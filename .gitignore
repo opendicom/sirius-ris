@@ -1,0 +1,41 @@
+# LOGS FILES:
+*.log
+
+# DEPENDENCIES DIRECTORIES:
+node_modules/
+jspm_packages/
+
+# BACKEND:
+database/sirius_db_data/
+database/sirius_db_config/
+backend/target/
+
+# FRONTEND:
+/dist/
+/tmp/
+/out-tsc/
+
+# ANGULAR CACHE:
+frontend/sirius_web_app/.angular/cache/*
+
+# IDE - VISUAL STUDIO CODE:
+frontend/sirius_web_app/.vscode/*
+frontend/sirius_web_app/!.vscode/settings.json
+frontend/sirius_web_app/!.vscode/tasks.json
+frontend/sirius_web_app/!.vscode/launch.json
+frontend/sirius_web_app/!.vscode/extensions.json
+frontend/sirius_web_app/.history/*
+
+# MISC:
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# SYSTEM FILES:
+.DS_Store
+Thumbs.db

@@ -1,0 +1,43 @@
+{
+  "name": "sirius-risjs",
+  "version": "1.0.0",
+  "description": "Sirius RISjs is a Radiology Information System",
+  "main": "main.js",
+  "_moduleAliases": {
+    "@main": "./",
+    "@auth": "./auth",
+    "@modules": "./modules"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API",
+    "REST",
+    "RESTful",
+    "Asynchronous",
+    "Async",
+    "Backend",
+    "RIS",
+    "Sirius",
+    "Radiology",
+    "NodeJS",
+    "MongoDB"
+  ],
+  "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.10.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "js-yaml": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.1",
+    "path": "^0.12.7"
+  }
+}
