@@ -2,12 +2,7 @@
   "name": "sirius-risjs",
   "version": "1.0.0",
   "description": "Sirius RISjs is a Radiology Information System",
-  "main": "main.js",
-  "_moduleAliases": {
-    "@main": "./",
-    "@auth": "./auth",
-    "@modules": "./modules"
-  },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
