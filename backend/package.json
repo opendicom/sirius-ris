@@ -22,7 +22,7 @@
   "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "argon2": "^0.28.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",

@@ -8,6 +8,7 @@ const path      = require('path');
 const fs        = require('fs');
 const yaml      = require('js-yaml');
 const mongoose  = require('mongoose');
+const argon2    = require('argon2');
 
 //Import app modules:
 const mainSettings = getFileSettings();                                     // File settings (YAML)
@@ -178,6 +179,26 @@ function getIPClient(request) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// HASH & VERIFY PASSWORD:
+//--------------------------------------------------------------------------------------------------------------------//
+async function hashPass(pass) {
+    try {
+        return await argon2.hash(pass);
+    } catch (err) {
+        return err;
+    }
+}
+
+async function verifyPass(hash, password) {
+    try {
+        return await argon2.verify(hash, password);
+    } catch (err) {
+        return err;
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -189,6 +210,8 @@ module.exports = {
     getSchemaKeys,
     sendConsoleMessage,
     queryMongoDB,
-    getIPClient
+    getIPClient,
+    hashPass,
+    verifyPass
 };
 //--------------------------------------------------------------------------------------------------------------------//

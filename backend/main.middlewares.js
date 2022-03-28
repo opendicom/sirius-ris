@@ -3,7 +3,6 @@
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Import external modules:
-const bcrypt    = require('bcrypt');
 const jwt       = require('jsonwebtoken');
 
 //Import app modules:
@@ -65,9 +64,6 @@ const allowedValidate = (allowedSchemaKeys) => {
 // Encrypts the fields designated as passwords in the schema before saving them to the database.
 //--------------------------------------------------------------------------------------------------------------------//
 const isPassword = (Schema, fieldName = 'password') => {
-    //Set amount of repetition of the SALT algorithm:
-    const saltRounds = 12;
-
     //PRE SAVE INSERT:
     Schema.pre('save', function(next){
         //Check if the password field exists according to the name indicated:
@@ -75,15 +71,17 @@ const isPassword = (Schema, fieldName = 'password') => {
         
         //Hash the password:
         const data = this;
-        bcrypt.hash(data[fieldName], saltRounds, (error, hashedPassword) => {
-            if(error){
-                next(error);
-            } else {
-                //Save hashed password:
-                data[fieldName] = hashedPassword;
-                next();
+        mainServices.hashPass(data[fieldName])
+            .then((hash) => {
+                 //Save hashed password:
+                 data[fieldName] = hash;
+                 next();
+            })
+            .catch((err) => {
+                //Send error:
+                next(err);
             }
-        });
+        );
     });
     
     //PRE SAVE UPDATE:
@@ -92,14 +90,20 @@ const isPassword = (Schema, fieldName = 'password') => {
         if(!this._update.$set[fieldName]) return next(); //If password is not updated:
 
         //Hash the password:
-        const hashedPassword = await bcrypt.hash(this._update.$set[fieldName], saltRounds);
-        
-        //Create set object to preserve fieldName as key:
-        let set = {};
-        set[fieldName] = hashedPassword;
+        mainServices.hashPass(this._update.$set[fieldName])
+            .then((hash) => {
+                //Create set object to preserve fieldName as key:
+                let set = {};
+                set[fieldName] = hash;
 
-        //Set hashed password:
-        this.set(set);
+                //Set hashed password:
+                this.set(set);
+            })
+            .catch((err) => {
+                //Send error:
+                next(err);
+            }
+        );
     });
 
     //Return MongoDB Schema:
