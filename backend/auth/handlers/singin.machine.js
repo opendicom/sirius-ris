@@ -27,6 +27,9 @@ module.exports = async function (req, res){
     await users.Model.findOne(usersFilter, usersProj)
     .exec()
     .then((userData) => {
+        //Convert Mongoose object to Javascript object:
+        userData = userData.toObject();
+
         //Check values projected (strictCheck): 
         //mainServices.strictCheck(usersProj, userData);
 
@@ -108,7 +111,8 @@ module.exports = async function (req, res){
                                     res.status(500).send({ success: false, message: currentLang.jwt.sign_error, error: err });
                                     return;
                                 } else {
-                                    res.status(200).send({ success: true, payload: payload, token: token });
+                                    //Send successfully response:
+                                    res.status(200).send({ success: true, message: 'Autenticación exitosa!', token: token });
                                 }
                             });
 

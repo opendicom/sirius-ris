@@ -101,6 +101,9 @@ module.exports = async function (req, res){
                                         await organizations.Model.findOne(orgFilter, orgProj)
                                         .exec()
                                         .then((orgData) => {
+                                            //Convert Mongoose object to Javascript object:
+                                            orgData = orgData.toObject();
+
                                             //Check values projected (strictCheck): 
                                             //mainServices.strictCheck(orgProj, orgData);
 

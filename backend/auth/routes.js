@@ -12,7 +12,7 @@ const authMiddlewares = require('./middlewares');
 //Import Handlers:
 const singinHuman       = require('./handlers/singin.human');
 const singinMachine     = require('./handlers/singin.machine');
-const autorizeHandler   = require('./handlers/autorize');
+const authorizeHandler  = require('./handlers/authorize');
 
 //Create Router.
 const router = express.Router();
@@ -35,9 +35,9 @@ router.post(
 );
 
 router.post(
-    '/autorize',
+    '/authorize',
     mainMiddlewares.checkJWT,
-    (req, res) => { autorizeHandler(req, res); }
+    (req, res) => { authorizeHandler(req, res); }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 
