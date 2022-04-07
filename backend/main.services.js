@@ -133,86 +133,6 @@ function sendConsoleMessage(req){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// ASYNCHRONOUS QUERY MONGODB:
-// Esta funcion ejecuta una consulta MongoDB y en caso de error envía los mensajes correspondientes.
-//--------------------------------------------------------------------------------------------------------------------//
-async function queryMongoDB(query, res, callback, strict = false){
-    //Get projection atributes (For strict mode):
-    let proj = query.projection();
-
-    //Initialize errors variables:
-    let error = {
-        status: false,
-        message: '',
-        details: []
-    }
-
-    //Execute branch query:
-    await query.exec()
-    .then(async (doc) => {
-        //Convert Mongoose Object to a simple Javascript Object:
-        doc = doc.toObject();
-
-        //Check values projected, only in strict mode true:
-        if(strict){
-            //Obtain keys and sort:
-            let projKeys = Object.keys(proj).sort();
-            let docKeys = Object.keys(doc).sort();
-
-            //Remove _id automatic projection case:
-            docKeys = removeArrayValue(docKeys, '_id');
-            
-            //Chequear que existan las mismas claves que las proyectadas:
-            if(JSON.stringify(projKeys) == JSON.stringify(docKeys)){
-                //Recorrer las claves del documento obtenido de la BD:
-                for (currentKey in docKeys){
-                    //Chequear que los elementos del documento contengan valores:
-                    if(doc[docKeys[currentKey]] === undefined || doc[docKeys[currentKey]] === null || doc[docKeys[currentKey]] === ''){
-                        //Set error:
-                        error.status = true;
-                        error.message = 'Existen valores de la respuesta indefinidos, nulos o vacíos.'
-                        error.details.push(docKeys[currentKey] + ', NO puede ser indefinido, nulo ni vacío.');
-                    }
-                }
-            } else {
-                //Set error:
-                error.status = true;
-                error.message = 'Existen diferencias entre los valores solicitados y los obtenidos desde la base de datos.';
-                error.details.push('Pojected keys: ' + projKeys);
-                error.details.push('Document keys: ' + docKeys);
-            }
-        }
-
-        if(error.status){
-            //Send errors and details:
-            //res.status(500).send({ success: false, message: error.message, details: error.details });
-            console.error(error.message);
-            console.log(error.details);
-
-            //Ejecutar callback con errores:
-            await callback(doc, error);
-
-            //Overwrite callback:
-            //callback = () => { return; }
-        } else {
-            //Ejecutar callback sin errores:
-            await callback(doc, false);
-        }
-    })
-    .catch((err) => {
-        //Set error message:
-        const errorMessage = { success: false, message: currentLang.db.query_error, error: err.message };
-
-        //Send error message to console:
-        console.error(errorMessage);
-
-        //Return error message (HTML Response):
-        res.status(500).send(errorMessage);
-    });
-}
-//--------------------------------------------------------------------------------------------------------------------//
-
-//--------------------------------------------------------------------------------------------------------------------//
 // GET IP CLIENT:
 //--------------------------------------------------------------------------------------------------------------------//
 function getIPClient(request) {
@@ -251,14 +171,9 @@ async function verifyPass(hash, password) {
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
-function removeArrayValue(array, value){
-    const index = array.indexOf(value);
-    if (index > -1) {
-        array.splice(index, 1);
-    }
-    return array;
-}
-
+//--------------------------------------------------------------------------------------------------------------------//
+// SEND ERROR:
+//--------------------------------------------------------------------------------------------------------------------//
 function sendError(res, message, error){
     //Set error message:
     const errorMessage = { success: false, message: message, error: error };
@@ -269,6 +184,57 @@ function sendError(res, message, error){
     //Return error message (HTML Response):
     res.status(500).send(errorMessage);
 }
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// STRICT CHECK:
+//--------------------------------------------------------------------------------------------------------------------//
+function strictCheck (proj, doc) {
+    //Only if they are the find, findOne and findById methods:
+    doc = doc.toObject()
+
+    //Obtain keys and sort:
+    let projKeys = Object.keys(proj).sort();
+    let docKeys = Object.keys(doc).sort();
+
+    //Remove _id automatic projection case:
+    removeItemFromArray(docKeys, '_id');
+
+    //Initialize error object:
+    let error = {
+        status: false,
+        message: 'No hay errores',
+        details: []
+    };
+    
+    //Chequear que existan las mismas claves que las proyectadas:
+    if(JSON.stringify(projKeys) == JSON.stringify(docKeys)){
+        //Recorrer las claves del documento obtenido de la BD:
+        for (currentKey in docKeys){
+            //Chequear que los elementos del documento contengan valores:
+            if(doc[docKeys[currentKey]] === undefined || doc[docKeys[currentKey]] === null || doc[docKeys[currentKey]] === ''){
+                //Set error:
+                error.status = true;
+                error.message = 'Existen valores de la respuesta indefinidos, nulos o vacíos.'
+                error.details.push(docKeys[currentKey] + ', NO puede ser indefinido, nulo ni vacío.');
+            }
+        }
+    } else {
+        //Set error:
+        error.status = true;
+        error.message = 'Existen diferencias entre los valores solicitados y los obtenidos desde la base de datos.';
+        error.details.push('Pojected keys: ' + projKeys);
+        error.details.push('Document keys: ' + docKeys);
+    }
+
+    //Return results:
+    if(error.status){
+        //Send errors and details:
+        console.error(error.message);
+        console.log(error.details);
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
@@ -281,11 +247,10 @@ module.exports = {
     commonResponse,
     getSchemaKeys,
     sendConsoleMessage,
-    queryMongoDB,
     getIPClient,
     hashPass,
     verifyPass,
-    removeArrayValue,
-    sendError
+    sendError,
+    strictCheck
 };
 //--------------------------------------------------------------------------------------------------------------------//

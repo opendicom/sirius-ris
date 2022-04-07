@@ -58,7 +58,6 @@ module.exports = async function (req, res){
 
         //Check if the person & user exists:
         if(peopleData){
-            //STRICT CHECK FUNCTION!! (CONTINUAR ACÁ)
 
             //Check user status:
             if(peopleData.user_data.status === true){
@@ -102,6 +101,9 @@ module.exports = async function (req, res){
                                         await organizations.Model.findOne(orgFilter, orgProj)
                                         .exec()
                                         .then((orgData) => {
+                                            //Check values projected (strictCheck): 
+                                            //mainServices.strictCheck(orgProj, orgData);
+
                                             //Check organization status:
                                             if(orgData.status == true){
                                                 //Add permission in array:
@@ -157,7 +159,7 @@ module.exports = async function (req, res){
                                             if(branchData.status == true && branchData.org_data.status == true){
                                                 //Add permission in array:
                                                 userPermissions[key] = {
-                                                    domain: branchData.org_data._id + '_' + branchData._id,
+                                                    domain: branchData._id,
                                                     description: branchData.org_data.short_name + ' - ' + branchData.short_name,
                                                     role: value['role']
                                                 };
@@ -217,11 +219,14 @@ module.exports = async function (req, res){
                                             //Clarification: in aggregate doc it is an array:
                                             servData = servData[0];
 
+                                            //Check values projected (strictCheck): 
+                                            //mainServices.strictCheck(servProj, servData);
+
                                             //Check service, branch (parent) and organization (parent) status:
                                             if(servData.status == true && servData.branch_data.status == true && servData.org_data.status == true){
                                                 //Add permission in array:
                                                 userPermissions[key] = {
-                                                    domain: servData.org_data._id + '_' + servData.branch_data._id + '_' + servData._id,
+                                                    domain: servData._id,
                                                     description: servData.org_data.short_name + ' - ' + servData.branch_data.short_name + ' - ' + servData.name,
                                                     role: value['role']
                                                 };
@@ -254,7 +259,7 @@ module.exports = async function (req, res){
                                 if(patientPermissions){
                                     response_data.patient_permissions = patientPermissions;
                                 }
-                                        
+                                
                                 //Send successfully response:
                                 res.status(200).send({ success: true, data: response_data, token: token });
                             });

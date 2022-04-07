@@ -18,17 +18,32 @@ module.exports = async function (req, res){
 
     //Create MongoDB arguments:
     const usersFilter = { _id: user_id };
-    const usersProj = { fk_people: 1, permissions: 1, settings: 1 };
+    const usersProj = { status: 1, permissions: 1, settings: 1 };
 
     //Build query:
-    const usersQuery = users.Model.findOne(usersFilter, usersProj);
+    await users.Model.findOne(usersFilter, usersProj)
+    .exec()
+    .then((userData) => {
+        //Check user status:
+        if(userData.status == true){
+            
+            console.log(userData);
 
-    //Execute query:
-    await mainServices.queryMongoDB(usersQuery, res, async (userData) => {
-        //Check that the user really has the indicated permission:
-        console.log(userData);
+            //Check that the user really has the indicated permission:
 
-        //Create user session:
+            //Create session in DB:
+            
+            //Send registry in Log DB:
+
+            //Create JWT Session:
+
+        } else {
+            res.status(200).send({ success: false, message: 'La cuenta de usuario ingresada está inhabilitada.' });
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
     });
 
     // Se recibe request del usuario con Token de Autorización y el uno de los permisos disponibles del usuario.
