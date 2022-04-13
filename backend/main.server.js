@@ -14,8 +14,9 @@ module.exports = function() {
     const fs            = require('fs');
 
     //Import router modules:
-    const authRoutes    = require('./auth/routes');
-    const usersRoutes   = require('./modules/users/routes');
+    const authRoutes            = require('./auth/routes');
+    const organizationsRoutes   = require('./modules/organizations/routes');
+    const usersRoutes           = require('./modules/users/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -105,6 +106,7 @@ module.exports = function() {
 
     //Set modules routes:
     app.use('/singin', authRoutes);
+    app.use('/organizations', organizationsRoutes);
     app.use('/users', usersRoutes);
 
     //Start message:

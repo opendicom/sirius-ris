@@ -15,7 +15,7 @@ const users     = require('../../modules/users/schemas');
 const sessions  = require('../../modules/sessions/schemas');
 const logs      = require('../../modules/logs/schemas');
 
-module.exports = async function (req, res){
+module.exports = async (req, res) => {
     //Get query params:
     const { username, password } = req.body;
 

@@ -32,7 +32,6 @@ module.exports = function(language){
             'check_invalid_token'   : 'Invalid token.'
         },
         'db': {
-            'empty_id'              : 'ID field cannot be empty.',
             'invalid_id'            : 'The specified ID is NOT valid for MongoDB.',
             'query_error'           : 'Error during query to MongoDB.',
             'query_no_data'         : 'No records was found.',
@@ -75,7 +74,6 @@ module.exports = function(language){
             lang.jwt.check_empty_token          = 'Es necesario un token de autenticación.';
             lang.jwt.check_invalid_token        = 'El token no es válido.';
 
-            lang.db.empty_id                    = 'El campo ID no puede ser vacío.';
             lang.db.invalid_id                  = 'El ID especificado NO es válido para MongoDB.';
             lang.db.query_error                 = 'Error durante la consulta al servidor MongoDB.';
             lang.db.query_no_data               = 'No se encontraron registros.';

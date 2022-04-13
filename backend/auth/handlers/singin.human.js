@@ -15,7 +15,7 @@ const organizations = require('../../modules/organizations/schemas');
 const branches      = require('../../modules/branches/schemas');
 const services      = require('../../modules/services/schemas');
 
-module.exports = async function (req, res){
+module.exports = async (req, res) => {
     //Get query params:
     const { documents, password } = req.body;
 

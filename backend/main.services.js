@@ -68,20 +68,15 @@ function validateFormattedProj(proj){
 // VALIDATE REQUEST ID:
 // Validate request ID (MongoID).
 //--------------------------------------------------------------------------------------------------------------------//
-function validateRequestID(req, res){
-    //Validate the existence of the ID field in the request:
-    if (!req.body.id && !req.query.id) {
-        res.status(400).json({ success: false,  message: currentLang.db.empty_id });
-        return false;
+function validateRequestID(id, res){
+    //Check that the entered ID is valid for MongoDB:
+    if(mongoose.Types.ObjectId.isValid(id)) {
+        return true;
     } else {
-        //Check that the entered ID is valid for MongoDB:
-        if(mongoose.Types.ObjectId.isValid(req.body.id) || mongoose.Types.ObjectId.isValid(req.query.id)) {
-            return true;
-        } else {
-            res.status(400).json({ success: false, message: currentLang.db.invalid_id });
-            return false;
-        }
+        res.status(400).json({ success: false, message: currentLang.db.invalid_id });
+        return false;
     }
+
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

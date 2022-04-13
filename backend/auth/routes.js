@@ -27,10 +27,10 @@ router.post(
     '/',
     authMiddlewares.accessControl, (req, res) => {
         // Human singin:
-        if(req.body.documents){
+        if(req.body.documents && req.body.password){
             singinHuman(req, res);
         // Machine singin:
-        } else if (req.body.username){
+        } else if (req.body.username && req.body.password){
             singinMachine(req, res);
         } else {
             res.status(400).send({ success: false, message: currentLang.http.bad_request });
@@ -42,7 +42,13 @@ router.post(
 router.post(
     '/authorize',
     mainMiddlewares.checkJWT,
-    (req, res) => { authorizeHandler(req, res); }
+    (req, res) => {
+        if (req.body.domain && req.body.role){
+            authorizeHandler(req, res);
+        } else {
+            res.status(400).send({ success: false, message: currentLang.http.bad_request });
+        }
+    }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 
