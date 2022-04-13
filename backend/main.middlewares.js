@@ -3,12 +3,12 @@
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Import external modules:
-const jwt       = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 //Import app modules:
 const mainServices  = require('./main.services');                           // Main services
-const mainSettings = mainServices.getFileSettings();                        // File settings (YAML)
-const currentLang = require('./main.languages')(mainSettings.language);     // Language Module
+const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
+const currentLang   = require('./main.languages')(mainSettings.language);   // Language Module
 
 //--------------------------------------------------------------------------------------------------------------------//
 //  ALLOWED VALIDATE:

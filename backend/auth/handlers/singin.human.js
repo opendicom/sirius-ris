@@ -101,20 +101,23 @@ module.exports = async function (req, res){
                                         await organizations.Model.findOne(orgFilter, orgProj)
                                         .exec()
                                         .then((orgData) => {
-                                            //Convert Mongoose object to Javascript object:
-                                            orgData = orgData.toObject();
+                                            //Check for results (not empty):
+                                            if(orgData){
+                                                //Convert Mongoose object to Javascript object:
+                                                orgData = orgData.toObject();
 
-                                            //Check values projected (strictCheck): 
-                                            //mainServices.strictCheck(orgProj, orgData);
+                                                //Check values projected (strictCheck): 
+                                                //mainServices.strictCheck(orgProj, orgData);
 
-                                            //Check organization status:
-                                            if(orgData.status == true){
-                                                //Add permission in array:
-                                                userPermissions[key] = {
-                                                    domain: orgData._id,
-                                                    description: orgData.short_name,
-                                                    role: value['role']
-                                                };
+                                                //Check organization status:
+                                                if(orgData.status == true){
+                                                    //Add permission in array:
+                                                    userPermissions[key] = {
+                                                        domain: orgData._id,
+                                                        description: orgData.short_name,
+                                                        role: value['role']
+                                                    };
+                                                }
                                             }
                                         })
                                         .catch((err) => {
@@ -268,18 +271,18 @@ module.exports = async function (req, res){
                             });
                         } else {
                             //Passwords don't match:
-                            res.status(200).send({ success: false, message: 'Contraseña incorrecta.' });
+                            res.status(200).send({ success: false, message: currentLang.auth.password_dont_match });
                         }
                     })
                     .catch((err) => {
-                        res.status(200).send({ success: false, message: 'Error durante la verificación del password, puede que el contenido del hash guardado en la BD no corresponda con el algoritmo de cifrado utilizado.', error: err });
+                        res.status(200).send({ success: false, message: currentLang.auth.password_error, error: err });
                     });
             } else {
-                res.status(200).send({ success: false, message: 'La cuenta de usuario ingresada está inhabilitada.' });
+                res.status(200).send({ success: false, message: currentLang.auth.user_disabled });
             }
         } else {
             //Return result NO data (HTML Response):
-            res.status(200).send({ success: false, message: 'El usuario ingresado NO se encuentra en la base de datos.' });
+            res.status(200).send({ success: false, message: currentLang.auth.wrong_user });
         }
     })
     .catch((err) => {

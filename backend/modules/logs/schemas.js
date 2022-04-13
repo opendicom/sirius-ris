@@ -5,12 +5,20 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Define Privileges Sub-Schema:
+const subSchemaElement = new mongoose.Schema({
+    type:      { type: Number, required: true },                // 1 user, 2 appointment, 3 study
+    element:   { type: mongoose.ObjectId, required: true },
+    state:     { type: Number }                                 // Only for 2 appointment and 3 study
+},
+{ _id : false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     event:      { type: Number, required: true },
     datetime:   { type: Date, required: true },
     fk_user:    { type: mongoose.ObjectId, required: true }, //Author
-    element:    { type: mongoose.ObjectId }
+    element:    { type: subSchemaElement }
 },
 { timestamps: false },
 { versionKey: false });

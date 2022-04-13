@@ -24,7 +24,7 @@ function getFileSettings(){
         let fileContents = fs.readFileSync(path.resolve('./', 'main.settings.yaml'), 'utf8');
         return yaml.load(fileContents);
     } catch (err) {
-        console.log('An error occurred while trying to read the settings.yaml file.');
+        console.log(currentLang.server.undefined_settings);
         console.error(err);
     }
 }
@@ -81,21 +81,6 @@ function validateRequestID(req, res){
             res.status(400).json({ success: false, message: currentLang.db.invalid_id });
             return false;
         }
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------//
-
-//--------------------------------------------------------------------------------------------------------------------//
-// COMMON RESPONSE:
-// Most common response function (only two way).
-//--------------------------------------------------------------------------------------------------------------------//
-function commonResponse(data){
-    if(data){
-        //Return result (HTML Response):
-        return { success: true, data: data };
-    } else {
-        //Return result NO data (HTML Response):
-        return { success: true, message: currentLang.db.query_no_data, data: {} };
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
@@ -244,7 +229,6 @@ module.exports = {
     removeItemFromArray,
     validateFormattedProj,
     validateRequestID,
-    commonResponse,
     getSchemaKeys,
     sendConsoleMessage,
     getIPClient,

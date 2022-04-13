@@ -59,11 +59,11 @@ const accessControl = (req, res, next) => {
                 );
 
                 //Send console message:
-                console.log('SANCIONED CLIENTS:');
+                console.log(currentLang.http.sancioned);
                 console.log(registeredIPs);
 
                 //Respond with a sanction message and not allow to continue until the penalty time has expired:
-                res.status(401).send({ success: false, message: 'Ha realizado demasiados intentos de singin dentro del tiempo permitido.' });
+                res.status(401).send({ success: false, message: currentLang.http.sancioned_msj });
                 return;
             } else {
                 //Increment counter and update las request:

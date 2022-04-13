@@ -5,6 +5,11 @@
 //Import external modules:
 const express   = require('express');
 
+//Import app modules:
+const mainServices  = require('../main.services');                          // Main services
+const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
+const currentLang   = require('../main.languages')(mainSettings.language);  // Language Module
+
 //Import middlewares:
 const mainMiddlewares = require('../main.middlewares');
 const authMiddlewares = require('./middlewares');
@@ -28,7 +33,7 @@ router.post(
         } else if (req.body.username){
             singinMachine(req, res);
         } else {
-            res.status(400).send({ success: false, message: 'Bad request.' });
+            res.status(400).send({ success: false, message: currentLang.http.bad_request });
         }
         
     }

@@ -85,7 +85,7 @@ module.exports = async function (req, res){
                 .then(async (savedSession) => {
                     //Create log object:
                     const logObj = {
-                        event: 1,                   //Loggin
+                        event: 1,                   //Login
                         datetime: creation_date,    //Same as payload iat
                         fk_user: mongoose.Types.ObjectId(userData._id),
                     }
@@ -115,7 +115,7 @@ module.exports = async function (req, res){
                                 return;
                             } else {
                                 //Send successfully response:
-                                res.status(200).send({ success: true, message: 'Autenticación exitosa!', token: token });
+                                res.status(200).send({ success: true, message: currentLang.auth.singin_success, token: token });
                             }
                         });
 
@@ -133,20 +133,16 @@ module.exports = async function (req, res){
                 });
 
             } else {
-                res.status(200).send({ success: false, message: 'El dominio y/o rol indicado no se encuentran adjudicados al usuario.' });
+                res.status(200).send({ success: false, message: currentLang.auth.wrong_role_domain });
             }
 
         } else {
-            res.status(200).send({ success: false, message: 'La cuenta de usuario ingresada está inhabilitada.' });
+            res.status(200).send({ success: false, message: currentLang.auth.user_disabled });
         }
     })
     .catch((err) => {
         //Send error:
         mainServices.sendError(res, currentLang.db.query_error, err);
     });
-
-    // Se recibe request del usuario con Token de Autorización y el uno de los permisos disponibles del usuario.
-    // El sistema valida si existe el permiso enviado para dicho usuario, si es correcto, el sistema envía un Response con un JWT de Session.
-    // Sino, se envía un Response con un mensaje de error.
 }
 //--------------------------------------------------------------------------------------------------------------------//
