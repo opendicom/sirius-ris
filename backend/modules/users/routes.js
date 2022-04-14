@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ROUTES:
+// USERS ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
@@ -11,10 +11,6 @@ const router = express.Router();
 //Routes:
 router.get('/find', (req, res) => {
     res.status(200).send({ success: true, message: 'Users find it works!' });
-});
-
-router.get('/findById', (req, res) => {
-    res.status(200).send({ success: true, message: 'Users findById it works!' });
 });
 //--------------------------------------------------------------------------------------------------------------------//
 

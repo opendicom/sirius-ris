@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ORGANIZATIONS ROUTES:
+// MODALITIES ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
@@ -18,11 +18,11 @@ const mainMiddlewares = require('../../main.middlewares');
 const genericCRUD = require('../crud.services');
 
 //Import schemas:
-const organizations = require('./schemas');
+const modalities = require('./schemas');
 
 //Get keys from current schema:
-const allSchemaKeys     = mainServices.getSchemaKeys(organizations);            //All.
-const allowedSchemaKeys = mainServices.getSchemaKeys(organizations, true);      //No parameters that cannot be modified.
+const allSchemaKeys     = mainServices.getSchemaKeys(modalities);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(modalities, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
@@ -47,10 +47,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                genericCRUD.find(req, res, organizations);
+                genericCRUD.find(req, res, modalities);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, organizations);
+                genericCRUD.findById(req, res, modalities);
                 break;
         }
     }
@@ -75,10 +75,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                genericCRUD.findOne(req, res, organizations);
+                genericCRUD.findOne(req, res, modalities);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, organizations);
+                genericCRUD.findById(req, res, modalities);
                 break;
         }
     }
@@ -89,8 +89,8 @@ router.post(
     '/insert',
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    organizations.Validator,
-    (req, res) => { genericCRUD.insert(req, res, organizations); }
+    modalities.Validator,
+    (req, res) => { genericCRUD.insert(req, res, modalities); }
 );
 
 //UPDATE:
@@ -99,8 +99,8 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
-    organizations.Validator,
-    (req, res) => { genericCRUD.update(req, res, organizations); }
+    modalities.Validator,
+    (req, res) => { genericCRUD.update(req, res, modalities); }
 );
 
 //DELETE:
@@ -108,7 +108,7 @@ router.post(
     '/delete',
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    (req, res) => { genericCRUD._delete(req, res, organizations); }
+    (req, res) => { genericCRUD._delete(req, res, modalities); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

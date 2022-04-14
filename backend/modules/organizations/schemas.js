@@ -31,7 +31,7 @@ const Validator = [
     body('short_name')
         .trim()
         .isLength({ min: 3, max: 32 })
-        .withMessage('El primer nombre corto ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
+        .withMessage('El nombre corto ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
 
     body('OID')
         .trim()

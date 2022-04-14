@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // GENERIC CRUD SERVICE:
 //--------------------------------------------------------------------------------------------------------------------//
+//Import external modules:
+const { validationResult } = require('express-validator');                  //Express-validator Middleware.
+
 //Import app modules:
 const mainServices  = require('../main.services');                          // Main services
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
@@ -119,6 +122,7 @@ async function findById(req, res, currentSchema){
     .then((data) => {
         //Check if have results:
         if(data){
+            //Send successfully response:
             res.status(200).send({ success: true, data: data });
         } else {
             //No data (empty result):
@@ -138,7 +142,28 @@ async function findById(req, res, currentSchema){
 // requested sort.
 //--------------------------------------------------------------------------------------------------------------------//
 async function findOne(req, res, currentSchema){
-    res.status(200).send({ success: true, message: 'findOne.' });
+    //Get query params:
+    let { filter, proj, sort } = req.query;
+
+    //Validate and format data projection:
+    const formatted_proj = mainServices.validateFormattedProj(proj);
+    
+    await currentSchema.Model.findOne(filter, formatted_proj).sort(sort)
+    .exec()
+    .then((data) => {
+        //Check if have results:
+        if(data){
+            //Send successfully response:
+            res.status(200).send({ success: true, data: data });
+        } else {
+            //No data (empty result):
+            res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -147,7 +172,36 @@ async function findOne(req, res, currentSchema){
 // Creates a new record in the database.
 //--------------------------------------------------------------------------------------------------------------------//
 async function insert(req, res, currentSchema){
-    res.status(200).send({ success: true, message: 'insert.' });
+    //Get validation result:
+    const errors = validationResult(req);
+
+    //Check validation result (express-validator):
+    if(!errors.isEmpty()){
+        //Initialize container array of validation messages:
+        let validate_messages = [];
+
+        //Walk through validation errors and load them into the message array:
+        errors.array().forEach(element => {
+            validate_messages.push(element.msg);
+        });
+    
+        //Return the result (HTML Response):
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: validate_messages });
+    } else {
+        //Create Mongoose object to insert validated data:
+        const objData = new currentSchema.Model(req.body);
+        
+        //Save data into DB:
+        await objData.save(objData)
+        .then(async (data) => {
+            //Send successfully response:
+            res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.insert_error, err);
+        });
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -157,7 +211,53 @@ async function insert(req, res, currentSchema){
 // ID and specified parameters.
 //--------------------------------------------------------------------------------------------------------------------//
 async function update(req, res, currentSchema){
-    res.status(200).send({ success: true, message: 'update.' });
+    //Validate ID request:
+    if(!mainServices.validateRequestID(req.body._id, res)) return;
+
+    //Get validation result (global: all elements):
+    const errors = validationResult(req);
+
+    //Initialize container array of validation messages:
+    let validate_messages = [];
+
+    //Check validation result (express-validator):
+    if(!errors.isEmpty()){
+        //Get keys of the elements allowed to set:
+        const setKeys = Object.keys(req.validatedResult.set)
+
+        //Check if the elements to be set contain errors:
+        errors.array().forEach(element => {
+            if(setKeys.includes(element.param)){
+                validate_messages.push(element.msg);
+            }
+        });
+    }
+
+    //Check only the validation of the fields allowed to set:
+    if(Object.keys(validate_messages).length === 0){
+        //Save data into DB:
+        await currentSchema.Model.findOneAndUpdate({_id: req.body._id },{$set: req.validatedResult.set }, {new:true})
+        .then(async (data) => {
+            //Check if have results:
+            if(data) {
+                //Delete _id of blocked items for message:
+                delete req.validatedResult.blocked._id;
+
+                //Send successfully response:
+                res.status(200).send({ success: true, data: data, blocked_attributes: req.validatedResult.blocked });
+            } else {
+                //Dont match (empty result):
+                res.status(200).send({ success: true, message: currentLang.db.id_no_results });
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.update_error, err);
+        });
+    } else {
+        //Return the result (HTML Response):
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: validate_messages });
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -166,7 +266,25 @@ async function update(req, res, currentSchema){
 // Delete an item from the database based on an ID (This method is reserved for developers).
 //--------------------------------------------------------------------------------------------------------------------//
 async function _delete(req, res, currentSchema){
-    res.status(200).send({ success: true, message: 'delete.' });
+    //Validate ID request:
+    if(!mainServices.validateRequestID(req.body._id, res)) return;
+
+    //Delete element:
+    await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
+    .exec()
+    .then((data) => {
+        if(data) {
+            //Send successfully response:
+            res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+        } else {
+            //Dont match (empty result):
+            res.status(404).send({ success: false, message: currentLang.db.delete_id_no_results, _id: req.body._id });
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.delete_error, err);
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
