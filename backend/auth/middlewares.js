@@ -58,9 +58,9 @@ const accessControl = (req, res, next) => {
                     clientIP + '|' + registeredIPs[clientIP].counter + '|' + Date.now(), //String actualizado
                 );
 
-                //Send console message:
-                console.log(currentLang.http.sancioned);
-                console.log(registeredIPs);
+                //Send WARN Message:
+                mainServices.sendConsoleMessage('WARN', currentLang.http.sancioned);
+                if(mainSettings.log_level == 'INFO' || mainSettings.log_level == 'WARN') { console.warn(registeredIPs) }
 
                 //Respond with a sanction message and not allow to continue until the penalty time has expired:
                 res.status(401).send({ success: false, message: currentLang.http.sancioned_msj });

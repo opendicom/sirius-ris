@@ -15,6 +15,8 @@ module.exports = function() {
 
     //Import router modules:
     const authRoutes            = require('./auth/routes');
+    const logsRoutes            = require('./modules/logs/routes');
+    const sessionsRoutes        = require('./modules/sessions/routes');
     const modalitiesRoutes      = require('./modules/modalities/routes');
     const organizationsRoutes   = require('./modules/organizations/routes');
     const usersRoutes           = require('./modules/users/routes');
@@ -92,24 +94,22 @@ module.exports = function() {
         }
 
         //Verbose mode message:
-        if(verboseMode === true) {
-            console.log('Verbose Mode: enabled\n')
-        } else {
-            console.log('Verbose Mode: disabled\n')
-        }
+        console.log('Log level: ' + mainSettings.log_level + '\n')
     });
 
     //Set default path:
     app.get('/', (req, res) => {
         //DEBUG:
-        res.status(200).send({ success: true, message: 'MAIN OK' });
+        res.status(200).send({ success: true, message: 'Welcome to Sirius RISjs Backend' });
     });
 
     //Set modules routes:
-    app.use('/singin', authRoutes);
-    app.use('/modalities', modalitiesRoutes);
-    app.use('/organizations', organizationsRoutes);
-    app.use('/users', usersRoutes);
+    app.use('/singin',          authRoutes);
+    app.use('/logs',            logsRoutes);
+    app.use('/sessions',        sessionsRoutes);
+    app.use('/modalities',      modalitiesRoutes);
+    app.use('/organizations',   organizationsRoutes);
+    app.use('/users',           usersRoutes);
 
     //Start message:
     console.log('\n' + consoleLn);

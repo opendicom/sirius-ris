@@ -116,6 +116,9 @@ const isPassword = (Schema, fieldName = 'password') => {
 // Checks for the existence of a JWT and validates it to protect itself from unwanted requests.
 //--------------------------------------------------------------------------------------------------------------------//
 const checkJWT = (req, res, next) => {
+    //Send INFO Message:
+    mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req));
+
     //Get bearer token from headers:
     let token = req.headers['x-access-token'] || req.headers['authorization'];
 

@@ -24,8 +24,9 @@ ssl_certificates:
 cors_enabled: false
 cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
 
-# Determine whether to use verbose mode:
-verbose_log_enabled: true
+# Set log level:
+# INFO > WARN > ERROR
+log_level: 'INFO'
 
 # Set your secret token:
 # For your safety change this value please.

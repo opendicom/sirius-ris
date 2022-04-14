@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ROUTES:
+// AUTH ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
@@ -26,6 +26,9 @@ const router = express.Router();
 router.post(
     '/',
     authMiddlewares.accessControl, (req, res) => {
+        //Send INFO Message:
+        mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req));
+
         // Human singin:
         if(req.body.documents && req.body.password){
             singinHuman(req, res);
@@ -35,7 +38,6 @@ router.post(
         } else {
             res.status(400).send({ success: false, message: currentLang.http.bad_request });
         }
-        
     }
 );
 

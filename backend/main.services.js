@@ -104,11 +104,32 @@ function getSchemaKeys(current, notAllowedKeys = false){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// SEND CONSOLE MESSAGE:
-// This function implements the verbose logging mode, sending information messages to the console.
+// REQUEST RECEIVED:
 //--------------------------------------------------------------------------------------------------------------------//
-function sendConsoleMessage(req){
-    console.log(req.method + ' request received [ ' + req.protocol + '://' + req.hostname + req.originalUrl + ' ] from ' + req.ip);
+function reqReceived(req){
+    return req.method + ' request received [ ' + req.protocol + '://' + req.hostname + req.originalUrl + ' ] from ' + getIPClient(req);
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SEND CONSOLE MESSAGE:
+//--------------------------------------------------------------------------------------------------------------------//
+function sendConsoleMessage(level, message){
+    switch(mainSettings.log_level){
+        case 'INFO':
+            if(level == 'INFO'){
+                console.info('[ INFO ] ' + message);
+            }
+        case 'WARN':
+            if(level == 'WARN'){
+                console.warn('[ WARN ] ' + message);
+            }
+        case 'ERROR':
+            if(level == 'ERROR'){
+                console.error('[ ERROR ] ' + message);
+            }
+            break;
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -225,6 +246,7 @@ module.exports = {
     validateFormattedProj,
     validateRequestID,
     getSchemaKeys,
+    reqReceived,
     sendConsoleMessage,
     getIPClient,
     hashPass,
