@@ -1,7 +1,6 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // AUTH MIDDLEWARES:
 //--------------------------------------------------------------------------------------------------------------------//
-
 //Import app modules:
 const mainServices  = require('../main.services');                          // Main services
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
@@ -59,8 +58,7 @@ const accessControl = (req, res, next) => {
                 );
 
                 //Send WARN Message:
-                mainServices.sendConsoleMessage('WARN', currentLang.http.sancioned);
-                if(mainSettings.log_level == 'INFO' || mainSettings.log_level == 'WARN') { console.warn(registeredIPs) }
+                mainServices.sendConsoleMessage('WARN', currentLang.http.sancioned, registeredIPs);
 
                 //Respond with a sanction message and not allow to continue until the penalty time has expired:
                 res.status(401).send({ success: false, message: currentLang.http.sancioned_msj });

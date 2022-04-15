@@ -114,19 +114,22 @@ function reqReceived(req){
 //--------------------------------------------------------------------------------------------------------------------//
 // SEND CONSOLE MESSAGE:
 //--------------------------------------------------------------------------------------------------------------------//
-function sendConsoleMessage(level, message){
+function sendConsoleMessage(level, message, details = false){
     switch(mainSettings.log_level){
         case 'INFO':
             if(level == 'INFO'){
                 console.info('[ INFO ] ' + message);
+                if(details){ console.info('[ INFO: Details ]'); console.info(details); }
             }
         case 'WARN':
             if(level == 'WARN'){
                 console.warn('[ WARN ] ' + message);
+                if(details){ console.warn('[ WARN: Details ]'); console.warn(details); }
             }
         case 'ERROR':
             if(level == 'ERROR'){
                 console.error('[ ERROR ] ' + message);
+                if(details){ console.error('[ ERROR: Details ]'); console.error(details); }
             }
             break;
     }
@@ -176,14 +179,11 @@ async function verifyPass(hash, password) {
 // SEND ERROR:
 //--------------------------------------------------------------------------------------------------------------------//
 function sendError(res, message, error){
-    //Set error message:
-    const errorMessage = { success: false, message: message, error: error };
-
-    //Send error message to console:
-    console.error(errorMessage);
+    //Send ERROR Message:
+    sendConsoleMessage('ERROR', message, error);
 
     //Return error message (HTML Response):
-    res.status(500).send(errorMessage);
+    res.status(500).send({ success: false, message: message, error: error });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -230,9 +230,8 @@ function strictCheck (proj, doc) {
 
     //Return results:
     if(error.status){
-        //Send errors and details:
-        console.error(error.message);
-        console.log(error.details);
+        //Send ERROR Message:
+        sendConsoleMessage('ERROR', error.message, error.details);
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

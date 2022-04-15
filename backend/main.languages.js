@@ -45,7 +45,7 @@ module.exports = function(language){
             'delete_id_no_results'  : 'No record was found to delete with the specified ID.'
         },
         http: {
-            'sancioned'             : 'SANCIONED CLIENTS:',
+            'sancioned'             : 'SANCIONED CLIENTS!',
             'sancioned_msj'         : 'You have made too many singin attempts within the allowed time.',
             'bad_request'           : 'Bad request.'
         }
@@ -86,7 +86,7 @@ module.exports = function(language){
             lang.db.delete_success              = 'Eliminación exitosa.';
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
             
-            lang.http.sancioned                 = 'CLIENTES SANCIONADOS:';
+            lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de singin dentro del tiempo permitido.';
             lang.http.bad_request               = 'La solicitud enviada es incorrecta.';
 
