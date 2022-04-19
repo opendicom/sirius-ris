@@ -5,13 +5,28 @@
 //Import external modules
 const express = require('express');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
+//Import middlewares:
+const mainMiddlewares = require('../../main.middlewares');
+
+//Import Handlers:
+const findHandler = require('./handlers/find');
+
 //Create Router.
 const router = express.Router();
 
 //Routes:
-router.get('/find', (req, res) => {
-    res.status(200).send({ success: true, message: 'Users find it works!' });
-});
+router.get(
+    '/find',
+    //mainMiddlewares.checkJWT,
+    (req, res) => {
+        findHandler(req, res);
+    }
+);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

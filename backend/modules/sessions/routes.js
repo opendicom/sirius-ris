@@ -84,6 +84,7 @@ router.get(
 router.post(
     '/delete',
     //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
     (req, res) => { genericCRUD._delete(req, res, sessions); }
 );

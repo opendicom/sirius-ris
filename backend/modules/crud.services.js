@@ -23,7 +23,7 @@ async function find(req, res, currentSchema){
     limit = parseInt(limit, 10);
 
     //Validate and format data projection:
-    const formatted_proj = mainServices.validateFormattedProj(proj);
+    const formatted_proj = mainServices.mongoDBObjFormat(proj);
 
     //Check if Pager was requested:
     if(pager){
@@ -114,7 +114,7 @@ async function findById(req, res, currentSchema){
     if(!mainServices.validateRequestID(filter._id, res)) return;
 
     //Validate and format data projection:
-    const formatted_proj = mainServices.validateFormattedProj(proj);
+    const formatted_proj = mainServices.mongoDBObjFormat(proj);
 
     //Execute main query:
     await currentSchema.Model.findById(filter._id, formatted_proj)
@@ -146,7 +146,7 @@ async function findOne(req, res, currentSchema){
     let { filter, proj, sort } = req.query;
 
     //Validate and format data projection:
-    const formatted_proj = mainServices.validateFormattedProj(proj);
+    const formatted_proj = mainServices.mongoDBObjFormat(proj);
     
     await currentSchema.Model.findOne(filter, formatted_proj).sort(sort)
     .exec()
@@ -289,6 +289,112 @@ async function _delete(req, res, currentSchema){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// FIND AGGREGATION:
+//--------------------------------------------------------------------------------------------------------------------//
+async function findAggregation(req, res, currentSchema){
+    //Get query params:
+    let { aggregate, proj, skip, limit, sort, pager } = req.query;
+
+    //Parse skip and limit value (string) to integer (base 10):
+    skip = parseInt(skip, 10);
+    limit = parseInt(limit, 10);
+
+    //Validate and format sort and data projection:
+    let formatted_proj = mainServices.mongoDBObjFormat(proj);
+    let formatted_sort = mainServices.mongoDBObjFormat(sort);
+
+    //Check if Pager was requested:
+    if(pager){
+        //Parse page_number and page_limit value (string) to integer (base 10):
+        pager.page_number = parseInt(pager.page_number, 10);
+        pager.page_limit = parseInt(pager.page_limit, 10);
+
+        //If dosn't exist, set page number:
+        if(!pager.page_number){
+            pager.page_number = 1;
+        }
+
+        //Set page limit and and replace limit param:
+        if(pager.page_limit){
+            limit = pager.page_limit;
+        } else {
+            //Set default page limit value:
+            limit = 10;
+        }
+
+        //Calculate and replace skip value (Paginate):
+        skip = (pager.page_number-1)*limit;
+    }
+
+    //Duplicate aggregate array object to count query:
+    let aggregateCount = Object.assign([], aggregate);
+
+    //Add count operation:
+    aggregateCount.push({ $count: "total_count" });
+
+    //Add operations to the main aggregation (skip and limit bad count):
+    if(formatted_proj != ''){ aggregate.push({ $project: formatted_proj }); }
+    if(!isNaN(skip)){ aggregate.push({ $skip: skip }); }
+    if(!isNaN(limit)){ aggregate.push({ $limit: limit }); }
+    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
+
+    //Count using query params:
+    await currentSchema.Model.aggregate(aggregateCount)
+    .exec()
+    .then(async (count) => {
+        //Check result count:
+        if(count.length !== 0){
+            //In aggregate count is an array:
+            count = count[0].total_count;
+
+            //Excecute main query:
+            await currentSchema.Model.aggregate(aggregate)
+            .exec()
+            .then((data) => {
+                //Check if have results:
+                if(data){
+                    //Validate and set paginator:
+                    let pager_data;
+                    if(pager){
+                        pager_data = {
+                            total_items: count,
+                            items_per_page: limit,
+                            viewed_items: data.length,
+                            number_of_pages: Math.ceil(count / limit),
+                            actual_page: pager.page_number
+                        };
+                    } else {
+                        pager_data = 'Pager is disabled';
+                    }
+
+                    //Send successfully response:
+                    res.status(200).send({
+                        success: true,
+                        data: data,
+                        pager: pager_data,
+                    });
+                } else {
+                    //No data (empty result):
+                    res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+        } else {
+            //No data (empty result):
+            res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export CRUD service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -297,6 +403,7 @@ module.exports = {
     findOne,
     insert,
     update,
-    _delete
+    _delete,
+    findAggregation
 };
 //--------------------------------------------------------------------------------------------------------------------//

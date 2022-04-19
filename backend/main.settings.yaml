@@ -28,6 +28,9 @@ cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
 # INFO > WARN > ERROR
 log_level: 'INFO'
 
+#Delete authorization code:
+delete_code: 'authorization_delete_code'
+
 # Set your secret token:
 # For your safety change this value please.
 AUTH_JWT_SECRET: 'top_secret'

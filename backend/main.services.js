@@ -41,22 +41,22 @@ function removeItemFromArray(array, item){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// VALIDATE FORMATTED PROJ:
-// Validate and format MongoDB query projection.
+// MONGODB OBJECT FORMAT PROJ:
+// Validate and format MongoDB object to sort or projection.
 //--------------------------------------------------------------------------------------------------------------------//
-function validateFormattedProj(proj){
+function mongoDBObjFormat(obj){
     //Initialize final projection variable:
-    let formatted_proj = new Object();
+    let formatted_obj = new Object();
 
-    //Format data projection:
-    if(proj && Object.keys(proj).length >= 1){
-        Object.entries(proj).forEach(([key, value]) => {
+    //Format data MongoDB object (sort & proj):
+    if(obj && Object.keys(obj).length >= 1){
+        Object.entries(obj).forEach(([key, value]) => {
             //Parse projection value (string) to integer (base 10):
-            formatted_proj[key] = parseInt(value, 10);
+            formatted_obj[key] = parseInt(value, 10);
         });
 
         //Return formatted projection:
-        return formatted_proj;
+        return formatted_obj;
     } else {
         //Return empty string:
         return '';
@@ -188,6 +188,20 @@ function sendError(res, message, error){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// STRING TO BOOLEAN:
+//--------------------------------------------------------------------------------------------------------------------//
+function stringToBoolean(string){
+    if(string === 'true'){
+        return true;
+    } else if(string === 'false') {
+        return false;
+    } else {
+        return undefined;
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // STRICT CHECK:
 //--------------------------------------------------------------------------------------------------------------------//
 function strictCheck (proj, doc) {
@@ -242,7 +256,7 @@ function strictCheck (proj, doc) {
 module.exports = {
     getFileSettings,
     removeItemFromArray,
-    validateFormattedProj,
+    mongoDBObjFormat,
     validateRequestID,
     getSchemaKeys,
     reqReceived,
@@ -251,6 +265,7 @@ module.exports = {
     hashPass,
     verifyPass,
     sendError,
+    stringToBoolean,
     strictCheck
 };
 //--------------------------------------------------------------------------------------------------------------------//

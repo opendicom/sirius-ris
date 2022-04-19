@@ -94,7 +94,7 @@ module.exports = function() {
         }
 
         //Verbose mode message:
-        console.log('Log level: ' + mainSettings.log_level + '\n')
+        console.log(' • Log level : ' + mainSettings.log_level + '\n')
     });
 
     //Set default path:

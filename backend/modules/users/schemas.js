@@ -30,7 +30,6 @@ const preSchema = new mongoose.Schema({
     fk_people:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
-    type:               { type: Number, required: true },
     permissions:        { type: [subSchemaPermissions] },
     settings:           { type: [subSchemaSettings] },
     status:             { type: Boolean, default: false },
