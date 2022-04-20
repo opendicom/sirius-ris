@@ -14,8 +14,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 //const checkSession = require('../');
 
-//Import Generic CRUD Service:
-const genericCRUD = require('../crud.services');
+//Import Module Services:
+const moduleServices = require('../modules.services');
 
 //Import schemas:
 const sessions = require('./schemas');
@@ -43,10 +43,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                genericCRUD.find(req, res, sessions);
+                moduleServices.find(req, res, sessions);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, sessions);
+                moduleServices.findById(req, res, sessions);
                 break;
         }
     }
@@ -71,10 +71,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                genericCRUD.findOne(req, res, sessions);
+                moduleServices.findOne(req, res, sessions);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, sessions);
+                moduleServices.findById(req, res, sessions);
                 break;
         }
     }
@@ -86,7 +86,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { genericCRUD._delete(req, res, sessions); }
+    (req, res) => { moduleServices._delete(req, res, sessions); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

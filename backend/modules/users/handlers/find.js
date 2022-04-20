@@ -1,16 +1,13 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // FIND HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
-//Import external modules:
-const mongoose  = require('mongoose');
-
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
 const currentLang   = require('../../../main.languages')(mainSettings.language);    // Language Module
 
-//Import Generic CRUD Service:
-const genericCRUD = require('../../crud.services');
+//Import Module Services:
+const moduleServices = require('../../modules.services');
 
 //Import schemas:
 const users = require('../schemas');
@@ -35,15 +32,15 @@ module.exports = async (req, res) => {
 
     //Correct data types for match operation:
     if(filter != undefined){
-        //Users and people types values (Schema):
-        if(filter.fk_people != undefined){ filter.fk_people = mongoose.Types.ObjectId(filter.fk_people) };
-        if(filter.status != undefined){ filter.status = mainServices.stringToBoolean(filter.status) };
+        //Adjust data types for match aggregation (Schema):
+        filter = moduleServices.adjustDataTypes(filter, 'users');
+        filter = moduleServices.adjustDataTypes(filter, 'people', 'people_data');
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: filter });
     }
 
     //Excecute main query:
-    await genericCRUD.findAggregation(req, res, users);
+    await moduleServices.findAggregation(req, res, users);
 }
 //--------------------------------------------------------------------------------------------------------------------//

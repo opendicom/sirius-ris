@@ -14,8 +14,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 //const checkSession = require('../');
 
-//Import Generic CRUD Service:
-const genericCRUD = require('../crud.services');
+//Import Module Services:
+const moduleServices = require('../modules.services');
 
 //Import schemas:
 const organizations = require('./schemas');
@@ -47,10 +47,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                genericCRUD.find(req, res, organizations);
+                moduleServices.find(req, res, organizations);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, organizations);
+                moduleServices.findById(req, res, organizations);
                 break;
         }
     }
@@ -75,10 +75,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                genericCRUD.findOne(req, res, organizations);
+                moduleServices.findOne(req, res, organizations);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, organizations);
+                moduleServices.findById(req, res, organizations);
                 break;
         }
     }
@@ -90,7 +90,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     organizations.Validator,
-    (req, res) => { genericCRUD.insert(req, res, organizations); }
+    (req, res) => { moduleServices.insert(req, res, organizations); }
 );
 
 //UPDATE:
@@ -100,7 +100,7 @@ router.post(
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     organizations.Validator,
-    (req, res) => { genericCRUD.update(req, res, organizations); }
+    (req, res) => { moduleServices.update(req, res, organizations); }
 );
 
 //DELETE:
@@ -109,7 +109,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { genericCRUD._delete(req, res, organizations); }
+    (req, res) => { moduleServices._delete(req, res, organizations); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

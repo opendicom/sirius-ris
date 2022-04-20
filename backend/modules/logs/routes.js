@@ -14,8 +14,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 //const checkSession = require('../');
 
-//Import Generic CRUD Service:
-const genericCRUD = require('../crud.services');
+//Import Module Services:
+const moduleServices = require('../modules.services');
 
 //Import schemas:
 const logs = require('./schemas');
@@ -43,10 +43,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                genericCRUD.find(req, res, logs);
+                moduleServices.find(req, res, logs);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, logs);
+                moduleServices.findById(req, res, logs);
                 break;
         }
     }
@@ -71,10 +71,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                genericCRUD.findOne(req, res, logs);
+                moduleServices.findOne(req, res, logs);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, logs);
+                moduleServices.findById(req, res, logs);
                 break;
         }
     }

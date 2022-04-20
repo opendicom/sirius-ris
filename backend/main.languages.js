@@ -47,7 +47,8 @@ module.exports = function(language){
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
             'sancioned_msj'         : 'You have made too many singin attempts within the allowed time.',
-            'bad_request'           : 'Bad request.'
+            'bad_request'           : 'Bad request.',
+            'pager_disabled'        : 'Pager is disabled',
         }
 
     };
@@ -89,6 +90,7 @@ module.exports = function(language){
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de singin dentro del tiempo permitido.';
             lang.http.bad_request               = 'La solicitud enviada es incorrecta.';
+            lang.http.pager_disabled            = 'Paginación desactivada.'
 
             break;
     }

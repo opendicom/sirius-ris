@@ -27,6 +27,19 @@ router.get(
         findHandler(req, res);
     }
 );
+
+router.get(
+    '/findOne',
+    //mainMiddlewares.checkJWT,
+    (req, res) => {
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
+
+        findHandler(req, res);
+    }
+);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

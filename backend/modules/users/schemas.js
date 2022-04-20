@@ -9,8 +9,8 @@ const middlewares   = require('../../main.middlewares');
 //Define Privileges Sub-Schema:
 const subSchemaPermissions = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId },
-    service:        { type: mongoose.ObjectId },
     branch:         { type: mongoose.ObjectId },
+    service:        { type: mongoose.ObjectId },
     role:           { type: Number, required: true },
     concession:     { type: [Number] }
 },
@@ -20,8 +20,8 @@ const subSchemaPermissions = new mongoose.Schema({
 const subSchemaSettings = new mongoose.Schema({
     max_row:        { type: String },
     viewer:         { type: Number },
-    language:       { type: [String] },
-    theme:          { type: [Number] }
+    language:       { type: String },
+    theme:          { type: Number }
 },
 { _id : false });
 

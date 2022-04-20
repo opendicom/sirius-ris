@@ -14,8 +14,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 //const checkSession = require('../');
 
-//Import Generic CRUD Service:
-const genericCRUD = require('../crud.services');
+//Import Module Services:
+const moduleServices = require('../modules.services');
 
 //Import schemas:
 const modalities = require('./schemas');
@@ -47,10 +47,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                genericCRUD.find(req, res, modalities);
+                moduleServices.find(req, res, modalities);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, modalities);
+                moduleServices.findById(req, res, modalities);
                 break;
         }
     }
@@ -75,10 +75,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                genericCRUD.findOne(req, res, modalities);
+                moduleServices.findOne(req, res, modalities);
                 break;
             case 'findById':
-                genericCRUD.findById(req, res, modalities);
+                moduleServices.findById(req, res, modalities);
                 break;
         }
     }
@@ -90,7 +90,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     modalities.Validator,
-    (req, res) => { genericCRUD.insert(req, res, modalities); }
+    (req, res) => { moduleServices.insert(req, res, modalities); }
 );
 
 //UPDATE:
@@ -100,7 +100,7 @@ router.post(
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     modalities.Validator,
-    (req, res) => { genericCRUD.update(req, res, modalities); }
+    (req, res) => { moduleServices.update(req, res, modalities); }
 );
 
 //DELETE:
@@ -109,7 +109,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { genericCRUD._delete(req, res, modalities); }
+    (req, res) => { moduleServices._delete(req, res, modalities); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//
