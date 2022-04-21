@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// USERS FIND HANDLER:
+// BRANCHES FIND HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
@@ -10,7 +10,7 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 //Import schemas:
-const users = require('../schemas');
+const branches = require('../schemas');
 
 module.exports = async (req, res) => {
     //Get query params:
@@ -18,29 +18,29 @@ module.exports = async (req, res) => {
 
     //Add aggregate to request:
     req.query['aggregate'] = [
-        //People lookup:
+        //Organizations lookup:
         { $lookup: {
-            from: 'people',
-            localField: 'fk_people',
+            from: 'organizations',
+            localField: 'fk_organization',
             foreignField: '_id',
-            as: 'people_data',
+            as: 'organitation_data',
         }},
         
         //Unwind:
-        { $unwind: { path: "$people_data", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$organitation_data", preserveNullAndEmptyArrays: true } },
     ];    
 
     //Correct data types for match operation:
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
-        filter = moduleServices.adjustDataTypes(filter, 'users');
-        filter = moduleServices.adjustDataTypes(filter, 'people', 'people_data');
+        filter = moduleServices.adjustDataTypes(filter, 'branches');
+        filter = moduleServices.adjustDataTypes(filter, 'organitations', 'organitation_data');
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: filter });
     }
 
     //Excecute main query:
-    await moduleServices.findAggregation(req, res, users);
+    await moduleServices.findAggregation(req, res, branches);
 }
 //--------------------------------------------------------------------------------------------------------------------//

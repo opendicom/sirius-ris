@@ -19,6 +19,8 @@ module.exports = function() {
     const sessionsRoutes        = require('./modules/sessions/routes');
     const modalitiesRoutes      = require('./modules/modalities/routes');
     const organizationsRoutes   = require('./modules/organizations/routes');
+    const branchesRoutes        = require('./modules/branches/routes');
+    const servicesRoutes        = require('./modules/services/routes');
     const usersRoutes           = require('./modules/users/routes');
 
     //Import app modules:
@@ -109,6 +111,8 @@ module.exports = function() {
     app.use('/sessions',        sessionsRoutes);
     app.use('/modalities',      modalitiesRoutes);
     app.use('/organizations',   organizationsRoutes);
+    app.use('/branches',        branchesRoutes);
+    app.use('/services',        servicesRoutes);
     app.use('/users',           usersRoutes);
 
     //Start message:
