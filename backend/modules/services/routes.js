@@ -30,6 +30,7 @@ const router = express.Router();
 router.get(
     '/find',
     //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
     (req, res) => {
         findHandler(req, res);
     }
@@ -39,6 +40,7 @@ router.get(
 router.get(
     '/findOne',
     //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
     (req, res) => {
         //Force limit to one result:
         req.query.skip = 0;                                 //No skip
@@ -53,8 +55,8 @@ router.get(
 router.post(
     '/delete',
     //mainMiddlewares.checkJWT,
-    mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
+    mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, services); }
 );
 //--------------------------------------------------------------------------------------------------------------------//

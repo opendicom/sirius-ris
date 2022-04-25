@@ -84,8 +84,8 @@ router.get(
 router.post(
     '/delete',
     //mainMiddlewares.checkJWT,
-    mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
+    mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, sessions); }
 );
 

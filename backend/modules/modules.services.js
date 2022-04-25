@@ -152,7 +152,7 @@ async function findOne(req, res, currentSchema){
 // INSERT:
 // Creates a new record in the database.
 //--------------------------------------------------------------------------------------------------------------------//
-async function insert(req, res, currentSchema){
+async function insert(req, res, currentSchema, referencedElements = false){
     //Get validation result:
     const errors = validationResult(req);
 
@@ -169,19 +169,42 @@ async function insert(req, res, currentSchema){
         //Return the result (HTML Response):
         res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: validate_messages });
     } else {
-        //Create Mongoose object to insert validated data:
-        const objData = new currentSchema.Model(req.body);
-        
-        //Save data into DB:
-        await objData.save(objData)
-        .then(async (data) => {
-            //Send successfully response:
-            res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.insert_error, err);
-        });
+        //Initialize secure insert variable:
+        let secureInsert = true;
+
+        //Check that the parents are valid:
+        if(referencedElements){
+            await Promise.all(referencedElements.map(async (value, key) => {
+                //Check referenced elements:
+                result = await ckeckElement(value[0], value[1], res);
+                
+                //Set secure insert:
+                if(result === false) { secureInsert = false; }
+            }));
+        } else {
+            //Set secure insert:
+            secureInsert = true;
+        }
+
+        //Check if secure insert:
+        if(secureInsert){
+            //Create Mongoose object to insert validated data:
+            const objData = new currentSchema.Model(req.body);
+            
+            //Save data into DB:
+            await objData.save(objData)
+            .then(async (data) => {
+                //Send successfully response:
+                res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.insert_error, err);
+            });
+        } else {
+            //Send not valid referenced object mensaje:
+            res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
+        }
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
@@ -191,7 +214,7 @@ async function insert(req, res, currentSchema){
 // Validate against the current model and if positive, updates an existing record in the database according to the
 // ID and specified parameters.
 //--------------------------------------------------------------------------------------------------------------------//
-async function update(req, res, currentSchema){
+async function update(req, res, currentSchema, referencedElements = false){
     //Validate ID request:
     if(!mainServices.validateRequestID(req.body._id, res)) return;
 
@@ -216,25 +239,48 @@ async function update(req, res, currentSchema){
 
     //Check only the validation of the fields allowed to set:
     if(Object.keys(validate_messages).length === 0){
-        //Save data into DB:
-        await currentSchema.Model.findOneAndUpdate({_id: req.body._id },{$set: req.validatedResult.set }, {new:true})
-        .then(async (data) => {
-            //Check if have results:
-            if(data) {
-                //Delete _id of blocked items for message:
-                delete req.validatedResult.blocked._id;
+        //Initialize secure update variable:
+        let secureUpdate = true;
 
-                //Send successfully response:
-                res.status(200).send({ success: true, data: data, blocked_attributes: req.validatedResult.blocked });
-            } else {
-                //Dont match (empty result):
-                res.status(200).send({ success: true, message: currentLang.db.id_no_results });
-            }
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.update_error, err);
-        });
+        //Check that the parents are valid:
+        if(referencedElements){
+            await Promise.all(referencedElements.map(async (value, key) => {
+                //Check referenced elements:
+                result = await ckeckElement(value[0], value[1], res);
+                
+                //Set secure update:
+                if(result === false) { secureUpdate = false; }
+            }));
+        } else {
+            //Set secure update:
+            secureUpdate = true;
+        }
+
+        //Check if secure update:
+        if(secureUpdate){
+            //Save data into DB:
+            await currentSchema.Model.findOneAndUpdate({_id: req.body._id },{$set: req.validatedResult.set }, {new:true})
+            .then(async (data) => {
+                //Check if have results:
+                if(data) {
+                    //Delete _id of blocked items for message:
+                    delete req.validatedResult.blocked._id;
+
+                    //Send successfully response:
+                    res.status(200).send({ success: true, data: data, blocked_attributes: req.validatedResult.blocked });
+                } else {
+                    //Dont match (empty result):
+                    res.status(200).send({ success: true, message: currentLang.db.id_no_results });
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.update_error, err);
+            });
+        } else {
+            //Send not valid referenced object mensaje:
+            res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
+        }
     } else {
         //Return the result (HTML Response):
         res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: validate_messages });
@@ -251,7 +297,7 @@ async function _delete(req, res, currentSchema){
     if(!mainServices.validateRequestID(req.body._id, res)) return;    
 
     //Check references of the element you want to delete:
-    const result = await checkReferences(req.body._id, currentSchema.Model.modelName, currentSchema.ForeignKeys);
+    const result = await checkReferences(req.body._id, currentSchema.Model.modelName, currentSchema.ForeignKeys, res);
 
     //Check References Result:
     if(result){
@@ -394,9 +440,39 @@ function setPager(req, pager){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK ELEMENT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function ckeckElement(_id, schemaName, res){
+    //Import current Schema:
+    const currentSchema = require('./' + schemaName + '/schemas');
+
+    //Initialize result:
+    let result = false;
+
+    //Execute check query:
+    await currentSchema.Model.findById(_id, { _id: 1 })
+    .exec()
+    .then((data) => {
+        //Check if have results:
+        if(data){
+            //Set result true:
+            result = true;
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK REFERENCES:
 //--------------------------------------------------------------------------------------------------------------------//
-async function checkReferences(_id, schemaName, ForeignKeys){
+async function checkReferences(_id, schemaName, ForeignKeys, res){
     //Initialize affected collections array:
     let affectedCollections = [];
 
@@ -589,6 +665,7 @@ module.exports = {
     update,
     _delete,
     findAggregation,
-    adjustDataTypes
+    adjustDataTypes,
+    ckeckElement
 };
 //--------------------------------------------------------------------------------------------------------------------//

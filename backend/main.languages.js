@@ -24,7 +24,7 @@ module.exports = function(language){
             'signin_success'        : 'Successful authentication.',
             'user_disabled'         : 'The user account entered is disabled.',
             'wrong_user'            : 'The entered user is NOT found in the database.',
-            'wrong_role_domain'     : 'The indicated domain and/or role are not assigned to the user.',
+            'wrong_role_domain'     : 'The indicated domain and/or role are not assigned to the user.'
         },
         'jwt': {
             'sign_error'            : 'An error occurred during the JWT generation.',
@@ -43,13 +43,14 @@ module.exports = function(language){
             'delete_error'          : 'An error occurred while deleting the element.',
             'delete_success'        : 'Successfully deleted.',
             'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
-            'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.'
+            'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.',
+            'not_valid_fk'          : 'Any of the elements referenced as foreign is NOT valid'
         },
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
             'sancioned_msj'         : 'You have made too many signin attempts within the allowed time.',
             'bad_request'           : 'Bad request.',
-            'pager_disabled'        : 'Pager is disabled',
+            'pager_disabled'        : 'Pager is disabled'
         }
 
     };
@@ -88,6 +89,7 @@ module.exports = function(language){
             lang.db.delete_success              = 'Eliminación exitosa.';
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
             lang.db.delete_rejected_dep         = 'Eliminación rechazada, existen dependencias del elemento que se desea eliminar.';
+            lang.db.not_valid_fk                = 'Alguno de los elementos referenciados como foráneos NO es válido';
             
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de signin dentro del tiempo permitido.';

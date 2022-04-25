@@ -14,13 +14,18 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const findHandler = require('./handlers/find');
+const findHandler   = require('./handlers/find');
+const insertHandler   = require('./handlers/insert');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
 //Import schemas:
 const branches = require('./schemas');
+
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(branches);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(branches, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
@@ -30,7 +35,9 @@ const router = express.Router();
 router.get(
     '/find',
     //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
     (req, res) => {
+        //Send to handler:
         findHandler(req, res);
     }
 );
@@ -39,13 +46,27 @@ router.get(
 router.get(
     '/findOne',
     //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
     (req, res) => {
         //Force limit to one result:
         req.query.skip = 0;                                 //No skip
         req.query.limit = 1;                                //One document
         if(req.query.pager) { delete req.query.pager };     //No pager
 
+        //Send to handler:
         findHandler(req, res);
+    }
+);
+
+//INSERT:
+router.post(
+    '/insert',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    (req, res) => {
+        //Send to handler:
+        insertHandler(req, res);
     }
 );
 
@@ -53,8 +74,8 @@ router.get(
 router.post(
     '/delete',
     //mainMiddlewares.checkJWT,
-    mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
+    mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, branches); }
 );
 //--------------------------------------------------------------------------------------------------------------------//
