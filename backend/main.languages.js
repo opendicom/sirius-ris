@@ -42,7 +42,8 @@ module.exports = function(language){
             'update_error'          : 'An error occurred while updating the element.',
             'delete_error'          : 'An error occurred while deleting the element.',
             'delete_success'        : 'Successfully deleted.',
-            'delete_id_no_results'  : 'No record was found to delete with the specified ID.'
+            'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
+            'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.'
         },
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
@@ -86,6 +87,7 @@ module.exports = function(language){
             lang.db.delete_error                = 'Error al intentar eliminar el elemento.';
             lang.db.delete_success              = 'Eliminación exitosa.';
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
+            lang.db.delete_rejected_dep         = 'Eliminación rechazada, existen dependencias del elemento que se desea eliminar.';
             
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de signin dentro del tiempo permitido.';

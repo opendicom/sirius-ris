@@ -16,10 +16,17 @@ const mainMiddlewares = require('../../main.middlewares');
 //Import Handlers:
 const findHandler = require('./handlers/find');
 
+//Import Module Services:
+const moduleServices = require('../modules.services');
+
+//Import schemas:
+const branches = require('./schemas');
+
 //Create Router.
 const router = express.Router();
 
 //Routes:
+//FIND:
 router.get(
     '/find',
     //mainMiddlewares.checkJWT,
@@ -28,6 +35,7 @@ router.get(
     }
 );
 
+//FIND ONE:
 router.get(
     '/findOne',
     //mainMiddlewares.checkJWT,
@@ -39,6 +47,15 @@ router.get(
 
         findHandler(req, res);
     }
+);
+
+//DELETE:
+router.post(
+    '/delete',
+    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDeleteCode,
+    //checkSession (middleware),
+    (req, res) => { moduleServices._delete(req, res, branches); }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -246,33 +246,35 @@ async function update(req, res, currentSchema){
 // DELETE:
 // Delete an item from the database based on an ID (This method is reserved for developers).
 //--------------------------------------------------------------------------------------------------------------------//
-async function _delete(req, res, currentSchema, fkName){
+async function _delete(req, res, currentSchema){
     //Validate ID request:
     if(!mainServices.validateRequestID(req.body._id, res)) return;    
 
-    const result = await checkReferences(res, req.body._id, currentSchema.Model.modelName, fkName);
-    console.log(result);
+    //Check references of the element you want to delete:
+    const result = await checkReferences(req.body._id, currentSchema.Model.modelName, currentSchema.ForeignKeys);
 
-    res.status(200).send({ test: true, result: result });
-
-    /*
-    //Delete element:
-    await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
-    .exec()
-    .then((data) => {
-        if(data) {
-            //Send successfully response:
-            res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
-        } else {
-            //Dont match (empty result):
-            res.status(404).send({ success: false, message: currentLang.db.delete_id_no_results, _id: req.body._id });
-        }
-    })
-    .catch((err) => {
-        //Send error:
-        mainServices.sendError(res, currentLang.db.delete_error, err);
-    });
-    */
+    //Check References Result:
+    if(result){
+        //Deletion rejected for dependencies:
+        res.status(405).send({ success: false, message: currentLang.db.delete_rejected_dep, dependencies: result });
+    } else {
+        //Delete element:
+        await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
+        .exec()
+        .then((data) => {
+            if(data) {
+                //Send successfully response:
+                res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+            } else {
+                //Dont match (empty result):
+                res.status(404).send({ success: false, message: currentLang.db.delete_id_no_results, _id: req.body._id });
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.delete_error, err);
+        });
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -281,7 +283,7 @@ async function _delete(req, res, currentSchema, fkName){
 //--------------------------------------------------------------------------------------------------------------------//
 async function findAggregation(req, res, currentSchema){
     //Get query params:
-    let { aggregate, proj, skip, limit, sort, pager } = req.query;
+    let { aggregate, proj, sort, pager } = req.query;
 
     //Parse skip and limit value (string) to integer (base 10):
     req.query.skip = parseInt(req.query.skip, 10);
@@ -394,18 +396,21 @@ function setPager(req, pager){
 //--------------------------------------------------------------------------------------------------------------------//
 // CHECK REFERENCES:
 //--------------------------------------------------------------------------------------------------------------------//
-async function checkReferences(res, _id, schemaName, fkName){
+async function checkReferences(_id, schemaName, ForeignKeys){
     //Initialize affected collections array:
     let affectedCollections = [];
 
     //Initialize result:
     let result = false;
 
+    //Initialize dependencies array:
+    let dependencies = [];
+
     //Set affected colletions:
     switch(schemaName){
         case 'users':
-            //Childs (cointain fk):
-            //affectedCollections.push('people');
+            affectedCollections.push('logs');
+            affectedCollections.push('sessions');
         case 'people':
             affectedCollections.push('users');
             break;
@@ -416,39 +421,54 @@ async function checkReferences(res, _id, schemaName, fkName){
             affectedCollections.push('services');
             break;
         case 'services':
-            //Childs (cointain fk):
-            //affectedCollections.push('branches');
-            //affectedCollections.push('modalities');
+            //Set dependencies
             break;
         case 'modalities':
             affectedCollections.push('services');
+            affectedCollections.push('equipments');
+            break;
+        case 'equipments':
+            //Set dependencies
             break;
     }
 
     //Import affected schemas:
     let schemasAffected = [];
     for (let current in affectedCollections){
-        console.log(affectedCollections[current]);
         schemasAffected[affectedCollections[current]] = require('./' + affectedCollections[current] + '/schemas');
     }
 
-    //Initialize filter object:
+    //Initialize filters objects:
     let filter = {};
+    let fk_singular = {};
+    let fk_plural = {};
 
     //Execute queries into affected schemas (await foreach):
     await Promise.all(affectedCollections.map(async (value, key) => {
-        //Create filter object:
-        filter[fkName] = _id;
+        //Set FK Keys:
+        fk_singular[ForeignKeys.Singular] = _id;
+        fk_plural[ForeignKeys.Plural] = mongoose.Types.ObjectId(_id);
         
+        //Create OR condition:
+        filter = { $or: [
+            fk_singular,
+            fk_plural
+        ]};
+
         //Execute current query:
         await schemasAffected[value].Model.findOne(filter, { _id: 1 } )
         .exec()
         .then((data) => {
             //Check if have results:
             if(data){
-                result = data;
-            } else {
-                result = false;
+                //Add dependencies:
+                dependencies.push({
+                    collection_ref: value,
+                    _id: data._id
+                });
+
+                //Set result true:
+                result = true;
             }
         })
         .catch((err) => {
@@ -457,8 +477,49 @@ async function checkReferences(res, _id, schemaName, fkName){
         });
     }));
 
-    //Return result:
-    return result;
+    //Search in users permissions:
+    if(schemaName == 'organizations' || schemaName == 'branches' || schemaName == 'services' || schemaName == 'people'){
+        //Import users Schema:
+        const users = require('../modules/users/schemas');
+
+        //Set users_filter:
+        const users_filter = { $or: [
+            { 'permissions.organization': _id },
+            { 'permissions.branch': _id },
+            { 'permissions.services': _id },
+            { 'permissions.patient.people_in_charge': _id },
+        ]};
+
+        //Execute users (permissions) query:
+        await users.Model.findOne(users_filter, { _id: 1 })
+        .exec()
+        .then((data) => {
+            //Check if have results:
+            if(data){
+                //Add dependencies:
+                dependencies.push({
+                    collection_ref: 'users',
+                    _id: data._id
+                });
+
+                //Set result true:
+                result = true;
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+    }
+
+    //Check result and return:
+    if(result){
+        //Return dependencies array:
+        return dependencies;
+    } else {
+        //Return boolean result (false):
+        return result;
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

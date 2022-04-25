@@ -86,7 +86,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { moduleServices._delete(req, res, sessions, 'fk_session'); }
+    (req, res) => { moduleServices._delete(req, res, sessions); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

@@ -24,6 +24,12 @@ const Schema = new mongoose.Schema({
 
 //Define model:
 const Model = mongoose.model('sessions', Schema, 'sessions');  //Specify collection name to prevent Mongoose pluralize.
+
+//Add fk names (Sirius RISjs logic):
+const ForeignKeys = {
+    Singular    : 'fk_session',
+    Plural      : 'fk_sessions'
+};
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -53,5 +59,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator };
+module.exports = { Schema, Model, Validator, ForeignKeys };
 //--------------------------------------------------------------------------------------------------------------------//
