@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// SINGIN HANDLER:
+// SIGNIN HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
 const jwt       = require('jsonwebtoken');
@@ -21,7 +21,13 @@ const services      = require('../../modules/services/schemas');
 
 module.exports = async (req, res) => {
     //Get query params:
-    const { documents, password } = req.body;
+    const documents = {
+        doc_country_code:   req.body.doc_country_code,
+        doc_type:           req.body.doc_type,
+        document:           req.body.document
+    }
+
+    const password = req.body.password;
 
     //Set doc_type format (Integer base 10):
     documents.doc_type = parseInt(documents.doc_type);
@@ -31,10 +37,10 @@ module.exports = async (req, res) => {
     const peopleProj = {
         'name_01': 1,
         'surname_01': 1,
-        'user_data._id': 1,
-        'user_data.password': 1,
-        'user_data.permissions': 1,
-        'user_data.status': 1
+        'user._id': 1,
+        'user.password': 1,
+        'user.permissions': 1,
+        'user.status': 1
     };
 
     //PEOPLE & USERS:
@@ -44,12 +50,12 @@ module.exports = async (req, res) => {
         { $lookup: {
             from: 'users',
             localField: '_id',
-            foreignField: 'fk_people',
-            as: 'user_data',
+            foreignField: 'fk_person',
+            as: 'user',
         }},
 
         //Unwind:
-        { $unwind: '$user_data' },
+        { $unwind: '$user' },
 
         //Operations:
         { $match: peopleMatch },
@@ -64,15 +70,15 @@ module.exports = async (req, res) => {
         if(peopleData){
 
             //Check user status:
-            if(peopleData.user_data.status === true){
+            if(peopleData.user.status === true){
                         
                 //Check user password:
-                mainServices.verifyPass(peopleData.user_data.password, password)
+                mainServices.verifyPass(peopleData.user.password, password)
                     .then(async (same) => {
                         //If Passwords match:
                         if(same){
-                            //If user singin with only one permission:
-                            if(peopleData.user_data.permissions.length == 1){
+                            //If user signin with only one permission:
+                            if(peopleData.user.permissions.length == 1){
                                 //Initialize user permission:
                                 let userPermission = {
                                     domain: '', 
@@ -82,28 +88,28 @@ module.exports = async (req, res) => {
 
                                 //ORGANIZATIONS:
                                 //If contain organizations permissions:
-                                if (Object.keys(peopleData.user_data.permissions[0]).includes('organization')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user_data.permissions[0].organization);
+                                if (Object.keys(peopleData.user.permissions[0]).includes('organization')){
+                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].organization);
                                 //BRANCHES:
                                 //If contain branches permissions:
-                                } else if (Object.keys(peopleData.user_data.permissions[0]).includes('branch')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user_data.permissions[0].branch);
+                                } else if (Object.keys(peopleData.user.permissions[0]).includes('branch')){
+                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].branch);
                                 //SERVICES:
                                 //If contain services permissions:
-                                } else if (Object.keys(peopleData.user_data.permissions[0]).includes('service')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user_data.permissions[0].service);
+                                } else if (Object.keys(peopleData.user.permissions[0]).includes('service')){
+                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].service);
                                 //PATIENTS:
                                 //If contain patient permissions:
-                                } else if (Object.keys(peopleData.user_data.permissions[0]).includes('patient')){
+                                } else if (Object.keys(peopleData.user.permissions[0]).includes('patient')){
                                     mainServices.sendConsoleMessage('WARN', 'Patient autorization request, to be continue..');
                                 }
 
                                 //Set role & consession in userPermission:
-                                userPermission.role = parseInt(peopleData.user_data.permissions[0].role);
-                                userPermission.consession = peopleData.user_data.permissions[0].concession;
+                                userPermission.role = parseInt(peopleData.user.permissions[0].role);
+                                userPermission.consession = peopleData.user.permissions[0].concession;
 
                                 //Create session:
-                                await authServices.createSession(peopleData.user_data._id, userPermission, res);
+                                await authServices.createSession(peopleData.user._id, userPermission, res);
 
                             //Multiple permissions:
                             } else {
@@ -112,7 +118,7 @@ module.exports = async (req, res) => {
 
                                 //Create payload:
                                 const payload = {
-                                    sub: peopleData.user_data._id.toString(),   //Identify the subject of the token.
+                                    sub: peopleData.user._id.toString(),   //Identify the subject of the token.
                                     iat: (Date.now() / 1000),                   //Token creation date.
                                     //exp: (Declared in expiresIn)              //Token expiration date.
                                 }
@@ -133,7 +139,7 @@ module.exports = async (req, res) => {
                                     let patientPermissions = {};
 
                                     //Obtain permissions keys (await foreach):
-                                    await Promise.all(peopleData.user_data.permissions.map(async (value, key) => {
+                                    await Promise.all(peopleData.user.permissions.map(async (value, key) => {
                                         //ORGANIZATIONS:
                                         //If contain organizations permissions:
                                         if (Object.keys(value).includes('organization')){
@@ -178,9 +184,9 @@ module.exports = async (req, res) => {
                                                 'status': 1,
                                                 'short_name': 1,
                                                 'fk_organization': 1,
-                                                'org_data._id': 1,
-                                                'org_data.short_name': 1,
-                                                'org_data.status': 1
+                                                'organization._id': 1,
+                                                'organization.short_name': 1,
+                                                'organization.status': 1
                                             };
 
                                             //Execute query:
@@ -190,11 +196,11 @@ module.exports = async (req, res) => {
                                                     from: 'organizations',
                                                     localField: 'fk_organization',
                                                     foreignField: '_id',
-                                                    as: 'org_data',
+                                                    as: 'organization',
                                                 }},
 
                                                 //Unwind:
-                                                { $unwind: '$org_data' },
+                                                { $unwind: '$organization' },
 
                                                 //Operations:
                                                 { $match: branchMatch },
@@ -206,11 +212,11 @@ module.exports = async (req, res) => {
                                                 branchData = branchData[0];
 
                                                 //Check branch and organization (parent) status:
-                                                if(branchData.status == true && branchData.org_data.status == true){
+                                                if(branchData.status == true && branchData.organization.status == true){
                                                     //Add permission in array:
                                                     userPermissions[key] = {
                                                         domain: branchData._id,
-                                                        description: branchData.org_data.short_name + ' - ' + branchData.short_name,
+                                                        description: branchData.organization.short_name + ' - ' + branchData.short_name,
                                                         role: value['role']
                                                     };
                                                 }
@@ -229,13 +235,13 @@ module.exports = async (req, res) => {
                                                 'status': 1,
                                                 'name': 1,
                                                 'fk_branch': 1,
-                                                'branch_data._id': 1,
-                                                'branch_data.status': 1,
-                                                'branch_data.short_name': 1,
-                                                'branch_data.fk_organization': 1,
-                                                'org_data._id': 1,
-                                                'org_data.short_name': 1,
-                                                'org_data.status': 1
+                                                'branch._id': 1,
+                                                'branch.status': 1,
+                                                'branch.short_name': 1,
+                                                'branch.fk_organization': 1,
+                                                'organization._id': 1,
+                                                'organization.short_name': 1,
+                                                'organization.status': 1
                                             };
 
                                             //Execute query:
@@ -245,20 +251,20 @@ module.exports = async (req, res) => {
                                                     from: 'branches',
                                                     localField: 'fk_branch',
                                                     foreignField: '_id',
-                                                    as: 'branch_data',
+                                                    as: 'branch',
                                                 }},
 
                                                 //Organizations lookup:
                                                 { $lookup: {
                                                     from: 'organizations',
-                                                    localField: 'branch_data.fk_organization',
+                                                    localField: 'branch.fk_organization',
                                                     foreignField: '_id',
-                                                    as: 'org_data',
+                                                    as: 'organization',
                                                 }},
 
                                                 //Unwind:
-                                                { $unwind: '$branch_data' },
-                                                { $unwind: '$org_data' },
+                                                { $unwind: '$branch' },
+                                                { $unwind: '$organization' },
 
                                                 //Operations:
                                                 { $match: servMatch },
@@ -273,11 +279,11 @@ module.exports = async (req, res) => {
                                                 //mainServices.strictCheck(servProj, servData);
 
                                                 //Check service, branch (parent) and organization (parent) status:
-                                                if(servData.status == true && servData.branch_data.status == true && servData.org_data.status == true){
+                                                if(servData.status == true && servData.branch.status == true && servData.organization.status == true){
                                                     //Add permission in array:
                                                     userPermissions[key] = {
                                                         domain: servData._id,
-                                                        description: servData.org_data.short_name + ' - ' + servData.branch_data.short_name + ' - ' + servData.name,
+                                                        description: servData.organization.short_name + ' - ' + servData.branch.short_name + ' - ' + servData.name,
                                                         role: value['role']
                                                     };
                                                 }
@@ -296,10 +302,15 @@ module.exports = async (req, res) => {
                                         }
                                     }));
 
+                                    //Remove undefined values (status false cases - key):
+                                    userPermissions = userPermissions.filter(element => {
+                                        return element !== undefined;
+                                    });
+
                                     //Set response data object:
                                     const response_data = {
-                                        people_id: peopleData._id,
-                                        user_id: peopleData.user_data._id,
+                                        person_id: peopleData._id,
+                                        user_id: peopleData.user._id,
                                         name: peopleData.name_01,
                                         surname: peopleData.surname_01,
                                         permissions: userPermissions

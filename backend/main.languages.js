@@ -21,7 +21,7 @@ module.exports = function(language){
             'password_dont_match'   : 'Passwords dont match.',
             'password_empty'        : 'Password field cannot be empty.',
             'password_error'        : 'Error during password verification, it may be that the content of the hash saved in the database does not correspond to the encryption algorithm used.',
-            'singin_success'        : 'Successful authentication.',
+            'signin_success'        : 'Successful authentication.',
             'user_disabled'         : 'The user account entered is disabled.',
             'wrong_user'            : 'The entered user is NOT found in the database.',
             'wrong_role_domain'     : 'The indicated domain and/or role are not assigned to the user.',
@@ -46,7 +46,7 @@ module.exports = function(language){
         },
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
-            'sancioned_msj'         : 'You have made too many singin attempts within the allowed time.',
+            'sancioned_msj'         : 'You have made too many signin attempts within the allowed time.',
             'bad_request'           : 'Bad request.',
             'pager_disabled'        : 'Pager is disabled',
         }
@@ -66,7 +66,7 @@ module.exports = function(language){
             lang.auth.password_dont_match       = 'La contraseña NO coincide.';
             lang.auth.password_empty            = 'La contraseña NO puede ser vacía.';
             lang.auth.password_error            = 'Error durante la verificación del password, puede que el contenido del hash guardado en la BD no corresponda con el algoritmo de cifrado utilizado.';
-            lang.auth.singin_success            = 'Autenticación exitosa.';
+            lang.auth.signin_success            = 'Autenticación exitosa.';
             lang.auth.user_disabled             = 'La cuenta de usuario ingresada está inhabilitada.';
             lang.auth.wrong_user                = 'El usuario ingresado NO se encuentra en la base de datos.';
             lang.auth.wrong_role_domain         = 'El dominio y/o rol indicado no se encuentran adjudicados al usuario.';
@@ -88,7 +88,7 @@ module.exports = function(language){
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
             
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
-            lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de singin dentro del tiempo permitido.';
+            lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de signin dentro del tiempo permitido.';
             lang.http.bad_request               = 'La solicitud enviada es incorrecta.';
             lang.http.pager_disabled            = 'Paginación desactivada.'
 

@@ -23,15 +23,15 @@ module.exports = async (req, res) => {
             from: 'branches',
             localField: 'fk_branch',
             foreignField: '_id',
-            as: 'branch_data',
+            as: 'branch',
         }},
 
         //Organizations lookup:
         { $lookup: {
             from: 'organizations',
-            localField: 'branch_data.fk_organization',
+            localField: 'branch.fk_organization',
             foreignField: '_id',
-            as: 'organization_data',
+            as: 'organization',
         }},
 
         //Modalities lookup:
@@ -39,22 +39,22 @@ module.exports = async (req, res) => {
             from: 'modalities',
             localField: 'fk_modality',
             foreignField: '_id',
-            as: 'modality_data',
+            as: 'modality',
         }},
 
         //Unwind:
-        { $unwind: { path: "$branch_data", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$organization_data", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$modality_data", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$organization", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
     ];    
 
     //Correct data types for match operation:
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
         filter = moduleServices.adjustDataTypes(filter, 'services');
-        filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch_data');
-        filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization_data');
-        filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modality_data');
+        filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
+        filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
+        filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: filter });

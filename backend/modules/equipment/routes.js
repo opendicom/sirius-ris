@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// SESSIONS ROUTES:
+// EQUIPMENTS ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
@@ -18,7 +18,11 @@ const mainMiddlewares = require('../../main.middlewares');
 const moduleServices = require('../modules.services');
 
 //Import schemas:
-const sessions = require('./schemas');
+const equipments = require('./schemas');
+
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(equipments);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(equipments, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
@@ -43,10 +47,10 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'find':
-                moduleServices.find(req, res, sessions);
+                moduleServices.find(req, res, equipments);
                 break;
             case 'findById':
-                moduleServices.findById(req, res, sessions);
+                moduleServices.findById(req, res, equipments);
                 break;
         }
     }
@@ -71,13 +75,32 @@ router.get(
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
-                moduleServices.findOne(req, res, sessions);
+                moduleServices.findOne(req, res, equipments);
                 break;
             case 'findById':
-                moduleServices.findById(req, res, sessions);
+                moduleServices.findById(req, res, equipments);
                 break;
         }
     }
+);
+
+//INSERT:
+router.post(
+    '/insert',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    equipments.Validator,
+    (req, res) => { moduleServices.insert(req, res, equipments); }
+);
+
+//UPDATE:
+router.post(
+    '/update',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    equipments.Validator,
+    (req, res) => { moduleServices.update(req, res, equipments); }
 );
 
 //DELETE:
@@ -86,7 +109,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { moduleServices._delete(req, res, sessions, 'fk_session'); }
+    (req, res) => { moduleServices._delete(req, res, equipments, 'fk_equipment'); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

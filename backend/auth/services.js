@@ -68,7 +68,7 @@ async function createSession(user_id, user_permission, res){
                     return;
                 } else {
                     //Send successfully response:
-                    res.status(200).send({ success: true, message: currentLang.auth.singin_success, token: token });
+                    res.status(200).send({ success: true, message: currentLang.auth.signin_success, token: token });
                 }
             });
 

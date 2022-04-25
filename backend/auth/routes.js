@@ -15,8 +15,8 @@ const mainMiddlewares = require('../main.middlewares');
 const authMiddlewares = require('./middlewares');
 
 //Import Handlers:
-const singinHuman       = require('./handlers/singin.human');
-const singinMachine     = require('./handlers/singin.machine');
+const signinHuman       = require('./handlers/signin.human');
+const signinMachine     = require('./handlers/signin.machine');
 const authorizeHandler  = require('./handlers/authorize');
 
 //Create Router.
@@ -29,12 +29,12 @@ router.post(
         //Send INFO Message:
         mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req));
 
-        // Human singin:
-        if(req.body.documents && req.body.password){
-            singinHuman(req, res);
-        // Machine singin:
+        // Human signin:
+        if(req.body.doc_country_code && req.body.doc_type && req.body.document && req.body.password){
+            signinHuman(req, res);
+        // Machine signin:
         } else if (req.body.username && req.body.password){
-            singinMachine(req, res);
+            signinMachine(req, res);
         } else {
             res.status(400).send({ success: false, message: currentLang.http.bad_request });
         }

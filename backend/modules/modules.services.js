@@ -246,10 +246,16 @@ async function update(req, res, currentSchema){
 // DELETE:
 // Delete an item from the database based on an ID (This method is reserved for developers).
 //--------------------------------------------------------------------------------------------------------------------//
-async function _delete(req, res, currentSchema){
+async function _delete(req, res, currentSchema, fkName){
     //Validate ID request:
-    if(!mainServices.validateRequestID(req.body._id, res)) return;
+    if(!mainServices.validateRequestID(req.body._id, res)) return;    
 
+    const result = await checkReferences(res, req.body._id, currentSchema.Model.modelName, fkName);
+    console.log(result);
+
+    res.status(200).send({ test: true, result: result });
+
+    /*
     //Delete element:
     await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
     .exec()
@@ -266,6 +272,7 @@ async function _delete(req, res, currentSchema){
         //Send error:
         mainServices.sendError(res, currentLang.db.delete_error, err);
     });
+    */
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -385,6 +392,77 @@ function setPager(req, pager){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK REFERENCES:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkReferences(res, _id, schemaName, fkName){
+    //Initialize affected collections array:
+    let affectedCollections = [];
+
+    //Initialize result:
+    let result = false;
+
+    //Set affected colletions:
+    switch(schemaName){
+        case 'users':
+            //Childs (cointain fk):
+            //affectedCollections.push('people');
+        case 'people':
+            affectedCollections.push('users');
+            break;
+        case 'organizations':
+            affectedCollections.push('branches');
+            break;
+        case 'branches':
+            affectedCollections.push('services');
+            break;
+        case 'services':
+            //Childs (cointain fk):
+            //affectedCollections.push('branches');
+            //affectedCollections.push('modalities');
+            break;
+        case 'modalities':
+            affectedCollections.push('services');
+            break;
+    }
+
+    //Import affected schemas:
+    let schemasAffected = [];
+    for (let current in affectedCollections){
+        console.log(affectedCollections[current]);
+        schemasAffected[affectedCollections[current]] = require('./' + affectedCollections[current] + '/schemas');
+    }
+
+    //Initialize filter object:
+    let filter = {};
+
+    //Execute queries into affected schemas (await foreach):
+    await Promise.all(affectedCollections.map(async (value, key) => {
+        //Create filter object:
+        filter[fkName] = _id;
+        
+        //Execute current query:
+        await schemasAffected[value].Model.findOne(filter, { _id: 1 } )
+        .exec()
+        .then((data) => {
+            //Check if have results:
+            if(data){
+                result = data;
+            } else {
+                result = false;
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+    }));
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // ADJUST DATA TYPES:
 //--------------------------------------------------------------------------------------------------------------------//
 function adjustDataTypes(filter, schemaName, asPrefix = ''){
@@ -396,7 +474,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
     //Correct data types:
     switch(schemaName){
         case 'users':
-            if(filter[asPrefix + 'fk_people'] != undefined){ filter[asPrefix + 'fk_people'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_people']); };
+            if(filter[asPrefix + 'fk_person'] != undefined){ filter[asPrefix + 'fk_person'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_person']); };
             if(filter[asPrefix + 'permissions.organization'] != undefined){ filter[asPrefix + 'permissions.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.organization']); }
             if(filter[asPrefix + 'permissions.branch'] != undefined){ filter[asPrefix + 'permissions.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.branch']); }
             if(filter[asPrefix + 'permissions.service'] != undefined){ filter[asPrefix + 'permissions.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.service']); }

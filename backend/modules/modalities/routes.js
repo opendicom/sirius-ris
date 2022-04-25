@@ -109,7 +109,7 @@ router.post(
     //mainMiddlewares.checkJWT,
     mainMiddlewares.checkDeleteCode,
     //checkSession (middleware),
-    (req, res) => { moduleServices._delete(req, res, modalities); }
+    (req, res) => { moduleServices._delete(req, res, modalities, 'fk_modality'); }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

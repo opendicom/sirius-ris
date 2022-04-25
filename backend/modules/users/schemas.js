@@ -27,7 +27,7 @@ const subSchemaSettings = new mongoose.Schema({
 
 //Define Pre-Schema:
 const preSchema = new mongoose.Schema({
-    fk_people:          { type: mongoose.ObjectId },    // Human user
+    fk_person:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
     permissions:        { type: [subSchemaPermissions] },
@@ -48,10 +48,10 @@ const Model = mongoose.model('users', Schema, 'users');  //Specify collection na
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
-    body('fk_people')
+    body('fk_person')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_people NO es un ID MongoDB válido.'),
+        .withMessage('El parametro fk_person NO es un ID MongoDB válido.'),
 
     body('username')
         .optional()

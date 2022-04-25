@@ -21,20 +21,20 @@ module.exports = async (req, res) => {
         //People lookup:
         { $lookup: {
             from: 'people',
-            localField: 'fk_people',
+            localField: 'fk_person',
             foreignField: '_id',
-            as: 'people_data',
+            as: 'person',
         }},
         
         //Unwind:
-        { $unwind: { path: "$people_data", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$person", preserveNullAndEmptyArrays: true } },
     ];    
 
     //Correct data types for match operation:
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
         filter = moduleServices.adjustDataTypes(filter, 'users');
-        filter = moduleServices.adjustDataTypes(filter, 'people', 'people_data');
+        filter = moduleServices.adjustDataTypes(filter, 'people', 'person');
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: filter });

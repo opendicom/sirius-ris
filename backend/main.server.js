@@ -106,7 +106,7 @@ module.exports = function() {
     });
 
     //Set modules routes:
-    app.use('/singin',          authRoutes);
+    app.use('/signin',          authRoutes);
     app.use('/logs',            logsRoutes);
     app.use('/sessions',        sessionsRoutes);
     app.use('/modalities',      modalitiesRoutes);

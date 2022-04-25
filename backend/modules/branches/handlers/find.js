@@ -23,18 +23,18 @@ module.exports = async (req, res) => {
             from: 'organizations',
             localField: 'fk_organization',
             foreignField: '_id',
-            as: 'organitation_data',
+            as: 'organitation',
         }},
         
         //Unwind:
-        { $unwind: { path: "$organitation_data", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$organitation", preserveNullAndEmptyArrays: true } },
     ];    
 
     //Correct data types for match operation:
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
         filter = moduleServices.adjustDataTypes(filter, 'branches');
-        filter = moduleServices.adjustDataTypes(filter, 'organitations', 'organitation_data');
+        filter = moduleServices.adjustDataTypes(filter, 'organitations', 'organitation');
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: filter });
