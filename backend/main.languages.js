@@ -44,7 +44,8 @@ module.exports = function(language){
             'delete_success'        : 'Successfully deleted.',
             'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
             'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.',
-            'not_valid_fk'          : 'Any of the elements referenced as foreign is NOT valid'
+            'not_valid_fk'          : 'Any of the elements referenced as foreign is NOT valid',
+            'not_allowed_save'      : 'Save operation NOT allowed.',
         },
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
@@ -90,6 +91,7 @@ module.exports = function(language){
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
             lang.db.delete_rejected_dep         = 'Eliminación rechazada, existen dependencias del elemento que se desea eliminar.';
             lang.db.not_valid_fk                = 'Alguno de los elementos referenciados como foráneos NO es válido';
+            lang.db.not_allowed_save            = 'Operación de guardado NO permitida.';
             
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de signin dentro del tiempo permitido.';

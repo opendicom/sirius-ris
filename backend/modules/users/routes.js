@@ -32,7 +32,8 @@ router.get(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
-        findHandler(req, res);
+        //Send to handler:
+        findHandler(req, res, users);
     }
 );
 
@@ -48,7 +49,8 @@ router.get(
         req.query.limit = 1;                                //One document
         if(req.query.pager) { delete req.query.pager };     //No pager
 
-        findHandler(req, res);
+        //Send to handler:
+        findHandler(req, res, users);
     }
 );
 
@@ -58,7 +60,10 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, users); }
+    (req, res) => {
+        //Send to module service:
+        moduleServices._delete(req, res, users);
+    }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 

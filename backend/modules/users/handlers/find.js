@@ -9,10 +9,7 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 //Import Module Services:
 const moduleServices = require('../../modules.services');
 
-//Import schemas:
-const users = require('../schemas');
-
-module.exports = async (req, res) => {
+module.exports = async (req, res, currentSchema) => {
     //Get query params:
     let filter = req.query.filter;
 
@@ -41,6 +38,6 @@ module.exports = async (req, res) => {
     }
 
     //Excecute main query:
-    await moduleServices.findAggregation(req, res, users);
+    await moduleServices.findAggregation(req, res, currentSchema);
 }
 //--------------------------------------------------------------------------------------------------------------------//

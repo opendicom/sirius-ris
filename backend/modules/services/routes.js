@@ -14,13 +14,18 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const findHandler = require('./handlers/find');
+const findHandler   = require('./handlers/find');
+const saveHandler   = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
 //Import schemas:
 const services = require('./schemas');
+
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(services);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(services, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
@@ -32,7 +37,8 @@ router.get(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
-        findHandler(req, res);
+        //Send to handler:
+        findHandler(req, res, services);
     }
 );
 
@@ -47,7 +53,33 @@ router.get(
         req.query.limit = 1;                                //One document
         if(req.query.pager) { delete req.query.pager };     //No pager
 
-        findHandler(req, res);
+        //Send to handler:
+        findHandler(req, res, services);
+    }
+);
+
+//INSERT:
+router.post(
+    '/insert',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    services.Validator,
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, services, 'insert');
+    }
+);
+
+//UPDATE:
+router.post(
+    '/update',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    services.Validator,
+    (req, res) => { 
+        //Send to handler:
+        saveHandler(req, res, services, 'update');
     }
 );
 
@@ -57,7 +89,10 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, services); }
+    (req, res) => { 
+        //Send to module service:
+        moduleServices._delete(req, res, services);
+    }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -15,7 +15,7 @@ const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
 const findHandler   = require('./handlers/find');
-const insertHandler   = require('./handlers/insert');
+const saveHandler   = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -38,7 +38,7 @@ router.get(
     //checkSession (middleware),
     (req, res) => {
         //Send to handler:
-        findHandler(req, res);
+        findHandler(req, res, branches);
     }
 );
 
@@ -54,7 +54,7 @@ router.get(
         if(req.query.pager) { delete req.query.pager };     //No pager
 
         //Send to handler:
-        findHandler(req, res);
+        findHandler(req, res, branches);
     }
 );
 
@@ -63,10 +63,23 @@ router.post(
     '/insert',
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    branches.Validator,
     (req, res) => {
         //Send to handler:
-        insertHandler(req, res);
+        saveHandler(req, res, branches, 'insert');
+    }
+);
+
+//UPDATE:
+router.post(
+    '/update',
+    //mainMiddlewares.checkJWT,
+    //checkSession (middleware),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    branches.Validator,
+    (req, res) => { 
+        //Send to handler:
+        saveHandler(req, res, branches, 'update');
     }
 );
 
@@ -76,7 +89,10 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, branches); }
+    (req, res) => {
+        //Send to module service:
+        moduleServices._delete(req, res, branches);
+    }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 
