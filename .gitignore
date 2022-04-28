@@ -6,8 +6,8 @@ node_modules/
 jspm_packages/
 
 # BACKEND:
-database/sirius_database_data/
-database/sirius_database_config/
+database/data/
+database/config/
 backend/target/
 
 # FRONTEND:

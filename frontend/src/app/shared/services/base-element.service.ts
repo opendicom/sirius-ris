@@ -35,15 +35,15 @@ export class BaseElementService {
       //Check if element is not empty:
       if(this.element != ''){
         //Initialize operation variable:
-        let operation: string = 'find';
+        let operation: string = '/find';
 
         //Determine type of operation:
         if(findOne === true){
-          operation = 'findOne';
+          operation = '/findOne';
         }
 
         //Find:
-        this.apiClient.getRequest(this.element, operation, params).subscribe({
+        this.apiClient.getRequest(this.element + operation, params).subscribe({
           next: (data) => {
             //Pass chunks of data between observables:
             observer.next(data);
@@ -69,7 +69,7 @@ export class BaseElementService {
       //Check if element is not empty:
       if(this.element != ''){
         //Find:
-        this.apiClient.getRequest(this.element, 'findById', params).subscribe({
+        this.apiClient.getRequest(this.element + '/findById', params).subscribe({
           next: (data) => {
             //Pass chunks of data between observables:
             observer.next(data);
@@ -101,18 +101,18 @@ export class BaseElementService {
         //Determine data flow according to action:
         switch(action){
           case 'new':
-            operation = 'insert';
+            operation = '/insert';
             break;
           case 'edit':
             //Update data:
-            operation = 'update';
+            operation = '/update';
             break;
         }
 
         //Check if operation is not empty:
         if(operation != ''){
           //Save data:
-          this.apiClient.postRequest(this.element, operation, data).subscribe({
+          this.apiClient.postRequest(this.element + operation, data).subscribe({
             next: (data) => {
               //Pass chunks of data between observables:
               observer.next(data);
@@ -139,7 +139,7 @@ export class BaseElementService {
       //Check if element is not empty:
       if(this.element != ''){
         //Save data:
-        this.apiClient.postRequest(this.element, 'delete', {'id': id}).subscribe({
+        this.apiClient.postRequest(this.element + '/delete', {'id': id}).subscribe({
           next: (data) => {
             //Pass chunks of data between observables:
             observer.next(data);

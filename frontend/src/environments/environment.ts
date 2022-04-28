@@ -5,7 +5,7 @@
 // Set backend API server params:
 export const environment = {
   production: false,
-  backend_url: 'http://sirius_backend:3001/',
+  backend_url: 'http://localhost:3001/',
 };
 
 // Set app default settings:

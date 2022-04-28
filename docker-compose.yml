@@ -4,8 +4,8 @@ services:
     container_name: sirius_database_container
     image: mongo:latest
     volumes:
-      - ./database/sirius_database_data:/data/db
-      - ./database/sirius_database_config:/data/configdb
+      - ./database/data:/data/db
+      - ./database/config:/data/configdb
     ports:
       - 27017:27017
     environment:

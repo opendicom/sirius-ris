@@ -69,32 +69,30 @@ export class UsersAuthService {
   //--------------------------------------------------------------------------------------------------------------------//
   userLogin(form_data: NgForm): any {
     //Create authentication object:
-    let siriusAuth: any = {};
+    //let siriusAuth: any = {};
 
-    //Set query parameters:
-    const people_params: any =  {
-      //Filter:
-      'filter[documents.doc_country_code]': form_data.value.doc_country_code,
-      'filter[documents.doc_type]': form_data.value.doc_type,
-      'filter[documents.document]': form_data.value.document,
+    //Create observable obsSignin:
+    const obsSignin = this.apiClient.sendRequest('POST', 'signin', form_data.value);
 
-      //Projection:
-      'proj[phone_numbers]': 0,
-      'proj[email]': 0,
-      'proj[gender]': 0,
-      'proj[createdAt]': 0,
-      'proj[updatedAt]': 0,
-      'proj[__v]': 0,
-    };
+    //Create observable obsUserLogin:
+    const obsUserLogin = obsSignin.pipe(
+      map((res: any) => {
+        console.log(res);
+        return res;
+      }),
+    );
 
+    //Observe content (Subscribe):
+    obsUserLogin.subscribe();
+
+    /*
     let users_params: any = {};
     let check_pass_params: any = {};
 
     //Create observable obsJWTLogin:
-    //const obsJWTLogin = this.apiClient.jwtLogin();
+    const obsJWTLogin = this.apiClient.jwtLogin();
 
     //Create observable obsUserLogin:
-    /*
     const obsUserLogin = obsJWTLogin.pipe(
       //Check JWT authentication:
       map((res: any) => { return this.setToken(res, siriusAuth); }),
