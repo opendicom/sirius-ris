@@ -1,3 +1,3 @@
-# Welcome to the official repository of Sirius RISjs
+# Welcome to the official repository of Sirius RIS
 
-**Sirius RISjs** is an open source radiological information system.
+**Sirius RIS** is an open source radiological information system.

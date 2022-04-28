@@ -1,0 +1,64 @@
+<mat-toolbar class="second-toolbar" *ngIf="sharedProp.action.content_title">
+  <mat-icon>{{ sharedProp.action.content_icon }}</mat-icon>&nbsp;&nbsp;<span>{{ sharedProp.action.content_title }}</span>
+
+  <span class="mat-spacer"></span>
+
+  <button mat-flat-button color="primary" routerLink="{{ sharedProp.action.add_button }}" *ngIf="sharedProp.action.add_button">
+    <mat-icon>add</mat-icon> AÑADIR
+  </button>
+</mat-toolbar>
+
+<form *ngIf="sharedProp.action.filters_form">
+  <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
+    <div> <!-- start fxLayout wrapper -->
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
+        <mat-label>Buscar</mat-label>
+        <input matInput type="search" placeholder="Criterio de busqueda">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.date_range">
+        <mat-label>Ingrese rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Fecha inicio">
+          <input matEndDate placeholder="Fecha fin">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
+        <mat-label>Estado</mat-label>
+        <mat-select>
+          <mat-option value="true">Activo</mat-option>
+          <mat-option value="false">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.madalities">
+        <mat-label>Modalidad</mat-label>
+        <mat-select>
+          <mat-option value="CR">CR</mat-option>
+          <mat-option value="MG">MG</mat-option>
+          <mat-option value="CT">CT</mat-option>
+          <mat-option value="RM">RM</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.institutions">
+        <mat-label>Sucursal</mat-label>
+        <mat-select>
+          <mat-option value="asseMACIEL">H. Maciel</mat-option>
+          <mat-option value="asseHTC">H. Clínicas</mat-option>
+          <mat-option value="assePASTEUR">H. Pasteur</mat-option>
+          <mat-option value="asseESPAÑOL">H. Español</mat-option>
+        </mat-select>
+        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+      </mat-form-field>
+
+      <button mat-flat-button color="accent" class="apply_filters">
+        <mat-icon>sync</mat-icon> APLICAR FILTROS
+      </button>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

@@ -16,7 +16,7 @@ function runserver (){
     }
     catch(err){
         console.log('The main.settings.yaml file does NOT exist.');
-        console.log('This file is necessary to run Sirius RISjs backend server.');
+        console.log('This file is necessary to run Sirius RIS backend server.');
         console.error(err);
     }
 }

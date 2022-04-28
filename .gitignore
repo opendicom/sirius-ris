@@ -6,8 +6,8 @@ node_modules/
 jspm_packages/
 
 # BACKEND:
-database/sirius_db_data/
-database/sirius_db_config/
+database/sirius_database_data/
+database/sirius_database_config/
 backend/target/
 
 # FRONTEND:
@@ -16,15 +16,15 @@ backend/target/
 /out-tsc/
 
 # ANGULAR CACHE:
-frontend/sirius_web_app/.angular/cache/*
+frontend/.angular/cache/*
 
 # IDE - VISUAL STUDIO CODE:
-frontend/sirius_web_app/.vscode/*
-frontend/sirius_web_app/!.vscode/settings.json
-frontend/sirius_web_app/!.vscode/tasks.json
-frontend/sirius_web_app/!.vscode/launch.json
-frontend/sirius_web_app/!.vscode/extensions.json
-frontend/sirius_web_app/.history/*
+frontend/.vscode/*
+frontend/!.vscode/settings.json
+frontend/!.vscode/tasks.json
+frontend/!.vscode/launch.json
+frontend/!.vscode/extensions.json
+frontend/.history/*
 
 # MISC:
 /.sass-cache

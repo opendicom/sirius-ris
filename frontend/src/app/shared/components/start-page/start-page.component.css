@@ -1,0 +1,48 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* WELCOME PAGE */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.welcome_header{
+  text-align: center;
+}
+
+h1 {
+  font-size: 33px;
+}
+
+.welcome_logo {
+  max-width: 150px !important;
+  max-height: 100% !important;
+  opacity: 0.8;
+}
+
+.welcome_card {
+  float: left;
+  width: 35%;
+  margin-left: 10%;
+  margin-top: 20px;
+  z-index: 1;
+  background-color: #27293d;
+  opacity: 0.8;
+  border-left: 2px solid #05ff9f77;
+  padding: 25px;
+  border-radius: 5px;
+}
+
+ul {
+  padding-left: 12px !important;
+}
+
+.slim{
+  padding: 6px 25px 6px 25px !important;
+  margin-left: 3% !important;
+}
+
+.vitruvian_man {
+  position: fixed;
+  bottom: -10%;
+  right: -10%;
+  z-index: -1;
+  max-height: 90%;
+  opacity: 0.5;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/

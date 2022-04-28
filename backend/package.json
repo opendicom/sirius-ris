@@ -1,10 +1,12 @@
 {
-  "name": "sirius-risjs",
+  "name": "sirius-ris",
   "version": "1.0.0",
-  "description": "Sirius RISjs is a Radiology Information System",
+  "description": "Sirius RIS is a Radiology Information System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "npm install -g npm@7.17.0",
+    "start": "node index.js"
   },
   "keywords": [
     "API",

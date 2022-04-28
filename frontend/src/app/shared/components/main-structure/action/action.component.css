@@ -1,0 +1,35 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* ACTION: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.second-toolbar{
+  color: #ddd;
+  background-color: #1e1e2f;
+}
+
+.main-action {
+  font-size: 15px;
+  background-color: #232338;
+  padding-top: 6px;
+  padding-left: 8px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom: 2px solid;
+    -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+       border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+  border-image-slice: 1;
+}
+
+.main-action a, .main-action button, .main-action input, .main-action mat-form-field{
+  margin-right: 8px;
+}
+
+.main-action ::ng-deep .mat-form-field-outline {
+  background-color: #2d2d47;
+}
+
+.apply_filters {
+  top: -4px;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/

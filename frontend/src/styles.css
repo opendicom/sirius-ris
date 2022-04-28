@@ -1,0 +1,179 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* GENERAL */
+/*----------------------------------------------------------------------------------------------------------------------*/
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #1e1e2f;
+  color: #ddd;
+}
+
+.clear{
+  clear: both;
+}
+
+.dashed{
+  border:#4e4e79 1px dashed;
+	border-style: none none dashed;
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+}
+
+.divider{
+  border-right: 2px solid #05ffa1;
+}
+
+.color-ok{
+  color: #05ffa1;
+}
+
+.color-fail{
+  color: #ff6f69;
+}
+
+.color-ok-alt{
+  color: #d53a9d;
+}
+
+.color-fail-alt{
+  color: #743ad5;
+}
+
+.underline-ok {
+  border-bottom: 2px solid #05ffa1;
+}
+
+.underline-fail {
+  border-bottom: 2px solid #ff6f69;
+}
+
+.underline-ok-alt {
+  border-bottom: 2px solid #d53a9d;
+}
+
+.underline-fail-alt {
+  border-bottom: 2px solid #743ad5;
+}
+
+.text-left{
+  text-align: left !important;
+}
+
+.text-center{
+  text-align: center !important;
+}
+
+.text-right{
+  text-align: right !important;
+}
+
+/* Spacer for dual align */
+.mat-spacer {
+  flex: 1 1 auto;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* LISTS */
+/*----------------------------------------------------------------------------------------------------------------------*/
+table {
+  width: 100%;
+  color: #ddd;
+  background-color: #27293d !important;
+}
+
+.mat-row:hover{
+  background-color: #2b2d42;
+}
+
+.mat-paginator{
+  color: #ddd;
+  background-color: #27293d;
+}
+
+.response-info{
+  font-size: 12px !important;
+  padding: 10px;
+  color: #ddd;
+  background-color: #27293d !important;
+}
+
+/* Table Header color:
+.mat-header-cell {
+  background: #f7f7f7;
+}
+*/
+
+/* Stripped table:
+.mat-row:nth-child(even){
+  background-color: #27293d;
+}
+
+.mat-row:nth-child(odd){
+  background-color: #2b2d42;
+}
+*/
+
+/* Datepicker */
+.mat-calendar{
+  background-color: #27293d !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* FORMS */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.form-element{
+  background-color: #27293d;
+  border-radius: 4px;
+}
+
+.input-wrapper{
+  width: 100%;
+  padding: 12px 12px 12px 20px;
+}
+
+.form_nodes {
+  margin-top: 10px;
+  padding: 10px;
+  width: 45%;
+  max-width: 551px;
+  max-height: 497px;
+  opacity: 0.45;
+}
+
+.form-element a, .form-element button, .form-element input, .form-element mat-form-field, .form-element label, .form-element mat-radio-button{
+  margin-right: 8px;
+}
+
+.form-element mat-form-field.small{
+  max-width: 100px;
+}
+
+.form-element mat-form-field.medium{
+  min-width: 200px;
+  width: 40%;
+}
+
+.form-element mat-form-field.large{
+  min-width: 200px;
+  width: 70%;
+}
+
+.action-wrapper{
+  padding: 12px 5px 12px 12px;
+  background: #2d2d47;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* NOTIFICATIONS: */
+.mat-snack-bar-container {
+  background-color: #3d3f51;
+  color: #fff;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/

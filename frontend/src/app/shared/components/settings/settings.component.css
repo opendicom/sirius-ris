@@ -1,0 +1,28 @@
+.settings-content {
+  background-color: #212233cb;
+  border-radius: 4px;
+  padding: 6px;
+  text-align: center;
+}
+
+.settings-card {
+  text-align: left;
+  background-color: #27293d;
+  opacity: 0.8;
+  border-left: 2px solid #05ff9f77;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.sirius {
+  max-width: 250px;
+}
+
+button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #27293d;
+  width: 30%;
+}

@@ -3,7 +3,7 @@
 // This module establishing the response messages for each language.
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = function(language){
-    //Set font color to welcome console messaging 'Sirius RISjs Backend':
+    //Set font color to welcome console messaging 'Sirius RIS Backend':
     const textColor     = '\x1b[35m';
     const resetColor    = '\x1b[0m';
 
@@ -12,7 +12,7 @@ module.exports = function(language){
         'server': {
             'db_cnx_error'          : 'Failed to establish connection with MongoDB to: ',
             'db_cnx_success'        : 'Established connection with MongoDB to: ',
-            'start'                 : textColor + 'Sirius RISjs Backend' + resetColor + ' has started',
+            'start'                 : textColor + 'Sirius RIS Backend' + resetColor + ' has started',
             'non_server'            : 'The server type was not specified in the settings file (http_enabled, https_enabled). ',
             'undefined_settings'    : 'An error occurred while trying to read the settings.yaml file.'
         },
@@ -61,7 +61,7 @@ module.exports = function(language){
         case 'ES':
             lang.server.db_cnx_error            = 'Error al intentar establecer la conexión con MongoDB hacia: ';
             lang.server.db_cnx_success          = 'Conexión satisfactoria con MongoDB hacia: ';
-            lang.server.start                   = textColor + 'Sirius RISjs Backend' + resetColor + ' ha iniciado';
+            lang.server.start                   = textColor + 'Sirius RIS Backend' + resetColor + ' ha iniciado';
             lang.server.non_server              = 'No se estableció ningún tipo de servidor en el archivo de configuración (http_enabled, https_enabled).';
             lang.server.undefined_settings      = 'Se produjo un error al intentar leer el archivo settings.yaml.'
 

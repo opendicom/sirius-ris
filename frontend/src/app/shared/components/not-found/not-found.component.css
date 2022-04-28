@@ -1,0 +1,13 @@
+.content-404 {
+  text-align: center;
+}
+
+.image-404 {
+  width: 100%;
+  max-width: 1024px;
+}
+
+.title-404 {
+  font-size: 33px;
+  font-weight: bolder;
+}

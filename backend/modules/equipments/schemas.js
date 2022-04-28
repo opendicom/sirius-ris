@@ -20,7 +20,7 @@ const Schema = new mongoose.Schema({
 //Define model:
 const Model = mongoose.model('equipments', Schema, 'equipments');  //Specify collection name to prevent Mongoose pluralize.
 
-//Add fk names (Sirius RISjs logic):
+//Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_equipment',
     Plural      : 'fk_equipments'
@@ -31,6 +31,36 @@ const ForeignKeys = {
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('fk_modalities')
+        .isArray(),
+
+    body('fk_modalities.*')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_modalities NO es un ID MongoDB válido.'),
+
+    body('fk_branch')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_modalities NO es un ID MongoDB válido.'),
+
+    body('name')
+        .trim()
+        .isLength({ min: 3, max: 64 })
+        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+    
+    body('serial_number')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 64 })
+        .withMessage('El serial_number ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+
+    body('AET')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 32 })
+        .withMessage('El AET ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
+
     body('status')
         .trim()
         .isBoolean()

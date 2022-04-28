@@ -1,0 +1,10 @@
+<button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
+  <span class="user_info">{{ user_info.name_01 | titlecase }} {{ user_info.surname_01 | titlecase }}&nbsp;</span>
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/auth/login">
+    <mat-icon>logout</mat-icon><span>Cerrar sesión</span>
+  </button>
+</mat-menu>

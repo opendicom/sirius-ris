@@ -1,0 +1,43 @@
+<form class="form-element" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
+  <img src="../../../../assets/img/logo_vertical.png" alt="Login">
+
+  <br/><br/><hr class="dashed" /><br/>
+
+  <mat-form-field appearance="fill" class="sub-element">
+    <mat-label>Número de documento</mat-label>
+    <input matInput type="text" name="document" ngModel required placeholder="Ingrese Nº de documento">
+  </mat-form-field>
+
+  <br/>
+
+  <mat-form-field appearance="fill" class="sub-element">
+    <mat-label>Contraseña</mat-label>
+    <input matInput type="password" name="password" ngModel required placeholder="Ingrese su contraseña">
+  </mat-form-field>
+
+  <br/>
+
+  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">INICIAR SESIÓN</button>
+
+  <br/><br/>
+
+  <div class="document-section">
+    <mat-form-field appearance="fill" class="medium">
+      <mat-label>País del documento</mat-label>
+      <mat-select name="doc_country_code" [(ngModel)]="settings.default_country" required >
+        <div *ngFor="let currentCode of getKeys(country_codes, true)">
+          <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="medium">
+      <mat-label>Tipo de documento</mat-label>
+      <mat-select name="doc_type" [(ngModel)]="settings.default_doc_type" required >
+        <div *ngFor="let currentDocType of document_types | keyvalue">
+          <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

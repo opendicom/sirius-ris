@@ -14,6 +14,10 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 //const checkSession = require('../');
 
+//Import Handlers:
+const findHandler   = require('./handlers/find');
+const saveHandler   = require('./handlers/save');
+
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
@@ -28,59 +32,30 @@ const allowedSchemaKeys = mainServices.getSchemaKeys(equipments, true);      //N
 const router = express.Router();
 
 //Routes:
-//FIND - FIND BY ID:
+//FIND:
 router.get(
     '/find',
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'find';
-
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'find':
-                moduleServices.find(req, res, equipments);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, equipments);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, equipments);
     }
 );
 
-//FIND ONE - FIND BY ID:
+//FIND ONE:
 router.get(
     '/findOne',
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'findOne';
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
 
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'findOne':
-                moduleServices.findOne(req, res, equipments);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, equipments);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, equipments);
     }
 );
 
@@ -90,7 +65,10 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     equipments.Validator,
-    (req, res) => { moduleServices.insert(req, res, equipments); }
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, equipments, 'insert');
+    }
 );
 
 //UPDATE:
@@ -100,7 +78,10 @@ router.post(
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     equipments.Validator,
-    (req, res) => { moduleServices.update(req, res, equipments); }
+    (req, res) => { 
+        //Send to handler:
+        saveHandler(req, res, equipments, 'update');
+    }
 );
 
 //DELETE:
@@ -109,9 +90,11 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, equipments); }
+    (req, res) => { 
+        //Send to module service:
+        moduleServices._delete(req, res, equipments);
+    }
 );
-
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

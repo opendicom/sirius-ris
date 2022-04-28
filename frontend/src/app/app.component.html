@@ -1,0 +1,50 @@
+<div *ngIf="sharedProp.isLogged; then thenBlock else elseBlock"></div>
+
+<ng-template #thenBlock>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<!-- MAIN TOOLBAR -->
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<mat-toolbar class="main-toolbar" color="primary">
+  <button mat-icon-button aria-label="Menu icon" mat-button (click)="drawerSidebar.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span>&nbsp;|&nbsp;&nbsp;</span>
+
+  <img class="logo" src="../assets/img/logo_horizontal.png" routerLink="/start" />
+
+  <span class="mat-spacer"></span>
+
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <app-header></app-header>
+  </div>
+</mat-toolbar>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<!-- MAIN CONTAINER -->
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<mat-drawer-container class="main-container">
+  <mat-drawer #drawerSidebar class="main-sidenav" mode="side" opened="true">
+    <app-sidenav></app-sidenav>
+  </mat-drawer>
+
+  <div class="main-content">
+    <app-action></app-action>
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer></app-footer>
+</mat-drawer-container>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+</ng-template>
+
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<!-- LOGIN CONTAINER -->
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<ng-template #elseBlock>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</ng-template>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->

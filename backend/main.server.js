@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // MAIN SERVER:
-// This module creates Sirius RISjs backend server (WebServer).
+// This module creates Sirius RIS backend server (WebServer).
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = function() {
     //Import external modules:
@@ -21,6 +21,7 @@ module.exports = function() {
     const organizationsRoutes   = require('./modules/organizations/routes');
     const branchesRoutes        = require('./modules/branches/routes');
     const servicesRoutes        = require('./modules/services/routes');
+    const equipmentsRoutes      = require('./modules/equipments/routes');
     const usersRoutes           = require('./modules/users/routes');
 
     //Import app modules:
@@ -102,7 +103,7 @@ module.exports = function() {
     //Set default path:
     app.get('/', (req, res) => {
         //DEBUG:
-        res.status(200).send({ success: true, message: 'Welcome to Sirius RISjs Backend' });
+        res.status(200).send({ success: true, message: 'Welcome to Sirius RIS Backend' });
     });
 
     //Set modules routes:
@@ -113,6 +114,7 @@ module.exports = function() {
     app.use('/organizations',   organizationsRoutes);
     app.use('/branches',        branchesRoutes);
     app.use('/services',        servicesRoutes);
+    app.use('/equipments',      equipmentsRoutes);
     app.use('/users',           usersRoutes);
 
     //Start message:

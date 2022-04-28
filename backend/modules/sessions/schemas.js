@@ -25,7 +25,7 @@ const Schema = new mongoose.Schema({
 //Define model:
 const Model = mongoose.model('sessions', Schema, 'sessions');  //Specify collection name to prevent Mongoose pluralize.
 
-//Add fk names (Sirius RISjs logic):
+//Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_session',
     Plural      : 'fk_sessions'

@@ -43,7 +43,7 @@ Schema = middlewares.isPassword(preSchema, 'password');
 //Define model:
 const Model = mongoose.model('users', Schema, 'users');  //Specify collection name to prevent Mongoose pluralize.
 
-//Add fk names (Sirius RISjs logic):
+//Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_user',
     Plural      : 'fk_users'

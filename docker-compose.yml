@@ -1,0 +1,38 @@
+version: "3"
+services:
+  sirius_database:
+    container_name: sirius_database_container
+    image: mongo:latest
+    volumes:
+      - ./database/sirius_database_data:/data/db
+      - ./database/sirius_database_config:/data/configdb
+    ports:
+      - 27017:27017
+    environment:
+      TZ: 'America/Argentina/Buenos_Aires'
+    restart: unless-stopped
+    networks:
+      - sirius_net
+
+  sirius_backend:
+    container_name: sirius_backend_container
+    image: node:latest
+    volumes:
+      - ./backend:/home/node/app
+    ports:
+      - 3001:3001
+      - 8443:8443
+    environment:
+      TZ: 'America/Argentina/Buenos_Aires'
+      NODE_ENV: production
+    user: node
+    working_dir: /home/node/app
+    command: "npm start"
+    depends_on:
+      - sirius_database
+    restart: unless-stopped
+    networks:
+      - sirius_net
+
+networks:
+  sirius_net:
