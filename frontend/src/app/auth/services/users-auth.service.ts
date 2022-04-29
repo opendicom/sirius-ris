@@ -45,7 +45,7 @@ export class UsersAuthService {
       localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(siriusAuth));
     } else {
       //Send message into screen:
-      this.userLoginError('Backend message: ' + res.message);
+      this.userSigninError('Backend message: ' + res.message);
     }
 
     //Return response:
@@ -65,165 +65,79 @@ export class UsersAuthService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // USER LOGIN:
+  // USER SIGNIN:
   //--------------------------------------------------------------------------------------------------------------------//
-  userLogin(form_data: NgForm): any {
+  userSignin(form_data: NgForm): any {
     //Create authentication object:
-    //let siriusAuth: any = {};
+    let siriusAuth: any = {};
+
+    //Initialize tmpToken string (For users with multiple permissions):
+    let tmpToken = '';
 
     //Create observable obsSignin:
     const obsSignin = this.apiClient.sendRequest('POST', 'signin', form_data.value);
 
-    //Create observable obsUserLogin:
-    const obsUserLogin = obsSignin.pipe(
-      map((res: any) => {
-        console.log(res);
-        return res;
-      }),
-    );
-
-    //Observe content (Subscribe):
-    obsUserLogin.subscribe();
-
-    /*
-    let users_params: any = {};
-    let check_pass_params: any = {};
-
-    //Create observable obsJWTLogin:
-    const obsJWTLogin = this.apiClient.jwtLogin();
-
-    //Create observable obsUserLogin:
-    const obsUserLogin = obsJWTLogin.pipe(
-      //Check JWT authentication:
-      map((res: any) => { return this.setToken(res, siriusAuth); }),
-
-      //Filter that only success cases continue:
-      filter((res: any) => res.success === true),
-
-      //Search for a person with the indicated document (Return observable):
-      mergeMap(() => this.apiClient.getRequest('people', 'findOne', people_params)),
-
-      //If there is a person, save data in session object:
+    //Create observable obsUserSignin:
+    const obsUserSignin = obsSignin.pipe(
       map((res: any) => {
         //Check operation status:
         if(res.success === true){
 
-          //Check existence of person with the entered document (Result NOT empty):
-          if(Object.keys(res.data).length !== 0){
+          //If user signin with only one permission:
+          if(Object.keys(res.data.permissions).length == 1){
+            //Set user data into authentication object:
+            siriusAuth = res.data;
 
-            //Set person data into authentication object:
-            siriusAuth['people_id']  = res.data._id;
-            siriusAuth['documents']  = res.data.documents;
-            siriusAuth['name_01']    = res.data.name_01;
-            siriusAuth['surname_01'] = res.data.surname_01;
-            siriusAuth['birth_date'] = res.data.birth_date;
+            //Add session token (1 day), into authentication object:
+            siriusAuth.token = res.token;
 
-            //Determine id parameter (fk_person), to query user:
-            users_params = {
-              'filter[fk_people]': siriusAuth.people_id,
-              'proj[password]': 0,
-              'proj[createdAt]': 0,
-              'proj[updatedAt]': 0,
-              'proj[__v]': 0,
-            }
+            //Stringify final authentication object:
+            const final_siriusAuth = JSON.stringify(siriusAuth);
+
+            //Crypt stringify object and create local file:
+            localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
+
+            //Send message into screen (Password match - Signin successfully):
+            this.snackBar.open(res.message, '', {
+              duration: 2000
+            });
+
+            //Redirect to Start Page:
+            this.router.navigate(['/start']);
+
+          //Multiple permissions:
           } else {
-            //Send message into screen:
-            this.userLoginError('No se encontró ninguna persona con el documento ingresado.');
+            //Set user data into authentication object:
+            siriusAuth = res.data;
+
+            //Set autorization token (1 minute):
+            tmpToken = res.token;
+
+            //Redirect to Authorize Page:
+            this.router.navigate(['/signin/authorize']);
           }
         } else {
           //Send message into screen:
-          this.userLoginError('Backend message: ' + res.message);
+          this.userSigninError(res.message);
         }
 
         //Return response:
         return res;
       }),
 
-      //Filter that only success cases and NOT empty results continue:
-      filter((res: any) => res.success === true && Object.keys(res.data).length !== 0),
+      //Filter that only success cases and users with multiple permissions continue:
+      filter((res: any) => res.success === true && Object.keys(res.data.permissions).length > 1),
 
-      //Query user (Return observable):
-      mergeMap(() => this.apiClient.getRequest('users', 'findOne', users_params)),
-
-      //Check if user exist and status == true:
-      map((res: any) => {
-
-        //Check operation status:
-        if(res.success === true){
-
-          //Check existence of user with the entered id (Result NOT empty):
-          if(Object.keys(res.data).length !== 0){
-
-            //Check user status:
-            if(res.data.status === true) {
-
-              //Set user data into authentication object:
-              siriusAuth['user_id']    = res.data._id;
-              siriusAuth['privileges'] = res.data.privileges;
-
-              //Determine parameters to query check password:
-              check_pass_params = {
-                'id': siriusAuth.user_id,
-                'password': form_data.value.password,
-              }
-
-            } else {
-              //Send message into screen:
-              this.userLoginError('El documento ingresado corresponde a un usuario inactivo.');
-            }
-          } else {
-            //Send message into screen:
-            this.userLoginError('No se encuentra un usuario asociado al documento ingresado.');
-          }
-        } else {
-          //Send message into screen:
-          this.userLoginError('Backend message: ' + res.message);
-        }
-
-        //Return response:
-        return res;
-      }),
-
-      //Filter that only success cases, NOT empty results and active users continue:
-      filter((res: any) => res.success === true && Object.keys(res.data).length !== 0 && res.data.status === true),
-
-      //Password attribute check query (Return observable):
-      mergeMap(() => this.apiClient.postRequest('users', 'checkPassById', check_pass_params)),
-
-      //Handle checkPassById response:
-      map((res: any) => {
-        //Check user password:
-        if(res.success === true){
-
-          //Remove previous temp token:
-          this.removeToken();
-
-          //Stringify final authentication object:
-          const final_siriusAuth = JSON.stringify(siriusAuth);
-
-          //Crypt stringify object and create local file:
-          localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
-
-          //Send message into screen (Password match - Login successfully):
-          this.snackBar.open('¡Autenticación exitosa!', '', {
-            duration: 2000
-          });
-
-          //Redirect to Start Page:
-          this.router.navigate(['/start']);
-        } else {
-          //Send message into screen (Wrong password):
-          this.userLoginError(res.message);
-        }
-
-        //Return response:
-        return res;
-      }),
+      //Authorize user with multiple permissions:
+      //mergeMap(() => this.apiClient.sendRequest('POST', 'signin/authorize', form_data.value)),
     );
 
     //Observe content (Subscribe):
-    obsUserLogin.subscribe();
-    */
+    obsUserSignin.subscribe({
+      next: data => console.log(data),
+      error: error => console.error(`Error: ${error}`),
+      complete: () => console.log('Suscripción finalizada')
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -233,7 +147,7 @@ export class UsersAuthService {
   //--------------------------------------------------------------------------------------------------------------------//
   userLogout(): void{
     this.removeToken();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/signin']);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -263,9 +177,9 @@ export class UsersAuthService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // USER LOGIN ERROR:
+  // USER SIGNIN ERROR:
   //--------------------------------------------------------------------------------------------------------------------//
-  private userLoginError(message: string): void{
+  private userSigninError(message: string): void{
     this.snackBar.open(message, 'ACEPTAR');
     this.removeToken();
   }

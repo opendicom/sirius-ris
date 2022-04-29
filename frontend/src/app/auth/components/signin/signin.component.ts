@@ -11,11 +11,11 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-signin',
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.css']
 })
-export class LoginComponent implements OnInit {
+export class SigninComponent implements OnInit {
   public settings: any = app_setting;
   public country_codes: any = ISO_3166;
   public document_types: any = document_types;
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
   onSubmit(form_data: NgForm){
     //Validate input fields:
     if(form_data.valid){
-      //Login:
-      this.userAuth.userLogin(form_data);
+      //Signin:
+      this.userAuth.userSignin(form_data);
     }
   }
 }

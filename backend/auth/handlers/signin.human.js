@@ -108,8 +108,17 @@ module.exports = async (req, res) => {
                                 userPermission.role = parseInt(peopleData.user.permissions[0].role);
                                 userPermission.consession = peopleData.user.permissions[0].concession;
 
+                                //Set response data object:
+                                const response_data = {
+                                    person_id: peopleData._id,
+                                    user_id: peopleData.user._id,
+                                    name: peopleData.name_01,
+                                    surname: peopleData.surname_01,
+                                    permissions: [ userPermission ]
+                                }
+
                                 //Create session:
-                                await authServices.createSession(peopleData.user._id, userPermission, res);
+                                await authServices.createSession(peopleData.user._id, userPermission, res, response_data);
 
                             //Multiple permissions:
                             } else {

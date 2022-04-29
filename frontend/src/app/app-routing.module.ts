@@ -10,9 +10,9 @@ import { SettingsComponent } from '@shared/components/settings/settings.componen
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 const routes: Routes = [
-  // Main Page and Login:
-  { path: 'auth', loadChildren: () => import('@auth/auth.module').then( m => m.AuthModule ) },
-  { path: '', redirectTo: 'auth', pathMatch: 'full' }, // Redirection from main page to auth (login).
+  // Main Page and Signin:
+  { path: 'signin', loadChildren: () => import('@auth/auth.module').then( m => m.AuthModule ) },
+  { path: '', redirectTo: 'signin', pathMatch: 'full' }, // Redirection from main page to signin.
 
   // Start Page:
   { path: 'start', component: StartPageComponent, canActivate: [AuthGuard] },

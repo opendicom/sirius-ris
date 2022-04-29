@@ -17,7 +17,7 @@ const logs      = require('../modules/logs/schemas');
 //--------------------------------------------------------------------------------------------------------------------//
 // CREATE SESSION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function createSession(user_id, user_permission, res){
+async function createSession(user_id, user_permission, res, response_data = false){
     //Set creation date:
     const creation_date = Date.now();
 
@@ -53,10 +53,10 @@ async function createSession(user_id, user_permission, res){
 
             //Create payload:
             const payload = {
-                sub: user_id.toString(),       //Identify the subject of the token.
+                sub: user_id.toString(),            //Identify the subject of the token.
                 iat: (creation_date / 1000),        //Token creation date.
                 //exp: (Declared in expiresIn)      //Token expiration date.
-                session: user_permission             //User permission for the session.
+                session: user_permission            //User permission for the session.
             }
 
             //Create JWT (Temp):
@@ -67,8 +67,15 @@ async function createSession(user_id, user_permission, res){
                     
                     return;
                 } else {
-                    //Send successfully response:
-                    res.status(200).send({ success: true, message: currentLang.auth.signin_success, token: token });
+                    //Check if user information should be added (signin with only one permission case):
+                    if(response_data){
+                        //Send successfully response:
+                        res.status(200).send({ success: true, message: currentLang.auth.signin_success, data: response_data, token: token });
+                    } else {
+                        //Send successfully response:
+                        res.status(200).send({ success: true, message: currentLang.auth.signin_success, token: token });
+                    }
+                    
                 }
             });
 
