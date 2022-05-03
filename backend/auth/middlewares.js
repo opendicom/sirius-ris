@@ -40,10 +40,10 @@ const accessControl = (req, res, next) => {
     //Check if the IP is registered, if not register it:
     if(registeredIPs[clientIP]){
         //Parse counter value (string) to integer (base 10) and increment:
-        let counter = parseInt(registeredIPs[clientIP].counter) + 1;
+        let counter = parseInt(registeredIPs[clientIP].counter, 10) + 1;
 
         //Calculate difference between dates (seconds):
-        let start = parseInt(registeredIPs[clientIP].last_req);
+        let start = parseInt(registeredIPs[clientIP].last_req, 10);
         let end = Date.now();
         let time_elapsed = Math.round((end - start)/1000);
 

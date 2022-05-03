@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
   ) { }
 
   canActivate(){
-    /*
     //Check authentication:
     if (!this.userAuth.userIsLogged()) {
       console.log('No estás logueado');
@@ -31,7 +30,6 @@ export class AuthGuard implements CanActivate {
 
     //Refresh isLoged value for display or not the toolbar and sidebar:
     this.sharedProp.checkIsLogged();
-    */
 
     //In case the authentication is correct, let pass (continue):
     return true;

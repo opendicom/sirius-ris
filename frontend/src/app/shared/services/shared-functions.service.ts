@@ -47,11 +47,19 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // READ TOKEN:
   //--------------------------------------------------------------------------------------------------------------------//
-  readToken(): string {
+  readToken(tmp: Boolean = false): string {
     let siriusAuth: any;
+    let fileName: String;
+
+    //Set file name:
+    if(tmp){
+      fileName = 'sirius_temp';
+    } else {
+      fileName = 'sirius_auth';
+    }
 
     //Get encoded local file content:
-    siriusAuth = localStorage.getItem('sirius_auth');
+    siriusAuth = localStorage.getItem(fileName.toString());
 
     //Decode content:
     siriusAuth = this.simpleCrypt(siriusAuth);
@@ -60,7 +68,7 @@ export class SharedFunctionsService {
     siriusAuth = JSON.parse(siriusAuth);
 
     //Get token:
-    return siriusAuth.jwt;
+    return siriusAuth.token;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -68,11 +76,19 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // GET USER INFO:
   //--------------------------------------------------------------------------------------------------------------------//
-  getUserInfo(): any {
+  getUserInfo(tmp: Boolean = false): any {
     let siriusAuth: any;
+    let fileName: String;
+
+    //Set file name:
+    if(tmp){
+      fileName = 'sirius_temp';
+    } else {
+      fileName = 'sirius_auth';
+    }
 
     //Get encoded local file content:
-    siriusAuth = localStorage.getItem('sirius_auth');
+    siriusAuth = localStorage.getItem(fileName.toString());
 
     //Decode content:
     siriusAuth = this.simpleCrypt(siriusAuth);
@@ -80,8 +96,8 @@ export class SharedFunctionsService {
     //Parse to JS object:
     siriusAuth = JSON.parse(siriusAuth);
 
-    //Delete object's JWT property:
-    delete siriusAuth.jwt;
+    //Delete object's token property:
+    delete siriusAuth.token;
 
     //Get authentication object without token (No JWT):
     return siriusAuth;
@@ -131,53 +147,6 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   sendMessage(message: string): void {
     this.snackBar.open(message, 'ACEPTAR');
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
-  // SIMPLE JOIN:
-  //--------------------------------------------------------------------------------------------------------------------//
-  simpleJoin(sub_element: string, fk_name: string, res: any, _matrix_pointer: any): any {
-    //Set sub-elements:
-    this.objSubElement.setElement(sub_element);
-
-    //Iterate over results:
-    for(let i=0; i<res.data.length; i++){
-
-      //If the sub element is not a person and has a type other than 1 (human) [User machine case do not enter]:
-      if(!(sub_element == 'people' && res.data[i].type != 1)){
-
-        //Set sub-element params:
-        let sub_params: any =  {
-          'filter[_id]': res.data[i][fk_name],
-          'proj[createdAt]': 0,
-          'proj[updatedAt]': 0,
-          'proj[__v]': 0,
-        };
-
-        //Observe sub-element content (Subscribe):
-        this.objSubElement.find(sub_params, true).subscribe({
-          next: (sub_res) => {
-            //Iterate over the api_response object (search of the sub-element corresponding to the id):
-            Object.keys(_matrix_pointer[0].data).forEach((key) => {
-              if(_matrix_pointer[0].data[key][fk_name] == sub_res.data._id){
-
-                //Add sub_element data to object:
-                _matrix_pointer[0].data[key][sub_element] = sub_res.data;
-
-                //Remove foreign key from object (redundant):
-                delete _matrix_pointer[0].data[key][fk_name];
-              }
-            });
-          },
-          error: (sub_res) => {
-            //Send snakbar message:
-            this.sendMessage(sub_res.error.message);
-          }
-        });
-      }
-    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

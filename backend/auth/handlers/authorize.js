@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
 
                             //Set userPermission:
                             userPermission.domain = mongoose.Types.ObjectId(domain);
-                            userPermission.role = parseInt(role);
+                            userPermission.role = parseInt(role, 10);
                             userPermission.consession = value['concession'];
                         }
                     } else if((Object.keys(value).includes('patient') && value['patient'] == domain)) {

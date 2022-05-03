@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';   // Shared Functions
+import { user_roles } from '@env/environment';                                        // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -13,15 +14,14 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 })
 export class HeaderComponent implements OnInit {
   public user_info: any;
+  public userRoles: any = user_roles;
 
   //Inject services to the constructor:
   constructor(private sharedFunctions: SharedFunctionsService) { }
 
   ngOnInit(): void {
     //Get User Logged Information:
-    //this.user_info = this.sharedFunctions.getUserInfo();
-    this.user_info.name_01 = "NOMBRE";
-    this.user_info.name_01 = "APELLIDO";
+    this.user_info = this.sharedFunctions.getUserInfo();
   }
 
 }

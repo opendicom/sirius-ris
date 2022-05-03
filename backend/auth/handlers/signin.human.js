@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
     const password = req.body.password;
 
     //Set doc_type format (Integer base 10):
-    documents.doc_type = parseInt(documents.doc_type);
+    documents.doc_type = parseInt(documents.doc_type, 10);
 
     //Create MongoDB arguments:
     const peopleMatch = { documents: documents };
@@ -105,7 +105,7 @@ module.exports = async (req, res) => {
                                 }
 
                                 //Set role & consession in userPermission:
-                                userPermission.role = parseInt(peopleData.user.permissions[0].role);
+                                userPermission.role = parseInt(peopleData.user.permissions[0].role, 10);
                                 userPermission.consession = peopleData.user.permissions[0].concession;
 
                                 //Set response data object:

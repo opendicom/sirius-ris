@@ -18,13 +18,15 @@ export class HttpInterceptorService implements HttpInterceptor {
 
   //Interface intercept method (HttpInterceptor):
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    /*
     let jwt_token: any = 'JWT Empty';
 
     //Get JWT of localStorage:
     if(localStorage.getItem('sirius_auth')){
       //Get token:
       jwt_token = this.sharedFunctions.readToken();
+    } else if(localStorage.getItem('sirius_temp')) {
+      //Get temp token:
+      jwt_token = this.sharedFunctions.readToken(true);
     }
 
     //Set Headers:
@@ -35,9 +37,5 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     //Return the request:
     return next.handle(reqClone);
-    */
-
-    //Retornar el request sin alteraciones:
-    return next.handle(req);
   }
 }

@@ -30,71 +30,33 @@ export class UsersAuthService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // SET TOKEN:
-  //--------------------------------------------------------------------------------------------------------------------//
-  private setToken(res: any, siriusAuth: any): any{
-    //Check operation status:
-    if(res.success === true){
-      //Set authentication object:
-      siriusAuth['jwt']  = res.token;
-
-      //Stringify object:
-      siriusAuth = JSON.stringify(siriusAuth);
-
-      //Crypt stringify object and create local file:
-      localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(siriusAuth));
-    } else {
-      //Send message into screen:
-      this.userSigninError('Backend message: ' + res.message);
-    }
-
-    //Return response:
-    return res;
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
-  // REMOVE TOKEN:
-  //--------------------------------------------------------------------------------------------------------------------//
-  public removeToken(): void{
-    //Delete token:
-    localStorage.removeItem('sirius_auth');
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
   // USER SIGNIN:
   //--------------------------------------------------------------------------------------------------------------------//
   userSignin(form_data: NgForm): any {
     //Create authentication object:
     let siriusAuth: any = {};
 
-    //Initialize tmpToken string (For users with multiple permissions):
-    let tmpToken = '';
-
     //Create observable obsSignin:
-    const obsSignin = this.apiClient.sendRequest('POST', 'signin', form_data.value);
+    const obsUserSignin = this.apiClient.sendRequest('POST', 'signin', form_data.value);
 
-    //Create observable obsUserSignin:
-    const obsUserSignin = obsSignin.pipe(
-      map((res: any) => {
+    //Observe content (Subscribe):
+    obsUserSignin.subscribe({
+      next: res => {
         //Check operation status:
         if(res.success === true){
 
+          //Set user data into authentication object:
+          siriusAuth = res.data;
+
+          //Add token into authentication object:
+          siriusAuth.token = res.token;
+
+          //Stringify final authentication object:
+          const final_siriusAuth = JSON.stringify(siriusAuth);
+
           //If user signin with only one permission:
           if(Object.keys(res.data.permissions).length == 1){
-            //Set user data into authentication object:
-            siriusAuth = res.data;
-
-            //Add session token (1 day), into authentication object:
-            siriusAuth.token = res.token;
-
-            //Stringify final authentication object:
-            const final_siriusAuth = JSON.stringify(siriusAuth);
-
-            //Crypt stringify object and create local file:
+            //Crypt stringify object and create local file (1 day token):
             localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
 
             //Send message into screen (Password match - Signin successfully):
@@ -107,11 +69,8 @@ export class UsersAuthService {
 
           //Multiple permissions:
           } else {
-            //Set user data into authentication object:
-            siriusAuth = res.data;
-
-            //Set autorization token (1 minute):
-            tmpToken = res.token;
+            //Crypt stringify object and create local file (1 minute token):
+            localStorage.setItem('sirius_temp', this.sharedFunctions.simpleCrypt(final_siriusAuth));
 
             //Redirect to Authorize Page:
             this.router.navigate(['/signin/authorize']);
@@ -120,24 +79,93 @@ export class UsersAuthService {
           //Send message into screen:
           this.userSigninError(res.message);
         }
+      },
+      error: req => {
+        //Send error into screen:
+        this.userSigninError(req.error.message);
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
-        //Return response:
-        return res;
-      }),
 
-      //Filter that only success cases and users with multiple permissions continue:
-      filter((res: any) => res.success === true && Object.keys(res.data.permissions).length > 1),
+  //--------------------------------------------------------------------------------------------------------------------//
+  // USER AUTHORIZE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  userAuthorize(form_data: NgForm): any {
+    //Create authentication object:
+    let siriusAuth: any = {};
 
-      //Authorize user with multiple permissions:
-      //mergeMap(() => this.apiClient.sendRequest('POST', 'signin/authorize', form_data.value)),
-    );
+    //Create observable obsUserAuthorize:
+    const obsUserAuthorize = this.apiClient.sendRequest('POST', 'signin/Authorize', form_data.value);
 
     //Observe content (Subscribe):
-    obsUserSignin.subscribe({
-      next: data => console.log(data),
-      error: error => console.error(`Error: ${error}`),
-      complete: () => console.log('Suscripción finalizada')
+    obsUserAuthorize.subscribe({
+      next: res => {
+        //Check operation status:
+        if(res.success === true){
+          //Set user data into authentication object:
+          siriusAuth = this.sharedFunctions.getUserInfo(true);
+
+          //Delete permissions array:
+          delete siriusAuth.permissions;
+
+          //Set selected permision:
+          siriusAuth.permissions = [{
+            domain: form_data.value.domain,
+            role: parseInt(form_data.value.role, 10)
+          }];
+
+          //Add token into authentication object:
+          siriusAuth.token = res.token;
+
+          //Stringify final authentication object:
+          const final_siriusAuth = JSON.stringify(siriusAuth);
+
+          //Crypt stringify object and create local file (1 day token):
+          localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
+
+          //Delete temporal token (if exist):
+          if(localStorage.getItem('sirius_temp')){
+            localStorage.removeItem('sirius_temp');
+          }
+
+          //Send message into screen (Password match - Signin successfully):
+          this.snackBar.open(res.message, '', {
+            duration: 2000
+          });
+
+          //Redirect to Start Page:
+          this.router.navigate(['/start']);
+        } else {
+          //Send message into screen:
+          this.userSigninError(res.message);
+        }
+      },
+      error: req => {
+        //Send error into screen:
+        this.userSigninError(req.error.message);
+      }
     });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // REMOVE TOKEN:
+  //--------------------------------------------------------------------------------------------------------------------//
+  public removeToken(): void{
+    //Check if token exist:
+    if(localStorage.getItem('sirius_auth')){
+      //Delete token:
+      localStorage.removeItem('sirius_auth');
+    }
+
+    //Check if temp token exist:
+    if(localStorage.getItem('sirius_temp')){
+      //Delete token:
+      localStorage.removeItem('sirius_temp');
+    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

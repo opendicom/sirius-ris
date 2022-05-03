@@ -37,7 +37,7 @@ export class SigninComponent implements OnInit {
     this.sharedProp.checkIsLogged();
   }
 
-  onSubmit(form_data: NgForm){
+  onSubmit(form_data: NgForm): void {
     //Validate input fields:
     if(form_data.valid){
       //Signin:

@@ -1,1 +1,29 @@
-<p>authorize works!</p>
+<form class="form-element" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
+  <img src="../../../../assets/img/logo_vertical.png" alt="Signin">
+
+  <br/><br/><hr class="dashed" /><br/>
+
+  <mat-form-field appearance="fill" class="sub-element">
+    <mat-label>Dominio</mat-label>
+    <mat-select name="domain" (selectionChange)="onChangeDomain($event)" ngModel required>
+      <div *ngFor="let currentDomain of availableDomains | keyvalue">
+        <mat-option value="{{ currentDomain.key }}">{{ currentDomain.value }}</mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="sub-element">
+    <mat-label>Rol</mat-label>
+    <mat-select name="role" [disabled]="RoleDisabled" ngModel required>
+      <div *ngFor="let currentRole of availableRoles | keyvalue">
+        <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <br/>
+
+  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">SELECCIONAR</button>
+  <br/><br/>
+  <button mat-flat-button color="accent" class="sub-element submit-button" type="button" (click)="onCancel()">CANCELAR</button>
+</form>
