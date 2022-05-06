@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
 import { user_roles } from '@env/environment';                                          // Enviroment
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { Router } from '@angular/router';                                               // Router
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -27,8 +27,8 @@ export class AuthorizeComponent implements OnInit {
   constructor(
     private router: Router,
     private userAuth: UsersAuthService,
-    private sharedFunctions: SharedFunctionsService,
-    public sharedProp: SharedPropertiesService
+    public sharedProp: SharedPropertiesService,
+    private sharedFunctions: SharedFunctionsService
   ) { }
 
   ngOnInit(): void {

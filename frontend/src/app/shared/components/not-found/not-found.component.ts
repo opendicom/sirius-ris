@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { UsersAuthService } from '@auth/services/users-auth.service';   // Users Auth Service
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';
+import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,7 +15,10 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 export class NotFoundComponent implements OnInit {
 
   //Inject services to the constructor:
-  constructor(private userAuth: UsersAuthService, public sharedProp: SharedPropertiesService) { }
+  constructor(
+    private userAuth: UsersAuthService,
+    public sharedProp: SharedPropertiesService
+  ) { }
 
   ngOnInit(): void {
     //Remove JWT and Auth Object:

@@ -17,13 +17,12 @@ export class AuthGuard implements CanActivate {
   constructor(
     private userAuth: UsersAuthService,
     private router: Router,
-    public sharedProp: SharedPropertiesService
+    public sharedProp: SharedPropertiesService,
   ) { }
 
   canActivate(){
     //Check authentication:
     if (!this.userAuth.userIsLogged()) {
-      console.log('No estás logueado');
       this.router.navigate(['/signin']);
       return false;
     }

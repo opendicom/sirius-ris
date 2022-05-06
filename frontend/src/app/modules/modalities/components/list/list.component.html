@@ -1,1 +1,64 @@
-<h1>List modalities</h1>
+<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/modalities/form/edit/{{ element._id }}">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- code_meaning -->
+    <ng-container matColumnDef="code_meaning">
+      <th mat-header-cell *matHeaderCellDef> Significado </th>
+      <td mat-cell *matCellDef="let element"> {{ element.code_meaning }} </td>
+    </ng-container>
+
+    <!-- code_value -->
+    <ng-container matColumnDef="code_value">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element"> {{ element.code_value }} </td>
+    </ng-container>
+
+    <!-- status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+        <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-template>
+
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    <h4>Aguarde, aún no hay resultados.</h4>
+  </div>
+</ng-template>
+
+<div class="response-info" *ngIf="sharedFunctions.response.success;">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div>
+      Items por página: {{ sharedFunctions.response.pager.items_per_page }} &nbsp;&nbsp;|&nbsp;&nbsp;
+      Página actual: {{ sharedFunctions.response.pager.actual_page }}
+    </div>
+
+    <span class="mat-spacer"></span>
+
+    <div>
+      Mostrados: {{ sharedFunctions.response.pager.viewed_items }} &nbsp;&nbsp;|&nbsp;&nbsp;
+      Cant. de páginas: {{ sharedFunctions.response.pager.number_of_pages }} &nbsp;&nbsp;|&nbsp;&nbsp;
+      Total: {{ sharedFunctions.response.pager.total_items }}
+    </div>
+  </div>
+</div>

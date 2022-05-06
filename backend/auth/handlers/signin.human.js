@@ -118,7 +118,7 @@ module.exports = async (req, res) => {
                                 }
 
                                 //Create session:
-                                await authServices.createSession(peopleData.user._id, userPermission, res, response_data);
+                                await authServices.createSession(peopleData.user._id, userPermission, req, res, response_data);
 
                             //Multiple permissions:
                             } else {

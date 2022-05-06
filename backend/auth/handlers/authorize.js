@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
                 //If contain the specific permission:
                 if(permisionChecked){
                     //Create session:
-                    authServices.createSession(userData._id, userPermission, res);
+                    authServices.createSession(userData._id, userPermission, req, res);
                 } else {
                     res.status(200).send({ success: false, message: currentLang.auth.wrong_role_domain });
                 }

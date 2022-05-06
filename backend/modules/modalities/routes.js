@@ -90,7 +90,16 @@ router.post(
     //mainMiddlewares.checkJWT,
     //checkSession (middleware),
     modalities.Validator,
-    (req, res) => { moduleServices.insert(req, res, modalities); }
+    async (req, res) => {
+        //Search for duplicates:
+        const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
+
+        //Check for duplicates:
+        if(code_value == false){
+            //Save data:
+            moduleServices.insert(req, res, modalities);
+        }
+    }
 );
 
 //UPDATE:
@@ -100,7 +109,16 @@ router.post(
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     modalities.Validator,
-    (req, res) => { moduleServices.update(req, res, modalities); }
+    async (req, res) => {
+        //Search for duplicates:
+        const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
+
+        //Check for duplicates:
+        if(code_value == false){
+            //Save data:
+            moduleServices.update(req, res, modalities);
+        }
+    }
 );
 
 //DELETE:

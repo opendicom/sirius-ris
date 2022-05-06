@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
 import { app_setting, document_types, ISO_3166 } from '@env/environment';               // Enviroment
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -24,7 +24,11 @@ export class SigninComponent implements OnInit {
   public getKeys: any;
 
   //Inject services to the constructor:
-  constructor(private userAuth: UsersAuthService, private sharedFunctions: SharedFunctionsService, public sharedProp: SharedPropertiesService) {
+  constructor(
+    private userAuth: UsersAuthService,
+    public sharedProp: SharedPropertiesService,
+    private sharedFunctions: SharedFunctionsService
+  ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
   }

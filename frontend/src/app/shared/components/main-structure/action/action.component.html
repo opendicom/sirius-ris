@@ -8,7 +8,7 @@
   </button>
 </mat-toolbar>
 
-<form *ngIf="sharedProp.action.filters_form">
+<div *ngIf="sharedProp.action.filters_form">
   <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
     <div> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
@@ -56,9 +56,10 @@
         <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
       </mat-form-field>
 
-      <button mat-flat-button color="accent" class="apply_filters">
+      <button mat-flat-button color="accent" class="apply_filters" (click)="sharedFunctions.onSearch(sharedProp.element, sharedProp.params);">
         <mat-icon>sync</mat-icon> APLICAR FILTROS
       </button>
+
     </div> <!-- end fxLayout wrapper -->
   </div>
-</form>
+</div>

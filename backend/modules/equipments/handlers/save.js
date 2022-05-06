@@ -13,21 +13,19 @@ module.exports = async (req, res, currentSchema, operation) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
     referencedElements.push([ req.body.fk_branch, 'branches' ]);
-    //referencedElements.push([ req.body.fk_modalities, 'modalities' ]);
+
+    //Set referenced elements (FKs - Check existence) [Arrays case]:
+    for(let currentKey in req.body.fk_modalities){
+        referencedElements.push([ req.body.fk_modalities[currentKey], 'modalities' ]);
+    }
 
     //Excecute main query:
     switch(operation){
         case 'insert':
-            console.log('CASO A:');
-            console.log(req.body.A_fk_modalities);
-            console.log('\nCASO B:');
-            console.log(req.body.B_fk_modalities);
-            
-            res.status(200).send({ test: true });
-            //await moduleServices.insert(req, res, currentSchema, referencedElements);
+            await moduleServices.insert(req, res, currentSchema, referencedElements);
             break;
         case 'update':
-            //await moduleServices.update(req, res, currentSchema, referencedElements);
+            await moduleServices.update(req, res, currentSchema, referencedElements);
             break;
         default:
             res.status(500).send({ success: false, message: currentLang.db.not_allowed_save });

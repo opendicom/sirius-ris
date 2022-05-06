@@ -10,14 +10,16 @@ const mainServices  = require('../main.services');                          // M
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
 const currentLang   = require('../main.languages')(mainSettings.language);  // Language Module
 
+//Import Module Services:
+const moduleServices = require('../modules/modules.services');
+
 //Import schemas:
 const sessions  = require('../modules/sessions/schemas');
-const logs      = require('../modules/logs/schemas');
 
 //--------------------------------------------------------------------------------------------------------------------//
 // CREATE SESSION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function createSession(user_id, user_permission, res, response_data = false){
+async function createSession(user_id, user_permission, req, res, response_data = false){
     //Set creation date:
     const creation_date = Date.now();
 
@@ -34,20 +36,11 @@ async function createSession(user_id, user_permission, res, response_data = fals
     //Save session in DB:
     await sessionData.save(sessionData)
     .then(async (savedSession) => {
-        //Create log object:
-        const logObj = {
-            event: 1,                   //Login
-            datetime: creation_date,    //Same as payload iat
-            fk_user: mongoose.Types.ObjectId(user_id),
-        }
-
-        //Create Mongoose object to insert validated data:
-        const logData = new logs.Model(logObj);
-
         //Save registry in Log DB:
-        await logData.save(logData)
-        .then(async (savedLog) => {
+        const logRegistry = await moduleServices.insertLog(1, creation_date, user_id, req, res);
 
+        //Check log registry result:
+        if(logRegistry){
             //Create JWT Session:
             const time_exp = '1d';
 
@@ -78,13 +71,7 @@ async function createSession(user_id, user_permission, res, response_data = fals
                     
                 }
             });
-
-        //Log DB error:
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.query_error, err);
-        });
+        }
     //Session DB error:
     })
     .catch((err) => {

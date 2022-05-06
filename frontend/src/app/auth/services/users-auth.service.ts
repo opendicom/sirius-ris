@@ -3,13 +3,12 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { map, filter, mergeMap } from 'rxjs/operators';                                         // Reactive Extensions (RxJS)
-import { NgForm } from '@angular/forms';                                                        // For bidirectional binding (NgForm).
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
-import { ApiClientService } from '@shared/services/api-client.service';                         // API Client Service
-import { MatSnackBar } from '@angular/material/snack-bar';                                      // SnackBar (Angular Material)
-import { Router } from '@angular/router';                                                       // Router
-import { JwtHelperService } from "@auth0/angular-jwt";                                          // JWT Helper Service (Check JWT Expiration)
+import { NgForm } from '@angular/forms';                                                // For bidirectional binding (NgForm).
+import { ApiClientService } from '@shared/services/api-client.service';                 // API Client Service
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { MatSnackBar } from '@angular/material/snack-bar';                              // SnackBar (Angular Material)
+import { Router } from '@angular/router';                                               // Router
+import { JwtHelperService } from "@auth0/angular-jwt";                                  // JWT Helper Service (Check JWT Expiration)
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Create helper object:
@@ -80,9 +79,9 @@ export class UsersAuthService {
           this.userSigninError(res.message);
         }
       },
-      error: req => {
+      error: res => {
         //Send error into screen:
-        this.userSigninError(req.error.message);
+        this.userSigninError(res.error.message);
       }
     });
   }
@@ -142,9 +141,9 @@ export class UsersAuthService {
           this.userSigninError(res.message);
         }
       },
-      error: req => {
+      error: res => {
         //Send error into screen:
-        this.userSigninError(req.error.message);
+        this.userSigninError(res.error.message);
       }
     });
   }

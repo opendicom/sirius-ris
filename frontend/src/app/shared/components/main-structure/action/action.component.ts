@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -14,7 +15,10 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 export class ActionComponent implements OnInit {
 
   //Inject services to the constructor:
-  constructor(public sharedProp: SharedPropertiesService) {
+  constructor(
+    public sharedProp: SharedPropertiesService,
+    public sharedFunctions: SharedFunctionsService
+  ) {
     //Set action properties:
     sharedProp.actionSetter({
       content_title   : false,

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { HttpClient } from '@angular/common/http';              // HTTPClient module
-import { observable, Observable } from 'rxjs';                              // Reactive Extensions (RxJS)
-import { environment } from '@env/environment';                 // Environment
+import { HttpClient } from '@angular/common/http';    // HTTPClient module
+import { Observable } from 'rxjs';                    // Reactive Extensions (RxJS)
+import { environment } from '@env/environment';       // Environment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -38,23 +38,4 @@ export class ApiClientService {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
-
-  //--------------------------------------------------------------------------------------------------------------------//
-  // GET REQUEST:
-  //--------------------------------------------------------------------------------------------------------------------//
-  getRequest(path: string, params: any): Observable<any> {
-    //Return response:
-    return this.http.get(environment.backend_url + path, { params: params });
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
-  // POST REQUEST:
-  //--------------------------------------------------------------------------------------------------------------------//
-  postRequest(path: string, post_data: any): Observable<any> {
-    //Return response:
-    return this.http.post(environment.backend_url + path, post_data);
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
 }

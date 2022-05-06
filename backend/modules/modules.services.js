@@ -600,6 +600,52 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// IS DUPLICATED:
+//--------------------------------------------------------------------------------------------------------------------//
+async function isDuplicated(req, res, currentSchema, value, fieldName){
+    //Initialize result:
+    result = false;
+
+    //Set filter:
+    let filter = {}
+    filter[fieldName] = value;
+    
+    await currentSchema.Model.findOne(filter, { _id: 1 })
+    .exec()
+    .then((data) => {
+        //Check operation:
+        //INSERT:
+        if(req.body._id == undefined){
+            //Check if have results:
+            if(data){
+                //Set result (duplicated):
+                result = true;
+
+                //Send duplicate message:
+                res.status(200).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
+            }
+        //UPDATE
+        } else {
+            if(data._id != req.body._id){
+                //Set result (duplicated):
+                result = true;
+
+                //Send duplicate message:
+                res.status(200).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+            }
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // ADJUST DATA TYPES:
 //--------------------------------------------------------------------------------------------------------------------//
 function adjustDataTypes(filter, schemaName, asPrefix = ''){
@@ -661,6 +707,45 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// INSERT LOG:
+//--------------------------------------------------------------------------------------------------------------------//
+async function insertLog(event, datetime, fk_user, req, res){
+    //Import schemas:
+    const logs = require('./logs/schemas');
+
+    //Initializate result:
+    let result = false;
+
+    //Create log object:
+    const logObj = {
+        event: event,
+        datetime: datetime,
+        fk_user: mongoose.Types.ObjectId(fk_user),
+        ip_client: mainServices.getIPClient(req)
+    }
+
+    //Create Mongoose object to insert validated data:
+    const logData = new logs.Model(logObj);
+
+    //Save registry in Log DB:
+    await logData.save(logData)
+    .then(async (savedLog) => {
+        if(savedLog){
+            //Set result:
+            result = true;
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -671,7 +756,9 @@ module.exports = {
     update,
     _delete,
     findAggregation,
+    isDuplicated,
     adjustDataTypes,
-    ckeckElement
+    ckeckElement,
+    insertLog
 };
 //--------------------------------------------------------------------------------------------------------------------//

@@ -18,7 +18,8 @@ const Schema = new mongoose.Schema({
     event:      { type: Number, required: true },
     datetime:   { type: Date, required: true },
     fk_user:    { type: mongoose.ObjectId, required: true }, //Author
-    element:    { type: subSchemaElement }
+    element:    { type: subSchemaElement },
+    ip_client:  { type: String, required: true }
 },
 { timestamps: false },
 { versionKey: false });
@@ -37,10 +38,40 @@ const ForeignKeys = {
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('event')
+        .trim()
+        .isInt()
+        .withMessage('El parametro event es requerido y debe ser numérico.'),
+
+    body('datetime').trim(),
+
     body('fk_user')
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_user NO es un ID MongoDB válido.'),
+
+    body('element').optional(),
+
+    body('element.*.type')
+        .trim()
+        .isInt()
+        .withMessage('El parametro type es requerido y debe ser numérico.'),
+
+    body('element.*.element')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro element NO es un ID MongoDB válido.'),
+
+    body('element.*.state')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage('El parametro state debe ser numérico.'),
+
+    body('ip_client')
+        .trim()
+        .isIP(4)
+        .withMessage('El parametro ip_client debe ser una IP válida.'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

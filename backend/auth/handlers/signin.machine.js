@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
                         }
                         
                         //Create session:
-                        authServices.createSession(userData._id, userPermission, res);
+                        authServices.createSession(userData._id, userPermission, req, res);
 
                     } else {
                         //Passwords don't match:

@@ -38,8 +38,10 @@ module.exports = function(language){
             'validate_error'        : 'Validation error.',
             'insert_success'        : 'Insert operation successful.',
             'insert_error'          : 'An error occurred while inserting the element.',
+            'insert_duplicate'      : 'The element you are trying to insert already exists in the database with the _id: ',
             'id_no_results'         : 'The specified ID does not exist.',
             'update_error'          : 'An error occurred while updating the element.',
+            'update_duplicate'      : 'The element you are trying to update already exists in the database with the _id: ',
             'delete_error'          : 'An error occurred while deleting the element.',
             'delete_success'        : 'Successfully deleted.',
             'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
@@ -84,8 +86,10 @@ module.exports = function(language){
             lang.db.validate_error              = 'Error de validación.';
             lang.db.insert_success              = 'Guardado exitoso.';
             lang.db.insert_error                = 'Error al intentar insertar el elemento.';
+            lang.db.insert_duplicate            = 'El elemento que esta intentando insertar ya existe en la base de datos bajo el _id: ';
             lang.db.id_no_results               = 'No existe ningún elemento con el ID especificado';
             lang.db.update_error                = 'Error al intentar actualizar el elemento.';
+            lang.db.update_duplicate            = 'El elemento que esta actualizar actualizar ya existe en la base de datos bajo el _id: ';
             lang.db.delete_error                = 'Error al intentar eliminar el elemento.';
             lang.db.delete_success              = 'Eliminación exitosa.';
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
