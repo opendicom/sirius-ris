@@ -17,7 +17,13 @@ const currentLang   = require('../main.languages')(mainSettings.language);  // L
 //--------------------------------------------------------------------------------------------------------------------//
 async function find(req, res, currentSchema){
     //Get query params:
-    let { filter, proj, sort, pager } = req.query;
+    let { condition, filter, proj, sort, pager } = req.query;
+
+    //Set condition type:
+    condition = await setConditionType(condition, filter);
+
+    //Set condition regex:
+    condition = await setConditionRegex(condition);
 
     //Parse skip and limit value (string) to integer (base 10):
     req.query.skip = parseInt(req.query.skip, 10);
@@ -30,13 +36,13 @@ async function find(req, res, currentSchema){
     if(pager){ pager = setPager(req, pager); }
 
     //Count using query params:
-    await currentSchema.Model.countDocuments(filter)
+    await currentSchema.Model.countDocuments(condition.filter)
     .exec()
     .then(async (count) => {
         //Check result count:
         if(count > 0){
             //Excecute main query:
-            await currentSchema.Model.find(filter, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
+            await currentSchema.Model.find(condition.filter, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
             .exec()
             .then((data) => {
                 //Check if have results:
@@ -124,12 +130,18 @@ async function findById(req, res, currentSchema){
 //--------------------------------------------------------------------------------------------------------------------//
 async function findOne(req, res, currentSchema){
     //Get query params:
-    let { filter, proj, sort } = req.query;
+    let { condition, filter, proj, sort } = req.query;
+
+    //Set condition type:
+    condition = await setConditionType(condition, filter);
+
+    //Set condition regex:
+    condition = await setConditionRegex(condition);
 
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
     
-    await currentSchema.Model.findOne(filter, formatted_proj).sort(sort)
+    await currentSchema.Model.findOne(condition.filter, formatted_proj).sort(sort)
     .exec()
     .then((data) => {
         //Check if have results:
@@ -436,6 +448,99 @@ function setPager(req, pager){
 
     //Return edited pager:
     return pager;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET CONDITION TYPE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setConditionType(condition, filter){
+    //Check filter:
+    if(filter){
+        //Check and set condition type:
+        if(condition){
+            if(condition.type){
+                //Set to upercase condition type:
+                condition.type = condition.type.toUpperCase();
+
+                //Create condition type:
+                if(condition.type != 'OR' && condition.type != 'AND'){
+                    //Set default condition type (AND)
+                    condition.type = 'AND';
+                }
+            } else {
+                //Set default condition type (AND):
+                condition.type = 'AND';
+            }
+        } else {
+            //Set default condition type (AND):
+            condition = { type: 'AND' };
+        }
+
+
+        //Set condition filter:
+        switch(condition.type){
+            case 'AND':
+                //Create condition filter:
+                condition.filter = { $and: [] };
+
+                //Build filter with contition type (await foreach):
+                await Promise.all(Object.keys(filter).map((key) => {
+                    condition.filter.$and.push({ [key]: filter[key] });
+                }));
+                break;
+            case 'OR':
+                //Create condition filter:
+                condition.filter = { $or: [] };
+
+                //Build filter with contition type (await foreach):
+                await Promise.all(Object.keys(filter).map((key) => {
+                    condition.filter.$or.push({ [key]: filter[key] });
+                }));
+                break;
+        }
+    } else {
+        //Set empty filter if filter is undefinded:
+        condition = { filter: {} };
+    }
+
+    //Return condition:
+    return condition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET CONDITION REGEX:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setConditionRegex(condition){
+    //Check condition regex:
+    if(mainServices.stringToBoolean(condition.regex)){
+        let keyName = '';
+        let currentValue = '';
+
+        //Switch by condition type:
+        switch(condition.type){
+            case 'AND':
+                //Build filter with contition type (await foreach):
+                await Promise.all(condition.filter.$and.map((current, index) => {
+                    keyName = Object.keys(current)[0];
+                    currentValue = condition.filter.$and[index][keyName];
+                    condition.filter.$and[index][keyName] = { $regex: currentValue, $options: 'i' };
+                }));
+                break;
+            case 'OR':
+                //Build filter with contition type (await foreach):
+                await Promise.all(condition.filter.$or.map((current, index) => {
+                    keyName = Object.keys(current)[0];
+                    currentValue = condition.filter.$or[index][keyName];
+                    condition.filter.$or[index][keyName] = { $regex: currentValue, $options: 'i' };
+                }));
+                break;
+        }
+    }
+
+    //Return condition:
+    return condition;
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -40,19 +40,21 @@ export class ListComponent implements OnInit {
     sharedProp.elementSetter('modalities');
 
     //Set initial request params:
-    sharedProp.paramsSetter({
+    sharedProp.paramsSetter(
+      //Filter fields:
+      ['code_meaning', 'code_value'],
+
+      //Status filter:
+
       //Projection:
-      'proj[createdAt]': 0,
-      'proj[updatedAt]': 0,
-      'proj[__v]': 0,
+      { code_meaning: 1, code_value: 1, status: 1 },
 
       //Sort:
-      'sort[status]' : -1,
+      { status: -1 },
 
       //Pager:
-      'pager[page_number]': 1,
-      'pager[page_limit]': 10,
-    });
+      { page_number: 1, page_limit: 10 }
+    );
   }
 
   ngOnInit(): void {

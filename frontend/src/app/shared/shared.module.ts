@@ -15,6 +15,7 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Required for bidirectional binding (ngModule).
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
   imports: [
     CommonModule,
     SharedRoutingModule,
-    SharedMaterialModule
+    SharedMaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent,

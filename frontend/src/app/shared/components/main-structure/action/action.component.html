@@ -13,7 +13,7 @@
     <div> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
         <mat-label>Buscar</mat-label>
-        <input matInput type="search" placeholder="Criterio de busqueda">
+        <input matInput type="search" placeholder="Criterio de busqueda" [(ngModel)]="filter">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
@@ -56,7 +56,7 @@
         <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
       </mat-form-field>
 
-      <button mat-flat-button color="accent" class="apply_filters" (click)="sharedFunctions.onSearch(sharedProp.element, sharedProp.params);">
+      <button mat-flat-button color="accent" class="apply_filters" (click)="onSearch();">
         <mat-icon>sync</mat-icon> APLICAR FILTROS
       </button>
 

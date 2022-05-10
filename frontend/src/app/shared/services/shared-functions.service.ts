@@ -159,47 +159,24 @@ export class SharedFunctionsService {
   // FIND:
   //--------------------------------------------------------------------------------------------------------------------//
   find(element: string, params: any): void{
-    //Create observable obsFind:
-    const obsFind = this.apiClient.sendRequest('GET', element + '/find', params);
+    //Check if element is not empty:
+    if(element != ''){
+      //Create observable obsFind:
+      const obsFind = this.apiClient.sendRequest('GET', element + '/find', params);
 
-    //Observe content (Subscribe):
-    obsFind.subscribe({
-      next: res => {
-        this.response = res;
-      },
-      error: res => {
-        //Send snakbar message:
-        alert(res.error.message);
-      }
-    });
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
-  // ON SEARCH:
-  //--------------------------------------------------------------------------------------------------------------------//
-  onSearch(element: string, params: any){
-    const new_params = {
-      //Filter:
-      'filter[code_value]': 'RM',
-
-      //Projection:
-      'proj[createdAt]': 0,
-      'proj[updatedAt]': 0,
-      'proj[__v]': 0,
-
-      //Sort:
-      'sort[status]' : -1,
-
-      //Pager:
-      'pager[page_number]': 1,
-      'pager[page_limit]': 10,
-    };
-
-    console.log(params);
-
-    this.find(element, new_params);
+      //Observe content (Subscribe):
+      obsFind.subscribe({
+        next: res => {
+          this.response = res;
+        },
+        error: res => {
+          //Send snakbar message:
+          this.sendMessage(res.error.message);
+        }
+      });
+    } else {
+      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }
