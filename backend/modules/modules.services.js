@@ -525,7 +525,11 @@ async function setConditionRegex(condition){
                 await Promise.all(condition.filter.$and.map((current, index) => {
                     keyName = Object.keys(current)[0];
                     currentValue = condition.filter.$and[index][keyName];
-                    condition.filter.$and[index][keyName] = { $regex: currentValue, $options: 'i' };
+
+                    //Exclude boolean types:
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                        condition.filter.$and[index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                    }
                 }));
                 break;
             case 'OR':
@@ -533,7 +537,11 @@ async function setConditionRegex(condition){
                 await Promise.all(condition.filter.$or.map((current, index) => {
                     keyName = Object.keys(current)[0];
                     currentValue = condition.filter.$or[index][keyName];
-                    condition.filter.$or[index][keyName] = { $regex: currentValue, $options: 'i' };
+
+                    //Exclude boolean types:
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                        condition.filter.$or[index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                    }
                 }));
                 break;
         }
@@ -864,6 +872,8 @@ module.exports = {
     isDuplicated,
     adjustDataTypes,
     ckeckElement,
-    insertLog
+    insertLog,
+    setConditionType,
+    setConditionRegex
 };
 //--------------------------------------------------------------------------------------------------------------------//

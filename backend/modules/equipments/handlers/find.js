@@ -11,7 +11,7 @@ const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema) => {
     //Get query params:
-    let filter = req.query.filter;
+    let { condition, filter } = req.query;
 
     //Add aggregate to request:
     req.query['aggregate'] = [
@@ -52,8 +52,14 @@ module.exports = async (req, res, currentSchema) => {
         filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
         filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modalities');
 
+        //Set condition type:
+        condition = await moduleServices.setConditionType(condition, filter);
+
+        //Set condition regex:
+        condition = await moduleServices.setConditionRegex(condition);
+
         //Add match operation to aggregations:
-        req.query.aggregate.push({ $match: filter });
+        req.query.aggregate.push({ $match: condition.filter });
     }
 
     //Excecute main query:
