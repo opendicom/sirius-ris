@@ -15,8 +15,23 @@ export class SharedPropertiesService {
   public element: any;
   public params: any;
 
+  //Request params:
+  public condition: any;
+  public filter: string;
+  public filterFields: any;
+  public projection: any;
+  public sort: any;
+  public pager: any;
+
+  //Action fields:
+  public status: string;
+
   //Inject services to the constructor:
-  constructor(private userAuth: UsersAuthService) { }
+  constructor(private userAuth: UsersAuthService) {
+    //Initialize filter (empty):
+    this.filter = '';
+    this.status = '';
+  }
 
   //--------------------------------------------------------------------------------------------------------------------//
   // SHARED PROPERTIES SETTERS:
@@ -36,41 +51,54 @@ export class SharedPropertiesService {
   elementSetter(element: string): void {
     this.element = element;
   }
+  //--------------------------------------------------------------------------------------------------------------------//
 
-  paramsSetter(filterFields: any, proj: any, sort: any, pager: any): void {
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // PARAMS REFRESH:
+  //--------------------------------------------------------------------------------------------------------------------//
+  paramsRefresh(): void {
+    let string_condition: string = '';
     let string_filter: string = '';
     let string_proj: string = '';
     let string_sort: string = '';
     let string_pager: string = '';
 
-    //DEBUG (Get action filter value):
-    let filter = '';
-
     //Adjust params formats:
+    //Condition:
+    if(this.condition != ''){
+      string_condition = '"condition[type]": "' + this.condition['type'] + '", ';
+      string_condition += '"condition[regex]": "' + this.condition['regex'] + '", ';
+    }
+
     //Filter:
-    if(filter != ''){
-      //Filter:
-      for(let key in filterFields){
-        string_filter += '"filter[' + filterFields[key] + ']": "' + filter + '", ';
+    if(this.filter != ''){
+      for(let key in this.filterFields){
+        string_filter += '"filter[' + this.filterFields[key] + ']": "' + this.filter + '", ';
       }
     }
 
+    //Check status:
+    if(this.status === 'true' || this.status === 'false'){
+      string_filter += '"filter[status]": "' + this.status + '", ';
+    }
+
     //Projection:
-    for(let key in proj){
-      string_proj += '"proj[' + key + ']": "' + proj[key] + '", ';
+    for(let key in this.projection){
+      string_proj += '"proj[' + key + ']": "' + this.projection[key] + '", ';
     }
 
     //Sort:
-    for(let key in sort){
-      string_sort += '"sort[' + key + ']": "' + sort[key] + '", ';
+    for(let key in this.sort){
+      string_sort += '"sort[' + key + ']": "' + this.sort[key] + '", ';
     }
 
     //Pager:
-    string_pager = '"pager[page_number]": "' + pager['page_number'] + '", ';
-    string_pager += '"pager[page_limit]": "' + pager['page_limit'] + '"';
+    string_pager = '"pager[page_number]": "' + this.pager['page_number'] + '", ';
+    string_pager += '"pager[page_limit]": "' + this.pager['page_limit'] + '"';
 
     //Concat string params:
-    const string_params = '{ ' + string_filter + string_proj + string_sort + string_pager + ' }';
+    const string_params = '{ ' + string_condition + string_filter + string_proj + string_sort + string_pager + ' }';
 
     //Set params:
     this.params = JSON.parse(string_params);

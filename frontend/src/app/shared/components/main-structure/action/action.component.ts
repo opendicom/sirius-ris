@@ -13,8 +13,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-  public filter: any;
-
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,
@@ -26,8 +24,8 @@ export class ActionComponent implements OnInit {
       filters_form    : false,
     });
 
-    //Initialize filter (empty):
-    this.filter = '';
+    //Initialize filter param (empty):
+    this.sharedProp.filter = '';
   }
 
   ngOnInit(): void {
@@ -36,28 +34,18 @@ export class ActionComponent implements OnInit {
   //--------------------------------------------------------------------------------------------------------------------//
   // ON SEARCH:
   //--------------------------------------------------------------------------------------------------------------------//
-  onSearch(){
-    const new_params = {
-      //Filter:
-      'filter[code_value]': 'RM',
+  onSearch(clear: boolean = false){
+    //Check clear filters:
+    if(clear){
+      this.sharedProp.filter = '';
+      this.sharedProp.status = '';
+    }
 
-      //Projection:
-      'proj[createdAt]': 0,
-      'proj[updatedAt]': 0,
-      'proj[__v]': 0,
+    //Refresh request params:
+    this.sharedProp.paramsRefresh();
 
-      //Sort:
-      'sort[status]' : -1,
-
-      //Pager:
-      'pager[page_number]': 1,
-      'pager[page_limit]': 10,
-    };
-
-    alert(this.filter);
-    console.log(this.sharedProp.params);
-
-    this.sharedFunctions.find(this.sharedProp.element, new_params);
+    //Find:
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

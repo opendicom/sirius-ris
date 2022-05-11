@@ -17,13 +17,13 @@ const currentLang   = require('../main.languages')(mainSettings.language);  // L
 //--------------------------------------------------------------------------------------------------------------------//
 async function find(req, res, currentSchema){
     //Get query params:
-    let { condition, filter, proj, sort, pager } = req.query;
+    let { filter, proj, sort, pager, regex } = req.query;
 
-    //Set condition type:
-    condition = await setConditionType(condition, filter);
+    //Set condition:
+    let condition = await setCondition(filter);
 
-    //Set condition regex:
-    condition = await setConditionRegex(condition);
+    //Set regex:
+    condition = await setRegex(regex, condition);
 
     //Parse skip and limit value (string) to integer (base 10):
     req.query.skip = parseInt(req.query.skip, 10);
@@ -36,13 +36,13 @@ async function find(req, res, currentSchema){
     if(pager){ pager = setPager(req, pager); }
 
     //Count using query params:
-    await currentSchema.Model.countDocuments(condition.filter)
+    await currentSchema.Model.countDocuments(condition)
     .exec()
     .then(async (count) => {
         //Check result count:
         if(count > 0){
             //Excecute main query:
-            await currentSchema.Model.find(condition.filter, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
+            await currentSchema.Model.find(condition, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
             .exec()
             .then((data) => {
                 //Check if have results:
@@ -130,18 +130,18 @@ async function findById(req, res, currentSchema){
 //--------------------------------------------------------------------------------------------------------------------//
 async function findOne(req, res, currentSchema){
     //Get query params:
-    let { condition, filter, proj, sort } = req.query;
+    let { filter, proj, sort, regex } = req.query;
 
-    //Set condition type:
-    condition = await setConditionType(condition, filter);
+    //Set condition:
+    let condition = await setCondition(filter);
 
-    //Set condition regex:
-    condition = await setConditionRegex(condition);
+    //Set regex:
+    condition = await setRegex(regex, condition);
 
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
     
-    await currentSchema.Model.findOne(condition.filter, formatted_proj).sort(sort)
+    await currentSchema.Model.findOne(condition, formatted_proj).sort(sort)
     .exec()
     .then((data) => {
         //Check if have results:
@@ -452,56 +452,51 @@ function setPager(req, pager){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// SET CONDITION TYPE:
+// SET CONDITION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function setConditionType(condition, filter){
+async function setCondition(filter){
+    //Initialize main condition:
+    let condition = {};
+
     //Check filter:
     if(filter){
-        //Check and set condition type:
-        if(condition){
-            if(condition.type){
-                //Set to upercase condition type:
-                condition.type = condition.type.toUpperCase();
+        //Initialize conditions:
+        let and_condition = false;
+        let or_condition = false;
 
-                //Create condition type:
-                if(condition.type != 'OR' && condition.type != 'AND'){
-                    //Set default condition type (AND)
-                    condition.type = 'AND';
-                }
-            } else {
-                //Set default condition type (AND):
-                condition.type = 'AND';
-            }
+        //Set AND Condition:
+        if(filter.and){
+            //Create condition filter:
+            and_condition = { $and: [] };
+
+            //Build filter with contition type (await foreach):
+            await Promise.all(Object.keys(filter.and).map((key) => {
+                and_condition.$and.push({ [key]: filter.and[key] });
+            }));
+        }
+
+        //Set OR Condition:
+        if(filter.or){
+            //Create condition filter:
+            or_condition = { $or: [] };
+
+            //Build filter with contition type (await foreach):
+            await Promise.all(Object.keys(filter.or).map((key) => {
+                or_condition.$or.push({ [key]: filter.or[key] });
+            }));
+        }
+
+        //Set final condition:
+        if(and_condition && or_condition){
+            condition = { $and: [and_condition, or_condition] };
+        } else if(and_condition){
+            condition = and_condition;
+        } else if(or_condition){
+            condition = or_condition;
         } else {
-            //Set default condition type (AND):
-            condition = { type: 'AND' };
+            //Set filter without condition (AND):
+            condition = filter;
         }
-
-
-        //Set condition filter:
-        switch(condition.type){
-            case 'AND':
-                //Create condition filter:
-                condition.filter = { $and: [] };
-
-                //Build filter with contition type (await foreach):
-                await Promise.all(Object.keys(filter).map((key) => {
-                    condition.filter.$and.push({ [key]: filter[key] });
-                }));
-                break;
-            case 'OR':
-                //Create condition filter:
-                condition.filter = { $or: [] };
-
-                //Build filter with contition type (await foreach):
-                await Promise.all(Object.keys(filter).map((key) => {
-                    condition.filter.$or.push({ [key]: filter[key] });
-                }));
-                break;
-        }
-    } else {
-        //Set empty filter if filter is undefinded:
-        condition = { filter: {} };
     }
 
     //Return condition:
@@ -512,39 +507,80 @@ async function setConditionType(condition, filter){
 //--------------------------------------------------------------------------------------------------------------------//
 // SET CONDITION REGEX:
 //--------------------------------------------------------------------------------------------------------------------//
-async function setConditionRegex(condition){
+async function setRegex(regex, condition){
     //Check condition regex:
-    if(mainServices.stringToBoolean(condition.regex)){
+    if(mainServices.stringToBoolean(regex)){
         let keyName = '';
         let currentValue = '';
 
-        //Switch by condition type:
-        switch(condition.type){
-            case 'AND':
-                //Build filter with contition type (await foreach):
-                await Promise.all(condition.filter.$and.map((current, index) => {
-                    keyName = Object.keys(current)[0];
-                    currentValue = condition.filter.$and[index][keyName];
+        //Await foreach condition:
+        await Promise.all(Object.keys(condition).map(async (current, index) => {
+            //OR Only:
+            if(current == '$or'){
+                //Build condition with OR Only contition (await foreach):
+                await Promise.all(condition.$or.map((or_current, or_index) => {
+                    keyName = Object.keys(or_current)[0];
+                    currentValue = condition.$or[or_index][keyName];
 
                     //Exclude boolean types:
                     if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
-                        condition.filter.$and[index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                        condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
-                break;
-            case 'OR':
-                //Build filter with contition type (await foreach):
-                await Promise.all(condition.filter.$or.map((current, index) => {
-                    keyName = Object.keys(current)[0];
-                    currentValue = condition.filter.$or[index][keyName];
+            
+            //AND:
+            } else if(current == '$and') {
+                //Build condition with AND contition (await foreach):
+                await Promise.all(condition.$and.map(async (and_current, and_index) => {
+                    //AND -> OR:
+                    if(and_current.$or){
+                        //Build condition with AND -> OR contition (await foreach):
+                        await Promise.all(and_current.$or.map((or_current, or_index) => {
+                            keyName = Object.keys(or_current)[0];
+                            currentValue = and_current.$or[or_index][keyName];
+                            
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                                condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                            }
+                        }));
+                    }
 
-                    //Exclude boolean types:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
-                        condition.filter.$or[index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                    //AND -> AND:
+                    if (and_current.$and){
+                        //Build condition with AND -> AND contition (await foreach):
+                        await Promise.all(and_current.$and.map((second_and_current, second_and_index) => {
+                            keyName = Object.keys(second_and_current)[0];
+                            currentValue = and_current.$and[second_and_index][keyName];
+                            
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                                condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                            }
+                        }));
+                    }
+
+                    //AND Only:
+                    if(and_current.$and == undefined && and_current.$or == undefined){
+                        keyName = Object.keys(and_current)[0];
+                        currentValue = condition.$and[and_index][keyName];
+
+                        //Exclude boolean types:
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                            condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
+                        }
                     }
                 }));
-                break;
-        }
+
+            //Filter without condition (current = name_value):
+            } else {
+                keyName = Object.keys(condition)[index];
+                currentValue = condition[current];
+                
+                //Exclude boolean types:
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                    condition[current] = { $regex: `${currentValue}`, $options: 'i' };
+                }
+            }
+        }));
     }
 
     //Return condition:
@@ -873,7 +909,7 @@ module.exports = {
     adjustDataTypes,
     ckeckElement,
     insertLog,
-    setConditionType,
-    setConditionRegex
+    setCondition,
+    setRegex
 };
 //--------------------------------------------------------------------------------------------------------------------//

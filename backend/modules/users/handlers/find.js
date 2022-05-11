@@ -11,7 +11,7 @@ const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema) => {
     //Get query params:
-    let { condition, filter } = req.query;
+    let { filter, regex } = req.query;
 
     //Add aggregate to request:
     req.query['aggregate'] = [
@@ -33,14 +33,14 @@ module.exports = async (req, res, currentSchema) => {
         filter = moduleServices.adjustDataTypes(filter, 'users');
         filter = moduleServices.adjustDataTypes(filter, 'people', 'person');
 
-        //Set condition type:
-        condition = await moduleServices.setConditionType(condition, filter);
+        //Set condition:
+        let condition = await moduleServices.setCondition(filter);
 
-        //Set condition regex:
-        condition = await moduleServices.setConditionRegex(condition);
+        //Set regex:
+        condition = await moduleServices.setRegex(regex, condition);
 
         //Add match operation to aggregations:
-        req.query.aggregate.push({ $match: condition.filter });
+        req.query.aggregate.push({ $match: condition });
     }
 
     //Excecute main query:
