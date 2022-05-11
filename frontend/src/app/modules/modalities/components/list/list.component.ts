@@ -39,9 +39,12 @@ export class ListComponent implements OnInit {
     //Set element:
     sharedProp.elementSetter('modalities');
 
-    //Set initial request params:
+    //Initialize action fields:
     this.sharedProp.filter        = '';
-    this.sharedProp.condition     = { type: 'OR', regex: true };
+    this.sharedProp.status        = '';
+
+    //Set initial request params:
+    this.sharedProp.regex         = 'true';
     this.sharedProp.filterFields  = ['code_meaning', 'code_value'];
     this.sharedProp.projection    = { code_meaning: 1, code_value: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };

@@ -37,6 +37,7 @@ export class ActionComponent implements OnInit {
   onSearch(clear: boolean = false){
     //Check clear filters:
     if(clear){
+      //Initialize action fields:
       this.sharedProp.filter = '';
       this.sharedProp.status = '';
     }

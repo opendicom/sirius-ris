@@ -10,18 +10,18 @@ import { UsersAuthService } from '@auth/services/users-auth.service';         //
   providedIn: 'root'
 })
 export class SharedPropertiesService {
-  public isLogged: boolean = false;
-  public action: any;
-  public element: any;
-  public params: any;
+  public isLogged : boolean = false;
+  public action   : any;
+  public element  : any;
+  public params   : any;
 
   //Request params:
-  public condition: any;
-  public filter: string;
-  public filterFields: any;
-  public projection: any;
-  public sort: any;
-  public pager: any;
+  public regex        : string;
+  public filter       : string;
+  public filterFields : any;
+  public projection   : any;
+  public sort         : any;
+  public pager        : any;
 
   //Action fields:
   public status: string;
@@ -31,6 +31,7 @@ export class SharedPropertiesService {
     //Initialize filter (empty):
     this.filter = '';
     this.status = '';
+    this.regex = '';
   }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -58,29 +59,28 @@ export class SharedPropertiesService {
   // PARAMS REFRESH:
   //--------------------------------------------------------------------------------------------------------------------//
   paramsRefresh(): void {
-    let string_condition: string = '';
-    let string_filter: string = '';
-    let string_proj: string = '';
-    let string_sort: string = '';
-    let string_pager: string = '';
+    let string_regex  : string = '';
+    let string_filter : string = '';
+    let string_proj   : string = '';
+    let string_sort   : string = '';
+    let string_pager  : string = '';
 
     //Adjust params formats:
-    //Condition:
-    if(this.condition != ''){
-      string_condition = '"condition[type]": "' + this.condition['type'] + '", ';
-      string_condition += '"condition[regex]": "' + this.condition['regex'] + '", ';
+    //Regex:
+    if(this.regex != ''){
+      string_regex = '"regex": "' + this.regex + '", ';
     }
 
-    //Filter:
+    //Check Word Search - Filter (With OR Condition):
     if(this.filter != ''){
       for(let key in this.filterFields){
-        string_filter += '"filter[' + this.filterFields[key] + ']": "' + this.filter + '", ';
+        string_filter += '"filter[or][' + this.filterFields[key] + ']": "' + this.filter + '", ';
       }
     }
 
-    //Check status:
+    //Check status - Filter (With AND Condition)::
     if(this.status === 'true' || this.status === 'false'){
-      string_filter += '"filter[status]": "' + this.status + '", ';
+      string_filter += '"filter[and][status]": "' + this.status + '", ';
     }
 
     //Projection:
@@ -98,7 +98,7 @@ export class SharedPropertiesService {
     string_pager += '"pager[page_limit]": "' + this.pager['page_limit'] + '"';
 
     //Concat string params:
-    const string_params = '{ ' + string_condition + string_filter + string_proj + string_sort + string_pager + ' }';
+    const string_params = '{ ' + string_regex + string_filter + string_proj + string_sort + string_pager + ' }';
 
     //Set params:
     this.params = JSON.parse(string_params);

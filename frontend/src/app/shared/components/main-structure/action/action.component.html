@@ -13,7 +13,7 @@
     <div> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
         <mat-label>Buscar</mat-label>
-        <input matInput type="search" placeholder="Criterio de busqueda" [(ngModel)]="sharedProp.filter">
+        <input matInput type="search" placeholder="Criterio de busqueda" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
