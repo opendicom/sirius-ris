@@ -49,6 +49,9 @@ export const gender_types = {
   3: 'Otros',
 };
 
+//Pager defaults:
+export const default_page_sizes = [10, 25, 50, 100];
+
 // Country codes (ISO-3166):
 export const ISO_3166 = {
   "100": {

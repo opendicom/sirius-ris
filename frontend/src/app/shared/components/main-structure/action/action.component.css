@@ -32,4 +32,46 @@
   padding-top: 7px !important;
   padding-bottom: 7px !important;
 }
+
+.pager {
+  position: relative;
+  top: -4px;
+  color: rgba(255, 255, 255, 0.678);
+  font-size: 12px;
+}
+
+.pager-info {
+  float:left;
+  text-align: right !important;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 20px;
+}
+
+.pager-select {
+  text-align: left !important;
+  float: right;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.pager-input {
+  position:relative;
+  top: -4px;
+  max-width: 80px;
+}
+
+.pager-input-select {
+  text-align: center;
+  margin-top: -12px;
+}
+
+.pager-arrows {
+  cursor: pointer;
+}
+
+.pager-disabled {
+  cursor: default;
+  color: rgba(255, 255, 255, 0.137);
+}
 /*----------------------------------------------------------------------------------------------------------------------*/

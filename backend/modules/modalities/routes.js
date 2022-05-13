@@ -31,7 +31,7 @@ const router = express.Router();
 //FIND - FIND BY ID:
 router.get(
     '/find',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Initialize operation type:
@@ -59,7 +59,7 @@ router.get(
 //FIND ONE - FIND BY ID:
 router.get(
     '/findOne',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Initialize operation type:
@@ -87,7 +87,7 @@ router.get(
 //INSERT:
 router.post(
     '/insert',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     modalities.Validator,
     async (req, res) => {
@@ -105,7 +105,7 @@ router.post(
 //UPDATE:
 router.post(
     '/update',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     modalities.Validator,
@@ -124,7 +124,7 @@ router.post(
 //DELETE:
 router.post(
     '/delete',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, modalities); }

@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from '@modules/modalities/components/list/list.component';
 import { FormComponent } from '@modules/modalities/components/form/form.component';
 
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormComponent } from '@modules/modalities/components/form/form.componen
     ModalitiesRoutingModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class ModalitiesModule { }

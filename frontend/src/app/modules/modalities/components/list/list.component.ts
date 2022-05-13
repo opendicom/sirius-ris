@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { default_page_sizes } from '@env/environment';                                  // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -31,8 +32,7 @@ export class ListComponent implements OnInit {
         search        : true,
         date_range    : false,
         status        : true,
-        madalities    : false,
-        institutions  : false,
+        pager         : true,
       }
     });
 
@@ -48,7 +48,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.filterFields  = ['code_meaning', 'code_value'];
     this.sharedProp.projection    = { code_meaning: 1, code_value: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: 10 };
+    this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

@@ -45,7 +45,7 @@ const MatModules = [
   MatTooltipModule,
   MatCardModule,
   MatSnackBarModule,
-  MatChipsModule,
+  MatChipsModule
 ];
 
 @NgModule({

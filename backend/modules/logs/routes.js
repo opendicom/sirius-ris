@@ -27,7 +27,7 @@ const router = express.Router();
 //FIND - FIND BY ID:
 router.get(
     '/find',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Initialize operation type:
@@ -55,7 +55,7 @@ router.get(
 //FIND ONE - FIND BY ID:
 router.get(
     '/findOne',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Initialize operation type:

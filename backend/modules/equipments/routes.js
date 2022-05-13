@@ -35,7 +35,7 @@ const router = express.Router();
 //FIND:
 router.get(
     '/find',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Send to handler:
@@ -46,7 +46,7 @@ router.get(
 //FIND ONE:
 router.get(
     '/findOne',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     (req, res) => {
         //Force limit to one result:
@@ -62,7 +62,7 @@ router.get(
 //INSERT:
 router.post(
     '/insert',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     equipments.Validator,
     (req, res) => {
@@ -74,7 +74,7 @@ router.post(
 //UPDATE:
 router.post(
     '/update',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.allowedValidate(allowedSchemaKeys),
     equipments.Validator,
@@ -87,7 +87,7 @@ router.post(
 //DELETE:
 router.post(
     '/delete',
-    //mainMiddlewares.checkJWT,
+    mainMiddlewares.checkJWT,
     //checkSession (middleware),
     mainMiddlewares.checkDeleteCode,
     (req, res) => { 

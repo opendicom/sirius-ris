@@ -171,7 +171,11 @@ export class SharedFunctionsService {
         },
         error: res => {
           //Send snakbar message:
-          this.sendMessage(res.error.message);
+          if(res.error.message){
+            this.sendMessage(res.error.message);
+          } else {
+            this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          }
         }
       });
     } else {

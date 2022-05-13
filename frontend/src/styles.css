@@ -24,6 +24,10 @@ body {
   border-right: 2px solid #05ffa1;
 }
 
+.divider-alt {
+  border-right: 2px solid rgba(255, 255, 255, 0.137);
+}
+
 .color-ok{
   color: #05ffa1;
 }

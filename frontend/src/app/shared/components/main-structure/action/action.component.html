@@ -29,7 +29,7 @@
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
         <mat-label>Estado</mat-label>
-        <mat-select [(ngModel)]="sharedProp.status">
+        <mat-select [(ngModel)]="sharedProp.status" (selectionChange)="onSearch();">
           <mat-option value="true">Activo</mat-option>
           <mat-option value="false">Inactivo</mat-option>
         </mat-select>
@@ -60,9 +60,45 @@
         <mat-icon>sync</mat-icon>
       </button>
 
-      <button mat-flat-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(true);">
+      <button mat-flat-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
         <mat-icon>close</mat-icon>
       </button>
     </div> <!-- end fxLayout wrapper -->
+
+    <span class="mat-spacer"></span>
+
+    <div *ngIf="sharedProp.action.filters.pager && sharedFunctions.response.pager"> <!-- start fxLayout wrapper -->
+      <div class="pager">
+        <div class="pager-info divider-alt">
+          Total: {{ sharedFunctions.response.pager.total_items }} <br/>
+          Mostrados: {{ sharedFunctions.response.pager.viewed_items }} <br/>
+          <hr class="dashed" />
+          <div>
+            <mat-icon class="pager-arrows" (click)="prevPage(sharedFunctions.response.pager);" [class.pager-disabled]="sharedFunctions.response.pager.actual_page === 1">chevron_left</mat-icon>
+            <mat-icon class="pager-disabled">remove</mat-icon>
+            <mat-icon class="pager-arrows" (click)="nextPage(sharedFunctions.response.pager);" [class.pager-disabled]="sharedFunctions.response.pager.actual_page === sharedFunctions.response.pager.number_of_pages">chevron_right</mat-icon>
+          </div>
+        </div>
+
+        <div class="pager-select">
+          Página
+          <mat-form-field class="pager-input" appearance="standard">
+            <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.actual_page" (selectionChange)="onSearch(sharedFunctions.response.pager.actual_page);">
+              <mat-option *ngFor="let currentPage of counterPages(sharedFunctions.response.pager.number_of_pages);" [value]="currentPage">{{ currentPage }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          de {{ sharedFunctions.response.pager.number_of_pages }}
+          <br/>
+          Items por página:
+          <mat-form-field class="pager-input" appearance="standard" style="margin-top: -17px;">
+            <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.items_per_page" (selectionChange)="setPageLimit(sharedFunctions.response.pager.items_per_page);">
+              <mat-option *ngFor="let currentSize of page_sizes" [value]="currentSize">{{ currentSize }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+    </div>
   </div>
 </div>

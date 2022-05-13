@@ -539,6 +539,7 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(or_current)[0];
                             currentValue = and_current.$or[or_index][keyName];
                             
+                            //Exclude boolean types:
                             if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
@@ -552,6 +553,7 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
+                            //Exclude boolean types:
                             if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }

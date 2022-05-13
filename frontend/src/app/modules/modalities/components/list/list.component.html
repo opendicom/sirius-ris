@@ -40,27 +40,14 @@
   </table>
 </ng-template>
 
+<!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    <h4>Aguarde, aún no hay resultados.</h4>
+    Aguarde, aún no hay resultados.
   </div>
 </ng-template>
 
-<div class="response-info" *ngIf="sharedFunctions.response.success;">
-  <div *ngIf="sharedFunctions.response.pager;">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div>
-        Items por página: {{ sharedFunctions.response.pager.items_per_page }} &nbsp;&nbsp;|&nbsp;&nbsp;
-        Página actual: {{ sharedFunctions.response.pager.actual_page }}
-      </div>
-
-      <span class="mat-spacer"></span>
-
-      <div>
-        Mostrados: {{ sharedFunctions.response.pager.viewed_items }} &nbsp;&nbsp;|&nbsp;&nbsp;
-        Cant. de páginas: {{ sharedFunctions.response.pager.number_of_pages }} &nbsp;&nbsp;|&nbsp;&nbsp;
-        Total: {{ sharedFunctions.response.pager.total_items }}
-      </div>
-    </div>
-  </div>
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
 </div>
