@@ -19,6 +19,8 @@ const routes: Routes = [
 
   // Modules:
   { path: 'modalities', loadChildren: () => import('@modules/modalities/modalities.module').then( m => m.ModalitiesModule ), canActivate: [AuthGuard] },
+  { path: 'organizations', loadChildren: () => import('@modules/organizations/organizations.module').then( m => m.OrganizationsModule ), canActivate: [AuthGuard] },
+  { path: 'branches', loadChildren: () => import('@modules/branches/branches.module').then( m => m.BranchesModule ), canActivate: [AuthGuard] },
 
   // Settings:
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },

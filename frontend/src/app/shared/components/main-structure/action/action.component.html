@@ -56,17 +56,16 @@
         <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
       </mat-form-field>
 
-      <button mat-flat-button color="primary" matTooltip="Aplicar búsqueda" class="button_filters" (click)="onSearch();">
-        <mat-icon>sync</mat-icon>
-      </button>
-
-      <button mat-flat-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
+      <button mat-icon-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
         <mat-icon>close</mat-icon>
       </button>
     </div> <!-- end fxLayout wrapper -->
 
     <span class="mat-spacer"></span>
 
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+    <!-- PAGER -->
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
     <div *ngIf="sharedProp.action.filters.pager && sharedFunctions.response.pager"> <!-- start fxLayout wrapper -->
       <div class="pager">
         <div class="pager-info divider-alt">
@@ -100,5 +99,7 @@
         <div class="clear"></div>
       </div>
     </div>
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+
   </div>
 </div>

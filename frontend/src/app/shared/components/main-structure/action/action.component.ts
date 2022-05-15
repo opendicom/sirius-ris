@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes } from '@env/environment';                                      // Enviroment
+import { default_page_sizes } from '@env/environment';                                  // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({

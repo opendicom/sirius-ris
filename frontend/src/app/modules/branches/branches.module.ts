@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ModalitiesRoutingModule } from '@modules/modalities/modalities-routing.module';
+import { BranchesRoutingModule } from '@modules/branches/branches-routing.module';
 
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from '@modules/modalities/components/list/list.component';
-import { FormComponent } from '@modules/modalities/components/form/form.component';
+import { ListComponent } from '@modules/branches/components/list/list.component';
+import { FormComponent } from '@modules/branches/components/form/form.component';
+
 
 @NgModule({
   declarations: [
@@ -16,10 +17,10 @@ import { FormComponent } from '@modules/modalities/components/form/form.componen
   ],
   imports: [
     CommonModule,
-    ModalitiesRoutingModule,
+    BranchesRoutingModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule
   ]
 })
-export class ModalitiesModule { }
+export class BranchesModule { }
