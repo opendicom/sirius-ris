@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BranchesRoutingModule } from '@modules/branches/branches-routing.module';
 
+import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,6 +19,7 @@ import { FormComponent } from '@modules/branches/components/form/form.component'
   imports: [
     CommonModule,
     BranchesRoutingModule,
+    SharedModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule

@@ -76,6 +76,51 @@ body {
 .mat-spacer {
   flex: 1 1 auto;
 }
+
+/* badges */
+.badge {
+  cursor: pointer;
+  padding: 2px 5px 2px 5px;
+  background-color: #4e4e79;
+  border-radius: 3px;
+  margin: 2px;
+  float: left;
+}
+
+.badge-primary {
+  cursor: pointer;
+  padding: 2px 5px 2px 5px;
+  background-color: #e91e63;
+  border-radius: 3px;
+  margin: 2px;
+  float: left;
+}
+
+.badge-accent {
+  cursor: pointer;
+  padding: 2px 5px 2px 5px;
+  background-color: #607d8b;
+  border-radius: 3px;
+  margin: 2px;
+  float: left;
+}
+
+.badge-warn {
+  cursor: pointer;
+  padding: 2px 5px 2px 5px;
+  background-color: #f44336;
+  border-radius: 3px;
+  margin: 2px;
+  float: left;
+}
+
+/* mark (highlighter pipe) */
+mark {
+  background: goldenrod;
+  color: #1e1e2f;
+  border-radius: 2px;
+  padding: 1px;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 

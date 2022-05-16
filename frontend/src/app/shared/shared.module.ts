@@ -15,7 +15,11 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Required for bidirectional binding (ngModule).
+// Shared pipes:
+import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
+
+// Required for bidirectional binding (ngModule):
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Requ
     FooterComponent,
     StartPageComponent,
     SettingsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HighlighterPipe
   ],
   imports: [
     CommonModule,
@@ -42,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Requ
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
-    SharedMaterialModule
+    SharedMaterialModule,
+    HighlighterPipe
   ]
 })
 export class SharedModule { }

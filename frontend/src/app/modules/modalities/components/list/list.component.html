@@ -16,13 +16,17 @@
     <!-- code_meaning -->
     <ng-container matColumnDef="code_meaning">
       <th mat-header-cell *matHeaderCellDef> Significado </th>
-      <td mat-cell *matCellDef="let element"> {{ element.code_meaning }} </td>
+      <td mat-cell *matCellDef="let element">
+        <span innerHTML="{{ element.code_meaning | highlighter : sharedProp.filter}}"></span>
+      </td>
     </ng-container>
 
     <!-- code_value -->
     <ng-container matColumnDef="code_value">
       <th mat-header-cell *matHeaderCellDef> Valor </th>
-      <td mat-cell *matCellDef="let element"> {{ element.code_value }} </td>
+      <td mat-cell *matCellDef="let element">
+        <span innerHTML="{{ element.code_value | highlighter : sharedProp.filter}}"></span>
+      </td>
     </ng-container>
 
     <!-- status -->

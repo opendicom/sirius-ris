@@ -1,27 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ModalitiesRoutingModule } from '@modules/modalities/modalities-routing.module';
+import { UsersRoutingModule } from '@modules/users/users-routing.module';
 
 import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from '@modules/modalities/components/list/list.component';
-import { FormComponent } from '@modules/modalities/components/form/form.component';
+import { ListComponent } from '@modules/users/components/list/list.component';
+import { FormComponent } from '@modules/users/components/form/form.component';
+
 
 @NgModule({
   declarations: [
-    ListComponent,
-    FormComponent
+    FormComponent,
+    ListComponent
   ],
   imports: [
     CommonModule,
-    ModalitiesRoutingModule,
+    UsersRoutingModule,
     SharedModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule
   ]
 })
-export class ModalitiesModule { }
+export class UsersModule { }

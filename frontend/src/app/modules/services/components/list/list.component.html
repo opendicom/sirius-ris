@@ -7,7 +7,7 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/branches/form/edit/{{ element._id }}">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/services/form/edit/{{ element._id }}">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -25,11 +25,15 @@
       </td>
     </ng-container>
 
-    <!-- short_name -->
-    <ng-container matColumnDef="short_name">
-      <th mat-header-cell *matHeaderCellDef> Nombre corto </th>
+    <!-- branch -->
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef> Sucursal </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.short_name | highlighter : sharedProp.filter}}"></span>
+        <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
+        <ng-template #thenBlockTableBranch>
+          <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter}}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableBranch>(Sin dato)</ng-template>
       </td>
     </ng-container>
 
@@ -41,11 +45,17 @@
       </td>
     </ng-container>
 
-    <!-- OID -->
-    <ng-container matColumnDef="OID">
-      <th mat-header-cell *matHeaderCellDef> OID </th>
+    <!-- modality -->
+    <ng-container matColumnDef="modality">
+      <th mat-header-cell *matHeaderCellDef> Modalidad </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.OID | highlighter : sharedProp.filter}}"></span>
+        <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+        <ng-template #thenBlockTableModality>
+          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">
+            <span innerHTML="{{ element.modality.code_value | highlighter : sharedProp.filter}}"></span>
+          </span>
+        </ng-template>
+        <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
       </td>
     </ng-container>
 

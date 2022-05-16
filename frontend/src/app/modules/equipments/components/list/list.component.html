@@ -7,7 +7,7 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/branches/form/edit/{{ element._id }}">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/equipments/form/edit/{{ element._id }}">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -25,11 +25,15 @@
       </td>
     </ng-container>
 
-    <!-- short_name -->
-    <ng-container matColumnDef="short_name">
-      <th mat-header-cell *matHeaderCellDef> Nombre corto </th>
+    <!-- branch -->
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef> Sucursal </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.short_name | highlighter : sharedProp.filter}}"></span>
+        <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
+        <ng-template #thenBlockTableBranch>
+          <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter}}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableBranch>(Sin dato)</ng-template>
       </td>
     </ng-container>
 
@@ -41,11 +45,35 @@
       </td>
     </ng-container>
 
-    <!-- OID -->
-    <ng-container matColumnDef="OID">
-      <th mat-header-cell *matHeaderCellDef> OID </th>
+    <!-- serial_number -->
+    <ng-container matColumnDef="serial_number">
+      <th mat-header-cell *matHeaderCellDef> S/N </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.OID | highlighter : sharedProp.filter}}"></span>
+        <span innerHTML="{{ element.serial_number | highlighter : sharedProp.filter}}"></span>
+      </td>
+    </ng-container>
+
+    <!-- AET -->
+    <ng-container matColumnDef="AET">
+      <th mat-header-cell *matHeaderCellDef> AET </th>
+      <td mat-cell *matCellDef="let element">
+        <span innerHTML="{{ element.AET | highlighter : sharedProp.filter}}"></span>
+      </td>
+    </ng-container>
+
+    <!-- branch -->
+    <ng-container matColumnDef="modalities">
+      <th mat-header-cell *matHeaderCellDef> Modalidades </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.modalities; then thenBlockTableModalities else elseBlockTableModalities"></span>
+        <ng-template #thenBlockTableModalities>
+          <div *ngFor="let current of element.modalities">
+            <span class="badge" matTooltip="{{ current.code_meaning }}">
+              <span innerHTML="{{ current.code_value | highlighter : sharedProp.filter}}"></span>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template #elseBlockTableModalities>(Sin dato)</ng-template>
       </td>
     </ng-container>
 

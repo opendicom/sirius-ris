@@ -39,6 +39,9 @@ import { AuthModule } from '@auth/auth.module';
 import { ModalitiesModule } from '@modules/modalities/modalities.module';
 import { OrganizationsModule } from '@modules/organizations/organizations.module';
 import { BranchesModule } from '@modules/branches/branches.module';
+import { ServicesModule } from '@modules/services/services.module';
+import { EquipmentsModule } from '@modules/equipments/equipments.module';
+import { UsersModule } from '@modules/users/users.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -63,7 +66,10 @@ import { BranchesModule } from '@modules/branches/branches.module';
     // Modules:
     ModalitiesModule,
     OrganizationsModule,
-    BranchesModule
+    BranchesModule,
+    ServicesModule,
+    EquipmentsModule,
+    UsersModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ModalitiesRoutingModule } from '@modules/modalities/modalities-routing.module';
+import { EquipmentsRoutingModule } from '@modules/equipments/equipments-routing.module';
 
 import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from '@modules/modalities/components/list/list.component';
-import { FormComponent } from '@modules/modalities/components/form/form.component';
+import { ListComponent } from '@modules/equipments/components/list/list.component';
+import { FormComponent } from '@modules/equipments/components/form/form.component';
+
 
 @NgModule({
   declarations: [
@@ -17,11 +18,11 @@ import { FormComponent } from '@modules/modalities/components/form/form.componen
   ],
   imports: [
     CommonModule,
-    ModalitiesRoutingModule,
+    EquipmentsRoutingModule,
     SharedModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule
   ]
 })
-export class ModalitiesModule { }
+export class EquipmentsModule { }

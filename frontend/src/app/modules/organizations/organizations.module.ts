@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { OrganizationsRoutingModule } from '@modules/organizations/organizations-routing.module';
 
+import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,6 +19,7 @@ import { FormComponent } from '@modules/organizations/components/form/form.compo
   imports: [
     CommonModule,
     OrganizationsRoutingModule,
+    SharedModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule
