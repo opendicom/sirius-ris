@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, Validators} from '@angular/forms';                     // Reactive form handling tools
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
