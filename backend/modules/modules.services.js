@@ -271,7 +271,7 @@ async function update(req, res, currentSchema, referencedElements = false){
         //Check if secure update:
         if(secureUpdate){
             //Save data into DB:
-            await currentSchema.Model.findOneAndUpdate({_id: req.body._id },{$set: req.validatedResult.set }, {new:true})
+            await currentSchema.Model.findOneAndUpdate({ _id: req.body._id },{ $set: req.validatedResult.set }, { new: true })
             .then(async (data) => {
                 //Check if have results:
                 if(data) {
@@ -760,29 +760,33 @@ async function isDuplicated(req, res, currentSchema, value, fieldName){
     //Set filter:
     let filter = {}
     filter[fieldName] = value;
-    
+
     await currentSchema.Model.findOne(filter, { _id: 1 })
     .exec()
     .then((data) => {
-        //Check operation:
-        //INSERT:
-        if(req.body._id == undefined){
-            //Check if have results:
-            if(data){
-                //Set result (duplicated):
-                result = true;
+        //Check data:
+        if(data){
+            //Check operation:
+            //INSERT:
+            if(req.body._id == undefined){
+                //Check if have results:
+                if(data){
+                    //Set result (duplicated):
+                    result = true;
 
-                //Send duplicate message:
-                res.status(200).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
-            }
-        //UPDATE
-        } else {
-            if(data._id != req.body._id){
-                //Set result (duplicated):
-                result = true;
+                    //Send duplicate message:
+                    res.status(200).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
+                }
 
-                //Send duplicate message:
-                res.status(200).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+            //UPDATE
+            } else {
+                if(data._id != req.body._id){
+                    //Set result (duplicated):
+                    result = true;
+
+                    //Send duplicate message:
+                    res.status(200).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+                }
             }
         }
     })

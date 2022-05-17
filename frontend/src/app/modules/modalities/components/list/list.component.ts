@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
     sharedProp.actionSetter({
       content_title   : 'Listado de modalidades',
       content_icon    : 'multiple_stop',
-      add_button      : '/modalities/form/new/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      add_button      : '/modalities/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
       filters_form    : true,
       filters : {
         search        : true,

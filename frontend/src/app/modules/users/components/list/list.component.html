@@ -1,1 +1,159 @@
-<p>list works!</p>
+<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form/update/{{ element._id }}">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- documents -->
+    <ng-container matColumnDef="documents">
+      <th mat-header-cell *matHeaderCellDef> Documentos </th>
+      <td class="documents" mat-cell *matCellDef="let element">
+
+          <!-- Human case -->
+          <span *ngIf="element.person">
+            <span *ngFor="let current of element.person.documents" >
+              <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+              <span matTooltip="{{ document_types[current.doc_type] }}">
+                <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+              </span>
+              <br/>
+            </span>
+          </span>
+
+          <!-- Machine case -->
+          <span *ngIf="element.username">
+            <button class="machine" mat-menu-item>
+              <mat-icon>vpn_key</mat-icon> <span innerHTML="{{ element.username | highlighter : sharedProp.filter }}"></span>
+            </button>
+          </span>
+
+      </td>
+    </ng-container>
+
+    <!-- names -->
+    <ng-container matColumnDef="names">
+      <th mat-header-cell *matHeaderCellDef> Nombres </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.person">
+          <span innerHTML="{{ element.person.name_01 | highlighter : sharedProp.filter }}"></span>
+
+          <span *ngIf="element.person.name_02">
+            <span innerHTML="{{ ' ' + element.person.name_02 | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- surnames -->
+    <ng-container matColumnDef="surnames">
+      <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.person">
+          <span innerHTML="{{ element.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+
+          <span *ngIf="element.person.surname_02">
+            <span innerHTML="{{ ' ' + element.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- birth_date -->
+    <ng-container matColumnDef="birth_date">
+      <th mat-header-cell *matHeaderCellDef> Fecha Nac. </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.person">
+          {{ element.person.birth_date | date:"dd/MM/yyyy":"UTC" }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Correo </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.person">
+          <span innerHTML="{{ element.person.email | highlighter : sharedProp.filter }}"></span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- phone_numbers -->
+    <ng-container matColumnDef="phone_numbers">
+      <th mat-header-cell *matHeaderCellDef> Teléfonos </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.person">
+          <span *ngFor="let current of element.person.phone_numbers" >
+            <span innerHTML="{{ current + ' ' | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- gender -->
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Género </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <span *ngIf="element.person">
+          <div [ngSwitch]="element.person.gender" matTooltip="{{ gender_types[element.person.gender] }}">
+            <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+            <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+            <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+          </div>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- type -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Tipo </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+
+        <!-- Human case -->
+        <span *ngIf="element.person">
+          <mat-icon matTooltip="Humano">person</mat-icon>
+        </span>
+
+        <!-- Machine case -->
+        <span *ngIf="element.username">
+          <mat-icon matTooltip="Maquina">smart_toy</mat-icon>
+        </span>
+
+      </td>
+    </ng-container>
+
+    <!-- status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+        <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-template>
+
+<!-- Await response or not response -->
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    Aguarde, aún no hay resultados.
+  </div>
+</ng-template>
+
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
+</div>

@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'list', component: ListComponent },
-      { path: 'form/:action/:id', component: FormComponent },
+      { path: 'form/:action/:_id', component: FormComponent },
       { path: '**', redirectTo: 'list' },
     ]
   }

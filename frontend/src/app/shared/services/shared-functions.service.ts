@@ -158,7 +158,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND:
   //--------------------------------------------------------------------------------------------------------------------//
-  find(element: string, params: any): void{
+  find(element: string, params: any, callback = (res: any) => {}): void {
     //Check if element is not empty:
     if(element != ''){
       //Create observable obsFind:
@@ -168,6 +168,9 @@ export class SharedFunctionsService {
       obsFind.subscribe({
         next: res => {
           this.response = res;
+
+          //Excecute optional callback with response:
+          callback(res);
         },
         error: res => {
           //Send snakbar message:
@@ -178,6 +181,43 @@ export class SharedFunctionsService {
           }
         }
       });
+    } else {
+      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SAVE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  save(element: string, operation: string, data: any, callback = (res: any) => {}): void {
+    //Check if element is not empty:
+    if(element != ''){
+
+      //Check if operation is not empty:
+      if(operation != ''){
+        //Create observable obsSave:
+        const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, data);
+
+        //Observe content (Subscribe):
+        obsSave.subscribe({
+          next: res => {
+            this.response = res;
+
+            //Excecute optional callback with response:
+            callback(res);
+          },
+          error: res => {
+            //Send snakbar message:
+            if(res.error.message){
+              this.sendMessage(res.error.message);
+            } else {
+              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            }
+          }
+        });
+      }
     } else {
       this.sendMessage('Error: Debe determinar el tipo de elemento.');
     }

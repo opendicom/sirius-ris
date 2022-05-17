@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
     sharedProp.actionSetter({
       content_title   : 'Listado de organizaciones',
       content_icon    : 'apartment',
-      add_button      : '/organizations/form/new/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      add_button      : '/organizations/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
       filters_form    : true,
       filters : {
         search        : true,

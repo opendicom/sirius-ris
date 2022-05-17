@@ -7,7 +7,7 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/organizations/form/edit/{{ element._id }}">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/organizations/form/update/{{ element._id }}">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -17,7 +17,7 @@
     <ng-container matColumnDef="short_name">
       <th mat-header-cell *matHeaderCellDef> Nombre corto </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.short_name | highlighter : sharedProp.filter}}"></span>
+        <span innerHTML="{{ element.short_name | highlighter : sharedProp.filter }}"></span>
       </td>
     </ng-container>
 
@@ -25,7 +25,7 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.name | highlighter : sharedProp.filter}}"></span>
+        <span innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
       </td>
     </ng-container>
 
@@ -33,7 +33,7 @@
     <ng-container matColumnDef="OID">
       <th mat-header-cell *matHeaderCellDef> OID </th>
       <td mat-cell *matCellDef="let element">
-        <span innerHTML="{{ element.OID | highlighter : sharedProp.filter}}"></span>
+        <span innerHTML="{{ element.OID | highlighter : sharedProp.filter }}"></span>
       </td>
     </ng-container>
 

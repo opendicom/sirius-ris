@@ -1,1 +1,40 @@
-<h1>Form modalities</h1>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Significado:</h4>
+      <mat-form-field appearance="fill" class="medium">
+        <mat-label>Significado</mat-label>
+        <input matInput type="text" formControlName="code_meaning" placeholder="Ingrese el significado">
+      </mat-form-field>
+
+      <h4>Valor:</h4>
+      <mat-form-field appearance="fill" class="small">
+        <mat-label>Valor</mat-label>
+        <input matInput type="text" formControlName="code_value" placeholder="Ingrese el código de valor">
+      </mat-form-field>
+
+      <hr class="dashed" /><br/>
+
+      <h4>Estado:</h4>
+      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-button value="true">Activo</mat-radio-button>
+        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button (click)="onCancel();">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">Guardar</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>
