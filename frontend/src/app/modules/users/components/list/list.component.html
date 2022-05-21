@@ -82,7 +82,7 @@
       <th mat-header-cell *matHeaderCellDef> Correo </th>
       <td mat-cell *matCellDef="let element">
         <span *ngIf="element.person">
-          <span innerHTML="{{ element.person.email | highlighter : sharedProp.filter }}"></span>
+          <span *ngIf="element.person.email" innerHTML="{{ element.person.email | highlighter : sharedProp.filter }}"></span>
         </span>
       </td>
     </ng-container>
@@ -92,8 +92,10 @@
       <th mat-header-cell *matHeaderCellDef> Teléfonos </th>
       <td mat-cell *matCellDef="let element">
         <span *ngIf="element.person">
-          <span *ngFor="let current of element.person.phone_numbers" >
-            <span innerHTML="{{ current + ' ' | highlighter : sharedProp.filter }}"></span>
+          <span *ngIf="element.person.phone_numbers">
+            <span *ngFor="let current of element.person.phone_numbers" >
+              <span innerHTML="{{ current + ' ' | highlighter : sharedProp.filter }}"></span>
+            </span>
           </span>
         </span>
       </td>

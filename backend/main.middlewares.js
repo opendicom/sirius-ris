@@ -16,8 +16,9 @@ const currentLang   = require('./main.languages')(mainSettings.language);   // L
 // Allowed Validate checks the schema of the current model which elements can be set and which cannot.
 // The allowed elements are returned in a set object to be validated.
 // The NOT allowed elements are returned to an object called blocked.
+// Separate unset values 'unset[value]' and block not allowed values to unset.
 //--------------------------------------------------------------------------------------------------------------------//
-const allowedValidate = (allowedSchemaKeys) => {
+const allowedValidate = (allowedSchemaKeys, AllowedUnsetValues = []) => {
     return (req, res, next) => {
         if(req.body){
             //Initialize attrAllowed and attrNotAllowed objects:
@@ -51,6 +52,41 @@ const allowedValidate = (allowedSchemaKeys) => {
                 req.validatedResult['blocked'] = false; //No blocked attributes.
             } else {
                 req.validatedResult['blocked'] = attrNotAllowed; //Return attributes NOT allowed.
+
+                //Check unset values:
+                if(attrNotAllowed.unset){
+                    Object.keys(attrNotAllowed.unset).forEach((current) => {
+                        //If not allowed to unset -> bloqued_unset:
+                        if(AllowedUnsetValues.includes(current)){
+                            //Set to unset:
+                            if(!req.validatedResult.hasOwnProperty('unset')){
+                                req.validatedResult['unset'] = {}
+                            }
+
+                            //Add unset value:
+                            req.validatedResult['unset'][current] = attrNotAllowed.unset[current]; //Separate unset values:
+                        } else {
+                            //Set to blocked_unset:
+                            if(!req.validatedResult.hasOwnProperty('blocked_unset')){
+                                req.validatedResult['blocked_unset'] = {}
+                            }
+                            
+                            //Add blocked_unset value:
+                            req.validatedResult['blocked_unset'][current] = attrNotAllowed.unset[current]; //Separate unset values:
+                        }
+                    });
+
+                    //Remove unset values from blocked:
+                    delete req.validatedResult['blocked'].unset;
+                } else {
+                    req.validatedResult['unset'] = false; //No unset attributes.
+                    req.validatedResult['blocked_unset'] = false; //No blocked_unset attributes.
+                }
+            }
+
+            //Check if blocked unset is defined:
+            if(!req.validatedResult.hasOwnProperty('blocked_unset')){
+                req.validatedResult['blocked_unset'] = false; //No blocked_unset attributes.
             }
         }
         

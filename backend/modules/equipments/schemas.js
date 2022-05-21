@@ -12,7 +12,7 @@ const Schema = new mongoose.Schema({
     name:           { type: String, required: true },
     serial_number:  { type: String },
     AET:            { type: String },
-    status:         { type: Boolean, default: false },
+    status:         { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -25,6 +25,9 @@ const ForeignKeys = {
     Singular    : 'fk_equipment',
     Plural      : 'fk_equipments'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = ['serial_number', 'AET'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -71,5 +74,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

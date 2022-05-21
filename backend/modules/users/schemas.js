@@ -32,7 +32,7 @@ const preSchema = new mongoose.Schema({
     password:           { type: String, required: true },
     permissions:        { type: [subSchemaPermissions] },
     settings:           { type: [subSchemaSettings] },
-    status:             { type: Boolean, default: false },
+    status:             { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -48,6 +48,9 @@ const ForeignKeys = {
     Singular    : 'fk_user',
     Plural      : 'fk_users'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = [];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -136,5 +139,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

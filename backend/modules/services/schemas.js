@@ -10,7 +10,7 @@ const Schema = new mongoose.Schema({
     fk_branch:      { type: mongoose.ObjectId, required: true },
     fk_modality:    { type: mongoose.ObjectId, required: true },
     name:           { type: String, required: true },
-    status:         { type: Boolean, default: false },
+    status:         { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -23,6 +23,9 @@ const ForeignKeys = {
     Singular    : 'fk_service',
     Plural      : 'fk_services'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = [];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -54,5 +57,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

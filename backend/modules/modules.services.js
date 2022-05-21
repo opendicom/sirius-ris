@@ -213,9 +213,6 @@ async function insert(req, res, currentSchema, referencedElements = false){
                 //Send error:
                 mainServices.sendError(res, currentLang.db.insert_error, err);
             });
-        } else {
-            //Send not valid referenced object mensaje:
-            res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
         }
     }
 }
@@ -270,16 +267,37 @@ async function update(req, res, currentSchema, referencedElements = false){
 
         //Check if secure update:
         if(secureUpdate){
+            //Initialize update Object:
+            let updateObj = {};
+
+            //Set update object:
+            if(req.validatedResult.unset){
+                updateObj = {
+                    $set: req.validatedResult.set,
+                    $unset: req.validatedResult.unset
+                };
+            } else {
+                updateObj = { $set: req.validatedResult.set };
+            }
+
             //Save data into DB:
-            await currentSchema.Model.findOneAndUpdate({ _id: req.body._id },{ $set: req.validatedResult.set }, { new: true })
+            await currentSchema.Model.findOneAndUpdate({ _id: req.body._id }, updateObj, { new: true })
             .then(async (data) => {
                 //Check if have results:
                 if(data) {
                     //Delete _id of blocked items for message:
                     delete req.validatedResult.blocked._id;
 
+                    //Set empty blocked format:
+                    if(Object.keys(req.validatedResult.blocked).length === 0) { req.validatedResult.blocked = false; }
+
                     //Send successfully response:
-                    res.status(200).send({ success: true, data: data, blocked_attributes: req.validatedResult.blocked });
+                    res.status(200).send({
+                        success: true,
+                        data: data,
+                        blocked_attributes: req.validatedResult.blocked,
+                        blocked_unset: req.validatedResult.blocked_unset
+                    });
                 } else {
                     //Dont match (empty result):
                     res.status(200).send({ success: true, message: currentLang.db.id_no_results });
@@ -289,9 +307,6 @@ async function update(req, res, currentSchema, referencedElements = false){
                 //Send error:
                 mainServices.sendError(res, currentLang.db.update_error, err);
             });
-        } else {
-            //Send not valid referenced object mensaje:
-            res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
         }
     } else {
         //Return the result (HTML Response):
@@ -600,20 +615,29 @@ async function ckeckElement(_id, schemaName, res){
     //Initialize result:
     let result = false;
 
-    //Execute check query:
-    await currentSchema.Model.findById(_id, { _id: 1 })
-    .exec()
-    .then((data) => {
-        //Check if have results:
-        if(data){
-            //Set result true:
-            result = true;
-        }
-    })
-    .catch((err) => {
+    //Check _id is not empty:
+    if(_id){
+        //Execute check query:
+        await currentSchema.Model.findById(_id, { _id: 1 })
+        .exec()
+        .then((data) => {
+            //Check if have results:
+            if(data){
+                //Set result true:
+                result = true;
+            } else {
+                //Send not valid referenced object mensaje:
+                res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+    } else {
         //Send error:
-        mainServices.sendError(res, currentLang.db.query_error, err);
-    });
+        mainServices.sendError(res, currentLang.db.id_referenced_empty, 'Ref. schemaName _id ' + _id);
+    }
 
     //Return result:
     return result;
@@ -813,6 +837,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
     switch(schemaName){
         case 'users':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_person'] != undefined){ filter[asPrefix + 'fk_person'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_person']); };
                 if(filter[asPrefix + 'permissions.organization'] != undefined){ filter[asPrefix + 'permissions.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.organization']); }
                 if(filter[asPrefix + 'permissions.branch'] != undefined){ filter[asPrefix + 'permissions.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.branch']); }
@@ -828,6 +853,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'people':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'documents.doc_type'] != undefined){ filter[asPrefix + 'documents.doc_type'] = parseInt(filter[asPrefix + 'documents.doc_type'], 10); }
                 if(filter[asPrefix + 'gender'] != undefined){ filter[asPrefix + 'gender'] = parseInt(filter[asPrefix + 'gender'], 10); }
                 if(filter[asPrefix + 'birth_date'] != undefined){ filter[asPrefix + 'birth_date'] = new Date(filter[asPrefix + 'birth_date']); }
@@ -838,6 +864,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'organizations':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -845,6 +872,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'branches':            
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
@@ -853,6 +881,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'services':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
                 if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
@@ -862,6 +891,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'modalities':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -869,6 +899,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'equipments':
             filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
                 if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };

@@ -20,6 +20,7 @@ export class FormComponent implements OnInit {
 
   //Define id and form_action variables (Activated Route):
   public _id: string = '';
+  private keysWithValues: Array<string> = [];
   public form_action: any;
 
   //Set Reactive form:
@@ -50,8 +51,8 @@ export class FormComponent implements OnInit {
     this.setReactiveForm({
       short_name:   ['', [Validators.required]],
       name:         ['', [Validators.required]],
-      OID:          ['', [Validators.required]],
-      status:       ['true'],
+      OID:          [''],
+      status:       ['true']
     });
   }
 
@@ -80,6 +81,10 @@ export class FormComponent implements OnInit {
               OID: res.data.OID,
               status: [ `${res.data.status}` ] //Use back tip notation to convert string
             });
+
+            //Get property keys with values:
+            this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
@@ -96,38 +101,17 @@ export class FormComponent implements OnInit {
       //Data normalization - Booleans types:
       this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false;
 
-      //Validate data - Delete empty fields:
-      this.sharedFunctions.cleanEmptyFields(this.form.value);
-
-      //Add _id only for update case:
-      if(this.form_action == 'update' && this._id != ''){
-        this.form.value._id = this._id;
-      }
-
       //Save data:
-      this.sharedFunctions.save(this.sharedProp.element, this.form_action,  this.form.value, (res) => {
-        //Check operation status:
-        if(res.success === true){
-          //Send snakbar message:
-          this.sharedFunctions.sendMessage('¡Guardado existoso!');
-
-          //Redirect to the list:
-          this.onCancel();
-
-        } else {
-          //Send snakbar message:
-          this.sharedFunctions.sendMessage(res.message);
-        }
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+        //Response the form according to the result:
+        this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
       });
     }
   }
 
   onCancel(){
-    //Reset response data before redirect to the list:
-    this.sharedFunctions.response = {};
-
-    //Redirect to list element:
-    this.router.navigate(['/' + this.sharedProp.element + '/list']);
+    //Redirect to the list:
+    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 
 }

@@ -30,6 +30,9 @@ const ForeignKeys = {
     Singular    : 'fk_session',
     Plural      : 'fk_sessions'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = [];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -59,5 +62,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

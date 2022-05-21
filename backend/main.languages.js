@@ -40,6 +40,7 @@ module.exports = function(language){
             'insert_error'          : 'An error occurred while inserting the element.',
             'insert_duplicate'      : 'The element you are trying to insert already exists in the database with the _id: ',
             'id_no_results'         : 'The specified ID does not exist.',
+            'id_referenced_empty'   : 'The ID of the referenced element cannot be empty.',
             'update_error'          : 'An error occurred while updating the element.',
             'update_duplicate'      : 'The element you are trying to update already exists in the database with the _id: ',
             'delete_error'          : 'An error occurred while deleting the element.',
@@ -88,6 +89,7 @@ module.exports = function(language){
             lang.db.insert_error                = 'Error al intentar insertar el elemento.';
             lang.db.insert_duplicate            = 'El elemento que esta intentando insertar ya existe en la base de datos bajo el _id: ';
             lang.db.id_no_results               = 'No existe ningún elemento con el ID especificado';
+            lang.db.id_referenced_empty         = 'El ID del elemento referenciado no puede ser vacío.';
             lang.db.update_error                = 'Error al intentar actualizar el elemento.';
             lang.db.update_duplicate            = 'El elemento que esta actualizar actualizar ya existe en la base de datos bajo el _id: ';
             lang.db.delete_error                = 'Error al intentar eliminar el elemento.';

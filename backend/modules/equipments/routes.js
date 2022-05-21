@@ -76,7 +76,7 @@ router.post(
     '/update',
     mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, equipments.AllowedUnsetValues),
     equipments.Validator,
     (req, res) => { 
         //Send to handler:

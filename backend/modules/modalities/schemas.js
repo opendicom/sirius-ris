@@ -9,7 +9,7 @@ const { body }      = require('express-validator');
 const Schema = new mongoose.Schema({
     code_meaning:   { type: String, required: true },
     code_value:     { type: String, required: true },
-    status:         { type: Boolean, default: false },
+    status:         { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -22,6 +22,9 @@ const ForeignKeys = {
     Singular    : 'fk_modality',
     Plural      : 'fk_modalities'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = [];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -49,5 +52,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

@@ -107,7 +107,7 @@ router.post(
     '/update',
     mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, modalities.AllowedUnsetValues),
     modalities.Validator,
     async (req, res) => {
         //Search for duplicates:

@@ -98,7 +98,7 @@ router.post(
     '/update',
     mainMiddlewares.checkJWT,
     //checkSession (middleware),
-    mainMiddlewares.allowedValidate(allowedSchemaKeys),
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, organizations.AllowedUnsetValues),
     organizations.Validator,
     (req, res) => { moduleServices.update(req, res, organizations); }
 );

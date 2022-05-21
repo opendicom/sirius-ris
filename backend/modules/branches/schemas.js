@@ -10,8 +10,8 @@ const Schema = new mongoose.Schema({
     fk_organization:    { type: mongoose.ObjectId, required: true },
     name:               { type: String, required: true },
     short_name:         { type: String, required: true },
-    OID:                { type: String, required: true },
-    status:             { type: Boolean, default: false },
+    OID:                { type: String },
+    status:             { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -24,6 +24,9 @@ const ForeignKeys = {
     Singular    : 'fk_branch',
     Plural      : 'fk_branches'
 };
+
+//Register allowed unset values:
+const AllowedUnsetValues = ['OID'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -46,6 +49,7 @@ const Validator = [
         .withMessage('El primer nombre corto ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
 
     body('OID')
+        .optional()
         .trim()
         .isLength({ min: 1, max: 64 })
         .withMessage('El OID ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
@@ -60,5 +64,5 @@ const Validator = [
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export Shcema, Model and Validation Rules:
-module.exports = { Schema, Model, Validator, ForeignKeys };
+module.exports = { Schema, Model, Validator, ForeignKeys, AllowedUnsetValues };
 //--------------------------------------------------------------------------------------------------------------------//

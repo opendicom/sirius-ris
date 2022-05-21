@@ -36,14 +36,44 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // REMOVE ITEM FROM ARRAY:
+  // Function to remove elements from an array.
+  //--------------------------------------------------------------------------------------------------------------------//
+  removeItemFromArray(array: Array<any>, item: any){
+    let indice = array.indexOf(item);
+    array.splice(indice, 1);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // GET KEYS:
   //--------------------------------------------------------------------------------------------------------------------//
-  getKeys(object: any, sort: boolean) {
-    if(sort){
-      return Object.keys(object).sort();
-    } else {
-      return Object.keys(object);
+  getKeys(object: any, sort: boolean = false, removeEmptyFields: boolean = false, removeTimestamps: boolean = false): Array<string> {
+    //Get all object keys:
+    let keys =  Object.keys(object);
+
+    //Remove empty fields:
+    if(removeEmptyFields){
+      Object.keys(object).forEach(current => {
+        if(object[current] === null || object[current] === undefined || object[current] === ''){
+          this.removeItemFromArray(keys, current);
+        }
+      });
     }
+
+    //Remove timestamps and version keys:
+    if(removeTimestamps){
+      this.removeItemFromArray(keys, 'updatedAt');
+      this.removeItemFromArray(keys, 'createdAt');
+      this.removeItemFromArray(keys, '__v');
+    }
+
+    //Sort:
+    if(sort){ keys = keys.sort(); }
+
+    //Return keys:
+    return keys;
   };
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -112,11 +142,27 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // CLEAN EMPTY FIELDS:
   //--------------------------------------------------------------------------------------------------------------------//
-  cleanEmptyFields(obj: any) {
+  cleanEmptyFields(operation: string, obj: any, exeptions: Array<string> = []) {
     //Iterate over the object:
-    Object.keys(obj).forEach(function(key){
-      //Delete empty fields:
+    Object.keys(obj).forEach((key) => {
+      //Check empty fields:
       if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+
+        //Check exceptions (unset values):
+        if(exeptions.includes(key)){
+          //Check operation:
+          if(operation == 'update'){
+            //Create property unset if not exist:
+            if(!obj.hasOwnProperty('unset')){
+              obj['unset'] = {}
+            }
+
+            //Add unset value:
+            obj['unset'][key] = '';
+          }
+        }
+
+        //Delete empty field:
         delete obj[key];
       }
     });
@@ -156,13 +202,21 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // FIND:
+  // FIND - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  find(element: string, params: any, callback = (res: any) => {}): void {
+  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false): void {
+    //Initialize operation type:
+    let operation = 'find';
+
+    //Check if findOne is true:
+    if(findOne){
+      operation = 'findOne';
+    }
+
     //Check if element is not empty:
     if(element != ''){
       //Create observable obsFind:
-      const obsFind = this.apiClient.sendRequest('GET', element + '/find', params);
+      const obsFind = this.apiClient.sendRequest('GET', element + '/' + operation, params);
 
       //Observe content (Subscribe):
       obsFind.subscribe({
@@ -189,14 +243,23 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // SAVE:
+  // SAVE - (INSERT & UPDATE):
   //--------------------------------------------------------------------------------------------------------------------//
-  save(element: string, operation: string, data: any, callback = (res: any) => {}): void {
+  save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}): void {
+    //Validate data - Delete empty fields:
+    this.cleanEmptyFields(operation, data, exceptions);
+
+    //Add _id only for update case:
+    if(operation == 'update' && _id != ''){
+      data._id = _id;
+    }
+
     //Check if element is not empty:
     if(element != ''){
 
       //Check if operation is not empty:
       if(operation != ''){
+        //Save data:
         //Create observable obsSave:
         const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, data);
 
@@ -211,7 +274,13 @@ export class SharedFunctionsService {
           error: res => {
             //Send snakbar message:
             if(res.error.message){
-              this.sendMessage(res.error.message);
+              //Check validate errors:
+              if(res.error.validate_errors){
+                this.sendMessage(res.error.message + ' ' + res.error.validate_errors);
+              } else {
+                //Send other errors:
+                this.sendMessage(res.error.message);
+              }
             } else {
               this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
             }
@@ -220,6 +289,54 @@ export class SharedFunctionsService {
       }
     } else {
       this.sendMessage('Error: Debe determinar el tipo de elemento.');
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GO TO LIST:
+  //--------------------------------------------------------------------------------------------------------------------//
+  gotoList(element: any, router: any): void{
+    //Reset response data before redirect to the list:
+    this.response = {};
+
+    //Redirect to list element:
+    router.navigate(['/' + element + '/list']);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FORM RESPONDER:
+  //--------------------------------------------------------------------------------------------------------------------//
+  formResponder(res: any, element: any, router: any){
+    //Check operation status:
+    if(res.success === true){
+      //Send snakbar message:
+      //Success with blocked_attributes & blocked_unset:
+      if(res.blocked_attributes && res.blocked_unset){
+        this.sendMessage('¡Guardado existoso! - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes) + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+
+      //Success with blocked_attributes:
+      } else if(res.blocked_attributes){
+        this.sendMessage('¡Guardado existoso! - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes));
+
+      //Success with blocked_unset:
+      } else if(res.blocked_unset){
+        this.sendMessage('¡Guardado existoso! - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+
+      //Success without blocked elements:
+      } else {
+        this.sendMessage('¡Guardado existoso!');
+      }
+
+      //Redirect to the list:
+      this.gotoList(element, router);
+
+    } else {
+      //Send snakbar message:
+      this.sendMessage(res.message);
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
