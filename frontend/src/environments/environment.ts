@@ -27,13 +27,16 @@ export const document_types = {
 
 // User Roles:
 export const user_roles = {
-  1: 'Recepcionista',
-  2: 'Enfermero',
-  3: 'Técnico',
-  4: 'Médico',
-  5: 'Supervisor',
-  6: 'Administrador',
-  7: 'REST'
+  1:  'Super usuario',
+  2:  'Administrador',
+  3:  'Supervisor',
+  4:  'Médico',
+  5:  'Técnico',
+  6:  'Enfermero',
+  7:  'Coordinador',
+  8:  'Recepcionista',
+  9:  'Paciente',
+  10: 'Funcional'  //Empty role for concessions (Generic user)
 };
 
 // User Types:
@@ -51,6 +54,39 @@ export const gender_types = {
 
 //Pager defaults:
 export const default_page_sizes = [10, 25, 50, 100];
+
+// Appointments flow states:
+export const appointments_flow_states = {
+  'A01': 'Área administración',
+  'A02': 'Retenido por administración',
+  'A03': 'Área médica',
+  'A04': 'Retenido por médico',
+  'A05': 'Área de coordinación',
+  'A06': 'Retenido por coordinación',
+  'A07': 'Coordinado',
+  'A08': 'Cancelado',
+  'A09': 'Para eliminar'
+};
+
+// Studies flow states:
+export const studies_flow_states = {
+  'S01': 'Recepción',
+  'S02': 'Para entrevistar',
+  'S03': 'Para inyectar/preparar',
+  'S04': 'Para consola',              // Adquisición de imágenes
+  'S05': 'Para liberar',
+  'S06': 'Para informar',
+  'S07': 'Cancelado',
+  'S08': 'Para eliminar'
+};
+
+// Reports flow states:
+export const report_flow_states = {
+  'R01': 'Informe borrador',
+  'R02': 'Informe firmado',
+  'R03': 'Informe autenticado',
+  'R04': 'Para eliminar'
+}
 
 // Country codes (ISO-3166):
 export const ISO_3166 = {

@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// SESSIONS ROUTES:
+// SLOTS ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
@@ -12,71 +12,74 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
-//const checkSession = require('../');
+
+//Import Handlers:
+const findHandler   = require('./handlers/find');
+//const saveHandler   = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
 //Import schemas:
-const sessions = require('./schemas');
+const slots = require('./schemas');
+
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(slots);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(slots, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
 
 //Routes:
-//FIND - FIND BY ID:
+//FIND:
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
     //roleAccessBasedControl
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'find';
-
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'find':
-                moduleServices.find(req, res, sessions);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, sessions);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, slots);
     }
 );
 
-//FIND ONE - FIND BY ID:
+//FIND ONE:
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
     //roleAccessBasedControl
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'findOne';
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
 
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
+        //Send to handler:
+        findHandler(req, res, slots);
+    }
+);
 
-        //Switch operation type:
-        switch(operation_type){
-            case 'findOne':
-                moduleServices.findOne(req, res, sessions);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, sessions);
-                break;
-        }
+//INSERT:
+router.post(
+    '/insert',
+    mainMiddlewares.checkJWT,
+    //roleAccessBasedControl
+    slots.Validator,
+    (req, res) => {
+        //Send to handler:
+        //saveHandler(req, res, slots, 'insert');
+    }
+);
+
+//UPDATE:
+router.post(
+    '/update',
+    mainMiddlewares.checkJWT,
+    //roleAccessBasedControl
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, slots.AllowedUnsetValues),
+    slots.Validator,
+    (req, res) => { 
+        //Send to handler:
+        //saveHandler(req, res, slots, 'update');
     }
 );
 
@@ -86,9 +89,11 @@ router.post(
     mainMiddlewares.checkJWT,
     //roleAccessBasedControl
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, sessions); }
+    (req, res) => { 
+        //Send to module service:
+        moduleServices._delete(req, res, slots);
+    }
 );
-
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

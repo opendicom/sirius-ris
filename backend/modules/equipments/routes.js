@@ -36,7 +36,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Send to handler:
         findHandler(req, res, equipments);
@@ -47,7 +47,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Force limit to one result:
         req.query.skip = 0;                                 //No skip
@@ -63,7 +63,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     equipments.Validator,
     (req, res) => {
         //Send to handler:
@@ -75,7 +75,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     mainMiddlewares.allowedValidate(allowedSchemaKeys, equipments.AllowedUnsetValues),
     equipments.Validator,
     (req, res) => { 
@@ -88,7 +88,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     mainMiddlewares.checkDeleteCode,
     (req, res) => { 
         //Send to module service:

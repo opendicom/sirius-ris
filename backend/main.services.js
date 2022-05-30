@@ -107,7 +107,7 @@ function getSchemaKeys(current, notAllowedKeys = false){
 // REQUEST RECEIVED:
 //--------------------------------------------------------------------------------------------------------------------//
 function reqReceived(req){
-    return req.method + ' request received [ ' + req.protocol + '://' + req.hostname + req.originalUrl + ' ] from ' + getIPClient(req);
+    return '\n' + req.method + ' request received \nurl: ' + req.protocol + '://' + req.hostname + req.originalUrl + ' \nfrom: ' + getIPClient(req);
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -118,17 +118,17 @@ function sendConsoleMessage(level, message, details = false){
     switch(mainSettings.log_level){
         case 'INFO':
             if(level == 'INFO'){
-                console.info('[ INFO ] ' + message);
+                console.info('\n[ INFO ] ' + message);
                 if(details){ console.info('[ INFO: Details ]'); console.info(details); }
             }
         case 'WARN':
             if(level == 'WARN'){
-                console.warn('[ WARN ] ' + message);
+                console.warn('\n[ WARN ] ' + message);
                 if(details){ console.warn('[ WARN: Details ]'); console.warn(details); }
             }
         case 'ERROR':
             if(level == 'ERROR'){
-                console.error('[ ERROR ] ' + message);
+                console.error('\n[ ERROR ] ' + message);
                 if(details){ console.error('[ ERROR: Details ]'); console.error(details); }
             }
             break;

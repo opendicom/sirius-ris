@@ -1,1 +1,66 @@
-<p>form works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Sucursal:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal">
+          <div *ngFor="let currentBranch of availableBranches">
+            <div *ngFor="let currentOrganization of availableOrganizations">
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} - {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+            </div>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Modalidades:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Modalidades</mat-label>
+        <mat-select formControlName="fk_modalities" placeholder="Seleccione las modalidades" multiple>
+          <div *ngFor="let currentModality of availableModalities">
+            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} - {{ currentModality.code_meaning }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Nombre:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+      </mat-form-field>
+
+      <h4>Número de serie:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Número de serie</mat-label>
+        <input matInput type="text" formControlName="serial_number" placeholder="Ingrese el número de serie">
+      </mat-form-field>
+
+      <h4>AET:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Application Entity Title</mat-label>
+        <input matInput type="text" formControlName="AET" placeholder="Ingrese el AET">
+      </mat-form-field>
+
+      <h4>Estado:</h4>
+      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-button value="true">Activo</mat-radio-button>
+        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button (click)="onCancel();">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">Guardar</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

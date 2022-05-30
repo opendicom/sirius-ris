@@ -23,6 +23,7 @@ module.exports = function() {
     const servicesRoutes        = require('./modules/services/routes');
     const equipmentsRoutes      = require('./modules/equipments/routes');
     const usersRoutes           = require('./modules/users/routes');
+    const slotsRoutes           = require('./modules/slots/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -116,6 +117,7 @@ module.exports = function() {
     app.use('/services',        servicesRoutes);
     app.use('/equipments',      equipmentsRoutes);
     app.use('/users',           usersRoutes);
+    app.use('/slots',           slotsRoutes);
 
     //Start message:
     console.log('\n' + consoleLn);

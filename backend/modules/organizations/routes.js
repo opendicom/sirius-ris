@@ -32,7 +32,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'find';
@@ -60,7 +60,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'findOne';
@@ -88,7 +88,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     organizations.Validator,
     (req, res) => { moduleServices.insert(req, res, organizations); }
 );
@@ -97,7 +97,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     mainMiddlewares.allowedValidate(allowedSchemaKeys, organizations.AllowedUnsetValues),
     organizations.Validator,
     (req, res) => { moduleServices.update(req, res, organizations); }
@@ -107,7 +107,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, organizations); }
 );

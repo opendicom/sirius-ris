@@ -28,7 +28,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'find';
@@ -56,7 +56,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
-    //checkSession (middleware),
+    //roleAccessBasedControl
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'findOne';

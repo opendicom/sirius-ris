@@ -152,37 +152,66 @@ const isPassword = (Schema, fieldName = 'password') => {
 // Checks for the existence of a JWT and validates it to protect itself from unwanted requests.
 //--------------------------------------------------------------------------------------------------------------------//
 const checkJWT = (req, res, next) => {
-    //Send INFO Message:
-    mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req));
+    //Initializate reqInfo:
+    let reqInfo = '';
 
     //Get bearer token from headers:
     let token = req.headers['x-access-token'] || req.headers['authorization'];
 
     //Validate that token exists:
     if(!token){
-      res.status(401).send({ success: false, message: currentLang.jwt.check_empty_token });
-      return;
+        //Set request info:
+        reqInfo = '\njwt: ' + currentLang.jwt.check_empty_token;
+
+        //Send INFO Message:
+        mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req) + reqInfo);
+
+        //Send response:
+        res.status(401).send({ success: false, message: currentLang.jwt.check_empty_token });
+        return;
     }
 
     //Sanitize header token: 
     if(token.startsWith('Bearer ')){
-      token = token.slice(7, token.length);
+        token = token.slice(7, token.length);
     }
 
     //Validate header token:
     if(token){
       jwt.verify(token, mainSettings.AUTH_JWT_SECRET, (err, decoded) => {
         if(err){
-          return res.status(401).send({ success: false, message: currentLang.jwt.check_invalid_token, error: err.message });
+            //Set request info:
+            reqInfo = '\njwt: ' + currentLang.jwt.check_invalid_token;
+
+            //Send response:
+            return res.status(401).send({ success: false, message: currentLang.jwt.check_invalid_token, error: err.message });
         } else {
-          req.decoded = decoded;
-          next();
+            //Add user _id into reqInfo:
+            reqInfo = '\nuser _id: ' + decoded.sub;
+
+            //If session exist:
+            if(decoded.session){
+                reqInfo += '\ndomain: ' + decoded.session.domain + '\nrole: ' + decoded.session.role;
+
+                //If sessioned user have consessions:
+                if(decoded.session.consession.length != 0) {
+                    reqInfo += '\nconsession: ' + decoded.session.consession;
+                }
+            }
+
+            req.decoded = decoded;
+            next();
         }
       });
     }
+
+    //Send INFO Message:
+    mainServices.sendConsoleMessage('INFO', mainServices.reqReceived(req) + reqInfo);
 };
 //--------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK DELETE CODE:
 //--------------------------------------------------------------------------------------------------------------------//
 const checkDeleteCode = (req, res, next) => {
     if(req.body.delete_code == mainSettings.delete_code){
@@ -192,6 +221,35 @@ const checkDeleteCode = (req, res, next) => {
     }
 };
 //--------------------------------------------------------------------------------------------------------------------//
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+// ROLE ACCESS CONTROL:
+//--------------------------------------------------------------------------------------------------------------------//
+const roleAccessBasedControl = (req, res, next, path) => {
+
+    //Obtener Role y Dominio del JWT.
+    //Habilitar o deshabilitar path si el rol está permitido o no para el mismo.
+    //Habilitar o deshabilitar path si posee o no una conseción para el mismo.
+    //Agregar dominio como condición de filter según cada caso.
+    //Qué es el dominio (a que corresponde).
+    
+    /*
+    admin
+        path //find studies
+            req.query.filter['fk_organization'] = JWT.domain;
+
+
+    medico
+        path //find studies
+            req.query.
+
+    */
+
+    //Inserts y updates controlar contra el dominio a nivel del handler.
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export middlewares:

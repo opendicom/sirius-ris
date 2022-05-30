@@ -681,6 +681,9 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         case 'equipments':
             //Set dependencies
             break;
+        case 'slots':
+            //Set dependencies
+            break;
     }
 
     //Import affected schemas:
@@ -903,6 +906,20 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
                 if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+                return filter;
+            });
+            break;
+
+        case 'slots':
+            filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_service'] != undefined){ filter[asPrefix + 'fk_service'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_service']); };
+                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'date'] != undefined){ filter[asPrefix + 'date'] = new Date(filter[asPrefix + 'date']); }
+                if(filter[asPrefix + 'start'] != undefined){ filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']); }
+                if(filter[asPrefix + 'end'] != undefined){ filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']); }
+                if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
                 return filter;
             });
             break;
