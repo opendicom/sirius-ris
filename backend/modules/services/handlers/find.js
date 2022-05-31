@@ -39,6 +39,14 @@ module.exports = async (req, res, currentSchema) => {
             as: 'modality',
         }},
 
+        //Equipments lookup:
+        { $lookup: {
+            from: 'equipments',
+            localField: 'fk_equipments',
+            foreignField: '_id',
+            as: 'equipments',
+        }},
+
         //Unwind:
         { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$organization", preserveNullAndEmptyArrays: true } },
@@ -52,6 +60,7 @@ module.exports = async (req, res, currentSchema) => {
         filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
         filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
         filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
+        filter = moduleServices.adjustDataTypes(filter, 'equipments', 'equipments');
 
         //Set condition:
         let condition = await moduleServices.setCondition(filter);

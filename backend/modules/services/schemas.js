@@ -9,6 +9,7 @@ const { body }      = require('express-validator');
 const Schema = new mongoose.Schema({
     fk_branch:      { type: mongoose.ObjectId, required: true },
     fk_modality:    { type: mongoose.ObjectId, required: true },
+    fk_equipments:  { type: [mongoose.ObjectId], required: true },
     name:           { type: String, required: true },
     status:         { type: Boolean, required: true, default: false },
 },
@@ -41,6 +42,14 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_modality NO es un ID MongoDB válido.'),
+
+    body('fk_equipments')
+        .isArray(),
+
+    body('fk_equipments.*')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_equipments NO es un ID MongoDB válido.'),
 
     body('name')
         .trim()

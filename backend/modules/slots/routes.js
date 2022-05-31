@@ -15,7 +15,7 @@ const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
 const findHandler   = require('./handlers/find');
-//const saveHandler   = require('./handlers/save');
+const saveHandler   = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -66,7 +66,7 @@ router.post(
     slots.Validator,
     (req, res) => {
         //Send to handler:
-        //saveHandler(req, res, slots, 'insert');
+        saveHandler(req, res, slots, 'insert');
     }
 );
 
@@ -79,7 +79,7 @@ router.post(
     slots.Validator,
     (req, res) => { 
         //Send to handler:
-        //saveHandler(req, res, slots, 'update');
+        saveHandler(req, res, slots, 'update');
     }
 );
 
