@@ -4,6 +4,7 @@
 
 //Import external modules:
 const jwt = require('jsonwebtoken');
+const url = require('url');
 
 //Import app modules:
 const mainServices  = require('./main.services');                           // Main services
@@ -186,19 +187,7 @@ const checkJWT = (req, res, next) => {
             //Send response:
             return res.status(401).send({ success: false, message: currentLang.jwt.check_invalid_token, error: err.message });
         } else {
-            //Add user _id into reqInfo:
-            reqInfo = '\nuser _id: ' + decoded.sub;
-
-            //If session exist:
-            if(decoded.session){
-                reqInfo += '\ndomain: ' + decoded.session.domain + '\nrole: ' + decoded.session.role;
-
-                //If sessioned user have consessions:
-                if(decoded.session.consession.length != 0) {
-                    reqInfo += '\nconsession: ' + decoded.session.consession;
-                }
-            }
-
+            //Save decoded token in req and pass to next middleware:
             req.decoded = decoded;
             next();
         }
@@ -224,29 +213,120 @@ const checkDeleteCode = (req, res, next) => {
 
 
 //--------------------------------------------------------------------------------------------------------------------//
-// ROLE ACCESS CONTROL:
+// ROLE ACCESS BASED CONTROL:
 //--------------------------------------------------------------------------------------------------------------------//
-const roleAccessBasedControl = (req, res, next, path) => {
+const roleAccessBasedControl = async (req, res, next) => {
+    //Initialize operation result:
+    let operationResult = '';
 
-    //Obtener Role y Dominio del JWT.
-    //Habilitar o deshabilitar path si el rol está permitido o no para el mismo.
-    //Habilitar o deshabilitar path si posee o no una conseción para el mismo.
-    //Agregar dominio como condición de filter según cada caso.
-    //Qué es el dominio (a que corresponde).
+    //Initialize have consession:
+    let haveConsession = false;
+
+    //Set role permissions:
+    const rolePermissions = {
+        //Superusuario:
+        1: {
+            users           : ['find', 'findOne', 'insert', 'update', '_delete'],            
+            logs            : ['find', 'findOne'],
+            sessions        : ['find', 'findOne', '_delete'],
+            modalities      : ['find', 'findOne', 'insert', 'update', '_delete'],
+            organizations   : ['find', 'findOne', 'insert', 'update', '_delete'],
+            branches        : ['find', 'findOne', 'insert', 'update', '_delete'],
+            services        : ['find', 'findOne', 'insert', 'update', '_delete'],
+            equipments      : ['find', 'findOne', 'insert', 'update', '_delete'],
+            slots           : ['find', 'findOne', 'insert', 'update', '_delete'],
+
+        },
+
+        //Administrador:
+        2: {
+            branches        : ['find', 'findOne', 'insert', 'update'],
+            services        : ['find', 'findOne', 'insert', 'update'],
+        }
+    }
+
+    //Set consessions:
+    const consessionPermissions = {
+        //Sign report
+        1: { report: ['sign'] },
+
+        //Authenticate report:
+        2: { report: ['authenticate'] },
+
+        //Test:
+        3: { test: ['find', 'update'] }
+    }
+
+    //Get authenticated user information (Decoded JWT):
+    const userAuth = {
+        _id: req.decoded.sub,
+        domain: req.decoded.session.domain,
+        role: req.decoded.session.role,
+        consession: req.decoded.session.consession
+    };
+
+    //Get request information:
+    const requested = {
+        schema: req.baseUrl.slice(1),   //Slice to remove '/' (first character).
+        method: req.path.slice(1),      //Slice to remove '/' (first character).
+    };
+
+    //Check consessionPermissions against currentConsessions (User auth consession):
+    await Promise.all(Object.keys(consessionPermissions).map(async (currentConsession) => {
+        
+        //Check if the user has a consession:
+        if(userAuth.consession.includes(parseInt(currentConsession, 10))){
+
+            //Check if the user consession has the request SCHEMA:
+            if(Object.keys(consessionPermissions[currentConsession]).includes(requested.schema)){
+
+                //Check if the user consession has the request METHOD:
+                if(consessionPermissions[currentConsession][requested.schema].includes(requested.method)){
+                    //Set have consession:
+                    haveConsession = true;  // Has the indicated consession.
+                }   
+            }
+        }
+    }));
+
+    //Check if current role is allowed for current SCHEMA or have a concession:
+    if(Object.keys(rolePermissions[userAuth.role]).includes(requested.schema) || haveConsession){
+
+        //Check if current role is allowed for current METHOD or have a concession:
+        if(rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConsession){
+
+            //Averiguar ¿Qué es el dominio que trae el usuario? ¿A que corresponde ['organization', 'branch', 'service']?
+            //const domainType = domainIs(userAuth.domain);
+
+            //Agregar dominio como condición (AND Condition) de filter según cada caso (servicio).
+            //addCondition(userAuth.domain, domainType, requested.schema, requested.method);
+            
+            //Inserts y updates controlar contra el dominio a nivel del handler.
+
+
+            //Set operation result:
+            operationResult = 'allowed'
+            next();
+        } else {
+            //Set operation result:
+            operationResult = 'denied'
     
-    /*
-    admin
-        path //find studies
-            req.query.filter['fk_organization'] = JWT.domain;
+            //Send response:
+            return res.status(401).send({ success: false, message: 'El usuario no posee los permisos necesarios sobre el método: ' + requested.method + ' -> ' + requested.schema });
+        }
 
+        
+    } else {
+        //Set operation result:
+        operationResult = 'denied'
 
-    medico
-        path //find studies
-            req.query.
+        //Send response:
+        return res.status(401).send({ success: false, message: 'El usuario no posee los permisos necesarios sobre el esquema: ' + requested.schema });
+    }
 
-    */
-
-    //Inserts y updates controlar contra el dominio a nivel del handler.
+    //Send DEBUG Message:
+    mainServices.sendConsoleMessage('DEBUG', '\nuser auth: ' + JSON.stringify(userAuth) + '\nuser request: ' + JSON.stringify(requested), 'operation: ' + operationResult);
+    
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -257,6 +337,7 @@ module.exports = {
     allowedValidate,
     isPassword,
     checkJWT,
-    checkDeleteCode
+    checkDeleteCode,
+    roleAccessBasedControl
 };
 //--------------------------------------------------------------------------------------------------------------------//

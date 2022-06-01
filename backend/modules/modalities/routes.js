@@ -12,7 +12,6 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
-//const checkSession = require('../');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -32,7 +31,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'find';
@@ -60,7 +59,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'findOne';
@@ -88,7 +87,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     modalities.Validator,
     async (req, res) => {
         //Search for duplicates:
@@ -106,7 +105,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, modalities.AllowedUnsetValues),
     modalities.Validator,
     async (req, res) => {
@@ -125,7 +124,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     (req, res) => { moduleServices._delete(req, res, modalities); }
 );

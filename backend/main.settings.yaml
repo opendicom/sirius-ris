@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
-  #host: 'localhost'
-  host: 'sirius_database'
+  host: 'localhost'
+  #host: 'sirius_database'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'
@@ -26,8 +26,8 @@ cors_enabled: false
 cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
 
 # Set log level:
-# INFO > WARN > ERROR
-log_level: 'INFO'
+# DEBUG > INFO > WARN > ERROR
+log_level: 'DEBUG'
 
 #Delete authorization code:
 delete_code: 'authorization_delete_code'

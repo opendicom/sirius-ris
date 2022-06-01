@@ -116,20 +116,25 @@ function reqReceived(req){
 //--------------------------------------------------------------------------------------------------------------------//
 function sendConsoleMessage(level, message, details = false){
     switch(mainSettings.log_level){
+        case 'DEBUG':
+            if(level == 'DEBUG'){
+                console.info('\n[ DEBUG ] ' + message);
+                if(details){ console.info('\n[ DEBUG: Details ]'); console.debug(details); }
+            }
         case 'INFO':
             if(level == 'INFO'){
                 console.info('\n[ INFO ] ' + message);
-                if(details){ console.info('[ INFO: Details ]'); console.info(details); }
+                if(details){ console.info('\n[ INFO: Details ]'); console.info(details); }
             }
         case 'WARN':
             if(level == 'WARN'){
                 console.warn('\n[ WARN ] ' + message);
-                if(details){ console.warn('[ WARN: Details ]'); console.warn(details); }
+                if(details){ console.warn('\n[ WARN: Details ]'); console.warn(details); }
             }
         case 'ERROR':
             if(level == 'ERROR'){
                 console.error('\n[ ERROR ] ' + message);
-                if(details){ console.error('[ ERROR: Details ]'); console.error(details); }
+                if(details){ console.error('\n[ ERROR: Details ]'); console.error(details); }
             }
             break;
     }

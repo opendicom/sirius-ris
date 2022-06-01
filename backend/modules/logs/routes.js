@@ -12,7 +12,6 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
-//const checkSession = require('../');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -28,7 +27,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'find';
@@ -56,7 +55,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
-    //roleAccessBasedControl
+    mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Initialize operation type:
         let operation_type = 'findOne';
