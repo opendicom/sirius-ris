@@ -995,6 +995,159 @@ async function insertLog(event, datetime, fk_user, req, res){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// DOMAIN IS:
+//--------------------------------------------------------------------------------------------------------------------//
+async function domainIs (domain, res) {
+    //Initialize result:
+    let result = null;
+
+    //Import schemas:
+    const organizations = require('./organizations/schemas');
+    const branches      = require('./branches/schemas');
+    const services      = require('./services/schemas');
+
+    //Set projection:
+    const minimalProj = { _id: 1 };
+
+    //Search in ORGANIZATIONS:
+    await organizations.Model.findById(domain, minimalProj)
+    .exec()
+    .then(async (organization_data) => {
+        //Check if have results:
+        if(organization_data){
+            result = 'organizations';
+        } else {
+
+            //Search in BRANCHES:
+            await branches.Model.findById(domain, minimalProj)
+            .exec()
+            .then(async (branches_data) => {
+                //Check if have results:
+                if(branches_data){
+                    result = 'branches';
+                } else {
+
+                    //Search in SERVICES:
+                    await services.Model.findById(domain, minimalProj)
+                    .exec()
+                    .then((services_data) => {
+                        //Check if have results:
+                        if(services_data){
+                            result = 'services';
+                        }
+                    })
+                    .catch((err) => {
+                        //Set result:
+                        result = 'Error: ' + currentLang.db.query_error;
+
+                        //Send error:
+                        mainServices.sendError(res, currentLang.db.query_error, err);
+                    });
+
+                }
+            })
+            .catch((err) => {
+                //Set result:
+                result = 'Error: ' + currentLang.db.query_error;
+
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+            
+        }
+    })
+    .catch((err) => {
+        //Set result:
+        result = 'Error: ' + currentLang.db.query_error;
+
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+function addDomainCondition(req, res, domainType){
+    //Get information for the request:
+    let filter = req.query.filter;
+    const domain = req.decoded.session.domain;
+    const schema = req.baseUrl.slice(1);   //Slice to remove '/' (first character).
+    const method = req.path.slice(1);      //Slice to remove '/' (first character).
+
+    //Switch by method:
+    switch(method){
+        case 'find':
+        case 'findOne':
+            //If filter has no operator, add domain condition with no operator:
+            let haveOperator = false;
+            
+            //Check if it has a filter:
+            if(filter){
+                //If filter has operator, add domain condition with AND operator:
+                if(filter.and || filter.or){
+                    haveOperator = true;        
+                }
+            } else {
+                //Add filter object to request (prevent undefined nested properties):
+                req.query.filter = {};
+            }
+
+            //Set condition according to schema:
+            switch(schema){
+                case 'organizations':
+                    //Check whether it has operator or not:
+                    if(haveOperator){
+                        //Add domain condition:
+                        req.query.filter['and']['_id'] = domain;
+                    } else {
+                        //Add domain condition:
+                        req.query.filter['_id'] = domain;
+                    }
+                    break;
+
+                case 'branches':
+                    //Check whether it has operator or not:
+                    if(haveOperator){
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['and']['fk_organization'] = domain;
+                        
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['and']['_id'] = domain;
+                        }
+
+                    } else {
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['fk_organization'] = domain;
+                        
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['_id'] = domain;
+                        }
+                    }
+                    break;
+
+                case 'services':
+                    
+                    break;
+            }
+            break;
+        case 'insert':
+            break;
+        case 'update':
+            break;
+        case 'delete':
+            break;
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -1010,6 +1163,8 @@ module.exports = {
     ckeckElement,
     insertLog,
     setCondition,
-    setRegex
+    setRegex,
+    domainIs,
+    addDomainCondition
 };
 //--------------------------------------------------------------------------------------------------------------------//

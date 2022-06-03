@@ -11,6 +11,9 @@ const mainServices  = require('./main.services');                           // M
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
 const currentLang   = require('./main.languages')(mainSettings.language);   // Language Module
 
+//Import Module Services:
+const moduleServices = require('./modules/modules.services');
+
 //--------------------------------------------------------------------------------------------------------------------//
 //  ALLOWED VALIDATE:
 //--------------------------------------------------------------------------------------------------------------------//
@@ -295,11 +298,11 @@ const roleAccessBasedControl = async (req, res, next) => {
         //Check if current role is allowed for current METHOD or have a concession:
         if(rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConsession){
 
-            //Averiguar ¿Qué es el dominio que trae el usuario? ¿A que corresponde ['organization', 'branch', 'service']?
-            //const domainType = domainIs(userAuth.domain);
+            //What the domain corresponds to:
+            const domainType = await moduleServices.domainIs(userAuth.domain, res);
 
-            //Agregar dominio como condición (AND Condition) de filter según cada caso (servicio).
-            //addCondition(userAuth.domain, domainType, requested.schema, requested.method);
+            //Agregar dominio como condición (dependiendo de como venga la condición en filter) de filter según cada caso (servicio).
+            moduleServices.addDomainCondition(req, res, domainType);
             
             //Inserts y updates controlar contra el dominio a nivel del handler.
 
