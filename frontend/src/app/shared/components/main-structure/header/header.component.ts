@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';   // Shared Functions
-import { user_roles } from '@env/environment';                                        // Enviroment
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+import { user_roles } from '@env/environment';                                          // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -13,15 +13,11 @@ import { user_roles } from '@env/environment';                                  
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public user_info: any;
   public userRoles: any = user_roles;
 
   //Inject services to the constructor:
-  constructor(private sharedFunctions: SharedFunctionsService) { }
+  constructor(public sharedProp: SharedPropertiesService) { }
 
-  ngOnInit(): void {
-    //Get User Logged Information:
-    this.user_info = this.sharedFunctions.getUserInfo();
-  }
+  ngOnInit(): void { }
 
 }

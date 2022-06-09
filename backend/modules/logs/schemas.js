@@ -7,9 +7,9 @@ const { body }      = require('express-validator');
 
 //Define Privileges Sub-Schema:
 const subSchemaElement = new mongoose.Schema({
-    type:      { type: Number, required: true },                // 1 user, 2 appointment, 3 study
-    element:   { type: mongoose.ObjectId, required: true },
-    state:     { type: Number }                                 // Only for 2 appointment and 3 study
+    type:           { type: String, required: true },
+    element:        { type: mongoose.ObjectId, required: true },
+    flow_state:     { type: String, required: true }
 },
 { _id : false });
 
@@ -55,21 +55,20 @@ const Validator = [
 
     body('element').optional(),
 
-    body('element.*.type')
+    body('element.type')
         .trim()
-        .isInt()
-        .withMessage('El parametro type es requerido y debe ser numérico.'),
+        .isLength({ min: 3, max: 30 })
+        .withMessage('El parametro element.type es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
-    body('element.*.element')
+    body('element.element')
         .trim()
         .isMongoId()
         .withMessage('El parametro element NO es un ID MongoDB válido.'),
 
-    body('element.*.state')
-        .optional()
+    body('element.flow_state')
         .trim()
-        .isInt()
-        .withMessage('El parametro state debe ser numérico.'),
+        .isLength({ min: 3, max: 3 })
+        .withMessage('El parametro element.flow_state es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
 
     body('ip_client')
         .trim()

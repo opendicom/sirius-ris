@@ -219,15 +219,13 @@ const checkDeleteCode = (req, res, next) => {
 // ROLE ACCESS BASED CONTROL:
 //--------------------------------------------------------------------------------------------------------------------//
 const roleAccessBasedControl = async (req, res, next) => {
-    //Initialize operation result:
-    let operationResult = '';
 
-    //Initialize have consession:
-    let haveConsession = false;
-
+    //---------------------------------------------------------------------------------------------------------------//
+    // Role Access Based Control -> Main Rules:
+    //---------------------------------------------------------------------------------------------------------------//
     //Set role permissions:
     const rolePermissions = {
-        //Superusuario:
+        //Superuser:
         1: {
             users           : ['find', 'findOne', 'insert', 'update', '_delete'],            
             logs            : ['find', 'findOne'],
@@ -241,10 +239,13 @@ const roleAccessBasedControl = async (req, res, next) => {
 
         },
 
-        //Administrador:
+        //Administrator:
         2: {
+            users           : ['find', 'findOne', 'insert', 'update'],
+            logs            : ['find', 'findOne'],
             branches        : ['find', 'findOne', 'insert', 'update'],
             services        : ['find', 'findOne', 'insert', 'update'],
+            equipments      : ['find', 'findOne', 'insert', 'update'],
         }
     }
 
@@ -259,6 +260,12 @@ const roleAccessBasedControl = async (req, res, next) => {
         //Test:
         3: { test: ['find', 'update'] }
     }
+    //---------------------------------------------------------------------------------------------------------------//
+
+    //Initialize flow control variables:
+    let operationResult = '';
+    let domainResult = true;
+    let haveConsession = false;
 
     //Get authenticated user information (Decoded JWT):
     const userAuth = {
@@ -300,16 +307,25 @@ const roleAccessBasedControl = async (req, res, next) => {
 
             //What the domain corresponds to:
             const domainType = await moduleServices.domainIs(userAuth.domain, res);
-
-            //Agregar dominio como condición (dependiendo de como venga la condición en filter) de filter según cada caso (servicio).
-            moduleServices.addDomainCondition(req, res, domainType);
             
-            //Inserts y updates controlar contra el dominio a nivel del handler.
-
+            //Exclude Superuser role:
+            if(userAuth.role != 1){
+                //Add domain as condition:
+                domainResult = moduleServices.addDomainCondition(req, res, domainType);
+            }
 
             //Set operation result:
-            operationResult = 'allowed'
-            next();
+            if(domainResult) {
+                operationResult = 'allowed'
+                next();
+            } else {
+                //Set operation result:
+                operationResult = 'denied'
+
+                //Send response:
+                return res.status(401).send({ success: false, message: 'La operación que está intentando realizar no está permitida para el dominio que posee su autenticación.' });
+            }
+            
         } else {
             //Set operation result:
             operationResult = 'denied'

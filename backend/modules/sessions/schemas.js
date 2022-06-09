@@ -46,17 +46,17 @@ const Validator = [
         .isMongoId()
         .withMessage('El parametro fk_user NO es un ID MongoDB válido.'),
 
-    body('current_access.*.domain')
+    body('current_access.domain')
         .trim()
         .isMongoId()
         .withMessage('El parametro domain NO es un ID MongoDB válido.'),
 
-    body('current_access.*.role')
+    body('current_access.role')
         .trim()
         .isInt()
         .withMessage('El parametro role es requerido y debe ser numérico.'),
 
-    body('current_access.*.concession').optional().isArray(),
+    body('current_access.concession').optional().isArray(),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

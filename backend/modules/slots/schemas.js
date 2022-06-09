@@ -5,12 +5,19 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Define Domain Sub-Schema:
+const subSchemaDomain = new mongoose.Schema({
+    organization:   { type: mongoose.ObjectId, required: true },
+    branch:         { type: mongoose.ObjectId, required: true },
+    service:        { type: mongoose.ObjectId, required: true },
+},
+{ _id : false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
-    fk_service:     { type: mongoose.ObjectId, required: true },
+    domain:         { type: subSchemaDomain, required: true },
     fk_equipment:   { type: mongoose.ObjectId, required: true },
     fk_procedure:   { type: mongoose.ObjectId },
-    date:           { type: Date, required: true },
     start:          { type: Date, required: true },
     end:            { type: Date, required: true },
     urgency:        { type: Boolean, required: true, default: false },
@@ -35,11 +42,21 @@ const AllowedUnsetValues = ['fk_procedure'];
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
-    body('fk_service')
+    body('domain.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_person NO es un ID MongoDB válido.'),
+        .withMessage('El parametro domain.organization NO es un ID MongoDB válido.'),
     
+    body('domain.branch')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
+
+    body('domain.service')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro domain.service NO es un ID MongoDB válido.'),
+
     body('fk_equipment')
         .trim()
         .isMongoId()
@@ -50,8 +67,6 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
-
-    body('date').trim(),
 
     body('start').trim(),
 

@@ -2,7 +2,8 @@
 // MODULES SERVICES:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
-const mongoose              = require('mongoose');
+const mongoose              = require('mongoose');                          //Mongoose.
+const ObjectId              = require('mongoose').Types.ObjectId;           //To check ObjectId Type.
 const { validationResult }  = require('express-validator');                 //Express-validator Middleware.
 
 //Import app modules:
@@ -34,6 +35,9 @@ async function find(req, res, currentSchema){
 
     //Check if Pager was requested:
     if(pager){ pager = setPager(req, pager); }
+
+    //Send DEBUG Message:
+    mainServices.sendConsoleMessage('DEBUG', '\nfind [processed condition]: ' + JSON.stringify(condition));
 
     //Count using query params:
     await currentSchema.Model.countDocuments(condition)
@@ -381,6 +385,9 @@ async function findAggregation(req, res, currentSchema){
     if(!isNaN(req.query.limit)){ aggregate.push({ $limit: req.query.limit }); }
     if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
 
+    //Send DEBUG Message:
+    mainServices.sendConsoleMessage('DEBUG', '\nfind aggregation [processed condition]: ' + JSON.stringify(aggregate));
+
     //Count using query params:
     await currentSchema.Model.aggregate(aggregateCount)
     .exec()
@@ -537,8 +544,8 @@ async function setRegex(regex, condition){
                     keyName = Object.keys(or_current)[0];
                     currentValue = condition.$or[or_index][keyName];
 
-                    //Exclude boolean types:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                    //Exclude boolean and ObjectId types:
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -554,8 +561,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(or_current)[0];
                             currentValue = and_current.$or[or_index][keyName];
                             
-                            //Exclude boolean types:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                            //Exclude boolean and ObjectId types:
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -568,8 +575,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
-                            //Exclude boolean types:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                            //Exclude boolean and ObjectId types:
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -580,8 +587,8 @@ async function setRegex(regex, condition){
                         keyName = Object.keys(and_current)[0];
                         currentValue = condition.$and[and_index][keyName];
 
-                        //Exclude boolean types:
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                        //Exclude boolean and ObjectId types:
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
@@ -592,8 +599,8 @@ async function setRegex(regex, condition){
                 keyName = Object.keys(condition)[index];
                 currentValue = condition[current];
                 
-                //Exclude boolean types:
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false){
+                //Exclude boolean and ObjectId types:
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -913,6 +920,12 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'slots':
             filter = adjustCondition(filter, (filter) => {
+                //Domain:
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+                if(filter[asPrefix + 'domain.service'] != undefined){ filter[asPrefix + 'domain.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.service']); };
+
+                //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_service'] != undefined){ filter[asPrefix + 'fk_service'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_service']); };
                 if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
@@ -1069,6 +1082,9 @@ async function domainIs (domain, res) {
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------------------------------------------------------------------//
+// ADD DOMAIN CONDITION:
+//--------------------------------------------------------------------------------------------------------------------//
 function addDomainCondition(req, res, domainType){
     //Get information for the request:
     let filter = req.query.filter;
@@ -1078,6 +1094,10 @@ function addDomainCondition(req, res, domainType){
 
     //Switch by method:
     switch(method){
+
+        //------------------------------------------------------------------------------------------------------------//
+        // FIND, FIND BY ID, FIND ONE:
+        //------------------------------------------------------------------------------------------------------------//
         case 'find':
         case 'findOne':
             //If filter has no operator, add domain condition with no operator:
@@ -1105,6 +1125,8 @@ function addDomainCondition(req, res, domainType){
                         //Add domain condition:
                         req.query.filter['_id'] = domain;
                     }
+                    //BRANCH AND SERVICE should not be accessed here due to role control.
+
                     break;
 
                 case 'branches':
@@ -1119,6 +1141,7 @@ function addDomainCondition(req, res, domainType){
                             //Add domain condition:
                             req.query.filter['and']['_id'] = domain;
                         }
+                        //SERVICE you should not access here because of role control.
 
                     } else {
                         //Switch by domain type: 
@@ -1130,22 +1153,176 @@ function addDomainCondition(req, res, domainType){
                             //Add domain condition:
                             req.query.filter['_id'] = domain;
                         }
+                        //SERVICE you should not access here because of role control.
                     }
                     break;
 
                 case 'services':
-                    
+                    //Check whether it has operator or not:
+                    if(haveOperator){
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['and']['branch.fk_organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['and']['fk_branch'] = domain;
+                        
+                        } else if(domainType == 'services'){
+                            //Add domain condition:
+                            req.query.filter['and']['_id'] = domain;
+                        }
+
+                    } else {
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['branch.fk_organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['fk_branch'] = domain;
+                        
+                        } else if(domainType == 'services'){
+                            //Add domain condition:
+                            req.query.filter['_id'] = domain;
+                        }
+                    }
+                    break;
+
+                case 'equipments':
+                    //Check whether it has operator or not:
+                    if(haveOperator){
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['and']['branch.fk_organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['and']['fk_branch'] = domain;
+                        
+                        }
+                        //SERVICE you should not access here because of role control.
+                    } else {
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['branch.fk_organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['fk_branch'] = domain;
+                        
+                        }
+                        //SERVICE you should not access here because of role control.
+                    }
                     break;
             }
             break;
+
+        //------------------------------------------------------------------------------------------------------------//
+        // INSERT & UPDATE:
+        //------------------------------------------------------------------------------------------------------------//
         case 'insert':
-            break;
         case 'update':
+            //Set restrictions according to schema:
+            switch(schema){
+                case 'branches':
+                    if(domainType == 'organizations' && req.body.fk_organization !== domain){
+                        return false; /* Operation rejected */  
+                    }
+                    break;
+                
+                case 'services':
+                    if( (domainType == 'organizations' && checkDomainReference(res, 'branches', { fk_organization: domain }) == false) ||
+                        (domainType == 'branches' && req.body.fk_branch !== domain) )
+                    { return false; /* Operation rejected */ }
+                    break;    
+
+                case 'slots':
+                    if( (domainType == 'organizations' && req.body.domain.organization !== domain) ||
+                        (domainType == 'branches' && req.body.domain.branch !== domain) ||
+                        (domainType == 'services' && req.body.domain.service !== domain) )
+                    { return false; /* Operation rejected */ }
+                    break;
+            }
+            // Inserts y updates ¿controlar contra el dominio a nivel del handler?
             break;
-        case 'delete':
-            break;
+
+        //------------------------------------------------------------------------------------------------------------//
+        // DELETE:
+        //------------------------------------------------------------------------------------------------------------//
+        // Restricted by roles (Superuser is only user allowed).
+        //------------------------------------------------------------------------------------------------------------//
+    }
+
+    //Operation allowed:
+    return true;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK OBJECT ID:
+//--------------------------------------------------------------------------------------------------------------------//
+function checkObjectId(objId){
+    //Check with Moongoose method:
+    if(mongoose.isValidObjectId(objId)){
+        //Fix any 12 characters long string case:
+        //When creating an object id with a valid string it must be the same string.
+        const realObjectId = new ObjectId(objId);
+
+        //Check string contents:
+        if(realObjectId.toString() == objId.toString()){
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK DOMAIN REFERENCE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkDomainReference(res, schemaName, filter){
+    //Import current Schema:
+    const currentSchema = require('./' + schemaName + '/schemas');
+
+    //Initialize result:
+    let result = false;
+
+    //Check filter is not empty:
+    if(filter){
+        //Execute check query:
+        await currentSchema.Model.findOne(filter, { _id: 1 })
+        .exec()
+        .then((data) => {
+            //Check if have results:
+            if(data){
+                //Set result true:
+                result = true;
+            } else {
+                //Send not valid referenced object mensaje:
+                res.status(405).send({ success: false, message: 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.' });
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+    } else {
+        //Send error:
+        mainServices.sendError(res, 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.');
+    }
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:

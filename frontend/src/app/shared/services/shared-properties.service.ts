@@ -10,10 +10,11 @@ import { UsersAuthService } from '@auth/services/users-auth.service';         //
   providedIn: 'root'
 })
 export class SharedPropertiesService {
-  public isLogged : boolean = false;
-  public action   : any;
-  public element  : any;
-  public params   : any;
+  public isLogged   : boolean = false;
+  public userLogged : any;
+  public action     : any;
+  public element    : any;
+  public params     : any;
 
   //Request params:
   public regex        : string;

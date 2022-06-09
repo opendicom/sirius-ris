@@ -27,7 +27,7 @@ export const document_types = {
 
 // User Roles:
 export const user_roles = {
-  1:  'Super usuario',
+  1:  'Superusuario',
   2:  'Administrador',
   3:  'Supervisor',
   4:  'Médico',

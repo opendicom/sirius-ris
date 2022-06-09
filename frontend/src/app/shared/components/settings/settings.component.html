@@ -6,7 +6,7 @@
 
   <br/>
 
-  <button mat-button routerLink="/organizations/list">
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/organizations/list">
     <mat-icon>apartment</mat-icon><br/>
     Organizaciones
   </button>
@@ -23,7 +23,7 @@
 
   <br/>
 
-  <button mat-button routerLink="/modalities/list">
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/modalities/list">
     <mat-icon>multiple_stop</mat-icon><br/>
     Modalidades
   </button>

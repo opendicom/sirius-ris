@@ -12,7 +12,9 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
-    referencedElements.push([ req.body.fk_service, 'services' ]);
+    referencedElements.push([ req.body.domain.organization, 'organizations' ]);
+    referencedElements.push([ req.body.domain.branch, 'branches' ]);
+    referencedElements.push([ req.body.domain.service, 'services' ]);
     referencedElements.push([ req.body.fk_equipment, 'equipments' ]);
 
     //Optional reference:
