@@ -22,7 +22,8 @@ const Model = mongoose.model('branches', Schema, 'branches');  //Specify collect
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_branch',
-    Plural      : 'fk_branches'
+    Plural      : 'fk_branches',
+    Domain      : 'domain.branch'
 };
 
 //Register allowed unset values:

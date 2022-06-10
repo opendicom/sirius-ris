@@ -38,6 +38,14 @@ module.exports = async (req, res, currentSchema) => {
             foreignField: '_id',
             as: 'modalities',
         }},
+
+        //Procedures lookup:
+        { $lookup: {
+            from: 'procedures',
+            localField: 'fk_procedures',
+            foreignField: '_id',
+            as: 'procedures',
+        }},
        
         //Unwind:
         { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
@@ -51,6 +59,7 @@ module.exports = async (req, res, currentSchema) => {
         filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
         filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
         filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modalities');
+        filter = moduleServices.adjustDataTypes(filter, 'procedures', 'procedures');
 
         //Set condition:
         let condition = await moduleServices.setCondition(filter);

@@ -4,12 +4,14 @@
 
 //Import external modules:
 const jwt = require('jsonwebtoken');
-const url = require('url');
 
 //Import app modules:
 const mainServices  = require('./main.services');                           // Main services
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
 const currentLang   = require('./main.languages')(mainSettings.language);   // Language Module
+
+//Import main permissions:
+const mainPermissions = require('./main.permissions');
 
 //Import Module Services:
 const moduleServices = require('./modules/modules.services');
@@ -219,49 +221,6 @@ const checkDeleteCode = (req, res, next) => {
 // ROLE ACCESS BASED CONTROL:
 //--------------------------------------------------------------------------------------------------------------------//
 const roleAccessBasedControl = async (req, res, next) => {
-
-    //---------------------------------------------------------------------------------------------------------------//
-    // Role Access Based Control -> Main Rules:
-    //---------------------------------------------------------------------------------------------------------------//
-    //Set role permissions:
-    const rolePermissions = {
-        //Superuser:
-        1: {
-            users           : ['find', 'findOne', 'insert', 'update', '_delete'],            
-            logs            : ['find', 'findOne'],
-            sessions        : ['find', 'findOne', '_delete'],
-            modalities      : ['find', 'findOne', 'insert', 'update', '_delete'],
-            organizations   : ['find', 'findOne', 'insert', 'update', '_delete'],
-            branches        : ['find', 'findOne', 'insert', 'update', '_delete'],
-            services        : ['find', 'findOne', 'insert', 'update', '_delete'],
-            equipments      : ['find', 'findOne', 'insert', 'update', '_delete'],
-            slots           : ['find', 'findOne', 'insert', 'update', '_delete'],
-
-        },
-
-        //Administrator:
-        2: {
-            users           : ['find', 'findOne', 'insert', 'update'],
-            logs            : ['find', 'findOne'],
-            branches        : ['find', 'findOne', 'insert', 'update'],
-            services        : ['find', 'findOne', 'insert', 'update'],
-            equipments      : ['find', 'findOne', 'insert', 'update'],
-        }
-    }
-
-    //Set consessions:
-    const consessionPermissions = {
-        //Sign report
-        1: { report: ['sign'] },
-
-        //Authenticate report:
-        2: { report: ['authenticate'] },
-
-        //Test:
-        3: { test: ['find', 'update'] }
-    }
-    //---------------------------------------------------------------------------------------------------------------//
-
     //Initialize flow control variables:
     let operationResult = '';
     let domainResult = true;
@@ -281,17 +240,17 @@ const roleAccessBasedControl = async (req, res, next) => {
         method: req.path.slice(1),      //Slice to remove '/' (first character).
     };
 
-    //Check consessionPermissions against currentConsessions (User auth consession):
-    await Promise.all(Object.keys(consessionPermissions).map(async (currentConsession) => {
+    //Check mainPermissions.consessionPermissions against currentConsessions (User auth consession):
+    await Promise.all(Object.keys(mainPermissions.consessionPermissions).map(async (currentConsession) => {
         
         //Check if the user has a consession:
         if(userAuth.consession.includes(parseInt(currentConsession, 10))){
 
             //Check if the user consession has the request SCHEMA:
-            if(Object.keys(consessionPermissions[currentConsession]).includes(requested.schema)){
+            if(Object.keys(mainPermissions.consessionPermissions[currentConsession]).includes(requested.schema)){
 
                 //Check if the user consession has the request METHOD:
-                if(consessionPermissions[currentConsession][requested.schema].includes(requested.method)){
+                if(mainPermissions.consessionPermissions[currentConsession][requested.schema].includes(requested.method)){
                     //Set have consession:
                     haveConsession = true;  // Has the indicated consession.
                 }   
@@ -300,10 +259,10 @@ const roleAccessBasedControl = async (req, res, next) => {
     }));
 
     //Check if current role is allowed for current SCHEMA or have a concession:
-    if(Object.keys(rolePermissions[userAuth.role]).includes(requested.schema) || haveConsession){
+    if(Object.keys(mainPermissions.rolePermissions[userAuth.role]).includes(requested.schema) || haveConsession){
 
         //Check if current role is allowed for current METHOD or have a concession:
-        if(rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConsession){
+        if(mainPermissions.rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConsession){
 
             //What the domain corresponds to:
             const domainType = await moduleServices.domainIs(userAuth.domain, res);

@@ -22,7 +22,8 @@ const Model = mongoose.model('services', Schema, 'services');  //Specify collect
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_service',
-    Plural      : 'fk_services'
+    Plural      : 'fk_services',
+    Domain      : 'domain.service'
 };
 
 //Register allowed unset values:

@@ -679,14 +679,14 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('services');
             break;
         case 'services':
-            //Set dependencies
+            affectedCollections.push('slots');
             break;
         case 'modalities':
             affectedCollections.push('services');
             affectedCollections.push('equipments');
             break;
         case 'equipments':
-            //Set dependencies
+            affectedCollections.push('services');
             break;
         case 'slots':
             //Set dependencies
@@ -703,6 +703,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     let filter = {};
     let fk_singular = {};
     let fk_plural = {};
+    let domain_condition = {};
 
     //Execute queries into affected schemas (await foreach):
     await Promise.all(affectedCollections.map(async (value, key) => {
@@ -715,6 +716,15 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             fk_singular,
             fk_plural
         ]};
+
+        //Check if contain domain property:
+        if(ForeignKeys.Domain){
+            //Set domain condition:
+            domain_condition[ForeignKeys.Domain] = _id;
+
+            //Add domain contition in OR condition:
+            filter.$or.push(domain_condition);
+        }
 
         //Execute current query:
         await schemasAffected[value].Model.findOne(filter, { _id: 1 } )
@@ -913,6 +923,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
                 if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
+                if(filter[asPrefix + 'fk_procedures'] != undefined){ filter[asPrefix + 'fk_procedures'] = filter[asPrefix + 'fk_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedures']); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -1242,10 +1253,13 @@ function addDomainCondition(req, res, domainType){
                     break;    
 
                 case 'slots':
-                    if( (domainType == 'organizations' && req.body.domain.organization !== domain) ||
-                        (domainType == 'branches' && req.body.domain.branch !== domain) ||
-                        (domainType == 'services' && req.body.domain.service !== domain) )
-                    { return false; /* Operation rejected */ }
+                    if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                        return false; /* Operation rejected */
+                    } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                        return false; /* Operation rejected */
+                    } else if(domainType == 'services' && req.body.domain.service !== domain && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
+                        return false; /* Operation rejected */
+                    }
                     break;
             }
             // Inserts y updates ¿controlar contra el dominio a nivel del handler?

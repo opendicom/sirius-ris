@@ -30,9 +30,6 @@ module.exports = function() {
     const mainSettings = mainServices.getFileSettings();                        // File settings (YAML)
     const currentLang = require('./main.languages')(mainSettings.language);     // Language Module
 
-    //Set verbose mode (true or false):
-    const verboseMode = mainSettings.verbose_log_enabled;
-
     //Initialize enviroment variables:
     process.env.REGISTERED_IPS = '';
 

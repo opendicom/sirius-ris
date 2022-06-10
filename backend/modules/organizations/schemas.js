@@ -21,7 +21,8 @@ const Model = mongoose.model('organizations', Schema, 'organizations');  //Speci
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_organization',
-    Plural      : 'fk_organizations'
+    Plural      : 'fk_organizations',
+    Domain      : 'domain.organization'
 };
 
 //Register allowed unset values:
