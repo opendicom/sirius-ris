@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+//--------------------------------------------------------------------------------------------------------------------//
+// IMPORTS:
+//--------------------------------------------------------------------------------------------------------------------//
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+//--------------------------------------------------------------------------------------------------------------------//
+
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
@@ -7,7 +13,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor() { }
+  //Inject services to the constructor:
+  constructor(
+    public sharedProp: SharedPropertiesService
+  ) { }
 
   ngOnInit(): void {
   }

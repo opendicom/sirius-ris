@@ -19,6 +19,7 @@ export class FormComponent implements OnInit {
   public availableOrganizations: any;
   public availableBranches: any;
   public availableModalities: any;
+  public availableEquipments: any;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -44,6 +45,9 @@ export class FormComponent implements OnInit {
     //Find references:
     this.findReferences();
 
+    //Get Logged User Information:
+    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title : 'Formulario de servicios',
@@ -60,6 +64,7 @@ export class FormComponent implements OnInit {
       fk_branch     : ['', [Validators.required]],
       fk_modality   : ['', [Validators.required]],
       name          : ['', [Validators.required]],
+      fk_equipments : [[], [Validators.required]],
       status        : ['true']
     });
   }
@@ -88,6 +93,7 @@ export class FormComponent implements OnInit {
               fk_branch   : res.data[0].fk_branch,
               fk_modality : res.data[0].fk_modality,
               name        : res.data[0].name,
+              fk_equipments : [], //res.data[0].fk_equipments,
               status      : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
@@ -118,6 +124,11 @@ export class FormComponent implements OnInit {
     }
   }
 
+  onTest(){
+    //TEST:
+    console.log(this.form.value);
+  }
+
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
@@ -140,17 +151,32 @@ export class FormComponent implements OnInit {
 
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
-      this.availableOrganizations = res.data;
+      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
+      if(Array.isArray(res.data)){
+        this.availableOrganizations = res.data;
+      } else {
+        this.availableOrganizations = [res.data];
+      }
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
-      this.availableBranches = res.data;
+      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
+      if(Array.isArray(res.data)){
+        this.availableBranches = res.data;
+      } else {
+        this.availableBranches = [res.data];
+      }
     });
 
     //Find modalities:
     this.sharedFunctions.find('modalities', params, (res) => {
       this.availableModalities = res.data;
+    });
+
+    //Find equipments:
+    this.sharedFunctions.find('equipments', params, (res) => {
+      this.availableEquipments = res.data;
     });
   }
 }

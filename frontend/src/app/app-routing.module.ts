@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'branches', loadChildren: () => import('@modules/branches/branches.module').then( m => m.BranchesModule ), canActivate: [AuthGuard] },
   { path: 'services', loadChildren: () => import('@modules/services/services.module').then( m => m.ServicesModule ), canActivate: [AuthGuard] },
   { path: 'equipments', loadChildren: () => import('@modules/equipments/equipments.module').then( m => m.EquipmentsModule ), canActivate: [AuthGuard] },
+  { path: 'slots', loadChildren: () => import('@modules/slots/slots.module').then( m => m.SlotsModule ), canActivate: [AuthGuard] },
   { path: 'users', loadChildren: () => import('@modules/users/users.module').then( m => m.UsersModule ), canActivate: [AuthGuard] },
 
   // Settings:

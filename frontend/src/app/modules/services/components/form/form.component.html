@@ -30,6 +30,16 @@
         <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
       </mat-form-field>
 
+      <h4>Equipamiento:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Equipamiento</mat-label>
+        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento" multiple>
+          <div *ngFor="let currentEquipment of availableEquipments">
+            <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
       <h4>Estado:</h4>
       <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
         <mat-radio-button value="true">Activo</mat-radio-button>
@@ -40,7 +50,7 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+      <img (click)="onTest();" class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
     </div> <!-- end fxLayout wrapper -->
 
   </div>

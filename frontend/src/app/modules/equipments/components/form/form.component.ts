@@ -44,6 +44,9 @@ export class FormComponent implements OnInit {
     //Find references:
     this.findReferences();
 
+    //Get Logged User Information:
+    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title : 'Formulario de equipamiento',
@@ -152,12 +155,22 @@ export class FormComponent implements OnInit {
 
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
-      this.availableOrganizations = res.data;
+      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
+      if(Array.isArray(res.data)){
+        this.availableOrganizations = res.data;
+      } else {
+        this.availableOrganizations = [res.data];
+      }
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
-      this.availableBranches = res.data;
+      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
+      if(Array.isArray(res.data)){
+        this.availableBranches = res.data;
+      } else {
+        this.availableBranches = [res.data];
+      }
     });
 
     //Find modalities:

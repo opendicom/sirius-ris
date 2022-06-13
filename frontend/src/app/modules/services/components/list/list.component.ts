@@ -22,6 +22,9 @@ export class ListComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
+    //Get Logged User Information:
+    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title   : 'Listado de servicios',
@@ -45,7 +48,7 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['name', 'organization.short_name', 'branch.short_name', 'modality.code_value', 'equipments.name'];
+    this.sharedProp.filterFields  = ['name', 'organization.short_name', 'branch.short_name', 'modality.code_value', 'equipments.name', 'equipments.AET'];
     this.sharedProp.projection    = {
       'fk_branch': 1,
       'fk_modality': 1,
@@ -55,7 +58,8 @@ export class ListComponent implements OnInit {
       'branch.short_name': 1,
       'modality.code_value': 1,
       'modality.code_meaning': 1,
-      'equipments.name': 1
+      'equipments.name': 1,
+      'equipments.AET': 1
     };
     this.sharedProp.sort          = { status: -1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };

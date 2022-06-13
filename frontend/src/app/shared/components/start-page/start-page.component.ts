@@ -21,14 +21,14 @@ export class StartPageComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ) {
+    //Get Logged User Information:
+    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title   : false,
       filters_form    : false,
     });
-
-    //Get User Logged Information:
-    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
   }
 
   ngOnInit(): void {

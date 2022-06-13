@@ -1,13 +1,14 @@
 <button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
+  <mat-icon>person</mat-icon>&nbsp;
   <span class="user_info">
-    {{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}
+    <small>{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
     &nbsp; ► &nbsp;
     <small>{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small> &nbsp;
   </span>
   <mat-icon>more_vert</mat-icon>
 </button>
 
-<mat-menu #userMenu="matMenu">
+<mat-menu #userMenu="matMenu" xPosition="before">
   <button mat-menu-item>
     <mat-icon>format_list_bulleted</mat-icon><span>Logs del usuario</span>
   </button>

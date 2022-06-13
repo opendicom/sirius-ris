@@ -15,7 +15,7 @@ import { default_page_sizes } from '@env/environment';                          
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'short_name', 'name', 'OID', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'service', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
 
   //Inject services to the constructor:
   constructor(
@@ -27,30 +27,44 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Listado de organizaciones',
-      content_icon    : 'apartment',
-      add_button      : '/organizations/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      content_title   : 'Listado de turnos',
+      content_icon    : 'date_range',
+      add_button      : '/slots/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
       filters_form    : true,
       filters : {
         search        : true,
-        date_range    : false,
+        date_range    : true,
         status        : true,
         pager         : true,
       }
     });
 
     //Set element:
-    sharedProp.elementSetter('organizations');
+    sharedProp.elementSetter('slots');
 
     //Initialize action fields:
     this.sharedProp.filter        = '';
+    //this.sharedProp.date_rage     = '';
     this.sharedProp.status        = '';
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['name', 'short_name', 'OID'];
-    this.sharedProp.projection    = { name: 1, short_name: 1, 'OID': 1, status: 1 };
-    this.sharedProp.sort          = { status: -1 };
+    this.sharedProp.filterFields  = ['start', 'end', 'organization.short_name', 'branch.short_name', 'service.name', 'modality.code_value', 'equipments.name'];
+    this.sharedProp.projection    = {
+      'domain': 1,
+      'fk_equipment': 1,
+      'start': 1,
+      'end': 1,
+      'urgency': 1,
+      'organization.short_name': 1,
+      'branch.short_name': 1,
+      'service.name': 1,
+      'equipment.name': 1,
+      'equipment.AET': 1,
+      'modality.code_value': 1,
+      'modality.code_meaning': 1
+    };
+    this.sharedProp.sort          = { start: -1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:
@@ -61,4 +75,5 @@ export class ListComponent implements OnInit {
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
+
 }

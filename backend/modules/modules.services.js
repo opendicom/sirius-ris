@@ -107,6 +107,9 @@ async function findById(req, res, currentSchema){
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
 
+    //Send DEBUG Message:
+    mainServices.sendConsoleMessage('DEBUG', '\nfind by id [processed condition]: ' + JSON.stringify({ _id: filter._id }));
+
     //Execute main query:
     await currentSchema.Model.findById(filter._id, formatted_proj)
     .exec()
@@ -144,7 +147,11 @@ async function findOne(req, res, currentSchema){
 
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
-    
+
+    //Send DEBUG Message:
+    mainServices.sendConsoleMessage('DEBUG', '\nfind one [processed condition]: ' + JSON.stringify(condition));
+
+    //Execute main query:
     await currentSchema.Model.findOne(condition, formatted_proj).sort(sort)
     .exec()
     .then((data) => {
@@ -206,10 +213,13 @@ async function insert(req, res, currentSchema, referencedElements = false){
         if(secureInsert){
             //Create Mongoose object to insert validated data:
             const objData = new currentSchema.Model(req.body);
-            
+
             //Save data into DB:
             await objData.save(objData)
             .then(async (data) => {
+                //Send DEBUG Message:
+                mainServices.sendConsoleMessage('DEBUG', '\ninsert [processed data]: ' + JSON.stringify(req.body));
+
                 //Send successfully response:
                 res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
             })
@@ -295,6 +305,9 @@ async function update(req, res, currentSchema, referencedElements = false){
                     //Set empty blocked format:
                     if(Object.keys(req.validatedResult.blocked).length === 0) { req.validatedResult.blocked = false; }
 
+                    //Send DEBUG Message:
+                    mainServices.sendConsoleMessage('DEBUG', '\nupdate [processed data]: ' + JSON.stringify({ _id: req.body._id }, updateObj));
+
                     //Send successfully response:
                     res.status(200).send({
                         success: true,
@@ -340,6 +353,9 @@ async function _delete(req, res, currentSchema){
         .exec()
         .then((data) => {
             if(data) {
+                //Send DEBUG Message:
+                mainServices.sendConsoleMessage('DEBUG', '\ndelete [deleted document]: ' + JSON.stringify({ _id: req.body._id }));
+
                 //Send successfully response:
                 res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
             } else {

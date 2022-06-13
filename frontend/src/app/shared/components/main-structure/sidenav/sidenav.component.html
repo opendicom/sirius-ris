@@ -6,7 +6,7 @@
 <mat-list>
   <h3>Gestión</h3>
 
-  <mat-list-item>
+  <mat-list-item routerLink="/slots/list">
     <mat-icon>date_range</mat-icon><span>Turnos</span>
   </mat-list-item>
 
@@ -24,31 +24,33 @@
 
   <br/>
 
-  <h3>Funciones avanzadas</h3>
+  <span *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+    <h3>Funciones avanzadas</h3>
 
-  <mat-list-item>
-    <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
-  </mat-list-item>
+    <mat-list-item>
+      <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
+    </mat-list-item>
 
-  <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
 
-  <mat-list-item>
-    <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
-  </mat-list-item>
+    <mat-list-item>
+      <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
+    </mat-list-item>
 
-  <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
 
-  <mat-list-item>
-    <mat-icon>query_stats</mat-icon><span>Estadística</span>
-  </mat-list-item>
+    <mat-list-item>
+      <mat-icon>query_stats</mat-icon><span>Estadística</span>
+    </mat-list-item>
 
-  <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
 
-  <mat-list-item>
-    <mat-icon>attach_money</mat-icon><span>Facturación</span>
-  </mat-list-item>
+    <mat-list-item>
+      <mat-icon>attach_money</mat-icon><span>Facturación</span>
+    </mat-list-item>
 
-  <br/>
+    <br/>
+  </span>
 
   <h3>Administrador</h3>
 

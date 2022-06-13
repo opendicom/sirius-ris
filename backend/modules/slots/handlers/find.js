@@ -15,36 +15,36 @@ module.exports = async (req, res, currentSchema) => {
 
     //Add aggregate to request:
     req.query['aggregate'] = [
+        //Organizations lookup:
+        { $lookup: {
+            from: 'organizations',
+            localField: 'domain.organization',
+            foreignField: '_id',
+            as: 'organization',
+        }},
+
+        //Branches lookup:
+        { $lookup: {
+            from: 'branches',
+            localField: 'domain.branch',
+            foreignField: '_id',
+            as: 'branch',
+        }},
+
+        //Services lookup:
+        { $lookup: {
+            from: 'services',
+            localField: 'domain.service',
+            foreignField: '_id',
+            as: 'service',
+        }},
+
         //Equipments lookup:
         { $lookup: {
             from: 'equipments',
             localField: 'fk_equipment',
             foreignField: '_id',
             as: 'equipment',
-        }},
-
-        //Services lookup:
-        { $lookup: {
-            from: 'services',
-            localField: 'fk_service',
-            foreignField: '_id',
-            as: 'service',
-        }},
-
-        //Branches lookup:
-        { $lookup: {
-            from: 'branches',
-            localField: 'service.fk_branch',
-            foreignField: '_id',
-            as: 'branch',
-        }},
-
-        //Organizations lookup:
-        { $lookup: {
-            from: 'organizations',
-            localField: 'branch.fk_organization',
-            foreignField: '_id',
-            as: 'organization',
         }},
 
         //Modalities lookup:
@@ -64,10 +64,10 @@ module.exports = async (req, res, currentSchema) => {
         }},
 
         //Unwind:
-        { $unwind: { path: "$equipment", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$service", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$organization", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$service", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$equipment", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$procedure", preserveNullAndEmptyArrays: true } },
     ];    
@@ -76,10 +76,10 @@ module.exports = async (req, res, currentSchema) => {
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
         filter = moduleServices.adjustDataTypes(filter, 'slots');
-        filter = moduleServices.adjustDataTypes(filter, 'equipments', 'equipment');
-        filter = moduleServices.adjustDataTypes(filter, 'services', 'service');
-        filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
         filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
+        filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
+        filter = moduleServices.adjustDataTypes(filter, 'services', 'service');
+        filter = moduleServices.adjustDataTypes(filter, 'equipments', 'equipment');
         filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
         filter = moduleServices.adjustDataTypes(filter, 'procedures', 'procedure');
 

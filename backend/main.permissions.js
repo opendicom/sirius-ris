@@ -22,9 +22,12 @@ const rolePermissions = {
     2: {
         users           : ['find', 'findOne', 'insert', 'update'],
         logs            : ['find', 'findOne'],
+        modalities      : ['find', 'findOne'],
+        organizations   : ['find', 'findOne'],
         branches        : ['find', 'findOne', 'insert', 'update'],
         services        : ['find', 'findOne', 'insert', 'update'],
         equipments      : ['find', 'findOne', 'insert', 'update'],
+        slots           : ['find', 'findOne', 'insert', 'update'],
     }
 }
 

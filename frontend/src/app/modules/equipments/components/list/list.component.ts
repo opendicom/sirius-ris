@@ -22,6 +22,9 @@ export class ListComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
+    //Get Logged User Information:
+    this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title   : 'Listado de equipamiento',

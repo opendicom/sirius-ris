@@ -42,6 +42,7 @@ import { BranchesModule } from '@modules/branches/branches.module';
 import { ServicesModule } from '@modules/services/services.module';
 import { EquipmentsModule } from '@modules/equipments/equipments.module';
 import { UsersModule } from '@modules/users/users.module';
+import { SlotsModule } from '@modules/slots/slots.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -69,7 +70,8 @@ import { UsersModule } from '@modules/users/users.module';
     BranchesModule,
     ServicesModule,
     EquipmentsModule,
-    UsersModule
+    UsersModule,
+    SlotsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
