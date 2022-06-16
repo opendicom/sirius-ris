@@ -4,8 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
-import { FormControl } from '@angular/forms';                                           // FormControl (Mat-Select Multiple)
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
@@ -20,9 +19,6 @@ export class FormComponent implements OnInit {
   public availableOrganizations: any;
   public availableBranches: any;
   public availableModalities: any;
-
-  //Set FormControl elements (Arrays - Mat-Select Multiple):
-  public selectedModalities = new FormControl('');
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -65,7 +61,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_branch     : ['', [Validators.required]],
-      //fk_modalities : [[], [Validators.required]],
+      fk_modalities : [[], [Validators.required]],
       name          : ['', [Validators.required]],
       serial_number : [''],
       AET           : [''],
@@ -95,7 +91,7 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               fk_branch     : res.data[0].fk_branch,
-              //fk_modalities : [], //res.data[0].fk_modalities,
+              fk_modalities : new FormControl({ value: [] }, Validators.required),
               name          : res.data[0].name,
               serial_number : res.data[0].serial_number,
               AET           : res.data[0].AET,
@@ -103,10 +99,7 @@ export class FormComponent implements OnInit {
             });
 
             //Send data to FormControl elements (Arrays - Mat-Select Multiple):
-            this.selectedModalities.setValue(res.data[0].fk_modalities);
-
-            //Add FormControl elements to FormGroup (Mat-Select Multiple):
-            this.form.value.fk_modalities = this.selectedModalities.value;
+            this.form.controls['fk_modalities'].setValue(res.data[0].fk_modalities);
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -126,9 +119,6 @@ export class FormComponent implements OnInit {
     if(this.form.valid){
       //Data normalization - Booleans types:
       this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false;
-
-      //Refresh FormControl elements to FormGroup (Mat-Select Multiple):
-      this.form.value.fk_modalities = this.selectedModalities.value;
 
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {

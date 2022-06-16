@@ -5,7 +5,7 @@
       <h4>Servicio:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Servicio</mat-label>
-        <mat-select formControlName="domain[service]" placeholder="Seleccione el servicio">
+        <mat-select formControlName="domain[service]" (selectionChange)="onChangeService($event)" placeholder="Seleccione el servicio">
           <div *ngFor="let currentService of availableServices">
             <div *ngFor="let currentBranch of availableBranches">
               <div *ngFor="let currentOrganization of availableOrganizations">

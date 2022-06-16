@@ -33,7 +33,7 @@
       <h4>Equipamiento:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Equipamiento</mat-label>
-        <mat-select [formControl]="selectedEquipments" required placeholder="Seleccione el equipamiento" multiple>
+        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento" multiple>
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>

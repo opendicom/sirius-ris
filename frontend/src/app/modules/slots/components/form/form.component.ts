@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
@@ -21,6 +21,9 @@ export class FormComponent implements OnInit {
   public availableServices: any;
   public availableModalities: any;
   public availableEquipments: any;
+
+  //Disbled elements (Dynamic control):
+  public equipmentsDisabled: boolean = true;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -63,7 +66,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       'domain[service]' : ['', [Validators.required]],
-      fk_equipments     : ['', [Validators.required]],
+      fk_equipments     : new FormControl({ value: '', disabled: true }, Validators.required),
       date              : ['', [Validators.required]],
       start             : ['', [Validators.required]],
       end               : ['', [Validators.required]],
@@ -111,6 +114,33 @@ export class FormComponent implements OnInit {
         });
       }
     }
+  }
+
+  onChangeService(event: any): void {
+    //Find corresponding service:
+    const paramsServices = {
+      'filter[_id]'     : event.value,
+      'proj[fk_branch]' : 1
+    };
+
+    //Find selected service:
+    this.sharedFunctions.find('services', paramsServices, (resServices) => {
+
+      //Find equipments for selected service (fk_branch):
+      const paramsEquipments = {
+        'filter[status]': true,
+        'filter[fk_branch]': resServices.data[0].fk_branch
+      };
+
+      //Set available equipments:
+      this.sharedFunctions.find('equipments', paramsEquipments, (resEquipments) => {
+        this.availableEquipments = resEquipments.data;
+      });
+    });
+
+    //Enable equipments input:
+    this.form.controls['fk_equipments'].enable();
+    this.form.controls['fk_equipments'].setValidators(Validators.required);
   }
 
   onSubmit(){
@@ -180,11 +210,6 @@ export class FormComponent implements OnInit {
     //Find modalities:
     this.sharedFunctions.find('modalities', params, (res) => {
       this.availableModalities = res.data;
-    });
-
-    //Find equipments:
-    this.sharedFunctions.find('equipments', params, (res) => {
-      this.availableEquipments = res.data;
     });
   }
 
