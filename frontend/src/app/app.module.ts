@@ -6,9 +6,12 @@ import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 
 //---------------------------------------------------------------------------------------------------------------------------//
-// Import MAT_DATE_LOCALE to set locale code:
+// Import LOCALE_ID to set locale code & language:
 //---------------------------------------------------------------------------------------------------------------------------//
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { LOCALE_ID } from '@angular/core';
+import es from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(es);
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -75,7 +78,7 @@ import { SlotsModule } from '@modules/slots/slots.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    { provide: LOCALE_ID, useValue: 'es-AR' },
   ],
   bootstrap: [AppComponent]
 })

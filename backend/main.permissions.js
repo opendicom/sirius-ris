@@ -27,7 +27,7 @@ const rolePermissions = {
         branches        : ['find', 'findOne', 'insert', 'update'],
         services        : ['find', 'findOne', 'insert', 'update'],
         equipments      : ['find', 'findOne', 'insert', 'update'],
-        slots           : ['find', 'findOne', 'insert', 'update'],
+        slots           : ['find', 'findOne', 'insert', 'update'], //delete
     }
 }
 

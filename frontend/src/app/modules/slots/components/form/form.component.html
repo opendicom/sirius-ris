@@ -1,1 +1,71 @@
-<p>form works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Servicio:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Servicio</mat-label>
+        <mat-select formControlName="domain[service]" placeholder="Seleccione el servicio">
+          <div *ngFor="let currentService of availableServices">
+            <div *ngFor="let currentBranch of availableBranches">
+              <div *ngFor="let currentOrganization of availableOrganizations">
+                <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+              </div>
+            </div>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Equipamiento:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Equipamiento</mat-label>
+        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento">
+          <div *ngFor="let currentEquipment of availableEquipments">
+            <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <hr class="dashed" /><br/>
+
+      <h4>Urgencia:</h4>
+      <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
+        <mat-radio-button value="true">Si</mat-radio-button>
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>Fecha:</h4>
+      <mat-form-field appearance="fill" class="large" (click)="picker.open()">
+        <mat-label>Seleccione fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" (keydown)="false">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+      </mat-form-field>
+
+      <h4>Inicio turno:</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Inicio</mat-label>
+        <input type="time" matInput formControlName="start" min="00:00" max="24:00">
+     </mat-form-field>
+
+      <h4>Fin turno:</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Fin</mat-label>
+        <input type="time" matInput formControlName="end" min="00:00" max="24:00">
+     </mat-form-field>
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button (click)="onCancel();">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">Guardar</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

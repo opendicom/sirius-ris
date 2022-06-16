@@ -83,7 +83,10 @@ body {
   padding: 2px 5px 2px 5px;
   background-color: #4e4e79;
   border-radius: 3px;
-  margin: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 0px;
   float: left;
 }
 
@@ -92,7 +95,10 @@ body {
   padding: 2px 5px 2px 5px;
   background-color: #e91e63;
   border-radius: 3px;
-  margin: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 0px;
   float: left;
 }
 
@@ -101,7 +107,10 @@ body {
   padding: 2px 5px 2px 5px;
   background-color: #607d8b;
   border-radius: 3px;
-  margin: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 0px;
   float: left;
 }
 
@@ -110,7 +119,10 @@ body {
   padding: 2px 5px 2px 5px;
   background-color: #f44336;
   border-radius: 3px;
-  margin: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 0px;
   float: left;
 }
 
@@ -147,6 +159,10 @@ table {
   padding: 10px;
   color: #ddd;
   background-color: #27293d !important;
+}
+
+.column-alt{
+  background-color: #2e304b !important;
 }
 
 /* Table Header color:

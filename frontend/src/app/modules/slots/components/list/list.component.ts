@@ -15,7 +15,7 @@ import { default_page_sizes } from '@env/environment';                          
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'service', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'service', 'date_name', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
 
   //Inject services to the constructor:
   constructor(
@@ -30,6 +30,7 @@ export class ListComponent implements OnInit {
       content_title   : 'Listado de turnos',
       content_icon    : 'date_range',
       add_button      : '/slots/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      add_slots_batch : '/slots/batch',
       filters_form    : true,
       filters : {
         search        : true,

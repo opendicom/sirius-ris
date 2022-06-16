@@ -41,7 +41,7 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
+        <span class="badge-accent" *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
       </td>
     </ng-container>
 

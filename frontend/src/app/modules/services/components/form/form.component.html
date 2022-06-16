@@ -8,7 +8,7 @@
         <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
-              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} - {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
             </div>
           </div>
         </mat-select>
@@ -33,7 +33,7 @@
       <h4>Equipamiento:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento" multiple>
+        <mat-select [formControl]="selectedEquipments" required placeholder="Seleccione el equipamiento" multiple>
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
@@ -50,7 +50,7 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-      <img (click)="onTest();" class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
     </div> <!-- end fxLayout wrapper -->
 
   </div>

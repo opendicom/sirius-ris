@@ -6,6 +6,17 @@
   <button mat-flat-button color="primary" routerLink="{{ sharedProp.action.add_button }}" *ngIf="sharedProp.action.add_button">
     <mat-icon>add</mat-icon> AÑADIR
   </button>
+
+  <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+  <!-- SPECIFIC CASES: -->
+  <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+  <span *ngIf="sharedProp.action.add_slots_batch">
+    &nbsp;
+    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_slots_batch }}">
+      <mat-icon>content_copy</mat-icon> GENERAR LOTE
+    </button>
+  </span>
+  <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 </mat-toolbar>
 
 <div *ngIf="sharedProp.action.filters_form">

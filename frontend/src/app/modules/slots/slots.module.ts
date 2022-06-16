@@ -9,12 +9,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/slots/components/list/list.component';
 import { FormComponent } from '@modules/slots/components/form/form.component';
-
+import { BatchComponent } from '@modules/slots/components/batch/batch.component';
 
 @NgModule({
   declarations: [
     ListComponent,
-    FormComponent
+    FormComponent,
+    BatchComponent
   ],
   imports: [
     CommonModule,

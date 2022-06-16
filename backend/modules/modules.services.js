@@ -209,6 +209,9 @@ async function insert(req, res, currentSchema, referencedElements = false){
             secureInsert = true;
         }
 
+        //Send DEBUG Message:
+        mainServices.sendConsoleMessage('DEBUG', '\ninsert [processed data]: ' + JSON.stringify(req.body));
+        
         //Check if secure insert:
         if(secureInsert){
             //Create Mongoose object to insert validated data:
@@ -217,9 +220,6 @@ async function insert(req, res, currentSchema, referencedElements = false){
             //Save data into DB:
             await objData.save(objData)
             .then(async (data) => {
-                //Send DEBUG Message:
-                mainServices.sendConsoleMessage('DEBUG', '\ninsert [processed data]: ' + JSON.stringify(req.body));
-
                 //Send successfully response:
                 res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
             })
@@ -294,6 +294,9 @@ async function update(req, res, currentSchema, referencedElements = false){
                 updateObj = { $set: req.validatedResult.set };
             }
 
+            //Send DEBUG Message:
+            mainServices.sendConsoleMessage('DEBUG', '\nupdate [processed data]: ' + JSON.stringify({ _id: req.body._id }, updateObj));
+
             //Save data into DB:
             await currentSchema.Model.findOneAndUpdate({ _id: req.body._id }, updateObj, { new: true })
             .then(async (data) => {
@@ -304,9 +307,6 @@ async function update(req, res, currentSchema, referencedElements = false){
 
                     //Set empty blocked format:
                     if(Object.keys(req.validatedResult.blocked).length === 0) { req.validatedResult.blocked = false; }
-
-                    //Send DEBUG Message:
-                    mainServices.sendConsoleMessage('DEBUG', '\nupdate [processed data]: ' + JSON.stringify({ _id: req.body._id }, updateObj));
 
                     //Send successfully response:
                     res.status(200).send({
@@ -1134,7 +1134,7 @@ function addDomainCondition(req, res, domainType){
             if(filter){
                 //If filter has operator, add domain condition with AND operator:
                 if(filter.and || filter.or){
-                    haveOperator = true;        
+                    haveOperator = true; 
                 }
             } else {
                 //Add filter object to request (prevent undefined nested properties):
@@ -1146,8 +1146,11 @@ function addDomainCondition(req, res, domainType){
                 case 'organizations':
                     //Check whether it has operator or not:
                     if(haveOperator){
+                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                        if(!filter.and){ req.query.filter['and'] = []; }
+
                         //Add domain condition:
-                        req.query.filter['and']['_id'] = domain;
+                        req.query.filter.and['_id'] = domain;
                     } else {
                         //Add domain condition:
                         req.query.filter['_id'] = domain;
@@ -1159,14 +1162,17 @@ function addDomainCondition(req, res, domainType){
                 case 'branches':
                     //Check whether it has operator or not:
                     if(haveOperator){
+                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                        if(!filter.and){ req.query.filter['and'] = []; }
+
                         //Switch by domain type: 
                         if(domainType == 'organizations'){
                             //Add domain condition:
-                            req.query.filter['and']['fk_organization'] = domain;
+                            req.query.filter.and['fk_organization'] = domain;
                         
                         } else if(domainType == 'branches'){
                             //Add domain condition:
-                            req.query.filter['and']['_id'] = domain;
+                            req.query.filter.and['_id'] = domain;
                         }
                         //SERVICE you should not access here because of role control.
 
@@ -1187,18 +1193,21 @@ function addDomainCondition(req, res, domainType){
                 case 'services':
                     //Check whether it has operator or not:
                     if(haveOperator){
+                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                        if(!filter.and){ req.query.filter['and'] = []; }
+
                         //Switch by domain type: 
                         if(domainType == 'organizations'){
                             //Add domain condition:
-                            req.query.filter['and']['branch.fk_organization'] = domain;
+                            req.query.filter.and['branch.fk_organization'] = domain;
 
                         } else if(domainType == 'branches'){
                             //Add domain condition:
-                            req.query.filter['and']['fk_branch'] = domain;
+                            req.query.filter.and['fk_branch'] = domain;
                         
                         } else if(domainType == 'services'){
                             //Add domain condition:
-                            req.query.filter['and']['_id'] = domain;
+                            req.query.filter.and['_id'] = domain;
                         }
 
                     } else {
@@ -1221,14 +1230,17 @@ function addDomainCondition(req, res, domainType){
                 case 'equipments':
                     //Check whether it has operator or not:
                     if(haveOperator){
+                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                        if(!filter.and){ req.query.filter['and'] = []; }
+
                         //Switch by domain type: 
                         if(domainType == 'organizations'){
                             //Add domain condition:
-                            req.query.filter['and']['branch.fk_organization'] = domain;
+                            req.query.filter.and['branch.fk_organization'] = domain;
 
                         } else if(domainType == 'branches'){
                             //Add domain condition:
-                            req.query.filter['and']['fk_branch'] = domain;
+                            req.query.filter.and['fk_branch'] = domain;
                         
                         }
                         //SERVICE you should not access here because of role control.
@@ -1246,6 +1258,43 @@ function addDomainCondition(req, res, domainType){
                         //SERVICE you should not access here because of role control.
                     }
                     break;
+
+                case 'slots':
+                    //Check whether it has operator or not:
+                    if(haveOperator){
+                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                        if(!filter.and){ req.query.filter['and'] = []; }
+
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter.and['domain.organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter.and['domain.branch'] = domain;
+
+                        } else if(domainType == 'services'){
+                            //Add domain condition:
+                            req.query.filter.and['domain.service'] = domain;
+                        }
+                    } else {
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Add domain condition:
+                            req.query.filter['domain.organization'] = domain;
+
+                        } else if(domainType == 'branches'){
+                            //Add domain condition:
+                            req.query.filter['domain.branch'] = domain;
+
+                        } else if(domainType == 'services'){
+                            //Add domain condition:
+                            req.query.filter['domain.service'] = domain;
+                        }
+                    }
+                    break;
+
             }
             break;
 

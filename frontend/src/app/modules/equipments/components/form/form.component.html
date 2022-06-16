@@ -8,7 +8,7 @@
         <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
-              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} - {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
             </div>
           </div>
         </mat-select>
@@ -17,7 +17,7 @@
       <h4>Modalidades:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Modalidades</mat-label>
-        <mat-select formControlName="fk_modalities" placeholder="Seleccione las modalidades" multiple>
+        <mat-select [formControl]="selectedModalities" required placeholder="Seleccione las modalidades" multiple>
           <div *ngFor="let currentModality of availableModalities">
             <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} - {{ currentModality.code_meaning }}</mat-option>
           </div>

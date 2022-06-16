@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
+import { FormControl } from '@angular/forms';                                           // FormControl (Mat-Select Multiple)
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
@@ -20,6 +21,9 @@ export class FormComponent implements OnInit {
   public availableBranches: any;
   public availableModalities: any;
   public availableEquipments: any;
+
+  //Set FormControl elements (Arrays - Mat-Select Multiple):
+  public selectedEquipments = new FormControl('');
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -61,11 +65,11 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      fk_branch     : ['', [Validators.required]],
-      fk_modality   : ['', [Validators.required]],
-      name          : ['', [Validators.required]],
-      fk_equipments : [[], [Validators.required]],
-      status        : ['true']
+      fk_branch     : [ '', [Validators.required] ],
+      fk_modality   : [ '', [Validators.required] ],
+      name          : [ '', [Validators.required] ],
+      //fk_equipments : [ [], [Validators.required] ],
+      status        : [ 'true' ]
     });
   }
 
@@ -93,9 +97,15 @@ export class FormComponent implements OnInit {
               fk_branch   : res.data[0].fk_branch,
               fk_modality : res.data[0].fk_modality,
               name        : res.data[0].name,
-              fk_equipments : [], //res.data[0].fk_equipments,
+              //fk_equipments : [], //res.data[0].fk_equipments,
               status      : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
+
+            //Send data to FormControl elements (Arrays - Mat-Select Multiple):
+            this.selectedEquipments.setValue(res.data[0].fk_equipments);
+
+            //Add FormControl elements to FormGroup (Mat-Select Multiple):
+            this.form.value.fk_equipments = this.selectedEquipments.value;
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -116,17 +126,15 @@ export class FormComponent implements OnInit {
       //Data normalization - Booleans types:
       this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false;
 
+      //Refresh FormControl elements to FormGroup (Mat-Select Multiple):
+      this.form.value.fk_equipments = this.selectedEquipments.value;
+
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
         //Response the form according to the result:
         this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
       });
     }
-  }
-
-  onTest(){
-    //TEST:
-    console.log(this.form.value);
   }
 
   onCancel(){
