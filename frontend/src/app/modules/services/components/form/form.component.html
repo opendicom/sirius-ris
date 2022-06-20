@@ -5,21 +5,11 @@
       <h4>Sucursal:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal">
+        <mat-select formControlName="fk_branch" (selectionChange)="onChangeBranch($event)" placeholder="Seleccione la sucursal">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
             </div>
-          </div>
-        </mat-select>
-      </mat-form-field>
-
-      <h4>Modalidad:</h4>
-      <mat-form-field appearance="fill" class="large">
-        <mat-label>Modalidad</mat-label>
-        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad">
-          <div *ngFor="let currentModality of availableModalities">
-            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
@@ -33,9 +23,19 @@
       <h4>Equipamiento:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento" multiple>
+        <mat-select formControlName="fk_equipments" (closed)="onChangeEquipment()" placeholder="Seleccione el equipamiento" multiple>
           <div *ngFor="let currentEquipment of availableEquipments">
-            <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+            <mat-option #matOption (click)="addModalities(matOption.selected, currentEquipment._id, currentEquipment.fk_modalities)" value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Modalidad:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Modalidad</mat-label>
+        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad">
+          <div *ngFor="let currentModality of availableModalities">
+            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
           </div>
         </mat-select>
       </mat-form-field>

@@ -21,6 +21,10 @@ export class FormComponent implements OnInit {
   public availableModalities: any;
   public availableEquipments: any;
 
+  //Initialize selected modalities array:
+  private selectedModalities: string[] = [];
+  private selectedEquipments: any = {};
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -61,11 +65,11 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      fk_branch     : [ '', [Validators.required] ],
-      fk_modality   : [ '', [Validators.required] ],
-      name          : [ '', [Validators.required] ],
-      fk_equipments : [ [], [Validators.required] ],
-      status        : [ 'true' ]
+      fk_branch       : [ '', [Validators.required] ],
+      name            : [ '', [Validators.required] ],
+      fk_equipments   : new FormControl({ value: '', disabled: true }, Validators.required),
+      fk_modality     : new FormControl({ value: '', disabled: true }, Validators.required),
+      status          : [ 'true' ]
     });
   }
 
@@ -88,6 +92,9 @@ export class FormComponent implements OnInit {
 
           //Check operation status:
           if(res.success === true){
+            //Find references (disabled inputs):
+            this.onChangeBranch(false, res.data[0]);
+
             //Send data to the form:
             this.setReactiveForm({
               fk_branch       : res.data[0].fk_branch,
@@ -110,6 +117,83 @@ export class FormComponent implements OnInit {
           }
         });
       }
+    }
+  }
+
+  onChangeBranch(event: any, updateData: any = false): void {
+    //Initialize fk_branch:
+    let fk_branch = '';
+
+    //Check update data case:
+    if(updateData == false){
+      fk_branch = event.value;
+    } else {
+      fk_branch = updateData.fk_branch;
+    }
+
+    //Find equipments for selected branch:
+    const paramsEquipments = {
+      'filter[status]': true,
+      'filter[fk_branch]': fk_branch
+    };
+
+    //Set available equipments:
+    this.sharedFunctions.find('equipments', paramsEquipments, (resEquipments) => {
+      //Check data:
+      if(resEquipments.data){
+        //Set available equipments:
+        this.availableEquipments = resEquipments.data;
+
+        //Enable equipments input:
+        this.form.controls['fk_equipments'].enable();
+
+        //Find modalities only in update case:
+        if(updateData){
+          this.findModalities(updateData);
+        }
+      }
+    });
+  }
+
+  async addModalities(selected: any, equipment:string, modalities: string[]) {
+    //Check if option is selected or unselected:
+    if(selected){
+      //Add selected equipment:
+      this.selectedEquipments[equipment] = modalities;
+    } else {
+      //Remove unselected equipment:
+      delete this.selectedEquipments[equipment];
+    }
+
+    //Clear selected modalities array:
+    this.selectedModalities = [];
+
+    //Loop into selected equipments (await foreach):
+    await Promise.all(Object.keys(this.selectedEquipments).map((key) => {
+      //Merge the below arrays and remove duplicates in the resulting array
+      this.selectedModalities = this.selectedModalities.concat(this.selectedEquipments[key].filter((item: any) => this.selectedModalities.indexOf(item) < 0));
+    }));
+  }
+
+  onChangeEquipment(): void {
+    //Check selected modalities:
+    if(this.selectedModalities.length > 0){
+      //Find corresponding modalities:
+      const paramsModalities = {
+        'filter[in][_id]' : this.selectedModalities
+      }
+
+      //Find modalities:
+      this.sharedFunctions.find('modalities', paramsModalities, (resModalities) => {
+        //Check data:
+        if(resModalities.data){
+          //Set available modalities:
+          this.availableModalities = resModalities.data;
+
+          //Enable modality input:
+          this.form.controls['fk_modality'].enable();
+        }
+      });
     }
   }
 
@@ -166,15 +250,21 @@ export class FormComponent implements OnInit {
         this.availableBranches = [res.data];
       }
     });
+  }
 
-    //Find modalities:
-    this.sharedFunctions.find('modalities', params, (res) => {
-      this.availableModalities = res.data;
-    });
+  //Find modalities only update case:
+  async findModalities(updateData: any){
+    //Loop into selected equipments:
+    await Promise.all(Object.keys(this.availableEquipments).map((key) => {
+      //Check if selected equipments (update data) is included in available equipments:
+      if(updateData.fk_equipments.includes(this.availableEquipments[key]._id)){
 
-    //Find equipments:
-    this.sharedFunctions.find('equipments', params, (res) => {
-      this.availableEquipments = res.data;
-    });
+        //Merge the below arrays and remove duplicates in the resulting array
+        this.selectedModalities = this.selectedModalities.concat(this.availableEquipments[key].fk_modalities.filter((item: any) => this.selectedModalities.indexOf(item) < 0));
+      }
+    }));
+
+    //Find modalities with "selectedModalities" and enable input:
+    this.onChangeEquipment();
   }
 }
