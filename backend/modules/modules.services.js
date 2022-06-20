@@ -26,6 +26,9 @@ async function find(req, res, currentSchema){
     //Set regex:
     condition = await setRegex(regex, condition);
 
+    //Set in:
+    condition = await setIn(filter, condition);
+
     //Parse skip and limit value (string) to integer (base 10):
     req.query.skip = parseInt(req.query.skip, 10);
     req.query.limit = parseInt(req.query.limit, 10);
@@ -144,6 +147,9 @@ async function findOne(req, res, currentSchema){
 
     //Set regex:
     condition = await setRegex(regex, condition);
+
+    //Set in:
+    condition = await setIn(filter, condition);
 
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
@@ -629,6 +635,60 @@ async function setRegex(regex, condition){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET IN:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setIn(filter, condition){
+    //Check filter:
+    if(filter){
+        //Check if the IN operator exists:
+        if(filter.in){
+            //Create IN condition:
+            let global_in_condition = {};
+
+            //Create AND condition to concat multiple IN conditions:
+            let and_in_condition = { $and: [] };
+
+            //Check if there is more than one property with the in operator:
+            if(Object.keys(filter.in).length == 1){
+                //Get key name:
+                const keyName = Object.keys(filter.in)[0];
+
+                //Set global in condition:
+                global_in_condition[keyName] = { $in: filter.in[keyName] };
+            } else {
+                //Build IN condition with multiple keys (await foreach):
+                await Promise.all(Object.keys(filter.in).map(async (current, index) => {
+                    //Create local in_condition (clean on each iteration):
+                    let in_condition = {};
+                    in_condition[current] = { $in: filter.in[current] };
+                    
+                    //Add current IN condition into AND array condition:
+                    and_in_condition.$and[index] = in_condition;
+                }));
+
+                //Set global IN condition (scope):
+                global_in_condition = and_in_condition;
+            }
+
+            //Remove original in from condition object:
+            delete condition.in;
+
+            //Check if oroginal condition have operators (AND | OR):
+            if(Object.keys(condition).length != 0){
+                //Set final IN condition to concatenate the original condition:
+                condition = { $and: [ global_in_condition, condition ] };
+            } else {
+                condition = global_in_condition;
+            }
+        }
+    }
+    
+    //Return condition:
+    return condition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK ELEMENT:
 //--------------------------------------------------------------------------------------------------------------------//
 async function ckeckElement(_id, schemaName, res){
@@ -974,7 +1034,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 //--------------------------------------------------------------------------------------------------------------------//
 // ADJUST CONDITION:
 //--------------------------------------------------------------------------------------------------------------------//
-function adjustCondition(filter, callback){
+async function adjustCondition(filter, callback){
     //Initialize final filter:
     let final_filter = {};
 
@@ -988,9 +1048,49 @@ function adjustCondition(filter, callback){
         final_filter = callback(filter.or);
     }
 
+    //Condition with IN operator:
+    if(filter.in){
+        //Check if there is more than one property with the in operator:
+        if(Object.keys(filter.in).length == 1){
+            //Get key name:
+            const keyName = Object.keys(filter.in)[0];
+
+            //Loop through values inside the IN array:
+            Object.keys(filter.in[keyName]).forEach(async (current) => {
+                //Create tmp_filter (clean on each iteration):
+                let tmp_filter = {};
+                tmp_filter[keyName] = filter.in[keyName][current];
+
+                //Adjust Data Type (individual element [IN Array]):
+                let callback_return = await callback(tmp_filter);
+                
+                //Assign adjusted value on original object:
+                filter.in[keyName][current] = callback_return[keyName]
+            });
+        } else {
+            //Build IN condition with multiple keys (await foreach):
+            await Promise.all(Object.keys(filter.in).map(async (keyName, index) => {
+
+                //Loop through values inside the IN array:
+                await Promise.all(Object.keys(filter.in[keyName]).map(async (current) => {
+                    //Create tmp_filter (clean on each iteration):
+                    let tmp_filter = {};
+                    tmp_filter[keyName] = filter.in[keyName][current];
+
+                    //Adjust Data Type (individual element [IN Array]):
+                    let callback_return = await callback(tmp_filter);
+                    
+                    //Assign adjusted value on original object:
+                    filter.in[keyName][current] = callback_return[keyName]
+                }));
+            }));
+        }
+    }
+
     //Condition without operator (Filter only):
     final_filter = callback(filter);
 
+    //Return adjusted condition:
     return final_filter;
 }
 //--------------------------------------------------------------------------------------------------------------------//
@@ -1420,6 +1520,7 @@ module.exports = {
     insertLog,
     setCondition,
     setRegex,
+    setIn,
     domainIs,
     addDomainCondition
 };

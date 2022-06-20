@@ -55,17 +55,20 @@ module.exports = async (req, res, currentSchema) => {
     //Correct data types for match operation:
     if(filter != undefined){
         //Adjust data types for match aggregation (Schema):
-        filter = moduleServices.adjustDataTypes(filter, 'equipments');
-        filter = moduleServices.adjustDataTypes(filter, 'branches', 'branch');
-        filter = moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
-        filter = moduleServices.adjustDataTypes(filter, 'modalities', 'modalities');
-        filter = moduleServices.adjustDataTypes(filter, 'procedures', 'procedures');
+        filter = await moduleServices.adjustDataTypes(filter, 'equipments');
+        filter = await moduleServices.adjustDataTypes(filter, 'branches', 'branch');
+        filter = await moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
+        filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modalities');
+        filter = await moduleServices.adjustDataTypes(filter, 'procedures', 'procedures');
 
         //Set condition:
         let condition = await moduleServices.setCondition(filter);
 
         //Set regex:
         condition = await moduleServices.setRegex(regex, condition);
+
+        //Set in:
+        condition = await moduleServices.setIn(filter, condition);
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: condition });
