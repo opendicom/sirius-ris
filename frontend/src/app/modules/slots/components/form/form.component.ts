@@ -22,8 +22,9 @@ export class FormComponent implements OnInit {
   public availableModalities: any;
   public availableEquipments: any;
 
-  //Disbled elements (Dynamic control):
-  public equipmentsDisabled: boolean = true;
+  //Initialize selected elements:
+  private selectedBranch: string = '';
+  private selectedEquipments: string[] = [];
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -65,8 +66,8 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      'domain[service]' : ['', [Validators.required]],
-      fk_equipments     : new FormControl({ value: '', disabled: true }, Validators.required),
+      domain            : ['', [Validators.required]],
+      fk_equipment      : new FormControl({ value: '', disabled: true }, Validators.required),
       date              : ['', [Validators.required]],
       start             : ['', [Validators.required]],
       end               : ['', [Validators.required]],
@@ -95,12 +96,12 @@ export class FormComponent implements OnInit {
           if(res.success === true){
             //Send data to the form:
             this.setReactiveForm({
-              'domain[service]' : res.data[0].domain.service,
-              fk_equipments     : res.data[0].fk_equipment,
+              //domain          : res.data[0].domain.service,
+              fk_equipment    : new FormControl({ value: res.data[0].fk_equipment, disabled: true }, Validators.required),
               //date
               //start
               //end
-              urgency           : [ `${res.data[0].status}` ] //Use back tip notation to convert string
+              urgency         : [ `${res.data[0].urgency}` ] //Use back tip notation to convert string
             });
 
             //Get property keys with values:
@@ -116,38 +117,85 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onChangeService(event: any): void {
-    //Find corresponding service:
-    const paramsServices = {
-      'filter[_id]'     : event.value,
-      'proj[fk_branch]' : 1
-    };
+  setBranch(fk_branch: string, fk_equipments: any = false): void {
+    //Clear selected equipments:
+    this.selectedEquipments = [];
 
-    //Find selected service:
-    this.sharedFunctions.find('services', paramsServices, (resServices) => {
+    //Set selected elements:
+    this.selectedBranch = fk_branch;
 
-      //Find equipments for selected service (fk_branch):
-      const paramsEquipments = {
-        'filter[status]': true,
-        'filter[fk_branch]': resServices.data[0].fk_branch
-      };
+    //Check fk_equipments:
+    if(fk_equipments){
+      if(fk_equipments.length == 1){
+        this.selectedEquipments.push(fk_equipments[0]);
+      } else {
+        this.selectedEquipments = fk_equipments;
+      }
+    } else {
+      //Enable equipments input:
+      this.form.controls['fk_equipment'].disable();
+
+      //Clear input:
+      this.form.controls['fk_equipment'].setValue([]);
+
+      //Send message:
+      this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún equipo.');
+    }
+
+  }
+
+  onChangeService(): void {
+    //Check selected equipments:
+    if(this.selectedEquipments.length != 0){
+      //Initialize params:
+      let paramsEquipments = {};
+
+      //Check number of selected equiipments:
+      if(this.selectedEquipments.length == 1){
+        paramsEquipments = {
+          'filter[_id]' : this.selectedEquipments[0]
+        };
+      } else {
+        paramsEquipments = {
+          'filter[and][status]': true,
+          'filter[and][fk_branch]': this.selectedBranch,
+          'filter[in][_id]' : this.selectedEquipments
+        };
+      }
 
       //Set available equipments:
       this.sharedFunctions.find('equipments', paramsEquipments, (resEquipments) => {
-        this.availableEquipments = resEquipments.data;
-      });
-    });
+        //Check data:
+        if(resEquipments.data.length > 0){
+          this.availableEquipments = resEquipments.data;
 
-    //Enable equipments input:
-    this.form.controls['fk_equipments'].enable();
-    this.form.controls['fk_equipments'].setValidators(Validators.required);
+          //Enable equipments input:
+          this.form.controls['fk_equipment'].enable();
+        }
+      });
+    }
   }
 
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
+      //Data normalization - Domain:
+      const domain = this.form.value.domain.split('.');
+      this.form.value.domain = {
+        organization  : domain[0],
+        branch        : domain[1],
+        service       : domain[2]
+      }
+
       //Data normalization - Booleans types:
-      this.form.value.urgency = this.form.value.status.toLowerCase() == 'true' ? true : false;
+      this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false;
+
+      //Data normalization - Dates types:
+      this.form.value.start = this.sharedFunctions.setDatetimeFormat(this.form.value.date, this.form.value.start);
+      this.form.value.end = this.sharedFunctions.setDatetimeFormat(this.form.value.date, this.form.value.end);
+
+      //Delete temp fields:
+      delete this.form.value.date;
 
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
@@ -205,11 +253,6 @@ export class FormComponent implements OnInit {
       } else {
         this.availableServices = [res.data];
       }
-    });
-
-    //Find modalities:
-    this.sharedFunctions.find('modalities', params, (res) => {
-      this.availableModalities = res.data;
     });
   }
 

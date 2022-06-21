@@ -5,11 +5,11 @@
       <h4>Servicio:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Servicio</mat-label>
-        <mat-select formControlName="domain[service]" (selectionChange)="onChangeService($event)" placeholder="Seleccione el servicio">
+        <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
           <div *ngFor="let currentService of availableServices">
             <div *ngFor="let currentBranch of availableBranches">
               <div *ngFor="let currentOrganization of availableOrganizations">
-                <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                <mat-option (click)="setBranch(currentService.fk_branch, currentService.fk_equipments)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
               </div>
             </div>
           </div>
@@ -19,7 +19,7 @@
       <h4>Equipamiento:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipments" placeholder="Seleccione el equipamiento">
+        <mat-select formControlName="fk_equipment" placeholder="Seleccione el equipamiento">
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
@@ -47,13 +47,15 @@
         <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
       </mat-form-field>
 
-      <h4>Inicio turno:</h4>
+      <hr class="dashed" /><br/>
+
+      <h4>Inicio turno <span class="label-info">Formato 24 hs</span>:</h4>
       <mat-form-field appearance="fill">
         <mat-label>Inicio</mat-label>
         <input type="time" matInput formControlName="start" min="00:00" max="24:00">
      </mat-form-field>
 
-      <h4>Fin turno:</h4>
+      <h4>Fin turno <span class="label-info">Formato 24 hs</span>:</h4>
       <mat-form-field appearance="fill">
         <mat-label>Fin</mat-label>
         <input type="time" matInput formControlName="end" min="00:00" max="24:00">

@@ -35,7 +35,7 @@ export class ListComponent implements OnInit {
       filters : {
         search        : true,
         date_range    : true,
-        status        : true,
+        status        : false,
         pager         : true,
       }
     });
@@ -50,7 +50,7 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['start', 'end', 'organization.short_name', 'branch.short_name', 'service.name', 'modality.code_value', 'equipments.name'];
+    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'service.name', 'modality.code_value', 'equipments.name'];
     this.sharedProp.projection    = {
       'domain': 1,
       'fk_equipment': 1,

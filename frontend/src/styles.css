@@ -133,6 +133,19 @@ mark {
   border-radius: 2px;
   padding: 1px;
 }
+
+.label-info {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #733ad5a9;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 

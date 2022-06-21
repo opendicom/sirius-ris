@@ -171,23 +171,22 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // GET DATE BACKEND FORMAT:
+  // SET DATETIME FORMAT:
   //--------------------------------------------------------------------------------------------------------------------//
-  getDateBackendFormat(date: Date): string {
+  setDatetimeFormat(date: Date, time: string): string{
     //Fix Eastern Daylight Time (TimezoneOffset):
     date.getTimezoneOffset();
 
-    //Set format date:
-    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
+    //Separate date:
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
 
+    //Set backend datetime format (string):
+    const datetime = year + "-" + month + "-" + day + "T" + time + ":00.000Z";
 
-  //--------------------------------------------------------------------------------------------------------------------//
-  // GET TIME BACKEND FORMAT:
-  //--------------------------------------------------------------------------------------------------------------------//
-  getTimeBackendFormat(time: Date): string {
-    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+    //Return formated datetime:
+    return datetime;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

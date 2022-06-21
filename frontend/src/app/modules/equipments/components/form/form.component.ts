@@ -61,7 +61,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_branch     : ['', [Validators.required]],
-      fk_modalities : [[], [Validators.required]],
+      fk_modalities : new FormControl({ value: [] }, Validators.required),
       name          : ['', [Validators.required]],
       serial_number : [''],
       AET           : [''],

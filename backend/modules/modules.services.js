@@ -566,8 +566,8 @@ async function setRegex(regex, condition){
                     keyName = Object.keys(or_current)[0];
                     currentValue = condition.$or[or_index][keyName];
 
-                    //Exclude boolean and ObjectId types:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false){
+                    //Exclude boolean, ObjectId and Date types [Date by KeyName]:
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -583,8 +583,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(or_current)[0];
                             currentValue = and_current.$or[or_index][keyName];
                             
-                            //Exclude boolean and ObjectId types:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
+                            //Exclude boolean, ObjectId and Date types [Date by KeyName]:
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -597,8 +597,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
-                            //Exclude boolean and ObjectId types:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
+                            //Exclude boolean, ObjectId and Date types [Date by KeyName]:
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -609,8 +609,8 @@ async function setRegex(regex, condition){
                         keyName = Object.keys(and_current)[0];
                         currentValue = condition.$and[and_index][keyName];
 
-                        //Exclude boolean and ObjectId types:
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
+                        //Exclude boolean, ObjectId and Date types [Date by KeyName]:
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
@@ -621,8 +621,8 @@ async function setRegex(regex, condition){
                 keyName = Object.keys(condition)[index];
                 currentValue = condition[current];
                 
-                //Exclude boolean and ObjectId types:
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false){
+                //Exclude boolean, ObjectId and Date types [Date by KeyName]:
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false  && keyName !== 'start' && keyName !== 'end'){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -1014,10 +1014,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
                 //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_service'] != undefined){ filter[asPrefix + 'fk_service'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_service']); };
                 if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                if(filter[asPrefix + 'date'] != undefined){ filter[asPrefix + 'date'] = new Date(filter[asPrefix + 'date']); }
                 if(filter[asPrefix + 'start'] != undefined){ filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']); }
                 if(filter[asPrefix + 'end'] != undefined){ filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
