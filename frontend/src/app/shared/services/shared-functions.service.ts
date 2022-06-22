@@ -173,7 +173,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SET DATETIME FORMAT:
   //--------------------------------------------------------------------------------------------------------------------//
-  setDatetimeFormat(date: Date, time: string): string{
+  setDatetimeFormat(date: Date, time: string = '00:00'): string{
     //Fix Eastern Daylight Time (TimezoneOffset):
     date.getTimezoneOffset();
 

@@ -567,7 +567,7 @@ async function setRegex(regex, condition){
                     currentValue = condition.$or[or_index][keyName];
 
                     //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -584,7 +584,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$or[or_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -598,7 +598,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$and[second_and_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -610,11 +610,15 @@ async function setRegex(regex, condition){
                         currentValue = condition.$and[and_index][keyName];
 
                         //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'start' && keyName !== 'end'){
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
                 }));
+
+            //IN:
+            } else if(current == 'in'){
+                // Do nothing to exclude IN condition elements (No regex into IN operator).
 
             //Filter without condition (current = name_value):
             } else {
@@ -622,7 +626,7 @@ async function setRegex(regex, condition){
                 currentValue = condition[current];
                 
                 //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false  && keyName !== 'start' && keyName !== 'end'){
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end'){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -685,6 +689,26 @@ async function setIn(filter, condition){
     
     //Return condition:
     return condition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET DATE CONDITION:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setExplicitOperator(currentValue, callback){
+    Object.keys(currentValue).map((current) => {
+        switch(current){
+            case '$gte':
+                callback('$gte');
+                break;
+            case '$lte':
+                callback('$lte');
+                break;
+            default:
+                callback(false);
+                break;
+        }
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -952,8 +976,19 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'documents.doc_type'] != undefined){ filter[asPrefix + 'documents.doc_type'] = parseInt(filter[asPrefix + 'documents.doc_type'], 10); }
                 if(filter[asPrefix + 'gender'] != undefined){ filter[asPrefix + 'gender'] = parseInt(filter[asPrefix + 'gender'], 10); }
-                if(filter[asPrefix + 'birth_date'] != undefined){ filter[asPrefix + 'birth_date'] = new Date(filter[asPrefix + 'birth_date']); }
                 if(filter[asPrefix + 'phone_numbers'] != undefined){ filter[asPrefix + 'phone_numbers'] = filter[asPrefix + 'phone_numbers'][0] = parseInt(filter[asPrefix + 'phone_numbers'], 10); }
+
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'birth_date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'birth_date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'birth_date'][explicitOperator] = new Date(filter[asPrefix + 'birth_date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'birth_date'] = new Date(filter[asPrefix + 'birth_date']);
+                        }
+                    });
+                }
+
                 return filter;
             });
             break;
@@ -1016,9 +1051,29 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                if(filter[asPrefix + 'start'] != undefined){ filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']); }
-                if(filter[asPrefix + 'end'] != undefined){ filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
+                
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'start'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'start'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'start'][explicitOperator] = new Date(filter[asPrefix + 'start'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']);
+                        }
+                    });
+                }
+
+                if(filter[asPrefix + 'end'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'end'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'end'][explicitOperator] = new Date(filter[asPrefix + 'end'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']);
+                        }
+                    });
+                }
+                
                 return filter;
             });
             break;
