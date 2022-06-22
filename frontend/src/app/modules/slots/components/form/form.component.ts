@@ -94,15 +94,25 @@ export class FormComponent implements OnInit {
 
           //Check operation status:
           if(res.success === true){
+            //Format time values:
+            let start = JSON.stringify(res.data[0].start).split('T')[1].split('.')[0].slice(0, -3);
+            let end = JSON.stringify(res.data[0].end).split('T')[1].split('.')[0].slice(0, -3);
+
             //Send data to the form:
             this.setReactiveForm({
-              //domain          : res.data[0].domain.service,
-              fk_equipment    : new FormControl({ value: res.data[0].fk_equipment, disabled: true }, Validators.required),
-              //date
-              //start
-              //end
+              domain          : new FormControl({ value: '' }, Validators.required),
+              fk_equipment    : new FormControl({ value: '', disabled: false }, Validators.required),
+              date            : new Date(res.data[0].start),
+              start           : start,
+              end             : end,
               urgency         : [ `${res.data[0].urgency}` ] //Use back tip notation to convert string
             });
+
+            //Send data to FormControl elements:
+            this.form.controls['domain'].setValue(res.data[0].domain.organization + '.' + res.data[0].domain.branch + '.' + res.data[0].domain.service);
+            this.setBranch(res.data[0].branch._id, res.data[0].service.fk_equipments);  //Necessary to obtain information for fk_equipment input.
+            this.onChangeService();                                                     //Necessary to obtain information for fk_equipment input.
+            this.form.controls['fk_equipment'].setValue(res.data[0].fk_equipment);
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -255,5 +265,4 @@ export class FormComponent implements OnInit {
       }
     });
   }
-
 }
