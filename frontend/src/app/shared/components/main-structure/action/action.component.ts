@@ -44,8 +44,13 @@ export class ActionComponent implements OnInit {
       //Initialize action fields:
       this.sharedProp.filter = '';
       this.sharedProp.status = '';
+      this.sharedProp.urgency = '';
       this.sharedProp.pager.page_number = 1;
       this.sharedProp.pager.page_limit = this.page_sizes[0];
+      this.sharedProp.date_range = {
+        start : '',
+        end   : ''
+      };
     }
 
     //Set page:

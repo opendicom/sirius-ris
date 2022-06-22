@@ -34,8 +34,8 @@ export class ListComponent implements OnInit {
       filters_form    : true,
       filters : {
         search        : true,
-        date_range    : true,
-        status        : false,
+        date_range    : 'range',
+        urgency       : true,
         pager         : true,
       }
     });
@@ -45,8 +45,11 @@ export class ListComponent implements OnInit {
 
     //Initialize action fields:
     this.sharedProp.filter        = '';
-    //this.sharedProp.date_rage     = '';
-    this.sharedProp.status        = '';
+    this.sharedProp.urgency       = '';
+    this.sharedProp.date_range = {
+      start : '',
+      end   : ''
+    };
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';

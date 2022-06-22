@@ -29,13 +29,13 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.date_range">
-        <mat-label>Ingrese rango de fechas</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Fecha inicio">
-          <input matEndDate placeholder="Fecha fin">
+        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly placeholder="Fecha inicio">
+          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly placeholder="Fecha fin">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #picker (closed)="onSearch();"></mat-date-range-picker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
@@ -46,13 +46,11 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.madalities">
-        <mat-label>Modalidad</mat-label>
-        <mat-select>
-          <mat-option value="CR">CR</mat-option>
-          <mat-option value="MG">MG</mat-option>
-          <mat-option value="CT">CT</mat-option>
-          <mat-option value="RM">RM</mat-option>
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.urgency">
+        <mat-label>Urgencia</mat-label>
+        <mat-select [(ngModel)]="sharedProp.urgency" (selectionChange)="onSearch();">
+          <mat-option value="true">Urgente</mat-option>
+          <mat-option value="false">Normal</mat-option>
         </mat-select>
       </mat-form-field>
 

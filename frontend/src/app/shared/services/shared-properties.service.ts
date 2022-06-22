@@ -10,11 +10,11 @@ import { UsersAuthService } from '@auth/services/users-auth.service';         //
   providedIn: 'root'
 })
 export class SharedPropertiesService {
-  public isLogged   : boolean = false;
-  public userLogged : any;
-  public action     : any;
-  public element    : any;
-  public params     : any;
+  public isLogged     : boolean = false;
+  public userLogged   : any;
+  public action       : any;
+  public element      : any;
+  public params       : any;
 
   //Request params:
   public regex        : string;
@@ -25,14 +25,21 @@ export class SharedPropertiesService {
   public pager        : any;
 
   //Action fields:
-  public status: string;
+  public status       : string;
+  public urgency      : string;
+  public date_range   : any;
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
     //Initialize filter (empty):
-    this.filter = '';
-    this.status = '';
-    this.regex = '';
+    this.filter     = '';
+    this.status     = '';
+    this.urgency    = '';
+    this.regex      = '';
+    this.date_range = {
+      start : '',
+      end   : ''
+    };
   }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -84,6 +91,34 @@ export class SharedPropertiesService {
       string_filter += '"filter[and][status]": "' + this.status + '", ';
     }
 
+    //Check urgency - Filter (With AND Condition)::
+    if(this.urgency === 'true' || this.urgency === 'false'){
+      string_filter += '"filter[and][urgency]": "' + this.urgency + '", ';
+    }
+
+    //Check Date Range - Filter (With AND Condition)::
+    if(this.date_range.start !== '' && this.date_range.end !== ''){
+      //Set Datetime format:
+      const start = this._setDatetimeFormat(this.date_range.start);
+      let end = this._setDatetimeFormat(this.date_range.end, '23:59');
+
+      //Check if datetipe is not empty:
+      if(this.action.filters.date_range != ''){
+        switch(this.action.filters.date_range){
+          case 'range':
+            //Add date range into filter:
+            string_filter += '"filter[and][start][$gte]": "' + start + '", ';
+            string_filter += '"filter[and][end][$lte]": "' + end + '", ';
+            break;
+          default:
+            //Add date range into filter:
+            string_filter += '"filter[and][' + this.action.filters.date_range + '][$gte]": "' + start + '", ';
+            string_filter += '"filter[and][' + this.action.filters.date_range + '][$lte]": "' + end + '", ';
+            break;
+        }
+      }
+    }
+
     //Projection:
     for(let key in this.projection){
       string_proj += '"proj[' + key + ']": "' + this.projection[key] + '", ';
@@ -103,6 +138,27 @@ export class SharedPropertiesService {
 
     //Set params:
     this.params = JSON.parse(string_params);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET DATETIME FORMAT:
+  // Duplicated method to prevent circular dependency - [Original method: shared-functions.service].
+  //--------------------------------------------------------------------------------------------------------------------//
+  _setDatetimeFormat(date: Date, time: string = '00:00'): string{
+    //Fix Eastern Daylight Time (TimezoneOffset):
+    date.getTimezoneOffset();
+
+    //Separate date:
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+
+    //Set backend datetime format (string):
+    const datetime = year + "-" + month + "-" + day + "T" + time + ":00.000Z";
+
+    //Return formated datetime:
+    return datetime;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

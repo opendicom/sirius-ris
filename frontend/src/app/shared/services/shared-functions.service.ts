@@ -172,6 +172,7 @@ export class SharedFunctionsService {
 
   //--------------------------------------------------------------------------------------------------------------------//
   // SET DATETIME FORMAT:
+  // Duplicated method to prevent circular dependency - [Duplicated method: shared-functions.service].
   //--------------------------------------------------------------------------------------------------------------------//
   setDatetimeFormat(date: Date, time: string = '00:00'): string{
     //Fix Eastern Daylight Time (TimezoneOffset):
