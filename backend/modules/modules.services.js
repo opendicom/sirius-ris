@@ -181,7 +181,7 @@ async function findOne(req, res, currentSchema){
 // INSERT:
 // Creates a new record in the database.
 //--------------------------------------------------------------------------------------------------------------------//
-async function insert(req, res, currentSchema, referencedElements = false){
+async function insert(req, res, currentSchema, referencedElements = false, successResponse = true){
     //Get validation result:
     const errors = validationResult(req);
 
@@ -197,6 +197,9 @@ async function insert(req, res, currentSchema, referencedElements = false){
     
         //Return the result (HTML Response):
         res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: validate_messages });
+
+        //Set header sent property to check if header have already been sent:
+        res.headerSent = true;
     } else {
         //Initialize secure insert variable:
         let secureInsert = true;
@@ -226,13 +229,25 @@ async function insert(req, res, currentSchema, referencedElements = false){
             //Save data into DB:
             await objData.save(objData)
             .then(async (data) => {
-                //Send successfully response:
-                res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+                //Check if you want successful http response (false to batch inserts):
+                if(successResponse){
+                    //Send successfully response:
+                    res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+
+                    //Set header sent property to check if header have already been sent:
+                    res.headerSent = true;
+                }
             })
             .catch((err) => {
                 //Send error:
                 mainServices.sendError(res, currentLang.db.insert_error, err);
+
+                //Set header sent property to check if header have already been sent:
+                res.headerSent = true;
             });
+        } else {
+            //Set header sent property to check if header have already been sent:
+            res.headerSent = true;
         }
     }
 }

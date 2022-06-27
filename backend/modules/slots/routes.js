@@ -14,8 +14,10 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const findHandler   = require('./handlers/find');
-const saveHandler   = require('./handlers/save');
+const findHandler           = require('./handlers/find');
+const saveHandler           = require('./handlers/save');
+const saveBatchHandler      = require('./handlers/batch.save');
+const deleteBatchHandler    = require('./handlers/batch.delete');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -92,6 +94,35 @@ router.post(
     (req, res) => { 
         //Send to module service:
         moduleServices._delete(req, res, slots);
+    }
+);
+//--------------------------------------------------------------------------------------------------------------------//
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SLOTS BATCH:
+//--------------------------------------------------------------------------------------------------------------------//
+//INSERT BATCH:
+router.post(
+    '/batch/insert',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    //slots.Validator, //Desactivated because request have other parameters (Example: range_start).
+    (req, res) => {
+        //Send to handler:
+        saveBatchHandler(req, res, slots);
+    }
+);
+
+//DELETE BATCH:
+router.post(
+    '/batch/delete',
+    //mainMiddlewares.checkJWT,
+    //mainMiddlewares.roleAccessBasedControl,
+    //mainMiddlewares.checkDeleteCode,
+    (req, res) => { 
+        //Send to module service:
+        deleteBatchHandler(req, res, slots);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

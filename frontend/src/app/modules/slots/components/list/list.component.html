@@ -3,6 +3,16 @@
 <ng-template #thenBlockTable>
   <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
 
+    <!-- select element-->
+    <ng-container matColumnDef="select_element">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox color="primary" value="{{ element._id }}"></mat-checkbox>
+      </td>
+    </ng-container>
+
     <!-- element action -->
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>

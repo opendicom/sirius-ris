@@ -15,7 +15,7 @@ import { default_page_sizes } from '@env/environment';                          
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'service', 'date_name', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
+  public displayedColumns: string[] = ['select_element', 'element_action', 'organization', 'branch', 'service', 'date_name', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
 
   //Inject services to the constructor:
   constructor(
@@ -34,7 +34,7 @@ export class ListComponent implements OnInit {
       filters_form    : true,
       filters : {
         search        : true,
-        date_range    : 'range',
+        date_range    : 'slots',
         urgency       : true,
         pager         : true,
       }

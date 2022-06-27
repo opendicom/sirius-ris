@@ -1,1 +1,84 @@
-<p>batch works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Servicio:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Servicio</mat-label>
+        <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
+          <div *ngFor="let currentService of availableServices">
+            <div *ngFor="let currentBranch of availableBranches">
+              <div *ngFor="let currentOrganization of availableOrganizations">
+                <mat-option (click)="setBranch(currentService.fk_branch, currentService.fk_equipments)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+              </div>
+            </div>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Equipamiento:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Equipamiento</mat-label>
+        <mat-select formControlName="fk_equipment" placeholder="Seleccione el equipamiento">
+          <div *ngFor="let currentEquipment of availableEquipments">
+            <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <hr class="dashed" /><br/>
+
+      <h4>Rango de fechas:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+          <input matStartDate formControlName="range_start" readonly placeholder="Fecha inicio">
+          <input matEndDate formControlName="range_end" readonly placeholder="Fecha fin">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <br/><hr class="dashed" /><br/>
+
+      <h4>Día/s de la semana:</h4>
+      <div class="item-container" formArrayName="day">
+        <ng-container *ngFor="let currentDay of daysOfWeek | keyvalue; let key = index">
+          <mat-checkbox color="primary" (change)="onCheckDay($event, key)">{{ currentDay.value }}</mat-checkbox>
+        </ng-container>
+      </div>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>Urgencia:</h4>
+      <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
+        <mat-radio-button value="true">Si</mat-radio-button>
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/><hr class="dashed" /><br/>
+
+      <h4>Inicio turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Inicio</mat-label>
+        <input type="time" matInput formControlName="start" min="00:00" max="24:00">
+     </mat-form-field>
+
+      <h4>Fin turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Fin</mat-label>
+        <input type="time" matInput formControlName="end" min="00:00" max="24:00">
+     </mat-form-field>
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button (click)="onCancel();">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">Guardar</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>
