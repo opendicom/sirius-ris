@@ -15,6 +15,9 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
+//Dialogs components:
+import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
+
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
 
@@ -23,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    // Shared components:
     HeaderComponent,
     SidenavComponent,
     ActionComponent,
@@ -30,6 +34,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
+
+    //Dialogs components:
+    DeleteItemsComponent,
+
+    // Shared pipes:
     HighlighterPipe
   ],
   imports: [
@@ -40,6 +49,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   exports: [
+    // Shared components:
     HeaderComponent,
     SidenavComponent,
     ActionComponent,
@@ -48,6 +58,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SettingsComponent,
     NotFoundComponent,
     SharedMaterialModule,
+
+    //Dialogs components:
+    DeleteItemsComponent,
+
+    // Shared pipes:
     HighlighterPipe
   ]
 })

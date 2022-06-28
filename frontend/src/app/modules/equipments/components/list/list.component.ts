@@ -46,6 +46,9 @@ export class ListComponent implements OnInit {
     this.sharedProp.filter        = '';
     this.sharedProp.status        = '';
 
+    //Initialize selected items:
+    this.sharedProp.selected_items = [];
+
     //Set initial request params:
     this.sharedProp.regex         = 'true';
     this.sharedProp.filterFields  = ['name', 'serial_number', 'AET', 'organization.short_name', 'branch.short_name', 'modalities.code_value'];

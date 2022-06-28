@@ -1,0 +1,22 @@
+<h1 mat-dialog-title class="underline-fail"><mat-icon>delete_forever</mat-icon>&nbsp; Borrar elementos seleccionados</h1>
+<div mat-dialog-content>
+  <h3>¿Confirma que desea eliminar los elementos seleccionados?</h3>
+  Tenga en cuenta que si confirma, la eliminación será física sobre la base de datos y los elementos no serán recuperables.
+
+  <br/><br/><hr class="dashed" /><br/>
+
+  <div class="form-element text-center">
+    <h4>Ingrese el código de eliminación:</h4>
+    <mat-form-field appearance="fill" class="medium">
+      <mat-label>Código de eliminación</mat-label>
+      <input matInput type="password" [(ngModel)]="sharedFunctions.delete_code" class="text-center" placeholder="Ingrese el código de eliminación">
+    </mat-form-field>
+  </div>
+
+  <hr class="dashed" />
+</div>
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">CANCELAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, ELIMINAR</button>
+</div>

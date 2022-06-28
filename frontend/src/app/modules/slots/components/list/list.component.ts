@@ -51,6 +51,9 @@ export class ListComponent implements OnInit {
       end   : ''
     };
 
+    //Initialize selected items:
+    this.sharedProp.selected_items = [];
+
     //Set initial request params:
     this.sharedProp.regex         = 'true';
     this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'service.name', 'modality.code_value', 'equipments.name'];
@@ -80,4 +83,14 @@ export class ListComponent implements OnInit {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
 
+  onCheckItem(event: any, key: string){
+    //Check if it was selected or deselected:
+    if(event.checked){
+      //Add to selected items array:
+      this.sharedProp.selected_items.push(key);
+    } else {
+      //Remove current item from array:
+      this.sharedProp.selected_items = this.sharedProp.selected_items.filter((item) => item !== key)
+    }
+  }
 }

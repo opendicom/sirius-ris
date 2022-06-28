@@ -10,24 +10,25 @@ import { UsersAuthService } from '@auth/services/users-auth.service';         //
   providedIn: 'root'
 })
 export class SharedPropertiesService {
-  public isLogged     : boolean = false;
-  public userLogged   : any;
-  public action       : any;
-  public element      : any;
-  public params       : any;
+  public isLogged       : boolean = false;
+  public userLogged     : any;
+  public action         : any;
+  public element        : any;
+  public params         : any;
 
   //Request params:
-  public regex        : string;
-  public filter       : string;
-  public filterFields : any;
-  public projection   : any;
-  public sort         : any;
-  public pager        : any;
+  public regex          : string;
+  public filter         : string;
+  public filterFields   : any;
+  public projection     : any;
+  public sort           : any;
+  public pager          : any;
 
   //Action fields:
-  public status       : string;
-  public urgency      : string;
-  public date_range   : any;
+  public status         : string;
+  public urgency        : string;
+  public date_range     : any;
+  public selected_items : string[];
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
@@ -40,6 +41,9 @@ export class SharedPropertiesService {
       start : '',
       end   : ''
     };
+
+    //Initialize selected items:
+    this.selected_items = [];
   }
 
   //--------------------------------------------------------------------------------------------------------------------//

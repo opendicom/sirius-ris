@@ -68,6 +68,8 @@
       <button mat-icon-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
         <mat-icon>close</mat-icon>
       </button>
+
+      <button mat-flat-button color="accent" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0"><mat-icon>delete_forever</mat-icon>&nbsp; <small>BORRAR SELECCIÓN</small></button>
     </div> <!-- end fxLayout wrapper -->
 
     <span class="mat-spacer"></span>

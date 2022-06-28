@@ -6,17 +6,23 @@ import { Injectable } from '@angular/core';
 import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
 import { app_setting } from '@env/environment';                               // Environment
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
+import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
+
+// Dialogs components:
+import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  public response: any = {};
+  public response     : any = {};
+  public delete_code  : string = '';
 
   constructor(
-    private apiClient: ApiClientService,
-    private snackBar: MatSnackBar
+    private apiClient : ApiClientService,
+    private snackBar  : MatSnackBar,
+    private dialog    : MatDialog
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -202,6 +208,42 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // OPEN DIALOG:
+  //--------------------------------------------------------------------------------------------------------------------//
+  openDialog(operation: string, element: string, selected_items: string[], router: any = false){
+    //Switch by operation types:
+    switch(operation){
+      case 'delete':
+        //Create dialog observable:
+        const dialogObservable = this.dialog.open(DeleteItemsComponent);
+
+        //Observe content (Subscribe):
+        dialogObservable.afterClosed().subscribe(result => {
+          //Check if result is true:
+          if(result){
+            //Batch delete:
+            if(selected_items.length > 1){
+              this.delete('batch', element, selected_items, (res) => {
+                //Response the deletion according to the result:
+                this.deleteResponder(res, element, router);
+              });
+
+            //Single delete:
+            } else {
+              this.delete('single', element, selected_items[0], (res) => {
+                //Response the deletion according to the result:
+                this.deleteResponder(res, element, router);
+              });
+            }
+          }
+        });
+        break;
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // FIND - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
   find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false): void {
@@ -291,6 +333,65 @@ export class SharedFunctionsService {
       this.sendMessage('Error: Debe determinar el tipo de elemento.');
     }
   }
+  //--------------------------------------------------------------------------------------------------------------------//<
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE - (SINGLE AND BATCH DELETE):
+  //--------------------------------------------------------------------------------------------------------------------//
+  delete(operation: string, element: string, selected_items: any, callback = (res: any) => {}): void {
+    //Initializate URL:
+    let url = '';
+
+    //Check operation:
+    if(operation != ''){
+      //Switch by operation:
+      switch(operation){
+        case 'single':
+          url = element + '/delete';
+          break;
+        case 'batch':
+          url = element + '/batch/delete';
+          break;
+        default:
+          this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
+          break;
+      }
+
+      //Check URL:
+      if(url !== ''){
+        //Set data to delete:
+        const data = {
+          _id         : selected_items,
+          delete_code : this.delete_code
+        };
+
+        //Delete data:
+        //Create observable obsDelete:
+        const obsDelete = this.apiClient.sendRequest('POST', url, data);
+
+        //Observe content (Subscribe):
+        obsDelete.subscribe({
+          next: res => {
+            //Excecute optional callback with response:
+            callback(res);
+          },
+          error: res => {
+            //Send snakbar message:
+            if(res.error.message){
+              //Send other errors:
+              this.sendMessage(res.error.message);
+
+            } else {
+              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            }
+          }
+        });
+      }
+    } else {
+      this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+    }
+  }
   //--------------------------------------------------------------------------------------------------------------------//
 
 
@@ -337,6 +438,35 @@ export class SharedFunctionsService {
     } else {
       //Send snakbar message:
       this.sendMessage(res.message);
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE RESPONDER:
+  //--------------------------------------------------------------------------------------------------------------------//
+  deleteResponder(res: any, element: any, router: any){
+    //Check operation status:
+    if(res.success === true){
+      //Send snakbar message:
+      this.sendMessage(res.message);
+
+      //Reload a component:
+      router.routeReuseStrategy.shouldReuseRoute = () => false;
+      router.onSameUrlNavigation = 'reload';
+
+      //Redirect to list element:
+      router.navigate(['/' + element + '/list']);
+
+    } else {
+      //Check validate errors:
+      if(res.validate_errors){
+        //Send snakbar message:
+        this.sendMessage(res.message + ', ' + res.validate_errors);
+      } else {
+        //Send snakbar message:
+        this.sendMessage(res.message);
+      }
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

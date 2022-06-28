@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { Router } from '@angular/router';                                               // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { default_page_sizes } from '@env/environment';                                  // Enviroment
@@ -19,6 +20,7 @@ export class ActionComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
+    private router: Router,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ) {
@@ -51,6 +53,9 @@ export class ActionComponent implements OnInit {
         start : '',
         end   : ''
       };
+
+      //Initialize selected items:
+      this.sharedProp.selected_items = [];
     }
 
     //Set page:
@@ -104,6 +109,16 @@ export class ActionComponent implements OnInit {
   //--------------------------------------------------------------------------------------------------------------------//
   counterPages(number_of_pages: number): Array<number> {
     return Array.from({length: number_of_pages}, (_, i) => i + 1);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE SELECTED ITEMS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  deleteSelectedItems(){
+    //Open dialog to confirm:
+    this.sharedFunctions.openDialog('delete', this.sharedProp.element, this.sharedProp.selected_items, this.router);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

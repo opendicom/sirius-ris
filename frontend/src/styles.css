@@ -245,6 +245,16 @@ table {
   padding: 12px 5px 12px 12px;
   background: #2d2d47;
 }
+
+.mat-menu-content {
+  background-color: #3d3f51;
+  color: #fff;
+}
+
+.mat-select-panel {
+  background-color: #3d3f51;
+  color: #fff;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -253,5 +263,14 @@ table {
 .mat-snack-bar-container {
   background-color: #3d3f51;
   color: #fff;
+}
+
+.mat-dialog-container {
+  background-color: #27293d;
+  color: #fff;
+}
+
+.mat-dialog-title {
+  padding-bottom: 10px;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
