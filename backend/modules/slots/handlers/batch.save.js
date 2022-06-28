@@ -9,7 +9,7 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 //Import Module Services:
 const moduleServices = require('../../modules.services');
 
-module.exports = async (req, res, currentSchema, operation) => {
+module.exports = async (req, res, currentSchema) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
     referencedElements.push([ req.body.domain.organization, 'organizations' ]);

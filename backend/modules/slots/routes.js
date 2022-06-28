@@ -117,8 +117,8 @@ router.post(
 //DELETE BATCH:
 router.post(
     '/batch/delete',
-    //mainMiddlewares.checkJWT,
-    //mainMiddlewares.roleAccessBasedControl,
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
     //mainMiddlewares.checkDeleteCode,
     (req, res) => { 
         //Send to module service:

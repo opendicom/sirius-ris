@@ -357,7 +357,7 @@ async function update(req, res, currentSchema, referencedElements = false){
 // DELETE:
 // Delete an item from the database based on an ID (This method is reserved for developers).
 //--------------------------------------------------------------------------------------------------------------------//
-async function _delete(req, res, currentSchema){
+async function _delete(req, res, currentSchema, successResponse = true){
     //Validate ID request:
     if(!mainServices.validateRequestID(req.body._id, res)) return;    
 
@@ -368,6 +368,9 @@ async function _delete(req, res, currentSchema){
     if(result){
         //Deletion rejected for dependencies:
         res.status(405).send({ success: false, message: currentLang.db.delete_rejected_dep, dependencies: result });
+
+        //Set header sent property to check if header have already been sent:
+        res.headerSent = true;
     } else {
         //Delete element:
         await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
@@ -377,16 +380,28 @@ async function _delete(req, res, currentSchema){
                 //Send DEBUG Message:
                 mainServices.sendConsoleMessage('DEBUG', '\ndelete [deleted document]: ' + JSON.stringify({ _id: req.body._id }));
 
-                //Send successfully response:
-                res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+                //Check if you want successful http response (false to batch delete):
+                if(successResponse){
+                    //Send successfully response:
+                    res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+
+                    //Set header sent property to check if header have already been sent:
+                    res.headerSent = true;
+                }
             } else {
                 //Dont match (empty result):
                 res.status(404).send({ success: false, message: currentLang.db.delete_id_no_results, _id: req.body._id });
+
+                //Set header sent property to check if header have already been sent:
+                res.headerSent = true;
             }
         })
         .catch((err) => {
             //Send error:
             mainServices.sendError(res, currentLang.db.delete_error, err);
+
+            //Set header sent property to check if header have already been sent:
+            res.headerSent = true;
         });
     }
 }
