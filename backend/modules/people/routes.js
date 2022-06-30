@@ -90,14 +90,12 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     people.Validator,
     async (req, res) => {
-        //Search for duplicates:
-        //const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
-
-        //Check for duplicates:
-        //if(code_value == false){
+        //Check if the person already exists in the database:
+        const personExist = await moduleServices.checkPerson(req, res);
+        if(personExist == false){
             //Save data:
             moduleServices.insert(req, res, people);
-        //}
+        }
     }
 );
 
@@ -109,14 +107,12 @@ router.post(
     mainMiddlewares.allowedValidate(allowedSchemaKeys, people.AllowedUnsetValues),
     people.Validator,
     async (req, res) => {
-        //Search for duplicates:
-        //const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
-
-        //Check for duplicates:
-        //if(code_value == false){
+        //Check if the person already exists in the database:
+        const personExist = await moduleServices.checkPerson(req, res);
+        if(personExist == false){
             //Save data:
             moduleServices.update(req, res, people);
-        //}
+        }
     }
 );
 

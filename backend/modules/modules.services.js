@@ -316,7 +316,7 @@ async function update(req, res, currentSchema, referencedElements = false){
             }
 
             //Send DEBUG Message:
-            mainServices.sendConsoleMessage('DEBUG', '\nupdate [processed data]: ' + JSON.stringify({ _id: req.body._id }, updateObj));
+            mainServices.sendConsoleMessage('DEBUG', '\nupdate [processed data]: ' + JSON.stringify({ _id: req.body }, updateObj));
 
             //Save data into DB:
             await currentSchema.Model.findOneAndUpdate({ _id: req.body._id }, updateObj, { new: true })
@@ -975,6 +975,82 @@ async function isDuplicated(req, res, currentSchema, value, fieldName){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK PERSON:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkPerson(req, res){
+    //Import schemas:
+    const people = require('./people/schemas');
+
+    //Initialize result:
+    result = false;
+
+    //Set filter:
+    let filter = {}
+
+    //Check if document exist (insert and update document case):
+    if(req.body.documents){
+        //Check how many documents entered:
+        if(req.body.documents.length == 1){
+            filter['documents'] = req.body.documents[0];
+        } else {
+            //Create OR condition:
+            filter = { $or: [] };
+
+            //Set documents OR condition (await foreach):
+            await Promise.all(Object.keys(req.body.documents).map((current) => {
+                console.log(req.body.documents[current]);
+                filter.$or.push({
+                    'documents.doc_country_code': req.body.documents[current].doc_country_code,
+                    'documents.doc_type': req.body.documents[current].doc_type,
+                    'documents.document': req.body.documents[current].document
+                });
+            }));
+        }
+    //Update without document case:
+    } else {
+        filter['_id'] = req.body._id;
+    }
+
+    await people.Model.findOne(filter, {})
+    .exec()
+    .then((data) => {
+        //Check data:
+        if(data){
+            //Check operation:
+            //INSERT:
+            if(req.body._id == undefined){
+                //Check if have results:
+                if(data){
+                    //Set result (duplicated):
+                    result = true;
+
+                    //Send duplicate message:
+                    res.status(200).send({ success: false, message: 'La persona que está intentando ingresar ya existe en la base de datos.', data: data });
+                }
+
+            //UPDATE
+            } else {
+                if(data._id != req.body._id){
+                    //Set result (duplicated):
+                    result = true;
+
+                    //Send duplicate message:
+                    res.status(200).send({ success: false, message: 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.', data: data });
+                }
+            }
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // ADJUST DATA TYPES:
 //--------------------------------------------------------------------------------------------------------------------//
 function adjustDataTypes(filter, schemaName, asPrefix = ''){
@@ -1598,6 +1674,7 @@ module.exports = {
     _delete,
     findAggregation,
     isDuplicated,
+    checkPerson,
     adjustDataTypes,
     ckeckElement,
     insertLog,
