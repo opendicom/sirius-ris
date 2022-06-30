@@ -48,6 +48,7 @@ export class ListComponent implements OnInit {
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
+    this.sharedProp.checked_items = [];
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';

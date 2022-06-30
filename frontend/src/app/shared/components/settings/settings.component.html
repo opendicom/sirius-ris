@@ -11,7 +11,7 @@
     Organizaciones
   </button>
 
-  <button mat-button routerLink="/branches/list">
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/branches/list">
     <mat-icon>account_tree</mat-icon><br/>
     Sucursales
   </button>
@@ -21,24 +21,27 @@
     Servicios
   </button>
 
-  <br/>
-
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/modalities/list">
     <mat-icon>multiple_stop</mat-icon><br/>
     Modalidades
   </button>
 
-  <button mat-button routerLink="/equipments/list">
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/equipments/list">
     <mat-icon>precision_manufacturing</mat-icon><br/>
     Equipamiento
   </button>
 
   <button mat-button>
-    <mat-icon>format_list_numbered</mat-icon><br/>
-    Tipos de estudios / Procedimientos
+    <mat-icon>category</mat-icon><br/>
+    Categorías de procedimientos
   </button>
 
-  <br/>
+  <button mat-button>
+    <mat-icon>format_list_numbered</mat-icon><br/>
+    Procedimientos
+  </button>
+
+  <br/><br/><hr class="dashed" /><br/>
 
   <button mat-button routerLink="/users/list">
     <mat-icon>people</mat-icon><br/>

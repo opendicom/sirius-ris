@@ -69,7 +69,7 @@
         <mat-icon>close</mat-icon>
       </button>
 
-      <button mat-flat-button color="accent" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0"><mat-icon>delete_forever</mat-icon>&nbsp; <small>BORRAR SELECCIÓN</small></button>
+      <button mat-flat-button color="accent" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0"><mat-icon>delete_forever</mat-icon>&nbsp; <small>BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})</small></button>
     </div> <!-- end fxLayout wrapper -->
 
     <span class="mat-spacer"></span>

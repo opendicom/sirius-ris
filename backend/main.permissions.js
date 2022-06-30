@@ -6,6 +6,7 @@
 const rolePermissions = {
     //Superuser:
     1: {
+        people          : ['find', 'findOne', 'insert', 'update', 'delete'],
         users           : ['find', 'findOne', 'insert', 'update', 'delete'],            
         logs            : ['find', 'findOne'],
         sessions        : ['find', 'findOne', 'delete'],
@@ -20,13 +21,14 @@ const rolePermissions = {
 
     //Administrator:
     2: {
+        people          : ['find', 'findOne', 'insert', 'update'],
         users           : ['find', 'findOne', 'insert', 'update'],
         logs            : ['find', 'findOne'],
         modalities      : ['find', 'findOne'],
         organizations   : ['find', 'findOne'],
-        branches        : ['find', 'findOne', 'insert', 'update'],
+        branches        : ['find', 'findOne'],
         services        : ['find', 'findOne', 'insert', 'update'],
-        equipments      : ['find', 'findOne', 'insert', 'update'],
+        equipments      : ['find', 'findOne'],
         slots           : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
     }
 }

@@ -29,6 +29,7 @@ export class SharedPropertiesService {
   public urgency        : string;
   public date_range     : any;
   public selected_items : string[];
+  public checked_items  : boolean[];
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
@@ -44,6 +45,7 @@ export class SharedPropertiesService {
 
     //Initialize selected items:
     this.selected_items = [];
+    this.checked_items = [];
   }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -145,6 +147,7 @@ export class SharedPropertiesService {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
+
   //--------------------------------------------------------------------------------------------------------------------//
   // SET DATETIME FORMAT:
   // Duplicated method to prevent circular dependency - [Original method: shared-functions.service].
@@ -163,6 +166,71 @@ export class SharedPropertiesService {
 
     //Return formated datetime:
     return datetime;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ON CHECK ITEM:
+  //--------------------------------------------------------------------------------------------------------------------//
+  onCheckItem(event: any, key: string, index: number){
+    //Check if it was selected or deselected:
+    if(event.checked){
+      //Add to selected items array:
+      this.checked_items[index] = true;
+      this.selected_items.push(key);
+    } else {
+      //Remove current item from array:
+      this.checked_items[index] = false;
+      this.selected_items = this.selected_items.filter((item) => item !== key);
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ON SELECT ALL:
+  //--------------------------------------------------------------------------------------------------------------------//
+  onSelectAll(event: any){
+    //Select list of checkboxes by class:
+    const listCheckboxes = document.querySelectorAll('.itemCheck');
+
+    //Initialize index (counter):
+    let current_index : number = -1;
+
+    //Loop in checkboxes:
+    listCheckboxes.forEach(current => {
+      let current_id    : any;
+      let hasValue      : boolean = false;
+
+      //Check if MatCheckbox atribute "ng-reflect-value" is not null or undefined:
+      if(current.getAttribute('ng-reflect-value') != null || current.getAttribute('ng-reflect-value') != undefined){
+        //Set current id:
+        current_id = current.getAttribute('ng-reflect-value');
+        current_index = current_index + 1;
+        hasValue = true;
+      } else {
+        hasValue = false;
+      }
+
+      //Check current element:
+      if(hasValue){
+        this.onCheckItem(event, current_id, current_index);
+      }
+    });
+
+    //Remove duplicates from an array:
+    this.selected_items = [...new Set(this.selected_items)];
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET TOTAL CHECKED:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getTotalChecked(): number{
+    //return the number of true values:
+    return this.checked_items.filter(value => value === true).length;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

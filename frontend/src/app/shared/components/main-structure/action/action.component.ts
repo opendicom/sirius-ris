@@ -53,10 +53,11 @@ export class ActionComponent implements OnInit {
         start : '',
         end   : ''
       };
-
-      //Initialize selected items:
-      this.sharedProp.selected_items = [];
     }
+
+    //Initialize selected items:
+    this.sharedProp.selected_items = [];
+    this.sharedProp.checked_items = [];
 
     //Set page:
     if(page >= 1){

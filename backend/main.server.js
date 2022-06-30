@@ -22,6 +22,7 @@ module.exports = function() {
     const branchesRoutes        = require('./modules/branches/routes');
     const servicesRoutes        = require('./modules/services/routes');
     const equipmentsRoutes      = require('./modules/equipments/routes');
+    const peopleRoutes          = require('./modules/people/routes');
     const usersRoutes           = require('./modules/users/routes');
     const slotsRoutes           = require('./modules/slots/routes');
 
@@ -113,6 +114,7 @@ module.exports = function() {
     app.use('/branches',        branchesRoutes);
     app.use('/services',        servicesRoutes);
     app.use('/equipments',      equipmentsRoutes);
+    app.use('/people',          peopleRoutes);
     app.use('/users',           usersRoutes);
     app.use('/slots',           slotsRoutes);
 

@@ -53,6 +53,7 @@ export class ListComponent implements OnInit {
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
+    this.sharedProp.checked_items = [];
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
@@ -81,16 +82,5 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
-  }
-
-  onCheckItem(event: any, key: string){
-    //Check if it was selected or deselected:
-    if(event.checked){
-      //Add to selected items array:
-      this.sharedProp.selected_items.push(key);
-    } else {
-      //Remove current item from array:
-      this.sharedProp.selected_items = this.sharedProp.selected_items.filter((item) => item !== key)
-    }
   }
 }

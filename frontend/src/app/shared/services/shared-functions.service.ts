@@ -16,13 +16,13 @@ import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/de
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  public response     : any = {};
-  public delete_code  : string = '';
+  public response       : any = {};
+  public delete_code    : string = '';
 
   constructor(
-    private apiClient : ApiClientService,
-    private snackBar  : MatSnackBar,
-    private dialog    : MatDialog
+    private apiClient   : ApiClientService,
+    private snackBar    : MatSnackBar,
+    private dialog      : MatDialog
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
