@@ -22,6 +22,10 @@ const moduleServices = require('../modules.services');
 //Import schemas:
 const users = require('./schemas');
 
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(users);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(users, true);      //No parameters that cannot be modified.
+
 //Create Router.
 const router = express.Router();
 
@@ -51,6 +55,95 @@ router.get(
 
         //Send to handler:
         findHandler(req, res, users);
+    }
+);
+
+//INSERT:
+router.post(
+    '/insert',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    users.Validator,
+    async (req, res) => {
+        //Initialize variables for duplicate checking:
+        let fk_person   = false;
+        let username    = false;
+
+        //Initializate person exist:
+        let personCheck = true;
+
+        //CHEQUEAR ROLES Y CONCESIONES Y VER SI POSEE LOS PERMISOS ADECUADOS Y EL DOMINIO DONDE ADJUDICAR.
+        //Revisar flujo de people y users para ver que el RABC filtre de forma adecuada.
+        //Secretaría.
+
+        //No permitir dar de alta rol administrador en dominios inferiores a organización.
+        //Chequear el resto para adjudicar los dominios adecuados para cada rol.
+        
+        //Human user:
+        if(req.body.fk_person){
+            //Search for duplicates:
+            fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
+
+            //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
+            personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
+        
+        //Machine user:
+        } else if(req.body.username) {
+            //Search for duplicates:
+            username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+
+        //Bad request:
+        } else {
+            res.status(400).send({ success: false, message: currentLang.http.bad_request });
+        }
+
+        //Check for duplicates:
+        if(fk_person == false && username == false && personCheck == true){
+            //Save data:
+            //moduleServices.insert(req, res, users);
+            res.status(200).send({ test: true, operation: 'insert' });
+        }
+    }
+);
+
+//UPDATE:
+router.post(
+    '/update',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, users.AllowedUnsetValues),
+    users.Validator,
+    async (req, res) => {
+        //Initialize variables for duplicate checking:
+        let fk_person   = false;
+        let username    = false;
+
+        //Initializate person check:
+        let personCheck = true;
+        
+        //Human user:
+        if(req.body.fk_person){
+            //Search for duplicates:
+            fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
+
+            //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
+            personCheck = moduleServices.ckeckElement(req.body.fk_person, 'people', res);
+        
+        //Machine user:
+        } else if(req.body.username) {
+            //Search for duplicates:
+            username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+
+        //Bad request:
+        } else {
+            res.status(400).send({ success: false, message: currentLang.http.bad_request });
+        }
+
+        //Check for duplicates:
+        if(fk_person == false && username == false && personCheck == true){
+            //Save data:
+            moduleServices.update(req, res, users);
+        }
     }
 );
 

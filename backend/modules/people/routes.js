@@ -92,7 +92,12 @@ router.post(
     async (req, res) => {
         //Check if the person already exists in the database:
         const personExist = await moduleServices.checkPerson(req, res);
-        if(personExist == false){
+
+        //Search for duplicates:
+        const email = await moduleServices.isDuplicated(req, res, people, req.body.email, 'email');
+
+        //Check for duplicates:
+        if(personExist == false && email == false){
             //Save data:
             moduleServices.insert(req, res, people);
         }
@@ -109,7 +114,12 @@ router.post(
     async (req, res) => {
         //Check if the person already exists in the database:
         const personExist = await moduleServices.checkPerson(req, res);
-        if(personExist == false){
+
+        //Search for duplicates:
+        const email = await moduleServices.isDuplicated(req, res, people, req.body.email, 'email');
+
+        //Check for duplicates:
+        if(personExist == false && email == false){
             //Save data:
             moduleServices.update(req, res, people);
         }

@@ -126,6 +126,18 @@ body {
   float: left;
 }
 
+.badge-alt {
+  cursor: pointer;
+  padding: 2px 5px 2px 5px;
+  background-color: #733ad58a;
+  border-radius: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 0px;
+  float: left;
+}
+
 /* mark (highlighter pipe) */
 mark {
   background: goldenrod;

@@ -1371,229 +1371,270 @@ async function domainIs (domain, res) {
 //--------------------------------------------------------------------------------------------------------------------//
 // ADD DOMAIN CONDITION:
 //--------------------------------------------------------------------------------------------------------------------//
-function addDomainCondition(req, res, domainType){
+async function addDomainCondition(req, res, domainType){
     //Get information for the request:
     let filter = req.query.filter;
     const domain = req.decoded.session.domain;
     const schema = req.baseUrl.slice(1);   //Slice to remove '/' (first character).
     const method = req.path.slice(1);      //Slice to remove '/' (first character).
 
-    //Switch by method:
-    switch(method){
-
-        //------------------------------------------------------------------------------------------------------------//
-        // FIND, FIND BY ID, FIND ONE:
-        //------------------------------------------------------------------------------------------------------------//
-        case 'find':
-        case 'findOne':
-            //If filter has no operator, add domain condition with no operator:
-            let haveOperator = false;
-            
-            //Check if it has a filter:
-            if(filter){
-                //If filter has operator, add domain condition with AND operator:
-                if(filter.and || filter.or){
-                    haveOperator = true; 
-                }
-            } else {
-                //Add filter object to request (prevent undefined nested properties):
-                req.query.filter = {};
-            }
-
-            //Set condition according to schema:
-            switch(schema){
-                case 'organizations':
-                    //Check whether it has operator or not:
-                    if(haveOperator){
-                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                        if(!filter.and){ req.query.filter['and'] = []; }
-
-                        //Add domain condition:
-                        req.query.filter.and['_id'] = domain;
-                    } else {
-                        //Add domain condition:
-                        req.query.filter['_id'] = domain;
-                    }
-                    //BRANCH AND SERVICE should not be accessed here due to role control.
-
-                    break;
-
-                case 'branches':
-                    //Check whether it has operator or not:
-                    if(haveOperator){
-                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                        if(!filter.and){ req.query.filter['and'] = []; }
-
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter.and['fk_organization'] = domain;
-                        
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter.and['_id'] = domain;
-                        }
-                        //SERVICE you should not access here because of role control.
-
-                    } else {
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter['fk_organization'] = domain;
-                        
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter['_id'] = domain;
-                        }
-                        //SERVICE you should not access here because of role control.
-                    }
-                    break;
-
-                case 'services':
-                    //Check whether it has operator or not:
-                    if(haveOperator){
-                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                        if(!filter.and){ req.query.filter['and'] = []; }
-
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter.and['branch.fk_organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter.and['fk_branch'] = domain;
-                        
-                        } else if(domainType == 'services'){
-                            //Add domain condition:
-                            req.query.filter.and['_id'] = domain;
-                        }
-
-                    } else {
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter['branch.fk_organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter['fk_branch'] = domain;
-                        
-                        } else if(domainType == 'services'){
-                            //Add domain condition:
-                            req.query.filter['_id'] = domain;
-                        }
-                    }
-                    break;
-
-                case 'equipments':
-                    //Check whether it has operator or not:
-                    if(haveOperator){
-                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                        if(!filter.and){ req.query.filter['and'] = []; }
-
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter.and['branch.fk_organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter.and['fk_branch'] = domain;
-                        
-                        }
-                        //SERVICE you should not access here because of role control.
-                    } else {
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter['branch.fk_organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter['fk_branch'] = domain;
-                        
-                        }
-                        //SERVICE you should not access here because of role control.
-                    }
-                    break;
-
-                case 'slots':
-                    //Check whether it has operator or not:
-                    if(haveOperator){
-                        //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                        if(!filter.and){ req.query.filter['and'] = []; }
-
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter.and['domain.organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter.and['domain.branch'] = domain;
-
-                        } else if(domainType == 'services'){
-                            //Add domain condition:
-                            req.query.filter.and['domain.service'] = domain;
-                        }
-                    } else {
-                        //Switch by domain type: 
-                        if(domainType == 'organizations'){
-                            //Add domain condition:
-                            req.query.filter['domain.organization'] = domain;
-
-                        } else if(domainType == 'branches'){
-                            //Add domain condition:
-                            req.query.filter['domain.branch'] = domain;
-
-                        } else if(domainType == 'services'){
-                            //Add domain condition:
-                            req.query.filter['domain.service'] = domain;
-                        }
-                    }
-                    break;
-
-            }
-            break;
-
-        //------------------------------------------------------------------------------------------------------------//
-        // INSERT & UPDATE:
-        //------------------------------------------------------------------------------------------------------------//
-        case 'insert':
-        case 'update':
-            //Set restrictions according to schema:
-            switch(schema){
-                case 'branches':
-                    if(domainType == 'organizations' && req.body.fk_organization !== domain){
-                        return false; /* Operation rejected */  
-                    }
-                    break;
+    //Check if bad domain type:
+    if(domainType !== 'organizations' || domainType !== 'branches' || domainType !== 'services'){
+        return false; /* Operation rejected */
+    } else {
+        //Switch by method:
+        switch(method){
+            //------------------------------------------------------------------------------------------------------------//
+            // FIND, FIND BY ID, FIND ONE:
+            //------------------------------------------------------------------------------------------------------------//
+            case 'find':
+            case 'findOne':
+                //If filter has no operator, add domain condition with no operator:
+                let haveOperator = false;
                 
-                case 'services':
-                    if( (domainType == 'organizations' && checkDomainReference(res, 'branches', { fk_organization: domain }) == false) ||
-                        (domainType == 'branches' && req.body.fk_branch !== domain) )
-                    { return false; /* Operation rejected */ }
-                    break;    
-
-                case 'slots':
-                    if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
-                        return false; /* Operation rejected */
-                    } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
-                        return false; /* Operation rejected */
-                    } else if(domainType == 'services' && req.body.domain.service !== domain && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
-                        return false; /* Operation rejected */
+                //Check if it has a filter:
+                if(filter){
+                    //If filter has operator, add domain condition with AND operator:
+                    if(filter.and || filter.or){
+                        haveOperator = true; 
                     }
-                    break;
-            }
-            // Inserts y updates ¿controlar contra el dominio a nivel del handler?
-            break;
+                } else {
+                    //Add filter object to request (prevent undefined nested properties):
+                    req.query.filter = {};
+                }
 
-        //------------------------------------------------------------------------------------------------------------//
-        // DELETE:
-        //------------------------------------------------------------------------------------------------------------//
-        // Restricted by roles (Superuser is only user allowed).
-        //------------------------------------------------------------------------------------------------------------//
+                //Set condition according to schema:
+                switch(schema){
+                    case 'organizations':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Add domain condition:
+                            req.query.filter.and['_id'] = domain;
+                        } else {
+                            //Add domain condition:
+                            req.query.filter['_id'] = domain;
+                        }
+                        //BRANCH AND SERVICE should not be accessed here due to role control.
+
+                        break;
+
+                    case 'branches':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['fk_organization'] = domain;
+                            
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = domain;
+                            }
+                            //SERVICE you should not access here because of role control.
+
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['fk_organization'] = domain;
+                            
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = domain;
+                            }
+                            //SERVICE you should not access here because of role control.
+                        }
+                        break;
+
+                    case 'services':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['fk_branch'] = domain;
+                            
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = domain;
+                            }
+
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['fk_branch'] = domain;
+                            
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = domain;
+                            }
+                        }
+                        break;
+
+                    case 'equipments':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['fk_branch'] = domain;
+                            
+                            }
+                            //SERVICE you should not access here because of role control.
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['fk_branch'] = domain;
+                            
+                            }
+                            //SERVICE you should not access here because of role control.
+                        }
+                        break;
+
+                    case 'slots':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.service'] = domain;
+                            }
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['domain.service'] = domain;
+                            }
+                        }
+                        break;
+
+                }
+                break;
+
+            //------------------------------------------------------------------------------------------------------------//
+            // INSERT & UPDATE:
+            //------------------------------------------------------------------------------------------------------------//
+            case 'insert':
+            case 'update':
+                //Set restrictions according to schema:
+                switch(schema){
+                    case 'branches':
+                        //To add a branch you must have domain access at the organization level:
+                        if(domainType == 'branches' || domainType == 'services'){
+                            return false; /* Operation rejected */
+
+                        //Current case to eval:
+                        } else if(domainType == 'organizations' && req.body.fk_organization !== domain){
+                            return false; /* Operation rejected */
+                        }
+                        break;
+                    
+                    case 'services':
+                        //To add a service you must have domain access at the organization or branch level:
+                        if(domainType == 'services'){
+                            return false; /* Operation rejected */
+
+                        //Current case to eval:
+                        } else if(  (domainType == 'organizations' && checkDomainReference(res, 'branches', { fk_organization: domain }) == false) ||
+                                    (domainType == 'branches' && req.body.fk_branch !== domain) ){
+                                return false; /* Operation rejected */
+                        }
+                        break;    
+
+                    case 'slots':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                            return false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                            return false; /* Operation rejected */
+                        } else if(domainType == 'services' && req.body.domain.service !== domain && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
+                            return false; /* Operation rejected */
+                        }
+                        break;
+
+                    case 'equipments':
+                        break;
+
+                    case 'people':
+                        //No restrictions here.
+                        //People must be accessible from all organizations (single database of people).
+                        break;
+
+                    case 'users':
+                        //Check that permissions are being established or modified:
+                        if(req.body.permissions){
+                            //Loop in permisions array (Await foreach):
+                            await Promise.all(Object.keys(req.body.permissions).map((current) => {
+                                //TEST:
+                                console.log('\n[ TEST PERMISSIONS ]:');
+                                console.log(current);
+
+                                //Current cases:
+                                if(domainType == 'organizations' && req.body.permissions[current].organization !== domain){
+                                    //Chequear la suma de todos los permisos (true, false, false) Con un solo true debería pasar.
+                                    //return false; /* Operation rejected */
+                                }
+                            }));
+                        }
+                        break;
+                }
+                break;
+
+            //------------------------------------------------------------------------------------------------------------//
+            // DELETE:
+            //------------------------------------------------------------------------------------------------------------//
+            // Restricted by roles (Superuser is only user allowed).
+            //------------------------------------------------------------------------------------------------------------//
+        }
     }
 
     //Operation allowed:

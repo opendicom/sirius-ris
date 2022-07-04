@@ -85,24 +85,35 @@ module.exports = function() {
     const mongodbURI = 'mongodb://' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
 
     //Establish connection with MongoDB:
+    let cnxMongoDBStatus = false;
+    let cnXMongoDBMessage = '';
+
     mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
         if(err){
-            console.error('| ' + currentLang.server.db_cnx_error + mongodbURI);
+            //Set status conexion:
+            cnxMongoDBStatus = false;
+
+            //Set MongoDB Message:
+            cnXMongoDBMessage = currentLang.server.db_cnx_error + mongodbURI;
+
+            //Send messages to console:
+            console.error('| ' + cnXMongoDBMessage);
             console.log(consoleLn + '\n');
             throw err;
         } else {
-            console.log('| ' + currentLang.server.db_cnx_success + mongodbURI);
+            //Set status conexion:
+            cnxMongoDBStatus = true;
+
+            //Set MongoDB Message:
+            cnXMongoDBMessage = currentLang.server.db_cnx_success + mongodbURI;
+
+            //Send messages to console:
+            console.log('| ' + cnXMongoDBMessage);
             console.log(consoleLn + '\n');
         }
 
-        //Verbose mode message:
+        //Log level message:
         console.log(' • Log level : ' + mainSettings.log_level + '\n')
-    });
-
-    //Set default path:
-    app.get('/', (req, res) => {
-        //DEBUG:
-        res.status(200).send({ success: true, message: 'Welcome to Sirius RIS Backend' });
     });
 
     //Set modules routes:
@@ -119,8 +130,9 @@ module.exports = function() {
     app.use('/slots',           slotsRoutes);
 
     //Start message:
+    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');
     console.log('\n' + consoleLn);
-    console.log('| ' + currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss'));
+    console.log('| ' + startMessage);
     console.log(consoleLn);
 
     //HTTP Enabled:
@@ -157,6 +169,39 @@ module.exports = function() {
     if(mainSettings.webserver.http_enabled === false && mainSettings.webserver.https_enabled === false ){
         console.log('| ' + currentLang.server.non_server);
     }
+
+    //Set default server path:
+    app.get('/', (req, res) => {
+        //Initialize webSerberOptions:
+        let webServerOptions = {
+            HTTP    : { status: 'disabled', url: false },
+            HTTPS   : { status: 'disabled', url: false, ssl_certificates: false }
+        };
+
+        //HTTP Enabled:
+        if(mainSettings.webserver.http_enabled === true){
+            webServerOptions.HTTP.status    = 'enabled';
+            webServerOptions.HTTP.url       = 'http://' + mainSettings.webserver.host + ':' + mainSettings.webserver.http_port;
+        }
+
+        //HTTPS Enabled:
+        if(mainSettings.webserver.https_enabled === true){
+            webServerOptions.HTTPS.status   = 'enabled';
+            webServerOptions.HTTPS.url      = 'https://' + mainSettings.webserver.host + ':' + mainSettings.webserver.https_port;
+            webServerOptions.HTTPS.ssl_certificates = mainSettings.ssl_certificates;
+        }
+
+        //Send HTTP/HTTPS Response:
+        res.status(200).send({
+            message: startMessage,
+            webServerOptions,
+            mongodb: {
+                status: cnxMongoDBStatus,
+                message: cnXMongoDBMessage
+            },
+            log_level: mainSettings.log_level
+        });
+    });
 
     //Export WebServer:
     return app;

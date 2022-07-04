@@ -94,7 +94,9 @@
         <span *ngIf="element.person">
           <span *ngIf="element.person.phone_numbers">
             <span *ngFor="let current of element.person.phone_numbers" >
-              <span innerHTML="{{ current + ' ' | highlighter : sharedProp.filter }}"></span>
+              <span class="badge-alt">
+                <span innerHTML="{{ current + ' ' | highlighter : sharedProp.filter }}"></span>
+              </span>
             </span>
           </span>
         </span>

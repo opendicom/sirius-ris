@@ -58,6 +58,7 @@ const AllowedUnsetValues = [];
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
     body('fk_person')
+        .optional()
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_person NO es un ID MongoDB válido.'),
@@ -70,11 +71,6 @@ const Validator = [
         .trim()
         .isLength(8)
         .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
-
-    body('type')
-        .trim()
-        .isInt()
-        .withMessage('El parametro tipo de usuario es requerido y debe ser numérico.'),
 
     body('permissions').optional().isArray(),
 
