@@ -30,7 +30,7 @@ const preSchema = new mongoose.Schema({
     fk_person:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
-    permissions:        { type: [subSchemaPermissions] },
+    permissions:        { type: [subSchemaPermissions], required: true },
     settings:           { type: [subSchemaSettings] },
     status:             { type: Boolean, required: true, default: false },
 },
@@ -72,7 +72,7 @@ const Validator = [
         .isLength(8)
         .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
 
-    body('permissions').optional().isArray(),
+    body('permissions').isArray(),
 
     body('permissions.*.organization')
         .optional()

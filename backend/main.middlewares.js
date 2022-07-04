@@ -270,7 +270,7 @@ const roleAccessBasedControl = async (req, res, next) => {
             //Exclude Superuser role:
             if(userAuth.role != 1){
                 //Add domain as condition:
-                domainResult = moduleServices.addDomainCondition(req, res, domainType);
+                domainResult = await moduleServices.addDomainCondition(req, res, domainType);
             }
 
             //Set operation result:

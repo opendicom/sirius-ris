@@ -1375,13 +1375,20 @@ async function addDomainCondition(req, res, domainType){
     //Get information for the request:
     let filter = req.query.filter;
     const domain = req.decoded.session.domain;
+    const role   = req.decoded.session.role;
     const schema = req.baseUrl.slice(1);   //Slice to remove '/' (first character).
     const method = req.path.slice(1);      //Slice to remove '/' (first character).
 
+    //Initializate operation result:
+    let operationResult = true;
+
     //Check if bad domain type:
-    if(domainType !== 'organizations' || domainType !== 'branches' || domainType !== 'services'){
-        return false; /* Operation rejected */
+    if(domainType !== 'organizations' && domainType !== 'branches' && domainType !== 'services'){
+        operationResult = false; /* Operation rejected */
     } else {
+        //Initializate insertCheck:
+        let insertCheck = false;
+
         //Switch by method:
         switch(method){
             //------------------------------------------------------------------------------------------------------------//
@@ -1563,41 +1570,80 @@ async function addDomainCondition(req, res, domainType){
             //------------------------------------------------------------------------------------------------------------//
             // INSERT & UPDATE:
             //------------------------------------------------------------------------------------------------------------//
+            // INSERT:
             case 'insert':
+                //Set insert check:
+                insertCheck = true;
+
+                //Set restrictions according to schema [INSERT ONLY]:
+                switch(schema){
+                    case 'users':
+                        //Check that permissions are being established or modified:
+                        if(req.body.permissions){
+
+                            //Loop in permisions array (Await foreach):
+                            await Promise.all(Object.keys(req.body.permissions).map((current) => {
+
+                                //Current cases:
+                                if( (domainType == 'organizations' && req.body.permissions[current].organization !== domain) ||
+                                    (domainType == 'branches' && req.body.permissions[current].branch !== domain) ||
+                                    (domainType == 'services' && req.body.permissions[current].service !== domain) )
+                                { operationResult = false; /* Operation rejected */ }
+
+                                //Check that the authenticated role can insert the role of the request:
+                                    //Add Superuser [Allowed: Superuser]:
+                                if( (req.body.permissions[current].role == 1 && role != 1) ||
+
+                                    //Add Administrator, ... ,Recepcionist [Allowed: Superuser, Administrator]:
+                                    (((req.body.permissions[current].role >= 2 && req.body.permissions[current].role <= 8) && (role != 1 && role != 2)) || ((req.body.permissions[current].role >= 2 && req.body.permissions[current].role <= 8) && (role != 1 && role != 2))) ||
+
+                                    //Add Patient [Allowed: Superuser, Administrator, Recepcionist]:
+                                    (req.body.permissions[current].role == 9 && (role != 1 && role != 2 && role != 8)) ||
+                                    
+                                    //Add Functional user [Allowed: Superuser, Administrator]:
+                                    (req.body.permissions[current].role == 1 && (role != 1 && role != 2)) )
+                                { operationResult = false; /* Operation rejected */ }
+                            }));
+                        }
+                        break;
+                }
+                //NO break;
+            
+            // INSERT AND UPDATE (Use insertCheck to control):
             case 'update':
-                //Set restrictions according to schema:
+                //Set restrictions according to schema [INSERT AND UPDATE]:
                 switch(schema){
                     case 'branches':
                         //To add a branch you must have domain access at the organization level:
                         if(domainType == 'branches' || domainType == 'services'){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
 
                         //Current case to eval:
                         } else if(domainType == 'organizations' && req.body.fk_organization !== domain){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
                         }
                         break;
                     
                     case 'services':
                         //To add a service you must have domain access at the organization or branch level:
                         if(domainType == 'services'){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
 
                         //Current case to eval:
                         } else if(  (domainType == 'organizations' && checkDomainReference(res, 'branches', { fk_organization: domain }) == false) ||
                                     (domainType == 'branches' && req.body.fk_branch !== domain) ){
-                                return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
                         }
                         break;    
 
                     case 'slots':
                         //Current cases to eval:
                         if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
                         } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
                         } else if(domainType == 'services' && req.body.domain.service !== domain && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
-                            return false; /* Operation rejected */
+                            operationResult = false; /* Operation rejected */
                         }
                         break;
 
@@ -1610,20 +1656,30 @@ async function addDomainCondition(req, res, domainType){
                         break;
 
                     case 'users':
-                        //Check that permissions are being established or modified:
-                        if(req.body.permissions){
-                            //Loop in permisions array (Await foreach):
-                            await Promise.all(Object.keys(req.body.permissions).map((current) => {
-                                //TEST:
-                                console.log('\n[ TEST PERMISSIONS ]:');
-                                console.log(current);
+                        //Check insert (Apply only update case):
+                        if(insertCheck === false){ 
+                            //Check that permissions are being established or modified:
+                            if(req.body.permissions){
+                                //Set operation result (rejected):
+                                operationResult = false;
 
-                                //Current cases:
-                                if(domainType == 'organizations' && req.body.permissions[current].organization !== domain){
-                                    //Chequear la suma de todos los permisos (true, false, false) Con un solo true debería pasar.
-                                    //return false; /* Operation rejected */
-                                }
-                            }));
+                                //Loop in permisions array (Await foreach):
+                                await Promise.all(Object.keys(req.body.permissions).map((current) => {
+                                    
+                                    //Current cases:
+                                    //With a single element that meets the condition will be enough to allow the operation.
+                                    //The rest of the permissions that do not meet the condition may belong to another organization.
+                                    if( (domainType == 'organizations' && req.body.permissions[current].organization === domain) ||
+                                        (domainType == 'branches' && req.body.permissions[current].branch === domain) ||
+                                        (domainType == 'services' && req.body.permissions[current].service === domain) ){
+
+                                        //Set operation result (allowed):
+                                        operationResult = true;
+                                    }
+
+                                    //In the event of an update, the roles are not controlled since they may belong to another organization.
+                                }));
+                            }
                         }
                         break;
                 }
@@ -1637,8 +1693,8 @@ async function addDomainCondition(req, res, domainType){
         }
     }
 
-    //Operation allowed:
-    return true;
+    //Return operation result:
+    return operationResult;
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -1704,6 +1760,33 @@ async function checkDomainReference(res, schemaName, filter){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// VALIDATE PERMISSIONS:
+//--------------------------------------------------------------------------------------------------------------------//
+async function validatePermissions(req){
+    //Initializate operation result:
+    let operationResult = false;
+
+    //Check that the request has permissions:
+    if(req.body.permissions){
+        //Loop in permissions array (Await foreach):
+        await Promise.all(Object.keys(req.body.permissions).map((current) => {
+            if( (req.body.permissions[current].organization ||
+                req.body.permissions[current].branch ||
+                req.body.permissions[current].service ) &&
+                req.body.permissions[current].role ){
+                
+                //Set operation result:
+                operationResult = true;
+            }
+        }));
+    }
+
+    //Return operation result:
+    return operationResult;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -1723,6 +1806,7 @@ module.exports = {
     setRegex,
     setIn,
     domainIs,
-    addDomainCondition
+    addDomainCondition,
+    validatePermissions
 };
 //--------------------------------------------------------------------------------------------------------------------//

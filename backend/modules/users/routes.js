@@ -78,30 +78,35 @@ router.post(
 
         //No permitir dar de alta rol administrador en dominios inferiores a organización.
         //Chequear el resto para adjudicar los dominios adecuados para cada rol.
-        
-        //Human user:
-        if(req.body.fk_person){
-            //Search for duplicates:
-            fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
 
-            //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
-            personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
-        
-        //Machine user:
-        } else if(req.body.username) {
-            //Search for duplicates:
-            username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+        //Validate particular case of permissions (inserts only):
+        if(await moduleServices.validatePermissions(req)){
+            //Human user:
+            if(req.body.fk_person){
+                //Search for duplicates:
+                fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
 
-        //Bad request:
+                //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
+                personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
+            
+            //Machine user:
+            } else if(req.body.username) {
+                //Search for duplicates:
+                username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+
+            //Bad request:
+            } else {
+                res.status(400).send({ success: false, message: currentLang.http.bad_request });
+            }
+
+            //Check for duplicates:
+            if(fk_person == false && username == false && personCheck == true){
+                //Save data:
+                moduleServices.insert(req, res, users);
+            }
         } else {
-            res.status(400).send({ success: false, message: currentLang.http.bad_request });
-        }
-
-        //Check for duplicates:
-        if(fk_person == false && username == false && personCheck == true){
-            //Save data:
-            //moduleServices.insert(req, res, users);
-            res.status(200).send({ test: true, operation: 'insert' });
+            //Return the result (HTML Response):
+            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'Debe ingresar al menos un permiso válido al usuario.' });
         }
     }
 );
@@ -127,7 +132,7 @@ router.post(
             fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
 
             //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
-            personCheck = moduleServices.ckeckElement(req.body.fk_person, 'people', res);
+            personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
         
         //Machine user:
         } else if(req.body.username) {
