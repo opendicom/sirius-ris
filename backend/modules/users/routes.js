@@ -72,13 +72,6 @@ router.post(
         //Initializate person exist:
         let personCheck = true;
 
-        //CHEQUEAR ROLES Y CONCESIONES Y VER SI POSEE LOS PERMISOS ADECUADOS Y EL DOMINIO DONDE ADJUDICAR.
-        //Revisar flujo de people y users para ver que el RABC filtre de forma adecuada.
-        //Secretaría.
-
-        //No permitir dar de alta rol administrador en dominios inferiores a organización.
-        //Chequear el resto para adjudicar los dominios adecuados para cada rol.
-
         //Validate particular case of permissions (inserts only):
         if(await moduleServices.validatePermissions(req)){
             //Human user:

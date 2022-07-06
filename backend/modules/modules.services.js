@@ -534,30 +534,70 @@ async function setCondition(filter){
 
     //Check filter:
     if(filter){
+
+        //Capture previous filters without operator to preserve:
+        let preservedFilters = {};
+        if(Object.keys(filter).length > 0){
+            //Copy filters without operators (Await foreach):
+            await Promise.all(Object.keys(filter).map((key) => {
+                if(key !== 'and' && key !== '$and' && key !== 'or' && key !== '$or' && key !== 'in' && key !== '$in'){
+                    preservedFilters[key] = filter[key];
+
+                    //Delete filter without operator from request:
+                    delete filter[key];
+                }
+            }));
+            
+            //Create and operator in NOT exist (Prevent: Cannot set properties of undefined):
+            if(!filter.and && Object.keys(preservedFilters).length > 0){ filter['and'] = {}; }
+
+            //Check if there are filters without operator to preserve:
+            if(Object.keys(preservedFilters).length > 0){
+                //Add filters without operator to preserve into AND operator (Await foreach):                            
+                await Promise.all(Object.keys(preservedFilters).map((key) => {
+                    filter.and[key] = preservedFilters[key];
+                }));
+            }
+        }
+
         //Initialize conditions:
         let and_condition = false;
         let or_condition = false;
 
         //Set AND Condition:
-        if(filter.and){
-            //Create condition filter:
-            and_condition = { $and: [] };
-
-            //Build filter with contition type (await foreach):
-            await Promise.all(Object.keys(filter.and).map((key) => {
-                and_condition.$and.push({ [key]: filter.and[key] });
-            }));
+        if(filter.and || filter.$and){
+            //Create condition filter or preserve the original in the filter:
+            if(!filter.$and){
+                and_condition = { $and: [] };
+            } else {
+                and_condition = { $and: filter.$and };
+            }
+            
+            //Check AND condition without '$' char:
+            if(filter.and){
+                //Build filter with contition type (await foreach):
+                await Promise.all(Object.keys(filter.and).map((key) => {
+                    and_condition.$and.push({ [key]: filter.and[key] });
+                }));
+            }
         }
 
         //Set OR Condition:
-        if(filter.or){
-            //Create condition filter:
-            or_condition = { $or: [] };
+        if(filter.or || filter.$or){
+            //Create condition filter or preserve the original in the filter:
+            if(!filter.$or){
+                or_condition = { $or: [] };
+            } else {
+                or_condition = { $or: filter.$or };
+            }
 
-            //Build filter with contition type (await foreach):
-            await Promise.all(Object.keys(filter.or).map((key) => {
-                or_condition.$or.push({ [key]: filter.or[key] });
-            }));
+            //Check OR condition without '$' char:
+            if(filter.or){
+                //Build filter with contition type (await foreach):
+                await Promise.all(Object.keys(filter.or).map((key) => {
+                    or_condition.$or.push({ [key]: filter.or[key] });
+                }));
+            }
         }
 
         //Set final condition:
@@ -1564,6 +1604,163 @@ async function addDomainCondition(req, res, domainType){
                         }
                         break;
 
+                    case 'users':
+                        //Add Explicit $OR operator (Prevent: Cannot set properties of undefined):
+                        // The explicit $OR operator is used since it is not possible to use IN.
+                        // If more than one operator is used (IN, OR in this case), the master 
+                        // condition is an AND and an OR would be required.
+                        if(!req.query.filter.$or){ req.query.filter['$or'] = []; }
+
+                        //Import schemas:
+                        const branches = require('./branches/schemas');
+                        const services = require('./services/schemas');
+
+                        //If domainType is ORGANIZATIONS:
+                        //In this case it is necessary to obtain all the _id of branches and services associated with the organization.
+                        if(domainType == 'organizations'){
+                            //Add into ORGANIZATION domain condition:
+                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(domain) });
+
+                            //Initializate query results variables:
+                            let branchesIds = [];
+                            let servicesIds = [];
+                            let branchesIN = [];
+
+                            //Get all branch _id of this organization:
+                            //Attribute to cross: fk_organization
+                            await branches.Model.find({ fk_organization: domain }, { _id: 1 })
+                            .exec()
+                            .then((data) => {
+                                branchesIds = data;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Format branches array for IN operator (Await foreach):
+                            await Promise.all(Object.keys(branchesIds).map((current) => {
+                                //Add _id branches into array for second query (services query):
+                                branchesIN.push(branchesIds[current]._id);
+
+                                //Add into BRANCH domain condition:
+                                req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(branchesIds[current]._id) });
+                            }));
+
+                            //Delete temp array:
+                            delete branchesIds;
+                            
+                            //Get all service _id of this organization:
+                            //Attribute to cross: fk_branch (branchesIN obtained).
+                            await services.Model.find({ fk_branch: { '$in': branchesIN } }, { _id: 1 })
+                            .exec()
+                            .then((data) => {
+                                servicesIds = data;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Format services array for IN operator (Await foreach):
+                            await Promise.all(Object.keys(servicesIds).map((current) => {
+                                //Add into SERVICE domain condition:
+                                // OR operator is used since it is not possible to use IN.
+                                // If more than one operator is used (IN, OR in this case),
+                                // the master condition is an AND and an OR would be required.
+                                req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                            }));
+
+                            //Delete temp array:
+                            delete servicesIds;
+
+                        //If domainType is BRANCHES:
+                        //In this case it is necessary to obtain the organization _id and all the services _id
+                        } else if(domainType == 'branches'){
+                            //Add into BRANCH domain condition:
+                            req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(domain) });
+
+                            //Initializate query results variables:
+                            let fk_organization = '';
+                            let servicesIds = [];
+
+                            //Get organization _id from branches collection (fk_organization):
+                            await branches.Model.findById(domain, { fk_organization: 1 })
+                            .exec()
+                            .then((data) => {
+                                fk_organization = data.fk_organization;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Add into ORGANIZATION domain condition:
+                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+
+                            //Get all service _id of this branch:
+                            await services.Model.find({ fk_branch: domain }, { _id: 1 })
+                            .exec()
+                            .then((data) => {
+                                servicesIds = data;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Format services array for IN operator (Await foreach):
+                            await Promise.all(Object.keys(servicesIds).map((current) => {
+                                //Add into SERVICE domain condition:
+                                // OR operator is used since it is not possible to use IN.
+                                // If more than one operator is used (IN, OR in this case),
+                                // the master condition is an AND and an OR would be required.
+                                req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                            }));
+
+                            //Delete temp array:
+                            delete servicesIds;
+
+                        //If domainType is SERVICES:
+                        //In this case it is necessary to obtain the _id of branch and organization.
+                        } else if(domainType == 'services'){
+                            //Add into SERVICE domain condition:
+                            req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(domain) });
+
+                            //Initializate query results variables:
+                            let fk_branch = '';
+                            let fk_organization = '';
+
+                            //Get branches _id from service collection (fk_branch):
+                            await services.Model.findById(domain, { fk_branch: 1 })
+                            .exec()
+                            .then((data) => {
+                                fk_branch = data.fk_branch;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Add into BRANCH domain condition:
+                            req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(fk_branch) });
+                            
+
+                            //Get organization _id from branches collection (fk_organization):
+                            await branches.Model.findById(fk_branch, { fk_organization: 1 })
+                            .exec()
+                            .then((data) => {
+                                fk_organization = data.fk_organization;
+                            })
+                            .catch((err) => {
+                                //Send error:
+                                mainServices.sendError(res, currentLang.db.query_error, err);
+                            });
+
+                            //Add into ORGANIZATION domain condition:
+                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+                        }
+                        break;
                 }
                 break;
 
