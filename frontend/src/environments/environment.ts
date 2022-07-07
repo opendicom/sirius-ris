@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // ENVIROMENT:
 //--------------------------------------------------------------------------------------------------------------------//
+//Set ObjectId regular expression to validate ObjectIds:
+export const regexObjectId = /^[0-9a-fA-F]{24}$/;
+
 // Set backend API server params:
 export const environment = {
   production: false,

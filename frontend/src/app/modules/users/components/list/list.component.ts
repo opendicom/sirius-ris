@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
-import { ISO_3166, document_types, gender_types, default_page_sizes } from '@env/environment';    // Enviroments
+import { ActivatedRoute } from '@angular/router';                                                               // Router and Activated Route Interface (To get information about the routes)
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';                           // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';                             // Shared Functions
+import { ISO_3166, document_types, gender_types, default_page_sizes, regexObjectId } from '@env/environment';   // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -35,6 +36,7 @@ export class ListComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
+    private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
@@ -92,6 +94,14 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    const id = this.objRoute.snapshot.params['_id'];
+
+    //If have an _id and this is valid ObjectId, change params to findById:
+    if(id !== undefined && regexObjectId.test(id)){
+      this.sharedProp.params['filter[_id]'] = id;
+    }
+
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }

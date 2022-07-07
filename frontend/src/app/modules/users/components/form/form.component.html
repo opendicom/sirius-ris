@@ -1,1 +1,109 @@
-<p>form works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-tab-group>
+
+    <!-- PEOPLE TAB: ---------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">person</mat-icon>
+        Persona
+      </ng-template>
+
+      <h2 class="form-title text-center underline-fail-alt">Datos de la persona:</h2>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          Formulario de persona...
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- PEOPLE TAB: ---------------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">admin_panel_settings</mat-icon>
+        Usuario
+      </ng-template>
+
+      <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          <h4>Estado:</h4>
+          <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+            <mat-radio-button value="true">Activo</mat-radio-button>
+            <mat-radio-button value="false">Inactivo</mat-radio-button>
+          </mat-radio-group>
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        </div> <!-- end fxLayout wrapper -->
+
+      </div>
+    </mat-tab>
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+    <!-- PROFESSIONAL TAB: ---------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">hail</mat-icon>
+        Profesional
+      </ng-template>
+
+      <h2 class="form-title text-center underline-fail-alt">Datos del profesional:</h2>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          Formulario de profesional...
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- PROFESSIONAL TAB: ---------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- PATIENT TAB: --------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">airline_seat_flat</mat-icon>
+        Paciente
+      </ng-template>
+
+      <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          Formulario de paciente...
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- PATIENT TAB: --------------------------------------------------------------------------------------------------------------- -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button (click)="onCancel();">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">Guardar</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

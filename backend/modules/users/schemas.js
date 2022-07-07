@@ -16,6 +16,15 @@ const subSchemaPermissions = new mongoose.Schema({
 },
 { _id : false });
 
+//Define Professional Sub-Schema:
+const subSchemaProfessional = new mongoose.Schema({
+    id:             { type: String },
+    description:    { type: String },
+    workload:       { type: Number }, //In weekly hours.
+    vacation:       { type: Boolean }
+},
+{ _id : false });
+
 //Define Settings Sub-Schema:
 const subSchemaSettings = new mongoose.Schema({
     max_row:        { type: String },
@@ -31,6 +40,7 @@ const preSchema = new mongoose.Schema({
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
     permissions:        { type: [subSchemaPermissions], required: true },
+    professional:       { type: subSchemaProfessional },
     settings:           { type: [subSchemaSettings] },
     status:             { type: Boolean, required: true, default: false },
 },
@@ -98,6 +108,33 @@ const Validator = [
         .withMessage('El parametro rol es requerido y debe ser numérico.'),
 
     body('permissions.*.concession').optional().isArray(),
+
+    body('professional').optional(),
+
+    body('professional.id')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 30 })
+        .withMessage('El parametro ID es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+
+    body('professional.description')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 50 })
+        .withMessage('El parametro description es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
+
+    body('professional.workload')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage('El parametro workload debe ser numérico.'),
+
+    body('professional.vacation')
+        .optional()
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro vacation ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
 
     body('settings').optional().isArray(),
 
