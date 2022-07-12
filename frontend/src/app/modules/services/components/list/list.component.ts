@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes } from '@env/environment';                                  // Enviroment
+import { default_page_sizes, regexObjectId } from '@env/environment';                   // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -19,6 +20,7 @@ export class ListComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
+    private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
@@ -73,6 +75,14 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    const id = this.objRoute.snapshot.params['_id'];
+
+    //If have an _id and this is valid ObjectId, change params to findById:
+    if(id !== undefined && regexObjectId.test(id)){
+      this.sharedProp.params['filter[_id]'] = id;
+    }
+
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }

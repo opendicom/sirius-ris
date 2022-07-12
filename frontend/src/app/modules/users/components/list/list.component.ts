@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                                               // Router and Activated Route Interface (To get information about the routes)
+import { ActivatedRoute } from '@angular/router';                                                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';                           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';                             // Shared Functions
 import { ISO_3166, document_types, gender_types, default_page_sizes, regexObjectId } from '@env/environment';   // Enviroments
@@ -47,7 +47,7 @@ export class ListComponent implements OnInit {
     sharedProp.actionSetter({
       content_title   : 'Listado de usuarios',
       content_icon    : 'people',
-      add_button      : '/users/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      add_button      : '/users/check', //Zero indicates empty :id (Activated Route) [content is ignored]
       filters_form    : true,
       filters : {
         search        : true,

@@ -150,22 +150,12 @@ export class FormComponent implements OnInit {
 
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
-      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
-      if(Array.isArray(res.data)){
-        this.availableOrganizations = res.data;
-      } else {
-        this.availableOrganizations = [res.data];
-      }
+      this.availableOrganizations = res.data;
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
-      //NgFor only supports binding to Iterables such as Arrays (RABC procesed condition):
-      if(Array.isArray(res.data)){
-        this.availableBranches = res.data;
-      } else {
-        this.availableBranches = [res.data];
-      }
+      this.availableBranches = res.data;
     });
 
     //Find modalities:

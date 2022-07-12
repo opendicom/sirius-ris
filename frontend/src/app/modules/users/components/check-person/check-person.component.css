@@ -1,0 +1,32 @@
+.form-element {
+  margin-left: 20%;
+  margin-top: 2%;
+  margin-bottom: 20px;
+  padding: 3% 5% 2% 5%;
+  width: 50%;
+  text-align: center;
+}
+
+.document-section {
+  background-color: #1e1e2f5b;
+  padding: 3% 1% 1% 1%;
+  border-radius: 5px;
+}
+
+.sub-element {
+  width: 70%;
+}
+
+.check-button {
+  padding: .71em;
+}
+
+mat-form-field {
+  text-align: center;
+}
+
+.search-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}

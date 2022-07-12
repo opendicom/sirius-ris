@@ -7,6 +7,7 @@ import { ApiClientService } from '@shared/services/api-client.service';       //
 import { app_setting } from '@env/environment';                               // Environment
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
+import { Observable } from 'rxjs';                                            // Reactive Extensions (RxJS)
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -210,7 +211,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // OPEN DIALOG:
   //--------------------------------------------------------------------------------------------------------------------//
-  openDialog(operation: string, element: string, selected_items: string[], router: any = false){
+  openDialog(operation: string, element: string, selected_items: string[] = [], router: any = false){
     //Switch by operation types:
     switch(operation){
       case 'delete':
@@ -280,6 +281,52 @@ export class SharedFunctionsService {
     } else {
       this.sendMessage('Error: Debe determinar el tipo de elemento.');
     }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND RXJS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findRxJS(element: string, params: any, findOne: boolean = false): Observable<any>{
+    //Initialize operation type:
+    let operation = 'find';
+
+    //Check if findOne is true:
+    if(findOne){
+      operation = 'findOne';
+    }
+
+    //Return Observable:
+    return new Observable<any>((observer) => {
+
+      //Check if element is not empty:
+      if(element != ''){
+        //Create observable obsFind:
+        const obsFind = this.apiClient.sendRequest('GET', element + '/' + operation, params);
+
+        //Observe content (Subscribe):
+        obsFind.subscribe({
+          next: res => {
+            this.response = res;
+
+            //Pass chunks of data between observables:
+            observer.next(res);
+          },
+          error: res => {
+            //Send snakbar message:
+            if(res.error.message){
+              this.sendMessage(res.error.message);
+            } else {
+              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            }
+          }
+        });
+      } else {
+        this.sendMessage('Error: Debe determinar el tipo de elemento.');
+        observer.next(false);
+      }
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

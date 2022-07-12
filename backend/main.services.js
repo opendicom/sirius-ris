@@ -9,6 +9,7 @@ const fs        = require('fs');
 const yaml      = require('js-yaml');
 const mongoose  = require('mongoose');
 const argon2    = require('argon2');
+const moment    = require('moment');
 
 //Import app modules:
 const mainSettings = getFileSettings();                                     // File settings (YAML)
@@ -118,22 +119,22 @@ function sendConsoleMessage(level, message, details = false){
     switch(mainSettings.log_level){
         case 'DEBUG':
             if(level == 'DEBUG'){
-                console.info('\n[ DEBUG ] ' + message);
+                console.info('\n[ DEBUG | ' + moment().format('DD/MM/YYYY H:mm:ss') + ' ] ' + message);
                 if(details){ console.info('\n[ DEBUG: Details ]'); console.debug(details); }
             }
         case 'INFO':
             if(level == 'INFO'){
-                console.info('\n[ INFO ] ' + message);
+                console.info('\n[ INFO | ' + moment().format('DD/MM/YYYY H:mm:ss') + ' ] ' + message);
                 if(details){ console.info('\n[ INFO: Details ]'); console.info(details); }
             }
         case 'WARN':
             if(level == 'WARN'){
-                console.warn('\n[ WARN ] ' + message);
+                console.warn('\n[ WARN | ' + moment().format('DD/MM/YYYY H:mm:ss') + ' ] ' + message);
                 if(details){ console.warn('\n[ WARN: Details ]'); console.warn(details); }
             }
         case 'ERROR':
             if(level == 'ERROR'){
-                console.error('\n[ ERROR ] ' + message);
+                console.error('\n[ ERROR | ' + moment().format('DD/MM/YYYY H:mm:ss') + ' ] ' + message);
                 if(details){ console.error('\n[ ERROR: Details ]'); console.error(details); }
             }
             break;

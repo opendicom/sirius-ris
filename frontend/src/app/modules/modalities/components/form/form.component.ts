@@ -78,9 +78,9 @@ export class FormComponent implements OnInit {
           if(res.success === true){
             //Send data to the form:
             this.setReactiveForm({
-              code_meaning: res.data.code_meaning,
-              code_value: res.data.code_value,
-              status: [ `${res.data.status}` ] //Use back tip notation to convert string
+              code_meaning: res.data[0].code_meaning,
+              code_value: res.data[0].code_value,
+              status: [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
             //Get property keys with values:

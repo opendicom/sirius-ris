@@ -9,12 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/users/components/list/list.component';
 import { FormComponent } from '@modules/users/components/form/form.component';
+import { CheckPersonComponent } from '@modules/users/components/check-person/check-person.component';
 
 
 @NgModule({
   declarations: [
     FormComponent,
-    ListComponent
+    ListComponent,
+    CheckPersonComponent
   ],
   imports: [
     CommonModule,

@@ -79,10 +79,10 @@ export class FormComponent implements OnInit {
           if(res.success === true){
             //Send data to the form:
             this.setReactiveForm({
-              short_name: res.data.short_name,
-              name: res.data.name,
-              OID: res.data.OID,
-              status: [ `${res.data.status}` ] //Use back tip notation to convert string
+              short_name: res.data[0].short_name,
+              name: res.data[0].name,
+              OID: res.data[0].OID,
+              status: [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
             //Get property keys with values:

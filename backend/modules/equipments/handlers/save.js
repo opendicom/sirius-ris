@@ -19,11 +19,6 @@ module.exports = async (req, res, currentSchema, operation) => {
         referencedElements.push([ req.body.fk_modalities[currentKey], 'modalities' ]);
     }
 
-    //Set referenced elements (FKs - Check existence) [Arrays case]:
-    for(let currentKey in req.body.fk_procedures){
-        //referencedElements.push([ req.body.fk_procedures[currentKey], 'procedures' ]);
-    }
-
     //Excecute main query:
     switch(operation){
         case 'insert':

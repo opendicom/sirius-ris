@@ -10,6 +10,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'list', component: ListComponent },
+      { path: 'list/:_id', component: ListComponent },
       { path: 'form/:action/:_id', component: FormComponent },
       { path: 'batch', component: BatchComponent },
       { path: '**', redirectTo: 'list' },

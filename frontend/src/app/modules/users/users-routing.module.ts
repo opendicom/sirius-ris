@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ListComponent } from '@modules/users/components/list/list.component';
 import { FormComponent } from '@modules/users/components/form/form.component';
+import { CheckPersonComponent } from '@modules/users/components/check-person/check-person.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
     children: [
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
+      { path: 'check', component: CheckPersonComponent },
       { path: 'form/:action/:_id', component: FormComponent },
       { path: '**', redirectTo: 'list' },
     ]

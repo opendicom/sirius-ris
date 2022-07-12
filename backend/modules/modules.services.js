@@ -120,7 +120,7 @@ async function findById(req, res, currentSchema){
         //Check if have results:
         if(data){
             //Send successfully response:
-            res.status(200).send({ success: true, data: data });
+            res.status(200).send({ success: true, data: [data] });
         } else {
             //No data (empty result):
             res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
@@ -164,7 +164,7 @@ async function findOne(req, res, currentSchema){
         //Check if have results:
         if(data){
             //Send successfully response:
-            res.status(200).send({ success: true, data: data });
+            res.status(200).send({ success: true, data: [data] });
         } else {
             //No data (empty result):
             res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
@@ -1182,7 +1182,6 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
                 if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
-                if(filter[asPrefix + 'fk_procedures'] != undefined){ filter[asPrefix + 'fk_procedures'] = filter[asPrefix + 'fk_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedures']); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
