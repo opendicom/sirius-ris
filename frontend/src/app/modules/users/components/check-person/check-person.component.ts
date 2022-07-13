@@ -21,12 +21,12 @@ export class CheckPersonComponent implements OnInit {
   public country_codes: any = ISO_3166;
   public document_types: any = document_types;
 
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
+
   //Initializate response and user_params objects:
   private response = {};
   private user_params = {};
-
-  //Re-define method in component to use in HTML view:
-  public getKeys: any;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -147,11 +147,9 @@ export class CheckPersonComponent implements OnInit {
               //Redirect to user form with update-person action and person _id:
               this.router.navigate(['/' + this.sharedProp.element + '/form/update-person/' + res.data[0]._id ]);
             }
-
-            console.log(res.data[0]);
           } else {
             //INSERT PERSON AND USER:
-            //Redirect to user form with insert action:
+            //Redirect to user form with insert action and the inserted document separated by pipes:
             this.router.navigate(['/' + this.sharedProp.element + '/form/insert/' + this.form.value.doc_country_code + '|' + this.form.value.doc_type + '|' + this.form.value.document + '|']);
           }
         }
