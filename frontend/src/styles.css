@@ -158,6 +158,49 @@ mark {
   margin-left: 2px;
   margin-right: 2px;
 }
+
+.label-ok {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #05ffa1;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.label-fail {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #ff6f69;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.label-alt {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #d53a9d;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.label-tab {
+  font-size: 23px !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 

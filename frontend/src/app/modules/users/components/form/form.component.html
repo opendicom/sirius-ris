@@ -6,7 +6,13 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">person</mat-icon>
-        Persona
+        Persona &nbsp;
+        <span *ngIf="personOperation">
+          <div [ngSwitch]="personOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
       </ng-template>
 
       <h2 class="form-title text-center underline-fail-alt">Datos de la persona:</h2>
@@ -16,7 +22,7 @@
           <h4>Documentos:</h4>
           <mat-form-field appearance="fill" class="medium">
             <mat-label>País del documento</mat-label>
-            <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument()">
+            <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
               <div *ngFor="let currentCode of getKeys(country_codes, true)">
                 <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
               </div>
@@ -25,7 +31,7 @@
 
           <mat-form-field appearance="fill" class="medium">
             <mat-label>Tipo de documento</mat-label>
-            <mat-select formControlName="doc_type" (selectionChange)="onSetDocument()">
+            <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
               <div *ngFor="let currentDocType of document_types | keyvalue">
                 <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
               </div>
@@ -38,6 +44,27 @@
           </mat-form-field>
 
           <hr class="dashed" /><br/>
+
+          <h4>Correo electrónico:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>E-mail</mat-label>
+            <input matInput type="text" formControlName="email" placeholder="Ej: nombre@casilla.com" (blur)="onSetEmail()">
+            <mat-icon matSuffix>mail</mat-icon>
+          </mat-form-field>
+
+          <h4>Teléfono de contacto:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Número de teléfono</mat-label>
+            <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+          </mat-form-field>
+
+          <br/><br/>
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
           <h4>Nombres:</h4>
           <mat-form-field appearance="fill" class="medium">
@@ -63,11 +90,7 @@
             <input matInput type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
           </mat-form-field>
 
-          <br/><br/>
-
-        </div> <!-- end fxLayout wrapper -->
-
-        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <br/><br/><hr class="dashed" /><br/>
 
           <h4>Fecha de nacimiento:</h4>
           <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
@@ -76,23 +99,6 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
-          </mat-form-field>
-
-          <br/><br/><hr class="dashed" /><br/>
-
-          <h4>Correo electrónico:</h4>
-          <mat-form-field appearance="fill" class="large">
-            <mat-label>E-mail</mat-label>
-            <input matInput type="text" formControlName="email" placeholder="Ej: nombre@casilla.com">
-            <mat-icon matSuffix>mail</mat-icon>
-          </mat-form-field>
-
-          <h4>Teléfono de contacto:</h4>
-          <mat-form-field appearance="fill" class="large">
-            <mat-label>Número de teléfono</mat-label>
-            <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
-            <mat-icon matSuffix>phone</mat-icon>
-            <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
           </mat-form-field>
 
         </div> <!-- end fxLayout wrapper -->
@@ -105,7 +111,13 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">account_circle</mat-icon>
-        Usuario
+        Usuario &nbsp;
+        <span *ngIf="userOperation">
+          <div [ngSwitch]="userOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
       </ng-template>
 
       <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
@@ -147,7 +159,7 @@
 
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
-          <h4>Clave del usuario:</h4>
+          <h4>Clave del usuario <span class="label-info">Vacío sino desea modificar</span>:</h4>
 
           <mat-form-field appearance="fill" class="medium">
             <mat-label>Contraseña</mat-label>
@@ -200,6 +212,13 @@
       </div>
     </mat-tab>
     <!-- PERMISSIONS TAB: ----------------------------------------------------------------------------------------------------------- -->
+
+    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab [disabled]="true">
+      <ng-template mat-tab-label>
+      </ng-template>
+    </mat-tab>
+    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
   </mat-tab-group>
 

@@ -22,8 +22,12 @@ export class FormComponent implements OnInit {
   public document_types: any = document_types;
 
   //Initializate response and user_params objects:
-  private response = {};
-  private user_params = {};
+  private response: any = {};
+  private user_params: any = {};
+
+  //Initializate operations:
+  public personOperation: string = 'insert';
+  public userOperation: string = 'insert';
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -51,9 +55,6 @@ export class FormComponent implements OnInit {
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
-
-    //Find references:
-    this.findReferences();
 
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -86,11 +87,11 @@ export class FormComponent implements OnInit {
       //User fields:
       'password'                  : [ '', [Validators.required]],
       'password_repeat'           : [ '', [Validators.required]],
-      'status'                    : [ 'true' ],
+      'status'                    : [ 'true', []],
       'professional[id]'          : [ '', []],
       'professional[description]' : [ '', []],
       'professional[workload]'    : [ '', []],
-      'professional[vacation]'    : [ '', []]
+      'professional[vacation]'    : [ 'false', []],
     });
   }
 
@@ -99,97 +100,205 @@ export class FormComponent implements OnInit {
     this.form_action = this.objRoute.snapshot.params['action'];
   }
 
-  onSetDocument(){
+  onSetDocument(preventClear: boolean = false){
     //Check document fields content:
     if(this.form.value.document != '' && this.form.value.doc_country_code != '' && this.form.value.doc_type != ''){
 
       //Set people params:
       const people_params = {
-        'filter[and][documents.document]' : this.form.value.document,
-        'filter[and][documents.doc_country_code]' : this.form.value.doc_country_code,
-        'filter[and][documents.doc_type]' : this.form.value.doc_type
+        'filter[elemMatch][documents][document]' : this.form.value.document,
+        'filter[elemMatch][documents][doc_country_code]' : this.form.value.doc_country_code,
+        'filter[elemMatch][documents][doc_type]' : this.form.value.doc_type
       };
 
-      //Create observable people:
-      const obsPeople = this.sharedFunctions.findRxJS('people', people_params, true);
-
-      //Create observable obsUser:
-      const obsUser = obsPeople.pipe(
-        //Check first result (find person) and set user params:
-        map((res: any) => {
-          //Clear response and user_params objects:
-          this.response = {};
-          this.user_params = {};
-
-          //Check operation status:
-          if(res.success === true){
-            //Check data:
-            if(Object.keys(res.data).length > 0){
-              //Set user params:
-              this.user_params = {
-                'filter[fk_person]' : res.data[0]._id,
-                'proj[password]'    : 0
-              };
-
-              //Preserve response (only person data case):
-              this.response = res;
-            }
-          }
-
-          //Return response:
-          return res;
-        }),
-
-        //Search user with the fk_person (Return observable):
-        mergeMap(() => this.sharedFunctions.findRxJS('users', this.user_params, true)),
-
-        //Check second result (find user):
-        map((res: any) => {
-
-          //Check operation status:
-          if(res.success === true){
-            //Check data:
-            if(Object.keys(res.data).length == 0 || Object.keys(this.user_params).length == 0){
-              //Preserve person response (only person data case):
-              res = this.response;
-            }
-          }
-
-          //Return response:
-          return res;
-        })
-      );
-
-      //Observe content (Subscribe):
-      obsUser.subscribe({
-        next: (res) => {
-          //Check response:
-          if(Object.keys(res).length > 0){
-            //Check if user exists
-            if(res.data[0].fk_person){
-              //UPDATE PERSON AND USER:
-              console.log('UPDATE PERSON AND USER');
-            } else {
-              //UPDATE PERSON AND INSERT USER:
-              console.log('UPDATE PERSON AND INSERT USER');
-            }
-          } else {
-            //INSERT PERSON AND USER:
-            console.log('INSERT PERSON AND USER');
-          }
-        }
-      });
-
-
+      //Get data (people and user):
+      this.getData(people_params, 'document');
+    } else {
+      //Check prevent clear (selectionChange: doc_country_code and doc_type):
+      if(preventClear == false){
+        //Clear data to FormControl elements:
+        this.clearFormFields();
+      }
     }
   }
 
-  onSubmit(){}
+  onSetEmail(){
+    //Check that the email field is not empty and there are no person data loaded:
+    //name_01 es required field of people schema.
+    if(this.form.value.email != '' && this.form.value.name_01 == ''){
+      //Set people params:
+      const people_params = {
+        'filter[email]' : this.form.value.email
+      };
+
+      //Get data (people and user):
+      this.getData(people_params, 'email');
+    }
+  }
+
+  onSubmit(){
+    console.log(this.form.value)
+  }
 
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 
-  findReferences(){}
+  getData(params: any, originField: string): void {
+    //Create observable people:
+    const obsPeople = this.sharedFunctions.findRxJS('people', params, true);
+
+    //Create observable obsUser:
+    const obsUser = obsPeople.pipe(
+      //Check first result (find person):
+      map((res: any) => {
+        //Clear response and user_params objects:
+        this.response = {};
+        this.user_params = {};
+
+        //Check operation status:
+        if(res.success === true){
+          //Check data:
+          if(Object.keys(res.data).length > 0){
+            //Set user params:
+            this.user_params = {
+              'filter[fk_person]' : res.data[0]._id,
+              'proj[password]'    : 0
+            };
+
+            //Preserve response (only person data case):
+            this.response = res;
+          }
+        }
+
+        //Return response:
+        return res;
+      }),
+
+      //Search user with the fk_person (Return observable):
+      mergeMap(() => this.sharedFunctions.findRxJS('users', this.user_params, true)),
+
+      //Check second result (find user):
+      map((res: any) => {
+
+        //Check operation status:
+        if(res.success === true){
+          //Check data:
+          if(Object.keys(res.data).length == 0 || Object.keys(this.user_params).length == 0){
+            //Preserve person response (only person data case):
+            res = this.response;
+          }
+        }
+
+        //Return response:
+        return res;
+      })
+    );
+
+    //Observe content (Subscribe):
+    obsUser.subscribe({
+      next: (res) => {
+        //Check response:
+        if(Object.keys(res).length > 0){
+
+          //UPDATE PERSON AND USER:
+          if(res.data[0].fk_person){
+            //Clear data to FormControl elements:
+            this.clearFormFields();
+
+            //Send data to FormControl elements:
+            this.setPerson(res.data[0].person);
+            this.setUser(res.data[0]);
+
+            //Set operations
+            this.personOperation = 'update';
+            this.userOperation = 'update';
+
+            //Set validation for password fields:
+
+          //UPDATE PERSON AND INSERT USER:
+          } else {
+            //Clear data to FormControl elements:
+            this.clearFormFields();
+
+            //Send data to FormControl elements (Set only person fields):
+            this.setPerson(res.data[0]);
+
+            //Set operations:
+            this.personOperation = 'update';
+            this.userOperation = 'insert';
+
+            //Set validation for password fields:
+          }
+
+        //INSERT PERSON AND USER:
+        } else {
+          //Clear data to FormControl elements:
+          this.clearFormFields(true);
+
+          //Set operations:
+          this.personOperation = 'insert';
+          this.userOperation = 'insert';
+
+          //Set validation for password fields:
+
+        }
+      }
+    });
+  }
+
+  setPerson(personData: any = false): void {
+    //Check person data:
+    if(personData){
+      //Send data to FormControl elements (Set person fields):
+      this.form.controls['doc_country_code'].setValue(personData.documents[0].doc_country_code);
+      this.form.controls['doc_type'].setValue(personData.documents[0].doc_type.toString());
+      this.form.controls['document'].setValue(personData.documents[0].document);
+      this.form.controls['name_01'].setValue(personData.name_01);
+      this.form.controls['name_02'].setValue(personData.name_02);
+      this.form.controls['surname_01'].setValue(personData.surname_01);
+      this.form.controls['surname_02'].setValue(personData.surname_02);
+      this.form.controls['email'].setValue(personData.email);
+      this.form.controls['phone_numbers[0]'].setValue(personData.phone_numbers[0]);
+      this.form.controls['birth_date'].setValue(new Date(personData.birth_date));
+    }
+  }
+
+  setUser(userData: any = false): void {
+    //Check user data:
+    if(userData){
+      //Send data to FormControl elements (Set user fields):
+      this.form.controls['status'].setValue(`${userData.status}`); //Use back tip notation to convert string
+      this.form.controls['professional[id]'].setValue(userData.professional.id);
+      this.form.controls['professional[description]'].setValue(userData.professional.description);
+      this.form.controls['professional[workload]'].setValue(userData.professional.workload);
+      this.form.controls['professional[vacation]'].setValue(`${userData.professional.vacation}`); //Use back tip notation to convert string
+    }
+  }
+
+  clearFormFields(preventClear: boolean = false){
+    //Person fields:
+    if(preventClear == false){
+      this.form.controls['email'].setValue('');
+      this.form.controls['document'].setValue('');
+      this.form.controls['doc_country_code'].setValue(this.settings.default_country);
+      this.form.controls['doc_type'].setValue(this.settings.default_doc_type.toString());
+    }
+    this.form.controls['name_01'].setValue('');
+    this.form.controls['name_02'].setValue('');
+    this.form.controls['surname_01'].setValue('');
+    this.form.controls['surname_02'].setValue('');
+    this.form.controls['phone_numbers[0]'].setValue('');
+    this.form.controls['birth_date'].setValue('');
+
+    //User fields:
+    this.form.controls['status'].setValue('true');
+    this.form.controls['password'].setValue('');
+    this.form.controls['password_repeat'].setValue('');
+    this.form.controls['professional[id]'].setValue('');
+    this.form.controls['professional[description]'].setValue('');
+    this.form.controls['professional[workload]'].setValue('');
+    this.form.controls['professional[vacation]'].setValue('false');
+  }
 }
