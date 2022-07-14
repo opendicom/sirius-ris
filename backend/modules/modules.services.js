@@ -21,13 +21,7 @@ async function find(req, res, currentSchema){
     let { filter, proj, sort, pager, regex } = req.query;
 
     //Set condition:
-    let condition = await setCondition(filter);
-
-    //Set regex:
-    condition = await setRegex(regex, condition);
-
-    //Set in:
-    condition = await setIn(filter, condition);
+    const condition = await setCondition(filter, regex);
 
     //Parse skip and limit value (string) to integer (base 10):
     req.query.skip = parseInt(req.query.skip, 10);
@@ -143,13 +137,7 @@ async function findOne(req, res, currentSchema){
     let { filter, proj, sort, regex } = req.query;
 
     //Set condition:
-    let condition = await setCondition(filter);
-
-    //Set regex:
-    condition = await setRegex(regex, condition);
-
-    //Set in:
-    condition = await setIn(filter, condition);
+    const condition = await setCondition(filter, regex);
 
     //Validate and format data projection:
     const formatted_proj = mainServices.mongoDBObjFormat(proj);
@@ -526,9 +514,61 @@ function setPager(req, pager){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// SET CONDITION:
+// SET ELEM MATCH:
 //--------------------------------------------------------------------------------------------------------------------//
-async function setCondition(filter){
+async function setElemMatch(filter){
+    //Check filter:
+    if(filter){
+        //Check elemMatch with AND operator:
+        if(filter.and){
+            if(filter.and.elemMatch){
+                //Set elemMatch into AND operator:
+                await Promise.all(Object.keys(filter.and.elemMatch).map((current) => {
+                    filter.and[current] = { '$elemMatch': filter.and.elemMatch[current] };
+                }));
+
+                //Delete original element match:
+                delete filter.and.elemMatch;
+            }
+        }
+
+        //Check elemMatch with OR operator:
+        if(filter.or){
+            if(filter.or.elemMatch){
+                //Set elemMatch into OR operator:
+                await Promise.all(Object.keys(filter.or.elemMatch).map((current) => {
+                    filter.or[current] = { '$elemMatch': filter.or.elemMatch[current] };
+                }));
+
+                //Delete original element match:
+                delete filter.or.elemMatch;
+            }
+        }
+
+        //Check elemMatch without operator:
+        if(filter.elemMatch){
+            //Create AND operator if not exist (Prevent: Cannot set properties of undefined):
+            if(!filter.and){ filter.and = {}; }
+
+            //Set elemMatch into AND operator:
+            await Promise.all(Object.keys(filter.elemMatch).map((current) => {
+                filter.and[current] = { '$elemMatch': filter.elemMatch[current] };
+            }));
+
+            //Delete original element match:
+            delete filter.elemMatch;
+        }
+    }
+
+    //Return filter:
+    return filter;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET AND OR:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setAndOr(filter){
     //Initialize main condition:
     let condition = {};
 
@@ -548,7 +588,7 @@ async function setCondition(filter){
                 }
             }));
             
-            //Create and operator in NOT exist (Prevent: Cannot set properties of undefined):
+            //Create and operator if NOT exist (Prevent: Cannot set properties of undefined):
             if(!filter.and && Object.keys(preservedFilters).length > 0){ filter['and'] = {}; }
 
             //Check if there are filters without operator to preserve:
@@ -637,7 +677,7 @@ async function setRegex(regex, condition){
                     currentValue = condition.$or[or_index][keyName];
 
                     //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -654,7 +694,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$or[or_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -668,7 +708,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$and[second_and_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -680,7 +720,7 @@ async function setRegex(regex, condition){
                         currentValue = condition.$and[and_index][keyName];
 
                         //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end'){
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
@@ -696,7 +736,7 @@ async function setRegex(regex, condition){
                 currentValue = condition[current];
                 
                 //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end'){
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -757,6 +797,27 @@ async function setIn(filter, condition){
         }
     }
     
+    //Return condition:
+    return condition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET CONDITION:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setCondition(filter, regex){
+    //Set elemMatch:
+    filter = await setElemMatch(filter);
+
+    //Set condition:
+    let condition = await setAndOr(filter);
+
+    //Set regex:
+    condition = await setRegex(regex, condition);
+
+    //Set in:
+    condition = await setIn(filter, condition);
+
     //Return condition:
     return condition;
 }
@@ -1248,6 +1309,45 @@ async function adjustCondition(filter, callback){
         final_filter = callback(filter.or);
     }
 
+    //Condition with elemMatch operator:
+    if(filter.elemMatch){
+        //Check if there is more than one property with the elemMatch operator:
+        if(Object.keys(filter.elemMatch).length){
+            //Get key name:
+            const keyName = Object.keys(filter.elemMatch)[0];
+
+            //Loop through values inside the elementMatch Object (await foreach):
+            await Promise.all(Object.keys(filter.elemMatch[keyName]).map(async (current) => {
+                //Create tmp_filter (clean on each iteration):
+                let tmp_filter = {};
+                tmp_filter[keyName + '.' + current] = filter.elemMatch[keyName][current];
+
+                //Adjust Data Type (individual element [elementMatch Object]):
+                let callback_return = await callback(tmp_filter);
+
+                //Assign adjusted value on original object:
+                filter.elemMatch[keyName][current] = callback_return[keyName + '.' + current];
+            }));
+        } else {
+            //Build elementMatch condition with multiple keys (await foreach):
+            await Promise.all(Object.keys(filter.elementMatch).map(async (keyName) => {
+
+                //Loop through values inside the IN array:
+                await Promise.all(Object.keys(filter.elementMatch[keyName]).map(async (current) => {
+                    //Create tmp_filter (clean on each iteration):
+                    let tmp_filter = {};
+                    tmp_filter[keyName + '.' + current] = filter.elemMatch[keyName][current];
+
+                    //Adjust Data Type (individual element [elementMatch Object]):
+                    let callback_return = await callback(tmp_filter);
+                    
+                    //Assign adjusted value on original object:
+                    filter.elemMatch[keyName][current] = callback_return[keyName + '.' + current];
+                }));
+            }));
+        }
+    }
+
     //Condition with IN operator:
     if(filter.in){
         //Check if there is more than one property with the in operator:
@@ -1256,7 +1356,7 @@ async function adjustCondition(filter, callback){
             const keyName = Object.keys(filter.in)[0];
 
             //Loop through values inside the IN array:
-            Object.keys(filter.in[keyName]).forEach(async (current) => {
+            await Promise.all(Object.keys(filter.in[keyName]).map(async (current) => {
                 //Create tmp_filter (clean on each iteration):
                 let tmp_filter = {};
                 tmp_filter[keyName] = filter.in[keyName][current];
@@ -1266,10 +1366,10 @@ async function adjustCondition(filter, callback){
                 
                 //Assign adjusted value on original object:
                 filter.in[keyName][current] = callback_return[keyName]
-            });
+            }));
         } else {
             //Build IN condition with multiple keys (await foreach):
-            await Promise.all(Object.keys(filter.in).map(async (keyName, index) => {
+            await Promise.all(Object.keys(filter.in).map(async (keyName) => {
 
                 //Loop through values inside the IN array:
                 await Promise.all(Object.keys(filter.in[keyName]).map(async (current) => {
@@ -2000,9 +2100,11 @@ module.exports = {
     adjustDataTypes,
     ckeckElement,
     insertLog,
-    setCondition,
+    setElemMatch,
+    setAndOr,
     setRegex,
     setIn,
+    setCondition,
     domainIs,
     addDomainCondition,
     validatePermissions

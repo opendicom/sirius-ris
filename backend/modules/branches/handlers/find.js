@@ -34,13 +34,7 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'organizations', 'organization');
 
         //Set condition:
-        let condition = await moduleServices.setCondition(filter);
-
-        //Set regex:
-        condition = await moduleServices.setRegex(regex, condition);
-
-        //Set in:
-        condition = await moduleServices.setIn(filter, condition);
+        const condition = await moduleServices.setCondition(filter, regex);
 
         //Add match operation to aggregations:
         req.query.aggregate.push({ $match: condition });
