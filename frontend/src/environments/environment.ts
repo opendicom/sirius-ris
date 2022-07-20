@@ -42,6 +42,17 @@ export const user_roles = {
   10: 'Funcional'  //Empty role for concessions (Generic user)
 };
 
+// User Concessions:
+export const user_concessions = {
+  1 : 'Búsquedas avanzadas',
+  2 : 'Firmar informes',
+  3 : 'Autenticar informes',
+  4 : 'Listados de facturación',
+  5 : 'Estadísticas generales',
+  6 : 'Estadísticas médicas',
+  7 : 'Estadísticas del personal'
+}
+
 // User Types:
 export const user_types = {
   1: 'Humano',

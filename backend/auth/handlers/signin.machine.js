@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
                         let userPermission = {
                             domain: '', 
                             role: '',
-                            consession: []
+                            concession: []
                         };
 
                         //Set domain:
@@ -61,9 +61,9 @@ module.exports = async (req, res) => {
                         //Set role:
                         userPermission.role = userData.permissions[0].role;
 
-                        //Set consessions:
-                        if(userData.permissions[0].consession){
-                            userPermission.consession = userData.permissions[0].consession;
+                        //Set concessions:
+                        if(userData.permissions[0].concession){
+                            userPermission.concession = userData.permissions[0].concession;
                         }
                         
                         //Create session:

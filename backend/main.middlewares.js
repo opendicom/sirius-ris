@@ -224,14 +224,14 @@ const roleAccessBasedControl = async (req, res, next) => {
     //Initialize flow control variables:
     let operationResult = '';
     let domainResult = true;
-    let haveConsession = false;
+    let haveConcession = false;
 
     //Get authenticated user information (Decoded JWT):
     const userAuth = {
         _id: req.decoded.sub,
         domain: req.decoded.session.domain,
         role: req.decoded.session.role,
-        consession: req.decoded.session.consession
+        concession: req.decoded.session.concession
     };
 
     //Get request information:
@@ -240,29 +240,29 @@ const roleAccessBasedControl = async (req, res, next) => {
         method: req.path.slice(1),      //Slice to remove '/' (first character).
     };
 
-    //Check mainPermissions.consessionPermissions against currentConsessions (User auth consession):
-    await Promise.all(Object.keys(mainPermissions.consessionPermissions).map(async (currentConsession) => {
+    //Check mainPermissions.concessionPermissions against currentConcessions (User auth concession):
+    await Promise.all(Object.keys(mainPermissions.concessionPermissions).map(async (currentConcession) => {
         
-        //Check if the user has a consession:
-        if(userAuth.consession.includes(parseInt(currentConsession, 10))){
+        //Check if the user has a concession:
+        if(userAuth.concession.includes(parseInt(currentConcession, 10))){
 
-            //Check if the user consession has the request SCHEMA:
-            if(Object.keys(mainPermissions.consessionPermissions[currentConsession]).includes(requested.schema)){
+            //Check if the user concession has the request SCHEMA:
+            if(Object.keys(mainPermissions.concessionPermissions[currentConcession]).includes(requested.schema)){
 
-                //Check if the user consession has the request METHOD:
-                if(mainPermissions.consessionPermissions[currentConsession][requested.schema].includes(requested.method)){
-                    //Set have consession:
-                    haveConsession = true;  // Has the indicated consession.
+                //Check if the user concession has the request METHOD:
+                if(mainPermissions.concessionPermissions[currentConcession][requested.schema].includes(requested.method)){
+                    //Set have concession:
+                    haveConcession = true;  // Has the indicated concession.
                 }   
             }
         }
     }));
 
     //Check if current role is allowed for current SCHEMA or have a concession:
-    if(Object.keys(mainPermissions.rolePermissions[userAuth.role]).includes(requested.schema) || haveConsession){
+    if(Object.keys(mainPermissions.rolePermissions[userAuth.role]).includes(requested.schema) || haveConcession){
 
         //Check if current role is allowed for current METHOD or have a concession:
-        if(mainPermissions.rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConsession){
+        if(mainPermissions.rolePermissions[userAuth.role][requested.schema].includes(requested.method) || haveConcession){
 
             //What the domain corresponds to:
             const domainType = await moduleServices.domainIs(userAuth.domain, res);

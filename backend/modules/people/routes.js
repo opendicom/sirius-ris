@@ -93,11 +93,8 @@ router.post(
         //Check if the person already exists in the database:
         const personExist = await moduleServices.checkPerson(req, res);
 
-        //Search for duplicates:
-        const email = await moduleServices.isDuplicated(req, res, people, req.body.email, 'email');
-
         //Check for duplicates:
-        if(personExist == false && email == false){
+        if(personExist == false){
             //Save data:
             moduleServices.insert(req, res, people);
         }
@@ -115,11 +112,8 @@ router.post(
         //Check if the person already exists in the database:
         const personExist = await moduleServices.checkPerson(req, res);
 
-        //Search for duplicates:
-        const email = await moduleServices.isDuplicated(req, res, people, req.body.email, 'email');
-
         //Check for duplicates:
-        if(personExist == false && email == false){
+        if(personExist == false){
             //Save data:
             moduleServices.update(req, res, people);
         }

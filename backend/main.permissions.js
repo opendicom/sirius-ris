@@ -33,8 +33,8 @@ const rolePermissions = {
     }
 }
 
-//Set user consessions:
-const consessionPermissions = {
+//Set user concessions:
+const concessionPermissions = {
     //Sign report
     1: { report: ['sign'] },
 
@@ -51,6 +51,6 @@ const consessionPermissions = {
 //Export permissions:
 module.exports = {
     rolePermissions,
-    consessionPermissions
+    concessionPermissions
 };
 //--------------------------------------------------------------------------------------------------------------------//

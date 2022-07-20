@@ -1,0 +1,29 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>unsubscribe</mat-icon>&nbsp; Dirección de correo ya registrada</h1>
+<div mat-dialog-content>
+  <br/>
+  La dirección de correo ingresada ya se encuentra registrada en la base de datos con el siguiente usuario:
+  <br/><br/>
+
+  <strong>DOCUMENTO/S:</strong><br/>
+  <span *ngFor="let current of data.person.documents" class="dialog-documents">
+    <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+    <span matTooltip="{{ document_types[current.doc_type] }}">
+      <span innerHTML="{{ current.document }}"></span>
+    </span>
+    <br/>
+  </span>
+
+  <br/>
+  <strong>NOMBRE/S:</strong> {{ data.person.name_01 }} <span *ngIf="data.person.name_02">{{ data.person.name_02 }}</span><br/>
+  <strong>APELLIDO/S:</strong> {{ data.person.surname_01 }} <span *ngIf="data.person.surname_02">{{ data.person.surname_02 }}</span><br/>
+
+  <br/>
+
+  <h3>¿Desea cargar los datos del usuario ya registrado en el formulario?</h3>
+
+</div>
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">NO, USAR OTRO CORREO</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, EDITAR USUARIO ENCONTRADO</button>
+</div>

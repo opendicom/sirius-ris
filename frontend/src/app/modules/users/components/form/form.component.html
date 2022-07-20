@@ -45,27 +45,6 @@
 
           <hr class="dashed" /><br/>
 
-          <h4>Correo electrónico:</h4>
-          <mat-form-field appearance="fill" class="large">
-            <mat-label>E-mail</mat-label>
-            <input matInput type="text" formControlName="email" placeholder="Ej: nombre@casilla.com" (blur)="onSetEmail()">
-            <mat-icon matSuffix>mail</mat-icon>
-          </mat-form-field>
-
-          <h4>Teléfono de contacto:</h4>
-          <mat-form-field appearance="fill" class="large">
-            <mat-label>Número de teléfono</mat-label>
-            <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
-            <mat-icon matSuffix>phone</mat-icon>
-            <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
-          </mat-form-field>
-
-          <br/><br/>
-
-        </div> <!-- end fxLayout wrapper -->
-
-        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-
           <h4>Nombres:</h4>
           <mat-form-field appearance="fill" class="medium">
             <mat-label>Primer nombre</mat-label>
@@ -90,7 +69,11 @@
             <input matInput type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
           </mat-form-field>
 
-          <br/><br/><hr class="dashed" /><br/>
+          <br/><br/>
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
           <h4>Fecha de nacimiento:</h4>
           <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
@@ -99,6 +82,26 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+          </mat-form-field>
+
+          <br/><br/><hr class="dashed" /><br/>
+
+          <h4>Teléfono de contacto:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Número de teléfono</mat-label>
+            <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+          </mat-form-field>
+
+          <br/><br/>
+
+          <h4>Contacto alternativo:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Número de teléfono</mat-label>
+            <input matInput type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
           </mat-form-field>
 
         </div> <!-- end fxLayout wrapper -->
@@ -123,6 +126,44 @@
       <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          <h4>Correo electrónico:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>E-mail</mat-label>
+            <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="Ej: nombre@casilla.com" (change)="onSetEmail()">
+            <mat-icon matSuffix>mail</mat-icon>
+          </mat-form-field>
+
+          <hr class="dashed" /><br/>
+
+          <h4>Clave del usuario <span class="label-info">Vacío sino desea modificar</span>:</h4>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
+            <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
+          </mat-form-field>
+
+          <br/><br/>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Reitere la contraseña</mat-label>
+            <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
+          </mat-form-field>
+
+          <hr class="dashed" /><br/>
+
+          <h4>Estado:</h4>
+          <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+            <mat-radio-button value="true">Activo</mat-radio-button>
+            <mat-radio-button value="false">Inactivo</mat-radio-button>
+          </mat-radio-group>
+
+          <br/><br/>
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
           <h4>Datos del profesional:</h4>
           <mat-form-field appearance="fill" class="medium">
@@ -157,35 +198,6 @@
 
         </div> <!-- end fxLayout wrapper -->
 
-        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-
-          <h4>Clave del usuario <span class="label-info">Vacío sino desea modificar</span>:</h4>
-
-          <mat-form-field appearance="fill" class="medium">
-            <mat-label>Contraseña</mat-label>
-            <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
-            <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
-          </mat-form-field>
-
-          <br/><br/>
-
-          <mat-form-field appearance="fill" class="medium">
-            <mat-label>Reitere la contraseña</mat-label>
-            <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
-          </mat-form-field>
-
-          <hr class="dashed" /><br/>
-
-          <h4>Estado:</h4>
-          <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-            <mat-radio-button value="true">Activo</mat-radio-button>
-            <mat-radio-button value="false">Inactivo</mat-radio-button>
-          </mat-radio-group>
-
-          <br/><br/>
-
-        </div> <!-- end fxLayout wrapper -->
-
       </div>
     </mat-tab>
     <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
@@ -195,30 +207,165 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">admin_panel_settings</mat-icon>
-        Permisos
+        Permisos &nbsp;
+        <span *ngIf="userOperation">
+          <div [ngSwitch]="userOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
       </ng-template>
 
       <h2 class="form-title text-center underline-fail-alt">Permisos del usuario:</h2>
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
 
-          Formulario de permisos...
+          <h4>Tipo de dominio:</h4>
+          <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
+            <mat-radio-button value="organization">Organización</mat-radio-button>
+            <mat-radio-button value="branch">Sucursal</mat-radio-button>
+            <mat-radio-button value="service">Servicio</mat-radio-button>
+          </mat-radio-group>
 
+          <br/><br/><hr class="dashed" /><br/>
+
+
+          <div [ngSwitch]="form.value.domain_type">
+            <!--ORGANIZATION-->
+            <span *ngSwitchCase="'organization'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentOrganization of availableOrganizations">
+                    <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+
+            <!--BRANCH-->
+            <span *ngSwitchCase="'branch'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentBranch of availableBranches">
+                    <div *ngFor="let currentOrganization of availableOrganizations">
+                      <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+
+            <!--SERVICE-->
+            <span *ngSwitchCase="'service'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentService of availableServices">
+                    <div *ngFor="let currentBranch of availableBranches">
+                      <div *ngFor="let currentOrganization of availableOrganizations">
+                        <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                      </div>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+          </div>
+
+          <h4>Rol:</h4>
+          <mat-form-field appearance="fill" class="medium">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role">
+              <div *ngFor="let currentRole of userRoles | keyvalue">
+                <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+
+          <br/><hr class="dashed" /><br/>
+
+          <h4>Conseciones particulares:</h4>
+          <div class="item-container" formArrayName="concessions">
+            <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue; let key = index">
+              <mat-checkbox color="primary">{{ currentConcessions.value }}</mat-checkbox><br/>
+            </ng-container>
+          </div>
+
+          <br/><hr class="dashed" /><br/>
+
+          <div class="text-right">
+            <button mat-flat-button type="button" color="accent"><mat-icon>add</mat-icon> AÑADIR PERMISO</button>
+          </div>
+
+          <br/>
         </div> <!-- end fxLayout wrapper -->
 
-        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <div *ngIf="getKeys(permissions).length > 0; then thenBlockPermissions else elseBlockPermissions"></div>
+
+          <ng-template #thenBlockPermissions>
+            <h4>Permisos asignados al usuario:</h4>
+            <ng-container *ngFor="let currentPermission of permissions;">
+
+              <div [ngSwitch]="getKeys(currentPermission)[0]">
+
+                <span *ngSwitchCase="'organization'">
+                  <div *ngFor="let currentOrganization of availableOrganizations">
+                    <span *ngIf="currentOrganization._id == currentPermission.organization">
+                      <br/><strong>Tipo de dominio:</strong> Organización
+                      <br/><strong>Dominio:</strong> {{ currentOrganization.short_name }} ({{ currentOrganization.name }})
+                      <br/><strong>Rol:</strong> {{ userRoles[currentPermission.role] }}
+                      <br/><strong>Conseciones:</strong> {{ currentPermission.concessions | json }}
+                    </span>
+                  </div>
+                </span>
+
+                <span *ngSwitchCase="'branch'">
+                  <div *ngFor="let currentBranch of availableBranches">
+                    <div *ngFor="let currentOrganization of availableOrganizations">
+                      <span *ngIf="currentBranch.fk_organization == currentOrganization._id && currentBranch._id == currentPermission['branch']">
+                        <br/><strong>Tipo de dominio:</strong> Sucursal
+                        <br/><strong>Dominio:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})
+                        <br/><strong>Rol:</strong> {{ userRoles[currentPermission.role] }}
+                        <br/><strong>Conseciones:</strong> {{ currentPermission.concessions | json }}
+                      </span>
+                    </div>
+                  </div>
+                </span>
+
+                <span *ngSwitchCase="'service'">
+                  <div *ngFor="let currentService of availableServices">
+                    <div *ngFor="let currentBranch of availableBranches">
+                      <div *ngFor="let currentOrganization of availableOrganizations">
+                        <span *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id && currentService._id == currentPermission['service']">
+                          <br/><strong>Tipo de dominio:</strong> Servicio
+                          <br/><strong>Dominio:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}
+                          <br/><strong>Rol:</strong> {{ userRoles[currentPermission.role] }}
+                          <br/><strong>Conseciones:</strong> {{ currentPermission.concessions | json}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </ng-container>
+
+          </ng-template>
+
+          <ng-template #elseBlockPermissions>
+            <br/><span class="label-info">El usuario aún no posee permisos asignados</span>
+          </ng-template>
+
         </div> <!-- end fxLayout wrapper -->
       </div>
     </mat-tab>
     <!-- PERMISSIONS TAB: ----------------------------------------------------------------------------------------------------------- -->
-
-    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
-    <mat-tab [disabled]="true">
-      <ng-template mat-tab-label>
-      </ng-template>
-    </mat-tab>
-    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
   </mat-tab-group>
 

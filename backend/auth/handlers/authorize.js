@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
                 let userPermission = {
                     domain: '', 
                     role: '',
-                    consession: []
+                    concession: []
                 };
 
                 //Obtain permissions keys (await foreach):
@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
                             //Set userPermission:
                             userPermission.domain = mongoose.Types.ObjectId(domain);
                             userPermission.role = parseInt(role, 10);
-                            userPermission.consession = value['concession'];
+                            userPermission.concession = value['concession'];
                         }
                     } else if((Object.keys(value).includes('patient') && value['patient'] == domain)) {
                         mainServices.sendConsoleMessage('WARN', 'Patient autorization request, to be continue..');

@@ -118,8 +118,15 @@ export class ActionComponent implements OnInit {
   // DELETE SELECTED ITEMS:
   //--------------------------------------------------------------------------------------------------------------------//
   deleteSelectedItems(){
+    //Create operation handler:
+    const operationHandler = {
+      element         : this.sharedProp.element,
+      selected_items  : this.sharedProp.selected_items,
+      router          : this.router
+    }
+
     //Open dialog to confirm:
-    this.sharedFunctions.openDialog('delete', this.sharedProp.element, this.sharedProp.selected_items, this.router);
+    this.sharedFunctions.openDialog('delete', operationHandler);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

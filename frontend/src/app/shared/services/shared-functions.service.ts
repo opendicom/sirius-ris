@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';                                            //
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
+import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -211,34 +212,50 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // OPEN DIALOG:
   //--------------------------------------------------------------------------------------------------------------------//
-  openDialog(operation: string, element: string, selected_items: string[] = [], router: any = false){
-    //Switch by operation types:
-    switch(operation){
-      case 'delete':
-        //Create dialog observable:
-        const dialogObservable = this.dialog.open(DeleteItemsComponent);
+  openDialog(operation: string, operationHandler: any = null, callback = (result: boolean) => {}): void {
+    if(operation !== '' && operationHandler !== null){
+      //Switch by operation types:
+      switch(operation){
+        //DELETE FROM LIST COMPONENTS (GENERIC):
+        case 'delete':
+          //Create dialog observable:
+          const dialogObservable = this.dialog.open(DeleteItemsComponent);
 
-        //Observe content (Subscribe):
-        dialogObservable.afterClosed().subscribe(result => {
-          //Check if result is true:
-          if(result){
-            //Batch delete:
-            if(selected_items.length > 1){
-              this.delete('batch', element, selected_items, (res) => {
-                //Response the deletion according to the result:
-                this.deleteResponder(res, element, router);
-              });
+          //Observe content (Subscribe):
+          dialogObservable.afterClosed().subscribe(result => {
+            //Check if result is true:
+            if(result){
+              //Batch delete:
+              if(operationHandler.selected_items.length > 1){
+                this.delete('batch', operationHandler.element, operationHandler.selected_items, (res) => {
+                  //Response the deletion according to the result:
+                  this.deleteResponder(res, operationHandler.element, operationHandler.router);
+                });
 
-            //Single delete:
-            } else {
-              this.delete('single', element, selected_items[0], (res) => {
-                //Response the deletion according to the result:
-                this.deleteResponder(res, element, router);
-              });
+              //Single delete:
+              } else {
+                this.delete('single', operationHandler.element, operationHandler.selected_items[0], (res) => {
+                  //Response the deletion according to the result:
+                  this.deleteResponder(res, operationHandler.element, operationHandler.router);
+                });
+              }
             }
-          }
-        });
-        break;
+          });
+          break;
+
+        //FOUND PERSON WITH USER EMAIL IN USER FORM COMPONENT:
+        case 'found_person':
+          //Create dialog observable:
+          const obsDialog = this.dialog.open(FoundPersonComponent, { data: operationHandler.user_data });
+
+          //Observe content (Subscribe):
+          obsDialog.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+      }
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

@@ -83,7 +83,7 @@ module.exports = async (req, res) => {
                                 let userPermission = {
                                     domain: '', 
                                     role: '',
-                                    consession: []
+                                    concession: []
                                 };
 
                                 //ORGANIZATIONS:
@@ -104,9 +104,9 @@ module.exports = async (req, res) => {
                                     mainServices.sendConsoleMessage('WARN', 'Patient autorization request, to be continue..');
                                 }
 
-                                //Set role & consession in userPermission:
+                                //Set role & concession in userPermission:
                                 userPermission.role = parseInt(peopleData.user.permissions[0].role, 10);
-                                userPermission.consession = peopleData.user.permissions[0].concession;
+                                userPermission.concession = peopleData.user.permissions[0].concession;
 
                                 //Set response data object:
                                 const response_data = {

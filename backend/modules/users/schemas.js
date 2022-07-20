@@ -39,6 +39,7 @@ const preSchema = new mongoose.Schema({
     fk_person:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
+    email:              { type: String, match: /.+\@.+\..+/ },
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
     settings:           { type: [subSchemaSettings] },
@@ -60,7 +61,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = [];
+const AllowedUnsetValues = ['email', 'professional.id', 'professional.description', 'professional.workload', 'professional.vacation'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -82,6 +83,14 @@ const Validator = [
         .isLength(8)
         .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
 
+    body('email')
+        .trim()
+        .optional()
+        .isEmail()
+        .withMessage('El valor ingresado NO es una dirección de correo válida.')
+        .normalizeEmail({ gmail_remove_dots: false })
+        .toLowerCase(),
+        
     body('permissions').isArray(),
 
     body('permissions.*.organization')

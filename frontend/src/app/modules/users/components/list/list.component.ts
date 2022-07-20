@@ -74,17 +74,18 @@ export class ListComponent implements OnInit {
     this.sharedProp.filterFields  = [
       'person.documents.document',
       'username',
+      'email',
       'person.name_01',
       'person.name_02',
       'person.surname_01',
       'person.surname_02',
-      'person.email',
       'person.phone_numbers'
     ];
     this.sharedProp.projection    = {
       'fk_person': 1,
       'person': 1,
       'username': 1,
+      'email': 1,
       'status': 1
     };
     this.sharedProp.sort          = { status: -1 };

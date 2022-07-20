@@ -81,9 +81,7 @@
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Correo </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.person">
-          <span *ngIf="element.person.email" innerHTML="{{ element.person.email | highlighter : sharedProp.filter }}"></span>
-        </span>
+        <span *ngIf="element.email" innerHTML="{{ element.email | highlighter : sharedProp.filter }}"></span>
       </td>
     </ng-container>
 

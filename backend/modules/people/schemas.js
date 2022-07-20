@@ -22,7 +22,6 @@ const Schema = new mongoose.Schema({
     surname_02:         { type: String },
     birth_date:         { type: Date, required: true },
     gender:             { type: Number, required: true },
-    email:              { type: String, match: /.+\@.+\..+/ },
     phone_numbers:      { type: [String] },
 },
 { timestamps: true },
@@ -38,7 +37,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['name_02', 'surname_02', 'email', 'phone_numbers'];
+const AllowedUnsetValues = ['name_02', 'surname_02', 'phone_numbers'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -98,14 +97,6 @@ const Validator = [
         .trim()
         .isInt()
         .withMessage('El parametro género es requerido y debe ser numérico.'),
-    
-    body('email')
-        .trim()
-        .optional()
-        .isEmail()
-        .withMessage('El valor ingresado NO es una dirección de correo válida.')
-        .normalizeEmail({ gmail_remove_dots: false })
-        .toLowerCase(),
 
     body('phone_numbers').optional().isArray(),
 
