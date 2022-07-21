@@ -220,7 +220,7 @@ export class BatchComponent implements OnInit {
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
-      this.availableOrganizations = res.data;
+      this.availableBranches = res.data;
     });
 
     //Find services:

@@ -89,26 +89,30 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       //Person fields:
-      'doc_country_code'  : [ this.settings.default_country, [Validators.required]],
-      'doc_type'          : [ this.settings.default_doc_type, [Validators.required]],
-      'document'          : [ '', [Validators.required]],
-      'name_01'           : [ '', [Validators.required]],
-      'name_02'           : [ '', []],
-      'surname_01'        : [ '', [Validators.required]],
-      'surname_02'        : [ '', []],
-      'birth_date'        : [ '', [Validators.required]],
-      'phone_numbers[0]'  : [ '', [Validators.required]],
-      'phone_numbers[1]'  : [ '', []],
+      person: this.formBuilder.group({
+        'doc_country_code'  : [ this.settings.default_country, [Validators.required]],
+        'doc_type'          : [ this.settings.default_doc_type, [Validators.required]],
+        'document'          : [ '', [Validators.required]],
+        'name_01'           : [ '', [Validators.required]],
+        'name_02'           : [ '', []],
+        'surname_01'        : [ '', [Validators.required]],
+        'surname_02'        : [ '', []],
+        'birth_date'        : [ '', [Validators.required]],
+        'phone_numbers[0]'  : [ '', [Validators.required]],
+        'phone_numbers[1]'  : [ '', []],
+      }),
 
       //User fields:
-      'password'                  : [ '', [Validators.required]],
-      'password_repeat'           : [ '', [Validators.required]],
-      'email'                     : [ '', []],
-      'status'                    : [ 'true', []],
-      'professional[id]'          : [ '', []],
-      'professional[description]' : [ '', []],
-      'professional[workload]'    : [ '', []],
-      'professional[vacation]'    : [ 'false', []],
+      user: this.formBuilder.group({
+        'password'                  : [ '', [Validators.required]],
+        'password_repeat'           : [ '', [Validators.required]],
+        'email'                     : [ '', []],
+        'status'                    : [ 'true', []],
+        'professional[id]'          : [ '', []],
+        'professional[description]' : [ '', []],
+        'professional[workload]'    : [ '', []],
+        'professional[vacation]'    : [ 'false', []],
+      }),
 
       //User permissions:
       'domain_type'       : [ 'organization', [],],
@@ -125,13 +129,13 @@ export class FormComponent implements OnInit {
 
   onSetDocument(preventClear: boolean = false){
     //Check document fields content:
-    if(this.form.value.document != '' && this.form.value.doc_country_code != '' && this.form.value.doc_type != ''){
+    if(this.form.value.person.document != '' && this.form.value.person.doc_country_code != '' && this.form.value.person.doc_type != ''){
 
       //Set people params:
       const people_params = {
-        'filter[elemMatch][documents][document]' : this.form.value.document,
-        'filter[elemMatch][documents][doc_country_code]' : this.form.value.doc_country_code,
-        'filter[elemMatch][documents][doc_type]' : this.form.value.doc_type
+        'filter[elemMatch][documents][document]' : this.form.value.person.document,
+        'filter[elemMatch][documents][doc_country_code]' : this.form.value.person.doc_country_code,
+        'filter[elemMatch][documents][doc_type]' : this.form.value.person.doc_type
       };
 
       //Create observable people:
@@ -206,10 +210,10 @@ export class FormComponent implements OnInit {
               this.permissions = res.data[0].permissions;
 
               //Remove validator required in passwords field:
-              this.form.controls['password'].clearValidators();
-              this.form.controls['password_repeat'].clearValidators();
-              this.form.controls['password'].updateValueAndValidity();
-              this.form.controls['password_repeat'].updateValueAndValidity();
+              this.form.get('user.password')?.clearValidators();
+              this.form.get('user.password_repeat')?.clearValidators();
+              this.form.get('user.password')?.updateValueAndValidity();
+              this.form.get('user.password_repeat')?.updateValueAndValidity();
 
               //Set operations
               this.personOperation = 'update';
@@ -227,10 +231,10 @@ export class FormComponent implements OnInit {
               this.permissions = [];
 
               //Add validator required in passwords field:
-              this.form.controls['password'].setValidators([Validators.required]);
-              this.form.controls['password_repeat'].setValidators([Validators.required]);
-              this.form.controls['password'].updateValueAndValidity();
-              this.form.controls['password_repeat'].updateValueAndValidity();
+              this.form.get('user.password')?.setValidators([Validators.required]);
+              this.form.get('user.password_repeat')?.setValidators([Validators.required]);
+              this.form.get('user.password')?.updateValueAndValidity();
+              this.form.get('user.password_repeat')?.updateValueAndValidity();
 
               //Set operations:
               this.personOperation = 'update';
@@ -247,10 +251,10 @@ export class FormComponent implements OnInit {
             this.permissions = [];
 
             //Add validator required in passwords field:
-            this.form.controls['password'].setValidators([Validators.required]);
-            this.form.controls['password_repeat'].setValidators([Validators.required]);
-            this.form.controls['password'].updateValueAndValidity();
-            this.form.controls['password_repeat'].updateValueAndValidity();
+            this.form.get('user.password')?.setValidators([Validators.required]);
+            this.form.get('user.password_repeat')?.setValidators([Validators.required]);
+            this.form.get('user.password')?.updateValueAndValidity();
+            this.form.get('user.password_repeat')?.updateValueAndValidity();
 
             //Set operations:
             this.personOperation = 'insert';
@@ -269,10 +273,10 @@ export class FormComponent implements OnInit {
 
   onSetEmail(){
     //Check the email field is not empty:
-    if(this.form.value.email != ''){
+    if(this.form.value.user.email != ''){
       //Set user params:
       const user_params = {
-        'filter[email]'   : this.form.value.email,
+        'filter[email]'   : this.form.value.user.email,
         'proj[password]'  : 0
       };
 
@@ -288,7 +292,7 @@ export class FormComponent implements OnInit {
             const inputEmail = document.getElementById('IDtxtEmail');
 
             //Check if document field is empty:
-            if(this.form.value.document != ''){
+            if(this.form.value.person.document != ''){
 
               //Check that the user is human:
               if(res.data[0].person){
@@ -312,10 +316,10 @@ export class FormComponent implements OnInit {
                     this.permissions = res.data[0].permissions;
 
                     //Remove validator required in passwords field:
-                    this.form.controls['password'].clearValidators();
-                    this.form.controls['password_repeat'].clearValidators();
-                    this.form.controls['password'].updateValueAndValidity();
-                    this.form.controls['password_repeat'].updateValueAndValidity();
+                    this.form.get('user.password')?.clearValidators();
+                    this.form.get('user.password_repeat')?.clearValidators();
+                    this.form.get('user.password')?.updateValueAndValidity();
+                    this.form.get('user.password_repeat')?.updateValueAndValidity();
 
                     //Set operations
                     this.personOperation = 'update';
@@ -323,14 +327,14 @@ export class FormComponent implements OnInit {
 
                   } else {
                     //Clear email input and focus on this:
-                    this.form.controls['email'].setValue('');
+                    this.form.get('user.email')?.setValue('');
                     inputEmail?.focus();
                   }
                 });
               } else {
                 //Send message, clear email input and focus on this:
                 this.sharedFunctions.sendMessage('El correo indicado NO puede utilizarse, el mismo se encuentra asociado a un usuario de tipo máquina.')
-                this.form.controls['email'].setValue('');
+                this.form.get('user.email')?.setValue('');
                 inputEmail?.focus();
               }
 
@@ -347,10 +351,10 @@ export class FormComponent implements OnInit {
               this.permissions = res.data[0].permissions;
 
               //Remove validator required in passwords field:
-              this.form.controls['password'].clearValidators();
-              this.form.controls['password_repeat'].clearValidators();
-              this.form.controls['password'].updateValueAndValidity();
-              this.form.controls['password_repeat'].updateValueAndValidity();
+              this.form.get('user.password')?.clearValidators();
+              this.form.get('user.password_repeat')?.clearValidators();
+              this.form.get('user.password')?.updateValueAndValidity();
+              this.form.get('user.password_repeat')?.updateValueAndValidity();
 
               //Set operations
               this.personOperation = 'update';
@@ -366,16 +370,16 @@ export class FormComponent implements OnInit {
     //Check person data:
     if(personData){
       //Send data to FormControl elements (Set person fields):
-      this.form.controls['doc_country_code'].setValue(personData.documents[0].doc_country_code);
-      this.form.controls['doc_type'].setValue(personData.documents[0].doc_type.toString());
-      this.form.controls['document'].setValue(personData.documents[0].document);
-      this.form.controls['name_01'].setValue(personData.name_01);
-      this.form.controls['name_02'].setValue(personData.name_02);
-      this.form.controls['surname_01'].setValue(personData.surname_01);
-      this.form.controls['surname_02'].setValue(personData.surname_02);
-      this.form.controls['phone_numbers[0]'].setValue(personData.phone_numbers[0]);
-      this.form.controls['phone_numbers[1]'].setValue(personData.phone_numbers[1]);
-      this.form.controls['birth_date'].setValue(new Date(personData.birth_date));
+      this.form.get('person.doc_country_code')?.setValue(personData.documents[0].doc_country_code);
+      this.form.get('person.doc_type')?.setValue(personData.documents[0].doc_type.toString());
+      this.form.get('person.document')?.setValue(personData.documents[0].document);
+      this.form.get('person.name_01')?.setValue(personData.name_01);
+      this.form.get('person.name_02')?.setValue(personData.name_02);
+      this.form.get('person.surname_01')?.setValue(personData.surname_01);
+      this.form.get('person.surname_02')?.setValue(personData.surname_02);
+      this.form.get('person.phone_numbers[0]')?.setValue(personData.phone_numbers[0]);
+      this.form.get('person.phone_numbers[1]')?.setValue(personData.phone_numbers[1]);
+      this.form.get('person.birth_date')?.setValue(personData.birth_date);
     }
   }
 
@@ -383,15 +387,15 @@ export class FormComponent implements OnInit {
     //Check user data:
     if(userData){
       //Send data to FormControl elements (Set user fields):
-      this.form.controls['email'].setValue(userData.email);
-      this.form.controls['status'].setValue(`${userData.status}`); //Use back tip notation to convert string
+      this.form.get('user.email')?.setValue(userData.email);
+      this.form.get('user.status')?.setValue(`${userData.status}`); //Use back tip notation to convert string
 
       //If cointain professional data:
       if(userData.professional){
-        this.form.controls['professional[id]'].setValue(userData.professional.id);
-        this.form.controls['professional[description]'].setValue(userData.professional.description);
-        this.form.controls['professional[workload]'].setValue(userData.professional.workload);
-        this.form.controls['professional[vacation]'].setValue(`${userData.professional.vacation}`); //Use back tip notation to convert string
+        this.form.get('user.professional[id]')?.setValue(userData.professional.id);
+        this.form.get('user.professional[description]')?.setValue(userData.professional.description);
+        this.form.get('user.professional[workload]')?.setValue(userData.professional.workload);
+        this.form.get('user.professional[vacation]')?.setValue(`${userData.professional.vacation}`); //Use back tip notation to convert string
       }
     }
   }
@@ -399,26 +403,27 @@ export class FormComponent implements OnInit {
   clearFormFields(preventClear: boolean = false){
     //Person fields:
     if(preventClear == false){
-      this.form.controls['document'].setValue('');
-      this.form.controls['doc_country_code'].setValue(this.settings.default_country);
-      this.form.controls['doc_type'].setValue(this.settings.default_doc_type.toString());
+      this.form.get('person.document')?.setValue('');
+      this.form.get('person.doc_country_code')?.setValue(this.settings.default_country);
+      this.form.get('person.doc_type')?.setValue(this.settings.default_doc_type.toString());
     }
-    this.form.controls['email'].setValue('');
-    this.form.controls['name_01'].setValue('');
-    this.form.controls['name_02'].setValue('');
-    this.form.controls['surname_01'].setValue('');
-    this.form.controls['surname_02'].setValue('');
-    this.form.controls['phone_numbers[0]'].setValue('');
-    this.form.controls['birth_date'].setValue('');
+    this.form.get('person.email')?.setValue('');
+    this.form.get('person.name_01')?.setValue('');
+    this.form.get('person.name_02')?.setValue('');
+    this.form.get('person.surname_01')?.setValue('');
+    this.form.get('person.surname_02')?.setValue('');
+    this.form.get('person.phone_numbers[0]')?.setValue('');
+    this.form.get('person.phone_numbers[1]')?.setValue('');
+    this.form.get('person.birth_date')?.setValue('');
 
     //User fields:
-    this.form.controls['status'].setValue('true');
-    this.form.controls['password'].setValue('');
-    this.form.controls['password_repeat'].setValue('');
-    this.form.controls['professional[id]'].setValue('');
-    this.form.controls['professional[description]'].setValue('');
-    this.form.controls['professional[workload]'].setValue('');
-    this.form.controls['professional[vacation]'].setValue('false');
+    this.form.get('user.status')?.setValue('true');
+    this.form.get('user.password')?.setValue('');
+    this.form.get('user.password_repeat')?.setValue('');
+    this.form.get('user.professional[id]')?.setValue('');
+    this.form.get('user.professional[description]')?.setValue('');
+    this.form.get('user.professional[workload]')?.setValue('');
+    this.form.get('user.professional[vacation]')?.setValue('false');
   }
 
   onCheckConcession(event: any, key: any){
@@ -451,7 +456,7 @@ export class FormComponent implements OnInit {
 
       //Add concessions if not empty:
       if(this.selectedConcession.length > 0){
-        currentPermission['concession'] = [...this.selectedConcession];
+        currentPermission['concession'] = [...this.selectedConcession]; //Clone array with spread operator.
       }
 
       //Add currentPermission to permissions object:
@@ -467,7 +472,18 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.form.value)
+    console.log('\nDATOS DE LA PERSONA:')
+    console.log(this.form.value.person);
+    console.log('\nDATOS DEL USUARIO:')
+    console.log(this.form.value.user);
+    console.log('\nPERMISOS DEL USUARIO:')
+    console.log(this.permissions);
+
+    //Validate fields:
+    if(this.form.valid){
+      //Data normalization - Booleans types:
+      this.form.value.user.status = this.form.value.user.status.toLowerCase() == 'true' ? true : false;
+    }
   }
 
   onCancel(){
