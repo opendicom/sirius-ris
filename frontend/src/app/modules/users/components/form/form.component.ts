@@ -33,7 +33,10 @@ export class FormComponent implements OnInit {
   private user_params   : any = {};
   private people_params : any = {};
   public  user_data     : any = {};
-  public  permissions   : any = {};
+  public  permissions   : any[] = [];
+
+  //Initializate selected concession:
+  public selectedConcession : number[] = [];
 
   //Initializate operations:
   public personOperation  : string = 'insert';
@@ -111,7 +114,7 @@ export class FormComponent implements OnInit {
       'domain_type'       : [ 'organization', [],],
       'domain'            : [ '', []],
       'role'              : [ '', []],
-      'concessions'       : [ '', []]
+      'concessions'       : [ [], []]
     });
   }
 
@@ -221,7 +224,7 @@ export class FormComponent implements OnInit {
               this.setPerson(res.data[0]);
 
               //Clear current permissions:
-              this.permissions = {};
+              this.permissions = [];
 
               //Add validator required in passwords field:
               this.form.controls['password'].setValidators([Validators.required]);
@@ -241,7 +244,7 @@ export class FormComponent implements OnInit {
             this.clearFormFields(true);
 
             //Clear current permissions:
-            this.permissions = {};
+            this.permissions = [];
 
             //Add validator required in passwords field:
             this.form.controls['password'].setValidators([Validators.required]);
@@ -359,15 +362,6 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-    console.log(this.form.value)
-  }
-
-  onCancel(){
-    //Redirect to the list:
-    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
-  }
-
   setPerson(personData: any = false): void {
     //Check person data:
     if(personData){
@@ -425,6 +419,60 @@ export class FormComponent implements OnInit {
     this.form.controls['professional[description]'].setValue('');
     this.form.controls['professional[workload]'].setValue('');
     this.form.controls['professional[vacation]'].setValue('false');
+  }
+
+  onCheckConcession(event: any, key: any){
+    //Parse key to base10 integer:
+    key = parseInt(key, 10);
+
+    //Check if input is check or uncheck:
+    if(event.checked){
+      //Set current check into selectedDays array:
+      this.selectedConcession.push(key);
+    } else {
+      //Remove from array by value:
+      this.selectedConcession = this.selectedConcession.filter((e: number) => { return e !== key });
+    }
+  }
+
+  addPermission(){
+    //Check fields contents:
+    if(this.form.value.domain_type !== '' && this.form.value.domain !== '' && this.form.value.role !== ''){
+      //Parse role to base10 integer:
+      this.form.value.role = parseInt(this.form.value.role, 10);
+
+      //Create current permission object:
+      let currentPermission: any = {
+        role: this.form.value.role
+      }
+
+      //Add domain type and domain:
+      currentPermission[this.form.value.domain_type] = this.form.value.domain;
+
+      //Add concessions if not empty:
+      if(this.selectedConcession.length > 0){
+        currentPermission['concession'] = [...this.selectedConcession];
+      }
+
+      //Add currentPermission to permissions object:
+      this.permissions.push(currentPermission);
+    } else {
+      //Send message:
+      this.sharedFunctions.sendMessage('Debe cargar los datos necesarios para agregar el permiso al usuario.');
+    }
+  }
+
+  removePermission(permissionIndex: number){
+    this.permissions.splice(permissionIndex, 1);
+  }
+
+  onSubmit(){
+    console.log(this.form.value)
+  }
+
+  onCancel(){
+    //Redirect to the list:
+    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 
   findReferences(){
