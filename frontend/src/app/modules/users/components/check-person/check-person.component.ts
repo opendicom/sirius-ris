@@ -145,7 +145,7 @@ export class CheckPersonComponent implements OnInit {
             } else {
               //UPDATE PERSON AND INSERT USER:
               //Redirect to user form with update-person action and person _id:
-              this.router.navigate(['/' + this.sharedProp.element + '/form/update-person/' + res.data[0]._id ]);
+              this.router.navigate(['/' + this.sharedProp.element + '/form/insert/' + res.data[0]._id ]);
             }
           } else {
             //INSERT PERSON AND USER:

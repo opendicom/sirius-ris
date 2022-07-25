@@ -16,6 +16,14 @@
       <mat-icon>content_copy</mat-icon> GENERAR LOTE
     </button>
   </span>
+
+  <!-- Only super user can add machine users -->
+  <span *ngIf="sharedProp.action.add_machine && sharedProp.userLogged.permissions[0].role == 1">
+    &nbsp;
+    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_machine }}">
+      <mat-icon>add_box</mat-icon> AÑADIR USUARIO MAQUINA
+    </button>
+  </span>
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 </mat-toolbar>
 

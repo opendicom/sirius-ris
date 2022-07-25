@@ -180,7 +180,7 @@ export class SharedFunctionsService {
 
   //--------------------------------------------------------------------------------------------------------------------//
   // SET DATETIME FORMAT:
-  // Duplicated method to prevent circular dependency - [Duplicated method: shared-functions.service].
+  // Duplicated method to prevent circular dependency - [Duplicated method: shared-properties.service].
   //--------------------------------------------------------------------------------------------------------------------//
   setDatetimeFormat(date: Date, time: string = '00:00'): string{
     //Fix Eastern Daylight Time (TimezoneOffset):
@@ -303,52 +303,6 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // FIND RXJS:
-  //--------------------------------------------------------------------------------------------------------------------//
-  findRxJS(element: string, params: any, findOne: boolean = false): Observable<any>{
-    //Initialize operation type:
-    let operation = 'find';
-
-    //Check if findOne is true:
-    if(findOne){
-      operation = 'findOne';
-    }
-
-    //Return Observable:
-    return new Observable<any>((observer) => {
-
-      //Check if element is not empty:
-      if(element != ''){
-        //Create observable obsFind:
-        const obsFind = this.apiClient.sendRequest('GET', element + '/' + operation, params);
-
-        //Observe content (Subscribe):
-        obsFind.subscribe({
-          next: res => {
-            this.response = res;
-
-            //Pass chunks of data between observables:
-            observer.next(res);
-          },
-          error: res => {
-            //Send snakbar message:
-            if(res.error.message){
-              this.sendMessage(res.error.message);
-            } else {
-              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
-            }
-          }
-        });
-      } else {
-        this.sendMessage('Error: Debe determinar el tipo de elemento.');
-        observer.next(false);
-      }
-    });
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
   // SAVE - (INSERT & UPDATE):
   //--------------------------------------------------------------------------------------------------------------------//
   save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}): void {
@@ -397,7 +351,112 @@ export class SharedFunctionsService {
       this.sendMessage('Error: Debe determinar el tipo de elemento.');
     }
   }
-  //--------------------------------------------------------------------------------------------------------------------//<
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND RXJS - (FIND, FIND ONE & FIND BY ID):
+  //--------------------------------------------------------------------------------------------------------------------//
+  findRxJS(element: string, params: any, findOne: boolean = false): Observable<any>{
+    //Initialize operation type:
+    let operation = 'find';
+
+    //Check if findOne is true:
+    if(findOne){
+      operation = 'findOne';
+    }
+
+    //Return Observable:
+    return new Observable<any>((observer) => {
+
+      //Check if element is not empty:
+      if(element != ''){
+        //Create observable obsFind:
+        const obsFind = this.apiClient.sendRequest('GET', element + '/' + operation, params);
+
+        //Observe content (Subscribe):
+        obsFind.subscribe({
+          next: res => {
+            this.response = res;
+
+            //Pass chunks of data between observables:
+            observer.next(res);
+          },
+          error: res => {
+            //Send snakbar message:
+            if(res.error.message){
+              this.sendMessage(res.error.message);
+            } else {
+              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            }
+            observer.next(false);
+          }
+        });
+      } else {
+        this.sendMessage('Error: Debe determinar el tipo de elemento.');
+        observer.next(false);
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SAVE RXJS - (INSERT & UPDATE):
+  //--------------------------------------------------------------------------------------------------------------------//
+  saveRxJS(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = []): Observable<any> {
+    //Validate data - Delete empty fields:
+    this.cleanEmptyFields(operation, data, exceptions);
+
+    //Add _id only for update case:
+    if(operation == 'update' && _id != ''){
+      data._id = _id;
+    }
+
+    //Return Observable:
+    return new Observable<any>((observer) => {
+
+      //Check if element is not empty:
+      if(element != ''){
+
+        //Check if operation is not empty:
+        if(operation != ''){
+          //Save data:
+          //Create observable obsSave:
+          const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, data);
+
+          //Observe content (Subscribe):
+          obsSave.subscribe({
+            next: res => {
+              this.response = res;
+
+              //Pass chunks of data between observables:
+              observer.next(res);
+            },
+            error: res => {
+              //Send snakbar message:
+              if(res.error.message){
+                //Check validate errors:
+                if(res.error.validate_errors){
+                  this.sendMessage(res.error.message + ' ' + res.error.validate_errors);
+                } else {
+                  //Send other errors:
+                  this.sendMessage(res.error.message);
+                }
+              } else {
+                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              }
+              observer.next(false);
+            }
+          });
+        }
+      } else {
+        this.sendMessage('Error: Debe determinar el tipo de elemento.');
+        observer.next(false);
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
 
   //--------------------------------------------------------------------------------------------------------------------//

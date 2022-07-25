@@ -7,9 +7,19 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form/update/{{ element._id }}">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <!-- Human case -->
+        <span *ngIf="element.person">
+          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form/update/{{ element._id }}">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </span>
+
+        <!-- Machine case | Only super user can edit machine users -->
+        <span *ngIf="element.username && sharedProp.userLogged.permissions[0].role == 1">
+          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form-machine/update/{{ element._id }}">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </span>
       </td>
     </ng-container>
 

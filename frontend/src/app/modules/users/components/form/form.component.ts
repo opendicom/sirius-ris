@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router, ActivatedRoute } from '@angular/router';                                                 // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';                         // Reactive form handling tools
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';                     // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';                       // Shared Functions
-import { app_setting, document_types, ISO_3166, user_roles, user_concessions } from '@env/environment';   // Enviroment
-import { map, mergeMap } from 'rxjs/operators';                                                           // Reactive Extensions (RxJS)
+import { Router, ActivatedRoute } from '@angular/router';                                                               // Router and Activated Route Interface (To get information about the routes)
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';                                       // Reactive form handling tools
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';                                   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';                                     // Shared Functions
+import { app_setting, document_types, ISO_3166, user_roles, user_concessions, regexObjectId } from '@env/environment';  // Enviroment
+import { map, mergeMap, filter } from 'rxjs/operators';                                                                 // Reactive Extensions (RxJS)
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -35,6 +35,11 @@ export class FormComponent implements OnInit {
   public  user_data     : any = {};
   public  permissions   : any[] = [];
 
+  //Initializate validation tab errors:
+  public personTabErrors      : boolean = false;
+  public userTabErrors        : boolean = false;
+  public permissionTabErrors  : boolean = false;
+
   //Initializate selected concession:
   public selectedConcession : number[] = [];
 
@@ -49,9 +54,10 @@ export class FormComponent implements OnInit {
   public form!: FormGroup;
 
   //Define id and form_action variables (Activated Route):
-  public _id: string = '';
-  private keysWithValues: Array<string> = [];
-  public form_action: any;
+  public person_id        : string = '';
+  public user_id          : string = '';
+  private keysWithValues  : Array<string> = [];
+  public form_action      : any;
 
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
@@ -125,6 +131,118 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
+
+    //Get data from the DB (form_action):
+    if(this.form_action == 'insert'){
+      //Check if have an _id:
+      if(this.objRoute.snapshot.params['_id']){
+        //Set person_id:
+        this.person_id = this.objRoute.snapshot.params['_id'];
+
+        //Check if _id it is a ObjectId (person _id):
+        if(regexObjectId.test(this.objRoute.snapshot.params['_id'])){
+          //Set people params:
+          const people_params = {
+            'filter[_id]' : this.objRoute.snapshot.params['_id']
+          };
+
+          //Create observable people:
+          const obsPeople = this.sharedFunctions.findRxJS('people', people_params, true);
+
+          //Observe content (Subscribe):
+          obsPeople.subscribe({
+            next: (res) => {
+              //Check operation status:
+              if(res.success === true){
+                //Check response:
+                if(Object.keys(res.data).length > 0){
+                  //Clear data to FormControl elements:
+                  this.clearFormFields();
+
+                  //Send data to FormControl elements:
+                  this.setPerson(res.data[0]);
+
+                  //Clear current permissions:
+                  this.permissions = [];
+
+                  //Add validator required in passwords field:
+                  this.form.get('user.password')?.setValidators([Validators.required]);
+                  this.form.get('user.password_repeat')?.setValidators([Validators.required]);
+                  this.form.get('user.password')?.updateValueAndValidity();
+                  this.form.get('user.password_repeat')?.updateValueAndValidity();
+
+                  //Set operations:
+                  this.personOperation = 'update';
+                  this.userOperation = 'insert';
+
+                  //Get property keys with values:
+                  this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+                }
+              }
+            },
+          });
+
+        //Check that it is not a normal insert:
+        } else if(this.objRoute.snapshot.params['_id'] != '0'){
+          //Split new document (check person component - insert case):
+          const new_document = this.objRoute.snapshot.params['_id'].split('|');
+
+          //Set document into Form Values:
+          this.form.get('person.doc_country_code')?.setValue(new_document[0]);
+          this.form.get('person.doc_type')?.setValue(new_document[1]);
+          this.form.get('person.document')?.setValue(new_document[2]);
+        }
+      }
+
+    } else if(this.form_action == 'update'){
+      //Extract sent data (Parameters by routing):
+      this.user_id = this.objRoute.snapshot.params['_id'];
+
+      //Check if element is not empty:
+      if(this.user_id != ''){
+        //Request params:
+        const params = {
+          'filter[_id]'     : this.user_id,
+          'proj[password]'  : 0
+        };
+
+        //Find element to update:
+        this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
+
+          //UPDATE PERSON AND USER:
+          //Check operation status:
+          if(res.success === true){
+            //Clear data to FormControl elements:
+            this.clearFormFields();
+
+            //Send data to FormControl elements:
+            this.setPerson(res.data[0].person);
+            this.setUser(res.data[0]);
+
+            //Set current permissions:
+            this.permissions = res.data[0].permissions;
+
+            //Remove validator required in passwords field:
+            this.form.get('user.password')?.clearValidators();
+            this.form.get('user.password_repeat')?.clearValidators();
+            this.form.get('user.password')?.updateValueAndValidity();
+            this.form.get('user.password_repeat')?.updateValueAndValidity();
+
+            //Set operations
+            this.personOperation = 'update';
+            this.userOperation = 'update';
+
+            //Get property keys with values:
+            this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+
+          } else {
+            //Return to the list with request error message:
+            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.router.navigate(['/' + this.sharedProp.element + '/list']);
+          }
+        });
+      }
+    }
   }
 
   onSetDocument(preventClear: boolean = false){
@@ -219,6 +337,9 @@ export class FormComponent implements OnInit {
               this.personOperation = 'update';
               this.userOperation = 'update';
 
+              //Get property keys with values:
+              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+
             //UPDATE PERSON AND INSERT USER:
             } else {
               //Clear data to FormControl elements:
@@ -240,6 +361,8 @@ export class FormComponent implements OnInit {
               this.personOperation = 'update';
               this.userOperation = 'insert';
 
+              //Get property keys with values:
+              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
             }
 
           //INSERT PERSON AND USER:
@@ -359,6 +482,9 @@ export class FormComponent implements OnInit {
               //Set operations
               this.personOperation = 'update';
               this.userOperation = 'update';
+
+              //Get property keys with values:
+              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
             }
           }
         }
@@ -369,6 +495,9 @@ export class FormComponent implements OnInit {
   setPerson(personData: any = false): void {
     //Check person data:
     if(personData){
+      //Set person_id:
+      this.person_id = personData._id;
+
       //Send data to FormControl elements (Set person fields):
       this.form.get('person.doc_country_code')?.setValue(personData.documents[0].doc_country_code);
       this.form.get('person.doc_type')?.setValue(personData.documents[0].doc_type.toString());
@@ -379,13 +508,16 @@ export class FormComponent implements OnInit {
       this.form.get('person.surname_02')?.setValue(personData.surname_02);
       this.form.get('person.phone_numbers[0]')?.setValue(personData.phone_numbers[0]);
       this.form.get('person.phone_numbers[1]')?.setValue(personData.phone_numbers[1]);
-      this.form.get('person.birth_date')?.setValue(personData.birth_date);
+      this.form.get('person.birth_date')?.setValue(new Date(personData.birth_date.split('T')[0].replace(/-/g, '/'))); //Replace '-' by '/' to prevent one day off JS Date error.
     }
   }
 
   setUser(userData: any = false): void {
     //Check user data:
     if(userData){
+      //Set user_id:
+      this.user_id = userData._id;
+
       //Send data to FormControl elements (Set user fields):
       this.form.get('user.email')?.setValue(userData.email);
       this.form.get('user.status')?.setValue(`${userData.status}`); //Use back tip notation to convert string
@@ -401,6 +533,10 @@ export class FormComponent implements OnInit {
   }
 
   clearFormFields(preventClear: boolean = false){
+    //Clear _ids:
+    this.person_id = '';
+    this.user_id = '';
+
     //Person fields:
     if(preventClear == false){
       this.form.get('person.document')?.setValue('');
@@ -472,17 +608,85 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('\nDATOS DE LA PERSONA:')
-    console.log(this.form.value.person);
-    console.log('\nDATOS DEL USUARIO:')
-    console.log(this.form.value.user);
-    console.log('\nPERMISOS DEL USUARIO:')
-    console.log(this.permissions);
+    //Check person tab errors:
+    if(this.form.controls['person'].status == 'VALID'){
+      this.personTabErrors = false;
+    } else {
+      this.personTabErrors = true;
+    }
 
-    //Validate fields:
-    if(this.form.valid){
-      //Data normalization - Booleans types:
-      this.form.value.user.status = this.form.value.user.status.toLowerCase() == 'true' ? true : false;
+    //Check user tab errors:
+    if(this.form.controls['user'].status == 'VALID'){
+      this.userTabErrors = false;
+    } else {
+      this.userTabErrors = true;
+    }
+
+    //Check permission tab errors:
+    if(this.permissions.length > 0){
+      this.permissionTabErrors = false;
+    } else {
+      this.permissionTabErrors = true;
+      //Send message:
+      this.sharedFunctions.sendMessage('El usuario debe poseer al menos un permiso para poder ser guardado.');
+    }
+
+    //Check that the entered passwords are the same:
+    if(this.form.value.user.password == this.form.value.user.password_repeat){
+      this.userTabErrors = false;
+
+      //Validate fields:
+      if(this.form.valid){
+        //Check permissions:
+        if(this.permissions.length > 0){
+          //Data normalization - Booleans types:
+          this.form.get('user.status')?.setValue(this.form.value.user.status.toLowerCase() == 'true' ? true : false);
+          this.form.get('user.professional[vacation]')?.setValue(this.form.value.user['professional[vacation]'].toLowerCase() == 'true' ? true : false);
+
+          //Data normalization - Dates types:
+          this.form.get('person.birth_date')?.setValue(this.sharedFunctions.setDatetimeFormat(this.form.value.person.birth_date));
+
+          //Set permissions in form user object:
+          this.form.value.user['permissions'] = this.permissions;
+
+          //Create observable Save Person:
+          const obsSavePerson = this.sharedFunctions.saveRxJS(this.personOperation, 'people', this.person_id, this.form.value.person, this.keysWithValues);
+
+          //Create observable Save User:
+          const obsSaveUser = obsSavePerson.pipe(
+            //Check first result (save person):
+            map((res: any) => {
+              //Check operation status:
+              if(res.success === true){
+                //Set fk_person in form user object with assigned _id:
+                this.form.value.user['fk_person'] = res.data._id;
+              }
+
+              //Return response:
+              return res;
+            }),
+
+            //Filter that only success continue:
+            filter((res: any) => res.success === true),
+
+            //Save user with the fk_person (Return observable):
+            mergeMap(() => this.sharedFunctions.saveRxJS(this.userOperation, 'users', this.user_id, this.form.value.user, this.keysWithValues)),
+          );
+
+          //Observe content (Subscribe):
+          obsSaveUser.subscribe({
+            next: (res) => {
+              //Response the form according to the result:
+              this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+            },
+          });
+        }
+      }
+    } else {
+      this.userTabErrors = true;
+
+      //Send message:
+      this.sharedFunctions.sendMessage('Las contraseñas ingresadas no coinciden entre si.');
     }
   }
 

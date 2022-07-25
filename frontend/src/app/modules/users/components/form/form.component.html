@@ -13,6 +13,7 @@
             <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
+        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="person">
@@ -123,6 +124,7 @@
             <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
+        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="user">
@@ -218,6 +220,7 @@
             <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
+        <mat-icon *ngIf="permissionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
       </ng-template>
 
       <h2 class="form-title text-center underline-fail-alt">Permisos del usuario:</h2>
