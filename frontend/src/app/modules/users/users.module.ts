@@ -12,8 +12,6 @@ import { FormComponent } from '@modules/users/components/form/form.component';
 import { FormMachineComponent } from '@modules/users/components/form-machine/form-machine.component';
 import { CheckPersonComponent } from '@modules/users/components/check-person/check-person.component';
 
-
-
 @NgModule({
   declarations: [
     FormComponent,

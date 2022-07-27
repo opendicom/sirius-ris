@@ -4,6 +4,29 @@
   margin-bottom: 1px;
 }
 
+.documents {
+  position: relative;
+  float: left;
+  width: 50%;
+}
+
+.documents mat-form-field {
+  min-width: 200px;
+  width: 100%;
+}
+
+.documents-info {
+  position: relative;
+  float: right;
+  width: 45%;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 27%, rgba(56,59,86,1) 100%);
+  border-radius: 4px;
+  opacity: 0.70;
+}
+
 .permission-container {
   padding: 20px;
   overflow-y: auto;

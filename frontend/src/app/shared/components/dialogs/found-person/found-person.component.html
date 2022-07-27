@@ -8,7 +8,7 @@
   <span *ngFor="let current of data.person.documents" class="dialog-documents">
     <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
     <span matTooltip="{{ document_types[current.doc_type] }}">
-      <span innerHTML="{{ current.document }}"></span>
+      <span>{{ current.document }}</span>
     </span>
     <br/>
   </span>

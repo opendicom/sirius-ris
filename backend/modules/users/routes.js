@@ -115,7 +115,6 @@ router.post(
     users.Validator,
     async (req, res) => {
         //Initialize variables for duplicate checking:
-        //let fk_person   = false; (Desactivated for Multiple users)
         let username    = false;
 
         //Initializate person check:
@@ -123,10 +122,6 @@ router.post(
         
         //Human user:
         if(req.body.fk_person){
-            //Search for duplicates (Desactivated for Multiple users):
-            //Multiple users (each organization manages its users [status case]).
-            //fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
-
             //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
             personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
         
@@ -136,12 +131,11 @@ router.post(
             username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
 
         //Bad request:
-        } else {
+        } else if(req.body._id == undefined || req.body._id == '' || req.body._id == null) {
             res.status(400).send({ success: false, message: currentLang.http.bad_request });
         }
 
         //Check for duplicates:
-        //fk_person == false (Desactivated for Multiple users)
         if(username == false && personCheck == true){
             //Save data:
             moduleServices.update(req, res, users);

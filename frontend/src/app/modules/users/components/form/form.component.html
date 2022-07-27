@@ -20,30 +20,50 @@
         <h2 class="form-title text-center underline-fail-alt">Datos de la persona:</h2>
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+            <div class="documents">
+              <h4>Documentos:</h4>
+              <mat-form-field appearance="fill" class="medium">
+                <mat-label>País del documento</mat-label>
+                <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
+                  <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                    <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
 
-            <h4>Documentos:</h4>
-            <mat-form-field appearance="fill" class="medium">
-              <mat-label>País del documento</mat-label>
-              <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
-                <div *ngFor="let currentCode of getKeys(country_codes, true)">
-                  <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
+              <br/>
 
-            <mat-form-field appearance="fill" class="medium">
-              <mat-label>Tipo de documento</mat-label>
-              <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
-                <div *ngFor="let currentDocType of document_types | keyvalue">
-                  <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="medium">
+                <mat-label>Tipo de documento</mat-label>
+                <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
+                  <div *ngFor="let currentDocType of document_types | keyvalue">
+                    <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="medium">
-              <mat-label>Documento</mat-label>
-              <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (blur)="onSetDocument()">
-            </mat-form-field>
+              <br/>
+
+              <mat-form-field appearance="fill" class="medium">
+                <mat-label>Documento</mat-label>
+                <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (blur)="onSetDocument()">
+              </mat-form-field>
+            </div>
+
+
+            <div *ngIf="getKeys(documents).length > 0" class="documents-info text-right">
+              <small>Documento/s persona:</small><br/>
+              <span *ngFor="let currentDoc of documents" >
+                <span matTooltip="{{ country_codes[currentDoc.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[currentDoc.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[currentDoc.doc_type] }}">
+                  <span>{{ currentDoc.document }}</span>
+                </span>
+                <br/>
+              </span>
+            </div>
+
+
+            <div class="clear"></div>
 
             <hr class="dashed" /><br/>
 
@@ -70,6 +90,13 @@
               <mat-label>Segundo apellido</mat-label>
               <input matInput type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
             </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Género:</h4>
+            <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+              <mat-radio-button *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+            </mat-radio-group>
 
             <br/><br/>
 
@@ -289,7 +316,15 @@
             <mat-label>Rol</mat-label>
             <mat-select formControlName="role">
               <div *ngFor="let currentRole of userRoles | keyvalue">
-                <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
+                <ng-template #thenBlockRole>
+                  <!--Only super user can add Superuser role -->
+                  <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
+
+                <ng-template #elseBlockRole>
+                  <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
               </div>
             </mat-select>
           </mat-form-field>
@@ -306,7 +341,7 @@
           <br/><hr class="dashed" /><br/>
 
           <div class="text-right">
-            <button mat-flat-button type="button" color="accent" (click)="addPermission()"><mat-icon>add</mat-icon> AÑADIR PERMISO</button>
+            <button mat-flat-button type="button" color="accent" (click)="userService.addPermission(form, permissions, selectedConcession)"><mat-icon>add</mat-icon> AÑADIR PERMISO</button>
           </div>
 
           <br/>
@@ -328,7 +363,7 @@
                       <div *ngIf="currentOrganization._id == currentPermission.organization" class="permission-table">
                         <div class="permission-header">
                           <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                          <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="removePermission(permissionIndex)">close</mat-icon></div>
+                          <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                           <div class="clear"></div>
                         </div>
                         <div><strong>Organización:</strong> {{ currentOrganization.short_name }} ({{ currentOrganization.name }})</div>
@@ -354,7 +389,7 @@
                         <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentBranch._id == currentPermission['branch']" class="permission-table">
                           <div class="permission-header">
                             <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                            <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="removePermission(permissionIndex)">close</mat-icon></div>
+                            <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                             <div class="clear"></div>
                           </div>
                           <div><strong>Sucursal:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</div>
@@ -382,7 +417,7 @@
                           <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id && currentService._id == currentPermission['service']" class="permission-table">
                             <div class="permission-header">
                               <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                              <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="removePermission(permissionIndex)">close</mat-icon></div>
+                              <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                               <div class="clear"></div>
                             </div>
                             <div><strong>Servicio:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</div>

@@ -165,7 +165,7 @@ export class BatchComponent implements OnInit {
         }
 
         //Data normalization - Booleans types:
-        this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false;
+        if(typeof this.form.value.urgency != "boolean"){ this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
 
         //Data normalization - Dates types:
         this.form.value.range_start = this.sharedFunctions.setDatetimeFormat(this.form.value.range_start);

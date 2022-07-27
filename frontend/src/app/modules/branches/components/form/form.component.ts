@@ -111,7 +111,8 @@ export class FormComponent implements OnInit {
     //Validate fields:
     if(this.form.valid){
       //Data normalization - Booleans types:
-      this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false;
+      if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+
 
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {

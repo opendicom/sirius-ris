@@ -3,12 +3,21 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router, ActivatedRoute } from '@angular/router';                                                               // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';                                       // Reactive form handling tools
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';                                   // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';                                     // Shared Functions
-import { app_setting, document_types, ISO_3166, user_roles, user_concessions, regexObjectId } from '@env/environment';  // Enviroment
-import { map, mergeMap, filter } from 'rxjs/operators';                                                                 // Reactive Extensions (RxJS)
+import { Router, ActivatedRoute } from '@angular/router';                                     // Router and Activated Route Interface (To get information about the routes)
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';                          // Reactive form handling tools
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { UsersService } from '@modules/users/services/users.service';                         // User Services
+import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
+import {                                                                                      // Enviroment
+  app_setting,
+  document_types,
+  ISO_3166,
+  user_roles,
+  user_concessions,
+  regexObjectId,
+  gender_types
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -22,17 +31,21 @@ export class FormComponent implements OnInit {
   public document_types   : any = document_types;
   public userRoles        : any = user_roles;
   public userConcessions  : any = user_concessions;
+  public genderTypes      : any = gender_types;
 
   //Set references objects:
   public availableOrganizations : any;
   public availableBranches      : any;
   public availableServices      : any;
 
-  //Initializate response, user_params and permissions objects:
+  //Initializate response & params objects:
   private response      : any = {};
   private user_params   : any = {};
   private people_params : any = {};
   public  user_data     : any = {};
+
+  //Initialize complex objects:
+  public  documents     : any[] = [];
   public  permissions   : any[] = [];
 
   //Initializate validation tab errors:
@@ -54,10 +67,11 @@ export class FormComponent implements OnInit {
   public form!: FormGroup;
 
   //Define id and form_action variables (Activated Route):
-  public person_id        : string = '';
-  public user_id          : string = '';
-  private keysWithValues  : Array<string> = [];
-  public form_action      : any;
+  public person_id              : string = '';
+  public user_id                : string = '';
+  private personKeysWithValues  : Array<string> = [];
+  private userKeysWithValues    : Array<string> = [];
+  public form_action            : any;
 
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
@@ -70,7 +84,8 @@ export class FormComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    public userService: UsersService
   ){
     //Find references:
     this.findReferences();
@@ -103,6 +118,7 @@ export class FormComponent implements OnInit {
         'name_02'           : [ '', []],
         'surname_01'        : [ '', [Validators.required]],
         'surname_02'        : [ '', []],
+        'gender'            : [ '1', [Validators.required]],
         'birth_date'        : [ '', [Validators.required]],
         'phone_numbers[0]'  : [ '', [Validators.required]],
         'phone_numbers[1]'  : [ '', []],
@@ -160,7 +176,10 @@ export class FormComponent implements OnInit {
                   this.clearFormFields();
 
                   //Send data to FormControl elements:
-                  this.setPerson(res.data[0]);
+                  this.userService.setPerson(res.data[0], this.person_id, this.form);
+
+                  //Set documents:
+                  this.documents = res.data[0].documents;
 
                   //Clear current permissions:
                   this.permissions = [];
@@ -176,7 +195,7 @@ export class FormComponent implements OnInit {
                   this.userOperation = 'insert';
 
                   //Get property keys with values:
-                  this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+                  this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
                 }
               }
             },
@@ -191,6 +210,13 @@ export class FormComponent implements OnInit {
           this.form.get('person.doc_country_code')?.setValue(new_document[0]);
           this.form.get('person.doc_type')?.setValue(new_document[1]);
           this.form.get('person.document')?.setValue(new_document[2]);
+
+          //Set documents:
+          this.documents[0] = {
+            doc_country_code  : new_document[0],
+            doc_type          : new_document[1],
+            document          : new_document[2],
+          };
         }
       }
 
@@ -216,8 +242,11 @@ export class FormComponent implements OnInit {
             this.clearFormFields();
 
             //Send data to FormControl elements:
-            this.setPerson(res.data[0].person);
-            this.setUser(res.data[0]);
+            this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+            this.userService.setUser(res.data[0], this.user_id, this.form);
+
+            //Set documents:
+            this.documents = res.data[0].person.documents;
 
             //Set current permissions:
             this.permissions = res.data[0].permissions;
@@ -233,7 +262,8 @@ export class FormComponent implements OnInit {
             this.userOperation = 'update';
 
             //Get property keys with values:
-            this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+            this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+            this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
 
           } else {
             //Return to the list with request error message:
@@ -321,8 +351,11 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements:
-              this.setPerson(res.data[0].person);
-              this.setUser(res.data[0]);
+              this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+              this.userService.setUser(res.data[0], this.user_id, this.form);
+
+              //Set documents:
+              this.documents = res.data[0].person.documents;
 
               //Set current permissions:
               this.permissions = res.data[0].permissions;
@@ -338,7 +371,8 @@ export class FormComponent implements OnInit {
               this.userOperation = 'update';
 
               //Get property keys with values:
-              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+              this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+              this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
 
             //UPDATE PERSON AND INSERT USER:
             } else {
@@ -346,7 +380,10 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements (Set only person fields):
-              this.setPerson(res.data[0]);
+              this.userService.setPerson(res.data[0], this.person_id, this.form);
+
+              //Set documents:
+              this.documents = res.data[0].documents;
 
               //Clear current permissions:
               this.permissions = [];
@@ -362,13 +399,21 @@ export class FormComponent implements OnInit {
               this.userOperation = 'insert';
 
               //Get property keys with values:
-              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+              this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+              this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
             }
 
           //INSERT PERSON AND USER:
           } else {
             //Clear data to FormControl elements:
             this.clearFormFields(true);
+
+            //Set documents:
+            this.documents[0] = {
+              doc_country_code  : this.form.value.person.doc_country_code,
+              doc_type          : this.form.value.person.doc_type,
+              document          : this.form.value.person.document
+            };
 
             //Clear current permissions:
             this.permissions = [];
@@ -410,7 +455,7 @@ export class FormComponent implements OnInit {
       obsUsers.subscribe({
         next: (res) => {
           //Check current response and res data (user data):
-          if(res.success === true && Object.keys(res.data[0]).length > 0){
+          if(res.success === true && res.data.length > 0){
             //Get native element to set focus:
             const inputEmail = document.getElementById('IDtxtEmail');
 
@@ -432,8 +477,11 @@ export class FormComponent implements OnInit {
                     this.clearFormFields();
 
                     //Send data to FormControl elements:
-                    this.setPerson(res.data[0].person);
-                    this.setUser(res.data[0]);
+                    this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+                    this.userService.setUser(res.data[0], this.user_id, this.form);
+
+                    //Set documents:
+                    this.documents = res.data[0].person.documents;
 
                     //Set current permissions:
                     this.permissions = res.data[0].permissions;
@@ -467,8 +515,11 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements:
-              this.setPerson(res.data[0].person);
-              this.setUser(res.data[0]);
+              this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+              this.userService.setUser(res.data[0], this.user_id, this.form);
+
+              //Set documents:
+              this.documents = res.data[0].person.documents;
 
               //Set current permissions:
               this.permissions = res.data[0].permissions;
@@ -484,7 +535,8 @@ export class FormComponent implements OnInit {
               this.userOperation = 'update';
 
               //Get property keys with values:
-              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+              this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+              this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
             }
           }
         }
@@ -492,50 +544,14 @@ export class FormComponent implements OnInit {
     }
   }
 
-  setPerson(personData: any = false): void {
-    //Check person data:
-    if(personData){
-      //Set person_id:
-      this.person_id = personData._id;
-
-      //Send data to FormControl elements (Set person fields):
-      this.form.get('person.doc_country_code')?.setValue(personData.documents[0].doc_country_code);
-      this.form.get('person.doc_type')?.setValue(personData.documents[0].doc_type.toString());
-      this.form.get('person.document')?.setValue(personData.documents[0].document);
-      this.form.get('person.name_01')?.setValue(personData.name_01);
-      this.form.get('person.name_02')?.setValue(personData.name_02);
-      this.form.get('person.surname_01')?.setValue(personData.surname_01);
-      this.form.get('person.surname_02')?.setValue(personData.surname_02);
-      this.form.get('person.phone_numbers[0]')?.setValue(personData.phone_numbers[0]);
-      this.form.get('person.phone_numbers[1]')?.setValue(personData.phone_numbers[1]);
-      this.form.get('person.birth_date')?.setValue(new Date(personData.birth_date.split('T')[0].replace(/-/g, '/'))); //Replace '-' by '/' to prevent one day off JS Date error.
-    }
-  }
-
-  setUser(userData: any = false): void {
-    //Check user data:
-    if(userData){
-      //Set user_id:
-      this.user_id = userData._id;
-
-      //Send data to FormControl elements (Set user fields):
-      this.form.get('user.email')?.setValue(userData.email);
-      this.form.get('user.status')?.setValue(`${userData.status}`); //Use back tip notation to convert string
-
-      //If cointain professional data:
-      if(userData.professional){
-        this.form.get('user.professional[id]')?.setValue(userData.professional.id);
-        this.form.get('user.professional[description]')?.setValue(userData.professional.description);
-        this.form.get('user.professional[workload]')?.setValue(userData.professional.workload);
-        this.form.get('user.professional[vacation]')?.setValue(`${userData.professional.vacation}`); //Use back tip notation to convert string
-      }
-    }
-  }
-
   clearFormFields(preventClear: boolean = false){
     //Clear _ids:
     this.person_id = '';
     this.user_id = '';
+
+    //Clear complex objects:
+    this.documents = [];
+    this.permissions = [];
 
     //Person fields:
     if(preventClear == false){
@@ -548,6 +564,7 @@ export class FormComponent implements OnInit {
     this.form.get('person.name_02')?.setValue('');
     this.form.get('person.surname_01')?.setValue('');
     this.form.get('person.surname_02')?.setValue('');
+    this.form.get('person.gender')?.setValue('1');
     this.form.get('person.phone_numbers[0]')?.setValue('');
     this.form.get('person.phone_numbers[1]')?.setValue('');
     this.form.get('person.birth_date')?.setValue('');
@@ -563,48 +580,8 @@ export class FormComponent implements OnInit {
   }
 
   onCheckConcession(event: any, key: any){
-    //Parse key to base10 integer:
-    key = parseInt(key, 10);
-
-    //Check if input is check or uncheck:
-    if(event.checked){
-      //Set current check into selectedDays array:
-      this.selectedConcession.push(key);
-    } else {
-      //Remove from array by value:
-      this.selectedConcession = this.selectedConcession.filter((e: number) => { return e !== key });
-    }
-  }
-
-  addPermission(){
-    //Check fields contents:
-    if(this.form.value.domain_type !== '' && this.form.value.domain !== '' && this.form.value.role !== ''){
-      //Parse role to base10 integer:
-      this.form.value.role = parseInt(this.form.value.role, 10);
-
-      //Create current permission object:
-      let currentPermission: any = {
-        role: this.form.value.role
-      }
-
-      //Add domain type and domain:
-      currentPermission[this.form.value.domain_type] = this.form.value.domain;
-
-      //Add concessions if not empty:
-      if(this.selectedConcession.length > 0){
-        currentPermission['concession'] = [...this.selectedConcession]; //Clone array with spread operator.
-      }
-
-      //Add currentPermission to permissions object:
-      this.permissions.push(currentPermission);
-    } else {
-      //Send message:
-      this.sharedFunctions.sendMessage('Debe cargar los datos necesarios para agregar el permiso al usuario.');
-    }
-  }
-
-  removePermission(permissionIndex: number){
-    this.permissions.splice(permissionIndex, 1);
+    //Set concession:
+    this.selectedConcession = this.userService.setConcession(event, key, this.selectedConcession);
   }
 
   onSubmit(){
@@ -633,24 +610,62 @@ export class FormComponent implements OnInit {
 
     //Check that the entered passwords are the same:
     if(this.form.value.user.password == this.form.value.user.password_repeat){
-      this.userTabErrors = false;
-
       //Validate fields:
       if(this.form.valid){
         //Check permissions:
         if(this.permissions.length > 0){
+          //Create save object to preserve data types in form.value (Clone objects with spread operator):
+          let personSaveData = { ...this.form.value.person };
+          let userSaveData = { ...this.form.value.user} ;
+
           //Data normalization - Booleans types:
-          this.form.get('user.status')?.setValue(this.form.value.user.status.toLowerCase() == 'true' ? true : false);
-          this.form.get('user.professional[vacation]')?.setValue(this.form.value.user['professional[vacation]'].toLowerCase() == 'true' ? true : false);
+          if(typeof userSaveData.status != "boolean"){ userSaveData.status = userSaveData.status.toLowerCase() == 'true' ? true : false; }
 
           //Data normalization - Dates types:
-          this.form.get('person.birth_date')?.setValue(this.sharedFunctions.setDatetimeFormat(this.form.value.person.birth_date));
+          personSaveData.birth_date = this.sharedFunctions.setDatetimeFormat(this.form.value.person.birth_date);
 
-          //Set permissions in form user object:
-          this.form.value.user['permissions'] = this.permissions;
+          //Data normalization - Set documents in form person object:
+          personSaveData['documents'] = this.documents;
+
+          //Data normalization - Set permissions in form user object:
+          userSaveData['permissions'] = this.permissions;
+
+          //Data normalization - Phone numbers to array:
+          personSaveData['phone_numbers'] = [];
+          personSaveData['phone_numbers'].push(personSaveData['phone_numbers[0]']);
+          if(personSaveData['phone_numbers[1]'] != undefined) { personSaveData['phone_numbers'].push(personSaveData['phone_numbers[1]']); }
+
+          //Data normalization - Professional:
+          if(userSaveData['professional[id]'] != '' || userSaveData['professional[description]'] != '' || userSaveData['professional[workload]'] != ''){
+            //Create object professional:
+            userSaveData['professional'] = {};
+
+            //Add sub-elements if exist:
+            if(userSaveData['professional[id]'] != ''){ userSaveData.professional['id'] = userSaveData['professional[id]']; }
+            if(userSaveData['professional[description]'] != ''){ userSaveData.professional['description'] = userSaveData['professional[description]']; }
+            if(userSaveData['professional[workload]'] != ''){ userSaveData.professional['workload'] = userSaveData['professional[workload]']; }
+
+            //Booleans types:
+            if(typeof userSaveData['professional[vacation]'] != "boolean"){
+              userSaveData.professional['vacation'] = userSaveData['professional[vacation]'].toLowerCase() == 'true' ? true : false;
+            } else {
+              userSaveData.professional['vacation'] = userSaveData['professional[vacation]'];
+            }
+          }
+
+          //Delete temp values:
+          delete personSaveData.doc_country_code;
+          delete personSaveData.doc_type;
+          delete personSaveData.document;
+          delete personSaveData['phone_numbers[0]'];
+          delete personSaveData['phone_numbers[1]'];
+          delete userSaveData['professional[id]'];
+          delete userSaveData['professional[description]'];
+          delete userSaveData['professional[workload]'];
+          delete userSaveData['professional[vacation]'];
 
           //Create observable Save Person:
-          const obsSavePerson = this.sharedFunctions.saveRxJS(this.personOperation, 'people', this.person_id, this.form.value.person, this.keysWithValues);
+          const obsSavePerson = this.sharedFunctions.saveRxJS(this.personOperation, 'people', this.person_id, personSaveData, this.personKeysWithValues);
 
           //Create observable Save User:
           const obsSaveUser = obsSavePerson.pipe(
@@ -666,11 +681,11 @@ export class FormComponent implements OnInit {
               return res;
             }),
 
-            //Filter that only success continue:
+            //Filter that only success cases continue:
             filter((res: any) => res.success === true),
 
             //Save user with the fk_person (Return observable):
-            mergeMap(() => this.sharedFunctions.saveRxJS(this.userOperation, 'users', this.user_id, this.form.value.user, this.keysWithValues)),
+            mergeMap(() => this.sharedFunctions.saveRxJS(this.userOperation, 'users', this.user_id, userSaveData, this.userKeysWithValues)),
           );
 
           //Observe content (Subscribe):
@@ -678,7 +693,7 @@ export class FormComponent implements OnInit {
             next: (res) => {
               //Response the form according to the result:
               this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
-            },
+            }
           });
         }
       }
