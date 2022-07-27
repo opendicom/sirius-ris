@@ -1,1 +1,298 @@
-<p>form-machine works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-tab-group>
+
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">account_circle</mat-icon>
+        Usuario &nbsp;
+        <span *ngIf="userOperation">
+          <div [ngSwitch]="userOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
+        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
+
+      <div formGroupName="user">
+        <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+            <h4>Nombre de usuario:</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Nombre de usuario</mat-label>
+              <input matInput type="text" formControlName="username" placeholder="Ingrese el nombre de usuario" (blur)="onSetUsername()">
+            </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Clave del usuario <span *ngIf="userOperation == 'update'" class="label-info">Vacío sino desea modificar</span>:</h4>
+
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Contraseña</mat-label>
+              <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
+              <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
+            </mat-form-field>
+
+            <br/><br/>
+
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Reitere la contraseña</mat-label>
+              <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
+            </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Estado:</h4>
+            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+              <mat-radio-button value="true">Activo</mat-radio-button>
+              <mat-radio-button value="false">Inactivo</mat-radio-button>
+            </mat-radio-group>
+
+            <br/><br/>
+
+          </div> <!-- end fxLayout wrapper -->
+
+          <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+            <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+          </div> <!-- end fxLayout wrapper -->
+
+        </div>
+      </div>
+    </mat-tab>
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+    <!-- PERMISSIONS TAB: ----------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">admin_panel_settings</mat-icon>
+        Permisos &nbsp;
+        <span *ngIf="userOperation">
+          <div [ngSwitch]="userOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
+        <mat-icon *ngIf="permissionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
+
+      <h2 class="form-title text-center underline-fail-alt">Permisos del usuario:</h2>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+          <h4>Tipo de dominio:</h4>
+          <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
+            <mat-radio-button value="organization">Organización</mat-radio-button>
+            <mat-radio-button value="branch">Sucursal</mat-radio-button>
+            <mat-radio-button value="service">Servicio</mat-radio-button>
+          </mat-radio-group>
+
+          <br/><br/><hr class="dashed" /><br/>
+
+
+          <div [ngSwitch]="form.value.domain_type">
+            <!--ORGANIZATION-->
+            <span *ngSwitchCase="'organization'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentOrganization of availableOrganizations">
+                    <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+
+            <!--BRANCH-->
+            <span *ngSwitchCase="'branch'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentBranch of availableBranches">
+                    <div *ngFor="let currentOrganization of availableOrganizations">
+                      <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+
+            <!--SERVICE-->
+            <span *ngSwitchCase="'service'">
+              <h4>Dominio:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Dominio</mat-label>
+                <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <div *ngFor="let currentService of availableServices">
+                    <div *ngFor="let currentBranch of availableBranches">
+                      <div *ngFor="let currentOrganization of availableOrganizations">
+                        <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                      </div>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </span>
+          </div>
+
+          <h4>Rol:</h4>
+          <mat-form-field appearance="fill" class="medium">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role">
+              <div *ngFor="let currentRole of userRoles | keyvalue">
+                <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
+                <ng-template #thenBlockRole>
+                  <!--Only super user can add Superuser role -->
+                  <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
+
+                <ng-template #elseBlockRole>
+                  <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
+              </div>
+            </mat-select>
+          </mat-form-field>
+
+          <br/><hr class="dashed" /><br/>
+
+          <h4>Conseciones particulares:</h4>
+          <div class="item-container" formArrayName="concessions">
+            <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue;">
+              <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
+            </ng-container>
+          </div>
+
+          <br/><hr class="dashed" /><br/>
+
+          <div class="text-right">
+            <button mat-flat-button type="button" color="accent" (click)="userService.addPermission(form, permissions, selectedConcession)"><mat-icon>add</mat-icon> AÑADIR PERMISO</button>
+          </div>
+
+          <br/>
+        </div> <!-- end fxLayout wrapper -->
+
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <div *ngIf="getKeys(permissions).length > 0; then thenBlockPermissions else elseBlockPermissions"></div>
+
+          <ng-template #thenBlockPermissions>
+            <h4>Permisos asignados al usuario:</h4>
+
+            <div  class="permission-container">
+              <ng-container *ngFor="let currentPermission of permissions; let permissionIndex = index;">
+
+                  <!--ORGANIZATION DOMAIN-->
+                  <span *ngIf="currentPermission.organization">
+                    <div *ngFor="let currentOrganization of availableOrganizations">
+                      <div *ngIf="currentOrganization._id == currentPermission.organization" class="permission-table">
+                        <div class="permission-header">
+                          <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                          <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                          <div class="clear"></div>
+                        </div>
+                        <div><strong>Organización:</strong> {{ currentOrganization.short_name }} ({{ currentOrganization.name }})</div>
+                        <div><strong>Conceciones: </strong>
+                          <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0 then thenBlockConcession else elseBlockConcession"></div>
+
+                          <ng-template #thenBlockConcession>
+                            <ng-container *ngFor="let currentConcession of currentPermission.concession;">
+                              {{ userConcessions[currentConcession] + ', ' }}
+                            </ng-container>
+                          </ng-template>
+
+                          <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+
+                  <!--BRANCH DOMAIN-->
+                  <span *ngIf="currentPermission.branch">
+                    <div *ngFor="let currentBranch of availableBranches">
+                      <div *ngFor="let currentOrganization of availableOrganizations">
+                        <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentBranch._id == currentPermission['branch']" class="permission-table">
+                          <div class="permission-header">
+                            <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                            <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                            <div class="clear"></div>
+                          </div>
+                          <div><strong>Sucursal:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</div>
+                          <div><strong>Conceciones: </strong>
+                            <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0; then thenBlockConcession else elseBlockConcession"></div>
+
+                            <ng-template #thenBlockConcession>
+                              <ng-container *ngFor="let currentConcession of currentPermission.concession;">
+                                {{ userConcessions[currentConcession] + ', ' }}
+                              </ng-container>
+                            </ng-template>
+
+                            <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+
+                  <!--SERVICE DOMAIN-->
+                  <span *ngIf="currentPermission.service">
+                    <div *ngFor="let currentService of availableServices">
+                      <div *ngFor="let currentBranch of availableBranches">
+                        <div *ngFor="let currentOrganization of availableOrganizations">
+                          <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id && currentService._id == currentPermission['service']" class="permission-table">
+                            <div class="permission-header">
+                              <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                              <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                              <div class="clear"></div>
+                            </div>
+                            <div><strong>Servicio:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</div>
+                            <div><strong>Conceciones: </strong>
+                              <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0; then thenBlockConcession else elseBlockConcession"></div>
+
+                              <ng-template #thenBlockConcession>
+                                <ng-container *ngFor="let currentConcession of currentPermission.concession;">
+                                  {{ userConcessions[currentConcession] + ', ' }}
+                                </ng-container>
+                              </ng-template>
+
+                              <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+              </ng-container>
+            </div>
+          </ng-template>
+
+          <ng-template #elseBlockPermissions>
+            <br/><span class="label-info">El usuario no posee permisos asignados</span>
+          </ng-template>
+
+          <br/><br/>
+
+          <div class="permission-card">
+            <mat-icon>info</mat-icon>&nbsp;
+            <span>Para que se apliquen los cambios realizados sobre los permisos es necesario guardar el formulario.</span>
+          </div>
+
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- PERMISSIONS TAB: ----------------------------------------------------------------------------------------------------------- -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

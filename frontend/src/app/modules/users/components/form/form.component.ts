@@ -80,12 +80,12 @@ export class FormComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    public formBuilder: FormBuilder,
-    private router: Router,
-    private objRoute: ActivatedRoute,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService,
-    public userService: UsersService
+    public  formBuilder     : FormBuilder,
+    private router          : Router,
+    private objRoute        : ActivatedRoute,
+    public  sharedProp      : SharedPropertiesService,
+    private sharedFunctions : SharedFunctionsService,
+    public  userService     : UsersService
   ){
     //Find references:
     this.findReferences();
@@ -176,7 +176,7 @@ export class FormComponent implements OnInit {
                   this.clearFormFields();
 
                   //Send data to FormControl elements:
-                  this.userService.setPerson(res.data[0], this.person_id, this.form);
+                  this.person_id = this.userService.setPerson(res.data[0], this.person_id, this.form);
 
                   //Set documents:
                   this.documents = res.data[0].documents;
@@ -242,8 +242,8 @@ export class FormComponent implements OnInit {
             this.clearFormFields();
 
             //Send data to FormControl elements:
-            this.userService.setPerson(res.data[0].person, this.person_id, this.form);
-            this.userService.setUser(res.data[0], this.user_id, this.form);
+            this.person_id = this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+            this.user_id = this.userService.setUser(res.data[0], this.user_id, this.form);
 
             //Set documents:
             this.documents = res.data[0].person.documents;
@@ -351,8 +351,8 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements:
-              this.userService.setPerson(res.data[0].person, this.person_id, this.form);
-              this.userService.setUser(res.data[0], this.user_id, this.form);
+              this.person_id = this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+              this.user_id = this.userService.setUser(res.data[0], this.user_id, this.form);
 
               //Set documents:
               this.documents = res.data[0].person.documents;
@@ -380,7 +380,7 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements (Set only person fields):
-              this.userService.setPerson(res.data[0], this.person_id, this.form);
+              this.person_id = this.userService.setPerson(res.data[0], this.person_id, this.form);
 
               //Set documents:
               this.documents = res.data[0].documents;
@@ -477,8 +477,8 @@ export class FormComponent implements OnInit {
                     this.clearFormFields();
 
                     //Send data to FormControl elements:
-                    this.userService.setPerson(res.data[0].person, this.person_id, this.form);
-                    this.userService.setUser(res.data[0], this.user_id, this.form);
+                    this.person_id = this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+                    this.user_id = this.userService.setUser(res.data[0], this.user_id, this.form);
 
                     //Set documents:
                     this.documents = res.data[0].person.documents;
@@ -515,8 +515,8 @@ export class FormComponent implements OnInit {
               this.clearFormFields();
 
               //Send data to FormControl elements:
-              this.userService.setPerson(res.data[0].person, this.person_id, this.form);
-              this.userService.setUser(res.data[0], this.user_id, this.form);
+              this.person_id = this.userService.setPerson(res.data[0].person, this.person_id, this.form);
+              this.user_id = this.userService.setUser(res.data[0], this.user_id, this.form);
 
               //Set documents:
               this.documents = res.data[0].person.documents;

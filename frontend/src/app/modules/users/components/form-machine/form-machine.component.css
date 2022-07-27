@@ -1,0 +1,71 @@
+.form-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+
+.permission-container {
+  padding: 20px;
+  overflow-y: auto;
+  height: 440px;
+  max-height: 440px;
+  background-color: #1e1e2f92;
+  border: 3px solid #383b56b2;
+  border-radius: 4px;
+}
+
+.permission-table {
+  font-size: 13px;
+  margin-bottom: 20px;
+  border: 1px solid #404362;
+  border-radius: 4px;
+}
+
+.permission-table > div {
+  border: 1px solid #404362;
+  background-color: #383b56b2;
+  padding: 5px;
+}
+
+.permission-header {
+  background-color: #404362bb !important;
+}
+
+.permission-title {
+  font-size: 18px;
+  float: left;
+  width: 48%;
+  text-align: left;
+  padding-top: 7px;
+  padding-left: 5px;
+}
+
+.permission-button {
+  padding-top: 5px;
+  float: left;
+  width: 50%;
+  text-align: right;
+}
+
+.permission-button > mat-icon {
+  cursor: pointer;
+}
+
+.permission-card {
+  text-align: left;
+  background-color: #383b56b2;
+  opacity: 0.8;
+  border-left: 2px solid #05ff9f77;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+}
+
+.permission-card > span {
+  position: relative;
+  top: -5px;
+}
+
+.permission-card > mat-icon {
+  position: relative;
+  top: 2.5px;
+}

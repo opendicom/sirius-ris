@@ -83,11 +83,14 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SET PERSON:
   //--------------------------------------------------------------------------------------------------------------------//
-  setPerson(personData: any = false, person_id: string, form: FormGroup): void {
+  setPerson(personData: any = false, person_id: string, form: FormGroup): string {
+    //Initialize current _id:
+    let current_id = person_id;
+
     //Check person data:
     if(personData){
-      //Set person_id:
-      person_id = personData._id;
+      //Set person _id:
+      current_id = personData._id;
 
       //Send data to FormControl elements (Set person fields):
       form.get('person.doc_country_code')?.setValue(personData.documents[0].doc_country_code);
@@ -102,6 +105,9 @@ export class UsersService {
       form.get('person.phone_numbers[1]')?.setValue(personData.phone_numbers[1]);
       form.get('person.birth_date')?.setValue(new Date(personData.birth_date.split('T')[0].replace(/-/g, '/'))); //Replace '-' by '/' to prevent one day off JS Date error.
     }
+
+    //Return current _id:
+    return current_id;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -109,14 +115,18 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SET USER:
   //--------------------------------------------------------------------------------------------------------------------//
-  setUser(userData: any = false, user_id: string, form: FormGroup): void {
+  setUser(userData: any = false, user_id: string, form: FormGroup): string {
+    //Initialize current _id:
+    let current_id = user_id;
+
     //Check user data:
     if(userData){
-      //Set user_id:
-      user_id = userData._id;
+      //Set current _id:
+      current_id = userData._id;
 
       //Send data to FormControl elements (Set user fields):
-      form.get('user.email')?.setValue(userData.email);
+      if(userData.username) { form.get('user.username')?.setValue(userData.username); }
+      if(userData.email) { form.get('user.email')?.setValue(userData.email); }
       form.get('user.status')?.setValue(`${userData.status}`); //Use back tip notation to convert string
 
       //If cointain professional data:
@@ -127,6 +137,9 @@ export class UsersService {
         form.get('user.professional[vacation]')?.setValue(`${userData.professional.vacation}`); //Use back tip notation to convert string
       }
     }
+
+    //Return current _id:
+    return current_id;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

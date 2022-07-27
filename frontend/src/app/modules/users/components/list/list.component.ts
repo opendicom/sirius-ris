@@ -88,7 +88,7 @@ export class ListComponent implements OnInit {
       'email': 1,
       'status': 1
     };
-    this.sharedProp.sort          = { status: -1 };
+    this.sharedProp.sort          = { username: 1, status: 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:

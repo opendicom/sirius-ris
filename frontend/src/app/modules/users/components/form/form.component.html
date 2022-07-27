@@ -168,7 +168,7 @@
 
             <hr class="dashed" /><br/>
 
-            <h4>Clave del usuario <span class="label-info">Vacío sino desea modificar</span>:</h4>
+            <h4>Clave del usuario <span *ngIf="userOperation == 'update'" class="label-info">Vacío sino desea modificar</span>:</h4>
 
             <mat-form-field appearance="fill" class="large">
               <mat-label>Contraseña</mat-label>
