@@ -922,6 +922,9 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         case 'slots':
             //Set dependencies
             break;
+        case 'procedures':
+            affectedCollections.push('slots');
+            break;
     }
 
     //Import affected schemas:
@@ -1282,6 +1285,22 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                     });
                 }
                 
+                return filter;
+            });
+            break;
+        
+        case 'procedures':
+            filter = adjustCondition(filter, (filter) => {
+                //Domain:
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
+                if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
+                if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
+                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
             break;
@@ -1701,6 +1720,34 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'services'){
                                 //Add domain condition:
                                 req.query.filter['domain.service'] = domain;
+                            }
+                        }
+                        break;
+
+                    case 'procedures':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.branch'] = domain;
+                            }
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['domain.branch'] = domain;
                             }
                         }
                         break;

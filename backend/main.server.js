@@ -25,6 +25,7 @@ module.exports = function() {
     const peopleRoutes          = require('./modules/people/routes');
     const usersRoutes           = require('./modules/users/routes');
     const slotsRoutes           = require('./modules/slots/routes');
+    const proceduresRoutes      = require('./modules/procedures/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -128,6 +129,7 @@ module.exports = function() {
     app.use('/people',          peopleRoutes);
     app.use('/users',           usersRoutes);
     app.use('/slots',           slotsRoutes);
+    app.use('/procedures',      proceduresRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');
