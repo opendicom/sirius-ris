@@ -46,6 +46,7 @@ import { ServicesModule } from '@modules/services/services.module';
 import { EquipmentsModule } from '@modules/equipments/equipments.module';
 import { UsersModule } from '@modules/users/users.module';
 import { SlotsModule } from '@modules/slots/slots.module';
+import { ProceduresModule } from '@modules/procedures/procedures.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -74,7 +75,8 @@ import { SlotsModule } from '@modules/slots/slots.module';
     ServicesModule,
     EquipmentsModule,
     UsersModule,
-    SlotsModule
+    SlotsModule,
+    ProceduresModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

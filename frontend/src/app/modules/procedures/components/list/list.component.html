@@ -1,0 +1,103 @@
+<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/procedures/form/update/{{ element._id }}">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- organization -->
+    <ng-container matColumnDef="organization">
+      <th mat-header-cell *matHeaderCellDef> Organización </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
+        <ng-template #thenBlockTableOrganization>
+          <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableOrganization>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- branch -->
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
+        <ng-template #thenBlockTableBranch>
+          <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter }}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableBranch>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- name -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
+      </td>
+    </ng-container>
+
+    <!-- modality -->
+    <ng-container matColumnDef="modality">
+      <th mat-header-cell *matHeaderCellDef> Modalidad </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+        <ng-template #thenBlockTableModality>
+          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">
+            <span innerHTML="{{ element.modality.code_value | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </ng-template>
+        <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- equipments -->
+    <ng-container matColumnDef="equipments">
+      <th mat-header-cell *matHeaderCellDef> Equipamiento </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.equipments; then thenBlockTableEquipments else elseBlockTableEquipments"></span>
+        <ng-template #thenBlockTableEquipments>
+          <div *ngFor="let current of element.equipments">
+            <span class="badge-accent" matTooltip="{{ 'AET: ' + current.details.AET }}">
+              <span innerHTML="{{ current.details.name | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template #elseBlockTableEquipments>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+        <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-template>
+
+<!-- Await response or not response -->
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    Aguarde, aún no hay resultados.
+  </div>
+</ng-template>
+
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
+</div>

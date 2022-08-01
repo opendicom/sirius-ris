@@ -52,6 +52,7 @@ export class FormComponent implements OnInit {
   public personTabErrors      : boolean = false;
   public userTabErrors        : boolean = false;
   public permissionTabErrors  : boolean = false;
+  public genderCheckErrors    : boolean = false;
 
   //Initializate selected concession:
   public selectedConcession : number[] = [];
@@ -118,7 +119,7 @@ export class FormComponent implements OnInit {
         'name_02'           : [ '', []],
         'surname_01'        : [ '', [Validators.required]],
         'surname_02'        : [ '', []],
-        'gender'            : [ '1', [Validators.required]],
+        'gender'            : [ '', [Validators.required]],
         'birth_date'        : [ '', [Validators.required]],
         'phone_numbers[0]'  : [ '', [Validators.required]],
         'phone_numbers[1]'  : [ '', []],
@@ -564,7 +565,7 @@ export class FormComponent implements OnInit {
     this.form.get('person.name_02')?.setValue('');
     this.form.get('person.surname_01')?.setValue('');
     this.form.get('person.surname_02')?.setValue('');
-    this.form.get('person.gender')?.setValue('1');
+    this.form.get('person.gender')?.setValue('');
     this.form.get('person.phone_numbers[0]')?.setValue('');
     this.form.get('person.phone_numbers[1]')?.setValue('');
     this.form.get('person.birth_date')?.setValue('');
@@ -608,6 +609,13 @@ export class FormComponent implements OnInit {
       this.sharedFunctions.sendMessage('El usuario debe poseer al menos un permiso para poder ser guardado.');
     }
 
+    //Check gender mat-opetion errors (mat-option validate but does not show validation error):
+    if(this.form.controls['person'].value.gender !== '' && this.form.controls['person'].value.gender !== undefined) {
+      this.genderCheckErrors = false;
+    } else {
+      this.genderCheckErrors = true;
+    }
+
     //Check that the entered passwords are the same:
     if(this.form.value.user.password == this.form.value.user.password_repeat){
       //Validate fields:
@@ -633,7 +641,7 @@ export class FormComponent implements OnInit {
           //Data normalization - Phone numbers to array:
           personSaveData['phone_numbers'] = [];
           personSaveData['phone_numbers'].push(personSaveData['phone_numbers[0]']);
-          if(personSaveData['phone_numbers[1]'] != undefined) { personSaveData['phone_numbers'].push(personSaveData['phone_numbers[1]']); }
+          if(personSaveData['phone_numbers[1]'] != undefined && personSaveData['phone_numbers[1]'] != '') { personSaveData['phone_numbers'].push(personSaveData['phone_numbers[1]']); }
 
           //Data normalization - Professional:
           if(userSaveData['professional[id]'] != '' || userSaveData['professional[description]'] != '' || userSaveData['professional[workload]'] != ''){
@@ -664,6 +672,15 @@ export class FormComponent implements OnInit {
           delete userSaveData['professional[workload]'];
           delete userSaveData['professional[vacation]'];
 
+          //Check person_id and user_id with regex ObjectId:
+          if(regexObjectId.test(this.person_id) === false){
+            this.person_id = '';
+          }
+
+          if(regexObjectId.test(this.user_id) === false){
+            this.user_id = '';
+          }
+
           //Create observable Save Person:
           const obsSavePerson = this.sharedFunctions.saveRxJS(this.personOperation, 'people', this.person_id, personSaveData, this.personKeysWithValues);
 
@@ -674,7 +691,7 @@ export class FormComponent implements OnInit {
               //Check operation status:
               if(res.success === true){
                 //Set fk_person in form user object with assigned _id:
-                this.form.value.user['fk_person'] = res.data._id;
+                userSaveData['fk_person'] = res.data._id;
               }
 
               //Return response:

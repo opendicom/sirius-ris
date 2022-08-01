@@ -95,7 +95,7 @@
 
             <h4>Género:</h4>
             <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
-              <mat-radio-button *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>
