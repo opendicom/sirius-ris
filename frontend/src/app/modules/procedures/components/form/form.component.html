@@ -1,1 +1,84 @@
-<p>form works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Sucursal:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" placeholder="Seleccione la sucursal">
+          <div *ngFor="let currentBranch of availableBranches">
+            <div *ngFor="let currentOrganization of availableOrganizations">
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentOrganization._id + '.' + currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }}</mat-option>
+            </div>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Equipamiento:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Equipamiento</mat-label>
+        <mat-select formControlName="equipments" (closed)="onChangeEquipment()" placeholder="Seleccione el equipamiento" multiple>
+          <div *ngFor="let currentEquipment of availableEquipments">
+            <mat-option #matOption (click)="addModalities(matOption.selected, currentEquipment._id, currentEquipment.fk_modalities)" value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Duración del procedimiento: <span class="label-info">En minutos</span>:</h4>
+      <span *ngIf="getKeys(selectedEquipments).length > 0; then thenBlockDurationEquipment else elseBlockDurationEquipment"></span>
+      <ng-template #thenBlockDurationEquipment>
+        <span *ngIf="getKeys(selectedDurations).length > 0;">
+          <span *ngFor="let currentDuration of getKeys(selectedDurations);">
+            <mat-form-field appearance="fill">
+              <mat-label>{{ selectedDurations[currentDuration].name }}</mat-label>
+              <input matInput type="text" [(ngModel)]="selectedDurations[currentDuration].duration" [ngModelOptions]="{standalone: true}" required placeholder="Duración en minutos">
+            </mat-form-field>
+          </span>
+        </span>
+      </ng-template>
+      <ng-template #elseBlockDurationEquipment>
+        <span class="label-accent">Aún no hay equipos seleccionados</span><br/><br/>
+      </ng-template>
+
+      <h4>Modalidad:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Modalidad</mat-label>
+        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad">
+          <div *ngFor="let currentModality of availableModalities">
+            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Estado:</h4>
+      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-button value="true">Activo</mat-radio-button>
+        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>Nombre:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+      </mat-form-field>
+
+      <h4>Preparación:</h4>
+      <mat-form-field appearance="fill" class="full preparation">
+        <mat-label>Preparación</mat-label>
+        <textarea matInput formControlName="preparation" placeholder="Escriba aquí la preparación para el procedimiento."></textarea>
+      </mat-form-field>
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

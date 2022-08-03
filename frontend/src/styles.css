@@ -185,6 +185,19 @@ mark {
   margin-right: 2px;
 }
 
+.label-accent {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #607d8b;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
 .label-alt {
   font-size: 13px;
   opacity: 0.75;
@@ -294,6 +307,11 @@ table {
 .form-element mat-form-field.large{
   min-width: 200px;
   width: 70%;
+}
+
+.form-element mat-form-field.full{
+  min-width: 200px;
+  width: 98%;
 }
 
 .action-wrapper{

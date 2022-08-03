@@ -62,6 +62,7 @@ export class ListComponent implements OnInit {
       'branch.short_name': 1,
       'modality.code_value': 1,
       'modality.code_meaning': 1,
+      'equipments.duration': 1,
       'equipments.details.name': 1,
       'equipments.details.AET': 1,
       'status': 1
