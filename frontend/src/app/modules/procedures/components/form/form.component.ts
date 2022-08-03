@@ -98,7 +98,6 @@ export class FormComponent implements OnInit {
 
         //Find element to update:
         this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
-
           //Check operation status:
           if(res.success === true){
             //Find references (disabled inputs):
@@ -106,7 +105,7 @@ export class FormComponent implements OnInit {
 
             //Send data to the form:
             this.setReactiveForm({
-              domain          : res.data[0].domain,
+              domain          : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
               fk_modality     : res.data[0].fk_modality,
               name            : res.data[0].name,
               equipments      : new FormControl({ value: [] }, Validators.required),
@@ -114,12 +113,11 @@ export class FormComponent implements OnInit {
               preparation     : res.data[0].preparation
             });
 
-            //Send data to FormControl elements (Arrays - Mat-Select Multiple):
-            this.form.controls['equipments'].setValue(res.data[0].equipments.fk_equipment);
+            //Set empty array value to prevent "Value must be an array in multiple-selection mode":
+            this.form.controls['equipments'].setValue([]);
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
-
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
@@ -134,11 +132,15 @@ export class FormComponent implements OnInit {
     //Initialize fk_branch:
     let fk_branch = '';
 
+    //Reset selected equipments and durations:
+    this.selectedEquipments = {};
+    this.selectedDurations = {};
+
     //Check update data case:
     if(updateData == false){
       fk_branch = event.value.split('.')[1];
     } else {
-      fk_branch = updateData.domain;
+      fk_branch = updateData.domain.branch;
     }
 
     //Find equipments for selected branch:
@@ -148,7 +150,7 @@ export class FormComponent implements OnInit {
     };
 
     //Set available equipments:
-    this.sharedFunctions.find('equipments', paramsEquipments, (resEquipments) => {
+    this.sharedFunctions.find('equipments', paramsEquipments, async (resEquipments) => {
       //Check data:
       if(resEquipments.data){
         //Set available equipments:
@@ -157,9 +159,9 @@ export class FormComponent implements OnInit {
         //Enable equipments input:
         this.form.controls['equipments'].enable();
 
-        //Find modalities only in update case:
+        //Set equipments info (only in update case):
         if(updateData){
-          this.findModalities(updateData);
+          await this.setEquipments(updateData);
         }
       }
     });
@@ -282,21 +284,41 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
     });
+
+    //Find modalities (Only update action - first case):
+    if(this.objRoute.snapshot.params['action'] == 'update'){
+      this.sharedFunctions.find('modalities', params, (res) => {
+        this.availableModalities = res.data;
+      });
+    }
   }
 
-  //Find modalities only update case:
-  async findModalities(updateData: any){
-    //Loop into selected equipments:
-    await Promise.all(Object.keys(this.availableEquipments).map((key) => {
-      //Check if selected equipments (update data) is included in available equipments:
-      if(updateData.equipments.includes(this.availableEquipments[key]._id)){
+  async setEquipments(updateData: any){
+    //Create array to set data into equipments input FormControl (Arrays - Mat-Select Multiple):
+    let equipmentsIds: string[] = [];
 
-        //Merge the below arrays and remove duplicates in the resulting array
-        this.selectedModalities = this.selectedModalities.concat(this.availableEquipments[key].fk_modalities.filter((item: any) => this.selectedModalities.indexOf(item) < 0));
-      }
+    //Loop (await foreach):
+    await Promise.all(Object.keys(this.availableEquipments).map(async (availableEquipmentKey) => {
+      await Promise.all(Object.keys(updateData.equipments).map((updateDataEquipmentKey) => {
+
+        //Check if update data equipments in available equipments:
+        if(updateData.equipments[updateDataEquipmentKey].fk_equipment == this.availableEquipments[availableEquipmentKey]._id){
+          //Set selected equipments:
+          this.selectedEquipments[this.availableEquipments[availableEquipmentKey]._id] = this.availableEquipments[availableEquipmentKey].fk_modalities;
+
+          //Set selected durations:
+          this.selectedDurations[this.availableEquipments[availableEquipmentKey]._id] = {
+            name: this.availableEquipments[availableEquipmentKey].name,
+            duration: updateData.equipments[updateDataEquipmentKey].duration
+          };
+
+          //Add current equipment _id into equipmentsIds:
+          equipmentsIds.push(this.availableEquipments[availableEquipmentKey]._id);
+        }
+      }));
     }));
 
-    //Find modalities with "selectedModalities" and enable input:
-    this.onChangeEquipment();
+    //Send data to FormControl elements (Arrays - Mat-Select Multiple):
+    this.form.controls['equipments'].setValue(equipmentsIds);
   }
 }

@@ -147,7 +147,7 @@ export class FormComponent implements OnInit {
         //Enable equipments input:
         this.form.controls['fk_equipments'].enable();
 
-        //Find modalities only in update case:
+        //Find modalities (only in update case):
         if(updateData){
           this.findModalities(updateData);
         }
