@@ -14,18 +14,19 @@ module.exports = function() {
     const fs            = require('fs');
 
     //Import router modules:
-    const authRoutes            = require('./auth/routes');
-    const logsRoutes            = require('./modules/logs/routes');
-    const sessionsRoutes        = require('./modules/sessions/routes');
-    const modalitiesRoutes      = require('./modules/modalities/routes');
-    const organizationsRoutes   = require('./modules/organizations/routes');
-    const branchesRoutes        = require('./modules/branches/routes');
-    const servicesRoutes        = require('./modules/services/routes');
-    const equipmentsRoutes      = require('./modules/equipments/routes');
-    const peopleRoutes          = require('./modules/people/routes');
-    const usersRoutes           = require('./modules/users/routes');
-    const slotsRoutes           = require('./modules/slots/routes');
-    const proceduresRoutes      = require('./modules/procedures/routes');
+    const authRoutes                    = require('./auth/routes');
+    const logsRoutes                    = require('./modules/logs/routes');
+    const sessionsRoutes                = require('./modules/sessions/routes');
+    const modalitiesRoutes              = require('./modules/modalities/routes');
+    const organizationsRoutes           = require('./modules/organizations/routes');
+    const branchesRoutes                = require('./modules/branches/routes');
+    const servicesRoutes                = require('./modules/services/routes');
+    const equipmentsRoutes              = require('./modules/equipments/routes');
+    const peopleRoutes                  = require('./modules/people/routes');
+    const usersRoutes                   = require('./modules/users/routes');
+    const slotsRoutes                   = require('./modules/slots/routes');
+    const proceduresRoutes              = require('./modules/procedures/routes');
+    const procedure_categoriesRoutes    = require('./modules/procedure_categories/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -118,18 +119,19 @@ module.exports = function() {
     });
 
     //Set modules routes:
-    app.use('/signin',          authRoutes);
-    app.use('/logs',            logsRoutes);
-    app.use('/sessions',        sessionsRoutes);
-    app.use('/modalities',      modalitiesRoutes);
-    app.use('/organizations',   organizationsRoutes);
-    app.use('/branches',        branchesRoutes);
-    app.use('/services',        servicesRoutes);
-    app.use('/equipments',      equipmentsRoutes);
-    app.use('/people',          peopleRoutes);
-    app.use('/users',           usersRoutes);
-    app.use('/slots',           slotsRoutes);
-    app.use('/procedures',      proceduresRoutes);
+    app.use('/signin',                  authRoutes);
+    app.use('/logs',                    logsRoutes);
+    app.use('/sessions',                sessionsRoutes);
+    app.use('/modalities',              modalitiesRoutes);
+    app.use('/organizations',           organizationsRoutes);
+    app.use('/branches',                branchesRoutes);
+    app.use('/services',                servicesRoutes);
+    app.use('/equipments',              equipmentsRoutes);
+    app.use('/people',                  peopleRoutes);
+    app.use('/users',                   usersRoutes);
+    app.use('/slots',                   slotsRoutes);
+    app.use('/procedures',              proceduresRoutes);
+    app.use('/procedure_categories',    procedure_categoriesRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');

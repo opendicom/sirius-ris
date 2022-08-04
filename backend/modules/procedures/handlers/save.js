@@ -12,13 +12,15 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
-    referencedElements.push([ req.body.domain.organization, 'organizations' ]);
-    referencedElements.push([ req.body.domain.branch, 'branches' ]);
-    referencedElements.push([ req.body.fk_modality, 'modalities' ]);
+    if(req.body.domain.organization){ referencedElements.push([ req.body.domain.organization, 'organizations' ]); }
+    if(req.body.domain.branch){ referencedElements.push([ req.body.domain.branch, 'branches' ]); }
+    if(req.body.fk_modality){ referencedElements.push([ req.body.fk_modality, 'modalities' ]); }
 
     //Set referenced elements (FKs - Check existence) [Arrays of objects case]:
-    for(let currentKey in req.body.equipments){
-        referencedElements.push([ req.body.equipments[currentKey].fk_equipment, 'equipments' ]);
+    if(req.body.equipments){
+        for(let currentKey in req.body.equipments){
+            referencedElements.push([ req.body.equipments[currentKey].fk_equipment, 'equipments' ]);
+        }
     }
 
     //Excecute main query:

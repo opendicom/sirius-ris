@@ -12,15 +12,11 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
-    referencedElements.push([ req.body.domain.organization, 'organizations' ]);
-    referencedElements.push([ req.body.domain.branch, 'branches' ]);
-    referencedElements.push([ req.body.domain.service, 'services' ]);
-    referencedElements.push([ req.body.fk_equipment, 'equipments' ]);
-
-    //Optional reference:
-    if(req.body.fk_procedure){
-        referencedElements.push([ req.body.fk_procedure, 'procedures' ]);
-    }
+    if(req.body.domain.organization){ referencedElements.push([ req.body.domain.organization, 'organizations' ]); }
+    if(req.body.domain.branch){ referencedElements.push([ req.body.domain.branch, 'branches' ]); }
+    if(eq.body.domain.service){ referencedElements.push([ req.body.domain.service, 'services' ]); }
+    if(req.body.fk_equipment){ referencedElements.push([ req.body.fk_equipment, 'equipments' ]); }
+    if(req.body.fk_procedure){ referencedElements.push([ req.body.fk_procedure, 'procedures' ]); } //Optional in schema
 
     //Convert start and end to date formats for comparison:
     const start = new Date(req.body.start);

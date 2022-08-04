@@ -35,7 +35,8 @@ const AllowedUnsetValues = ['serial_number', 'AET'];
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
     body('fk_modalities')
-        .isArray(),
+        .isArray()
+        .withMessage('El parametro fk_modalities es requerido.'),
 
     body('fk_modalities.*')
         .trim()

@@ -10,6 +10,9 @@ const { validationResult }  = require('express-validator');                 //Ex
 const mainServices  = require('../main.services');                          // Main services
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
 const currentLang   = require('../main.languages')(mainSettings.language);  // Language Module
+
+//Set ObjectId Regex to validate:
+const regexObjectId = /^[0-9a-fA-F]{24}$/;
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -855,23 +858,29 @@ async function ckeckElement(_id, schemaName, res){
 
     //Check _id is not empty:
     if(_id){
-        //Execute check query:
-        await currentSchema.Model.findById(_id, { _id: 1 })
-        .exec()
-        .then((data) => {
-            //Check if have results:
-            if(data){
-                //Set result true:
-                result = true;
-            } else {
-                //Send not valid referenced object mensaje:
-                res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
-            }
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.query_error, err);
-        });
+        //Check _id is valid ObjectId (Express validator Fix: Update case case that does not go through schema validator):
+        if(regexObjectId.test(_id)){
+            //Execute check query:
+            await currentSchema.Model.findById(_id, { _id: 1 })
+            .exec()
+            .then((data) => {
+                //Check if have results:
+                if(data){
+                    //Set result true:
+                    result = true;
+                } else {
+                    //Send not valid referenced object mensaje:
+                    res.status(405).send({ success: false, message: currentLang.db.not_valid_fk });
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+        } else {
+            //Send not valid referenced object mensaje:
+            res.status(405).send({ success: false, message: currentLang.db.not_valid_objectid });
+        }
     } else {
         //Send error:
         mainServices.sendError(res, currentLang.db.id_referenced_empty, 'Ref. schemaName _id ' + _id);
@@ -924,6 +933,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             break;
         case 'procedures':
             affectedCollections.push('slots');
+            affectedCollections.push('procedure_categories');
             break;
     }
 
@@ -1301,6 +1311,19 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
                 if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+                return filter;
+            });
+            break;
+
+        case 'procedure_categories':
+            filter = adjustCondition(filter, (filter) => {
+                //Domain:
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+    
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_procedures'] != undefined){ filter[asPrefix + 'fk_procedures'] = filter[asPrefix + 'fk_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedures']); }
                 return filter;
             });
             break;
@@ -1725,6 +1748,34 @@ async function addDomainCondition(req, res, domainType){
                         break;
 
                     case 'procedures':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.branch'] = domain;
+                            }
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['domain.branch'] = domain;
+                            }
+                        }
+                        break;
+
+                    case 'procedure_categories':
                         //Check whether it has operator or not:
                         if(haveOperator){
                             //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):

@@ -69,7 +69,8 @@ const Validator = [
         .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
 
     body('equipments')
-        .isArray(),
+        .isArray()
+        .withMessage('El parametro equipments es requerido.'),
 
     body('equipments.*.fk_equipment')
         .trim()

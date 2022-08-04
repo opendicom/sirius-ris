@@ -1,29 +1,33 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// SERVICES SCHEMAS:
+// PROCEDURES CATEGORIES SCHEMA:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import modules:
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Define Domain Sub-Schema:
+const subSchemaDomain = new mongoose.Schema({
+    organization:   { type: mongoose.ObjectId, required: true },
+    branch:         { type: mongoose.ObjectId, required: true },
+},
+{ _id : false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
-    fk_branch:      { type: mongoose.ObjectId, required: true },
-    fk_modality:    { type: mongoose.ObjectId, required: true },
-    fk_equipments:  { type: [mongoose.ObjectId], required: true },
-    name:           { type: String, required: true },
-    status:         { type: Boolean, required: true, default: false },
+    domain:             { type: subSchemaDomain, required: true },    
+    name:               { type: String, required: true },
+    fk_procedures:      { type: [mongoose.ObjectId], required: true }
 },
 { timestamps: true },
 { versionKey: false });
 
 //Define model:
-const Model = mongoose.model('services', Schema, 'services');  //Specify collection name to prevent Mongoose pluralize.
+const Model = mongoose.model('procedure_categories', Schema, 'procedure_categories');  //Specify collection name to prevent Mongoose pluralize.
 
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
-    Singular    : 'fk_service',
-    Plural      : 'fk_services',
-    Domain      : 'domain.service'
+    Singular    : 'fk_procedure_categories',
+    Plural      : 'fk_procedure_categories'
 };
 
 //Register allowed unset values:
@@ -34,35 +38,29 @@ const AllowedUnsetValues = [];
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
-    body('fk_branch')
+    body('domain.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_branch NO es un ID MongoDB válido.'),
-
-    body('fk_modality')
+        .withMessage('El parametro domain.organization NO es un ID MongoDB válido.'),
+    
+    body('domain.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_modality NO es un ID MongoDB válido.'),
-
-    body('fk_equipments')
-        .isArray()
-        .withMessage('El parametro fk_equipments es requerido.'),
-
-    body('fk_equipments.*')
-        .trim()
-        .isMongoId()
-        .withMessage('El parametro fk_equipments NO es un ID MongoDB válido.'),
+        .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 64 })
         .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
 
-    body('status')
+    body('fk_procedures')
+        .isArray()
+        .withMessage('El parametro fk_procedures es requerido.'),
+
+    body('fk_procedures.*')
         .trim()
-        .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
-        .toBoolean()
+        .isMongoId()
+        .withMessage('El parametro fk_procedures NO es un ID MongoDB válido.'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

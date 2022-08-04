@@ -6,32 +6,34 @@
 const rolePermissions = {
     //Superuser:
     1: {
-        people          : ['find', 'findOne', 'insert', 'update', 'delete'],
-        users           : ['find', 'findOne', 'insert', 'update', 'delete'],            
-        logs            : ['find', 'findOne'],
-        sessions        : ['find', 'findOne', 'delete'],
-        modalities      : ['find', 'findOne', 'insert', 'update', 'delete'],
-        organizations   : ['find', 'findOne', 'insert', 'update', 'delete'],
-        branches        : ['find', 'findOne', 'insert', 'update', 'delete'],
-        services        : ['find', 'findOne', 'insert', 'update', 'delete'],
-        equipments      : ['find', 'findOne', 'insert', 'update', 'delete'],
-        slots           : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/insert', 'batch/delete'],
-        procedures      : ['find', 'findOne', 'insert', 'update', 'delete'],
+        people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        users                   : ['find', 'findOne', 'insert', 'update', 'delete'],            
+        logs                    : ['find', 'findOne'],
+        sessions                : ['find', 'findOne', 'delete'],
+        modalities              : ['find', 'findOne', 'insert', 'update', 'delete'],
+        organizations           : ['find', 'findOne', 'insert', 'update', 'delete'],
+        branches                : ['find', 'findOne', 'insert', 'update', 'delete'],
+        services                : ['find', 'findOne', 'insert', 'update', 'delete'],
+        equipments              : ['find', 'findOne', 'insert', 'update', 'delete'],
+        slots                   : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/insert', 'batch/delete'],
+        procedures              : ['find', 'findOne', 'insert', 'update', 'delete'],
+        procedure_categories   : ['find', 'findOne', 'insert', 'update', 'delete'],
 
     },
 
     //Administrator:
     2: {
-        people          : ['find', 'findOne', 'insert', 'update'],
-        users           : ['find', 'findOne', 'insert', 'update'],
-        logs            : ['find', 'findOne'],
-        modalities      : ['find', 'findOne'],
-        organizations   : ['find', 'findOne'],
-        branches        : ['find', 'findOne'],
-        services        : ['find', 'findOne', 'insert', 'update'],
-        equipments      : ['find', 'findOne'],
-        slots           : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
-        procedures      : ['find', 'findOne', 'insert', 'update'],
+        people                  : ['find', 'findOne', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'insert', 'update'],
+        logs                    : ['find', 'findOne'],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne', 'insert', 'update'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
+        procedures              : ['find', 'findOne', 'insert', 'update'],
+        procedure_categories   : ['find', 'findOne', 'insert', 'update'],
     }
 }
 

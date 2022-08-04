@@ -91,7 +91,9 @@ const Validator = [
         .normalizeEmail({ gmail_remove_dots: false })
         .toLowerCase(),
         
-    body('permissions').isArray(),
+    body('permissions')
+        .isArray()
+        .withMessage('El parametro permissions es requerido.'),
 
     body('permissions.*.organization')
         .optional()

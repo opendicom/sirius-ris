@@ -12,11 +12,13 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Set referenced elements (FKs - Check existence):
     let referencedElements = [];
-    referencedElements.push([ req.body.fk_branch, 'branches' ]);
+    if(req.body.fk_branch){ referencedElements.push([ req.body.fk_branch, 'branches' ]); }
     
     //Set referenced elements (FKs - Check existence) [Arrays case]:
-    for(let currentKey in req.body.fk_modalities){
-        referencedElements.push([ req.body.fk_modalities[currentKey], 'modalities' ]);
+    if(req.body.fk_modalities){
+        for(let currentKey in req.body.fk_modalities){
+            referencedElements.push([ req.body.fk_modalities[currentKey], 'modalities' ]);
+        }
     }
 
     //Excecute main query:
