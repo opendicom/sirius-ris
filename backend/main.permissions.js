@@ -17,7 +17,7 @@ const rolePermissions = {
         equipments              : ['find', 'findOne', 'insert', 'update', 'delete'],
         slots                   : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/insert', 'batch/delete'],
         procedures              : ['find', 'findOne', 'insert', 'update', 'delete'],
-        procedure_categories   : ['find', 'findOne', 'insert', 'update', 'delete'],
+        procedure_categories    : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/delete'],
 
     },
 
@@ -33,7 +33,7 @@ const rolePermissions = {
         equipments              : ['find', 'findOne'],
         slots                   : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
         procedures              : ['find', 'findOne', 'insert', 'update'],
-        procedure_categories   : ['find', 'findOne', 'insert', 'update'],
+        procedure_categories    : ['find', 'findOne', 'insert', 'update', 'batch/delete'],
     }
 }
 

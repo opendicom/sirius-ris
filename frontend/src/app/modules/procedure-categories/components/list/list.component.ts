@@ -16,7 +16,10 @@ import { default_page_sizes, regexObjectId } from '@env/environment';           
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'status'];
+  public displayedColumns: string[] = ['select_element', 'element_action', 'organization', 'branch', 'name', 'procedures_count'];
+
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
 
   //Inject services to the constructor:
   constructor(
@@ -27,22 +30,25 @@ export class ListComponent implements OnInit {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
+    //Pass Service Method:
+    this.getKeys = this.sharedFunctions.getKeys;
+
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Listado de procedimientos',
-      content_icon    : 'format_list_numbered',
-      add_button      : '/procedures/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
+      content_title   : 'Listado de categorías de procedimientos',
+      content_icon    : 'category',
+      add_button      : '/procedure_categories/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
       filters_form    : true,
       filters : {
         search        : true,
         date_range    : false,
-        status        : true,
+        status        : false,
         pager         : true,
       }
     });
 
     //Set element:
-    sharedProp.elementSetter('procedures');
+    sharedProp.elementSetter('procedure_categories');
 
     //Initialize action fields:
     this.sharedProp.filter        = '';
@@ -54,18 +60,13 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'name', 'modality.code_value', 'equipments.details.name'];
+    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'name'];
     this.sharedProp.projection    = {
       'domain': 1,
       'name': 1,
       'organization.short_name': 1,
       'branch.short_name': 1,
-      'modality.code_value': 1,
-      'modality.code_meaning': 1,
-      'equipments.duration': 1,
-      'equipments.details.name': 1,
-      'equipments.details.AET': 1,
-      'status': 1
+      'procedures._id': 1
     };
     this.sharedProp.sort          = { 'organization.short_name': 1, 'branch.short_name': 1, name: 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };

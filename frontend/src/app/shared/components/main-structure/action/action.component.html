@@ -62,17 +62,6 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.institutions">
-        <mat-label>Sucursal</mat-label>
-        <mat-select>
-          <mat-option value="asseMACIEL">H. Maciel</mat-option>
-          <mat-option value="asseHTC">H. Clínicas</mat-option>
-          <mat-option value="assePASTEUR">H. Pasteur</mat-option>
-          <mat-option value="asseESPAÑOL">H. Español</mat-option>
-        </mat-select>
-        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
-      </mat-form-field>
-
       <button mat-icon-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
         <mat-icon>close</mat-icon>
       </button>

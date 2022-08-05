@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { regexObjectId } from '@env/environment';                                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({

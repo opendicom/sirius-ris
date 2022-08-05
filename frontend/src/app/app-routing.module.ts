@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'equipments', loadChildren: () => import('@modules/equipments/equipments.module').then( m => m.EquipmentsModule ), canActivate: [AuthGuard] },
   { path: 'slots', loadChildren: () => import('@modules/slots/slots.module').then( m => m.SlotsModule ), canActivate: [AuthGuard] },
   { path: 'procedures', loadChildren: () => import('@modules/procedures/procedures.module').then( m => m.ProceduresModule ), canActivate: [AuthGuard] },
+  { path: 'procedure_categories', loadChildren: () => import('@modules/procedure-categories/procedure-categories.module').then( m => m.ProcedureCategoriesModule ), canActivate: [AuthGuard] },
   { path: 'users', loadChildren: () => import('@modules/users/users.module').then( m => m.UsersModule ), canActivate: [AuthGuard] },
 
   // Settings:
