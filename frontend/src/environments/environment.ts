@@ -102,6 +102,40 @@ export const report_flow_states = {
   'R04': 'Para eliminar'
 }
 
+// Default CKEditor configuration:
+export const CKEditorConfig = {
+  toolbar: {
+    items: [
+      //Heading:
+      'heading',
+      '|',
+
+      //Alignment:
+      'alignment',
+      '|',
+
+      //Basic styles
+      'bold', 'italic', 'underline', 'strikethrough',
+      '|',
+      'subscript', 'superscript',
+      '|',
+
+      //Lists:
+      'numberedList', 'bulletedList',
+      '|',
+
+      //Extra tools:
+      'findAndReplace',
+      'removeFormat'
+    ],
+
+    //Allow multiline in toolbar with '-':
+    shouldNotGroupWhenFull: true
+  },
+
+  language: { ui: 'es', content: 'es' }
+};
+
 // Country codes (ISO-3166):
 export const ISO_3166 = {
   "100": {

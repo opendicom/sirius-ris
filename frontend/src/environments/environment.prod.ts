@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ENVIROMENT:
+// ENVIROMENT PROD:
 //--------------------------------------------------------------------------------------------------------------------//
 //Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
@@ -101,6 +101,40 @@ export const report_flow_states = {
   'R03': 'Informe autenticado',
   'R04': 'Para eliminar'
 }
+
+// Default CKEditor configuration:
+export const CKEditorConfig = {
+  toolbar: {
+    items: [
+      //Heading:
+      'heading',
+      '|',
+
+      //Alignment:
+      'alignment',
+      '|',
+
+      //Basic styles
+      'bold', 'italic', 'underline', 'strikethrough',
+      '|',
+      'subscript', 'superscript',
+      '|',
+
+      //Lists:
+      'numberedList', 'bulletedList',
+      '|',
+
+      //Extra tools:
+      'findAndReplace',
+      'removeFormat'
+    ],
+
+    //Allow multiline in toolbar with '-':
+    shouldNotGroupWhenFull: true
+  },
+
+  language: { ui: 'es', content: 'es' }
+};
 
 // Country codes (ISO-3166):
 export const ISO_3166 = {

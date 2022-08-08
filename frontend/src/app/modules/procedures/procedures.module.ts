@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { ProceduresRoutingModule } from '@modules/procedures/procedures-routing.module';
 
@@ -19,6 +20,7 @@ import { FormComponent } from '@modules/procedures/components/form/form.componen
   imports: [
     CommonModule,
     ProceduresRoutingModule,
+    CKEditorModule,
     SharedModule,
     SharedMaterialModule,
     FormsModule,

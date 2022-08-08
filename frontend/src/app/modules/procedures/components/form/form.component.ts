@@ -7,6 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { CKEditorConfig } from '@env/environment';                                      // Enviroments
+import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,6 +17,10 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
+  //Create CKEditor component and configure them:
+  public preparationEditor = customBuildEditor;
+  public editorConfig = CKEditorConfig;
+
   //Set references objects:
   public availableOrganizations: any;
   public availableBranches: any;
@@ -82,6 +88,12 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Enable source editing CKEditor for Superuser:
+    if(this.sharedProp.userLogged.permissions[0].role == 1){
+      //Add sourceEditing to the toolbar:
+      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+    }
+
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
 

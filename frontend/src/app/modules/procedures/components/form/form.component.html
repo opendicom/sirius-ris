@@ -67,10 +67,8 @@
       </mat-form-field>
 
       <h4>Preparación:</h4>
-      <mat-form-field appearance="fill" class="full preparation">
-        <mat-label>Preparación</mat-label>
-        <textarea matInput formControlName="preparation" placeholder="Escriba aquí la preparación para el procedimiento."></textarea>
-      </mat-form-field>
+      <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="editorConfig" data=""></ckeditor>
+
     </div> <!-- end fxLayout wrapper -->
 
   </div>

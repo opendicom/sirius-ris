@@ -345,6 +345,7 @@ table {
 
 /*----------------------------------------------------------------------------------------------------------------------*/
 /* NOTIFICATIONS: */
+/*----------------------------------------------------------------------------------------------------------------------*/
 .mat-snack-bar-container {
   background-color: #3d3f51;
   color: #fff;
@@ -357,5 +358,89 @@ table {
 
 .mat-dialog-title {
   padding-bottom: 10px;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* CKEDITOR CUSTOMIZATION: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.ck-editor {
+  color: #fff !important;
+  border-radius: 10px !important;
+}
+
+.ck-toolbar {
+  background-color: #3d3f51 !important;
+  border-color: #3d3f51 !important;
+}
+
+.ck-button {
+  color: #fff !important;
+}
+
+.ck-button:hover {
+  background-color: #4d4f65 !important;
+}
+
+.ck-content {
+  border-color: #3d3f51 !important;
+  background-color: #4d4f65 !important;
+}
+
+.ck-dropdown__panel {
+  border-color: #3d3f51 !important;
+}
+
+.ck-list{
+  background-color: #4d4f65 !important;
+}
+
+.ck-editor__editable {
+  min-height: 200px !important;
+}
+
+.ck-find-and-replace-form {
+  background-color: #3d3f51 !important;
+  border-color: #3d3f51 !important;
+  color: #fff !important;
+}
+
+.ck-form__header {
+  background-color: #303242 !important;
+  border-bottom: none !important;
+}
+
+.ck-form__header__label {
+  color: #fff !important;
+}
+
+.ck-input-text {
+  color: #fff !important;
+  background-color: #4d4f65 !important;
+  border: 1px #4d4f65 !important;
+}
+
+.ck-input_focused {
+  border-bottom: 3px solid #d53a9d !important;
+  box-shadow: none !important;
+}
+
+.ck-labeled-field-view__status {
+  color: #fff !important;
+}
+
+.ck-button-find {
+  background-color: #733ad597 !important;
+}
+
+.ck-label {
+  background-color: #4d4f65 !important;
+  color: #fff !important;
+  border-radius: 5px;
+}
+
+.ck-on {
+  background-color: #4d4f65 !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
