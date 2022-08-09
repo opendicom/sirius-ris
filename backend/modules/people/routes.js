@@ -112,6 +112,13 @@ router.post(
         //Check if the person already exists in the database:
         const personExist = await moduleServices.checkPerson(req, res);
 
+        //Data normalization - toUpperCase for names and surnames:
+        //Fix allowedValidate case: NO Data normalization because body is cloned in set object.
+        if(req.validatedResult.set.name_01 !== undefined && req.validatedResult.set.name_01 !== ''){ req.validatedResult.set.name_01 = req.validatedResult.set.name_01.toUpperCase(); }
+        if(req.validatedResult.set.name_02 !== undefined && req.validatedResult.set.name_02 !== ''){ req.validatedResult.set.name_02 = req.validatedResult.set.name_02.toUpperCase(); }
+        if(req.validatedResult.set.surname_01 !== undefined && req.validatedResult.set.name_02 !== ''){ req.validatedResult.set.surname_01 = req.validatedResult.set.surname_01.toUpperCase(); }
+        if(req.validatedResult.set.surname_02 !== undefined && req.validatedResult.set.name_02 !== ''){ req.validatedResult.set.surname_02 = req.validatedResult.set.surname_02.toUpperCase(); }
+
         //Check for duplicates:
         if(personExist == false){
             //Save data:
