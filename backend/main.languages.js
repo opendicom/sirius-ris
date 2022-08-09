@@ -44,6 +44,7 @@ module.exports = function(language){
             'delete_success'        : 'Successfully deleted.',
             'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
             'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.',
+            'delete_empty_id'       : 'You must specify at least one _id for delete.',
             'not_valid_fk'          : 'Any of the elements referenced as foreign is NOT valid',
             'not_valid_objectid'    : 'Some of the referenced elements have an ObjectId that is NOT valid.',
             'not_allowed_save'      : 'Save operation NOT allowed.',
@@ -94,6 +95,7 @@ module.exports = function(language){
             lang.db.delete_success              = 'Eliminación exitosa.';
             lang.db.delete_id_no_results        = 'No se encuentra ningún registro para eliminar con el ID especificado.';
             lang.db.delete_rejected_dep         = 'Eliminación rechazada, existen dependencias del elemento que se desea eliminar.';
+            lang.db.delete_empty_id             = 'Debe especificar al menos un _id para la eliminación.';
             lang.db.not_valid_fk                = 'Alguno de los elementos referenciados como foráneos NO es válido.';
             lang.db.not_valid_objectid          = 'Alguno de los elementos referenciados posee un ObjectId que NO es válido.';
             lang.db.not_allowed_save            = 'Operación de guardado NO permitida.';

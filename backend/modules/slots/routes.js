@@ -17,7 +17,6 @@ const mainMiddlewares = require('../../main.middlewares');
 const findHandler           = require('./handlers/find');
 const saveHandler           = require('./handlers/save');
 const saveBatchHandler      = require('./handlers/batch.save');
-const deleteBatchHandler    = require('./handlers/batch.delete');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -120,10 +119,7 @@ router.post(
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { 
-        //Send to module service:
-        deleteBatchHandler(req, res, slots);
-    }
+    async (req, res) => { await moduleServices.batchDelete(req, res, slots) }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 

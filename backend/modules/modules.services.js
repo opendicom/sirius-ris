@@ -399,6 +399,42 @@ async function _delete(req, res, currentSchema, successResponse = true){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// BATCH DELETE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function batchDelete(req, res, currentSchema){
+    //Remove duplicates from an array:
+    const toDelete = [...new Set(req.body._id)];
+
+    //Check that there is at least one _id in the request:
+    if(toDelete.length > 0){
+        //Set header sent (First time):
+        res.headerSent = false;
+
+        //Loop through an id:
+        for(let key in toDelete){
+            //Set current _id into the request (prepare delete):
+            req.body._id = toDelete[key];
+
+            //Check if header have already been sent (Posibly validation errors):
+            if(res.headerSent == false){
+                //Send to module service:
+                await _delete(req, res, currentSchema, false);
+            }
+        }
+        
+        //Check if header have already been sent (Posibly validation errors):
+        if(res.headerSent == false){
+            //Send successfully response:
+            res.status(200).send({ success: true, message: currentLang.db.delete_success });
+        }
+    } else {
+        //Return the result (HTML Response):
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.db.delete_empty_id });
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // FIND AGGREGATION:
 //--------------------------------------------------------------------------------------------------------------------//
 async function findAggregation(req, res, currentSchema){
@@ -2192,6 +2228,7 @@ module.exports = {
     insert,
     update,
     _delete,
+    batchDelete,
     findAggregation,
     isDuplicated,
     checkPerson,
