@@ -34,5 +34,21 @@ services:
     networks:
       - sirius_net
 
+#  sirius_frontend:
+#    container_name: sirius_frontend_container
+#    image: nginx:alpine
+#    volumes:
+#      - ./nginx/conf.d:/etc/nginx/conf.d/
+#      - ./frontend/dist/sirius-ris:/usr/share/nginx/html:ro
+#      # - ./nginx/ssl:/etc/ssl/
+#    ports:
+#     - 80:80
+#     # - 8443:443
+#    environment:
+#      TZ: 'America/Argentina/Buenos_Aires'
+#    restart: unless-stopped
+#    networks:
+#      - sirius_net
+
 networks:
   sirius_net:
