@@ -2046,14 +2046,8 @@ async function addDomainCondition(req, res, domainType){
                 //Set restrictions according to schema [INSERT AND UPDATE]:
                 switch(schema){
                     case 'branches':
-                        //To add a branch you must have domain access at the organization level:
-                        if(domainType == 'branches' || domainType == 'services'){
-                            operationResult = false; /* Operation rejected */
-
-                        //Current case to eval:
-                        } else if(domainType == 'organizations' && req.body.fk_organization !== domain){
-                            operationResult = false; /* Operation rejected */
-                        }
+                        // No restrictions here.
+                        // The Superuser role is unique role can access here.
                         break;
                     
                     case 'services':
@@ -2066,7 +2060,17 @@ async function addDomainCondition(req, res, domainType){
                                     (domainType == 'branches' && req.body.fk_branch !== domain) ){
                             operationResult = false; /* Operation rejected */
                         }
-                        break;    
+                        break;
+
+                    case 'modalities':
+                        // No restrictions here.
+                        // The Superuser role is unique role can access here.
+                        break;
+
+                    case 'equipments':
+                        // No restrictions here.
+                        // The Superuser role is unique role can access here.
+                        break;
 
                     case 'slots':
                         //Current cases to eval:
@@ -2079,7 +2083,28 @@ async function addDomainCondition(req, res, domainType){
                         }
                         break;
 
-                    case 'equipments':
+                    case 'procedures':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services'){
+                            // The user cannot access here with that level of permission (Only Superuser and Administrator role can access here).
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
+                    case 'procedure_categories':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services'){
+                            // The user cannot access here with that level of permission (Only Superuser and Administrator role can access here).
+                            operationResult = false; /* Operation rejected */
+                        }
                         break;
 
                     case 'people':
