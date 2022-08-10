@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                          // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
 import {                                                                                      // Enviroment
@@ -61,6 +62,11 @@ export class FormComponent implements OnInit {
   public personOperation  : string = 'insert';
   public userOperation    : string = 'insert';
 
+  //Initializate validation document vars:
+  public registered_doc_type  : boolean = false;
+  public validation_result    : boolean = false;
+  public disabled_save_button : boolean = true;
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -86,6 +92,7 @@ export class FormComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public  sharedProp      : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
+    private sharedValidate  : ValidateDocumentsService,
     public  userService     : UsersService
   ){
     //Find references:
@@ -276,7 +283,33 @@ export class FormComponent implements OnInit {
     }
   }
 
+  validateDocument(){
+    //Get validation result:
+    const result = this.sharedValidate.validate(this.form.value.person.doc_country_code, this.form.value.person.doc_type, this.form.value.person.document);
+
+    //Set validation result in component vars:
+    this.registered_doc_type = result.registered_doc_type;
+
+    //Check that the type of document is registered:
+    if(result.registered_doc_type === true){
+      this.validation_result = result.validation_result;
+
+      //Enable and disable save button:
+      if(result.validation_result === true){
+        this.disabled_save_button = false;
+      } else {
+        this.disabled_save_button = true;
+      }
+    } else {
+      //Enable save button (Document type not registered):
+      this.disabled_save_button = false;
+    }
+  }
+
   onSetDocument(preventClear: boolean = false){
+    //Validate document (Check registered_doc_type):
+    this.validateDocument();
+
     //Check document fields content:
     if(this.form.value.person.document != '' && this.form.value.person.doc_country_code != '' && this.form.value.person.doc_type != ''){
 

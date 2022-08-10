@@ -27,6 +27,20 @@
   opacity: 0.70;
 }
 
+.document_inputs {
+  z-index: 10000;
+}
+
+.validate-info {
+  position: relative;
+  top: 10px !important;
+}
+
+.validate-icon {
+  position: relative;
+  top: 7px !important;
+}
+
 .permission-container {
   padding: 20px;
   overflow-y: auto;
