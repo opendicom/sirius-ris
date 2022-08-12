@@ -26,6 +26,7 @@ export const document_types = {
   5: 'Permiso de residencia',
   6: 'Visa',
   7: 'Documento transitorio',
+  //100: Anonymous document (reserved but not listed).
 };
 
 // User Roles:
@@ -134,6 +135,13 @@ export const CKEditorConfig = {
   },
 
   language: { ui: 'es', content: 'es' }
+};
+
+// Anonymous patient document case:
+export const anonymous_doc = {
+  doc_country_code: '001',  // Available in ISO-3166.
+  document_types: 100,      // Reserved in document_types for this case.
+  description: 'Anónimo'
 };
 
 // Country codes (ISO-3166):

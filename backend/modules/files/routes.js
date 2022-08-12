@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// SLOTS ROUTES:
+// FILES ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
@@ -16,17 +16,16 @@ const mainMiddlewares = require('../../main.middlewares');
 //Import Handlers:
 const findHandler           = require('./handlers/find');
 const saveHandler           = require('./handlers/save');
-const saveBatchHandler      = require('./handlers/batch.save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
 //Import schemas:
-const slots = require('./schemas');
+const files = require('./schemas');
 
 //Get keys from current schema:
-const allSchemaKeys     = mainServices.getSchemaKeys(slots);            //All.
-const allowedSchemaKeys = mainServices.getSchemaKeys(slots, true);      //No parameters that cannot be modified.
+const allSchemaKeys     = mainServices.getSchemaKeys(files);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(files, true);      //No parameters that cannot be modified.
 
 //Create Router.
 const router = express.Router();
@@ -39,7 +38,7 @@ router.get(
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
-        findHandler(req, res, slots);
+        findHandler(req, res, files);
     }
 );
 
@@ -55,7 +54,7 @@ router.get(
         if(req.query.pager) { delete req.query.pager };     //No pager
 
         //Send to handler:
-        findHandler(req, res, slots);
+        findHandler(req, res, files);
     }
 );
 
@@ -64,10 +63,10 @@ router.post(
     '/insert',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
-    slots.Validator,
+    files.Validator,
     (req, res) => {
         //Send to handler:
-        saveHandler(req, res, slots, 'insert');
+        saveHandler(req, res, files, 'insert');
     }
 );
 
@@ -76,11 +75,17 @@ router.post(
     '/update',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
-    mainMiddlewares.allowedValidate(allowedSchemaKeys, slots.AllowedUnsetValues),
-    slots.Validator,
-    (req, res) => { 
-        //Send to handler:
-        saveHandler(req, res, slots, 'update');
+    mainMiddlewares.allowedValidate(allowedSchemaKeys, files.AllowedUnsetValues),
+    files.Validator,
+    async (req, res) => {
+        //Search for duplicates:
+        const base64 = await moduleServices.isDuplicated(req, res, files, req.body.base64, 'base64');   //Same base64 = same file (duplicated).
+
+        //Check for duplicates:
+        if(base64 == false){
+            //Send to handler:
+            saveHandler(req, res, files, 'update');
+        }
     }
 );
 
@@ -90,35 +95,29 @@ router.post(
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { 
-        //Send to module service:
-        moduleServices._delete(req, res, slots);
+    async (req, res) => { 
+        //Search for duplicates:
+        const base64 = await moduleServices.isDuplicated(req, res, files, req.body.base64, 'base64');   //Same base64 = same file (duplicated).
+
+        //Check for duplicates:
+        if(base64 == false){
+            //Send to module service:
+            moduleServices._delete(req, res, files);
+        }
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// SLOTS BATCH:
+// FILES BATCH:
 //--------------------------------------------------------------------------------------------------------------------//
-//INSERT BATCH:
-router.post(
-    '/batch/insert',
-    mainMiddlewares.checkJWT,
-    mainMiddlewares.roleAccessBasedControl,
-    //slots.Validator, //Desactivated because request have other parameters (Example: range_start).
-    (req, res) => {
-        //Send to handler:
-        saveBatchHandler(req, res, slots);
-    }
-);
-
 //DELETE BATCH:
 router.post(
     '/batch/delete',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
-    async (req, res) => { await moduleServices.batchDelete(req, res, slots) }
+    async (req, res) => { await moduleServices.batchDelete(req, res, files) }
 );
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -1363,6 +1363,18 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 return filter;
             });
             break;
+
+        case 'files':
+            filter = adjustCondition(filter, (filter) => {
+                //Domain:
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+    
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                return filter;
+            });
+            break;
     }
 
     //Return adjusted filter:
@@ -1839,6 +1851,34 @@ async function addDomainCondition(req, res, domainType){
                         }
                         break;
 
+                    case 'files':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['domain.branch'] = domain;
+                            }
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['domain.organization'] = domain;
+
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['domain.branch'] = domain;
+                            }
+                        }
+                        break;
+
                     case 'users':
                         //Add Explicit $OR operator (Prevent: Cannot set properties of undefined):
                         // The explicit $OR operator is used since it is not possible to use IN.
@@ -2103,6 +2143,17 @@ async function addDomainCondition(req, res, domainType){
                             operationResult = false; /* Operation rejected */
                         } else if(domainType == 'services'){
                             // The user cannot access here with that level of permission (Only Superuser and Administrator role can access here).
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
+                    case 'files':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services' && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
                             operationResult = false; /* Operation rejected */
                         }
                         break;

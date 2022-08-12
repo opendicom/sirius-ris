@@ -64,8 +64,8 @@
 
             <div *ngIf="this.registered_doc_type === true" class="validate-info text-right">
               <div *ngIf="this.validation_result; then thenBlock else elseBlock"></div>
-              <ng-template #thenBlock><span class="label-accent" matTooltip="¿El documento ingresado pasa la validación?">Validación de documento: <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
-              <ng-template #elseBlock><span class="label-accent" matTooltip="¿El documento ingresado pasa la validación?">Validación de documento: <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
+              <ng-template #thenBlock><span class="label-accent" matTooltip="El documento ingresado cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
+              <ng-template #elseBlock><span class="label-accent" matTooltip="El documento ingresado NO cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
             </div>
 
             <div class="clear"></div>
