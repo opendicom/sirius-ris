@@ -1440,17 +1440,32 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'imaging.branch'] != undefined){ filter[asPrefix + 'imaging.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch']); };
                 if(filter[asPrefix + 'imaging.service'] != undefined){ filter[asPrefix + 'imaging.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service']); };
 
+                //Imaging - Post aggregate lookup:
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
+
                 //Referring:
                 if(filter[asPrefix + 'referring.organization'] != undefined){ filter[asPrefix + 'referring.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization']); };
                 if(filter[asPrefix + 'referring.branch'] != undefined){ filter[asPrefix + 'referring.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch']); };
                 if(filter[asPrefix + 'referring.service'] != undefined){ filter[asPrefix + 'referring.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service']); };
                 if(filter[asPrefix + 'referring.fk_referring'] != undefined){ filter[asPrefix + 'referring.fk_referring'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring']); };
 
+                //Referring - Post aggregate lookup:
+                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
+                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
+                if(filter[asPrefix + 'referring.service._id'] != undefined){ filter[asPrefix + 'referring.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service._id']); };
+
                 //Reporting:
                 if(filter[asPrefix + 'reporting.organization'] != undefined){ filter[asPrefix + 'reporting.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization']); };
                 if(filter[asPrefix + 'reporting.branch'] != undefined){ filter[asPrefix + 'reporting.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch']); };
                 if(filter[asPrefix + 'reporting.service'] != undefined){ filter[asPrefix + 'reporting.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service']); };
                 if(filter[asPrefix + 'reporting.fk_reporting'] != undefined){ filter[asPrefix + 'reporting.fk_reporting'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting']); };
+
+                //Reporting - Post aggregate lookup:
+                if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
+                if(filter[asPrefix + 'reporting.branch._id'] != undefined){ filter[asPrefix + 'reporting.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch._id']); };
+                if(filter[asPrefix + 'reporting.service._id'] != undefined){ filter[asPrefix + 'reporting.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service._id']); };
 
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'start'] != undefined){
@@ -2051,41 +2066,61 @@ async function addDomainCondition(req, res, domainType){
                         break;
 
                     case 'appointments':
-                        //Check whether it has operator or not:
-                        if(haveOperator){
-                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                            if(!filter.and){ req.query.filter['and'] = []; }
+                        //Initializate composite domain objects:
+                        let imaging = {};
+                        let referring = {};
+                        let reporting = {};
 
-                            //Switch by domain type: 
-                            if(domainType == 'organizations'){
-                                //Add domain condition:
-                                req.query.filter.and['imaging.organization'] = domain;
+                        //Create filter and first explicit $AND operator (if not exist):
+                        if(!filter){ req.query.filter = {}; }
+                        req.query.filter['$and'] = [];
 
-                            } else if(domainType == 'branches'){
-                                //Add domain condition:
-                                req.query.filter.and['imaging.branch'] = domain;
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
+                            referring['referring.organization._id'] = mongoose.Types.ObjectId(domain);
+                            reporting['reporting.organization._id'] = mongoose.Types.ObjectId(domain);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
 
-                            } else if(domainType == 'services'){
-                                //Add domain condition:
-                                req.query.filter.and['imaging.service'] = domain;
-                            }
-                        } else {
-                            //Switch by domain type: 
-                            if(domainType == 'organizations'){
-                                //Add domain condition:
-                                req.query.filter['imaging.organization'] = domain;
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
 
-                            } else if(domainType == 'branches'){
-                                //Add domain condition:
-                                req.query.filter['imaging.branch'] = domain;
+                        } else if(domainType == 'branches'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
+                            referring['referring.branch._id'] = mongoose.Types.ObjectId(domain);
+                            reporting['reporting.branch._id'] = mongoose.Types.ObjectId(domain);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
 
-                            } else if(domainType == 'services'){
-                                //Add domain condition:
-                                req.query.filter['imaging.service'] = domain;
-                            }
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+
+                        } else if(domainType == 'services'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging['imaging.service._id'] = mongoose.Types.ObjectId(domain);
+                            referring['referring.service._id'] = mongoose.Types.ObjectId(domain);
+                            reporting['reporting.service._id'] = mongoose.Types.ObjectId(domain);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
                         }
-                        break;
 
+                        break;
+                        
                     case 'users':
                         //Add Explicit $OR operator (Prevent: Cannot set properties of undefined):
                         // The explicit $OR operator is used since it is not possible to use IN.
