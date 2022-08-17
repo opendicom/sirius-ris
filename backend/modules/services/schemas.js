@@ -23,7 +23,10 @@ const Model = mongoose.model('services', Schema, 'services');  //Specify collect
 const ForeignKeys = {
     Singular    : 'fk_service',
     Plural      : 'fk_services',
-    Domain      : 'domain.service'
+    Domain      : 'domain.service',
+    Imaging     : 'imaging.service',
+    Referring   : 'referring.service',
+    Reporting   : 'reporting.service'
 };
 
 //Register allowed unset values:

@@ -28,6 +28,7 @@ module.exports = function() {
     const proceduresRoutes              = require('./modules/procedures/routes');
     const procedure_categoriesRoutes    = require('./modules/procedure_categories/routes');
     const filesRoutes                   = require('./modules/files/routes');
+    const appointmentsRoutes            = require('./modules/appointments/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -134,6 +135,7 @@ module.exports = function() {
     app.use('/procedures',              proceduresRoutes);
     app.use('/procedure_categories',    procedure_categoriesRoutes);
     app.use('/files',                   filesRoutes);
+    app.use('/appointments',            appointmentsRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');

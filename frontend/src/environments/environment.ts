@@ -1,8 +1,32 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // ENVIROMENT:
 //--------------------------------------------------------------------------------------------------------------------//
-//Set ObjectId regular expression to validate ObjectIds:
+// Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
+
+//--------------------------------------------------------------------------------------------------------------------//
+// Set OID Structure base:
+// Reference in UY:
+// https://centrodeconocimiento.agesic.gub.uy/documents/207224/425682/Gu%C3%ADa+para+la+gesti%C3%B3n+de+OID.pdf/293df376-77d5-71d3-9490-ede702bbb583
+export const structOID =
+  '2.16.858.'         + // Base UNAOID UY.
+  '2.'                + // Identifica Objeto ( 0: Organizaciones, 1: Personas, 2: Objetos) UY.
+  '1xxxxxxx.'         + // ID Institución
+  '72769.'            + // ID PACS
+  'aaaammddhhmmss.'   + // Timestamp
+  'xxxxxx.'           + // Consecutivo interno
+  '8.'                + // PACS de ASSE
+  ''
+;
+// ID PACS:
+// 67430 Historia Clínica Electrónica
+// 71867 Repositorio de documentos electrónicos
+// 72591 Modelo de Plantilla Digital
+// 72768 Sistemas de Información de Salud (HIS, SIS,HealthInformationSystems)
+// 72769 Sistemas de Archivo y Transmisión de Imágenes (PACS, SATI, Picture And CommunicationInformationSystems)
+// 72770 Sistemas de Información Imagenológica (SII, RIS, IIS, ImagenologicalInformationSystem, RadiologicalInformationSystems)
+// 72771 Sistemas de Información de Laboratorios (sinónimos asociados: SIL, LIS, LaboratoryInformationSystems)
+//--------------------------------------------------------------------------------------------------------------------//
 
 // Set backend API server params:
 export const environment = {

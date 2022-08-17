@@ -57,7 +57,10 @@ const Model = mongoose.model('users', Schema, 'users');  //Specify collection na
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_user',
-    Plural      : 'fk_users'
+    Plural      : 'fk_users',
+    Patient     : 'fk_patient',
+    Referring   : 'fk_referring',
+    Reporting   : 'fk_reporting'
 };
 
 //Register allowed unset values:

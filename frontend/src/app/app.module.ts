@@ -48,6 +48,8 @@ import { UsersModule } from '@modules/users/users.module';
 import { SlotsModule } from '@modules/slots/slots.module';
 import { ProceduresModule } from '@modules/procedures/procedures.module';
 import { ProcedureCategoriesModule } from '@modules/procedure-categories/procedure-categories.module';
+import { FilesModule } from '@modules/files/files.module';
+import { LogsModule } from '@modules/logs/logs.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -78,7 +80,9 @@ import { ProcedureCategoriesModule } from '@modules/procedure-categories/procedu
     UsersModule,
     SlotsModule,
     ProceduresModule,
-    ProcedureCategoriesModule
+    ProcedureCategoriesModule,
+    FilesModule,
+    LogsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

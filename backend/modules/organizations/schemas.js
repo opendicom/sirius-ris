@@ -22,7 +22,10 @@ const Model = mongoose.model('organizations', Schema, 'organizations');  //Speci
 const ForeignKeys = {
     Singular    : 'fk_organization',
     Plural      : 'fk_organizations',
-    Domain      : 'domain.organization'
+    Domain      : 'domain.organization',
+    Imaging     : 'imaging.organization',
+    Referring   : 'referring.organization',
+    Reporting   : 'reporting.organization'
 };
 
 //Register allowed unset values:

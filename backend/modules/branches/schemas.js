@@ -23,7 +23,10 @@ const Model = mongoose.model('branches', Schema, 'branches');  //Specify collect
 const ForeignKeys = {
     Singular    : 'fk_branch',
     Plural      : 'fk_branches',
-    Domain      : 'domain.branch'
+    Domain      : 'domain.branch',
+    Imaging     : 'imaging.branch',
+    Referring   : 'referring.branch',
+    Reporting   : 'reporting.branch'
 };
 
 //Register allowed unset values:
