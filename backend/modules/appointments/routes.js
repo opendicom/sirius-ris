@@ -64,9 +64,18 @@ router.post(
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     appointments.Validator,
-    (req, res) => {
-        //Send to handler:
-        saveHandler(req, res, appointments, 'insert');
+    async (req, res) => {
+        //Set params for check duplicates:
+        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+
+        //Search for duplicates:
+        const duplicated = await moduleServices.isDuplicated(req, res, appointments, params);
+
+        //Check for duplicates:
+        if(duplicated == false){
+            //Send to handler:
+            saveHandler(req, res, appointments, 'insert');
+        }
     }
 );
 
@@ -77,9 +86,18 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, appointments.AllowedUnsetValues),
     appointments.Validator,
-    (req, res) => { 
-        //Send to handler:
-        saveHandler(req, res, appointments, 'update');
+    async (req, res) => {
+        //Set params for check duplicates:
+        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+
+        //Search for duplicates:
+        const duplicated = await moduleServices.isDuplicated(req, res, appointments, params);
+
+        //Check for duplicates:
+        if(duplicated == false){
+            //Send to handler:
+            saveHandler(req, res, appointments, 'update');
+        }
     }
 );
 
