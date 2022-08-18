@@ -79,7 +79,7 @@ router.post(
     files.Validator,
     async (req, res) => {
         //Search for duplicates:
-        const base64 = await moduleServices.isDuplicated(req, res, files, req.body.base64, 'base64');   //Same base64 = same file (duplicated).
+        const base64 = await moduleServices.isDuplicated(req, res, files, { base64: req.body.base64 });  //Same base64 = same file (duplicated).
 
         //Check for duplicates:
         if(base64 == false){
@@ -97,7 +97,7 @@ router.post(
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { 
         //Search for duplicates:
-        const base64 = await moduleServices.isDuplicated(req, res, files, req.body.base64, 'base64');   //Same base64 = same file (duplicated).
+        const base64 = await moduleServices.isDuplicated(req, res, files, { base64: req.body.base64 });  //Same base64 = same file (duplicated).
 
         //Check for duplicates:
         if(base64 == false){

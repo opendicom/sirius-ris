@@ -76,17 +76,13 @@ router.post(
         if(await moduleServices.validatePermissions(req)){
             //Human user:
             if(req.body.fk_person){
-                //Search for duplicates (Desactivated for Multiple users):
-                //Multiple users (each organization manages its users [status case]).
-                //fk_person = await moduleServices.isDuplicated(req, res, users, req.body.fk_person, 'fk_person');
-
                 //Check if referenced person exist in DB (fk_person [users] -> _id [people]):
                 personCheck = await moduleServices.ckeckElement(req.body.fk_person, 'people', res);
             
             //Machine user:
             } else if(req.body.username) {
                 //Search for duplicates:
-                username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+                username = await moduleServices.isDuplicated(req, res, users, { username: req.body.username });
 
             //Bad request:
             } else {
@@ -128,7 +124,7 @@ router.post(
         //Machine user:
         } else if(req.body.username) {
             //Search for duplicates:
-            username = await moduleServices.isDuplicated(req, res, users, req.body.username, 'username');
+            username = await moduleServices.isDuplicated(req, res, users, { username: req.body.username });
 
         //Bad request:
         } else if(req.body._id == undefined || req.body._id == '' || req.body._id == null) {

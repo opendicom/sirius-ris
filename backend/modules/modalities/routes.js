@@ -91,7 +91,7 @@ router.post(
     modalities.Validator,
     async (req, res) => {
         //Search for duplicates:
-        const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
+        const code_value = await moduleServices.isDuplicated(req, res, modalities, { code_value: req.body.code_value });
 
         //Check for duplicates:
         if(code_value == false){
@@ -110,7 +110,7 @@ router.post(
     modalities.Validator,
     async (req, res) => {
         //Search for duplicates:
-        const code_value = await moduleServices.isDuplicated(req, res, modalities, req.body.code_value, 'code_value');
+        const code_value = await moduleServices.isDuplicated(req, res, modalities, { code_value: req.body.code_value });
 
         //Check for duplicates:
         if(code_value == false){

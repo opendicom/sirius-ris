@@ -746,8 +746,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
-                            //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
+                            //Exclude boolean, ObjectId and Date types [Date by KeyName] (In this case exclude third level $and [Composite domain]):
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and'){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -1134,15 +1134,11 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 //--------------------------------------------------------------------------------------------------------------------//
 // IS DUPLICATED:
 //--------------------------------------------------------------------------------------------------------------------//
-async function isDuplicated(req, res, currentSchema, value, fieldName){
+async function isDuplicated(req, res, currentSchema, params){
     //Initialize result:
     result = false;
 
-    //Set filter:
-    let filter = {}
-    filter[fieldName] = value;
-
-    await currentSchema.Model.findOne(filter, { _id: 1 })
+    await currentSchema.Model.findOne(params, { _id: 1 })
     .exec()
     .then((data) => {
         //Check data:
@@ -1455,6 +1451,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
                 if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
                 if(filter[asPrefix + 'referring.service._id'] != undefined){ filter[asPrefix + 'referring.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service._id']); };
+                if(filter[asPrefix + 'referring.fk_referring._id'] != undefined){ filter[asPrefix + 'referring.fk_referring._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring._id']); };
 
                 //Reporting:
                 if(filter[asPrefix + 'reporting.organization'] != undefined){ filter[asPrefix + 'reporting.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization']); };
@@ -1466,6 +1463,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
                 if(filter[asPrefix + 'reporting.branch._id'] != undefined){ filter[asPrefix + 'reporting.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch._id']); };
                 if(filter[asPrefix + 'reporting.service._id'] != undefined){ filter[asPrefix + 'reporting.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service._id']); };
+                if(filter[asPrefix + 'reporting.fk_reporting._id'] != undefined){ filter[asPrefix + 'reporting.fk_reporting._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting._id']); };
 
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'start'] != undefined){
@@ -1790,11 +1788,12 @@ async function domainIs (domain, res) {
 //--------------------------------------------------------------------------------------------------------------------//
 async function addDomainCondition(req, res, domainType){
     //Get information for the request:
-    let filter = req.query.filter;
-    const domain = req.decoded.session.domain;
-    const role   = req.decoded.session.role;
-    const schema = req.baseUrl.slice(1);   //Slice to remove '/' (first character).
-    const method = req.path.slice(1);      //Slice to remove '/' (first character).
+    let filter      = req.query.filter;
+    const user_id   = req.decoded.sub;
+    const domain    = req.decoded.session.domain;
+    const role      = req.decoded.session.role;
+    const schema    = req.baseUrl.slice(1);   //Slice to remove '/' (first character).
+    const method    = req.path.slice(1);      //Slice to remove '/' (first character).
 
     //Initializate operation result:
     let operationResult = true;
@@ -2069,7 +2068,9 @@ async function addDomainCondition(req, res, domainType){
                         //Initializate composite domain objects:
                         let imaging = {};
                         let referring = {};
+                        let fk_referring = {};
                         let reporting = {};
+                        let fk_reporting = {};
 
                         //Create filter and first explicit $AND operator (if not exist):
                         if(!filter){ req.query.filter = {}; }
@@ -2081,10 +2082,12 @@ async function addDomainCondition(req, res, domainType){
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
                             imaging['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
                             referring['referring.organization._id'] = mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
                             reporting['reporting.organization._id'] = mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
-                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
                             let domain_condition   = { '$and'  : [ or_condition ] };
 
                             //Add domain condition into explicit $AND operator:
@@ -2095,10 +2098,12 @@ async function addDomainCondition(req, res, domainType){
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
                             imaging['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
                             referring['referring.branch._id'] = mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
                             reporting['reporting.branch._id'] = mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
-                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
                             let domain_condition   = { '$and'  : [ or_condition ] };
 
                             //Add domain condition into explicit $AND operator:
@@ -2109,10 +2114,12 @@ async function addDomainCondition(req, res, domainType){
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
                             imaging['imaging.service._id'] = mongoose.Types.ObjectId(domain);
                             referring['referring.service._id'] = mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
                             reporting['reporting.service._id'] = mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
-                            let or_condition    = { '$or'   : [ imaging, referring, reporting] };
+                            let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
                             let domain_condition   = { '$and'  : [ or_condition ] };
 
                             //Add domain condition into explicit $AND operator:
