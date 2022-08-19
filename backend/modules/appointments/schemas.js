@@ -116,7 +116,7 @@ const subSchemaConsents = new mongoose.Schema({
 
 //Define Inpatient Sub-Schema:
 const subSchemaInpatient = new mongoose.Schema({
-    where:          { type: String, required: true },
+    where:          { type: String },
     room:           { type: String },
     contact:        { type: String }
 },
@@ -134,7 +134,7 @@ const Schema = new mongoose.Schema({
     flow_state:             { type: String, required: true },
     fk_slot:                { type: mongoose.ObjectId, required: true },
     fk_procedure:           { type: mongoose.ObjectId, required: true },
-    priority:               { type: String, required: true },
+    priority:               { type: [String], required: true },
     study_iuid:             { type: String, required: true, match: /^([0-2])((\.0)|(\.[1-9][0-9]*))*$/gm },
     anamnesis:              { type: String, required: true },
     indications:            { type: String, required: true },
@@ -270,7 +270,7 @@ const Validator = [
 
     body('priority')
         .isArray()
-        .withMessage('El parametro reporting.fk_reporting es requerido.'),
+        .withMessage('El parametro priority es requerido.'),
 
     body('priority.*')
         .trim()
@@ -591,6 +591,7 @@ const Validator = [
     // INPATIENT:
     //----------------------------------------------------------------------------------------------------------------//
     body('inpatient.where')
+        .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
         .withMessage('El parametro inpatient.where ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),

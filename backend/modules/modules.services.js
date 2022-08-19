@@ -46,7 +46,7 @@ async function find(req, res, currentSchema){
         //Check result count:
         if(count > 0){
             //Excecute main query:
-            await currentSchema.Model.find(condition, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
+            await currentSchema.Model.find(condition, formatted_proj).sort(sort).skip(req.query.skip).limit(req.query.limit)
             .exec()
             .then((data) => {
                 //Check if have results:
@@ -350,7 +350,7 @@ async function update(req, res, currentSchema, referencedElements = false){
 //--------------------------------------------------------------------------------------------------------------------//
 async function _delete(req, res, currentSchema, successResponse = true){
     //Validate ID request:
-    if(!mainServices.validateRequestID(req.body._id, res)) return;    
+    if(!mainServices.validateRequestID(req.body._id, res)) return;
 
     //Check references of the element you want to delete:
     const result = await checkReferences(req.body._id, currentSchema.Model.modelName, currentSchema.ForeignKeys, res);
@@ -460,9 +460,9 @@ async function findAggregation(req, res, currentSchema){
 
     //Add operations to the main aggregation (skip and limit bad count):
     if(formatted_proj != ''){ aggregate.push({ $project: formatted_proj }); }
+    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
     if(!isNaN(req.query.skip)){ aggregate.push({ $skip: req.query.skip }); }
     if(!isNaN(req.query.limit)){ aggregate.push({ $limit: req.query.limit }); }
-    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
 
     //Send DEBUG Message:
     mainServices.sendConsoleMessage('DEBUG', '\nfind aggregation [processed condition]: ' + JSON.stringify(aggregate));
@@ -1457,13 +1457,13 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'reporting.organization'] != undefined){ filter[asPrefix + 'reporting.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization']); };
                 if(filter[asPrefix + 'reporting.branch'] != undefined){ filter[asPrefix + 'reporting.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch']); };
                 if(filter[asPrefix + 'reporting.service'] != undefined){ filter[asPrefix + 'reporting.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service']); };
-                if(filter[asPrefix + 'reporting.fk_reporting'] != undefined){ filter[asPrefix + 'reporting.fk_reporting'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting']); };
+                if(filter[asPrefix + 'reporting.fk_reporting'] != undefined){ filter[asPrefix + 'reporting.fk_reporting'] = filter[asPrefix + 'reporting.fk_reporting'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting']); }
 
                 //Reporting - Post aggregate lookup:
                 if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
                 if(filter[asPrefix + 'reporting.branch._id'] != undefined){ filter[asPrefix + 'reporting.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch._id']); };
                 if(filter[asPrefix + 'reporting.service._id'] != undefined){ filter[asPrefix + 'reporting.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service._id']); };
-                if(filter[asPrefix + 'reporting.fk_reporting._id'] != undefined){ filter[asPrefix + 'reporting.fk_reporting._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting._id']); };
+                if(filter[asPrefix + 'reporting.fk_reporting._id'] != undefined){ filter[asPrefix + 'reporting.fk_reporting._id'] = filter[asPrefix + 'reporting.fk_reporting._id'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting._id']); }
 
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'start'] != undefined){
