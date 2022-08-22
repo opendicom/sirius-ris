@@ -161,6 +161,13 @@ export const CKEditorConfig = {
   language: { ui: 'es', content: 'es' }
 };
 
+export const inpatient_types = {
+  1 :'Ambulatorio',
+  2 :'Cuidados intensivos',
+  3 :'Emergencia',
+  4 :'Internación'
+};
+
 // Anonymous patient document case:
 export const anonymous_doc = {
   doc_country_code: '001',  // Available in ISO-3166.

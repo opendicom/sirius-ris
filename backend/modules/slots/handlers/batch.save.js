@@ -33,7 +33,7 @@ module.exports = async (req, res, currentSchema) => {
     //Check that the days are not undefined (string NOT true or false):
     if(week_day.includes(undefined)){
         //Return the result (HTML Response):
-        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'El día de la semana tiene que ser booleano [true, false].' });
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.weekday_boolean });
     
     //Check that the days are not all false:
     } else if(week_day.includes(true)){
@@ -114,29 +114,29 @@ module.exports = async (req, res, currentSchema) => {
                         //Check if header have already been sent (Posibly validation errors):
                         if(res.headerSent == false){
                             //Send successfully response:
-                            res.status(200).send({ success: true, message: 'Lote procesado correctamente.' });
+                            res.status(200).send({ success: true, message: currentLang.ris.batch_processed });
                         }
                     } else {
                         //Return the result (HTML Response):
-                        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'La fecha de inicio debe ser menor que la fecha de fin.' });
+                        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.start_date_lte_end_date });
                     }
                 } else {
                     //Return the result (HTML Response):
-                    res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'La hora de inicio debe ser menor que la hora de fin.' });
+                    res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.start_time_lte_end_time });
                 }
             } else {
                 //Return the result (HTML Response):
-                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'El formato de hora de inicio o fin es incorrecto [Formato admitido: HH:MM (24hs)].' });
+                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.time_format });
             }
 
         } else {
             //Return the result (HTML Response):
-            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'El parametro urgencia debe ser booleano [true, false].' });
+            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.urgency_boolean });
         }
 
     } else {
         //Return the result (HTML Response):
-        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'Al menos un día de la semana tiene que ser de valor verdadero para aplicar el rango de fechas.' });
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.weekday_required });
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

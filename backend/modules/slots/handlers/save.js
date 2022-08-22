@@ -44,11 +44,11 @@ module.exports = async (req, res, currentSchema, operation) => {
             }
         } else {
             //Return the result (HTML Response):
-            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'La hora de inicio debe ser menor que la hora de fin.' });
+            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.start_time_lte_end_time });
         }
     } else {
         //Return the result (HTML Response):
-        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'La fecha de inicio y la de fin deben de ser la misma.' });
+        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.same_dates });
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

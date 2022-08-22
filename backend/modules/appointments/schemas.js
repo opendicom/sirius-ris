@@ -116,6 +116,7 @@ const subSchemaConsents = new mongoose.Schema({
 
 //Define Inpatient Sub-Schema:
 const subSchemaInpatient = new mongoose.Schema({
+    type:           { type: Number },
     where:          { type: String },
     room:           { type: String },
     contact:        { type: String }
@@ -134,6 +135,7 @@ const Schema = new mongoose.Schema({
     flow_state:             { type: String, required: true },
     fk_slot:                { type: mongoose.ObjectId, required: true },
     fk_procedure:           { type: mongoose.ObjectId, required: true },
+    extra_procedures:       { type: [mongoose.ObjectId] },
     priority:               { type: [String], required: true },
     study_iuid:             { type: String, required: true, match: /^([0-2])((\.0)|(\.[1-9][0-9]*))*$/gm },
     anamnesis:              { type: String, required: true },
@@ -267,6 +269,16 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
+
+    body('extra_procedures')
+        .optional()
+        .isArray()
+        .withMessage('El parametro extra_procedures debe ser un array.'),
+
+    body('extra_procedures.*')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro extra_procedures.* NO es un ID MongoDB válido.'),
 
     body('priority')
         .isArray()
@@ -612,7 +624,7 @@ const Validator = [
     body('attached_files')
         .optional()
         .isArray()
-        .withMessage('El parametro attached_files debe ser una array.'),
+        .withMessage('El parametro attached_files debe ser un array.'),
 
     body('attached_files.*')
         .trim()

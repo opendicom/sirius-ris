@@ -54,6 +54,24 @@ module.exports = function(language){
             'sancioned_msj'         : 'You have made too many signin attempts within the allowed time.',
             'bad_request'           : 'Bad request.',
             'pager_disabled'        : 'Pager is disabled'
+        },
+        ris: {
+            'operation_not_allowed' : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
+            'empty_domain_JWT'      : 'To check for a domain reference, the filter parameter can NOT be empty.',
+            'duplicated_person'     : 'The person you are trying to insert already exists in the database.',
+            'same_document'         : 'Unable to update entered information. There is already another person with the same document in the database.',
+            'unavailable_slot'      : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
+            'batch_processed'       : 'Batch processed successfully.',
+            'validate' : {
+                'same_dates'                : 'The start date and the end date must be the same.',
+                'start_date_lte_end_date'   : 'The start date must be less than the end date.',
+                'start_time_lte_end_time'   : 'The start time must be less than the end time.',
+                'weekday_boolean'           : 'The day of the week must be boolean [true, false].',
+                'weekday_required'          : 'At least one day of the week must be true to apply the date range.',
+                'time_format'               : 'The start or end time format is incorrect [Supported format: HH:MM (24h)].',
+                'urgency_boolean'           : 'The urgency parameter must be boolean [true, false].',
+                'valid_permission'          : 'You must enter at least one valid permission to the user.'
+            }
         }
 
     };
@@ -61,12 +79,14 @@ module.exports = function(language){
     //Set translations according to the requested language: 
     switch (language) {
         case 'ES':
+            //Server:
             lang.server.db_cnx_error            = 'Error al intentar establecer la conexión con MongoDB hacia: ';
             lang.server.db_cnx_success          = 'Conexión satisfactoria con MongoDB hacia: ';
             lang.server.start                   = 'Sirius RIS Backend ha iniciado';
             lang.server.non_server              = 'No se estableció ningún tipo de servidor en el archivo de configuración (http_enabled, https_enabled).';
             lang.server.undefined_settings      = 'Se produjo un error al intentar leer el archivo settings.yaml.'
 
+            //Auth:
             lang.auth.password_match            = 'Contraseña correcta.';
             lang.auth.password_dont_match       = 'La contraseña NO coincide.';
             lang.auth.password_empty            = 'La contraseña NO puede ser vacía.';
@@ -76,10 +96,12 @@ module.exports = function(language){
             lang.auth.wrong_user                = 'El usuario ingresado NO se encuentra en la base de datos.';
             lang.auth.wrong_role_domain         = 'El dominio y/o rol indicado no se encuentran adjudicados al usuario.';
 
+            //JWT:
             lang.jwt.sign_error                 = 'Ha ocurrido un error durante la generación del JWT.';
             lang.jwt.check_empty_token          = 'Es necesario un token de autenticación.';
             lang.jwt.check_invalid_token        = 'El token no es válido.';
 
+            //Database:
             lang.db.invalid_id                  = 'El ID especificado NO es válido para MongoDB.';
             lang.db.query_error                 = 'Error durante la consulta al servidor MongoDB.';
             lang.db.query_no_data               = 'No se encontraron registros.';
@@ -100,10 +122,29 @@ module.exports = function(language){
             lang.db.not_valid_objectid          = 'Alguno de los elementos referenciados posee un ObjectId que NO es válido.';
             lang.db.not_allowed_save            = 'Operación de guardado NO permitida.';
             
+            //HTTP:
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';
             lang.http.sancioned_msj             = 'Ha realizado demasiados intentos de signin dentro del tiempo permitido.';
             lang.http.bad_request               = 'La solicitud enviada es incorrecta.';
             lang.http.pager_disabled            = 'Paginación desactivada.'
+
+            //RIS:
+            lang.ris.operation_not_allowed      = 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.';
+            lang.ris.empty_domain_JWT           = 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.';
+            lang.ris.duplicated_person          = 'La persona que está intentando ingresar ya existe en la base de datos.';
+            lang.ris.same_document              = 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.';
+            lang.ris.unavailable_slot           = 'El inicio y/o fin indicado no se encuentra disponible en el turno. Utilizado por la cita _id: ';
+            lang.ris.batch_processed            = 'Lote procesado correctamente.';
+
+            //RIS - Validate:
+            lang.ris.validate.same_dates                = 'La fecha de inicio y la de fin deben de ser la misma.';
+            lang.ris.validate.start_date_lte_end_date   = 'La fecha de inicio debe ser menor que la fecha de fin.';
+            lang.ris.validate.start_time_lte_end_time   = 'La hora de inicio debe ser menor que la hora de fin.';
+            lang.ris.validate.weekday_boolean           = 'El día de la semana tiene que ser booleano [true, false].';
+            lang.ris.validate.weekday_required          = 'Al menos un día de la semana tiene que ser de valor verdadero para aplicar el rango de fechas.';
+            lang.ris.validate.time_format               = 'El formato de hora de inicio o fin es incorrecto [Formato admitido: HH:MM (24hs)].';
+            lang.ris.validate.urgency_boolean           = 'El parametro urgencia debe ser booleano [true, false].';
+            lang.ris.validate.valid_permission          = 'Debe ingresar al menos un permiso válido al usuario.';
 
             break;
     }

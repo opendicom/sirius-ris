@@ -73,8 +73,13 @@ router.post(
 
         //Check for duplicates:
         if(duplicated == false){
-            //Send to handler:
-            saveHandler(req, res, appointments, 'insert');
+            //Check if slot is available or not:
+            const available_slot = await moduleServices.checkSlot(req, res);
+
+            if(available_slot == true){
+                //Send to handler:
+                saveHandler(req, res, appointments, 'insert');
+            }
         }
     }
 );
@@ -95,8 +100,13 @@ router.post(
 
         //Check for duplicates:
         if(duplicated == false){
-            //Send to handler:
-            saveHandler(req, res, appointments, 'update');
+            //Check if slot is available or not:
+            const available_slot = await moduleServices.checkSlot(req, res);
+            
+            if(available_slot == true){
+                //Send to handler:
+                saveHandler(req, res, appointments, 'update');
+            }
         }
     }
 );

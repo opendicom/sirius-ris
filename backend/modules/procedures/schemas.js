@@ -37,7 +37,8 @@ const Model = mongoose.model('procedures', Schema, 'procedures');  //Specify col
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
     Singular    : 'fk_procedure',
-    Plural      : 'fk_procedures'
+    Plural      : 'fk_procedures',
+    Extra       : 'extra_procedures'
 };
 
 //Register allowed unset values:

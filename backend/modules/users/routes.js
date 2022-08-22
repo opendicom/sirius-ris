@@ -97,7 +97,7 @@ router.post(
             }
         } else {
             //Return the result (HTML Response):
-            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: 'Debe ingresar al menos un permiso válido al usuario.' });
+            res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.valid_permission });
         }
     }
 );

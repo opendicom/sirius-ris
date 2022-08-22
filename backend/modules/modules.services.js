@@ -1005,6 +1005,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     let referring_condition = {};
     let reporting_condition = {};
     let patient_condition = {};
+    let extra_condition = {};
 
     //Execute queries into affected schemas (await foreach):
     await Promise.all(affectedCollections.map(async (value, key) => {
@@ -1061,6 +1062,15 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
             //Add patient contition in OR condition:
             filter.$or.push(patient_condition);
+        }
+
+        //Check if contain extra property:
+        if(ForeignKeys.Extra){
+            //Set extra condition:
+            extra_condition[ForeignKeys.Extra] = mongoose.Types.ObjectId(_id);
+
+            //Add extra contition in OR condition:
+            filter.$or.push(extra_condition);
         }
 
         //Execute current query:
@@ -1152,7 +1162,7 @@ async function isDuplicated(req, res, currentSchema, params){
                     result = true;
 
                     //Send duplicate message:
-                    res.status(200).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
+                    res.status(422).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
                 }
 
             //UPDATE
@@ -1162,7 +1172,72 @@ async function isDuplicated(req, res, currentSchema, params){
                     result = true;
 
                     //Send duplicate message:
-                    res.status(200).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+                    res.status(422).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+                }
+            }
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK SLOT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkSlot(req, res){
+    //Import schema:
+    const appointments = require('./appointments/schemas');
+
+    //Initialize result (available):
+    result = true;
+
+    //Set params:
+    const params = { "$and" : [
+        { "fk_slot" : req.body.fk_slot },
+        { "$or" : [
+            { "start" : {
+                "$gte" : req.body.start,
+                "$lte" : req.body.end
+            }},
+            { "end" : {
+                "$gte" : req.body.start,
+                "$lte" : req.body.end
+            }}
+        ]}
+    ]};
+
+    //Find:
+    await appointments.Model.findOne(params, { _id: 1 })
+    .exec()
+    .then((data) => {
+        //Check data:
+        if(data){
+            //Check operation:
+            //INSERT:
+            if(req.body._id == undefined){
+                //Check if have results:
+                if(data){
+                    //Set result (unavailable):
+                    result = false;
+
+                    //Send unavailable slot message:
+                    res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
+                }
+
+            //UPDATE
+            } else {
+                if(data._id != req.body._id){
+                    //Set result (unavailable):
+                    result = false;
+
+                    //Send unavailable slot message:
+                    res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
                 }
             }
         }
@@ -1228,7 +1303,7 @@ async function checkPerson(req, res){
                     result = true;
 
                     //Send duplicate message:
-                    res.status(200).send({ success: false, message: 'La persona que está intentando ingresar ya existe en la base de datos.', data: data });
+                    res.status(422).send({ success: false, message: currentLang.ris.duplicated_person, data: data });
                 }
 
             //UPDATE
@@ -1238,7 +1313,7 @@ async function checkPerson(req, res){
                     result = true;
 
                     //Send duplicate message:
-                    res.status(200).send({ success: false, message: 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.', data: data });
+                    res.status(422).send({ success: false, message: currentLang.ris.same_document, data: data });
                 }
             }
         }
@@ -1501,6 +1576,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
                 if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 
                 if(filter[asPrefix + 'media.CD'] != undefined){ filter[asPrefix + 'media.CD'] = mainServices.stringToBoolean(filter[asPrefix + 'media.CD']); };
                 if(filter[asPrefix + 'media.DVD'] != undefined){ filter[asPrefix + 'media.DVD'] = mainServices.stringToBoolean(filter[asPrefix + 'media.DVD']); };
@@ -2499,7 +2575,7 @@ async function checkDomainReference(res, schemaName, filter){
                 result = true;
             } else {
                 //Send not valid referenced object mensaje:
-                res.status(405).send({ success: false, message: 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.' });
+                res.status(405).send({ success: false, message: currentLang.ris.operation_not_allowed });
             }
         })
         .catch((err) => {
@@ -2508,7 +2584,7 @@ async function checkDomainReference(res, schemaName, filter){
         });
     } else {
         //Send error:
-        mainServices.sendError(res, 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.');
+        mainServices.sendError(res, currentLang.ris.empty_domain_JWT);
     }
 
     //Return result:
@@ -2556,6 +2632,7 @@ module.exports = {
     batchDelete,
     findAggregation,
     isDuplicated,
+    checkSlot,
     checkPerson,
     adjustDataTypes,
     ckeckElement,
