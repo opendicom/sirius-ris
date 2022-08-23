@@ -1253,6 +1253,135 @@ async function checkSlot(req, res){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK URGENCY:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkUrgency(req, res, operation){
+    //Import schema:
+    const slots = require('./slots/schemas');
+
+    //Initialize result:
+    result = false;
+    
+    //Initialize params:
+    let params = {};
+    
+    //Switch by operation:
+    switch(operation){
+        case 'insert':
+            //Urgency appointments can be coordinated in any slot:
+            if(req.body.urgency === true){
+                result = true;
+            //NOT urgent appointments cannot be coordinated in an urgency slot:
+            } else {
+                //Set params:
+                params = {
+                    _id: req.body.fk_slot,
+                    urgency: true
+                };
+            }
+            break;
+        case 'update':
+            //Check if the necessary parameters exist in the body for the check:
+            let search_urgency_value = false;
+            let search_fk_slot_value = false;
+            if(req.body.urgency == undefined){ search_urgency_value = true; }
+            if(req.body.fk_slot == undefined){ search_fk_slot_value = true; }
+
+            if(search_urgency_value === false && search_fk_slot_value === false){
+                //Urgency appointments can be coordinated in any slot:
+                if(req.body.urgency === true){
+                    result = true;
+                //NOT urgent appointments cannot be coordinated in an urgency slot:
+                } else {
+                    //Set params:
+                    params = {
+                        _id: req.body.fk_slot,
+                        urgency: true
+                    };
+                }
+
+            //Find necessary parameters to check the slot:
+            } else {
+                //Urgency appointments can be coordinated in any slot:
+                if(req.body.urgency === true){
+                    result = true;
+                //NOT urgent appointments cannot be coordinated in an urgency slot:
+                } else {
+                    //Check _id:
+                    if(req.body._id){
+                        //Import schema:
+                        const appointments = require('./appointments/schemas');
+
+                        //Find appointment that is trying to update:
+                        await appointments.Model.findOne(req.body._id, { fk_slot: 1 })
+                        .exec()
+                        .then((data) => {
+                            //Set params:
+                            params = {
+                                _id: data.fk_slot,
+                                urgency: true
+                            };
+                        })
+                        .catch((err) => {
+                            //Send error:
+                            mainServices.sendError(res, currentLang.db.query_error, err);
+                        });
+                    } else {
+                        //Send error:
+                        res.status(422).send({ success: false, message: currentLang.db.invalid_id });
+                    }
+                }
+            }
+
+            break;
+    }    
+
+    //Find if result == false:
+    if(result === false){
+        await slots.Model.findOne(params, { _id: 1 })
+        .exec()
+        .then((data) => {
+            //Check data:
+            if(data){
+                //Check operation:
+                //INSERT:
+                if(req.body._id == undefined){
+                    //Check if have results:
+                    if(data){
+                        //Set result (urgency slot):
+                        result = false;
+
+                        //Send only urgency slot slot message:
+                        res.status(422).send({ success: false, message: currentLang.ris.only_urgency_slot });
+                    }
+
+                //UPDATE
+                } else {
+                    if(data._id != req.body._id){
+                        //Set result (urgency slot):
+                        result = false;
+
+                        //Send only urgency slot message:
+                        res.status(422).send({ success: false, message: currentLang.ris.only_urgency_slot });
+                    }
+                }
+            } else {
+                //Allowed slot (Not urgency appointment and not urgency slot):
+                result = true;
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+    }
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK PERSON:
 //--------------------------------------------------------------------------------------------------------------------//
 async function checkPerson(req, res){
@@ -1577,7 +1706,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
                 if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
-                
+                if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
+
                 if(filter[asPrefix + 'media.CD'] != undefined){ filter[asPrefix + 'media.CD'] = mainServices.stringToBoolean(filter[asPrefix + 'media.CD']); };
                 if(filter[asPrefix + 'media.DVD'] != undefined){ filter[asPrefix + 'media.DVD'] = mainServices.stringToBoolean(filter[asPrefix + 'media.DVD']); };
                 if(filter[asPrefix + 'media.acetate_sheets'] != undefined){ filter[asPrefix + 'media.acetate_sheets'] = mainServices.stringToBoolean(filter[asPrefix + 'media.acetate_sheets']); };
@@ -2633,6 +2763,7 @@ module.exports = {
     findAggregation,
     isDuplicated,
     checkSlot,
+    checkUrgency,
     checkPerson,
     adjustDataTypes,
     ckeckElement,

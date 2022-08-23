@@ -62,6 +62,7 @@ module.exports = function(language){
             'same_document'         : 'Unable to update entered information. There is already another person with the same document in the database.',
             'unavailable_slot'      : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
             'batch_processed'       : 'Batch processed successfully.',
+            'only_urgency_slot'     : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
             'validate' : {
                 'same_dates'                : 'The start date and the end date must be the same.',
                 'start_date_lte_end_date'   : 'The start date must be less than the end date.',
@@ -70,7 +71,8 @@ module.exports = function(language){
                 'weekday_required'          : 'At least one day of the week must be true to apply the date range.',
                 'time_format'               : 'The start or end time format is incorrect [Supported format: HH:MM (24h)].',
                 'urgency_boolean'           : 'The urgency parameter must be boolean [true, false].',
-                'valid_permission'          : 'You must enter at least one valid permission to the user.'
+                'valid_permission'          : 'You must enter at least one valid permission to the user.',
+                'fk_slot_required'          : 'The fk_slot parameter must be specified (it is required for the operation).'
             }
         }
 
@@ -135,6 +137,7 @@ module.exports = function(language){
             lang.ris.same_document              = 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.';
             lang.ris.unavailable_slot           = 'El inicio y/o fin indicado no se encuentra disponible en el turno. Utilizado por la cita _id: ';
             lang.ris.batch_processed            = 'Lote procesado correctamente.';
+            lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
 
             //RIS - Validate:
             lang.ris.validate.same_dates                = 'La fecha de inicio y la de fin deben de ser la misma.';
@@ -145,6 +148,7 @@ module.exports = function(language){
             lang.ris.validate.time_format               = 'El formato de hora de inicio o fin es incorrecto [Formato admitido: HH:MM (24hs)].';
             lang.ris.validate.urgency_boolean           = 'El parametro urgencia debe ser booleano [true, false].';
             lang.ris.validate.valid_permission          = 'Debe ingresar al menos un permiso válido al usuario.';
+            lang.ris.validate.fk_slot_required          = 'El parametro fk_slot debe ser especificado (es requerido para la operación).';
 
             break;
     }

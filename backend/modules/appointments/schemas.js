@@ -136,7 +136,7 @@ const Schema = new mongoose.Schema({
     fk_slot:                { type: mongoose.ObjectId, required: true },
     fk_procedure:           { type: mongoose.ObjectId, required: true },
     extra_procedures:       { type: [mongoose.ObjectId] },
-    priority:               { type: [String], required: true },
+    urgency:                { type: Boolean, required: true },
     study_iuid:             { type: String, required: true, match: /^([0-2])((\.0)|(\.[1-9][0-9]*))*$/gm },
     anamnesis:              { type: String, required: true },
     indications:            { type: String, required: true },
@@ -280,14 +280,11 @@ const Validator = [
         .isMongoId()
         .withMessage('El parametro extra_procedures.* NO es un ID MongoDB válido.'),
 
-    body('priority')
-        .isArray()
-        .withMessage('El parametro priority es requerido.'),
-
-    body('priority.*')
+    body('urgency')
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro prioridad ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .isBoolean()
+        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
 
     body('study_iuid')
         .trim()

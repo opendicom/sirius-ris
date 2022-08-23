@@ -73,12 +73,23 @@ router.post(
 
         //Check for duplicates:
         if(duplicated == false){
-            //Check if slot is available or not:
-            const available_slot = await moduleServices.checkSlot(req, res);
+            //Check fk_slot:
+            if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
+                //Check if slot is available or not:
+                const available_slot = await moduleServices.checkSlot(req, res);
+                
+                if(available_slot == true){
+                    //Check urgency:
+                    const urgency_check = await moduleServices.checkUrgency(req, res, 'insert');
 
-            if(available_slot == true){
-                //Send to handler:
-                saveHandler(req, res, appointments, 'insert');
+                    if(urgency_check === true){
+                        //Send to handler:
+                        saveHandler(req, res, appointments, 'insert');
+                    }
+                }
+            } else {
+                //Return the result (HTML Response):
+                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
             }
         }
     }
@@ -100,12 +111,23 @@ router.post(
 
         //Check for duplicates:
         if(duplicated == false){
-            //Check if slot is available or not:
-            const available_slot = await moduleServices.checkSlot(req, res);
-            
-            if(available_slot == true){
-                //Send to handler:
-                saveHandler(req, res, appointments, 'update');
+            //Check fk_slot:
+            if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
+                //Check if slot is available or not:
+                const available_slot = await moduleServices.checkSlot(req, res);
+                
+                if(available_slot == true){
+                    //Check urgency:
+                    const urgency_check = await moduleServices.checkUrgency(req, res, 'update');
+
+                    if(urgency_check === true){
+                        //Send to handler:
+                        saveHandler(req, res, appointments, 'update');
+                    }
+                }
+            } else {
+                //Return the result (HTML Response):
+                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
             }
         }
     }
