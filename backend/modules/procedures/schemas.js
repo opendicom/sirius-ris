@@ -26,6 +26,7 @@ const Schema = new mongoose.Schema({
     name:               { type: String, required: true },
     equipments:         { type: [subSchemaAllowedEquipments], required: true },
     preparation:        { type: String },
+    informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
@@ -87,6 +88,12 @@ const Validator = [
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+
+    body('informed_consent')
+        .trim()
+        .isBoolean()
+        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
 
     body('status')
         .trim()

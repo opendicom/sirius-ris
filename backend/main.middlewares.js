@@ -211,7 +211,7 @@ const checkDeleteCode = (req, res, next) => {
     if(req.body.delete_code == mainSettings.delete_code){
         next();
     } else {
-        return res.status(401).send({ success: false, message: 'Para eliminar un elemento debe especificar el código de eliminación válido.' });
+        return res.status(401).send({ success: false, message: currentLang.ris.validate.delete_code_required });
     }
 };
 //--------------------------------------------------------------------------------------------------------------------//
@@ -282,7 +282,7 @@ const roleAccessBasedControl = async (req, res, next) => {
                 operationResult = 'denied'
 
                 //Send response:
-                return res.status(401).send({ success: false, message: 'La operación que está intentando realizar no está permitida para el dominio que posee su autenticación.' });
+                return res.status(401).send({ success: false, message: currentLang.rabc.operation_deny_domain });
             }
             
         } else {
@@ -290,7 +290,7 @@ const roleAccessBasedControl = async (req, res, next) => {
             operationResult = 'denied'
     
             //Send response:
-            return res.status(401).send({ success: false, message: 'El usuario no posee los permisos necesarios sobre el método: ' + requested.method + ' -> ' + requested.schema });
+            return res.status(401).send({ success: false, message: currentLang.rabc.not_have_method_permissions + requested.method + ' -> ' + requested.schema });
         }
 
         
@@ -299,7 +299,7 @@ const roleAccessBasedControl = async (req, res, next) => {
         operationResult = 'denied'
 
         //Send response:
-        return res.status(401).send({ success: false, message: 'El usuario no posee los permisos necesarios sobre el esquema: ' + requested.schema });
+        return res.status(401).send({ success: false, message: currentLang.rabc.not_have_schema_permissions + requested.schema });
     }
 
     //Send DEBUG Message:

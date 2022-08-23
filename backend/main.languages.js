@@ -55,6 +55,11 @@ module.exports = function(language){
             'bad_request'           : 'Bad request.',
             'pager_disabled'        : 'Pager is disabled'
         },
+        rabc: {
+            'operation_deny_domain'         : 'The operation you are trying to perform is not allowed for the domain that owns your authentication.',
+            'not_have_method_permissions'   : 'The user does not have the necessary permissions on the method: ',
+            'not_have_schema_permissions'   : 'The user does not have the necessary permissions on the schema: ',
+        },
         ris: {
             'operation_not_allowed' : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
             'empty_domain_JWT'      : 'To check for a domain reference, the filter parameter can NOT be empty.',
@@ -64,6 +69,7 @@ module.exports = function(language){
             'batch_processed'       : 'Batch processed successfully.',
             'only_urgency_slot'     : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
             'validate' : {
+                'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
                 'start_date_lte_end_date'   : 'The start date must be less than the end date.',
                 'start_time_lte_end_time'   : 'The start time must be less than the end time.',
@@ -130,6 +136,11 @@ module.exports = function(language){
             lang.http.bad_request               = 'La solicitud enviada es incorrecta.';
             lang.http.pager_disabled            = 'Paginación desactivada.'
 
+            //RABC:
+            lang.rabc.operation_deny_domain         = 'La operación que está intentando realizar no está permitida para el dominio que posee su autenticación.';
+            lang.rabc.not_have_method_permissions   = 'El usuario no posee los permisos necesarios sobre el método: ';
+            lang.rabc.not_have_schema_permissions   = 'El usuario no posee los permisos necesarios sobre el esquema: ';
+
             //RIS:
             lang.ris.operation_not_allowed      = 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.';
             lang.ris.empty_domain_JWT           = 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.';
@@ -140,6 +151,7 @@ module.exports = function(language){
             lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
 
             //RIS - Validate:
+            lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';
             lang.ris.validate.same_dates                = 'La fecha de inicio y la de fin deben de ser la misma.';
             lang.ris.validate.start_date_lte_end_date   = 'La fecha de inicio debe ser menor que la fecha de fin.';
             lang.ris.validate.start_time_lte_end_time   = 'La hora de inicio debe ser menor que la hora de fin.';

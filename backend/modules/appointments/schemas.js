@@ -109,7 +109,7 @@ const subSchemaPrivateHealth = new mongoose.Schema({
 
 //Define Consents Sub-Schema:
 const subSchemaConsents = new mongoose.Schema({
-    informed_consent:   { type: mongoose.ObjectId, required: true },
+    informed_consent:   { type: mongoose.ObjectId },
     clinical_trial:     { type: mongoose.ObjectId }
 },
 { _id : false });
@@ -579,6 +579,7 @@ const Validator = [
     // CONSENTS:
     //----------------------------------------------------------------------------------------------------------------//
     body('consents.informed_consent')
+        .optional()
         .trim()
         .isMongoId()
         .withMessage('El parametro consents.informed_consent NO es un ID MongoDB válido.'),

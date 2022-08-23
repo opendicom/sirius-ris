@@ -1603,7 +1603,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
                 if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
                 if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
+                if(filter[asPrefix + 'informed_consent'] != undefined){ filter[asPrefix + 'informed_consent'] = mainServices.stringToBoolean(filter[asPrefix + 'informed_consent']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+
                 return filter;
             });
             break;
@@ -2609,6 +2611,17 @@ async function addDomainCondition(req, res, domainType){
                         } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
                             operationResult = false; /* Operation rejected */
                         } else if(domainType == 'services' && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
+                    case 'appointments':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.imaging.organization !== domain && checkDomainReference(res, 'organizations', { 'imaging.organization': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.imaging.branch !== domain && checkDomainReference(res, 'branches', { 'imaging.branch': domain }) == false){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services' && req.body.imaging.service !== domain && checkDomainReference(res, 'services', { 'imaging.service': domain }) == false){
                             operationResult = false; /* Operation rejected */
                         }
                         break;
