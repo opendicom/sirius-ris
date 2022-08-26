@@ -96,15 +96,9 @@ export const default_page_sizes = [10, 25, 50, 100];
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Área administración',
-  'A02': 'Retenido por administración',
-  'A03': 'Área médica',
-  'A04': 'Retenido por médico',
-  'A05': 'Área de coordinación',
-  'A06': 'Retenido por coordinación',
-  'A07': 'Coordinado',
-  'A08': 'Cancelado',
-  'A09': 'Para eliminar'
+  'A01': 'Coordinado',
+  'A02': 'Cancelado',
+  'A03': 'Para eliminar'
 };
 
 // Studies flow states:
@@ -162,10 +156,9 @@ export const CKEditorConfig = {
 };
 
 export const inpatient_types = {
-  1 :'Ambulatorio',
-  2 :'Cuidados intensivos',
-  3 :'Emergencia',
-  4 :'Internación'
+  1 :'Cuidados intensivos',
+  2 :'Emergencia',
+  3 :'Internación'
 };
 
 // Anonymous patient document case:

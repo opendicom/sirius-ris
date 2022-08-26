@@ -715,8 +715,8 @@ async function setRegex(regex, condition){
                     keyName = Object.keys(or_current)[0];
                     currentValue = condition.$or[or_index][keyName];
 
-                    //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
+                    //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -732,8 +732,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(or_current)[0];
                             currentValue = and_current.$or[or_index][keyName];
                             
-                            //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
+                            //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -746,8 +746,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
-                            //Exclude boolean, ObjectId and Date types [Date by KeyName] (In this case exclude third level $and [Composite domain]):
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and'){
+                            //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -758,8 +758,8 @@ async function setRegex(regex, condition){
                         keyName = Object.keys(and_current)[0];
                         currentValue = condition.$and[and_index][keyName];
 
-                        //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
+                        //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
@@ -774,8 +774,8 @@ async function setRegex(regex, condition){
                 keyName = Object.keys(condition)[index];
                 currentValue = condition[current];
                 
-                //Exclude boolean, ObjectId and Date types [Date by KeyName]:
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined){
+                //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -2337,11 +2337,11 @@ async function addDomainCondition(req, res, domainType){
                         break;
                         
                     case 'users':
-                        //Add Explicit $OR operator (Prevent: Cannot set properties of undefined):
+                        //Create explicit $OR operator:
                         // The explicit $OR operator is used since it is not possible to use IN.
                         // If more than one operator is used (IN, OR in this case), the master 
                         // condition is an AND and an OR would be required.
-                        if(!req.query.filter.$or){ req.query.filter['$or'] = []; }
+                        let explicit_or = [];
 
                         //Import schemas:
                         const branches = require('./branches/schemas');
@@ -2351,7 +2351,7 @@ async function addDomainCondition(req, res, domainType){
                         //In this case it is necessary to obtain all the _id of branches and services associated with the organization.
                         if(domainType == 'organizations'){
                             //Add into ORGANIZATION domain condition:
-                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let branchesIds = [];
@@ -2376,7 +2376,7 @@ async function addDomainCondition(req, res, domainType){
                                 branchesIN.push(branchesIds[current]._id);
 
                                 //Add into BRANCH domain condition:
-                                req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(branchesIds[current]._id) });
+                                explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(branchesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -2400,7 +2400,7 @@ async function addDomainCondition(req, res, domainType){
                                 // OR operator is used since it is not possible to use IN.
                                 // If more than one operator is used (IN, OR in this case),
                                 // the master condition is an AND and an OR would be required.
-                                req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                                explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -2410,7 +2410,7 @@ async function addDomainCondition(req, res, domainType){
                         //In this case it is necessary to obtain the organization _id and all the services _id
                         } else if(domainType == 'branches'){
                             //Add into BRANCH domain condition:
-                            req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let fk_organization = '';
@@ -2428,7 +2428,7 @@ async function addDomainCondition(req, res, domainType){
                             });
 
                             //Add into ORGANIZATION domain condition:
-                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
 
                             //Get all service _id of this branch:
                             await services.Model.find({ fk_branch: domain }, { _id: 1 })
@@ -2447,7 +2447,7 @@ async function addDomainCondition(req, res, domainType){
                                 // OR operator is used since it is not possible to use IN.
                                 // If more than one operator is used (IN, OR in this case),
                                 // the master condition is an AND and an OR would be required.
-                                req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                                explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -2457,7 +2457,7 @@ async function addDomainCondition(req, res, domainType){
                         //In this case it is necessary to obtain the _id of branch and organization.
                         } else if(domainType == 'services'){
                             //Add into SERVICE domain condition:
-                            req.query.filter.$or.push({ 'permissions.service': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let fk_branch = '';
@@ -2475,7 +2475,7 @@ async function addDomainCondition(req, res, domainType){
                             });
 
                             //Add into BRANCH domain condition:
-                            req.query.filter.$or.push({ 'permissions.branch': mongoose.Types.ObjectId(fk_branch) });
+                            explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(fk_branch) });
                             
 
                             //Get organization _id from branches collection (fk_organization):
@@ -2490,8 +2490,14 @@ async function addDomainCondition(req, res, domainType){
                             });
 
                             //Add into ORGANIZATION domain condition:
-                            req.query.filter.$or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
                         }
+
+                        //Create explicit $AND operator to contain $OR (Explicit operator):
+                        if(!req.query.filter.$and){ req.query.filter['$and'] = []; }
+
+                        //Add explicit $OR operator:
+                        req.query.filter.$and.push({'$or' : explicit_or });
                         break;
                 }
                 break;

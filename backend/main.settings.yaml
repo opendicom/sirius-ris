@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
-  host: 'localhost'
-  #host: 'sirius_database'
+  #host: 'localhost'
+  host: 'sirius_database'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'

@@ -79,7 +79,7 @@
     <ng-container matColumnDef="schedule">
       <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
       <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.start">De {{ element.start | date : "HH:mm" : "UTC" }} a </span>
+        <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
         <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
       </td>
     </ng-container>

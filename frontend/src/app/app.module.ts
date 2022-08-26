@@ -50,6 +50,7 @@ import { ProceduresModule } from '@modules/procedures/procedures.module';
 import { ProcedureCategoriesModule } from '@modules/procedure-categories/procedure-categories.module';
 import { FilesModule } from '@modules/files/files.module';
 import { LogsModule } from '@modules/logs/logs.module';
+import { AppointmentsModule } from '@modules/appointments/appointments.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -82,7 +83,8 @@ import { LogsModule } from '@modules/logs/logs.module';
     ProceduresModule,
     ProcedureCategoriesModule,
     FilesModule,
-    LogsModule
+    LogsModule,
+    AppointmentsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

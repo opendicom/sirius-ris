@@ -12,7 +12,7 @@
 
   <mat-divider></mat-divider>
 
-  <mat-list-item>
+  <mat-list-item routerLink="/appointments/list">
     <mat-icon>event_available</mat-icon><span>Citas</span>
   </mat-list-item>
 
@@ -22,9 +22,15 @@
     <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
   </mat-list-item>
 
-  <br/>
-
   <span *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+    <h3>Recepción</h3>
+
+    <mat-list-item>
+      <mat-icon>today</mat-icon><span>Coordinaciones</span>
+    </mat-list-item>
+
+    <br/>
+
     <h3>Funciones avanzadas</h3>
 
     <mat-list-item>
@@ -49,8 +55,9 @@
       <mat-icon>attach_money</mat-icon><span>Facturación</span>
     </mat-list-item>
 
-    <br/>
   </span>
+
+  <br/>
 
   <h3>Administrador</h3>
 

@@ -132,6 +132,15 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
+        //Imaging -> Service -> Modality (Lookup & Unwind):
+        { $lookup: {
+            from: 'modalities',
+            localField: 'imaging.service.fk_modality',
+            foreignField: '_id',
+            as: 'modality',
+        }},
+        { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
+
         //Patient (Lookup & Unwind):
         { $lookup: {
             from: 'users',
@@ -140,6 +149,15 @@ module.exports = async (req, res, currentSchema) => {
             as: 'patient',
         }},
         { $unwind: { path: "$patient", preserveNullAndEmptyArrays: true } },
+
+        //Patient -> Person (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'patient.fk_person',
+            foreignField: '_id',
+            as: 'patient.person',
+        }},
+        { $unwind: { path: "$patient.person", preserveNullAndEmptyArrays: true } },
 
         //Slot (Lookup & Unwind)::
         { $lookup: {
@@ -221,7 +239,7 @@ module.exports = async (req, res, currentSchema) => {
         // REMOVE DUPLICATED VALUES (SET DEFAULT PROJECTION):
         // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
         //------------------------------------------------------------------------------------------------------------//
-        { $project: { fk_slot: 0, fk_patient: 0, fk_procedure: 0 }}
+        { $project: { fk_slot: 0, fk_patient: 0, fk_procedure: 0, 'patient.password': 0 }}
         //------------------------------------------------------------------------------------------------------------//
     ];    
 
