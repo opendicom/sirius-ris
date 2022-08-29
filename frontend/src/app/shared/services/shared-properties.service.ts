@@ -111,7 +111,7 @@ export class SharedPropertiesService {
       //Check if datetipe is not empty:
       if(this.action.filters.date_range != ''){
         switch(this.action.filters.date_range){
-          case 'slots':
+          case 'start-end':
             //Add date range into filter:
             string_filter += '"filter[and][start][$gte]": "' + start + '", ';
             string_filter += '"filter[and][end][$lte]": "' + end + '", ';

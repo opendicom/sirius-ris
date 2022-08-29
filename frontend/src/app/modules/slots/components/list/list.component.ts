@@ -36,7 +36,7 @@ export class ListComponent implements OnInit {
       filters_form    : true,
       filters : {
         search        : true,
-        date_range    : 'slots',
+        date_range    : 'start-end',
         urgency       : true,
         pager         : true,
       }

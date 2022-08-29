@@ -7,7 +7,7 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/procedures/form/update/{{ element._id }}">
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -42,6 +42,7 @@
     <ng-container matColumnDef="documents">
       <th mat-header-cell *matHeaderCellDef> Documentos </th>
       <td class="documents" mat-cell *matCellDef="let element">
+        <span *ngIf="element.patient">
           <span *ngIf="element.patient.person">
             <span *ngFor="let current of element.patient.person.documents" >
               <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
@@ -51,6 +52,7 @@
               <br/>
             </span>
           </span>
+        </span>
       </td>
     </ng-container>
 
@@ -58,11 +60,13 @@
     <ng-container matColumnDef="names">
       <th mat-header-cell *matHeaderCellDef> Nombres </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient.person">
-          <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
 
-          <span *ngIf="element.patient.person.name_02">
-            <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+            <span *ngIf="element.patient.person.name_02">
+              <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+            </span>
           </span>
         </span>
       </td>
@@ -72,11 +76,13 @@
     <ng-container matColumnDef="surnames">
       <th mat-header-cell *matHeaderCellDef> Apellidos </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient.person">
-          <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
 
-          <span *ngIf="element.patient.person.surname_02">
-            <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+            <span *ngIf="element.patient.person.surname_02">
+              <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+            </span>
           </span>
         </span>
       </td>
@@ -86,13 +92,15 @@
     <ng-container matColumnDef="equipment">
       <th mat-header-cell *matHeaderCellDef> Equipamiento </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
-        <ng-template #thenBlockTableEquipment>
-          <span class="badge-accent" matTooltip="{{ 'AET: ' + element.slot.equipment.AET }}">
-            <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
-          </span>
-        </ng-template>
-        <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+        <span *ngIf="element.slot">
+          <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+          <ng-template #thenBlockTableEquipment>
+            <span class="badge-accent" matTooltip="{{ 'AET: ' + element.slot.equipment.AET }}">
+              <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </ng-template>
+          <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+        </span>
       </td>
     </ng-container>
 
