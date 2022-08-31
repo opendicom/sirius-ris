@@ -1,0 +1,37 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-icon class="search-icon">person_search</mat-icon>
+
+  <br/><br/><hr class="dashed" /><br/>
+
+  <mat-form-field appearance="fill" class="sub-element">
+    <mat-label>Documento</mat-label>
+    <input matInput type="text" formControlName="document" placeholder="Ingrese el documento">
+  </mat-form-field>
+
+  <div class="document-section">
+    <mat-form-field appearance="fill" class="medium">
+      <mat-label>País del documento</mat-label>
+      <mat-select formControlName="doc_country_code">
+        <div *ngFor="let currentCode of getKeys(country_codes, true)">
+          <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="medium">
+      <mat-label>Tipo de documento</mat-label>
+      <mat-select formControlName="doc_type">
+        <div *ngFor="let currentDocType of document_types | keyvalue">
+          <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <br/><br/>
+
+  <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+  <button mat-flat-button type="submit" color="primary">SIGUIENTE &nbsp;►</button>
+
+</form>

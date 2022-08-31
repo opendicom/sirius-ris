@@ -1,0 +1,40 @@
+.form-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+
+.search-off-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.current-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.user-first {
+  font-size: 16px;
+}

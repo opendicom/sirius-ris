@@ -142,7 +142,7 @@ export class FormComponent implements OnInit {
         this.selectedEquipments = fk_equipments;
       }
     } else {
-      //Enable equipments input:
+      //Disable equipments input:
       this.form.controls['fk_equipment'].disable();
 
       //Clear input:

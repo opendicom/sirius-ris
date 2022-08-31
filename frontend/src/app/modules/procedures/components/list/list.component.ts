@@ -16,7 +16,7 @@ import { default_page_sizes, regexObjectId } from '@env/environment';           
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'code', 'status'];
 
   //Inject services to the constructor:
   constructor(
@@ -54,10 +54,11 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'name', 'modality.code_value', 'equipments.details.name'];
+    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'name', 'code', 'modality.code_value', 'equipments.details.name'];
     this.sharedProp.projection    = {
       'domain': 1,
       'name': 1,
+      'code': 1,
       'organization.short_name': 1,
       'branch.short_name': 1,
       'modality.code_value': 1,

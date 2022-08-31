@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { user_roles } from '@env/environment';                                          // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({

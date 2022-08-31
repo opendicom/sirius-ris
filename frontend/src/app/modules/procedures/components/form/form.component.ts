@@ -80,6 +80,7 @@ export class FormComponent implements OnInit {
     this.setReactiveForm({
       domain          : [ '', [Validators.required] ],
       name            : [ '', [Validators.required] ],
+      code            : [ '' ],
       equipments      : new FormControl({ value: '', disabled: true }, Validators.required),
       fk_modality     : new FormControl({ value: '', disabled: true }, Validators.required),
       status          : [ 'true' ],
@@ -119,6 +120,7 @@ export class FormComponent implements OnInit {
               domain          : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
               fk_modality     : res.data[0].fk_modality,
               name            : res.data[0].name,
+              code            : res.data[0].code,
               equipments      : new FormControl({ value: [] }, Validators.required),
               status          : [ `${res.data[0].status}` ], //Use back tip notation to convert string
               preparation     : res.data[0].preparation

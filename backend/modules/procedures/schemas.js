@@ -24,6 +24,7 @@ const Schema = new mongoose.Schema({
     domain:             { type: subSchemaDomain, required: true },
     fk_modality:        { type: mongoose.ObjectId, required: true },
     name:               { type: String, required: true },
+    code:               { type: String },
     equipments:         { type: [subSchemaAllowedEquipments], required: true },
     preparation:        { type: String },
     informed_consent:   { type: Boolean, required: true },
@@ -43,7 +44,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['preparation'];
+const AllowedUnsetValues = ['code', 'preparation'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -69,6 +70,12 @@ const Validator = [
         .trim()
         .isLength({ min: 3, max: 64 })
         .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+
+    body('name')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 30 })
+        .withMessage('El código ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('equipments')
         .isArray()

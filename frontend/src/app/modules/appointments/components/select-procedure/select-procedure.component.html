@@ -1,0 +1,145 @@
+<span *ngIf="this.sharedProp.current_patient; then thenBlockPatient else elseBlockPatient"></span>
+
+<ng-template #thenBlockPatient>
+  <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" fxLayoutAlign="start start">
+      <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+        <h2 class="form-title text-center underline-fail-alt">Servicio y procedimiento:</h2>
+        <br/>
+
+        <h4>Servicio:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Servicio</mat-label>
+          <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
+            <div *ngFor="let currentService of availableServices">
+              <div *ngFor="let currentBranch of availableBranches">
+                <div *ngFor="let currentOrganization of availableOrganizations">
+                  <mat-option (click)="setBranch({ '_id': currentOrganization._id, 'short_name': currentOrganization.short_name }, { '_id': currentBranch._id, 'short_name': currentBranch.short_name }, { '_id': currentService._id, 'name': currentService.name }, currentService.fk_modality)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                </div>
+              </div>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        <h4>Categoría de procedimiento:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Categoría de procedimiento</mat-label>
+          <mat-select formControlName="id_category" (closed)="onChangeCategory()" placeholder="Seleccione la categoría">
+            <div *ngFor="let currentCategory of availableCategories">
+              <mat-option (click)="setProceduresIN(currentCategory.fk_procedures)" value="{{ currentCategory._id }}">{{ currentCategory.name }}</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        <h4>Procedimiento:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Procedimiento</mat-label>
+          <mat-select formControlName="fk_procedure" placeholder="Seleccione el procedimiento">
+            <div *ngFor="let currentProcedure of availableProcedures">
+              <mat-option value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2><br/>
+
+        <span *ngIf="this.sharedProp.current_patient">
+          <span *ngIf="this.sharedProp.current_patient.person">
+
+            <div class="user-wrap">
+              <!-- documents -->
+              <div class="user-info">
+                <small>Documento/s:</small><br/>
+                <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                    <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                  </span>
+                  <br/>
+                </span>
+              </div>
+
+              <!-- names -->
+              <div class="user-info">
+                <small>Nombre completo:</small><br/>
+                <span class="user-first">
+                  <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
+
+                  <span *ngIf="this.sharedProp.current_patient.person.name_02">
+                    <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
+                  </span>
+
+                  <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
+
+                  <span *ngIf="this.sharedProp.current_patient.person.surname_02">
+                    <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
+                  </span>
+                </span>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="user-wrap">
+              <!-- birth_date -->
+              <div class="user-info">
+                <small>Fecha de nacimiento:</small><br/>
+                <span class="user-first">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+              </div>
+
+              <!-- genre -->
+              <div class="user-info text-center">
+                <small>Género:</small><br/>
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                  <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                  <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                  <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                </span>
+              </div>
+
+              <!-- status -->
+              <div class="user-info text-center">
+                <small>Estado:</small><br/>
+                <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+          </span>
+        </span>
+      </div> <!-- end fxLayout wrapper -->
+
+    </div>
+
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+      <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="submit" color="primary">SIGUIENTE &nbsp;►</button> <!-- [disabled]="form_data.invalid" -->
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+
+  </form>
+</ng-template>
+
+<ng-template #elseBlockPatient>
+  <form class="form-element text-center">
+    <br/>
+    <mat-icon class="person-icon">person_off</mat-icon>
+
+    <br/><br/><hr class="dashed" /><br/>
+    <h4>No se hallaron los datos correspondientes al paciente, intente desde el formulario de chequeo de personas.</h4>
+
+    <button mat-flat-button type="button" (click)="onCancel();">VOLVER AL LISTADO</button>
+    <button mat-flat-button type="button" routerLink="/appointments/check_person/" color="primary">IR AL FORMULARIO DE CHEQUEO</button>
+
+    <br/><br/>
+  </form>
+</ng-template>

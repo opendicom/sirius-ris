@@ -31,6 +31,13 @@ export class SharedPropertiesService {
   public selected_items : string[];
   public checked_items  : boolean[];
 
+  //Current operation objects:
+  public current_patient    : any;
+  public current_imaging    : any;
+  public current_modality   : string = '';
+  public current_procedure  : any;
+  public current_slot       : any;
+
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
     //Initialize filter (empty):

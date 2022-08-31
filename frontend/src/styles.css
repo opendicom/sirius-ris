@@ -291,6 +291,14 @@ table {
   opacity: 0.45;
 }
 
+.form_sirius {
+  margin-top: 30px;
+  padding: 10px;
+  width: 60%;
+  max-width: 500px;
+  opacity: 0.35;
+}
+
 .form-element a, .form-element button, .form-element input, .form-element mat-form-field, .form-element label, .form-element mat-radio-button{
   margin-right: 8px;
 }
