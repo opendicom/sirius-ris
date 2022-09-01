@@ -220,7 +220,7 @@ mark {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /* LISTS */
 /*----------------------------------------------------------------------------------------------------------------------*/
-table {
+.mat-table {
   width: 100%;
   color: #ddd;
   background-color: #27293d !important;
@@ -450,5 +450,48 @@ table {
 
 .ck-on {
   background-color: #4d4f65 !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* FULLCALENDAR CUSTOMIZATION:
+/*----------------------------------------------------------------------------------------------------------------------*/
+.calendar-container {
+  padding: 20px;
+}
+
+.fc-timegrid {
+  background-color: #2d2d47;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border-radius: 5px !important;
+  border: 1px solid #343654 !important;
+}
+
+.fc-col-header {
+  background-color: #2e304b;
+  font-size: 16px !important;
+  padding: 5px !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  border-color: #4d4f65 !important;
+}
+
+.fc-day-today {
+  background: none !important;
+}
+
+.fc-timegrid-event {
+  box-shadow: none !important;
+}
+
+.invisible-datepicker {
+  opacity: 0 !important;
+  max-height: 0px !important;
+  z-index: -99999 !important;
+  margin-top: -40px !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/

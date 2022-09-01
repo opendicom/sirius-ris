@@ -1,7 +1,7 @@
 <span *ngIf="this.sharedProp.current_patient && this.sharedProp.current_imaging && this.sharedProp.current_modality && this.sharedProp.current_procedure; then thenBlockCurrentObj else elseBlockCurrentObj"></span>
 
 <ng-template #thenBlockCurrentObj>
-  <form class="form-element"><!-- [formGroup]="form" (ngSubmit)="onSubmit()">-->
+  <form class="form-element"><!--[formGroup]="form" (ngSubmit)="onSubmit()">-->
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
         <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2><br/>
@@ -25,7 +25,7 @@
               <!-- names -->
               <div class="current-info">
                 <small>Nombre completo:</small><br/>
-                <span class="user-first">
+                <span class="current-firts">
                   <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
 
                   <span *ngIf="this.sharedProp.current_patient.person.name_02">
@@ -49,7 +49,7 @@
               <!-- birth_date -->
               <div class="current-info">
                 <small>Fecha de nacimiento:</small><br/>
-                <span class="user-first">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+                <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
               </div>
 
               <!-- genre -->
@@ -87,7 +87,7 @@
               <!-- imaging and modality -->
               <div class="current-info">
                 <small>Organización ► Sucursal ► Servicio:</small><br/>
-                <span class="user-first">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
+                <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
               </div>
 
               <div class="clear"></div>
@@ -129,23 +129,18 @@
 
     </div>
 
+    <hr class="dashed"/>
+
     <!-- FullCalendar-->
-    <div>
-      <h4>Patient:</h4>
-      {{ this.sharedProp.current_patient | json }}
-      <br/>
+    <div class="calendar-container">
+      <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
+        <mat-label>Seleccione fecha</mat-label>
+        <input matInput [matDatepicker]="picker" (keydown)="false" (dateChange)="onChangeDate($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-      <h4>Imaging:</h4>
-      {{ this.sharedProp.current_imaging | json }}
-      <br/>
-
-      <h4>Modality:</h4>
-      {{ this.sharedProp.current_modality | json }}
-      <br/>
-
-      <h4>Procedure:</h4>
-      {{ this.sharedProp.current_procedure | json }}
-      <br/>
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
     </div>
 
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">

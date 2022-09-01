@@ -5,8 +5,8 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
-//Define Domain Sub-Schema:
-const subSchemaDomain = new mongoose.Schema({
+//Define Imaging Sub-Schema:
+const subSchemaImaging = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
     branch:         { type: mongoose.ObjectId, required: true },
     service:        { type: mongoose.ObjectId, required: true }
@@ -125,7 +125,7 @@ const subSchemaInpatient = new mongoose.Schema({
 
 //Define Schema:
 const Schema = new mongoose.Schema({
-    imaging:                { type: subSchemaDomain, required: true },
+    imaging:                { type: subSchemaImaging, required: true },
     referring:              { type: subSchemaReferring, required: true },
     reporting:              { type: subSchemaReporting, required: true },
     fk_patient:             { type: mongoose.ObjectId, required: true },

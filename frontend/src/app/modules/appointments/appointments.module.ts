@@ -13,6 +13,18 @@ import { CheckPersonComponent } from '@modules/appointments/components/check-per
 import { SelectProcedureComponent } from '@modules/appointments/components/select-procedure/select-procedure.component';
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
 
+//---------------------------------------------------------------------------------------------------------------------------//
+// FullCalendar:
+//---------------------------------------------------------------------------------------------------------------------------//
+import { FullCalendarModule } from '@fullcalendar/angular';                   // FullCalendar Module
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';         // Time Grid Plugin
+
+//Register FullCalendar plugins:
+FullCalendarModule.registerPlugins([
+  resourceTimeGridPlugin,
+]);
+//---------------------------------------------------------------------------------------------------------------------------//
+
 
 @NgModule({
   declarations: [
@@ -28,7 +40,10 @@ import { SelectSlotComponent } from '@modules/appointments/components/select-slo
     SharedModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    //FullCalendar:
+    FullCalendarModule
   ]
 })
 export class AppointmentsModule { }

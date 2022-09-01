@@ -155,6 +155,30 @@ export const CKEditorConfig = {
   language: { ui: 'es', content: 'es' }
 };
 
+// Default FullCalendar configuration:
+export const FullCalendarOptions: any = {
+  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+  allDaySlot: false,
+  initialView: 'resourceTimeGridDay',
+  slotLabelFormat: {
+    hour: '2-digit',
+    minute: '2-digit',
+    meridiem: false
+  },
+  eventTimeFormat: {
+    hour: '2-digit',
+    minute: '2-digit',
+    meridiem: false
+  },
+  height: 'auto',
+  slotMinTime: '06:00:00',
+  slotMaxTime: '20:00:00',
+  eventBorderColor: '#8244ee',
+  eventColor: '#6130b6',
+  eventTextColor: '#fff',
+};
+
+// Inpatient types:
 export const inpatient_types = {
   1 :'Cuidados intensivos',
   2 :'Emergencia',
