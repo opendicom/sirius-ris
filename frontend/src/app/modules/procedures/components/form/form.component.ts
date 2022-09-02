@@ -78,13 +78,14 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      domain          : [ '', [Validators.required] ],
-      name            : [ '', [Validators.required] ],
-      code            : [ '' ],
-      equipments      : new FormControl({ value: '', disabled: true }, Validators.required),
-      fk_modality     : new FormControl({ value: '', disabled: true }, Validators.required),
-      status          : [ 'true' ],
-      preparation     : [ '', [Validators.required] ]
+      domain            : [ '', [Validators.required] ],
+      name              : [ '', [Validators.required] ],
+      code              : [ '' ],
+      equipments        : new FormControl({ value: '', disabled: true }, Validators.required),
+      fk_modality       : new FormControl({ value: '', disabled: true }, Validators.required),
+      informed_consent  : [ 'false' ],
+      status            : [ 'true' ],
+      preparation       : [ '', [Validators.required] ]
     });
   }
 
@@ -117,13 +118,14 @@ export class FormComponent implements OnInit {
 
             //Send data to the form:
             this.setReactiveForm({
-              domain          : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
-              fk_modality     : res.data[0].fk_modality,
-              name            : res.data[0].name,
-              code            : res.data[0].code,
-              equipments      : new FormControl({ value: [] }, Validators.required),
-              status          : [ `${res.data[0].status}` ], //Use back tip notation to convert string
-              preparation     : res.data[0].preparation
+              domain            : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
+              fk_modality       : res.data[0].fk_modality,
+              name              : res.data[0].name,
+              code              : res.data[0].code,
+              equipments        : new FormControl({ value: [] }, Validators.required),
+              status            : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
+              informed_consent  : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
+              preparation       : res.data[0].preparation
             });
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":
@@ -250,6 +252,7 @@ export class FormComponent implements OnInit {
 
       //Data normalization - Booleans types:
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+      if(typeof this.form.value.informed_consent != "boolean"){ this.form.value.informed_consent = this.form.value.informed_consent.toLowerCase() == 'true' ? true : false; }
 
       //Data normalization - Equipments array of objects:
       this.form.value.equipments = []; //Reset array of objects equipments (Ignore previous content - Form control only).

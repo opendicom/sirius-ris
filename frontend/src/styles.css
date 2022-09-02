@@ -494,4 +494,24 @@ mark {
   z-index: -99999 !important;
   margin-top: -40px !important;
 }
+
+
+.fc-datepicker-button {
+  background-color: #4e4e79 !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+.fc-normal_slots-button {
+  background-color: #b0bec5 !important;
+  color: #17191a !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+.fc-urgency_slots-button {
+  background-color: #cd382d !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/

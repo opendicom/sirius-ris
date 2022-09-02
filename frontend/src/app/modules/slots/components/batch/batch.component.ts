@@ -27,6 +27,10 @@ export class BatchComponent implements OnInit {
   private selectedBranch: string = '';
   private selectedEquipments: string[] = [];
 
+  //Min and max dates:
+  public minDate: Date;
+  public maxDate: Date;
+
   //Initialize days of week arrays to checkbox:
   public daysOfWeek: string[] = [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado' ];
   public selectedDays: boolean[] = [ false, false, false, false, false, false, false ];
@@ -51,6 +55,16 @@ export class BatchComponent implements OnInit {
     private sharedFunctions: SharedFunctionsService,
     private apiClient: ApiClientService
   ){
+    //Get current date:
+    const today = new Date();
+    const currentYear   = today.getFullYear();
+    const currentMonth  = today.getMonth();
+    const currentDay    = today.getDate();
+
+    //Set min and max dates (Datepicker):
+    this.minDate = new Date(currentYear - 0, currentMonth, currentDay);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
+
     //Find references:
     this.findReferences();
 

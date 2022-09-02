@@ -135,7 +135,7 @@
     <div class="calendar-container">
       <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
         <mat-label>Seleccione fecha</mat-label>
-        <input matInput [matDatepicker]="picker" (keydown)="false" (dateChange)="onChangeDate($event)">
+        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (keydown)="false" (dateChange)="onChangeDate($event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>

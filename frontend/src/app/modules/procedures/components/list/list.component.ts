@@ -16,7 +16,7 @@ import { default_page_sizes, regexObjectId } from '@env/environment';           
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'code', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'code', 'informed_consent', 'status'];
 
   //Inject services to the constructor:
   constructor(
@@ -66,6 +66,7 @@ export class ListComponent implements OnInit {
       'equipments.duration': 1,
       'equipments.details.name': 1,
       'equipments.details.AET': 1,
+      'informed_consent': 1,
       'status': 1
     };
     this.sharedProp.sort          = { 'organization.short_name': 1, 'branch.short_name': 1, name: 1 };

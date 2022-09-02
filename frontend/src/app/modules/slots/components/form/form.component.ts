@@ -26,6 +26,10 @@ export class FormComponent implements OnInit {
   private selectedBranch: string = '';
   private selectedEquipments: string[] = [];
 
+  //Min and max dates:
+  public minDate: Date;
+  public maxDate: Date;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -47,6 +51,16 @@ export class FormComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ){
+    //Get current date:
+    const today = new Date();
+    const currentYear   = today.getFullYear();
+    const currentMonth  = today.getMonth();
+    const currentDay    = today.getDate();
+
+    //Set min and max dates (Datepicker):
+    this.minDate = new Date(currentYear - 0, currentMonth, currentDay);
+    this.maxDate = new Date(currentYear + 1, 11, 31);
+
     //Find references:
     this.findReferences();
 

@@ -31,8 +31,8 @@
       <h4>Rango de fechas:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Seleccione rango de fechas</mat-label>
-        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
-          <input matStartDate formControlName="range_start" readonly placeholder="Fecha inicio">
+        <mat-date-range-input [rangePicker]="picker" [min]="minDate" [max]="maxDate" (click)="picker.open()">
+          <input matStartDate  formControlName="range_start" readonly placeholder="Fecha inicio">
           <input matEndDate formControlName="range_end" readonly placeholder="Fecha fin">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

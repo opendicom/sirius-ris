@@ -41,7 +41,7 @@
       <h4>Fecha:</h4>
       <mat-form-field appearance="fill" class="large" (click)="picker.open()">
         <mat-label>Seleccione fecha</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="date" (keydown)="false">
+        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="date" (keydown)="false">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>

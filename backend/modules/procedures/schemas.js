@@ -99,7 +99,7 @@ const Validator = [
     body('informed_consent')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage('El parametro informed_consent ingresado no es de tipo booleano (verdadero o falso).')
         .toBoolean(),
 
     body('status')

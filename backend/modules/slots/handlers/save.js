@@ -14,7 +14,7 @@ module.exports = async (req, res, currentSchema, operation) => {
     let referencedElements = [];
     if(req.body.domain.organization){ referencedElements.push([ req.body.domain.organization, 'organizations' ]); }
     if(req.body.domain.branch){ referencedElements.push([ req.body.domain.branch, 'branches' ]); }
-    if(eq.body.domain.service){ referencedElements.push([ req.body.domain.service, 'services' ]); }
+    if(req.body.domain.service){ referencedElements.push([ req.body.domain.service, 'services' ]); }
     if(req.body.fk_equipment){ referencedElements.push([ req.body.fk_equipment, 'equipments' ]); }
     if(req.body.fk_procedure){ referencedElements.push([ req.body.fk_procedure, 'procedures' ]); } //Optional in schema
 
