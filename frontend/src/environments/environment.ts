@@ -170,12 +170,20 @@ export const FullCalendarOptions: any = {
     minute: '2-digit',
     meridiem: false
   },
-  height: 'auto',
-  slotMinTime: '06:00:00',
-  slotMaxTime: '20:00:00',
+  height: '570px',
+  slotMinTime: '08:00:00',
+  slotMaxTime: '18:00:00',
+  slotDuration: '00:10:00',
   eventBorderColor: '#8244ee',
   eventColor: '#6130b6',
   eventTextColor: '#fff',
+  headerToolbar: {
+    start: 'datepicker today prev,next',
+    center: 'title',
+    end: ''
+  },
+  resources: [],
+  events: []
 };
 
 // Inpatient types:

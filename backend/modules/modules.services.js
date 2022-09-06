@@ -1759,6 +1759,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
 
                 //Equipment -> Slot (Lookup & Unwind):
+                if(filter[asPrefix + 'slot._id'] != undefined){ filter[asPrefix + 'slot._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'slot._id']); };
                 if(filter[asPrefix + 'slot.fk_equipment'] != undefined){ filter[asPrefix + 'slot.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'slot.fk_equipment']); };
                 if(filter[asPrefix + 'slot.equipment._id'] != undefined){ filter[asPrefix + 'slot.equipment._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'slot.equipment._id']); };
                 if(filter[asPrefix + 'slot.equipment.fk_branch'] != undefined){ filter[asPrefix + 'slot.equipment.fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'slot.equipment.fk_branch']); };

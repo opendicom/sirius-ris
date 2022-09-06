@@ -16,12 +16,14 @@ import { SelectSlotComponent } from '@modules/appointments/components/select-slo
 //---------------------------------------------------------------------------------------------------------------------------//
 // FullCalendar:
 //---------------------------------------------------------------------------------------------------------------------------//
-import { FullCalendarModule } from '@fullcalendar/angular';                   // FullCalendar Module
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';         // Time Grid Plugin
+import { FullCalendarModule } from '@fullcalendar/angular';
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 //Register FullCalendar plugins:
 FullCalendarModule.registerPlugins([
   resourceTimeGridPlugin,
+  interactionPlugin
 ]);
 //---------------------------------------------------------------------------------------------------------------------------//
 

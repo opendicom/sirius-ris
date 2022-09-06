@@ -4,7 +4,7 @@
 <h2>Menú principal</h2>
 
 <mat-list>
-  <h3>Gestión</h3>
+  <h3>Coordinación</h3>
 
   <mat-list-item routerLink="/slots/list">
     <mat-icon>date_range</mat-icon><span>Turnos</span>
@@ -16,21 +16,22 @@
     <mat-icon>event_available</mat-icon><span>Citas</span>
   </mat-list-item>
 
-  <mat-divider></mat-divider>
+
+  <h3>Recepción</h3>
+
+  <mat-list-item>
+    <mat-icon>today</mat-icon><span>Coordinaciones</span>
+  </mat-list-item>
+
+
+  <h3>Realización</h3>
 
   <mat-list-item>
     <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
   </mat-list-item>
 
+
   <span *ngIf="sharedProp.userLogged.permissions[0].role == 1">
-    <h3>Recepción</h3>
-
-    <mat-list-item>
-      <mat-icon>today</mat-icon><span>Coordinaciones</span>
-    </mat-list-item>
-
-    <br/>
-
     <h3>Funciones avanzadas</h3>
 
     <mat-list-item>

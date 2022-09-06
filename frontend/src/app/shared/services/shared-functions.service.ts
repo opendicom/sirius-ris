@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';                                            //
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
+import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -250,6 +251,19 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsDialog.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //SELECT DATE WITHIN A SLOT:
+        case 'slot_select':
+          //Create dialog observable:
+          const obsSlotSelectDialog = this.dialog.open(SlotSelectComponent);
+
+          //Observe content (Subscribe):
+          obsSlotSelectDialog.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });

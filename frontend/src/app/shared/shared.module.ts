@@ -18,6 +18,7 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 //Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
+import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -39,6 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     //Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
+    SlotSelectComponent,
 
     // Shared pipes:
     HighlighterPipe
@@ -64,6 +66,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     //Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
+    SlotSelectComponent,
 
     // Shared pipes:
     HighlighterPipe

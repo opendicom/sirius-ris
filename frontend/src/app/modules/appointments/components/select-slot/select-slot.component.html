@@ -1,7 +1,7 @@
 <span *ngIf="this.sharedProp.current_patient && this.sharedProp.current_imaging && this.sharedProp.current_modality && this.sharedProp.current_procedure; then thenBlockCurrentObj else elseBlockCurrentObj"></span>
 
 <ng-template #thenBlockCurrentObj>
-  <form class="form-element"><!--[formGroup]="form" (ngSubmit)="onSubmit()">-->
+  <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
         <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2><br/>
@@ -131,8 +131,8 @@
 
     <hr class="dashed"/>
 
-    <!-- FullCalendar-->
-    <div class="calendar-container">
+    <div class="calendar-container divider-alt">
+      <!-- FullCalendar Datepicker -->
       <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
         <mat-label>Seleccione fecha</mat-label>
         <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (keydown)="false" (dateChange)="onChangeDate($event)">
@@ -140,14 +140,92 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
+      <!-- FullCalendar -->
       <full-calendar #calendar [options]="calendarOptions"></full-calendar>
     </div>
+
+    <!-- Slot info container -->
+    <div class="slot-container">
+      <h4 class="underline-ok-alt">Datos del equipo:</h4>
+
+      <div class="current-wrap" [class.unselected]="selectedEquipment == undefined">
+        <!-- selected equipment -->
+        <div class="current-info">
+          <small>Equipo seleccionado:</small><br/>
+          <span *ngIf="selectedEquipment == undefined; then thenBlockEquipment else elseBlockEquipment"></span>
+          <ng-template #thenBlockEquipment><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #elseBlockEquipment><span class="current-firts">{{ selectedEquipment.details.name }}</span></ng-template>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="current-wrap" [class.unselected]="selectedEquipment == undefined">
+        <!-- selected equipment duration -->
+        <div class="current-info">
+          <small>Duración del procedimiento:</small><br/>
+          <span *ngIf="selectedEquipment == undefined; then thenBlockEquipmentDuration else elseBlockEquipmentDuration"></span>
+          <ng-template #thenBlockEquipmentDuration><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #elseBlockEquipmentDuration><span class="current-firts">{{ selectedEquipment.duration }} <small>min.</small></span></ng-template>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <br/><hr class="dashed" /><br/>
+
+      <h4 class="underline-ok-alt">Datos de la cita:</h4>
+
+      <div class="current-wrap" [class.unselected]="selectedStart == undefined">
+        <!-- selected date -->
+        <div class="current-info">
+          <small>Fecha de la cita:</small><br/>
+          <span *ngIf="selectedStart == undefined; then thenBlockDate else elseBlockDate"></span>
+          <ng-template #thenBlockDate><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #elseBlockDate><span class="current-firts">{{ selectedStart | date:"dd/MM/yyyy":"UTC" }}</span></ng-template>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <!-- selected start -->
+      <div class="current-wrap" [class.unselected]="selectedStart == undefined">
+        <div class="current-info">
+          <small>Hora de inicio:</small><br/>
+          <span *ngIf="selectedStart == undefined; then thenBlockStart else elseBlockStart"></span>
+          <ng-template #thenBlockStart><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #elseBlockStart><span class="current-firts">{{ selectedStart | date:"HH:mm":"UTC" }}</span></ng-template>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <!-- selected end -->
+      <div class="current-wrap" [class.unselected]="selectedEnd == undefined">
+        <div class="current-info">
+          <small>Hora de fin:</small><br/>
+          <span *ngIf="selectedEnd == undefined; then thenBlockEnd else elseBlockEnd"></span>
+          <ng-template #thenBlockEnd><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #elseBlockEnd><span class="current-firts">{{ selectedEnd | date:"HH:mm":"UTC" }}</span></ng-template>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+      <br/><hr class="dashed" /><br/>
+
+      <div class="text-center">
+        <h4>Urgencia</h4>
+        <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency" (change)="onCheckUrgency($event)">
+          <mat-radio-button value="true">Si</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="clear"></div>
 
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
         <button mat-flat-button type="button" color="accent" routerLink="/appointments/select_procedure">◄&nbsp; ATRÁS</button>
-        <button mat-flat-button type="submit" color="primary">SIGUIENTE &nbsp;►</button> <!-- [disabled]="form_data.invalid" -->
+        <button mat-flat-button type="submit" color="primary" [disabled]="selectedEquipment && selectedStart && selectedEnd ? undefined : true">SIGUIENTE &nbsp;►</button>
       </div> <!-- end fxLayout wrapper -->
     </div>
   </form>

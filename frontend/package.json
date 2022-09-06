@@ -26,6 +26,7 @@
     "@ckeditor/ckeditor5-build-classic": "^35.1.0",
     "@fullcalendar/angular": "^5.11.2",
     "@fullcalendar/core": "^5.11.3",
+    "@fullcalendar/interaction": "^5.11.3",
     "@fullcalendar/resource-common": "^5.11.3",
     "@fullcalendar/resource-timegrid": "^5.11.3",
     "flag-icon-css": "^4.1.7",

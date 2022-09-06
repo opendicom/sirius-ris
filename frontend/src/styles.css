@@ -458,7 +458,15 @@ mark {
 /* FULLCALENDAR CUSTOMIZATION:
 /*----------------------------------------------------------------------------------------------------------------------*/
 .calendar-container {
-  padding: 20px;
+  float: left;
+  width: 80%;
+  padding: 1%;
+}
+
+.slot-container {
+  float: left;
+  width: 15%;
+  padding: 1%;
 }
 
 .fc-timegrid {
@@ -486,6 +494,11 @@ mark {
 
 .fc-timegrid-event {
   box-shadow: none !important;
+  margin-right: 0 !important;
+}
+
+.fc-timegrid-col-events {
+  margin: 0 1px 0 2px !important;
 }
 
 .invisible-datepicker {

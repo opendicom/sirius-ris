@@ -16,4 +16,13 @@ export class AppComponent {
 
   //Inject services to the constructor (Create first actionProp):
   constructor(public sharedProp: SharedPropertiesService) { }
+
+  // Fix FullCalendar bug first Render:
+  fixFullCalendar(){
+    // Fix info:
+    // https://github.com/fullcalendar/fullcalendar/issues/4976
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 250);
+  }
 }
