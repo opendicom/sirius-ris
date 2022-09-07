@@ -158,6 +158,7 @@ export const CKEditorConfig = {
 // Default FullCalendar configuration:
 export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+  timeZone: 'UTC',
   allDaySlot: false,
   initialView: 'resourceTimeGridDay',
   slotLabelFormat: {

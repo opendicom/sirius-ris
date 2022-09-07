@@ -41,7 +41,7 @@ export class SelectSlotComponent implements OnInit {
   private slotsParams         : any;
   private appointmentsParams  : any;
 
-  //Set selected datetimes:
+  //Set selected elements:
   public selectedEquipment    : any  | undefined;
   public selectedStart        : Date | undefined;
   public selectedEnd          : Date | undefined;
@@ -90,7 +90,7 @@ export class SelectSlotComponent implements OnInit {
     this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
     this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
     this.sharedProp.current_modality = '6267e558bb4e2e4f54931fa7';
-    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 60, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 40, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true } ;
+    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true } ;
     //--------------------------------------------------------------------------------------------------------------------//
 
     //Find references:
@@ -250,7 +250,7 @@ export class SelectSlotComponent implements OnInit {
             //Create registered equipments array (Duplicated control):
             let registeredEquipments: string[] = [];
 
-            //Set currentEquipments - FullCalendar Resources:
+            //Set currentEquipments - FullCalendar Resources (await foreach):
             await Promise.all(Object.keys(res.data).map((key) => {
               //Check duplicates:
               if(!registeredEquipments.includes(res.data[key].equipment._id)){
@@ -296,7 +296,7 @@ export class SelectSlotComponent implements OnInit {
         //Check data:
         if(res.data){
           if(res.data.length > 0){
-            //Set currentAppointments - FullCalendar Events:
+            //Set currentAppointments - FullCalendar Events (await foreach):
             await Promise.all(Object.keys(res.data).map((key) => {
               //Add event in calendar (Appointment):
               this.calendarComponent.getApi().addEvent({
@@ -357,10 +357,10 @@ export class SelectSlotComponent implements OnInit {
   async onClickSlot(arg: any){
     if(arg.jsEvent.target.classList.contains('fc-bg-event')) {
       //Set selected start:
-      let stringDate = arg.dateStr.slice(0, -6);
+      let stringDate = arg.dateStr.slice(0, -1);
       this.selectedStart = new Date(stringDate + '.000Z');
 
-      //Search selected equipment (resource) in current procedure:
+      //Search selected equipment (resource) in current procedure (await foreach):
       await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((key) => {
         if(this.sharedProp.current_procedure.equipments[key].fk_equipment == arg.resource._resource.id){
           //Set selected equipment:
@@ -372,31 +372,41 @@ export class SelectSlotComponent implements OnInit {
         }
       }));
 
-      //Set dates in FullCalendar format:
-      const dateYear   = this.selectedStart.getFullYear();
-      const dateMonth  = this.selectedStart.toLocaleString("es-AR", { month: "2-digit" });
-      const dateDay    = this.selectedStart.toLocaleString("es-AR", { day: "2-digit" })
+      //Set date and time in FullCalendar format:
+      const formattedDateTime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
 
-      //Set start and end times in FullCalendar format:
-      const startHours    = this.addZero(this.selectedStart.getUTCHours());
-      const startMinutes  = this.addZero(this.selectedStart.getUTCMinutes());
-      const endHours      = this.addZero(this.selectedEnd?.getUTCHours());
-      const endMinutes    = this.addZero(this.selectedEnd?.getUTCMinutes());
+      //Check if the event is overlapped:
+      const isOverlapping = await this.isOverlapping(formattedDateTime, this.selectedEquipment.fk_equipment);
 
-      //Add tentative event in FullCalendar:
-      this.calendarComponent.getApi().addEvent({
-        id: 'nowid',
-        resourceId: arg.resource._resource.id,
-        title: this.sharedProp.current_procedure.name,
-        start: dateYear + '-' + dateMonth + '-' + dateDay + 'T' + startHours + ':' + startMinutes + ':00',
-        end: dateYear + '-' + dateMonth + '-' + dateDay + 'T' + endHours + ':' + endMinutes + ':00',
-        backgroundColor: '#b0bec5',
-        borderColor: '#909da4',
-        textColor: '#17191a'
-      });
+      //If is overlapped:
+      if(isOverlapping) {
+        //Get time required:
+        let timeRequired = this.selectedEquipment.duration;
+
+        //Clear selected elements:
+        this.selectedEquipment  = undefined;
+        this.selectedStart      = undefined;
+        this.selectedEnd        = undefined;
+
+        //Open dialog:
+        this.sharedFunctions.openDialog('overlap_events', timeRequired);
+
+      } else {
+        //Add tentative event in FullCalendar:
+        this.calendarComponent.getApi().addEvent({
+          id: 'nowid',
+          resourceId: arg.resource._resource.id,
+          title: this.sharedProp.current_procedure.name,
+          start: formattedDateTime.start,
+          end: formattedDateTime.end,
+          backgroundColor: '#b0bec5',
+          borderColor: '#909da4',
+          textColor: '#17191a'
+        });
+      }
 
     } else {
-      //Open dialog to confirm:
+      //Open dialog:
       this.sharedFunctions.openDialog('slot_select', 'stuff_data');
     }
   }
@@ -419,5 +429,69 @@ export class SelectSlotComponent implements OnInit {
       i = "0" + i.toString()
     }
     return i;
+  }
+
+  datetimeFulCalendarFormater(start: any, end: any): any{
+    //Date:
+    const dateYear   = start.getFullYear();
+    const dateMonth  = start.toLocaleString("es-AR", { month: "2-digit" });
+    const dateDay    = start.toLocaleString("es-AR", { day: "2-digit" })
+
+    //Start:
+    const startHours    = this.addZero(start.getUTCHours());
+    const startMinutes  = this.addZero(start.getUTCMinutes());
+
+    //End:
+    const endHours    = this.addZero(end.getUTCHours());
+    const endMinutes  = this.addZero(end.getUTCMinutes());
+
+    //Set start and end FullCalendar format:
+    const startStr = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + startHours + ':' + startMinutes + ':00';
+    const endStr   = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + endHours + ':' + endMinutes + ':00';
+
+    //Set return object:
+    return {
+      dateYear      : dateYear,
+      dateMonth     : dateMonth,
+      dateDay       : dateDay,
+      startHours    : startHours,
+      startMinutes  : startMinutes,
+      endHours      : endHours,
+      endMinutes    : endMinutes,
+      start         : startStr,
+      end           : endStr
+    }
+  }
+
+  async isOverlapping(inputDateTime: any, inputResource: string){
+    //Initialize isOverlap:
+    let isOverlap = false;
+
+    //Get calendar events (current in memory):
+    let calendarEvents = this.calendarComponent.getApi().getEvents();
+
+    //Search in calendar events (await foreach):
+    await Promise.all(Object.keys(calendarEvents).map((key) => {
+      //Skip background events (slots):
+      if(calendarEvents[parseInt(key, 10)]._def.ui.display != 'background'){
+        //Get current event info:
+        const currentResource: any = calendarEvents[parseInt(key, 10)]._def.resourceIds;
+        const currentStart = calendarEvents[parseInt(key, 10)]._instance?.range.start;
+        const currentEnd = calendarEvents[parseInt(key, 10)]._instance?.range.end;
+
+        //Set date and time in FullCalendar format:
+        const currentDateTime = this.datetimeFulCalendarFormater(currentStart, currentEnd);
+
+        //Check current resource (equipment):
+        if(currentResource[0] == inputResource){
+          //Check if is overlapping:
+          if(!(new Date(currentDateTime.start) >= new Date(inputDateTime.end) || new Date(currentDateTime.end) <= new Date(inputDateTime.start))){
+            isOverlap = true;
+          }
+        }
+      }
+    }));
+
+    return isOverlap;
   }
 }

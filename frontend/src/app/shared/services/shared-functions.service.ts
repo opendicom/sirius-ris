@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';                                            //
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
+import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -264,6 +265,19 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsSlotSelectDialog.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //OVERLAP EVENTS:
+        case 'overlap_events':
+          //Create dialog observable:
+          const obsOverlapEvents = this.dialog.open(OverlapEventsComponent, { data: operationHandler });
+
+          //Observe content (Subscribe):
+          obsOverlapEvents.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });

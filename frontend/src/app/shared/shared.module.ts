@@ -19,6 +19,7 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
+import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -41,6 +42,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DeleteItemsComponent,
     FoundPersonComponent,
     SlotSelectComponent,
+    OverlapEventsComponent,
 
     // Shared pipes:
     HighlighterPipe
@@ -67,6 +69,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DeleteItemsComponent,
     FoundPersonComponent,
     SlotSelectComponent,
+    OverlapEventsComponent,
 
     // Shared pipes:
     HighlighterPipe
