@@ -171,7 +171,7 @@ export const FullCalendarOptions: any = {
     minute: '2-digit',
     meridiem: false
   },
-  height: '570px',
+  height: '650px',
   slotMinTime: '08:00:00',
   slotMaxTime: '18:00:00',
   slotDuration: '00:10:00',

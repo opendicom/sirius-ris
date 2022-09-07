@@ -142,6 +142,8 @@
 
       <!-- FullCalendar -->
       <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+      <br/>
     </div>
 
     <!-- Slot info container -->
@@ -217,6 +219,15 @@
           <mat-radio-button value="false">No</mat-radio-button>
         </mat-radio-group>
       </div>
+
+      <br/><hr class="dashed" /><br/>
+
+      <div *ngIf="selectedEquipment && selectedStart && selectedEnd && selectedSlot" class="text-center">
+        <button mat-flat-button type="button" color="accent" (click)="onDelete();"><mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN</button>
+      </div>
+
+      <br/>
+
     </div>
 
     <div class="clear"></div>
@@ -225,7 +236,7 @@
       <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
         <button mat-flat-button type="button" color="accent" routerLink="/appointments/select_procedure">◄&nbsp; ATRÁS</button>
-        <button mat-flat-button type="submit" color="primary" [disabled]="selectedEquipment && selectedStart && selectedEnd ? undefined : true">SIGUIENTE &nbsp;►</button>
+        <button mat-flat-button type="submit" color="primary" [disabled]="selectedEquipment && selectedStart && selectedEnd && selectedSlot ? undefined : true">SIGUIENTE &nbsp;►</button>
       </div> <!-- end fxLayout wrapper -->
     </div>
   </form>

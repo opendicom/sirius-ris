@@ -1,1 +1,39 @@
-<p>form works!</p>
+<div>
+  <h3>Current Patient:</h3>
+  {{ this.sharedProp.current_patient | json }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Imaging:</h3>
+  {{ this.sharedProp.current_imaging | json }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Modality:</h3>
+  {{ this.sharedProp.current_modality }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Procedure:</h3>
+  {{ this.sharedProp.current_procedure | json }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Slot:</h3>
+  {{ this.sharedProp.current_slot }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Equipment:</h3>
+  {{ this.sharedProp.current_equipment | json }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Datetime (Start & End):</h3>
+  {{ this.sharedProp.current_datetime | json }}
+
+  <br/><hr class="dashed" /><br/>
+
+  <h3>Current Urgency:</h3>
+  {{ this.sharedProp.current_urgency }}
+</div>

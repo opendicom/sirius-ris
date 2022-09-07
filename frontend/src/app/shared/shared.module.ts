@@ -20,6 +20,7 @@ import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/de
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
+import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -43,6 +44,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FoundPersonComponent,
     SlotSelectComponent,
     OverlapEventsComponent,
+    TentativeExistComponent,
 
     // Shared pipes:
     HighlighterPipe
@@ -70,6 +72,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FoundPersonComponent,
     SlotSelectComponent,
     OverlapEventsComponent,
+    TentativeExistComponent,
 
     // Shared pipes:
     HighlighterPipe

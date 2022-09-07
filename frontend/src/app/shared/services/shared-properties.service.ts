@@ -37,6 +37,9 @@ export class SharedPropertiesService {
   public current_modality   : string = '';
   public current_procedure  : any;
   public current_slot       : any;
+  public current_equipment  : any;
+  public current_datetime   : any;
+  public current_urgency    : boolean = false;
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

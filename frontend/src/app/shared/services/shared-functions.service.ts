@@ -14,6 +14,7 @@ import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/de
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
+import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -278,6 +279,19 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsOverlapEvents.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //SELECT DATE BUT ALREADY EXIST A TENTATIVE EVENT:
+        case 'tentative_exist':
+          //Create dialog observable:
+          const obsTentativeExist = this.dialog.open(TentativeExistComponent);
+
+          //Observe content (Subscribe):
+          obsTentativeExist.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });

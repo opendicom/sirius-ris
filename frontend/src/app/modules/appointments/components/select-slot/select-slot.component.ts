@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router } from '@angular/router';                                                   // Router
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
+import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
@@ -45,6 +45,7 @@ export class SelectSlotComponent implements OnInit {
   public selectedEquipment    : any  | undefined;
   public selectedStart        : Date | undefined;
   public selectedEnd          : Date | undefined;
+  public selectedSlot         : any | undefined;
 
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
@@ -76,22 +77,6 @@ export class SelectSlotComponent implements OnInit {
     //Set min and max dates (Datepicker):
     this.minDate = new Date(currentYear - 0, currentMonth, currentDay);
     this.maxDate = new Date(currentYear + 1, 11, 31);
-
-    //--------------------------------------------------------------------------------------------------------------------//
-    //TEST:
-    //--------------------------------------------------------------------------------------------------------------------//
-    //MNFFP:
-    //this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } };
-    //this.sharedProp.current_imaging = { "organization": { "_id": "6284f7c533afdd00139994ee", "short_name": "MNFFP" }, "branch": { "_id": "628538fffef404001374c353", "short_name": "Sanatorio PET" }, "service": { "_id": "628544d4fef404001374c3b9", "name": "Tomografía PET" } };
-    //this.sharedProp.current_modality = '6267e558bb4e2e4f54931fa7';
-    //this.sharedProp.current_procedure = { "_id": "631206b1afea9400136c2834", "name": "CBR MET", "equipments": [ { "fk_equipment": "62a9ccccf95f8d0013447131", "duration": 20, "details": { "_id": "62a9ccccf95f8d0013447131", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "status": true, "fk_branch": "628538fffef404001374c353", "name": "Biograph Horizon", "serial_number": "SMBH2021", "AET": "SMBH", "createdAt": "2022-06-15T12:13:00.810Z", "updatedAt": "2022-06-15T12:13:00.810Z", "__v": 0 } } ], "informed_consent": false };
-
-    //CUDIM:
-    this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
-    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
-    this.sharedProp.current_modality = '6267e558bb4e2e4f54931fa7';
-    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true } ;
-    //--------------------------------------------------------------------------------------------------------------------//
 
     //Find references:
     this.findReferences();
@@ -160,10 +145,6 @@ export class SelectSlotComponent implements OnInit {
     this.findSlots(false, true);
   }
 
-  onSubmit(){
-
-  }
-
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList('appointments', this.router);
@@ -187,6 +168,9 @@ export class SelectSlotComponent implements OnInit {
     if(first_search == false){
       this.calendarComponent.getApi().removeAllEvents();
       this.calendarOptions['resources'] = [];
+
+      //Clear selected elements:
+      this.clearSelectedElements();
     }
     //Initialize Slot Background color:
     let slotBackgroundColor = '#05ff9f49';
@@ -251,15 +235,22 @@ export class SelectSlotComponent implements OnInit {
             let registeredEquipments: string[] = [];
 
             //Set currentEquipments - FullCalendar Resources (await foreach):
-            await Promise.all(Object.keys(res.data).map((key) => {
+            await Promise.all(Object.keys(res.data).map(async (key) => {
+
               //Check duplicates:
               if(!registeredEquipments.includes(res.data[key].equipment._id)){
 
-                //Add resouces in calendar (Equipments):
-                this.calendarComponent.getApi().addResource({
-                  id: res.data[key].equipment._id,
-                  title: res.data[key].equipment.name
-                });
+                //Get duration from current procedure equipments:
+                await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((keyProcedure) => {
+                  if(res.data[key].equipment._id === this.sharedProp.current_procedure.equipments[keyProcedure].fk_equipment){
+
+                    //Add resouces in calendar (Equipments):
+                    this.calendarComponent.getApi().addResource({
+                      id: res.data[key].equipment._id,
+                      title: res.data[key].equipment.name + ' | ' + this.sharedProp.current_procedure.equipments[keyProcedure].duration + ' min.'
+                    });
+                  }
+                }));
               }
 
               //Register equipment:
@@ -270,6 +261,7 @@ export class SelectSlotComponent implements OnInit {
 
               //Add background events in calendar (Slots):
               this.calendarComponent.getApi().addEvent({
+                classNames: res.data[key]._id,            //Add slot _id in classes (Future set fk_slot)
                 resourceId: res.data[key].equipment._id,
                 start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                 end: res.data[key].end.slice(0, -5),      //Remove last 5 chars '.000Z'
@@ -298,13 +290,29 @@ export class SelectSlotComponent implements OnInit {
           if(res.data.length > 0){
             //Set currentAppointments - FullCalendar Events (await foreach):
             await Promise.all(Object.keys(res.data).map((key) => {
+
+              //Set event colors by default configuration (Enviroment):
+              let backgroundColor = FullCalendarOptions.eventColor;
+              let borderColor = FullCalendarOptions.eventBorderColor;
+              let textColor = FullCalendarOptions.eventTextColor;
+
+              //Set event colors by default configuration (Urgency or not):
+              if(res.data[key].urgency){
+                backgroundColor = '#f44336';
+                borderColor = '#f7594d';
+                textColor = '#fff'
+              }
+
               //Add event in calendar (Appointment):
               this.calendarComponent.getApi().addEvent({
                 id: res.data[key]._id,
                 resourceId: res.data[key].slot.equipment._id,
                 title: res.data[key].procedure.name,
                 start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
-                end: res.data[key].end.slice(0, -5)       //Remove last 5 chars '.000Z'
+                end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                textColor: textColor
               });
             }));
           }
@@ -320,10 +328,8 @@ export class SelectSlotComponent implements OnInit {
   }
 
   onCheckUrgency(event: any){
-    //Clear selected datetimes and selected equipments:
-    this.selectedEquipment = undefined;
-    this.selectedStart = undefined;
-    this.selectedEnd = undefined;
+    //Clear selected elements:
+    this.clearSelectedElements();
 
     //Check if urgency is true or false (string):
     if(event.value == 'true'){
@@ -354,61 +360,106 @@ export class SelectSlotComponent implements OnInit {
     }
   }
 
+  onDelete(){
+    //Find slots method clear event previouly:
+    this.findSlots();
+
+    //Set urgency input to false (Default value):
+    this.form.controls['urgency'].setValue('false');
+  }
+
   async onClickSlot(arg: any){
+    //Check that you click within the slot (Background event):
     if(arg.jsEvent.target.classList.contains('fc-bg-event')) {
-      //Set selected start:
-      let stringDate = arg.dateStr.slice(0, -1);
-      this.selectedStart = new Date(stringDate + '.000Z');
+      //Get calendar events (current in memory):
+      let calendarEvents = this.calendarComponent.getApi().getEvents();
 
-      //Search selected equipment (resource) in current procedure (await foreach):
-      await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((key) => {
-        if(this.sharedProp.current_procedure.equipments[key].fk_equipment == arg.resource._resource.id){
-          //Set selected equipment:
-          this.selectedEquipment = this.sharedProp.current_procedure.equipments[key];
-
-          //Set calculated selected end:
-          this.selectedEnd = new Date(stringDate + '.000Z');
-          this.selectedEnd.setMinutes(this.selectedEnd.getMinutes() + parseInt(this.sharedProp.current_procedure.equipments[key].duration, 10) );
+      //Find if tentative event already exist:
+      let tentativeExist = false;
+      await Promise.all(Object.keys(calendarEvents).map((keyEvents) => {
+        if(calendarEvents[parseInt(keyEvents)]._def.publicId == 'tentative'){
+          tentativeExist = true;
         }
       }));
 
-      //Set date and time in FullCalendar format:
-      const formattedDateTime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+      //Check tentative event:
+      if(tentativeExist === false){
+        //Get slot _id from background event classList:
+        let bgEventClassList = arg.jsEvent.target.classList;
 
-      //Check if the event is overlapped:
-      const isOverlapping = await this.isOverlapping(formattedDateTime, this.selectedEquipment.fk_equipment);
+        //Filter classes with ObjecId regular expression:
+        const slotResult = Object.values(bgEventClassList).filter((currentClass: any) => regexObjectId.test(currentClass))[0];
 
-      //If is overlapped:
-      if(isOverlapping) {
-        //Get time required:
-        let timeRequired = this.selectedEquipment.duration;
+        //Set selected_slot:
+        if(slotResult !== undefined && slotResult !== '' && slotResult !== null){
+          this.selectedSlot = slotResult;
+        }
 
-        //Clear selected elements:
-        this.selectedEquipment  = undefined;
-        this.selectedStart      = undefined;
-        this.selectedEnd        = undefined;
+        //Set selected start:
+        let stringDate = arg.dateStr.slice(0, -1);
+        this.selectedStart = new Date(stringDate + '.000Z');
 
-        //Open dialog:
-        this.sharedFunctions.openDialog('overlap_events', timeRequired);
+        //Search selected equipment (resource) in current procedure (await foreach):
+        await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((key) => {
+          if(this.sharedProp.current_procedure.equipments[key].fk_equipment == arg.resource._resource.id){
+            //Set selected equipment:
+            this.selectedEquipment = this.sharedProp.current_procedure.equipments[key];
 
+            //Set calculated selected end:
+            this.selectedEnd = new Date(stringDate + '.000Z');
+            this.selectedEnd.setMinutes(this.selectedEnd.getMinutes() + parseInt(this.sharedProp.current_procedure.equipments[key].duration, 10) );
+          }
+        }));
+
+        //Set date and time in FullCalendar format:
+        const formattedDateTime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+
+        //Check if the event is overlapped:
+        const isOverlapping = await this.isOverlapping(formattedDateTime, this.selectedEquipment.fk_equipment);
+
+        //If is overlapped:
+        if(isOverlapping) {
+          //Get time required:
+          let timeRequired = this.selectedEquipment.duration;
+
+          //Clear selected elements:
+          this.clearSelectedElements();
+
+          //Open dialog:
+          this.sharedFunctions.openDialog('overlap_events', timeRequired);
+
+        } else {
+          //Add tentative event in FullCalendar:
+          this.calendarComponent.getApi().addEvent({
+            id: 'tentative',
+            resourceId: arg.resource._resource.id,
+            title: this.sharedProp.current_procedure.name,
+            start: formattedDateTime.start,
+            end: formattedDateTime.end,
+            backgroundColor: '#b0bec5',
+            borderColor: '#909da4',
+            textColor: '#17191a'
+          });
+        }
       } else {
-        //Add tentative event in FullCalendar:
-        this.calendarComponent.getApi().addEvent({
-          id: 'nowid',
-          resourceId: arg.resource._resource.id,
-          title: this.sharedProp.current_procedure.name,
-          start: formattedDateTime.start,
-          end: formattedDateTime.end,
-          backgroundColor: '#b0bec5',
-          borderColor: '#909da4',
-          textColor: '#17191a'
-        });
+        //Open dialog:
+        this.sharedFunctions.openDialog('tentative_exist', 'stuff_data');
       }
-
     } else {
       //Open dialog:
       this.sharedFunctions.openDialog('slot_select', 'stuff_data');
     }
+  }
+
+  onSubmit(){
+    //Set current selections in shared properties:
+    this.sharedProp.current_urgency = this.form.value.urgency;
+    this.sharedProp.current_equipment = this.selectedEquipment;
+    this.sharedProp.current_slot = this.selectedSlot;
+    this.sharedProp.current_datetime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+
+    //Redirect to appointments form:
+    this.router.navigate(['/appointments/form/insert/0']); //Zero indicates empty :id (Activated Route) [content is ignored]
   }
 
   findReferences(){
@@ -493,5 +544,12 @@ export class SelectSlotComponent implements OnInit {
     }));
 
     return isOverlap;
+  }
+
+  clearSelectedElements(){
+    this.selectedEquipment  = undefined;
+    this.selectedStart      = undefined;
+    this.selectedEnd        = undefined;
+    this.selectedSlot       = undefined;
   }
 }
