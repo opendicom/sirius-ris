@@ -61,13 +61,14 @@ module.exports = function(language){
             'not_have_schema_permissions'   : 'The user does not have the necessary permissions on the schema: ',
         },
         ris: {
-            'operation_not_allowed' : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
-            'empty_domain_JWT'      : 'To check for a domain reference, the filter parameter can NOT be empty.',
-            'duplicated_person'     : 'The person you are trying to insert already exists in the database.',
-            'same_document'         : 'Unable to update entered information. There is already another person with the same document in the database.',
-            'unavailable_slot'      : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
-            'batch_processed'       : 'Batch processed successfully.',
-            'only_urgency_slot'     : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
+            'operation_not_allowed'     : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
+            'empty_domain_JWT'          : 'To check for a domain reference, the filter parameter can NOT be empty.',
+            'duplicated_person'         : 'The person you are trying to insert already exists in the database.',
+            'same_document'             : 'Unable to update entered information. There is already another person with the same document in the database.',
+            'unavailable_slot'          : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
+            'wrong_date_format_slot'    : 'The format of the start and/or end datetime is wrong.',
+            'batch_processed'           : 'Batch processed successfully.',
+            'only_urgency_slot'         : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -147,6 +148,7 @@ module.exports = function(language){
             lang.ris.duplicated_person          = 'La persona que está intentando ingresar ya existe en la base de datos.';
             lang.ris.same_document              = 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.';
             lang.ris.unavailable_slot           = 'El inicio y/o fin indicado no se encuentra disponible en el turno. Utilizado por la cita _id: ';
+            lang.ris.wrong_date_format_slot     = 'El formato de la fecha de inicio y/o fin NO es correcto.';
             lang.ris.batch_processed            = 'Lote procesado correctamente.';
             lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
 

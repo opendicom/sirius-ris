@@ -267,6 +267,50 @@ function strictCheck (proj, doc) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// ADD ZERO & DATETIME FULLCALENDAR FORMATER:
+// Duplicated methods - [Duplicated method: Frontend - SelectSlotComponent].
+//--------------------------------------------------------------------------------------------------------------------//
+function addZero(i) {
+    if(i < 10){
+        i = "0" + i.toString()
+    }
+    return i;
+}
+
+function datetimeFulCalendarFormater(start, end){
+    //Date:
+    const dateYear   = start.getFullYear();
+    const dateMonth  = start.toLocaleString("es-AR", { month: "2-digit" });
+    const dateDay    = start.toLocaleString("es-AR", { day: "2-digit" })
+
+    //Start:
+    const startHours    = addZero(start.getUTCHours());
+    const startMinutes  = addZero(start.getUTCMinutes());
+
+    //End:
+    const endHours    = addZero(end.getUTCHours());
+    const endMinutes  = addZero(end.getUTCMinutes());
+
+    //Set start and end FullCalendar format:
+    const startStr = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + startHours + ':' + startMinutes + ':00';
+    const endStr   = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + endHours + ':' + endMinutes + ':00';
+
+    //Set return object:
+    return {
+        dateYear      : dateYear,
+        dateMonth     : dateMonth,
+        dateDay       : dateDay,
+        startHours    : startHours,
+        startMinutes  : startMinutes,
+        endHours      : endHours,
+        endMinutes    : endMinutes,
+        start         : startStr,
+        end           : endStr
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -283,6 +327,7 @@ module.exports = {
     sendError,
     stringToBoolean,
     parseDate,
-    strictCheck
+    strictCheck,
+    datetimeFulCalendarFormater
 };
 //--------------------------------------------------------------------------------------------------------------------//
