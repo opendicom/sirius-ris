@@ -282,6 +282,11 @@ mark {
   padding: 12px 12px 12px 20px;
 }
 
+.sub-wrapper {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
 .form_nodes {
   margin-top: 10px;
   padding: 10px;
