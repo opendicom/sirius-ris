@@ -41,6 +41,12 @@ export const app_setting = {
   secret_number: 1618,  //Used on simple crypt
 };
 
+// Set self management params:
+export const self_management = {
+  referring: false,
+  reporting: true
+}
+
 // Document types:
 export const document_types = {
   1: 'ID Nacional (DNI, CI, CURP, RUT)',

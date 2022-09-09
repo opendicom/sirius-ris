@@ -195,7 +195,8 @@ export class SelectProcedureComponent implements OnInit {
               '_id'               : this.availableProcedures[key]._id,
               'name'              : this.availableProcedures[key].name,
               'equipments'        : this.availableProcedures[key].equipments,
-              'informed_consent'  : this.availableProcedures[key].informed_consent
+              'informed_consent'  : this.availableProcedures[key].informed_consent,
+              'preparation'       : this.availableProcedures[key].preparation
             }
           }
         }));

@@ -1,39 +1,266 @@
-<div>
-  <h3>Current Patient:</h3>
-  {{ this.sharedProp.current_patient | json }}
+<span *ngIf="this.sharedProp.current_patient && this.sharedProp.current_imaging && this.sharedProp.current_modality && this.sharedProp.current_procedure && this.sharedProp.current_slot && this.sharedProp.current_equipment && this.sharedProp.current_datetime; then thenBlockCurrentObj else elseBlockCurrentObj"></span>
 
-  <br/><hr class="dashed" /><br/>
+<ng-template #thenBlockCurrentObj>
+  <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2 class="form-title text-center underline-fail-alt">Resumen:</h2>
+    <div fxLayout="row" fxLayoutAlign="start start">
 
-  <h3>Current Imaging:</h3>
-  {{ this.sharedProp.current_imaging | json }}
+      <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+        <h3 class="details-title">Datos de la cita a coordinar:</h3>
+        <div class="current-wrap">
+          <!-- appointment_date -->
+          <div class="current-info divider-alt">
+            <small>Fecha de cita:</small><br/>
+            <span class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
+          </div>
 
-  <br/><hr class="dashed" /><br/>
+          <!-- appointment_start -->
+          <div class="current-info divider-alt">
+            <small>Hora de inicio:</small><br/>
+            <span class="appointment-firts">{{ this.sharedProp.current_datetime.startHours + ':' + this.sharedProp.current_datetime.startMinutes }}</span>
+          </div>
 
-  <h3>Current Modality:</h3>
-  {{ this.sharedProp.current_modality }}
+          <!-- appointment_end -->
+          <div class="current-info divider-alt">
+            <small>Hora de fin:</small><br/>
+            <span class="appointment-firts">{{ this.sharedProp.current_datetime.endHours + ':' + this.sharedProp.current_datetime.endMinutes }}</span>
+          </div>
 
-  <br/><hr class="dashed" /><br/>
+          <!-- equipment -->
+          <div class="current-info text-center divider-alt">
+            <small>Equipamiento:</small><br/>
+            <span class="badge-accent" matTooltip="{{ 'AET: ' + this.sharedProp.current_equipment.details.AET }}">
+              <span>{{ this.sharedProp.current_equipment.details.name }}</span>
+            </span>
+          </div>
 
-  <h3>Current Procedure:</h3>
-  {{ this.sharedProp.current_procedure | json }}
+          <!-- urgency -->
+          <div class="current-info text-center">
+            <small>Urgencia:</small><br/>
+            <div *ngIf="this.sharedProp.current_urgency; then thenBlockUrgency else elseBlockUrgency"></div>
+            <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+            <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          </div>
 
-  <br/><hr class="dashed" /><br/>
+          <div class="clear"></div>
+        </div>
 
-  <h3>Current Slot:</h3>
-  {{ this.sharedProp.current_slot }}
+        <hr class="dashed" /><br/>
 
-  <br/><hr class="dashed" /><br/>
+        <h3 class="details-title">Preparación previa:</h3>
+        <div class="current-wrap preparation-wrap">
+          <!-- preparation -->
+          <div class="current-info">
+            <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
+          </div>
 
-  <h3>Current Equipment:</h3>
-  {{ this.sharedProp.current_equipment | json }}
+          <div class="clear"></div>
+        </div>
+      </div> <!-- end fxLayout wrapper -->
 
-  <br/><hr class="dashed" /><br/>
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <span *ngIf="this.sharedProp.current_patient">
+          <span *ngIf="this.sharedProp.current_patient.person">
+            <h3 class="details-title">Datos del paciente:</h3>
+            <div class="current-wrap">
+              <!-- documents -->
+              <div class="current-info">
+                <small>Documento/s:</small><br/>
+                <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                    <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                  </span>
+                  <br/>
+                </span>
+              </div>
 
-  <h3>Current Datetime (Start & End):</h3>
-  {{ this.sharedProp.current_datetime | json }}
+              <!-- names -->
+              <div class="current-info">
+                <small>Nombre completo:</small><br/>
+                <span class="current-firts">
+                  <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
 
-  <br/><hr class="dashed" /><br/>
+                  <span *ngIf="this.sharedProp.current_patient.person.name_02">
+                    <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
+                  </span>
 
-  <h3>Current Urgency:</h3>
-  {{ this.sharedProp.current_urgency }}
-</div>
+                  <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
+
+                  <span *ngIf="this.sharedProp.current_patient.person.surname_02">
+                    <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
+                  </span>
+                </span>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="current-wrap">
+              <!-- birth_date -->
+              <div class="current-info">
+                <small>Fecha de nacimiento:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+              </div>
+
+              <!-- genre -->
+              <div class="current-info text-center">
+                <small>Género:</small><br/>
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                  <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                  <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                  <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                </span>
+              </div>
+
+              <!-- status -->
+              <div class="current-info text-center">
+                <small>Estado:</small><br/>
+                <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+          </span>
+        </span>
+
+        <hr class="dashed"/><br/>
+
+        <span *ngIf="this.sharedProp.current_imaging">
+          <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
+            <h3 class="details-title">Realización del estudio:</h3>
+
+            <div class="current-wrap">
+              <!-- imaging and modality -->
+              <div class="current-info">
+                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="current-wrap">
+              <!-- procedure -->
+              <div class="current-info text-center">
+                <small>Procedimiento a realizar:</small><br/>
+                <span class="badge-alt">
+                  <span>{{ this.sharedProp.current_procedure.name }}</span>
+                </span>
+              </div>
+
+              <!-- modality -->
+              <div class="current-info text-center">
+                <small>Modalidad:</small><br/>
+                <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
+                  <span>{{ this.sharedProp.current_modality.code_value }}</span>
+                </span>
+              </div>
+
+              <!-- informed_consent -->
+              <div class="current-info text-center">
+                <small>Requiere consentimiento informado:</small><br/>
+                <span *ngIf="this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="SI">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+          </span>
+        </span>
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+
+    <hr class="dashed"/>
+
+    <h2 class="form-title text-center underline-ok-alt">Detalles de la cita</h2>
+    <div fxLayout="row" fxLayoutAlign="start start">
+
+      <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+        Referring<br/>
+        Reporting<br/>
+
+        <br/><hr class="dashed" /><br/>
+
+        <h4>Anamnesis:</h4>
+        <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+
+        <br/><hr class="dashed" /><br/>
+
+        <h4>Indicaciones:</h4>
+        <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+
+        <br/><hr class="dashed" /><br/>
+
+        <h4>Informar antes de:</h4>
+        <mat-form-field appearance="fill" class="large" (click)="picker.open()">
+          <mat-label>Seleccione fecha</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+        </mat-form-field>
+
+        <br/><br/>Current address<br/><br/>
+
+        <h4>Contacto:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Contacto</mat-label>
+          <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+        </mat-form-field>
+
+        <br/><br/>Contrast<br/>
+
+        <br/><hr class="dashed" /><br/>
+
+        <h4>Estado:</h4>
+        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+          <mat-radio-button value="true">Activo</mat-radio-button>
+          <mat-radio-button value="false">Inactivo</mat-radio-button>
+        </mat-radio-group>
+
+        <br/><br/>
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        Private health<br/>
+        Consents<br/>
+        Outpatient | Inpatient<br/>
+        Attached files<br/>
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+      <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="submit" color="primary">GUARDAR</button>
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+
+  </form>
+</ng-template>
+
+<ng-template #elseBlockCurrentObj>
+  <form class="form-element text-center">
+    <br/>
+    <mat-icon class="search-off-icon">search_off</mat-icon>
+
+    <br/><br/><hr class="dashed" /><br/>
+    <h4>No se hallaron datos suficientes para poder continuar (paciente, servicio, modalidad, procedimiento, turno y/o fechas de cita).</h4>
+
+    <button mat-flat-button type="button" (click)="onCancel();">VOLVER AL LISTADO</button>
+
+    <br/><br/>
+  </form>
+</ng-template>

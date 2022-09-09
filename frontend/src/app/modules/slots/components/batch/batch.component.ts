@@ -55,15 +55,10 @@ export class BatchComponent implements OnInit {
     private sharedFunctions: SharedFunctionsService,
     private apiClient: ApiClientService
   ){
-    //Get current date:
-    const today = new Date();
-    const currentYear   = today.getFullYear();
-    const currentMonth  = today.getMonth();
-    const currentDay    = today.getDate();
-
     //Set min and max dates (Datepicker):
-    this.minDate = new Date(currentYear - 0, currentMonth, currentDay);
-    this.maxDate = new Date(currentYear + 1, 11, 31);
+    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
+    this.minDate = dateRangeLimit.minDate;
+    this.maxDate = dateRangeLimit.maxDate;
 
     //Find references:
     this.findReferences();

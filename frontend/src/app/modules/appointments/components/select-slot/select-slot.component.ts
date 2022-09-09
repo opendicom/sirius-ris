@@ -68,15 +68,19 @@ export class SelectSlotComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ) {
-    //Get current date:
-    const today = new Date();
-    const currentYear   = today.getFullYear();
-    const currentMonth  = today.getMonth();
-    const currentDay    = today.getDate();
+    //--------------------------------------------------------------------------------------------------------------------//
+    // TEST:
+    //--------------------------------------------------------------------------------------------------------------------//
+    this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
+    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
+    this.sharedProp.current_modality = "6267e558bb4e2e4f54931fa7";
+    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
+    //--------------------------------------------------------------------------------------------------------------------//
 
     //Set min and max dates (Datepicker):
-    this.minDate = new Date(currentYear - 0, currentMonth, currentDay);
-    this.maxDate = new Date(currentYear + 1, 11, 31);
+    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
+    this.minDate = dateRangeLimit.minDate;
+    this.maxDate = dateRangeLimit.maxDate;
 
     //Find references:
     this.findReferences();
@@ -164,167 +168,170 @@ export class SelectSlotComponent implements OnInit {
   }
 
   findSlots(urgency: boolean = false, first_search: boolean = false){
-    //Clear FullCalendar:
-    if(first_search == false){
-      this.calendarComponent.getApi().removeAllEvents();
-      this.calendarOptions['resources'] = [];
+    //Check current imaging and current procedure:
+    if(this.sharedProp.current_imaging !== undefined && this.sharedProp.current_procedure !== undefined){
+      //Clear FullCalendar:
+      if(first_search == false){
+        this.calendarComponent.getApi().removeAllEvents();
+        this.calendarOptions['resources'] = [];
 
-      //Clear selected elements:
-      this.clearSelectedElements();
-    }
-    //Initialize Slot Background color:
-    let slotBackgroundColor = '#05ff9f49';
+        //Clear selected elements:
+        this.clearSelectedElements();
+      }
+      //Initialize Slot Background color:
+      let slotBackgroundColor = '#05ff9f49';
 
-    //Check urgency:
-    if(urgency){
-      slotBackgroundColor = '#f44336a1'
-    }
+      //Check urgency:
+      if(urgency){
+        slotBackgroundColor = '#f44336a1'
+      }
 
-    //Set max date filter format:
-    let minDateString = this.minDate.getFullYear() + '-' + this.minDate.toLocaleString("es-AR", { month: "2-digit" }) + '-' + this.minDate.toLocaleString("es-AR", { day: "2-digit" }) + 'T00:00:00.000Z';
-    const maxDateString = this.maxDate.getFullYear() + '-12-31T00:00:00.000Z'
+      //Set max date filter format:
+      let minDateString = this.minDate.getFullYear() + '-' + this.minDate.toLocaleString("es-AR", { month: "2-digit" }) + '-' + this.minDate.toLocaleString("es-AR", { day: "2-digit" }) + 'T00:00:00.000Z';
+      const maxDateString = this.maxDate.getFullYear() + '-12-31T00:00:00.000Z'
 
-    //Set slots params (Background events):
-    this.slotsParams = {
-      //Filter:
-      'filter[and][domain.organization]': this.sharedProp.current_imaging.organization._id,
-      'filter[and][domain.branch]': this.sharedProp.current_imaging.branch._id,
-      'filter[and][domain.service]': this.sharedProp.current_imaging.service._id,
-      'filter[and][start][$gte]': minDateString,
-      'filter[and][end][$lte]': maxDateString,
-      'filter[and][urgency]': urgency,
+      //Set slots params (Background events):
+      this.slotsParams = {
+        //Filter:
+        'filter[and][domain.organization]': this.sharedProp.current_imaging.organization._id,
+        'filter[and][domain.branch]': this.sharedProp.current_imaging.branch._id,
+        'filter[and][domain.service]': this.sharedProp.current_imaging.service._id,
+        'filter[and][start][$gte]': minDateString,
+        'filter[and][end][$lte]': maxDateString,
+        'filter[and][urgency]': urgency,
 
-      //Projection:
-      'proj[start]': 1,
-      'proj[end]': 1,
-      'proj[urgency]': 1,
-      'proj[equipment._id]': 1,
-      'proj[equipment.name]': 1
-    };
+        //Projection:
+        'proj[start]': 1,
+        'proj[end]': 1,
+        'proj[urgency]': 1,
+        'proj[equipment._id]': 1,
+        'proj[equipment.name]': 1
+      };
 
-    //Set appointments params (Events):
-    this.appointmentsParams = {
-      //Filter:
-      'filter[and][imaging.organization._id]': this.sharedProp.current_imaging.organization._id,
-      'filter[and][imaging.branch._id]': this.sharedProp.current_imaging.branch._id,
-      'filter[and][imaging.service._id]': this.sharedProp.current_imaging.service._id,
-      'filter[and][flow_state]': 'A01', //Coordinated appointments
-      'filter[and][status]': true,
-      'filter[and][start][$gte]': minDateString,
-      'filter[and][end][$lte]': maxDateString,
+      //Set appointments params (Events):
+      this.appointmentsParams = {
+        //Filter:
+        'filter[and][imaging.organization._id]': this.sharedProp.current_imaging.organization._id,
+        'filter[and][imaging.branch._id]': this.sharedProp.current_imaging.branch._id,
+        'filter[and][imaging.service._id]': this.sharedProp.current_imaging.service._id,
+        'filter[and][flow_state]': 'A01', //Coordinated appointments
+        'filter[and][status]': true,
+        'filter[and][start][$gte]': minDateString,
+        'filter[and][end][$lte]': maxDateString,
 
-      //Projection:
-      'proj[start]': 1,
-      'proj[end]': 1,
-      'proj[urgency]': 1,
-      'proj[outpatient]': 1,
-      'proj[inpatient]': 1,
-      'proj[procedure.name]': 1,
-      'proj[slot.equipment._id]':1
-    };
+        //Projection:
+        'proj[start]': 1,
+        'proj[end]': 1,
+        'proj[urgency]': 1,
+        'proj[outpatient]': 1,
+        'proj[inpatient]': 1,
+        'proj[procedure.name]': 1,
+        'proj[slot.equipment._id]':1
+      };
 
-    //Create slots observable slots:
-    const obsSlots = this.sharedFunctions.findRxJS('slots', this.slotsParams).pipe(
-      //Get equipments (resources) and slots (background events):
-      map(async (res: any) => {
+      //Create slots observable slots:
+      const obsSlots = this.sharedFunctions.findRxJS('slots', this.slotsParams).pipe(
+        //Get equipments (resources) and slots (background events):
+        map(async (res: any) => {
 
-        //Check data:
-        if(res.data){
-          if(res.data.length > 0){
-            //Create registered equipments array (Duplicated control):
-            let registeredEquipments: string[] = [];
+          //Check data:
+          if(res.data){
+            if(res.data.length > 0){
+              //Create registered equipments array (Duplicated control):
+              let registeredEquipments: string[] = [];
 
-            //Set currentEquipments - FullCalendar Resources (await foreach):
-            await Promise.all(Object.keys(res.data).map(async (key) => {
+              //Set currentEquipments - FullCalendar Resources (await foreach):
+              await Promise.all(Object.keys(res.data).map(async (key) => {
 
-              //Check duplicates:
-              if(!registeredEquipments.includes(res.data[key].equipment._id)){
+                //Check duplicates:
+                if(!registeredEquipments.includes(res.data[key].equipment._id)){
 
-                //Get duration from current procedure equipments:
-                await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((keyProcedure) => {
-                  if(res.data[key].equipment._id === this.sharedProp.current_procedure.equipments[keyProcedure].fk_equipment){
+                  //Get duration from current procedure equipments:
+                  await Promise.all(Object.keys(this.sharedProp.current_procedure.equipments).map((keyProcedure) => {
+                    if(res.data[key].equipment._id === this.sharedProp.current_procedure.equipments[keyProcedure].fk_equipment){
 
-                    //Add resouces in calendar (Equipments):
-                    this.calendarComponent.getApi().addResource({
-                      id: res.data[key].equipment._id,
-                      title: res.data[key].equipment.name + ' | ' + this.sharedProp.current_procedure.equipments[keyProcedure].duration + ' min.'
-                    });
-                  }
-                }));
-              }
+                      //Add resouces in calendar (Equipments):
+                      this.calendarComponent.getApi().addResource({
+                        id: res.data[key].equipment._id,
+                        title: res.data[key].equipment.name + ' | ' + this.sharedProp.current_procedure.equipments[keyProcedure].duration + ' min.'
+                      });
+                    }
+                  }));
+                }
 
-              //Register equipment:
-              registeredEquipments.push(res.data[key].equipment._id);
+                //Register equipment:
+                registeredEquipments.push(res.data[key].equipment._id);
 
-              //Register slots _id (IN Appointment condition):
-              this.appointmentsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
+                //Register slots _id (IN Appointment condition):
+                this.appointmentsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
 
-              //Add background events in calendar (Slots):
-              this.calendarComponent.getApi().addEvent({
-                classNames: res.data[key]._id,            //Add slot _id in classes (Future set fk_slot)
-                resourceId: res.data[key].equipment._id,
-                start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
-                end: res.data[key].end.slice(0, -5),      //Remove last 5 chars '.000Z'
-                display: 'background',
-                backgroundColor: slotBackgroundColor
-              });
+                //Add background events in calendar (Slots):
+                this.calendarComponent.getApi().addEvent({
+                  classNames: res.data[key]._id,            //Add slot _id in classes (Future set fk_slot)
+                  resourceId: res.data[key].equipment._id,
+                  start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
+                  end: res.data[key].end.slice(0, -5),      //Remove last 5 chars '.000Z'
+                  display: 'background',
+                  backgroundColor: slotBackgroundColor
+                });
 
-            }));
+              }));
+            }
           }
-        }
 
-        //Return response:
-        return res;
-      }),
+          //Return response:
+          return res;
+        }),
 
-      //Filter that only success cases continue:
-      filter((res: any) => res.success !== true),
+        //Filter that only success cases continue:
+        filter((res: any) => res.success !== true),
 
-      //Search appointments - FullCalendar events (Return observable):
-      mergeMap(() => this.sharedFunctions.findRxJS('appointments', this.appointmentsParams)),
+        //Search appointments - FullCalendar events (Return observable):
+        mergeMap(() => this.sharedFunctions.findRxJS('appointments', this.appointmentsParams)),
 
-      //Check and set Events:
-      map(async (res: any) => {
-        //Check data:
-        if(res.data){
-          if(res.data.length > 0){
-            //Set currentAppointments - FullCalendar Events (await foreach):
-            await Promise.all(Object.keys(res.data).map((key) => {
+        //Check and set Events:
+        map(async (res: any) => {
+          //Check data:
+          if(res.data){
+            if(res.data.length > 0){
+              //Set currentAppointments - FullCalendar Events (await foreach):
+              await Promise.all(Object.keys(res.data).map((key) => {
 
-              //Set event colors by default configuration (Enviroment):
-              let backgroundColor = FullCalendarOptions.eventColor;
-              let borderColor = FullCalendarOptions.eventBorderColor;
-              let textColor = FullCalendarOptions.eventTextColor;
+                //Set event colors by default configuration (Enviroment):
+                let backgroundColor = FullCalendarOptions.eventColor;
+                let borderColor = FullCalendarOptions.eventBorderColor;
+                let textColor = FullCalendarOptions.eventTextColor;
 
-              //Set event colors by default configuration (Urgency or not):
-              if(res.data[key].urgency){
-                backgroundColor = '#f44336';
-                borderColor = '#f7594d';
-                textColor = '#fff'
-              }
+                //Set event colors by default configuration (Urgency or not):
+                if(res.data[key].urgency){
+                  backgroundColor = '#f44336';
+                  borderColor = '#f7594d';
+                  textColor = '#fff'
+                }
 
-              //Add event in calendar (Appointment):
-              this.calendarComponent.getApi().addEvent({
-                id: res.data[key]._id,
-                resourceId: res.data[key].slot.equipment._id,
-                title: res.data[key].procedure.name,
-                start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
-                end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
-                backgroundColor: backgroundColor,
-                borderColor: borderColor,
-                textColor: textColor
-              });
-            }));
+                //Add event in calendar (Appointment):
+                this.calendarComponent.getApi().addEvent({
+                  id: res.data[key]._id,
+                  resourceId: res.data[key].slot.equipment._id,
+                  title: res.data[key].procedure.name,
+                  start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
+                  end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
+                  backgroundColor: backgroundColor,
+                  borderColor: borderColor,
+                  textColor: textColor
+                });
+              }));
+            }
           }
-        }
 
-        //Return response:
-        return res;
-      })
-    );
+          //Return response:
+          return res;
+        })
+      );
 
-    //Observe content (Subscribe):
-    obsSlots.subscribe();
+      //Observe content (Subscribe):
+      obsSlots.subscribe();
+    }
   }
 
   onCheckUrgency(event: any){
@@ -457,22 +464,42 @@ export class SelectSlotComponent implements OnInit {
     this.sharedProp.current_equipment = this.selectedEquipment;
     this.sharedProp.current_slot = this.selectedSlot;
     this.sharedProp.current_datetime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+    this.sharedProp.current_modality = this.currentModality; //Replace current modality (All information from the modality).
 
     //Redirect to appointments form:
     this.router.navigate(['/appointments/form/insert/0']); //Zero indicates empty :id (Activated Route) [content is ignored]
   }
 
   findReferences(){
-    //Initialize params:
-    const params = {
-      'filter[_id]': this.sharedProp.current_modality,
-      'filter[status]': true
-    };
+    //Initialize _id param:
+    let _id = undefined;
 
-    //Find organizations:
-    this.sharedFunctions.find('modalities', params, (res) => {
-      this.currentModality = res.data[0];
-    });
+    //Check current modality:
+    if(this.sharedProp.current_modality !== undefined){
+      //Check if current modality is a valid ObjectId (Default case):
+      if(regexObjectId.test(this.sharedProp.current_modality)){
+        _id = this.sharedProp.current_modality;
+      //Current modality form component format (Back in browser case):
+      } else if(regexObjectId.test(this.sharedProp.current_modality._id)){
+        _id = this.sharedProp.current_modality._id;
+      }
+    }
+
+    if(_id !== undefined && this.sharedProp.current_modality !== undefined){
+      //Set params:
+      const params = {
+        'filter[_id]': _id,
+        'filter[status]': true
+      };
+
+      //Find organizations:
+      this.sharedFunctions.find('modalities', params, (res) => {
+        this.currentModality = res.data[0];
+      });
+    } else {
+      //Clear all selected elemets (Force #elseBlockCurrentObj screen):
+      this.clearSelectedElements();
+    }
   }
 
   addZero(i: any) {

@@ -16,7 +16,7 @@ const subSchemaImaging = new mongoose.Schema({
 //Define Referring Sub-Schema:
 const subSchemaReferring = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
-    branch:         { type: mongoose.ObjectId, required: true },
+    branch:         { type: mongoose.ObjectId },
     service:        { type: mongoose.ObjectId },
     fk_referring:   { type: mongoose.ObjectId },
     accno:          { type: String }
@@ -28,7 +28,7 @@ const subSchemaReporting = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
     branch:         { type: mongoose.ObjectId, required: true },
     service:        { type: mongoose.ObjectId, required: true },
-    fk_reporting:   { type: [mongoose.ObjectId], required: true }
+    fk_reporting:   { type: [mongoose.ObjectId] } //Not required | all doctors with domain reporting.
 },
 { _id : false });
 
@@ -200,6 +200,7 @@ const Validator = [
         .withMessage('El parametro referring.organization NO es un ID MongoDB válido.'),
     
     body('referring.branch')
+        .optional()
         .trim()
         .isMongoId()
         .withMessage('El parametro referring.branch NO es un ID MongoDB válido.'),
@@ -217,8 +218,8 @@ const Validator = [
         .withMessage('El parametro fk_referring NO es un ID MongoDB válido.'),
 
     body('referring.accno')
-        .trim()
         .optional()
+        .trim()
         .isLength({ min: 3, max: 30 })
         .withMessage('El parametro referring accno ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     //----------------------------------------------------------------------------------------------------------------//
@@ -242,8 +243,8 @@ const Validator = [
         .withMessage('El parametro reporting.service NO es un ID MongoDB válido.'),
 
     body('reporting.fk_reporting')
-        .isArray()
-        .withMessage('El parametro reporting.fk_reporting es requerido.'),
+        .optional()
+        .isArray(),
 
     body('reporting.fk_reporting.*')
         .trim()

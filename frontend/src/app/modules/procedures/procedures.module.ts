@@ -21,11 +21,13 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
   imports: [
     CommonModule,
     ProceduresRoutingModule,
-    CKEditorModule,
     SharedModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    //CKEditor:
+    CKEditorModule,
   ]
 })
 export class ProceduresModule { }

@@ -1,7 +1,7 @@
 .main-toolbar{
-  position: sticky;
-  position: -webkit-sticky; /* For macOS/iOS Safari */
-  top: 0;                   /* Sets the sticky toolbar to be on top */
+  position: fixed;
+  position: -webkit-fixed;  /* For macOS/iOS Safari */
+  top: 0;                   /* Sets the fixed toolbar to be on top */
   z-index: 1000;            /* Ensure that your app's content doesn't overlap the toolbar */
 
   color: #ddd;
@@ -33,5 +33,5 @@
 }
 
 .main-content {
-  padding: 12px;
+  padding: 64px 12px 12px 12px;
 }

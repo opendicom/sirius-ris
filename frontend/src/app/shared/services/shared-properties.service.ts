@@ -34,7 +34,7 @@ export class SharedPropertiesService {
   //Current operation objects:
   public current_patient    : any;
   public current_imaging    : any;
-  public current_modality   : string = '';
+  public current_modality   : any;
   public current_procedure  : any;
   public current_slot       : any;
   public current_equipment  : any;

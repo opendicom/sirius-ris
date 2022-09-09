@@ -635,4 +635,21 @@ export class SharedFunctionsService {
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET DATE RANGE LIMIT:
+  //--------------------------------------------------------------------------------------------------------------------//
+  setDateRangeLimit(date: Date){
+    const currentYear   = date.getFullYear();
+    const currentMonth  = date.getMonth();
+    const currentDay    = date.getDate();
+
+    //Set min and max dates (Datepicker):
+    return {
+      minDate: new Date(currentYear - 0, currentMonth, currentDay),
+      maxDate: new Date(currentYear + 1, 11, 31)
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

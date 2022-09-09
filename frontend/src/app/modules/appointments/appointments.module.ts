@@ -13,6 +13,9 @@ import { CheckPersonComponent } from '@modules/appointments/components/check-per
 import { SelectProcedureComponent } from '@modules/appointments/components/select-procedure/select-procedure.component';
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
 
+// Import CKEditor Module:
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 //---------------------------------------------------------------------------------------------------------------------------//
 // FullCalendar:
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -45,7 +48,10 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
 
     //FullCalendar:
-    FullCalendarModule
+    FullCalendarModule,
+
+    //CKEditor:
+    CKEditorModule,
   ]
 })
 export class AppointmentsModule { }
