@@ -1,6 +1,11 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // ENVIROMENT:
 //--------------------------------------------------------------------------------------------------------------------//
+// Set Enviroment:
+export const environment = {
+  production: false
+};
+
 // Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
@@ -28,17 +33,17 @@ export const structOID =
 // 72771 Sistemas de Información de Laboratorios (sinónimos asociados: SIL, LIS, LaboratoryInformationSystems)
 //--------------------------------------------------------------------------------------------------------------------//
 
-// Set backend API server params:
-export const environment = {
-  production: false,
-  backend_url: 'http://localhost:3001/',
-};
-
 // Set app default settings:
 export const app_setting = {
-  default_country: '858',
-  default_doc_type: '1',
+  backend_url: 'http://localhost:3001/',
   secret_number: 1618,  //Used on simple crypt
+  default_country: '858',
+  default_country_isoCode: 'UY',
+  default_country_name: 'Uruguay',
+  default_state_isoCode: 'MO',
+  default_state_name: 'Montevideo',
+  default_city_name: 'Montevideo',
+  default_doc_type: '1'
 };
 
 // Set self management params:

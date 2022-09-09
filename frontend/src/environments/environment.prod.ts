@@ -1,21 +1,54 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ENVIROMENT PROD:
+// ENVIROMENT PRODUCTION:
 //--------------------------------------------------------------------------------------------------------------------//
-//Set ObjectId regular expression to validate ObjectIds:
+// Set Enviroment:
+export const environment = {
+  production: true
+};
+
+// Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
-// Set backend API server params:
-export const environment = {
-  production: true,
-  backend_url: 'http://localhost:3001/',
-};
+//--------------------------------------------------------------------------------------------------------------------//
+// Set OID Structure base:
+// Reference in UY:
+// https://centrodeconocimiento.agesic.gub.uy/documents/207224/425682/Gu%C3%ADa+para+la+gesti%C3%B3n+de+OID.pdf/293df376-77d5-71d3-9490-ede702bbb583
+export const structOID =
+  '2.16.858.'         + // Base UNAOID UY.
+  '2.'                + // Identifica Objeto ( 0: Organizaciones, 1: Personas, 2: Objetos) UY.
+  '1xxxxxxx.'         + // ID Institución
+  '72769.'            + // ID PACS
+  'aaaammddhhmmss.'   + // Timestamp
+  'xxxxxx.'           + // Consecutivo interno
+  '8.'                + // PACS de ASSE
+  ''
+;
+// ID PACS:
+// 67430 Historia Clínica Electrónica
+// 71867 Repositorio de documentos electrónicos
+// 72591 Modelo de Plantilla Digital
+// 72768 Sistemas de Información de Salud (HIS, SIS,HealthInformationSystems)
+// 72769 Sistemas de Archivo y Transmisión de Imágenes (PACS, SATI, Picture And CommunicationInformationSystems)
+// 72770 Sistemas de Información Imagenológica (SII, RIS, IIS, ImagenologicalInformationSystem, RadiologicalInformationSystems)
+// 72771 Sistemas de Información de Laboratorios (sinónimos asociados: SIL, LIS, LaboratoryInformationSystems)
+//--------------------------------------------------------------------------------------------------------------------//
 
 // Set app default settings:
 export const app_setting = {
-  default_country: '858',
-  default_doc_type: '1',
+  backend_url: 'http://localhost:3001/',
   secret_number: 1618,  //Used on simple crypt
+  default_country: '858',
+  default_country_isoCode: 'UY',
+  default_state_isoCode: 'MO',
+  default_city_isoCode: 'MO',
+  default_doc_type: '1'
 };
+
+// Set self management params:
+export const self_management = {
+  referring: false,
+  reporting: true
+}
 
 // Document types:
 export const document_types = {
@@ -26,6 +59,7 @@ export const document_types = {
   5: 'Permiso de residencia',
   6: 'Visa',
   7: 'Documento transitorio',
+  //100: Anonymous document (reserved but not listed).
 };
 
 // User Roles:
@@ -71,15 +105,9 @@ export const default_page_sizes = [10, 25, 50, 100];
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Área administración',
-  'A02': 'Retenido por administración',
-  'A03': 'Área médica',
-  'A04': 'Retenido por médico',
-  'A05': 'Área de coordinación',
-  'A06': 'Retenido por coordinación',
-  'A07': 'Coordinado',
-  'A08': 'Cancelado',
-  'A09': 'Para eliminar'
+  'A01': 'Coordinado',
+  'A02': 'Cancelado',
+  'A03': 'Para eliminar'
 };
 
 // Studies flow states:
@@ -134,6 +162,52 @@ export const CKEditorConfig = {
   },
 
   language: { ui: 'es', content: 'es' }
+};
+
+// Default FullCalendar configuration:
+export const FullCalendarOptions: any = {
+  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+  timeZone: 'UTC',
+  allDaySlot: false,
+  initialView: 'resourceTimeGridDay',
+  slotLabelFormat: {
+    hour: '2-digit',
+    minute: '2-digit',
+    meridiem: false
+  },
+  eventTimeFormat: {
+    hour: '2-digit',
+    minute: '2-digit',
+    meridiem: false
+  },
+  height: '650px',
+  slotMinTime: '08:00:00',
+  slotMaxTime: '18:00:00',
+  slotDuration: '00:10:00',
+  eventBorderColor: '#8244ee',
+  eventColor: '#6130b6',
+  eventTextColor: '#fff',
+  headerToolbar: {
+    start: 'datepicker today prev,next',
+    center: 'title',
+    end: ''
+  },
+  resources: [],
+  events: []
+};
+
+// Inpatient types:
+export const inpatient_types = {
+  1 :'Cuidados intensivos',
+  2 :'Emergencia',
+  3 :'Internación'
+};
+
+// Anonymous patient document case:
+export const anonymous_doc = {
+  doc_country_code: '001',  // Available in ISO-3166.
+  document_types: 100,      // Reserved in document_types for this case.
+  description: 'Anónimo'
 };
 
 // Country codes (ISO-3166):

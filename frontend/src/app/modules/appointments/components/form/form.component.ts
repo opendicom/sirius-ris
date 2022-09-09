@@ -4,10 +4,11 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router } from '@angular/router';                                                   // Router
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import {                                                                                    // Enviroments
+  app_setting,
   regexObjectId,
   ISO_3166,
   document_types,
@@ -17,6 +18,8 @@ import {                                                                        
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
+import { Country, State, City }  from 'country-state-city';                                 // Country State City
+import { ICountry, IState, ICity } from 'country-state-city'                                // Country State City Interfaces
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -25,17 +28,24 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  //Create CKEditor component and configure them:
-  public customEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
-
   //Set component properties:
+  public settings       : any = app_setting;
   public country_codes  : any = ISO_3166;
   public document_types : any = document_types;
   public gender_types   : any = gender_types;
-
-  //Set organization self management:
   public selfManagement : any = self_management;
+
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
+
+  //Get Country State City information (Default settings):
+  public allCountries   : any = Country.getAllCountries();
+  public currentStates  : any = State.getStatesOfCountry(this.settings.default_country_isoCode);
+  public currentCities  : any = City.getCitiesOfState(this.settings.default_country_isoCode, this.settings.default_state_isoCode);
+
+  //Create CKEditor component and configure them:
+  public customEditor = customBuildEditor;
+  public editorConfig = CKEditorConfig;
 
   //Min and max dates:
   public minDate: Date;
@@ -68,6 +78,8 @@ export class FormComponent implements OnInit {
     this.sharedProp.current_datetime = { "dateYear": 2022, "dateMonth": "09", "dateDay": "08", "startHours": "09", "startMinutes": 30, "endHours": 10, "endMinutes": 10, "start": "2022-09-08T09:30:00", "end": "2022-09-08T10:10:00" };
     this.sharedProp.current_urgency = false;
     //--------------------------------------------------------------------------------------------------------------------//
+    //Pass Service Method:
+    this.getKeys = this.sharedFunctions.getKeys;
 
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
@@ -94,12 +106,33 @@ export class FormComponent implements OnInit {
       anamnesis     : [ '', [Validators.required] ],
       indications   : [ '', [Validators.required] ],
       report_before : [ '', [Validators.required] ],
+      country       : [ this.settings.default_country_name, [Validators.required] ],
+      state         : [ this.settings.default_state_name, [Validators.required] ],
+      city          : [ this.settings.default_city_name, [Validators.required] ],
+      neighborhood  : [ '', [Validators.required] ],
+      address       : [ '', [Validators.required] ],
       contact       : [ '', [Validators.required] ],
       status        : [ 'true' ],
     });
   }
 
   ngOnInit(): void {
+  }
+
+  setCurrentStates(country_isoCode: string){
+    //Set current states:
+    this.currentStates = State.getStatesOfCountry(country_isoCode);
+
+    //Disable category input:
+    this.form.controls['city'].disable();
+  }
+
+  setCurrentCities(country_isoCode: string, state_isoCode: string){
+    //Set current cities:
+    this.currentCities = City.getCitiesOfState(country_isoCode, state_isoCode);
+
+    //Disable category input:
+    this.form.controls['city'].enable();
   }
 
   onSubmit(){}

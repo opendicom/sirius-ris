@@ -210,7 +210,88 @@
           <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
         </mat-form-field>
 
-        <br/><br/>Current address<br/><br/>
+        <br/><hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Domicilio actual del paciente:</h3>
+        <br/>
+
+        <h4>País:</h4>
+        <span *ngIf="getKeys(allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
+
+        <ng-template #thenBlockCountries>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>País</mat-label>
+            <mat-select formControlName="country" placeholder="Seleccione el país">
+              <div *ngFor="let currentCountry of allCountries">
+                <mat-option (click)="setCurrentStates(currentCountry.isoCode)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </ng-template>
+
+        <ng-template #elseBlockCountries>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>País</mat-label>
+            <input matInput type="text" formControlName="country" placeholder="Ingrese el país">
+          </mat-form-field>
+        </ng-template>
+
+
+        <h4>Estado | Provincia | Departamento:</h4>
+        <span *ngIf="getKeys(currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
+
+        <ng-template #thenBlockStates>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Estado | Provincia | Departamento</mat-label>
+            <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
+              <div *ngFor="let currentState of currentStates">
+                <mat-option (click)="setCurrentCities(currentState.countryCode, currentState.isoCode)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </ng-template>
+
+        <ng-template #elseBlockStates>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Estado | Provincia | Departamento</mat-label>
+            <input matInput type="text" formControlName="state" placeholder="Ingrese el Estado | Provincia | Departamento">
+          </mat-form-field>
+        </ng-template>
+
+
+        <h4>Ciudad:</h4>
+        <span *ngIf="getKeys(currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
+
+        <ng-template #thenBlockCities>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Ciudad</mat-label>
+            <mat-select formControlName="city" placeholder="Seleccione la ciudad">
+              <div *ngFor="let currentCity of currentCities">
+                <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </ng-template>
+
+        <ng-template #elseBlockCities>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Ciudad</mat-label>
+            <input matInput type="text" formControlName="city" placeholder="Ingrese la ciudad">
+          </mat-form-field>
+        </ng-template>
+
+
+        <h4>Barrio | Zona:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Barrio | Zona</mat-label>
+          <input matInput type="text" formControlName="neighborhood" placeholder="Ingrese el Barrio | Zona del domicilio">
+        </mat-form-field>
+
+        <h4>Dirección del domicilio:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Dirección</mat-label>
+          <input matInput type="text" formControlName="address" placeholder="Ingrese la dirección completa del domicilio">
+        </mat-form-field>
 
         <h4>Contacto:</h4>
         <mat-form-field appearance="fill" class="large">
@@ -218,7 +299,9 @@
           <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
         </mat-form-field>
 
-        <br/><br/>Contrast<br/>
+        <br/><hr class="dashed" /><br/>
+
+        Contrast<br/>
 
         <br/><hr class="dashed" /><br/>
 

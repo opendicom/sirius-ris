@@ -19,6 +19,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 //---------------------------------------------------------------------------------------------------------------------------//
 // FullCalendar:
 //---------------------------------------------------------------------------------------------------------------------------//
+//Import modules and plugins:
 import { FullCalendarModule } from '@fullcalendar/angular';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -29,7 +30,6 @@ FullCalendarModule.registerPlugins([
   interactionPlugin
 ]);
 //---------------------------------------------------------------------------------------------------------------------------//
-
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ FullCalendarModule.registerPlugins([
     FullCalendarModule,
 
     //CKEditor:
-    CKEditorModule,
+    CKEditorModule
   ]
 })
 export class AppointmentsModule { }
