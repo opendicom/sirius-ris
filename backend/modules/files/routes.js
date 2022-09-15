@@ -2,8 +2,9 @@
 // FILES ROUTES:
 // In this file the routes of the module are declared.
 //--------------------------------------------------------------------------------------------------------------------//
-//Import external modules
+//Import external modules:
 const express = require('express');
+const multer = require('multer');
 
 //Import app modules:
 const mainServices  = require('../../main.services');                           // Main services
@@ -14,8 +15,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const findHandler           = require('./handlers/find');
-const saveHandler           = require('./handlers/save');
+const findHandler       = require('./handlers/find');
+const saveHandler       = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -26,6 +27,9 @@ const files = require('./schemas');
 //Get keys from current schema:
 const allSchemaKeys     = mainServices.getSchemaKeys(files);            //All.
 const allowedSchemaKeys = mainServices.getSchemaKeys(files, true);      //No parameters that cannot be modified.
+
+//Set storage parameters:
+const upload = multer({ storage: mainServices.setStorage() });
 
 //Create Router.
 const router = express.Router();
@@ -62,30 +66,12 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    upload.single('uploaded_file'),
     mainMiddlewares.roleAccessBasedControl,
-    files.Validator,
-    (req, res) => {
-        //Send to handler:
-        saveHandler(req, res, files, 'insert');
-    }
-);
-
-//UPDATE:
-router.post(
-    '/update',
-    mainMiddlewares.checkJWT,
-    mainMiddlewares.roleAccessBasedControl,
-    mainMiddlewares.allowedValidate(allowedSchemaKeys, files.AllowedUnsetValues),
     files.Validator,
     async (req, res) => {
-        //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, files, { base64: req.body.base64 });  //Same base64 = same file (duplicated).
-
-        //Check for duplicates:
-        if(duplicated == false){
-            //Send to handler:
-            saveHandler(req, res, files, 'update');
-        }
+        //Send to handler:
+        saveHandler(req, res, files);
     }
 );
 
@@ -96,14 +82,8 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { 
-        //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, files, { base64: req.body.base64 });  //Same base64 = same file (duplicated).
-
-        //Check for duplicates:
-        if(duplicated == false){
-            //Send to module service:
-            moduleServices._delete(req, res, files);
-        }
+        //Send to module service:
+        moduleServices._delete(req, res, files);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

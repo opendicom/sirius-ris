@@ -15,9 +15,8 @@ const subSchemaDomain = new mongoose.Schema({
 //Define Schema:
 const Schema = new mongoose.Schema({
     domain:         { type: subSchemaDomain, required: true },
-    name:           { type: String, required: true },
     description:    { type: String },
-    base64:         { type: String, required: true }
+    base64:         { type: String } //This parameter is created in backend server (not validate).
 },
 { timestamps: true },
 { versionKey: false });
@@ -49,22 +48,13 @@ const Validator = [
         .isMongoId()
         .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
 
-    body('name')
+    body('description')
         .trim()
         .isLength({ min: 3, max: 50 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
-
-    body('description')
-        .optional()
-        .trim()
-        .isLength({ min: 10, max: 500 })
-        .withMessage('El parametro description ingresado es demasiado corto o demasiado largo (min: 10, max: 500 [caracteres]).'),
+        .withMessage('La descripción ingresada es demasiado corta o demasiado larga (min: 3, max: 50 [caracteres]).'),
 
     body('base64')
-        .trim()
-        .isLength({ min: 4 })
-        .isBase64()
-        .withMessage('El el atributo base64 ingresado NO es una cadena base64 válida.'),
+        .optional(),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

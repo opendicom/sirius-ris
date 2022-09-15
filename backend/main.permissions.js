@@ -18,7 +18,7 @@ const rolePermissions = {
         slots                   : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/insert', 'batch/delete'],
         procedures              : ['find', 'findOne', 'insert', 'update', 'delete'],
         procedure_categories    : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/delete'],
-        files                   : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/delete'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update', 'delete'],
 
     },
@@ -36,7 +36,7 @@ const rolePermissions = {
         slots                   : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
         procedures              : ['find', 'findOne', 'insert', 'update'],
         procedure_categories    : ['find', 'findOne', 'insert', 'update', 'batch/delete'],
-        files                   : ['find', 'findOne', 'insert', 'update', 'batch/delete'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
     }
 }

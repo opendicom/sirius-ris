@@ -10,6 +10,7 @@ const yaml      = require('js-yaml');
 const mongoose  = require('mongoose');
 const argon2    = require('argon2');
 const moment    = require('moment');
+const multer    = require('multer');
 
 //Import app modules:
 const mainSettings = getFileSettings();                                     // File settings (YAML)
@@ -311,6 +312,37 @@ function datetimeFulCalendarFormater(start, end){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET STORAGE:
+//--------------------------------------------------------------------------------------------------------------------//
+function setStorage(){
+    return multer.diskStorage({
+        destination: (req, file, callback) => {
+            //Set destination path:
+            callback(null, 'uploads');
+        },
+        filename: (req, file, callback) => {
+            //Create random simple hash:
+            const baseChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let file_hash = '';
+    
+            for (let i=0; i<=10; i++){
+                file_hash += baseChars[Math.round(Math.random() * baseChars.length)];
+            }
+            
+            //Get file extension:
+            const file_extension = file.originalname.split('.').pop();
+    
+            //Set file name in the request:
+            req.filename = moment().format('YYYYMMDD_HHmmss') + '_' + file_hash + '.' + file_extension;
+    
+            //Execute callback:
+            callback(null, req.filename);
+        }
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -328,6 +360,7 @@ module.exports = {
     stringToBoolean,
     parseDate,
     strictCheck,
-    datetimeFulCalendarFormater
+    datetimeFulCalendarFormater,
+    setStorage
 };
 //--------------------------------------------------------------------------------------------------------------------//
