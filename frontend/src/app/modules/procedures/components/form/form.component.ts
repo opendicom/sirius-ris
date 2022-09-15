@@ -56,9 +56,6 @@ export class FormComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ){
-    //Find references:
-    this.findReferences();
-
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
 
@@ -90,6 +87,9 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:

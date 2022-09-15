@@ -59,6 +59,7 @@ module.exports = function(language){
             'operation_deny_domain'         : 'The operation you are trying to perform is not allowed for the domain that owns your authentication.',
             'not_have_method_permissions'   : 'The user does not have the necessary permissions on the method: ',
             'not_have_schema_permissions'   : 'The user does not have the necessary permissions on the schema: ',
+            'exclude_code'                  : 'Domain condition was avoided from RABC by exclusion policy (rabc_exclude_code was applied)'
         },
         ris: {
             'operation_not_allowed'     : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
@@ -141,6 +142,7 @@ module.exports = function(language){
             lang.rabc.operation_deny_domain         = 'La operación que está intentando realizar no está permitida para el dominio que posee su autenticación.';
             lang.rabc.not_have_method_permissions   = 'El usuario no posee los permisos necesarios sobre el método: ';
             lang.rabc.not_have_schema_permissions   = 'El usuario no posee los permisos necesarios sobre el esquema: ';
+            lang.rabc.exclude_code                  = 'La condicion de dominio fué evitada del RABC por politica de exclusión (se aplicó rabc_exclude_code).';
 
             //RIS:
             lang.ris.operation_not_allowed      = 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.';

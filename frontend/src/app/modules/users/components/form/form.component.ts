@@ -95,9 +95,6 @@ export class FormComponent implements OnInit {
     private sharedValidate  : ValidateDocumentsService,
     public  userService     : UsersService
   ){
-    //Find references:
-    this.findReferences();
-
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
 
@@ -153,6 +150,9 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
 
@@ -272,6 +272,9 @@ export class FormComponent implements OnInit {
             //Get property keys with values:
             this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
             this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
+
+            //Validate document (Enable submit document):
+            this.validateDocument();
 
           } else {
             //Return to the list with request error message:

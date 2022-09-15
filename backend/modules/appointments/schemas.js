@@ -145,7 +145,7 @@ const Schema = new mongoose.Schema({
     contrast:               { type: subSchemaContrast, required: true },
     current_address:        { type: subSchemaAddress },
     private_health:         { type: subSchemaPrivateHealth, required: true },
-    consents:               { type: subSchemaConsents, required: true },
+    consents:               { type: subSchemaConsents },
     outpatient:             { type: Boolean, required: true },
     inpatient:              { type: subSchemaInpatient },
     attached_files:         { type: [mongoose.ObjectId] },
@@ -579,6 +579,9 @@ const Validator = [
     //----------------------------------------------------------------------------------------------------------------//
     // CONSENTS:
     //----------------------------------------------------------------------------------------------------------------//
+    body('consents')
+        .optional(),
+
     body('consents.informed_consent')
         .optional()
         .trim()

@@ -66,9 +66,6 @@ export class FormMachineComponent implements OnInit {
     private sharedFunctions : SharedFunctionsService,
     public  userService     : UsersService
   ){
-    //Find references:
-    this.findReferences();
-
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
 
@@ -105,6 +102,9 @@ export class FormMachineComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
 

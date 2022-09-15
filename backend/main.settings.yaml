@@ -29,8 +29,11 @@ cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
 # DEBUG > INFO > WARN > ERROR
 log_level: 'DEBUG'
 
-#Delete authorization code:
+# Delete authorization code:
 delete_code: 'delete_code'
+
+# RABC exclusion code:
+rabc_exclude_code: 'exclude_code'
 
 # Set your secret token:
 # For your safety change this value please.

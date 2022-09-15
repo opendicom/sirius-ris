@@ -60,9 +60,6 @@ export class BatchComponent implements OnInit {
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
-    //Find references:
-    this.findReferences();
-
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -90,7 +87,10 @@ export class BatchComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+  }
 
   onCheckDay(event: any, key: number){
     //Set current check into selectedDays array:

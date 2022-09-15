@@ -13,6 +13,7 @@ export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 // Set OID Structure base:
 // Reference in UY:
 // https://centrodeconocimiento.agesic.gub.uy/documents/207224/425682/Gu%C3%ADa+para+la+gesti%C3%B3n+de+OID.pdf/293df376-77d5-71d3-9490-ede702bbb583
+//--------------------------------------------------------------------------------------------------------------------//
 export const structOID =
   '2.16.858.'         + // Base UNAOID UY.
   '2.'                + // Identifica Objeto ( 0: Organizaciones, 1: Personas, 2: Objetos) UY.
@@ -23,6 +24,7 @@ export const structOID =
   '8.'                + // PACS de ASSE
   ''
 ;
+
 // ID PACS:
 // 67430 Historia Clínica Electrónica
 // 71867 Repositorio de documentos electrónicos
@@ -36,7 +38,8 @@ export const structOID =
 // Set app default settings:
 export const app_setting = {
   backend_url: 'http://localhost:3001/',
-  secret_number: 1618,  //Used on simple crypt
+  secret_number: 1618,    // Used on simple crypt
+  rabc_exclude_code: 'exclude_code',
   default_country: '858',
   default_country_isoCode: 'UY',
   default_country_name: 'Uruguay',
@@ -45,12 +48,6 @@ export const app_setting = {
   default_city_name: 'Montevideo',
   default_doc_type: '1'
 };
-
-// Set self management params:
-export const self_management = {
-  referring: false,
-  reporting: true
-}
 
 // Document types:
 export const document_types = {

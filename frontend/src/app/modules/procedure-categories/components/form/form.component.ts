@@ -44,9 +44,6 @@ export class FormComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ){
-    //Find references:
-    this.findReferences();
-
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
 
@@ -73,6 +70,9 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
 

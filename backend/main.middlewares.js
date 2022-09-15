@@ -15,6 +15,7 @@ const mainPermissions = require('./main.permissions');
 
 //Import Module Services:
 const moduleServices = require('./modules/modules.services');
+const mainLanguages = require('./main.languages');
 
 //--------------------------------------------------------------------------------------------------------------------//
 //  ALLOWED VALIDATE:
@@ -226,6 +227,9 @@ const roleAccessBasedControl = async (req, res, next) => {
     let domainResult = true;
     let haveConcession = false;
 
+    //Set schemas allowed in RABC exclude policy (Referring and Reporting cases):
+    const excludeSchemasRABCPolicy = ['organizations'];
+
     //Get authenticated user information (Decoded JWT):
     const userAuth = {
         _id: req.decoded.sub,
@@ -269,8 +273,15 @@ const roleAccessBasedControl = async (req, res, next) => {
             
             //Exclude Superuser role:
             if(userAuth.role != 1){
-                //Add domain as condition:
-                domainResult = await moduleServices.addDomainCondition(req, res, domainType);
+
+                //Check if the request has the RABC exclusion code:
+                if(req.query.rabc_exclude_code == mainSettings.rabc_exclude_code && excludeSchemasRABCPolicy.includes(requested.schema) && (requested.method == 'find' || requested.method == 'findOne' || requested.method == 'findById')){
+                    //Prevent domain condition (RABC exclude policy).
+                    mainServices.sendConsoleMessage('DEBUG', currentLang.rabc.exclude_code);
+                } else {
+                    //Add domain as condition:
+                    domainResult = await moduleServices.addDomainCondition(req, res, domainType);
+                }
             }
 
             //Set operation result:

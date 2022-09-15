@@ -186,8 +186,67 @@
     <div fxLayout="row" fxLayoutAlign="start start">
 
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-        Referring<br/>
-        Reporting<br/>
+        <h3 class="form-title text-center underline-fail-alt">Solicitante:</h3>
+        <br/>
+
+        <h4>Organización solicitante:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Organización solicitante</mat-label>
+          <mat-select formControlName="referring_organization" placeholder="Seleccione la organización solicitante">
+            <div *ngFor="let currentOrganization of referringOrganizations">
+              <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        <br/><hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Informador:</h3>
+        <br/>
+
+        <h4>Servicio informador:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Servicio informador</mat-label>
+          <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
+            <div *ngFor="let currentService of availableServices">
+              <div *ngFor="let currentBranch of availableBranches">
+                <div *ngFor="let currentOrganization of availableOrganizations">
+                  <mat-option (click)="findReportingUsers(currentService._id)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                </div>
+              </div>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        <h4>Médico informador:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Médico informador</mat-label>
+          <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
+            <div *ngFor="let currentReporting of reportingUsers">
+              <mat-option value="{{ currentReporting._id }}">
+                <!--names-->
+                {{ currentReporting.person.name_01 }}
+                <span *ngIf="currentReporting.person.name_02">
+                  {{ ' ' + currentReporting.person.name_02 }}
+                </span>
+                <!--surnames-->
+                {{ ' ' + currentReporting.person.surname_01 }}
+                <span *ngIf="currentReporting.person.surname_02">
+                  {{ ' ' + currentReporting.person.surname_02 }}
+                </span>
+              </mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        <h4>Informe requerido antes de:</h4>
+        <mat-form-field appearance="fill" class="large" (click)="picker.open()">
+          <mat-label>Seleccione fecha</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+        </mat-form-field>
 
         <br/><hr class="dashed" /><br/>
 
@@ -201,108 +260,101 @@
 
         <br/><hr class="dashed" /><br/>
 
-        <h4>Informar antes de:</h4>
-        <mat-form-field appearance="fill" class="large" (click)="picker.open()">
-          <mat-label>Seleccione fecha</mat-label>
-          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
-        </mat-form-field>
-
-        <br/><hr class="dashed" />
-
         <h3 class="form-title text-center underline-fail-alt">Domicilio actual del paciente:</h3>
         <br/>
 
-        <div fxLayout="row" fxLayoutAlign="start start">
-          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-            <h4>País:</h4>
-            <span *ngIf="getKeys(allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
+        <!-- Current address start-->
+        <div formGroupName="current_address">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>País:</h4>
+              <span *ngIf="getKeys(allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
 
-            <ng-template #thenBlockCountries>
+              <ng-template #thenBlockCountries>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>País</mat-label>
+                  <mat-select formControlName="country" placeholder="Seleccione el país">
+                    <div *ngFor="let currentCountry of allCountries">
+                      <mat-option (click)="setCurrentStates(currentCountry.isoCode)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
+                    </div>
+                  </mat-select>
+                </mat-form-field>
+              </ng-template>
+
+              <ng-template #elseBlockCountries>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>País</mat-label>
+                  <input matInput type="text" formControlName="country" placeholder="Ingrese el país">
+                </mat-form-field>
+              </ng-template>
+            </div> <!-- end fxLayout wrapper -->
+
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Estado:</h4>
+              <span *ngIf="getKeys(currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
+
+              <ng-template #thenBlockStates>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>Estado | Provincia | Departamento</mat-label>
+                  <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
+                    <div *ngFor="let currentState of currentStates">
+                      <mat-option (click)="setCurrentCities(currentState.countryCode, currentState.isoCode)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
+                    </div>
+                  </mat-select>
+                </mat-form-field>
+              </ng-template>
+
+              <ng-template #elseBlockStates>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>Estado | Provincia | Departamento</mat-label>
+                  <input matInput type="text" formControlName="state" placeholder="Ingrese el Estado | Provincia | Departamento">
+                </mat-form-field>
+              </ng-template>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Ciudad:</h4>
+              <span *ngIf="getKeys(currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
+
+              <ng-template #thenBlockCities>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>Ciudad</mat-label>
+                  <mat-select formControlName="city" placeholder="Seleccione la ciudad">
+                    <div *ngFor="let currentCity of currentCities">
+                      <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
+                    </div>
+                  </mat-select>
+                </mat-form-field>
+              </ng-template>
+
+              <ng-template #elseBlockCities>
+                <mat-form-field appearance="fill" class="full">
+                  <mat-label>Ciudad</mat-label>
+                  <input matInput type="text" formControlName="city" placeholder="Ingrese la ciudad">
+                </mat-form-field>
+              </ng-template>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Barrio | Zona:</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>País</mat-label>
-                <mat-select formControlName="country" placeholder="Seleccione el país">
-                  <div *ngFor="let currentCountry of allCountries">
-                    <mat-option (click)="setCurrentStates(currentCountry.isoCode)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
-                  </div>
-                </mat-select>
+                <mat-label>Barrio | Zona</mat-label>
+                <input matInput type="text" formControlName="neighborhood" placeholder="Ingrese el Barrio | Zona del domicilio">
               </mat-form-field>
-            </ng-template>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
 
-            <ng-template #elseBlockCountries>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>País</mat-label>
-                <input matInput type="text" formControlName="country" placeholder="Ingrese el país">
-              </mat-form-field>
-            </ng-template>
-          </div> <!-- end fxLayout wrapper -->
-
-
-          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-            <h4>Estado:</h4>
-            <span *ngIf="getKeys(currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
-
-            <ng-template #thenBlockStates>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>Estado | Provincia | Departamento</mat-label>
-                <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
-                  <div *ngFor="let currentState of currentStates">
-                    <mat-option (click)="setCurrentCities(currentState.countryCode, currentState.isoCode)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
-                  </div>
-                </mat-select>
-              </mat-form-field>
-            </ng-template>
-
-            <ng-template #elseBlockStates>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>Estado | Provincia | Departamento</mat-label>
-                <input matInput type="text" formControlName="state" placeholder="Ingrese el Estado | Provincia | Departamento">
-              </mat-form-field>
-            </ng-template>
-          </div> <!-- end fxLayout wrapper -->
+          <h4>Dirección del domicilio:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Dirección</mat-label>
+            <input matInput type="text" formControlName="address" placeholder="Ingrese la dirección completa del domicilio">
+          </mat-form-field>
         </div>
-
-
-        <div fxLayout="row" fxLayoutAlign="start start">
-          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-            <h4>Ciudad:</h4>
-            <span *ngIf="getKeys(currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
-
-            <ng-template #thenBlockCities>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>Ciudad</mat-label>
-                <mat-select formControlName="city" placeholder="Seleccione la ciudad">
-                  <div *ngFor="let currentCity of currentCities">
-                    <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
-                  </div>
-                </mat-select>
-              </mat-form-field>
-            </ng-template>
-
-            <ng-template #elseBlockCities>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>Ciudad</mat-label>
-                <input matInput type="text" formControlName="city" placeholder="Ingrese la ciudad">
-              </mat-form-field>
-            </ng-template>
-          </div> <!-- end fxLayout wrapper -->
-
-          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-            <h4>Barrio | Zona:</h4>
-            <mat-form-field appearance="fill" class="full">
-              <mat-label>Barrio | Zona</mat-label>
-              <input matInput type="text" formControlName="neighborhood" placeholder="Ingrese el Barrio | Zona del domicilio">
-            </mat-form-field>
-          </div> <!-- end fxLayout wrapper -->
-        </div>
-
-        <h4>Dirección del domicilio:</h4>
-        <mat-form-field appearance="fill" class="full">
-          <mat-label>Dirección</mat-label>
-          <input matInput type="text" formControlName="address" placeholder="Ingrese la dirección completa del domicilio">
-        </mat-form-field>
+        <!-- Current address end -->
 
         <br/><hr class="dashed" /><br/>
 
@@ -312,11 +364,37 @@
           <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
         </mat-form-field>
 
-        <br/><hr class="dashed" /><br/>
+        <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
+        <div *ngIf="this.sharedProp.current_modality.code_value !== 'PT'">
+          <br/><hr class="dashed" />
 
-        Contrast<br/>
+          <h3 class="form-title text-center underline-fail-alt">Medios de contraste:</h3>
+          <!-- Contrast start-->
+          <div formGroupName="contrast">
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                <h4>Solicita contraste:</h4>
+                <mat-radio-group aria-label="Contraste" color="primary" formControlName="use_contrast" (change)="onChangeContrast($event)">
+                  <mat-radio-button value="true">Si</mat-radio-button>
+                  <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div> <!-- end fxLayout wrapper -->
 
-        <br/><hr class="dashed" /><br/>
+              <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                <div id="contrast_description" class="non-display">
+                  <h4>Tipo de contraste:</h4>
+                  <mat-form-field appearance="fill" class="full">
+                    <mat-label>Tipo de contraste</mat-label>
+                    <input matInput type="text" formControlName="description" placeholder="Ingrese el tipo de contraste solicitado.">
+                  </mat-form-field>
+                </div>
+              </div> <!-- end fxLayout wrapper -->
+            </div>
+          </div>
+          <!-- Contrast end-->
+        </div>
+
+        <hr class="dashed" /><br/>
 
         <h4>Estado:</h4>
         <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
@@ -328,10 +406,206 @@
       </div> <!-- end fxLayout wrapper -->
 
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-        Private health<br/>
-        Consents<br/>
-        Outpatient | Inpatient<br/>
-        Attached files<br/>
+        <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
+        <br/>
+
+        <!-- Private health start --->
+        <div formGroupName="private_health">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Altura <span class="label-info">Centímetros</span>:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Altura</mat-label>
+                <input type="text" matInput formControlName="height" min="1" max="300">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Peso <span class="label-info">Kilogramos</span>:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Peso</mat-label>
+                <input type="text" matInput formControlName="weight" min="1" max="300">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+
+          <hr class="dashed" />
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <mat-checkbox formControlName="diabetes" color="primary">Diabetes</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypertension" color="primary">Hipertensión</mat-checkbox><br/>
+              <mat-checkbox formControlName="epoc" color="primary">EPOC</mat-checkbox><br/>
+              <mat-checkbox formControlName="smoking" color="primary">Tabaquismo</mat-checkbox><br/>
+              <mat-checkbox formControlName="malnutrition" color="primary">Desnutrición</mat-checkbox><br/>
+              <mat-checkbox formControlName="obesity" color="primary">Obesidad</mat-checkbox><br/>
+              <mat-checkbox formControlName="asthma" color="primary">Asma</mat-checkbox><br/>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <mat-checkbox formControlName="pregnancy" color="primary">Embarazo</mat-checkbox><br/>
+              <mat-checkbox formControlName="claustrophobia" color="primary">Claustrofobia</mat-checkbox><br/>
+              <mat-checkbox formControlName="renal_insufficiency" color="primary">Insuficiencia renal</mat-checkbox><br/>
+              <mat-checkbox formControlName="heart_failure" color="primary">Insuficiencia cardíaca</mat-checkbox><br/>
+              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">Cardiopatía isquémica</mat-checkbox><br/>
+              <mat-checkbox formControlName="valvulopathy" color="primary">Valvulopatía</mat-checkbox><br/>
+              <mat-checkbox formControlName="arrhythmia" color="primary">Arritmia</mat-checkbox><br/>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <mat-checkbox formControlName="hiv" color="primary">HIV</mat-checkbox><br/>
+              <mat-checkbox formControlName="cancer" color="primary">Cancer</mat-checkbox><br/>
+              <mat-checkbox formControlName="dementia" color="primary">Demencia</mat-checkbox><br/>
+              <mat-checkbox formControlName="hyperthyroidism" color="primary">Hipertiroidismo</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypothyroidism" color="primary">Hipotiroidismo</mat-checkbox><br/>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+
+          <mat-checkbox color="primary" (change)="onCheckOtherPatology($event)">Otro antecedente/patología</mat-checkbox><br/>
+
+          <div id="private_health_other" class="non-display">
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>Otro antecedente/patología</mat-label>
+              <input matInput type="text" formControlName="other" placeholder="Ingrese el o los antecedentes/patologías.">
+            </mat-form-field>
+          </div>
+
+          <br/><hr class="dashed" /><br/>
+
+          <h4>Medicación:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Medicación</mat-label>
+            <input matInput type="text" formControlName="medication" placeholder="Indique si consume algún tipo de medicación.">
+          </mat-form-field>
+
+          <hr class="dashed" /><br/>
+
+          <h4>Alergias:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Alergias</mat-label>
+            <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
+          </mat-form-field>
+
+          <hr class="dashed" />
+
+          <h4 class="form-title text-center underline-fail">Implantes</h4>
+          <br/>
+
+          <div formGroupName="implants">
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                <mat-checkbox formControlName="cochlear_implant" color="primary">Implante coclear</mat-checkbox><br/>
+                <mat-checkbox formControlName="cardiac_stent" color="primary">Stent cardíaco</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_prostheses" color="primary">Protesis metálicas</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_shards" color="primary">Esquirlas metálicas</mat-checkbox><br/>
+                <mat-checkbox formControlName="pacemaker" color="primary">Marcapasos</mat-checkbox><br/>
+              </div> <!-- end fxLayout wrapper -->
+
+              <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                <mat-checkbox (change)="onCheckOtherImplants($event)" color="primary">Otro tipo de implante</mat-checkbox><br/>
+
+                <div id="implants_other" class="non-display">
+                  <mat-form-field appearance="fill" class="full">
+                    <mat-label>Otro tipo de implante</mat-label>
+                    <input matInput type="text" formControlName="other" placeholder="Ingrese el o los tipos de impantes.">
+                  </mat-form-field>
+                </div>
+              </div> <!-- end fxLayout wrapper -->
+            </div>
+          </div>
+          <hr class="dashed" />
+
+          <h4 class="form-title text-center underline-fail">COVID-19</h4>
+          <br/>
+
+          <div formGroupName="covid19">
+            <mat-checkbox formControlName="had_covid" color="primary">Tuvo COVID-19</mat-checkbox><br/>
+            <mat-checkbox formControlName="vaccinated" color="primary">Posee vacunación contra COVID-19</mat-checkbox><br/>
+
+            <br/>
+
+            <h4>Detalles:</h4>
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>Detalles</mat-label>
+              <input matInput type="text" formControlName="details" placeholder="Indique detalles (Ej. tipo de dosis Sinovac, Phizer).">
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Private health end --->
+
+        <hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Hospitalización:</h3>
+        <br/>
+
+        <mat-radio-group aria-label="Hospitalización" color="primary" formControlName="outpatient" (change)="onChangeOutpatient($event)">
+          <mat-radio-button value="true">Ambulatorio</mat-radio-button>
+          <mat-radio-button value="false">Internado</mat-radio-button>
+        </mat-radio-group>
+
+        <br/>
+
+        <!-- Inpatient start -->
+        <div formGroupName="inpatient" id="inpatient" class="non-display">
+          <br/><hr class="dashed" />
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Tipo de hospitalización:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Tipo de hospitalización</mat-label>
+                <mat-select formControlName="type" placeholder="Seleccione el tipo de hospitalización">
+                  <div *ngFor="let currentType of inpatient_types | keyvalue">
+                    <mat-option value="{{ currentType.key }}">{{ currentType.value }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Donde:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Donde</mat-label>
+                <input matInput type="text" formControlName="where" placeholder="Ingrese donde está hospitalizado el paciente (Institución).">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Sala | Habitación | Piso:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Sala | Habitación | Piso</mat-label>
+                <input matInput type="text" formControlName="room" placeholder="Ingrese la sala, habitación, piso donde está hospitalizado el paciente.">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Contacto:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Contacto</mat-label>
+                <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+        </div>
+        <!-- Inpatient end -->
+
+        <br/><hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Consentimientos:</h3>
+        <br/>
+
+        ...
+
+        <br/><hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos:</h3>
+        <br/>
+
+        ...
+
+        <br/>
       </div> <!-- end fxLayout wrapper -->
     </div>
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router } from '@angular/router';                                                   // Router
+import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
@@ -13,7 +13,7 @@ import {                                                                        
   ISO_3166,
   document_types,
   gender_types,
-  self_management,
+  inpatient_types,
   FullCalendarOptions,
   CKEditorConfig
 } from '@env/environment';
@@ -29,11 +29,11 @@ import { ICountry, IState, ICity } from 'country-state-city'                    
 })
 export class FormComponent implements OnInit {
   //Set component properties:
-  public settings       : any = app_setting;
-  public country_codes  : any = ISO_3166;
-  public document_types : any = document_types;
-  public gender_types   : any = gender_types;
-  public selfManagement : any = self_management;
+  public settings         : any = app_setting;
+  public country_codes    : any = ISO_3166;
+  public document_types   : any = document_types;
+  public gender_types     : any = gender_types;
+  public inpatient_types  : any = inpatient_types;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -51,6 +51,15 @@ export class FormComponent implements OnInit {
   public minDate: Date;
   public maxDate: Date;
 
+  //Set references objects:
+  public availableOrganizations : any;
+  public availableBranches      : any;
+  public availableServices      : any;
+
+  //Set referring and reporting objects:
+  public referringOrganizations   : any;
+  public reportingUsers           : any;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -62,6 +71,7 @@ export class FormComponent implements OnInit {
   //Inject services, components and router to the constructor:
   constructor(
     private router: Router,
+    private objRoute: ActivatedRoute,
     public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
@@ -78,6 +88,7 @@ export class FormComponent implements OnInit {
     this.sharedProp.current_datetime = { "dateYear": 2022, "dateMonth": "09", "dateDay": "08", "startHours": "09", "startMinutes": 30, "endHours": 10, "endMinutes": 10, "start": "2022-09-08T09:30:00", "end": "2022-09-08T10:10:00" };
     this.sharedProp.current_urgency = false;
     //--------------------------------------------------------------------------------------------------------------------//
+
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
 
@@ -101,22 +112,107 @@ export class FormComponent implements OnInit {
     //Set element:
     sharedProp.elementSetter('appointments');
 
+    //Set sugested reporting:
+    const sugestedReporting = this.sharedProp.current_imaging.organization._id + '.' + this.sharedProp.current_imaging.branch._id + '.' + this.sharedProp.current_imaging.service._id;
+
+    //Set contrast values (PET-CT cases):
+    let use_contrast = false;
+    let contrast_description = '';
+    if(this.sharedProp.current_modality.code_value == 'PT'){
+      use_contrast = true;
+      contrast_description = this.sharedProp.current_procedure.name;
+    }
+
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      anamnesis     : [ '', [Validators.required] ],
-      indications   : [ '', [Validators.required] ],
-      report_before : [ '', [Validators.required] ],
-      country       : [ this.settings.default_country_name, [Validators.required] ],
-      state         : [ this.settings.default_state_name, [Validators.required] ],
-      city          : [ this.settings.default_city_name, [Validators.required] ],
-      neighborhood  : [ '', [Validators.required] ],
-      address       : [ '', [Validators.required] ],
-      contact       : [ '', [Validators.required] ],
-      status        : [ 'true' ],
+      referring_organization    : [ this.sharedProp.current_imaging.organization._id, [Validators.required] ],
+      reporting_domain          : [ sugestedReporting, [Validators.required] ],
+      reporting_user            : [ '', [Validators.required] ],
+
+      anamnesis                 : [ '', [Validators.required] ],
+      indications               : [ '', [Validators.required] ],
+      report_before             : [ '', [Validators.required] ],
+      contact                   : [ '', [Validators.required] ],
+      status                    : [ 'true', [Validators.required] ],
+
+      //Current address fields:
+      current_address: this.formBuilder.group({
+        country                 : [ this.settings.default_country_name, [Validators.required] ],
+        state                   : [ this.settings.default_state_name, [Validators.required] ],
+        city                    : [ this.settings.default_city_name, [Validators.required] ],
+        neighborhood            : [ '', [Validators.required] ],
+        address                 : [ '', [Validators.required] ],
+      }),
+
+      //Contrast fields:
+      contrast: this.formBuilder.group({
+        use_contrast            : [ use_contrast, [Validators.required] ],
+        description             : [ contrast_description ],
+      }),
+
+      //Private health fields:
+      private_health: this.formBuilder.group({
+        height                  : [ '', [Validators.required]],
+        weight                  : [ '', [Validators.required]],
+        diabetes                : [ false, [Validators.required] ],
+        hypertension            : [ false, [Validators.required] ],
+        epoc                    : [ false, [Validators.required] ],
+        smoking                 : [ false, [Validators.required] ],
+        malnutrition            : [ false, [Validators.required] ],
+        obesity                 : [ false, [Validators.required] ],
+        hiv                     : [ false, [Validators.required] ],
+        renal_insufficiency     : [ false, [Validators.required] ],
+        heart_failure           : [ false, [Validators.required] ],
+        ischemic_heart_disease  : [ false, [Validators.required] ],
+        valvulopathy            : [ false, [Validators.required] ],
+        arrhythmia              : [ false, [Validators.required] ],
+        cancer                  : [ false, [Validators.required] ],
+        dementia                : [ false, [Validators.required] ],
+        claustrophobia          : [ false, [Validators.required] ],
+        asthma                  : [ false, [Validators.required] ],
+        hyperthyroidism         : [ false, [Validators.required] ],
+        hypothyroidism          : [ false, [Validators.required] ],
+        pregnancy               : [ false, [Validators.required] ],
+        other                   : [ '' ],
+        medication              : [ '' ],
+        allergies               : [ '' ],
+
+        implants: this.formBuilder.group({
+          cochlear_implant      : [ false, [Validators.required] ],
+          cardiac_stent         : [ false, [Validators.required] ],
+          metal_prostheses      : [ false, [Validators.required] ],
+          metal_shards          : [ false, [Validators.required] ],
+          pacemaker             : [ false, [Validators.required] ],
+          other                 : [ '' ]
+        }),
+
+        covid19: this.formBuilder.group({
+          had_covid             : [ false, [Validators.required] ],
+          vaccinated            : [ false, [Validators.required] ],
+          details               : [ '' ]
+        }),
+      }),
+
+      outpatient                : [ 'true', [Validators.required] ],
+      inpatient: this.formBuilder.group({
+        type                    : [ '' ],
+        where                   : [ '' ],
+        room                    : [ '' ],
+        contact                 : [ '' ]
+      }),
+
     });
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
+    //Find referring organizations:
+    this.findReferringOrganizations();
+
+    //Find referring and reporting information:
+    this.findReportingUsers(this.sharedProp.current_imaging.service._id);
   }
 
   setCurrentStates(country_isoCode: string){
@@ -124,7 +220,7 @@ export class FormComponent implements OnInit {
     this.currentStates = State.getStatesOfCountry(country_isoCode);
 
     //Disable category input:
-    this.form.controls['city'].disable();
+    this.form.get('current_address.city')?.disable();
   }
 
   setCurrentCities(country_isoCode: string, state_isoCode: string){
@@ -132,13 +228,163 @@ export class FormComponent implements OnInit {
     this.currentCities = City.getCitiesOfState(country_isoCode, state_isoCode);
 
     //Disable category input:
-    this.form.controls['city'].enable();
+    this.form.get('current_address.city')?.enable();
   }
 
-  onSubmit(){}
+  onChangeContrast(event: any){
+    //Get div contrast_description from DOM:
+    const $contrast_description = document.getElementById('contrast_description');
+
+    if(event.value == 'true'){
+      //Display input:
+      $contrast_description?.classList.remove('non-display');
+    } else {
+      //Clear input:
+      this.form.get('contrast.description')?.setValue('');
+
+      //Hide input:
+      $contrast_description?.classList.add('non-display');
+    }
+  }
+
+  onCheckOtherPatology(event: any){
+    //Get div contrast_description from DOM:
+    const $private_health_other = document.getElementById('private_health_other');
+
+    if(event.checked == true){
+      //Display input:
+      $private_health_other?.classList.remove('non-display');
+    } else {
+      //Clear input:
+      this.form.get('private_health.other')?.setValue('');
+
+      //Hide input:
+      $private_health_other?.classList.add('non-display');
+    }
+  }
+
+  onCheckOtherImplants(event: any){
+    //Get div contrast_description from DOM:
+    const $implants_other = document.getElementById('implants_other');
+
+    if(event.checked == true){
+      //Display input:
+      $implants_other?.classList.remove('non-display');
+    } else {
+      //Clear input:
+      this.form.get('implants.other')?.setValue('');
+
+      //Hide input:
+      $implants_other?.classList.add('non-display');
+    }
+  }
+
+  async onChangeOutpatient(event: any){
+    //Get element from DOM:
+    const $elementDOM = document.getElementById('inpatient');
+
+    if(event.value == 'false'){
+      //Display element:
+      $elementDOM?.classList.remove('non-display');
+    } else {
+      //Set clear inputs:
+      const clear_inputs = ['inpatient.type', 'inpatient.where', 'inpatient.room', 'inpatient.contact'];
+
+      //Clear inputs:
+      await (await Promise.all(Object.keys(clear_inputs))).map((key) => {
+        this.form.get(clear_inputs[parseInt(key)])?.setValue('');
+      });
+
+      //Hide element:
+      $elementDOM?.classList.add('non-display');
+    }
+  }
+
+  onSubmit(){
+    console.log(this.form.value)
+  }
 
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList('appointments', this.router);
+  }
+
+  findReferringOrganizations(){
+    //Set params:
+    const params = {
+      'rabc_exclude_code' : this.settings.rabc_exclude_code,
+      'filter[status]'    : true
+    };
+
+    //Find organizations:
+    this.sharedFunctions.find('organizations', params, (res) => {
+      this.referringOrganizations = res.data;
+    });
+  }
+
+  findReportingUsers(service_id: string){
+    //Set params:
+    const params = {
+      //Only people users:
+      'filter[person.name_01]': '',
+      'regex': true,
+
+      //Only Doctors users in selected service:
+      'filter[elemMatch][permissions][service]': service_id,
+      'filter[elemMatch][permissions][role]': 4,
+
+      //Exclude users with vacation true:
+      'filter[professional.vacation]': false,
+
+      //Only enabled users:
+      'filter[status]': true
+    };
+
+    //Find reporting users:
+    this.sharedFunctions.find('users', params, (res) => {
+      //Check data:
+      if(res.data.length > 0){
+        //Set reporting users:
+        this.reportingUsers = res.data;
+      } else {
+        //Clear previous values:
+        this.reportingUsers = [];
+        this.form.controls['reporting_user'].setValue('');
+
+        //Send message:
+        this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.');
+      }
+    });
+  }
+
+  findReferences(){
+    //Initialize params:
+    let params: any;
+
+    //Switch params:
+    switch(this.objRoute.snapshot.params['action']){
+      case 'insert':
+        params = { 'filter[status]': true };
+        break;
+
+      case 'update':
+        params = {};
+        break;
+    }
+
+    //Find organizations:
+    this.sharedFunctions.find('organizations', params, (res) => {
+      this.availableOrganizations = res.data;
+    });
+
+     //Find branches:
+     this.sharedFunctions.find('branches', params, (res) => {
+      this.availableBranches = res.data;
+    });
+
+    //Find services:
+    this.sharedFunctions.find('services', params, (res) => {
+      this.availableServices = res.data;
+    });
   }
 }

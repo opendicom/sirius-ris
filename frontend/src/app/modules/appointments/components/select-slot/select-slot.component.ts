@@ -82,9 +82,6 @@ export class SelectSlotComponent implements OnInit {
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
-    //Find references:
-    this.findReferences();
-
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -139,6 +136,9 @@ export class SelectSlotComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     // Fix FullCalendar bug first Render:
     // https://github.com/fullcalendar/fullcalendar/issues/4976
     setTimeout(() => {
