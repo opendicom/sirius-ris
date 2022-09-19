@@ -52,3 +52,13 @@
   min-height: 200px;
   padding-top: 5px;
 }
+
+.primary-color{
+  background-color: #c2185b;
+  color: #fff;
+}
+
+.default-color{
+  background-color: #424242;
+  color: #fff;
+}

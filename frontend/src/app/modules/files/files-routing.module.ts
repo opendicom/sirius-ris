@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ListComponent } from '@modules/files/components/list/list.component';
-import { FormComponent } from '@modules/files/components/form/form.component';
 
 const routes: Routes = [
   {
@@ -10,7 +9,6 @@ const routes: Routes = [
     children: [
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
-      { path: 'form/:action/:_id', component: FormComponent },
       { path: '**', redirectTo: 'list' },
     ]
   }

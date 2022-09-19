@@ -38,8 +38,9 @@ export const structOID =
 // Set app default settings:
 export const app_setting = {
   backend_url: 'http://localhost:3001/',
-  secret_number: 1618,    // Used on simple crypt
   rabc_exclude_code: 'exclude_code',
+  secret_number: 1618,    // Used on simple crypt
+  file_max_size: 10,      // Maximum size in MB allowed to upload files
   default_country: '858',
   default_country_isoCode: 'UY',
   default_country_name: 'Uruguay',
@@ -83,7 +84,8 @@ export const user_concessions = {
   4 : 'Listados de facturación',
   5 : 'Estadísticas generales',
   6 : 'Estadísticas médicas',
-  7 : 'Estadísticas del personal'
+  7 : 'Estadísticas del personal',
+  8 : 'Eliminación física de archivos'
 }
 
 // User Types:

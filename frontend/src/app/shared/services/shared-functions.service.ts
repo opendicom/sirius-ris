@@ -221,6 +221,14 @@ export class SharedFunctionsService {
       switch(operation){
         //DELETE FROM LIST COMPONENTS (GENERIC):
         case 'delete':
+          //Initializate excludeRedirect:
+          let excludeRedirect: boolean = false;
+
+          //Check operationHandler excludeRedirect:
+          if(operationHandler.excludeRedirect !== undefined && operationHandler.excludeRedirect === true){
+            excludeRedirect = operationHandler.excludeRedirect;
+          }
+
           //Create dialog observable:
           const dialogObservable = this.dialog.open(DeleteItemsComponent);
 
@@ -232,14 +240,20 @@ export class SharedFunctionsService {
               if(operationHandler.selected_items.length > 1){
                 this.delete('batch', operationHandler.element, operationHandler.selected_items, (res) => {
                   //Response the deletion according to the result:
-                  this.deleteResponder(res, operationHandler.element, operationHandler.router);
+                  const result = this.deleteResponder(res, operationHandler.element, operationHandler.router, excludeRedirect);
+
+                  //Excecute callback:
+                  callback(result);
                 });
 
               //Single delete:
               } else {
                 this.delete('single', operationHandler.element, operationHandler.selected_items[0], (res) => {
                   //Response the deletion according to the result:
-                  this.deleteResponder(res, operationHandler.element, operationHandler.router);
+                  const result = this.deleteResponder(res, operationHandler.element, operationHandler.router, excludeRedirect);
+
+                  //Excecute callback:
+                  callback(result);
                 });
               }
             }
@@ -610,19 +624,27 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // DELETE RESPONDER:
   //--------------------------------------------------------------------------------------------------------------------//
-  deleteResponder(res: any, element: any, router: any){
+  deleteResponder(res: any, element: any, router: any, excludeRedirect: boolean = false): boolean{
+    //Initialize result:
+    let result: boolean = false;
+
     //Check operation status:
     if(res.success === true){
+      //Set result:
+      result = true;
+
       //Send snakbar message:
       this.sendMessage(res.message);
 
-      //Reload a component:
-      router.routeReuseStrategy.shouldReuseRoute = () => false;
-      router.onSameUrlNavigation = 'reload';
+      //Check excludeRedirect:
+      if(excludeRedirect === false && excludeRedirect !== undefined){
+        //Reload a component:
+        router.routeReuseStrategy.shouldReuseRoute = () => false;
+        router.onSameUrlNavigation = 'reload';
 
-      //Redirect to list element:
-      router.navigate(['/' + element + '/list']);
-
+        //Redirect to list element:
+        router.navigate(['/' + element + '/list']);
+      }
     } else {
       //Check validate errors:
       if(res.validate_errors){
@@ -633,6 +655,9 @@ export class SharedFunctionsService {
         this.sendMessage(res.message);
       }
     }
+
+    //Return result:
+    return result;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -652,4 +677,35 @@ export class SharedFunctionsService {
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DOWNLOAD FILE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  downloadFile(_id: any){
+    //Find selected file:
+    this.find('files', { 'filter[_id]': _id }, (res) => {
+      //Check data:
+      if(res.data){
+        //Set link source (base64):
+        const linkSource ='data:application/octet-stream;base64,' + res.data[0].base64;
+
+        //Create link to enable browser download dialog:
+        const downloadLink = document.createElement('a');
+
+        //Set downloadLink href:
+        downloadLink.href = linkSource;
+
+        //Set name of the file to download:
+        downloadLink.download = res.data[0].name;
+
+        //Trigger click (download):
+        downloadLink.click();
+      } else {
+        //Send snakbar message:
+        this.sendMessage('No se encontró el archivo [_id: ' + _id + ']: ' + res.message);
+      }
+    });
+    //--------------------------------------------------------------------------------------------------------------------//
+  }
 }

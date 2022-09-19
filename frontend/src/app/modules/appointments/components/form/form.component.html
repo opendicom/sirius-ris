@@ -472,19 +472,23 @@
 
           <br/><hr class="dashed" /><br/>
 
-          <h4>Medicación:</h4>
-          <mat-form-field appearance="fill" class="full">
-            <mat-label>Medicación</mat-label>
-            <input matInput type="text" formControlName="medication" placeholder="Indique si consume algún tipo de medicación.">
-          </mat-form-field>
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Medicación:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Medicación</mat-label>
+                <input matInput type="text" formControlName="medication" placeholder="Indique si consume algún tipo de medicación.">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
 
-          <hr class="dashed" /><br/>
-
-          <h4>Alergias:</h4>
-          <mat-form-field appearance="fill" class="full">
-            <mat-label>Alergias</mat-label>
-            <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
-          </mat-form-field>
+            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+              <h4>Alergias:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Alergias</mat-label>
+                <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
+              </mat-form-field>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
 
           <hr class="dashed" />
 
@@ -593,17 +597,83 @@
 
         <br/><hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Consentimientos:</h3>
+        <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
         <br/>
 
-        ...
+        <span *ngIf="getKeys(fileManagerController.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
 
-        <br/><hr class="dashed" />
+        <ng-template #thenBlockInformedConsent>
+          <mat-chip-list>
+            <mat-chip *ngFor="let informedConsentFile of fileManagerController.informed_consent.files | keyvalue" class="primary-color">
+              <mat-icon (click)="sharedFunctions.downloadFile(informedConsentFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(informedConsentFile.key, 'informed_consent')">close</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          <br/>
+        </ng-template>
 
-        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos:</h3>
+        <ng-template #elseBlockInformedConsent>
+          <input type="file" (change)="onFileSelected($event, 'informed_consent')" #fileInputInformedConsent style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManagerController['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
+            <span *ngIf="fileManagerController['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
+            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> SUBIR CONSENTIMIENTO INFORMADO</ng-template>
+          </button>
+          <br/><br/>
+        </ng-template>
+
+        <span *ngIf="getKeys(fileManagerController.clinical_trial.files).length > 0; then thenBlockClinicalTrial else elseBlockClinicalTrial"></span>
+
+        <ng-template #thenBlockClinicalTrial>
+          <mat-chip-list>
+            <mat-chip *ngFor="let clinicalTrialFile of fileManagerController.clinical_trial.files | keyvalue" class="default-color">
+              <mat-icon (click)="sharedFunctions.downloadFile(clinicalTrialFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          <br/>
+        </ng-template>
+
+        <ng-template #elseBlockClinicalTrial>
+          <input type="file" (change)="onFileSelected($event, 'clinical_trial')" #fileInputClinicalTrial style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManagerController['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
+            <span *ngIf="fileManagerController['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
+            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> SUBIR CONSENTIMIENTO DE INVESTIGACIÓN</ng-template>
+          </button>
+          <br/><br/>
+        </ng-template>
+
+        <hr class="dashed" />
+
+        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
         <br/>
 
-        ...
+        <span *ngIf="getKeys(fileManagerController.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
+
+        <ng-template #thenBlockAttached>
+          <mat-chip-list>
+            <mat-chip *ngFor="let currentAtachedFile of fileManagerController.attached_files.files | keyvalue">
+              <mat-icon (click)="sharedFunctions.downloadFile(currentAtachedFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(currentAtachedFile.key, 'attached_files')">close</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          <br/>
+        </ng-template>
+
+        <ng-template #elseBlockAttached>
+          <div class="text-center">
+            <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+          </div>
+        </ng-template>
+
+        <hr class="dashed" /><br/>
+
+        <div class="text-right">
+          <input type="file" (change)="onFileSelected($event, 'attached_files')" #fileInputAttached style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManagerController['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
+            <span *ngIf="fileManagerController['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
+            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
+          </button>
+        </div>
 
         <br/>
       </div> <!-- end fxLayout wrapper -->

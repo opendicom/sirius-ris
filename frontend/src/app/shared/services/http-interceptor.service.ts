@@ -30,7 +30,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     }
 
     //Set Headers:
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt_token });
+    const headers = new HttpHeaders({ 'Authorization': 'Bearer ' + jwt_token });
 
     //Clone request:
     const reqClone = req.clone({ headers });

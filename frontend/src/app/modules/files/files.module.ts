@@ -8,13 +8,11 @@ import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/files/components/list/list.component';
-import { FormComponent } from '@modules/files/components/form/form.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent,
-    FormComponent
+    ListComponent
   ],
   imports: [
     CommonModule,

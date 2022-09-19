@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { ApiClientService } from '@shared/services/api-client.service';                     // API Client Service
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
@@ -19,7 +20,6 @@ import {                                                                        
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
-import { ICountry, IState, ICity } from 'country-state-city'                                // Country State City Interfaces
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -60,6 +60,23 @@ export class FormComponent implements OnInit {
   public referringOrganizations   : any;
   public reportingUsers           : any;
 
+  //Initialize selected file objects:
+  public fileUploadProgress     : Number = 0;
+  public fileManagerController  : any = {
+    informed_consent  : {
+      files: {},
+      disabled: false
+    },
+    clinical_trial    : {
+      files: {},
+      disabled: false
+    },
+    attached_files    : {
+      files: {},
+      disabled: false
+    }
+  };
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -70,11 +87,12 @@ export class FormComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    private router: Router,
-    private objRoute: ActivatedRoute,
-    public formBuilder: FormBuilder,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private apiClient       : ApiClientService,
+    private router          : Router,
+    private objRoute        : ActivatedRoute,
+    public formBuilder      : FormBuilder,
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions : SharedFunctionsService
   ) {
     //--------------------------------------------------------------------------------------------------------------------//
     // TEST:
@@ -199,8 +217,7 @@ export class FormComponent implements OnInit {
         where                   : [ '' ],
         room                    : [ '' ],
         contact                 : [ '' ]
-      }),
-
+      })
     });
   }
 
@@ -300,8 +317,84 @@ export class FormComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: any, type: string){
+    //Upload selected file (RxJS):
+    this.apiClient.sendFileRequest(
+        'files/insert',
+        <File>event.target.files[0],
+        this.sharedProp.current_imaging.organization._id,
+        this.sharedProp.current_imaging.branch._id,
+        type
+      ).subscribe({
+      next: (res) => {
+        //Check operation status:
+        switch(res.operation_status){
+          case 'uploading':
+            //Disable upload button:
+            this.fileManagerController[type].disabled = true;
+
+            //Set upload progress:
+            this.fileUploadProgress = res.progress, 10;
+
+            break;
+
+          case 'finished':
+            //Check operation status (backend server response):
+            if(res.server_response.body.success === true){
+
+              //Add current atached file in atachedFiles object:
+              this.fileManagerController[type].files[res.server_response.body.data._id] = res.server_response.body.data.name;
+
+              //Send snakbar message:
+              this.sharedFunctions.sendMessage('Archivo subido exitosamente');
+            } else {
+              //Send snakbar message:
+              this.sharedFunctions.sendMessage(res.error.message);
+            }
+
+            //Enable upload button:
+            this.fileManagerController[type].disabled = false;
+
+            break;
+
+          case 'cancelled':
+            //Send snakbar message:
+            this.sharedFunctions.sendMessage(res.message);
+
+            break;
+        }
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          this.sharedFunctions.sendMessage(res.error.message);
+        } else {
+          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
+
+  onDeleteFile(_id: any, type: string){
+    //Create operation handler:
+    const operationHandler = {
+      element         : 'files',
+      selected_items  : [_id],
+      excludeRedirect : true
+    }
+
+    //Open dialog to confirm:
+    this.sharedFunctions.openDialog('delete', operationHandler, (result) => {
+      //Check result:
+      if(result === true){
+        //Remove deleted file from atachedFiles object:
+        delete this.fileManagerController[type].files[_id];
+      }
+    });
+  }
+
   onSubmit(){
-    console.log(this.form.value)
+    console.log(this.form.value);
   }
 
   onCancel(){
