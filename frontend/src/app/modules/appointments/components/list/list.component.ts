@@ -56,7 +56,7 @@ export class ListComponent implements OnInit {
     sharedProp.actionSetter({
       content_title   : 'Listado de citas',
       content_icon    : 'event_available',
-      add_button      : '/appointments/check_person',
+      add_button      : '/appointments/set_patient',
       filters_form    : true,
       filters : {
         search        : true,

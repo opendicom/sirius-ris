@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
     //PEOPLE & USERS:
     //Execute query:
     await people.Model.aggregate([
-        //Branches lookup:
+        //Users lookup:
         { $lookup: {
             from: 'users',
             localField: '_id',
@@ -82,6 +82,8 @@ module.exports = async (req, res) => {
                                 //Initialize user permission:
                                 let userPermission = {
                                     domain: '', 
+                                    type: '',
+                                    description: '',
                                     role: '',
                                     concession: []
                                 };
@@ -90,18 +92,31 @@ module.exports = async (req, res) => {
                                 //If contain organizations permissions:
                                 if (Object.keys(peopleData.user.permissions[0]).includes('organization')){
                                     userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].organization);
+                                    userPermission.type = 'organization';
+
+                                    //Find organization short_name (userPermission description):
+                                    const resultObj = await simplifiedFindById(res, organizations, userPermission.domain, { 'short_name': 1 });
+                                    userPermission.description = resultObj.short_name;
+
                                 //BRANCHES:
                                 //If contain branches permissions:
                                 } else if (Object.keys(peopleData.user.permissions[0]).includes('branch')){
                                     userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].branch);
+                                    userPermission.type = 'branch';
+
+                                    //Find branch short_name (userPermission description):
+                                    const resultObj = await simplifiedFindById(res, branches, userPermission.domain, { 'short_name': 1 });
+                                    userPermission.description = resultObj.short_name;
+
                                 //SERVICES:
                                 //If contain services permissions:
                                 } else if (Object.keys(peopleData.user.permissions[0]).includes('service')){
                                     userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].service);
-                                //PATIENTS:
-                                //If contain patient permissions:
-                                } else if (Object.keys(peopleData.user.permissions[0]).includes('patient')){
-                                    mainServices.sendConsoleMessage('WARN', 'Patient autorization request, to be continue..');
+                                    userPermission.type = 'service';
+
+                                    //Find service name (userPermission description):
+                                    const resultObj = await simplifiedFindById(res, services, userPermission.domain, { 'name': 1 });
+                                    userPermission.description = resultObj.name;
                                 }
 
                                 //Set role & concession in userPermission:
@@ -145,7 +160,6 @@ module.exports = async (req, res) => {
 
                                     //Set user & patient permissions:
                                     let userPermissions = [];
-                                    let patientPermissions = {};
 
                                     //Obtain permissions keys (await foreach):
                                     await Promise.all(peopleData.user.permissions.map(async (value, key) => {
@@ -173,6 +187,7 @@ module.exports = async (req, res) => {
                                                         //Add permission in array:
                                                         userPermissions[key] = {
                                                             domain: orgData._id,
+                                                            type: 'organization',
                                                             description: orgData.short_name,
                                                             role: value['role']
                                                         };
@@ -225,6 +240,7 @@ module.exports = async (req, res) => {
                                                     //Add permission in array:
                                                     userPermissions[key] = {
                                                         domain: branchData._id,
+                                                        type: 'branch',
                                                         description: branchData.organization.short_name + ' - ' + branchData.short_name,
                                                         role: value['role']
                                                     };
@@ -292,6 +308,7 @@ module.exports = async (req, res) => {
                                                     //Add permission in array:
                                                     userPermissions[key] = {
                                                         domain: servData._id,
+                                                        type: 'service',
                                                         description: servData.organization.short_name + ' - ' + servData.branch.short_name + ' - ' + servData.name,
                                                         role: value['role']
                                                     };
@@ -301,13 +318,6 @@ module.exports = async (req, res) => {
                                                 //Send error:
                                                 mainServices.sendError(res, currentLang.db.query_error, err);
                                             });
-
-                                        //PATIENTS:
-                                        //If contain patient permissions:
-                                        } else if (Object.keys(value).includes('patient')){
-                                            //Set patient permissions:
-                                            patientPermissions.is_patient = true;
-                                            patientPermissions.people_in_charge = value.patient.people_in_charge;
                                         }
                                     }));
 
@@ -323,11 +333,6 @@ module.exports = async (req, res) => {
                                         name: peopleData.name_01,
                                         surname: peopleData.surname_01,
                                         permissions: userPermissions
-                                    }
-        
-                                    //If contain patient permissions:
-                                    if(patientPermissions){
-                                        response_data.patient_permissions = patientPermissions;
                                     }
                                     
                                     //Send successfully response:
@@ -355,5 +360,33 @@ module.exports = async (req, res) => {
         //Send error:
         mainServices.sendError(res, currentLang.db.query_error, err);
     });
+
+    // Simplified Find by _id:
+    async function simplifiedFindById(res, currentSchema, _id, proj){
+        //Initialize result:
+        let result = null;
+
+        await currentSchema.Model.findById(_id, proj)
+        .exec()
+        .then((data) => {
+            //Check for results (not empty):
+            if(data){
+                //Convert Mongoose object to Javascript object:
+                data = data.toObject();
+
+                //Set user permission description:
+                result = data;
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
+
+        //Return result:
+        return result;
+    }
 }
+
+
 //--------------------------------------------------------------------------------------------------------------------//

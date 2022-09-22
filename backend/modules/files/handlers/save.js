@@ -26,21 +26,22 @@ module.exports = async (req, res, currentSchema) => {
         }
     });
 
-    //Remove temp file from uploads:
-    await fs.unlink('uploads/' + req.filename, (error) => {
-        if(error){
-            console.log(error);
-            throw('Error: ' + error);
-        } else {
-            console.log('Archivo eliminado');
-        }
-    });
-
     //Set base64 in request for insert method:
     req.body.base64 = fileBase64;
 
+    //Remove temp file from uploads:
+    await fs.unlink('uploads/' + req.filename, (error) => {
+        if(error){
+            //Send ERROR Message:
+            sendConsoleMessage('ERROR', error);
+            throw('Error: ' + error);
+        } else {
+            //Send DEBUG Message:
+            mainServices.sendConsoleMessage('DEBUG', currentLang.db.delete_temp_file_uploads);
+        }
+    });
+    
     //Save in database:
-    //res.status(200).send({ domain: req.body.domain, description: req.body.description, base64: req.body.base64 });
     await moduleServices.insert(req, res, currentSchema, referencedElements);
 }
 //--------------------------------------------------------------------------------------------------------------------//

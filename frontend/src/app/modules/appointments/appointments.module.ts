@@ -8,10 +8,10 @@ import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/appointments/components/list/list.component';
-import { FormComponent } from '@modules/appointments/components/form/form.component';
-import { CheckPersonComponent } from '@modules/appointments/components/check-person/check-person.component';
+import { SetPatientComponent } from '@modules/appointments/components/set-patient/set-patient.component';
 import { SelectProcedureComponent } from '@modules/appointments/components/select-procedure/select-procedure.component';
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
+import { FormComponent } from '@modules/appointments/components/form/form.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -34,10 +34,10 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   declarations: [
     ListComponent,
-    FormComponent,
-    CheckPersonComponent,
+    SetPatientComponent,
     SelectProcedureComponent,
-    SelectSlotComponent
+    SelectSlotComponent,
+    FormComponent
   ],
   imports: [
     CommonModule,

@@ -29,25 +29,26 @@ module.exports = function(language){
             'check_invalid_token'   : 'Invalid token.'
         },
         'db': {
-            'invalid_id'            : 'The specified ID is NOT valid for MongoDB.',
-            'query_error'           : 'Error during query to MongoDB.',
-            'query_no_data'         : 'No records was found.',
-            'validate_error'        : 'Validation error.',
-            'insert_success'        : 'Insert operation successful.',
-            'insert_error'          : 'An error occurred while inserting the element.',
-            'insert_duplicate'      : 'The element you are trying to insert already exists in the database with the _id: ',
-            'id_no_results'         : 'The specified ID does not exist.',
-            'id_referenced_empty'   : 'The ID of the referenced element cannot be empty.',
-            'update_error'          : 'An error occurred while updating the element.',
-            'update_duplicate'      : 'The element you are trying to update already exists in the database with the _id: ',
-            'delete_error'          : 'An error occurred while deleting the element.',
-            'delete_success'        : 'Successfully deleted.',
-            'delete_id_no_results'  : 'No record was found to delete with the specified ID.',
-            'delete_rejected_dep'   : 'Deletion rejected, there are dependencies of the element to be deleted.',
-            'delete_empty_id'       : 'You must specify at least one _id for delete.',
-            'not_valid_fk'          : 'Any of the elements referenced as foreign is NOT valid',
-            'not_valid_objectid'    : 'Some of the referenced elements have an ObjectId that is NOT valid.',
-            'not_allowed_save'      : 'Save operation NOT allowed.',
+            'invalid_id'                : 'The specified ID is NOT valid for MongoDB.',
+            'query_error'               : 'Error during query to MongoDB.',
+            'query_no_data'             : 'No records was found.',
+            'validate_error'            : 'Validation error.',
+            'insert_success'            : 'Insert operation successful.',
+            'insert_error'              : 'An error occurred while inserting the element.',
+            'insert_duplicate'          : 'The element you are trying to insert already exists in the database with the _id: ',
+            'id_no_results'             : 'The specified ID does not exist.',
+            'id_referenced_empty'       : 'The ID of the referenced element cannot be empty.',
+            'update_error'              : 'An error occurred while updating the element.',
+            'update_duplicate'          : 'The element you are trying to update already exists in the database with the _id: ',
+            'delete_error'              : 'An error occurred while deleting the element.',
+            'delete_success'            : 'Successfully deleted.',
+            'delete_id_no_results'      : 'No record was found to delete with the specified ID.',
+            'delete_rejected_dep'       : 'Deletion rejected, there are dependencies of the element to be deleted.',
+            'delete_empty_id'           : 'You must specify at least one _id for delete.',
+            'not_valid_fk'              : 'Any of the elements referenced as foreign is NOT valid',
+            'not_valid_objectid'        : 'Some of the referenced elements have an ObjectId that is NOT valid.',
+            'not_allowed_save'          : 'Save operation NOT allowed.',
+            'delete_temp_file_uploads'  : 'Successful temporary file deletion (upload files).'
         },
         http: {
             'sancioned'             : 'SANCIONED CLIENTS!',
@@ -131,6 +132,7 @@ module.exports = function(language){
             lang.db.not_valid_fk                = 'Alguno de los elementos referenciados como foráneos NO es válido.';
             lang.db.not_valid_objectid          = 'Alguno de los elementos referenciados posee un ObjectId que NO es válido.';
             lang.db.not_allowed_save            = 'Operación de guardado NO permitida.';
+            lang.db.delete_temp_file_uploads    = 'Eliminación de archivo temporal exitosa (upload files).'
             
             //HTTP:
             lang.http.sancioned                 = '¡CLIENTES SANCIONADOS!';

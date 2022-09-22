@@ -1,9 +1,22 @@
 <button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
   <mat-icon>person</mat-icon>&nbsp;
   <span class="user_info">
-    <small>{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
+    <small matTooltip="Usuario">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
     &nbsp; ► &nbsp;
-    <small>{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small> &nbsp;
+    <small matTooltip="Rol">{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small>
+    &nbsp; ► &nbsp;
+    <span [ngSwitch]="sharedProp.userLogged.permissions[0].type">
+      <span *ngSwitchCase="'organization'">
+        <small matTooltip="Organización">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+      <span *ngSwitchCase="'branch'">
+        <small matTooltip="Sucursal">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+      <span *ngSwitchCase="'service'">
+        <small matTooltip="Servicio">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+      </span>
+    </span>
+
   </span>
   <mat-icon>more_vert</mat-icon>
 </button>

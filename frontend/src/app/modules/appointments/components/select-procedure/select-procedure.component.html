@@ -122,6 +122,7 @@
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="button" color="accent" routerLink="/appointments/set_patient">◄&nbsp; ATRÁS</button>
         <button mat-flat-button type="submit" color="primary">SIGUIENTE &nbsp;►</button> <!-- [disabled]="form_data.invalid" -->
       </div> <!-- end fxLayout wrapper -->
     </div>
@@ -138,7 +139,7 @@
     <h4>No se hallaron los datos correspondientes al paciente, intente desde el formulario de chequeo de personas.</h4>
 
     <button mat-flat-button type="button" (click)="onCancel();">VOLVER AL LISTADO</button>
-    <button mat-flat-button type="button" routerLink="/appointments/check_person/" color="primary">IR AL FORMULARIO DE CHEQUEO</button>
+    <button mat-flat-button type="button" routerLink="/appointments/set_patient/" color="primary">IR AL FORMULARIO DE CHEQUEO</button>
 
     <br/><br/>
   </form>

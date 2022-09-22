@@ -7,7 +7,7 @@ import { ApiClientService } from '@shared/services/api-client.service';       //
 import { app_setting } from '@env/environment';                               // Environment
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
-import { Observable } from 'rxjs';                                            // Reactive Extensions (RxJS)
+import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -569,6 +569,65 @@ export class SharedFunctionsService {
       }
     } else {
       this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET LOGGED ORGANIZATION:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getLoggedOrganization(domain: string, domainType: string, callback = (result: string) => {}): void {
+    //Check domain type:
+    switch(domainType){
+      case 'organization':
+        callback(domain);
+        break;
+
+      case 'branch':
+        this.find('branches', { 'filter[_id]': domain, 'proj[fk_organization]': 1 }, (res) => {
+          if(res.success === true){
+            //Execute callback:
+            callback(res.data[0].fk_organization);
+          }
+        });
+
+        break;
+
+      case 'service':
+        //Initialize fk_branch:
+        let fk_branch = '';
+
+        const obsDomain = this.findRxJS('services', { 'filter[_id]': domain, 'proj[fk_branch]': 1 }).pipe(
+          //Check first result (find service):
+          map((res: any) => {
+            //Check operation status:
+            if(res.success === true){
+              fk_branch = res.data[0].fk_branch;
+            }
+
+            //Return response:
+            return res;
+          }),
+
+          //Filter that only success cases continue:
+          filter((res: any) => res.success === true),
+
+          //Search branch to obtain fk_organization (Return observable):
+          mergeMap(() => this.findRxJS('branches', { 'filter[_id]': fk_branch, 'proj[fk_organization]': 1 })),
+        );
+
+        //Observe content (Subscribe):
+        obsDomain.subscribe({
+          next: (res) => {
+            if(res.success === true){
+              //Execute callback:
+              callback(res.data[0].fk_organization);
+            }
+          }
+        });
+
+        break;
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

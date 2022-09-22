@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     //Get query params:
     const { domain, role } = req.body;
 
-    //Get user ID to the payload:
+    //Get user ID the payload:
     const user_id = req.decoded.sub;
 
     //Create MongoDB arguments:
@@ -65,9 +65,6 @@ module.exports = async (req, res) => {
                             userPermission.role = parseInt(role, 10);
                             userPermission.concession = value['concession'];
                         }
-                    } else if((Object.keys(value).includes('patient') && value['patient'] == domain)) {
-                        mainServices.sendConsoleMessage('WARN', 'Patient autorization request, to be continue..');
-                        return;
                     }
                 }));
                 

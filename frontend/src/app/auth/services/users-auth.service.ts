@@ -100,11 +100,25 @@ export class UsersAuthService {
 
     //Observe content (Subscribe):
     obsUserAuthorize.subscribe({
-      next: res => {
+      next: async res => {
         //Check operation status:
         if(res.success === true){
           //Set user data into authentication object:
           siriusAuth = this.sharedFunctions.getUserInfo(true);
+
+          //Initialize domain type and description:
+          let domainType = '';
+          let domainDescription = '';
+
+          //Preserve domain type and description:
+          await Promise.all(Object.keys(siriusAuth.permissions).map((key) => {
+            //If domain and role indicated in form is the same in the permissions object:
+            if(siriusAuth.permissions[key].domain == form_data.value.domain && parseInt(siriusAuth.permissions[key].role, 10) == parseInt(form_data.value.role, 10)){
+              //Set domain type and description:
+              domainType = siriusAuth.permissions[key].type;
+              domainDescription = siriusAuth.permissions[key].description;
+            }
+          }));
 
           //Delete permissions array:
           delete siriusAuth.permissions;
@@ -112,6 +126,8 @@ export class UsersAuthService {
           //Set selected permision:
           siriusAuth.permissions = [{
             domain: form_data.value.domain,
+            type: domainType,
+            description: domainDescription,
             role: parseInt(form_data.value.role, 10)
           }];
 

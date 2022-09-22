@@ -49,7 +49,7 @@ export class SelectProcedureComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Selección de servicio y procedimiento',
+      content_title : 'Paso 02 - Selección de servicio y procedimiento',
       content_icon  : 'health_and_safety',
       add_button    : false,
       filters_form  : false,

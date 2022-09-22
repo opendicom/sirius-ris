@@ -20,7 +20,7 @@ const rolePermissions = {
         procedure_categories    : ['find', 'findOne', 'insert', 'update', 'delete', 'batch/delete'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update', 'delete'],
-
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
     },
 
     //Administrator:
@@ -38,6 +38,7 @@ const rolePermissions = {
         procedure_categories    : ['find', 'findOne', 'insert', 'update', 'batch/delete'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
     }
 }
 

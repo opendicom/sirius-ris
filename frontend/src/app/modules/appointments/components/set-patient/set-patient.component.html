@@ -1,0 +1,236 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-tab-group>
+
+    <!-- PEOPLE TAB: ---------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">person</mat-icon>
+        Persona &nbsp;
+        <span *ngIf="personOperation">
+          <div [ngSwitch]="personOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
+        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
+
+      <div formGroupName="person">
+        <h2 class="form-title text-center underline-fail-alt">Datos de la persona:</h2>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+            <div class="documents">
+              <h4>Documentos:</h4>
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>País del documento</mat-label>
+                <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
+                  <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                    <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+
+              <br/>
+
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>Tipo de documento</mat-label>
+                <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
+                  <div *ngFor="let currentDocType of document_types | keyvalue">
+                    <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+
+              <br/>
+
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>Documento</mat-label>
+                <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (blur)="onSetDocument()" (keyup)="validateDocument()">
+              </mat-form-field>
+            </div>
+
+
+            <div *ngIf="getKeys(documents).length > 0" class="documents-info text-right">
+              <small>Documento/s persona:</small><br/>
+              <span *ngFor="let currentDoc of documents" >
+                <span matTooltip="{{ country_codes[currentDoc.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[currentDoc.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[currentDoc.doc_type] }}">
+                  <span>{{ currentDoc.document }}</span>
+                </span>
+                <br/>
+              </span>
+            </div>
+
+            <div *ngIf="this.registered_doc_type === true" class="validate-info text-right">
+              <div *ngIf="this.validation_result; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock><span class="label-accent" matTooltip="El documento ingresado cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
+              <ng-template #elseBlock><span class="label-accent" matTooltip="El documento ingresado NO cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
+            </div>
+
+            <div class="clear"></div>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Nombres:</h4>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>Primer nombre</mat-label>
+              <input matInput type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>Segundo nombre</mat-label>
+              <input matInput type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
+            </mat-form-field>
+
+            <br/>
+
+            <h4>Apellidos:</h4>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>Primer apellido</mat-label>
+              <input matInput type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>Segundo apellido</mat-label>
+              <input matInput type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
+            </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Género:</h4>
+            <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+            </mat-radio-group>
+
+            <br/><br/>
+
+          </div> <!-- end fxLayout wrapper -->
+
+          <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+
+            <h4>Fecha de nacimiento:</h4>
+            <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
+              <mat-label>Seleccione fecha</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birth_date" (keydown)="false">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+            </mat-form-field>
+
+            <br/><br/><hr class="dashed" /><br/>
+
+            <h4>Teléfono de contacto:</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Número de teléfono</mat-label>
+              <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+            </mat-form-field>
+
+            <br/><br/>
+
+            <h4>Contacto alternativo:</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Número de teléfono</mat-label>
+              <input matInput type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+            </mat-form-field>
+
+          </div> <!-- end fxLayout wrapper -->
+        </div>
+      </div>
+    </mat-tab>
+    <!-- PEOPLE TAB: ---------------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">account_circle</mat-icon>
+        Usuario &nbsp;
+        <span *ngIf="userOperation">
+          <div [ngSwitch]="userOperation">
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+          </div>
+        </span>
+        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
+
+      <div formGroupName="user">
+        <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+
+            <h4>Correo electrónico:</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>E-mail</mat-label>
+              <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="Ej: nombre@casilla.com" (change)="onSetEmail()">
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Clave del usuario <span *ngIf="userOperation == 'update'" class="label-info">Vacío sino desea modificar</span>:</h4>
+
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Contraseña</mat-label>
+              <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
+              <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
+            </mat-form-field>
+
+            <br/><br/>
+
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>Reitere la contraseña</mat-label>
+              <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
+            </mat-form-field>
+
+            <hr class="dashed" /><br/>
+
+            <h4>Estado:</h4>
+            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+              <mat-radio-button value="true">Activo</mat-radio-button>
+              <mat-radio-button value="false">Inactivo</mat-radio-button>
+            </mat-radio-group>
+
+            <br/><br/>
+
+          </div> <!-- end fxLayout wrapper -->
+
+
+          <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+            <!-- Only super user can set patient organization -->
+            <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
+              <h4>Organización del paciente <span class="label-info">Permisos del paciente</span>:</h4>
+              <mat-form-field appearance="fill" class="large">
+                <mat-label>Organización</mat-label>
+                <mat-select formControlName="organization"  placeholder="Seleccione la organización">
+                  <div *ngFor="let currentOrganization of availableOrganizations">
+                    <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="text-center" [class.non-display]="sharedProp.userLogged.permissions[0].role === 1">
+              <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+            </div>
+          </div> <!-- end fxLayout wrapper -->
+
+        </div>
+      </div>
+    </mat-tab>
+    <!-- USER TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">SIGUIENTE &nbsp;►</button>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

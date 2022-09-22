@@ -1,0 +1,114 @@
+//--------------------------------------------------------------------------------------------------------------------//
+// APPOINTMENTS DRAFTS ROUTES:
+// In this file the routes of the module are declared.
+//--------------------------------------------------------------------------------------------------------------------//
+//Import external modules
+const express = require('express');
+
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
+//Import middlewares:
+const mainMiddlewares = require('../../main.middlewares');
+
+//Import Handlers:
+const findHandler           = require('./handlers/find');
+const saveHandler           = require('./handlers/save');
+
+//Import Module Services:
+const moduleServices = require('../modules.services');
+
+//Import schemas:
+const appointments_drafts = require('./schemas');
+
+//Get keys from current schema:
+const allSchemaKeys     = mainServices.getSchemaKeys(appointments_drafts);            //All.
+const allowedSchemaKeys = mainServices.getSchemaKeys(appointments_drafts, true);      //No parameters that cannot be modified.
+
+//Create Router.
+const router = express.Router();
+
+//Routes:
+//FIND:
+router.get(
+    '/find',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    (req, res) => {
+        //Send to handler:
+        findHandler(req, res, appointments_drafts);
+    }
+);
+
+//FIND ONE:
+router.get(
+    '/findOne',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    (req, res) => {
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
+
+        //Send to handler:
+        findHandler(req, res, appointments_drafts);
+    }
+);
+
+//INSERT:
+router.post(
+    '/insert',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    appointments_drafts.Validator,
+    async (req, res) => {
+        //Set params for check duplicates:
+        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+
+        //Search for duplicates:
+        const duplicated = await moduleServices.isDuplicated(req, res, appointments_drafts, params);
+
+        //Check for duplicates:
+        if(duplicated == false){
+            //Check fk_slot:
+            if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
+                //Check if slot is available or not:
+                const available_slot = await moduleServices.checkSlot(req, res);
+                
+                if(available_slot == true){
+                    //Check urgency:
+                    const urgency_check = await moduleServices.checkUrgency(req, res, 'insert');
+
+                    if(urgency_check === true){
+                        //Send to handler:
+                        saveHandler(req, res, appointments_drafts, 'insert');
+                    }
+                }
+            } else {
+                //Return the result (HTML Response):
+                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
+            }
+        }
+    }
+);
+
+//DELETE:
+router.post(
+    '/delete',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    mainMiddlewares.checkDeleteCode,
+    (req, res) => { 
+        //Send to module service:
+        moduleServices._delete(req, res, appointments_drafts);
+    }
+);
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// Export module routes:
+module.exports = router;
+//--------------------------------------------------------------------------------------------------------------------//

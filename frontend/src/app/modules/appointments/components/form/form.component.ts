@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';                     // API Client Service
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import {                                                                                    // Enviroments
   app_setting,
-  regexObjectId,
   ISO_3166,
   document_types,
   gender_types,
   inpatient_types,
-  FullCalendarOptions,
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
@@ -95,7 +93,7 @@ export class FormComponent implements OnInit {
     public sharedFunctions : SharedFunctionsService
   ) {
     //--------------------------------------------------------------------------------------------------------------------//
-    // TEST:
+    // TEST DATA:
     //--------------------------------------------------------------------------------------------------------------------//
     this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
     this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
@@ -121,7 +119,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Detalles de la cita',
+      content_title : 'Paso 04 - Detalles de la cita',
       content_icon  : 'privacy_tip',
       add_button    : false,
       filters_form  : false,
