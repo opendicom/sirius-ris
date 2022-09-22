@@ -75,6 +75,24 @@ module.exports = async (req, res, currentSchema) => {
         }},
         { $unwind: { path: "$patient.person", preserveNullAndEmptyArrays: true } },
 
+        //Coordinator (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'fk_coordinator',
+            foreignField: '_id',
+            as: 'coordinator',
+        }},
+        { $unwind: { path: "$coordinator", preserveNullAndEmptyArrays: true } },
+
+        //Patient -> Person (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'coordinator.fk_person',
+            foreignField: '_id',
+            as: 'coordinator.person',
+        }},
+        { $unwind: { path: "$coordinator.person", preserveNullAndEmptyArrays: true } },
+
         //Slot (Lookup & Unwind)::
         { $lookup: {
             from: 'slots',
@@ -106,7 +124,16 @@ module.exports = async (req, res, currentSchema) => {
         // REMOVE DUPLICATED VALUES (SET DEFAULT PROJECTION):
         // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
         //------------------------------------------------------------------------------------------------------------//
-        { $project: { fk_slot: 0, fk_patient: 0, fk_procedure: 0, 'patient.password': 0 }}
+        { $project: {
+            'fk_slot': 0,
+            'fk_patient': 0,
+            'patient.permissions': 0, 
+            'patient.password': 0,
+            'fk_coordinator': 0, 
+            'coordinator.permissions': 0, 
+            'coordinator.password': 0, 
+            'fk_procedure': 0
+        }}
         //------------------------------------------------------------------------------------------------------------//
     ];    
 
@@ -125,6 +152,7 @@ module.exports = async (req, res, currentSchema) => {
         //Schema:
         filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'patient');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'coordinator');
         filter = await moduleServices.adjustDataTypes(filter, 'slots', 'slot');
         filter = await moduleServices.adjustDataTypes(filter, 'equipments', 'slot.equipment');
         filter = await moduleServices.adjustDataTypes(filter, 'procedures', 'procedure');

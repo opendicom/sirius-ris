@@ -239,7 +239,7 @@ module.exports = async (req, res, currentSchema) => {
         // REMOVE DUPLICATED VALUES (SET DEFAULT PROJECTION):
         // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
         //------------------------------------------------------------------------------------------------------------//
-        { $project: { fk_slot: 0, fk_patient: 0, fk_procedure: 0, 'patient.password': 0 }}
+        { $project: { 'fk_slot': 0, 'fk_patient': 0, 'patient.permissions': 0, 'patient.password': 0, 'fk_procedure': 0 }}
         //------------------------------------------------------------------------------------------------------------//
     ];    
 

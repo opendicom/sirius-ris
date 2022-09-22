@@ -22,6 +22,7 @@ module.exports = async (req, res, currentSchema, operation) => {
 
     //Schema:
     if(req.body.fk_patient){ referencedElements.push([ req.body.fk_patient, 'users' ]); }
+    if(req.body.fk_coordinator){ referencedElements.push([ req.body.fk_coordinator, 'users' ]); }
     if(req.body.fk_slot){ referencedElements.push([ req.body.fk_slot, 'slots' ]); }
     if(req.body.fk_procedure){ referencedElements.push([ req.body.fk_procedure, 'procedures' ]); }
     //----------------------------------------------------------------------------------------------------------------//

@@ -38,8 +38,9 @@ export class SelectSlotComponent implements OnInit {
   public currentModality      : any;
 
   //Set params objects:
-  private slotsParams         : any;
-  private appointmentsParams  : any;
+  private slotsParams               : any;
+  private appointmentsParams        : any;
+  private appointmentsDraftsParams  : any;
 
   //Set selected elements:
   public selectedEquipment    : any  | undefined;
@@ -71,10 +72,10 @@ export class SelectSlotComponent implements OnInit {
     //--------------------------------------------------------------------------------------------------------------------//
     // TEST DATA:
     //--------------------------------------------------------------------------------------------------------------------//
-    //this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
-    //this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
-    //this.sharedProp.current_modality = "6267e558bb4e2e4f54931fa7";
-    //this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
+    this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
+    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
+    this.sharedProp.current_modality = "6267e558bb4e2e4f54931fa7";
+    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
     //--------------------------------------------------------------------------------------------------------------------//
 
     //Set min and max dates (Datepicker):
@@ -130,6 +131,20 @@ export class SelectSlotComponent implements OnInit {
         }
       }
     };
+
+    //Set eventClick:
+    this.calendarOptions.eventClick = (arg) => {
+      //Check that it is not a background event (slot) or a tentative event:
+      if(arg.event._def.ui.display !== 'background' && Object.keys(arg.event.extendedProps).length > 0){
+        //Create operation handler:
+        const operationHandler = {
+          event_data : arg.event.extendedProps
+        };
+
+        //Open dialog:
+        this.sharedFunctions.openDialog('event_details', operationHandler);
+      }
+    }
 
     //Bind dateClick event:
     this.calendarOptions.dateClick = this.onClickSlot.bind(this);
@@ -226,7 +241,38 @@ export class SelectSlotComponent implements OnInit {
         'proj[outpatient]': 1,
         'proj[inpatient]': 1,
         'proj[procedure.name]': 1,
-        'proj[slot.equipment._id]':1
+        'proj[slot.equipment._id]':1,
+        'proj[patient.person.documents]': 1,
+        'proj[patient.person.name_01]': 1,
+        'proj[patient.person.name_02]': 1,
+        'proj[patient.person.surname_01]': 1,
+        'proj[patient.person.surname_02]': 1
+      };
+
+      //Set appointments drafts params (In progress events)
+      this.appointmentsDraftsParams = {
+        //Filter:
+        'filter[and][imaging.organization._id]': this.sharedProp.current_imaging.organization._id,
+        'filter[and][imaging.branch._id]': this.sharedProp.current_imaging.branch._id,
+        'filter[and][imaging.service._id]': this.sharedProp.current_imaging.service._id,
+        'filter[and][start][$gte]': minDateString,
+        'filter[and][end][$lte]': maxDateString,
+
+        //Projection:
+        'proj[start]': 1,
+        'proj[end]': 1,
+        'proj[urgency]': 1,
+        'proj[procedure.name]': 1,
+        'proj[slot.equipment._id]':1,
+        'proj[patient.person.documents]': 1,
+        'proj[patient.person.name_01]': 1,
+        'proj[patient.person.name_02]': 1,
+        'proj[patient.person.surname_01]': 1,
+        'proj[patient.person.surname_02]': 1,
+        'proj[coordinator.person.name_01]': 1,
+        'proj[coordinator.person.name_02]': 1,
+        'proj[coordinator.person.surname_01]': 1,
+        'proj[coordinator.person.surname_02]': 1
       };
 
       //Create slots observable slots:
@@ -262,8 +308,9 @@ export class SelectSlotComponent implements OnInit {
                 //Register equipment:
                 registeredEquipments.push(res.data[key].equipment._id);
 
-                //Register slots _id (IN Appointment condition):
+                //Register slots _id (IN Appointment and Appointments drafts condition):
                 this.appointmentsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
+                this.appointmentsDraftsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
 
                 //Add background events in calendar (Slots):
                 this.calendarComponent.getApi().addEvent({
@@ -318,7 +365,16 @@ export class SelectSlotComponent implements OnInit {
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,
                   borderColor: borderColor,
-                  textColor: textColor
+                  textColor: textColor,
+                  extendedProps: {
+                    patient: {
+                      'documents'   : res.data[key].patient.person.documents,
+                      'name_01'     : res.data[key].patient.person.name_01,
+                      'name_02'     : res.data[key].patient.person.name_02,
+                      'surname_01'  : res.data[key].patient.person.surname_01,
+                      'surname_02'  : res.data[key].patient.person.surname_02
+                    }
+                  }
                 });
               }));
             }
@@ -326,7 +382,64 @@ export class SelectSlotComponent implements OnInit {
 
           //Return response:
           return res;
-        })
+        }),
+
+        //Search appointments drafts - FullCalendar In progress events (Return observable):
+        mergeMap(() => this.sharedFunctions.findRxJS('appointments_drafts', this.appointmentsDraftsParams)),
+
+        //Check and set In progress Events:
+        map(async (res: any) => {
+          //Check data:
+          if(res.data){
+            if(res.data.length > 0){
+              //Set currentAppointments drafts - FullCalendar Events (await foreach):
+              await Promise.all(Object.keys(res.data).map((key) => {
+
+                //Set event colors by default configuration (Enviroment):
+                let backgroundColor = '#424242';
+                let borderColor = '#4f4f4f';
+                let textColor = '#fff';
+
+                //Set event colors by default configuration (Urgency or not):
+                if(res.data[key].urgency){
+                  backgroundColor = '#f44336';
+                  borderColor = '#f7594d';
+                  textColor = '#fff'
+                }
+
+                //Add event in calendar (Appointment drafts):
+                this.calendarComponent.getApi().addEvent({
+                  id: res.data[key]._id,
+                  resourceId: res.data[key].slot.equipment._id,
+                  title: res.data[key].procedure.name + ' [Coordinación en curso]',
+                  start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
+                  end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
+                  backgroundColor: backgroundColor,
+                  borderColor: borderColor,
+                  textColor: textColor,
+                  extendedProps: {
+                    patient: {
+                      'documents'   : res.data[key].patient.person.documents,
+                      'name_01'     : res.data[key].patient.person.name_01,
+                      'name_02'     : res.data[key].patient.person.name_02,
+                      'surname_01'  : res.data[key].patient.person.surname_01,
+                      'surname_02'  : res.data[key].patient.person.surname_02
+                    },
+                    coordinator: {
+                      'name_01'     : res.data[key].coordinator.person.name_01,
+                      'name_02'     : res.data[key].coordinator.person.name_02,
+                      'surname_01'  : res.data[key].coordinator.person.surname_01,
+                      'surname_02'  : res.data[key].coordinator.person.surname_02
+                    }
+                  }
+                });
+              }));
+            }
+          }
+
+          //Return response:
+          return res;
+        }),
       );
 
       //Observe content (Subscribe):
@@ -460,14 +573,35 @@ export class SelectSlotComponent implements OnInit {
 
   onSubmit(){
     //Set current selections in shared properties:
-    this.sharedProp.current_urgency = this.form.value.urgency;
     this.sharedProp.current_equipment = this.selectedEquipment;
     this.sharedProp.current_slot = this.selectedSlot;
     this.sharedProp.current_datetime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
     this.sharedProp.current_modality = this.currentModality; //Replace current modality (All information from the modality).
 
-    //Redirect to appointments form:
-    this.router.navigate(['/appointments/form/insert/0']); //Zero indicates empty :id (Activated Route) [content is ignored]
+    //Data normalization - Booleans types:
+    if(typeof this.form.value.urgency != "boolean"){ this.sharedProp.current_urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
+
+    //Create save object (Data normalization):
+    let appointmentsDraftsSaveData = {
+      imaging : {
+        organization  : this.sharedProp.current_imaging.organization._id,
+        branch        : this.sharedProp.current_imaging.branch._id,
+        service       : this.sharedProp.current_imaging.service._id,
+      },
+      start           : this.sharedProp.current_datetime.start + '.000Z',
+      end             : this.sharedProp.current_datetime.end + '.000Z',
+      fk_patient      : this.sharedProp.current_patient._id,
+      fk_coordinator  : this.sharedProp.userLogged.user_id,
+      fk_slot         : this.sharedProp.current_slot,
+      fk_procedure    : this.sharedProp.current_procedure._id,
+      urgency         : this.sharedProp.current_urgency,
+    };
+
+    //Save appointment draft in DB:
+    this.sharedFunctions.save('insert', 'appointments_drafts', '', appointmentsDraftsSaveData, [], (res) => {
+      //Response the form according to the result and redirect to appointments form in success case:
+      this.sharedFunctions.formResponder(res, '/appointments/form/insert/0', this.router, false, '¡Guardado de cita en proceso exitoso!');
+    });
   }
 
   findReferences(){

@@ -32,15 +32,16 @@ export class SharedPropertiesService {
   public checked_items  : boolean[];
 
   //Current operation objects:
-  public current_organization : any; // To be able to add patients permissions.
-  public current_patient      : any;
-  public current_imaging      : any;
-  public current_modality     : any;
-  public current_procedure    : any;
-  public current_slot         : any;
-  public current_equipment    : any;
-  public current_datetime     : any;
-  public current_urgency      : boolean = false;
+  public current_organization       : any; // To be able to add patients permissions.
+  public current_patient            : any;
+  public current_imaging            : any;
+  public current_modality           : any;
+  public current_procedure          : any;
+  public current_slot               : any;
+  public current_equipment          : any;
+  public current_datetime           : any;
+  public current_urgency            : boolean = false;
+  public current_appointment_draft  : any;
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

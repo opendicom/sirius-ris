@@ -15,6 +15,7 @@ import { FoundPersonComponent } from '@shared/components/dialogs/found-person/fo
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
+import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -306,6 +307,19 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsTentativeExist.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //FULLCALENDAR EVENT DETAILS:
+        case 'event_details':
+          //Create dialog observable:
+          const obsEventDetails = this.dialog.open(EventDetailsComponent, { data: operationHandler.event_data });
+
+          //Observe content (Subscribe):
+          obsEventDetails.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });
@@ -649,29 +663,40 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FORM RESPONDER:
   //--------------------------------------------------------------------------------------------------------------------//
-  formResponder(res: any, element: any, router: any){
+  formResponder(res: any, element: any, router: any, redirectToList: boolean = true, custom_message: string = ''){
+    //Check and set custom message:
+    if(custom_message === ''){
+      custom_message = '¡Guardado existoso!';
+    }
+
     //Check operation status:
     if(res.success === true){
       //Send snakbar message:
       //Success with blocked_attributes & blocked_unset:
       if(res.blocked_attributes && res.blocked_unset){
-        this.sendMessage('¡Guardado existoso! - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes) + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+        this.sendMessage(custom_message + ' - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes) + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
 
       //Success with blocked_attributes:
       } else if(res.blocked_attributes){
-        this.sendMessage('¡Guardado existoso! - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes));
+        this.sendMessage(custom_message + ' - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes));
 
       //Success with blocked_unset:
       } else if(res.blocked_unset){
-        this.sendMessage('¡Guardado existoso! - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+        this.sendMessage(custom_message + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
 
       //Success without blocked elements:
       } else {
-        this.sendMessage('¡Guardado existoso!');
+        this.sendMessage(custom_message);
       }
 
-      //Redirect to the list:
-      this.gotoList(element, router);
+      //Redirect to:
+      if(redirectToList){
+        //The element list component:
+        this.gotoList(element, router);
+      } else {
+        //The element indicated:
+        router.navigate([element]);
+      }
 
     } else {
       //Send snakbar message:

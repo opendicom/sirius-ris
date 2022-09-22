@@ -17,6 +17,7 @@ const subSchemaImaging = new mongoose.Schema({
 const Schema = new mongoose.Schema({
     imaging:                { type: subSchemaImaging, required: true },
     fk_patient:             { type: mongoose.ObjectId, required: true },
+    fk_coordinator:         { type: mongoose.ObjectId, required: true },
     start:                  { type: Date, required: true },
     end:                    { type: Date, required: true },
     fk_slot:                { type: mongoose.ObjectId, required: true },
@@ -67,6 +68,11 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_patient NO es un ID MongoDB válido.'),
+
+    body('fk_coordinator')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_coordinator NO es un ID MongoDB válido.'),
 
     body('start').trim(),
 

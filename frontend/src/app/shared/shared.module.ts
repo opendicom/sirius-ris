@@ -21,6 +21,7 @@ import { FoundPersonComponent } from '@shared/components/dialogs/found-person/fo
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
+import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -45,6 +46,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SlotSelectComponent,
     OverlapEventsComponent,
     TentativeExistComponent,
+    EventDetailsComponent,
 
     // Shared pipes:
     HighlighterPipe
