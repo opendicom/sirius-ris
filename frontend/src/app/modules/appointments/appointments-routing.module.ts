@@ -5,7 +5,8 @@ import { ListComponent } from '@modules/appointments/components/list/list.compon
 import { SetPatientComponent } from '@modules/appointments/components/set-patient/set-patient.component';
 import { SelectProcedureComponent } from '@modules/appointments/components/select-procedure/select-procedure.component';
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
-import { FormComponent } from '@modules/appointments/components/form/form.component';
+import { FormInsertComponent } from '@modules/appointments/components/form-insert/form-insert.component';
+import { FormUpdateComponent } from '@modules/appointments/components/form-update/form-update.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,8 @@ const routes: Routes = [
       { path: 'set_patient', component: SetPatientComponent },
       { path: 'select_procedure', component: SelectProcedureComponent },
       { path: 'select_slot', component: SelectSlotComponent },
-      { path: 'form/:action/:_id', component: FormComponent },
+      { path: 'form/insert', component: FormInsertComponent },
+      { path: 'form/update/:_id', component: FormUpdateComponent },
 
       //Default path:
       { path: '**', redirectTo: 'list' },

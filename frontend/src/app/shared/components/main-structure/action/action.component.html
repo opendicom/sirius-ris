@@ -24,6 +24,17 @@
       <mat-icon>add_box</mat-icon> AÑADIR USUARIO MAQUINA
     </button>
   </span>
+
+  <span *ngIf="sharedProp.action.appointments_drafts">
+    &nbsp;
+    <button mat-flat-button color="accent" (click)="resumeAppointmentDraft(sharedProp.action.appointments_drafts._id)">
+      <mat-icon>published_with_changes</mat-icon> CONTINUAR CITA EN CURSO
+    </button>
+    &nbsp;
+    <button mat-flat-button (click)="deleteAppointmentsDrafts(sharedProp.action.appointments_drafts)">
+      <mat-icon>delete_forever</mat-icon> DESCARTAR CITA EN CURSO
+    </button>
+  </span>
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 </mat-toolbar>
 

@@ -16,6 +16,7 @@ import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
+import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -259,6 +260,7 @@ export class SharedFunctionsService {
               }
             }
           });
+
           break;
 
         //FOUND PERSON WITH USER EMAIL IN USER FORM COMPONENT:
@@ -324,6 +326,26 @@ export class SharedFunctionsService {
             callback(result);
           });
 
+          break;
+
+        //DELETE APPOINTMENT DRAFT:
+        case 'delete_appointment_draft':
+          //Create dialog observable:
+          const obsDeleteAppointmentDraft = this.dialog.open(DeleteAppointmentDraftComponent, { data: operationHandler.appointment_draft });
+
+          //Observe content (Subscribe):
+          obsDeleteAppointmentDraft.afterClosed().subscribe(result => {
+            //Check if result is true:
+            if(result){
+              this.delete('single', operationHandler.element, operationHandler.appointment_draft._id, (res) => {
+                //Response the deletion according to the result:
+                const result = this.deleteResponder(res, operationHandler.element, false, true);
+
+                //Excecute callback:
+                callback(result);
+              });
+            }
+          });
           break;
       }
     }
@@ -790,6 +812,50 @@ export class SharedFunctionsService {
         this.sendMessage('No se encontró el archivo [_id: ' + _id + ']: ' + res.message);
       }
     });
-    //--------------------------------------------------------------------------------------------------------------------//
   }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DATETIME FULLCALENDAR FORMATER & ADD ZERO:
+  //--------------------------------------------------------------------------------------------------------------------//
+  datetimeFulCalendarFormater(start: any, end: any): any{
+    //Date:
+    const dateYear   = start.getFullYear();
+    const dateMonth  = start.toLocaleString("es-AR", { month: "2-digit" });
+    const dateDay    = start.toLocaleString("es-AR", { day: "2-digit" })
+
+    //Start:
+    const startHours    = this.addZero(start.getUTCHours());
+    const startMinutes  = this.addZero(start.getUTCMinutes());
+
+    //End:
+    const endHours    = this.addZero(end.getUTCHours());
+    const endMinutes  = this.addZero(end.getUTCMinutes());
+
+    //Set start and end FullCalendar format:
+    const startStr = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + startHours + ':' + startMinutes + ':00';
+    const endStr   = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + endHours + ':' + endMinutes + ':00';
+
+    //Set return object:
+    return {
+      dateYear      : dateYear,
+      dateMonth     : dateMonth,
+      dateDay       : dateDay,
+      startHours    : startHours,
+      startMinutes  : startMinutes,
+      endHours      : endHours,
+      endMinutes    : endMinutes,
+      start         : startStr,
+      end           : endStr
+    }
+  }
+
+  addZero(i: any) {
+    if(i < 10){
+      i = "0" + i.toString()
+    }
+    return i;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

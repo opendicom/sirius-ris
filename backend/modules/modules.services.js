@@ -1144,7 +1144,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 //--------------------------------------------------------------------------------------------------------------------//
 // IS DUPLICATED:
 //--------------------------------------------------------------------------------------------------------------------//
-async function isDuplicated(req, res, currentSchema, params){
+async function isDuplicated(req, res, currentSchema, params, message = ''){
     //Initialize result:
     result = false;
 
@@ -1161,8 +1161,13 @@ async function isDuplicated(req, res, currentSchema, params){
                     //Set result (duplicated):
                     result = true;
 
+                    //Set message:
+                    if(message === '' || message === undefined || message === null){
+                        message = currentLang.db.insert_duplicate;
+                    }
+
                     //Send duplicate message:
-                    res.status(422).send({ success: false, message: currentLang.db.insert_duplicate + data._id });
+                    res.status(422).send({ success: false, message: message + data._id });
                 }
 
             //UPDATE
@@ -1171,8 +1176,13 @@ async function isDuplicated(req, res, currentSchema, params){
                     //Set result (duplicated):
                     result = true;
 
+                    //Set message:
+                    if(message === '' || message === undefined || message === null){
+                        message = currentLang.db.update_duplicate;
+                    }
+
                     //Send duplicate message:
-                    res.status(422).send({ success: false, message: currentLang.db.update_duplicate + data._id });
+                    res.status(422).send({ success: false, message: message + data._id });
                 }
             }
         }

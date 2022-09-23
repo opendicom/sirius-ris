@@ -72,10 +72,12 @@ export class SelectSlotComponent implements OnInit {
     //--------------------------------------------------------------------------------------------------------------------//
     // TEST DATA:
     //--------------------------------------------------------------------------------------------------------------------//
+    /*
     this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
     this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
     this.sharedProp.current_modality = "6267e558bb4e2e4f54931fa7";
     this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
+    */
     //--------------------------------------------------------------------------------------------------------------------//
 
     //Set min and max dates (Datepicker):
@@ -532,7 +534,7 @@ export class SelectSlotComponent implements OnInit {
         }));
 
         //Set date and time in FullCalendar format:
-        const formattedDateTime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+        const formattedDateTime = this.sharedFunctions.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
 
         //Check if the event is overlapped:
         const isOverlapping = await this.isOverlapping(formattedDateTime, this.selectedEquipment.fk_equipment);
@@ -575,7 +577,7 @@ export class SelectSlotComponent implements OnInit {
     //Set current selections in shared properties:
     this.sharedProp.current_equipment = this.selectedEquipment;
     this.sharedProp.current_slot = this.selectedSlot;
-    this.sharedProp.current_datetime = this.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
+    this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
     this.sharedProp.current_modality = this.currentModality; //Replace current modality (All information from the modality).
 
     //Data normalization - Booleans types:
@@ -600,7 +602,7 @@ export class SelectSlotComponent implements OnInit {
     //Save appointment draft in DB:
     this.sharedFunctions.save('insert', 'appointments_drafts', '', appointmentsDraftsSaveData, [], (res) => {
       //Response the form according to the result and redirect to appointments form in success case:
-      this.sharedFunctions.formResponder(res, '/appointments/form/insert/0', this.router, false, '¡Guardado de cita en proceso exitoso!');
+      this.sharedFunctions.formResponder(res, '/appointments/form/insert', this.router, false, '¡Guardado de cita en proceso exitoso!');
     });
   }
 
@@ -636,45 +638,6 @@ export class SelectSlotComponent implements OnInit {
     }
   }
 
-  addZero(i: any) {
-    if(i < 10){
-      i = "0" + i.toString()
-    }
-    return i;
-  }
-
-  datetimeFulCalendarFormater(start: any, end: any): any{
-    //Date:
-    const dateYear   = start.getFullYear();
-    const dateMonth  = start.toLocaleString("es-AR", { month: "2-digit" });
-    const dateDay    = start.toLocaleString("es-AR", { day: "2-digit" })
-
-    //Start:
-    const startHours    = this.addZero(start.getUTCHours());
-    const startMinutes  = this.addZero(start.getUTCMinutes());
-
-    //End:
-    const endHours    = this.addZero(end.getUTCHours());
-    const endMinutes  = this.addZero(end.getUTCMinutes());
-
-    //Set start and end FullCalendar format:
-    const startStr = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + startHours + ':' + startMinutes + ':00';
-    const endStr   = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + endHours + ':' + endMinutes + ':00';
-
-    //Set return object:
-    return {
-      dateYear      : dateYear,
-      dateMonth     : dateMonth,
-      dateDay       : dateDay,
-      startHours    : startHours,
-      startMinutes  : startMinutes,
-      endHours      : endHours,
-      endMinutes    : endMinutes,
-      start         : startStr,
-      end           : endStr
-    }
-  }
-
   async isOverlapping(inputDateTime: any, inputResource: string){
     //Initialize isOverlap:
     let isOverlap = false;
@@ -692,7 +655,7 @@ export class SelectSlotComponent implements OnInit {
         const currentEnd = calendarEvents[parseInt(key, 10)]._instance?.range.end;
 
         //Set date and time in FullCalendar format:
-        const currentDateTime = this.datetimeFulCalendarFormater(currentStart, currentEnd);
+        const currentDateTime = this.sharedFunctions.datetimeFulCalendarFormater(currentStart, currentEnd);
 
         //Check current resource (equipment):
         if(currentResource[0] == inputResource){

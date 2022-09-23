@@ -65,31 +65,41 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     appointments_drafts.Validator,
     async (req, res) => {
-        //Set params for check duplicates:
-        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+        //Set params for check duplicates - Coordinator user should only have one appointment draft at a time:
+        const coordinatorParams = { fk_coordinator: req.body.fk_coordinator };
 
         //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, appointments_drafts, params);
+        const duplicatedCoordinator = await moduleServices.isDuplicated(req, res, appointments_drafts, coordinatorParams, currentLang.ris.coordination_in_progress);
 
-        //Check for duplicates:
-        if(duplicated == false){
-            //Check fk_slot:
-            if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
-                //Check if slot is available or not:
-                const available_slot = await moduleServices.checkSlot(req, res);
-                
-                if(available_slot == true){
-                    //Check urgency:
-                    const urgency_check = await moduleServices.checkUrgency(req, res, 'insert');
+        //Check for duplicates (Coordinator):
+        if(duplicatedCoordinator == false){
 
-                    if(urgency_check === true){
-                        //Send to handler:
-                        saveHandler(req, res, appointments_drafts, 'insert');
+            //Set params for check duplicates - The same patient on the same exact date and time (start end):
+            const patientParams = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+
+            //Search for duplicates:
+            const duplicatedPatientInDate = await moduleServices.isDuplicated(req, res, appointments_drafts, patientParams);
+
+            //Check for duplicates (Patient in date):
+            if(duplicatedPatientInDate == false){
+                //Check fk_slot:
+                if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
+                    //Check if slot is available or not:
+                    const available_slot = await moduleServices.checkSlot(req, res);
+                    
+                    if(available_slot == true){
+                        //Check urgency:
+                        const urgency_check = await moduleServices.checkUrgency(req, res, 'insert');
+
+                        if(urgency_check === true){
+                            //Send to handler:
+                            saveHandler(req, res, appointments_drafts, 'insert');
+                        }
                     }
+                } else {
+                    //Return the result (HTML Response):
+                    res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
                 }
-            } else {
-                //Return the result (HTML Response):
-                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
             }
         }
     }
@@ -100,7 +110,8 @@ router.post(
     '/delete',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
-    mainMiddlewares.checkDeleteCode,
+    //Disabled checkDeleteCode (all users should be able to cancel appointments in progress):
+    //mainMiddlewares.checkDeleteCode,      
     (req, res) => { 
         //Send to module service:
         moduleServices._delete(req, res, appointments_drafts);

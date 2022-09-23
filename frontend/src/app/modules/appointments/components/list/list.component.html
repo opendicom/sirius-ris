@@ -7,9 +7,18 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
-          <mat-icon>edit</mat-icon>
-        </button>
+
+        <div *ngIf="sharedProp.action.appointments_drafts === false; then thenBlockAppointmentsDrafts else elseBlockAppointmentsDrafts"></div>
+
+        <ng-template #thenBlockAppointmentsDrafts>
+          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </ng-template>
+
+        <ng-template #elseBlockAppointmentsDrafts>
+          <mat-icon matTooltip="Para poder editar citas debe continuar la cita en proceso o descartarla.">info</mat-icon>
+        </ng-template>
       </td>
     </ng-container>
 

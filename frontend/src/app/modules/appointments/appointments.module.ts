@@ -11,7 +11,8 @@ import { ListComponent } from '@modules/appointments/components/list/list.compon
 import { SetPatientComponent } from '@modules/appointments/components/set-patient/set-patient.component';
 import { SelectProcedureComponent } from '@modules/appointments/components/select-procedure/select-procedure.component';
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
-import { FormComponent } from '@modules/appointments/components/form/form.component';
+import { FormInsertComponent } from '@modules/appointments/components/form-insert/form-insert.component';
+import { FormUpdateComponent } from '@modules/appointments/components/form-update/form-update.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -37,7 +38,8 @@ FullCalendarModule.registerPlugins([
     SetPatientComponent,
     SelectProcedureComponent,
     SelectSlotComponent,
-    FormComponent
+    FormInsertComponent,
+    FormUpdateComponent
   ],
   imports: [
     CommonModule,

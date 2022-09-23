@@ -85,7 +85,8 @@ export const user_concessions = {
   5 : 'Estadísticas generales',
   6 : 'Estadísticas médicas',
   7 : 'Estadísticas del personal',
-  8 : 'Eliminación física de archivos'
+  8 : 'Eliminación física de archivos',
+  9 : 'Supervisar citas en curso',
 }
 
 // User Types:
