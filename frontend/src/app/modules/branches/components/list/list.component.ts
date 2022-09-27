@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes, regexObjectId } from '@env/environment';                   // Enviroments
+import { ActivatedRoute } from '@angular/router';                                             // Activated Route Interface
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { app_setting, ISO_3166, default_page_sizes, regexObjectId } from '@env/environment';  // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,8 +15,11 @@ import { default_page_sizes, regexObjectId } from '@env/environment';           
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  public settings         : any = app_setting;
+  public country_codes    : any = ISO_3166;
+
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'short_name', 'name', 'OID', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'short_name', 'name', 'OID', 'country_code', 'structure_id', 'suffix', 'status'];
 
   //Inject services to the constructor:
   constructor(
@@ -54,12 +57,15 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['name', 'short_name', 'OID', 'organization.short_name'];
+    this.sharedProp.filterFields  = ['name', 'short_name', 'OID', 'structure_id', 'suffix', 'organization.short_name'];
     this.sharedProp.projection    = {
       'fk_organization': 1,
       'name': 1,
       'short_name': 1,
       'OID': 1,
+      'country_code': 1,
+      'structure_id': 1,
+      'suffix': 1,
       'status': 1,
       'organization.short_name': 1
     };

@@ -41,8 +41,28 @@
       <br/><br/>
     </div> <!-- end fxLayout wrapper -->
 
-    <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>País de la organización:</h4>
+      <mat-form-field appearance="fill" class="medium">
+        <mat-label>País de la organización</mat-label>
+        <mat-select formControlName="country_code">
+          <div *ngFor="let currentCode of getKeys(country_codes, true)">
+            <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>ID Estructura:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>ID Estructura</mat-label>
+        <input matInput type="text" formControlName="structure_id" placeholder="Ingrese el ID Estructura">
+      </mat-form-field>
+
+      <h4>Sufijo:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Sufijo</mat-label>
+        <input matInput type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
+      </mat-form-field>
     </div> <!-- end fxLayout wrapper -->
 
   </div>

@@ -258,7 +258,7 @@ export class FormMachineComponent implements OnInit {
           //Create save object to preserve data types in form.value (Clone objects with spread operator):
           let userSaveData = { ...this.form.value.user} ;
 
-          //Data normalization - Booleans types:
+          //Data normalization - Booleans types (mat-option cases):
           if(typeof userSaveData.status != "boolean"){ userSaveData.status = userSaveData.status.toLowerCase() == 'true' ? true : false; }
 
           //Data normalization - Set permissions in form user object:

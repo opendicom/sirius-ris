@@ -505,7 +505,7 @@ export class SetPatientComponent implements OnInit {
         let personSaveData = { ...this.form.value.person };
         let userSaveData = { ...this.form.value.user} ;
 
-        //Data normalization - Booleans types:
+        //Data normalization - Booleans types (mat-option cases):
         if(typeof userSaveData.status != "boolean"){ userSaveData.status = userSaveData.status.toLowerCase() == 'true' ? true : false; }
 
         //Data normalization - Dates types:

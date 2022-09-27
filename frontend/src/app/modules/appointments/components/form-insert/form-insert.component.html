@@ -51,7 +51,15 @@
         <div class="current-wrap preparation-wrap">
           <!-- preparation -->
           <div class="current-info">
-            <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
+            <div *ngIf="this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
+
+            <ng-template #thenBlockPreparation>
+              <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
+            </ng-template>
+
+            <ng-template #elseBlockPreparation>
+              <span>El procedimiento seleccionado no posee preparación previa.</span>
+            </ng-template>
           </div>
 
           <div class="clear"></div>
@@ -69,7 +77,7 @@
                 <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
                   <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                   <span matTooltip="{{ document_types[current.doc_type] }}">
-                    <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                    <span>{{ current.document }}</span>
                   </span>
                   <br/>
                 </span>
@@ -251,12 +259,16 @@
         <br/><hr class="dashed" /><br/>
 
         <h4>Anamnesis:</h4>
-        <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+        <div [class.unselected]="anamnesisValidator == false">
+          <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+        </div>
 
         <br/><hr class="dashed" /><br/>
 
         <h4>Indicaciones:</h4>
-        <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+        <div [class.unselected]="indicationsValidator == false">
+          <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+        </div>
 
         <br/><hr class="dashed" /><br/>
 

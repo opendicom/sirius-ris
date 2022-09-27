@@ -323,7 +323,7 @@
               <div *ngFor="let currentRole of userRoles | keyvalue">
                 <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
                 <ng-template #thenBlockRole>
-                  <!--Only super user can add Superuser role -->
+                  <!--Only superuser can add Superuser role -->
                   <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
                 </ng-template>
 
@@ -336,7 +336,7 @@
 
           <br/><hr class="dashed" /><br/>
 
-          <h4>Conseciones particulares:</h4>
+          <h4>Concesiones particulares:</h4>
           <div class="item-container" formArrayName="concessions">
             <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue;">
               <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>

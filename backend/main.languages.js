@@ -72,6 +72,7 @@ module.exports = function(language){
             'batch_processed'           : 'Batch processed successfully.',
             'only_urgency_slot'         : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
             'coordination_in_progress'  : 'The coordinating user already has a coordination in progress: ',
+            'study_iuid_error'          : 'There was some problem trying to generate the Study IUID: ',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -157,6 +158,7 @@ module.exports = function(language){
             lang.ris.batch_processed            = 'Lote procesado correctamente.';
             lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
             lang.ris.coordination_in_progress   = 'El usuario coordinador ya posee una coordinación en curso: ';
+            lang.ris.study_iuid_error           = 'Hubo algún problema al intentar generar el Study IUID: ';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

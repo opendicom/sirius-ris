@@ -14,9 +14,9 @@
           </button>
         </span>
 
-        <!-- Machine case | Only super user can edit machine users -->
+        <!-- Machine case | Only superuser can edit machine users -->
         <span *ngIf="element.username && sharedProp.userLogged.permissions[0].role == 1">
-          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form-machine/update/{{ element._id }}">
+          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/users/form_machine/update/{{ element._id }}">
             <mat-icon>edit</mat-icon>
           </button>
         </span>

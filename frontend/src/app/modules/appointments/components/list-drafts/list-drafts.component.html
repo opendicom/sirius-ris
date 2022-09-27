@@ -1,0 +1,141 @@
+<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" aria-label="Continuar" matTooltip="Continuar cita en curso">
+          <mat-icon>published_with_changes</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" aria-label="Descartar" matTooltip="Descartar cita en curso">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- date -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Fecha </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
+      </td>
+    </ng-container>
+
+    <!-- schedule -->
+    <ng-container matColumnDef="schedule">
+      <th mat-header-cell *matHeaderCellDef> Horario </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
+        <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
+      </td>
+    </ng-container>
+
+    <!-- documents -->
+    <ng-container matColumnDef="documents">
+      <th mat-header-cell *matHeaderCellDef> Documentos </th>
+      <td class="documents" mat-cell *matCellDef="let element">
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <span *ngFor="let current of element.patient.person.documents" >
+              <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+              <span matTooltip="{{ document_types[current.doc_type] }}">
+                <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+              </span>
+              <br/>
+            </span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- names -->
+    <ng-container matColumnDef="names">
+      <th mat-header-cell *matHeaderCellDef> Nombres </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+
+            <span *ngIf="element.patient.person.name_02">
+              <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- surnames -->
+    <ng-container matColumnDef="surnames">
+      <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+
+            <span *ngIf="element.patient.person.surname_02">
+              <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- equipment -->
+    <ng-container matColumnDef="equipment">
+      <th mat-header-cell *matHeaderCellDef> Equipamiento </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.slot">
+          <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+          <ng-template #thenBlockTableEquipment>
+            <span class="badge-accent" matTooltip="{{ 'AET: ' + element.slot.equipment.AET }}">
+              <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </ng-template>
+          <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- modality -->
+    <ng-container matColumnDef="modality">
+      <th mat-header-cell *matHeaderCellDef> Modalidad </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+        <ng-template #thenBlockTableModality>
+          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">
+            <span innerHTML="{{ element.modality.code_value | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </ng-template>
+        <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- urgency -->
+    <ng-container matColumnDef="urgency">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+        <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-template>
+
+<!-- Await response or not response -->
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    Aguarde, aún no hay resultados.
+  </div>
+</ng-template>
+
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
+</div>

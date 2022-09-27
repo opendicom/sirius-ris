@@ -57,6 +57,7 @@ export class ListComponent implements OnInit {
       content_title       : 'Listado de citas',
       content_icon        : 'event_available',
       add_button          : '/appointments/set_patient',
+      manage_drafts       : '/appointments/list_drafts',
       appointments_drafts : false,
       filters_form        : true,
       filters : {

@@ -137,7 +137,7 @@ const Schema = new mongoose.Schema({
     fk_procedure:           { type: mongoose.ObjectId, required: true },
     extra_procedures:       { type: [mongoose.ObjectId] },
     urgency:                { type: Boolean, required: true },
-    study_iuid:             { type: String, required: true, match: /^([0-2])((\.0)|(\.[1-9][0-9]*))*$/gm },
+    study_iuid:             { type: String, match: /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm },
     anamnesis:              { type: String, required: true },
     indications:            { type: String, required: true },
     report_before:          { type: Date, required: true },
@@ -150,7 +150,7 @@ const Schema = new mongoose.Schema({
     inpatient:              { type: subSchemaInpatient },
     attached_files:         { type: [mongoose.ObjectId] },
     cancellation_reasons:   { type: Number },
-    status:                 { type: Boolean, required: true, default: false },
+    status:                 { type: Boolean, required: true, default: false }
 },
 { timestamps: true },
 { versionKey: false });
@@ -165,7 +165,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['extra_procedures'];
+const AllowedUnsetValues = ['extra_procedures', 'media', 'consents', 'inpatient', 'cancellation_reasons'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -288,9 +288,10 @@ const Validator = [
         .toBoolean(),
 
     body('study_iuid')
+        .optional()
         .trim()
-        .isLength({ min: 3, max: 200 })
-        .withMessage('El parametro study_iuid ingresado es demasiado corto o demasiado largo (min: 3, max: 200 [caracteres]).'),
+        .isLength({ min: 3, max: 64 })
+        .withMessage('El parametro study_iuid generado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
 
     body('anamnesis')
         .trim()

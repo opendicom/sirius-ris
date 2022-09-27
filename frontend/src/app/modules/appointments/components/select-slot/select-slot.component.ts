@@ -580,7 +580,7 @@ export class SelectSlotComponent implements OnInit {
     this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
     this.sharedProp.current_modality = this.currentModality; //Replace current modality (All information from the modality).
 
-    //Data normalization - Booleans types:
+    //Data normalization - Booleans types (mat-option cases):
     if(typeof this.form.value.urgency != "boolean"){ this.sharedProp.current_urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
 
     //Create save object (Data normalization):

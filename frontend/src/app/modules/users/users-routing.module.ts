@@ -12,7 +12,7 @@ const routes: Routes = [
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
       { path: 'form/:action/:_id', component: FormComponent },
-      { path: 'form-machine/:action/:_id', component: FormMachineComponent },
+      { path: 'form_machine/:action/:_id', component: FormMachineComponent },
       { path: '**', redirectTo: 'list' },
     ]
   }

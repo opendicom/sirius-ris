@@ -2,9 +2,10 @@
 // MODULES SERVICES:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
-const mongoose              = require('mongoose');                          //Mongoose.
-const ObjectId              = require('mongoose').Types.ObjectId;           //To check ObjectId Type.
-const { validationResult }  = require('express-validator');                 //Express-validator Middleware.
+const mongoose              = require('mongoose');                          // Mongoose
+const moment                = require('moment');                            // Moment
+const ObjectId              = require('mongoose').Types.ObjectId;           // To check ObjectId Type
+const { validationResult }  = require('express-validator');                 // Express-validator Middleware
 
 //Import app modules:
 const mainServices  = require('../main.services');                          // Main services
@@ -3075,6 +3076,130 @@ async function validatePermissions(req){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET STUDY IUID:
+//--------------------------------------------------------------------------------------------------------------------//
+// Set OID Structure base:
+// Reference in UY:
+// https://centrodeconocimiento.agesic.gub.uy/documents/207224/425682/Gu%C3%ADa+para+la+gesti%C3%B3n+de+OID.pdf/293df376-77d5-71d3-9490-ede702bbb583
+//--------------------------------------------------------------------------------------------------------------------//
+// '2.16.858'          + // Base UNAOID UY
+// '.2'                + // Identifica Objeto (0: Organizaciones, 1: Personas, 2: Objetos)
+// '.XXXXXXXX'         + // ID Estructura (Organización o sucursal) [max length: 8]
+// '.72769'            + // ID PACS (PACS organization o branch) Tipo de objeto [FIJO]
+// '.YYYYMMDDHHmmss'   + // Timestamp
+// '*'                 + // Sufijo (Opcional)
+//--------------------------------------------------------------------------------------------------------------------//
+// Ejemplo de sufijo:
+// '.XXXXXX'           + // Consecutivo interno
+// '.8'                + // PACS de ASSE
+//--------------------------------------------------------------------------------------------------------------------//
+// Total max length: 64
+//--------------------------------------------------------------------------------------------------------------------//
+// ID PACS:
+// 67430 Historia Clínica Electrónica
+// 71867 Repositorio de documentos electrónicos
+// 72591 Modelo de Plantilla Digital
+// 72768 Sistemas de Información de Salud (HIS, SIS,HealthInformationSystems)
+// 72769 Sistemas de Archivo y Transmisión de Imágenes (PACS, SATI, Picture And CommunicationInformationSystems)
+// 72770 Sistemas de Información Imagenológica (SII, RIS, IIS, ImagenologicalInformationSystem, RadiologicalInformationSystems)
+// 72771 Sistemas de Información de Laboratorios (sinónimos asociados: SIL, LIS, LaboratoryInformationSystems)
+//--------------------------------------------------------------------------------------------------------------------//
+async function setStudyIUID(req, res) {
+    //Initialize operation status:
+    let operation_status = false;
+
+    //Import schema:
+    const organizations = require('./organizations/schemas');
+    const branches = require('./branches/schemas');
+
+    //Get timestamp:
+    const timestamp = moment().format('YYYYMMDDHHmmss');
+
+    //Create Study IUID regex:
+    const regexStudyIUD = /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm;
+
+    //Search in Organizations:
+    await organizations.Model.findById(req.body.imaging.organization, { country_code: 1, structure_id: 1, suffix: 1 })
+    .exec()
+    .then(async (organization_data) => {
+        //Check if have results:
+        if(organization_data){
+            //Initialize Study IUID structure:
+            let country_code = undefined;
+            let structure_id = undefined;
+            let suffix = '';
+
+            //Check organization country_code:
+            if(organization_data.country_code !== undefined && organization_data.country_code !== null && organization_data.country_code !== ''){
+                country_code = organization_data.country_code;
+            }
+
+            //Check organization structure_id:
+            if(organization_data.structure_id !== undefined && organization_data.structure_id !== null && organization_data.structure_id !== ''){
+                structure_id = organization_data.structure_id;
+            }
+
+            //Check organization suffix:
+            if(organization_data.suffix !== undefined && organization_data.suffix !== null && organization_data.suffix !== ''){
+                suffix = '.' + organization_data.suffix;
+            }
+
+            //Search in Branches:
+            await branches.Model.findById(req.body.imaging.branch, { country_code: 1, structure_id: 1, suffix: 1 })
+            .exec()
+            .then((branch_data) => {
+                //Check if have results:
+                if(branch_data){
+                    //Check branch country_code:
+                    if(branch_data.country_code !== undefined && branch_data.country_code !== null && branch_data.country_code !== ''){
+                        //Override organization country_code with branch country_code:
+                        country_code = branch_data.country_code;
+                    }
+
+                    //Check branch structure_id:
+                    if(branch_data.structure_id !== undefined && branch_data.structure_id !== null && branch_data.structure_id !== ''){
+                        //Override organization structure_id with branch structure_id:
+                        structure_id = branch_data.structure_id;
+                    }
+
+                    //Check branch suffix:
+                    if(branch_data.suffix !== undefined && branch_data.suffix !== null && branch_data.suffix !== ''){
+                        suffix = suffix + '.' + branch_data.suffix;
+                    }
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+
+            //Create Study IUID:
+            const study_iuid = '2.16.' + country_code + '.2.' + structure_id + '.72769.' + timestamp + suffix;
+
+            //Check study IUID with regex:
+            if(regexStudyIUD.test(study_iuid)){
+                //Set study_iuid in the request:
+                req.body['study_iuid'] = study_iuid;
+
+                //Set operation status:
+                operation_status = true;
+            } else {
+                //Hubo algún problema al generar el Study IUID:
+                res.status(500).send({ success: false, message: currentLang.ris.study_iuid_error + study_iuid });
+            }
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return operation status:
+    return operation_status;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -3100,6 +3225,7 @@ module.exports = {
     setCondition,
     domainIs,
     addDomainCondition,
-    validatePermissions
+    validatePermissions,
+    setStudyIUID
 };
 //--------------------------------------------------------------------------------------------------------------------//

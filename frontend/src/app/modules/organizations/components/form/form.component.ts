@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { app_setting, ISO_3166 } from '@env/environment';                               // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,8 +16,14 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
+  public settings         : any = app_setting;
+  public country_codes    : any = ISO_3166;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
+
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
 
   //Define id and form_action variables (Activated Route):
   public _id: string = '';
@@ -36,6 +43,9 @@ export class FormComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ){
+    //Pass Service Method:
+    this.getKeys = this.sharedFunctions.getKeys;
+
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -52,10 +62,13 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      short_name:   ['', [Validators.required]],
-      name:         ['', [Validators.required]],
-      OID:          [''],
-      status:       ['true']
+      short_name    : ['', [Validators.required]],
+      name          : ['', [Validators.required]],
+      OID           : [''],
+      country_code  : [ this.settings.default_country, [Validators.required]],
+      structure_id  : [''],
+      suffix        : [''],
+      status        : ['true']
     });
   }
 
@@ -79,10 +92,13 @@ export class FormComponent implements OnInit {
           if(res.success === true){
             //Send data to the form:
             this.setReactiveForm({
-              short_name: res.data[0].short_name,
-              name: res.data[0].name,
-              OID: res.data[0].OID,
-              status: [ `${res.data[0].status}` ] //Use back tip notation to convert string
+              short_name    : res.data[0].short_name,
+              name          : res.data[0].name,
+              OID           : res.data[0].OID,
+              country_code  : res.data[0].country_code,
+              structure_id  : res.data[0].structure_id,
+              suffix        : res.data[0].suffix,
+              status        : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
             //Get property keys with values:
@@ -101,7 +117,7 @@ export class FormComponent implements OnInit {
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
-      //Data normalization - Booleans types:
+      //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
 
       //Save data:

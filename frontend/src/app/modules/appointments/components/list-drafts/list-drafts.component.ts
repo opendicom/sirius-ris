@@ -3,35 +3,40 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                                               // Activated Route Interface
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';                           // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';                             // Shared Functions
-import { ISO_3166, document_types, gender_types, default_page_sizes, regexObjectId } from '@env/environment';   // Enviroments
+import { ActivatedRoute } from '@angular/router';                                               // Activated Route Interface
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
+import {                                                                                        // Enviroments
+  default_page_sizes,
+  regexObjectId,
+  ISO_3166,
+  document_types,
+  gender_types
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: 'app-list-drafts',
+  templateUrl: './list-drafts.component.html',
+  styleUrls: ['./list-drafts.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListDraftsComponent implements OnInit {
   //Set component properties:
   public country_codes: any = ISO_3166;
   public document_types: any = document_types;
   public gender_types: any = gender_types;
 
   //Set visible columns of the list:
-  displayedColumns: string[] = [
+  public displayedColumns: string[] = [
     'element_action',
+    'date',
+    'schedule',
     'documents',
     'names',
     'surnames',
-    'birth_date',
-    'email',
-    'phone_numbers',
-    'gender',
-    'type',
-    'status'
+    'equipment',
+    'modality',
+    'urgency'
   ];
 
   //Inject services to the constructor:
@@ -45,25 +50,30 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Listado de usuarios',
-      content_icon    : 'people',
-      add_button      : '/users/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
-      add_machine     : '/users/form_machine/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
-      filters_form    : true,
+      content_title       : 'Listado de citas en curso',
+      content_icon        : 'free_cancellation',
+      add_button          : false,
+      filters_form        : true,
       filters : {
         search        : true,
-        date_range    : false,
-        status        : true,
+        date_range    : 'start-end',
+        urgency       : true,
+        status        : false,
         pager         : true,
       }
     });
 
     //Set element:
-    sharedProp.elementSetter('users');
+    sharedProp.elementSetter('appointments_drafts');
 
     //Initialize action fields:
     this.sharedProp.filter        = '';
+    this.sharedProp.urgency       = '';
     this.sharedProp.status        = '';
+    this.sharedProp.date_range = {
+      start : '',
+      end   : ''
+    };
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -72,23 +82,25 @@ export class ListComponent implements OnInit {
     //Set initial request params:
     this.sharedProp.regex         = 'true';
     this.sharedProp.filterFields  = [
-      'person.documents.document',
-      'username',
-      'email',
-      'person.name_01',
-      'person.name_02',
-      'person.surname_01',
-      'person.surname_02',
-      'person.phone_numbers'
+      'patient.person.documents.document',
+      'patient.person.name_01',
+      'patient.person.name_02',
+      'patient.person.surname_01',
+      'patient.person.surname_02',
+      'slot.equipment.name',
+      'modality.code_value'
     ];
     this.sharedProp.projection    = {
-      'fk_person': 1,
-      'person': 1,
-      'username': 1,
-      'email': 1,
-      'status': 1
+      'imaging': 1,
+      'start': 1,
+      'end': 1,
+      'patient': 1,
+      'urgency': 1,
+      'slot.equipment.name': 1,
+      'slot.equipment.AET': 1,
+      'modality': 1
     };
-    this.sharedProp.sort          = { username: 1 };
+    this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:

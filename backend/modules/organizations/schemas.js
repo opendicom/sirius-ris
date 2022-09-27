@@ -10,6 +10,9 @@ const Schema = new mongoose.Schema({
     name:           { type: String, required: true },
     short_name:     { type: String, required: true },
     OID:            { type: String },
+    country_code:   { type: String, required: true },
+    structure_id:   { type: String },
+    suffix:         { type: String },
     status:         { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
@@ -29,7 +32,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -51,6 +54,24 @@ const Validator = [
         .trim()
         .isLength({ min: 1, max: 64 })
         .withMessage('El OID ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+
+    body('country_code')
+        .trim()
+        .isLength({ min: 3, max: 3 })
+        .withMessage('El código de país ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).')
+        .toLowerCase(),
+
+    body('structure_id')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 64 })
+        .withMessage('El ID de Estructura ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+
+    body('suffix')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 64 })
+        .withMessage('El suffix ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
     
     body('status')
         .trim()

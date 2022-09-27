@@ -250,7 +250,7 @@ export class FormComponent implements OnInit {
         branch        : domain[1]
       }
 
-      //Data normalization - Booleans types:
+      //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
       if(typeof this.form.value.informed_consent != "boolean"){ this.form.value.informed_consent = this.form.value.informed_consent.toLowerCase() == 'true' ? true : false; }
 

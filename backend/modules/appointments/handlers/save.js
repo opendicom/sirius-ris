@@ -38,9 +38,11 @@ module.exports = async (req, res, currentSchema, operation) => {
     if(req.body.fk_procedure){ referencedElements.push([ req.body.fk_procedure, 'procedures' ]); }
 
     //Consents:
-    if(req.body.consents.informed_consent){ referencedElements.push([ req.body.consents.informed_consent, 'files' ]); }
-    if(req.body.consents.clinical_trial){ referencedElements.push([ req.body.consents.clinical_trial, 'files' ]); }
-
+    if(req.body.consents){
+        if(req.body.consents.informed_consent){ referencedElements.push([ req.body.consents.informed_consent, 'files' ]); }
+        if(req.body.consents.clinical_trial){ referencedElements.push([ req.body.consents.clinical_trial, 'files' ]); }
+    }
+    
     //Set referenced elements (FKs - Check existence) [Arrays case]:
     if(req.body.attached_files){
         for(let currentKey in req.body.attached_files){
@@ -64,7 +66,13 @@ module.exports = async (req, res, currentSchema, operation) => {
             //Excecute main query:
             switch(operation){
                 case 'insert':
-                    await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    //Set Study IUID:
+                    const operation_status = await moduleServices.setStudyIUID(req, res);
+
+                    //Check operation status:
+                    if(operation_status){
+                        await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    }
                     break;
                 case 'update':
                     await moduleServices.update(req, res, currentSchema, referencedElements);

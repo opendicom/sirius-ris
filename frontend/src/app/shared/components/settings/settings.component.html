@@ -46,7 +46,7 @@
     Cuentas de usuarios
   </button>
 
-  <button mat-button routerLink="/files/list">
+  <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/files/list">
     <mat-icon>folder</mat-icon><br/>
     Archivos
   </button>

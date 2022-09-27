@@ -7,6 +7,7 @@ import { SelectProcedureComponent } from '@modules/appointments/components/selec
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
 import { FormInsertComponent } from '@modules/appointments/components/form-insert/form-insert.component';
 import { FormUpdateComponent } from '@modules/appointments/components/form-update/form-update.component';
+import { ListDraftsComponent } from '@modules/appointments/components/list-drafts/list-drafts.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
     children: [
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
+
+      //Appointments drafts list:
+      { path: 'list_drafts', component: ListDraftsComponent },
+      { path: 'list_drafts/:_id', component: ListDraftsComponent },
 
       //Appointments form secuence:
       { path: 'set_patient', component: SetPatientComponent },

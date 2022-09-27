@@ -37,6 +37,30 @@
       </td>
     </ng-container>
 
+    <!-- country_code -->
+    <ng-container matColumnDef="country_code">
+      <th mat-header-cell *matHeaderCellDef> País </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.country_code" matTooltip="{{ country_codes[element.country_code].name }}" class="flag-icon flag-icon-{{ country_codes[element.country_code].alpha_2 | lowercase }}"></span>
+      </td>
+    </ng-container>
+
+    <!-- structure_id -->
+    <ng-container matColumnDef="structure_id">
+      <th mat-header-cell *matHeaderCellDef> ID Estructura </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.structure_id" innerHTML="{{ element.structure_id | highlighter : sharedProp.filter }}"></span>
+      </td>
+    </ng-container>
+
+    <!-- suffix -->
+    <ng-container matColumnDef="suffix">
+      <th mat-header-cell *matHeaderCellDef> Sufijo </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.suffix" innerHTML="{{ element.suffix | highlighter : sharedProp.filter }}"></span>
+      </td>
+    </ng-container>
+
     <!-- status -->
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> Estado </th>

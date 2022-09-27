@@ -173,7 +173,7 @@ export class BatchComponent implements OnInit {
           service       : domain[2]
         }
 
-        //Data normalization - Booleans types:
+        //Data normalization - Booleans types (mat-option cases):
         if(typeof this.form.value.urgency != "boolean"){ this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
 
         //Data normalization - Dates types:

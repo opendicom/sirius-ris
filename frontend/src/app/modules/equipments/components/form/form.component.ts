@@ -117,7 +117,7 @@ export class FormComponent implements OnInit {
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
-      //Data normalization - Booleans types:
+      //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
 
       //Save data:
