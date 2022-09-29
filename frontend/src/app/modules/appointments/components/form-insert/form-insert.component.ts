@@ -94,7 +94,7 @@ export class FormInsertComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService
   ) {
     //--------------------------------------------------------------------------------------------------------------------//
     // TEST DATA:

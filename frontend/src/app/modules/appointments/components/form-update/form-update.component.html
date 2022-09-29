@@ -1,1 +1,29 @@
-<p>form-update works!</p>
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-tab-group>
+
+    <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita</ng-template>
+
+      ...
+    </mat-tab>
+    <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+    <!-- SLOT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">date_range</mat-icon> Detalles de la coordinación</ng-template>
+
+      ...
+    </mat-tab>
+    <!-- SLOT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

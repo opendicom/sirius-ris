@@ -145,9 +145,10 @@
 
       <br/>
 
-      <button mat-flat-button appearance="fill" (click)="calendarComponent.getApi().changeView('resourceTimeGridDay')">Todos los equipos</button>
-      <button mat-flat-button appearance="fill" color="accent" (click)="calendarComponent.getApi().changeView('resourceTimeGridWeek')">STE</button>
-
+      <button mat-flat-button type="button" appearance="fill" (click)="setResources('ALL')">Todos los equipos</button>
+      <span *ngFor="let currentResource of calendarResources">
+        <button mat-flat-button type="button" appearance="fill" color="accent" (click)="setResources(currentResource.id)">{{ currentResource.title.split('|')[0] }}</button>
+      </span>
       <br/>
     </div>
 

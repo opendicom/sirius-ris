@@ -164,7 +164,7 @@ export const FullCalendarOptions: any = {
   eventColor: '#6130b6',
   eventTextColor: '#fff',
   headerToolbar: {
-    start: 'datepicker today prev,next',
+    start: 'datepicker today prev,next view_day,view_week',
     center: 'title',
     end: ''
   },
