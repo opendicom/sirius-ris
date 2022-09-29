@@ -208,8 +208,8 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SEND MESSAGE:
   //--------------------------------------------------------------------------------------------------------------------//
-  sendMessage(message: string): void {
-    this.snackBar.open(message, 'ACEPTAR');
+  sendMessage(message: string, duration: any | undefined = undefined): void {
+    this.snackBar.open(message, 'ACEPTAR', duration);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -708,7 +708,7 @@ export class SharedFunctionsService {
 
       //Success without blocked elements:
       } else {
-        this.sendMessage(custom_message);
+        this.sendMessage(custom_message, { duration: 2000 });
       }
 
       //Redirect to:
@@ -740,7 +740,7 @@ export class SharedFunctionsService {
       result = true;
 
       //Send snakbar message:
-      this.sendMessage(res.message);
+      this.sendMessage(res.message, { duration: 2000 });
 
       //Check excludeRedirect:
       if(excludeRedirect === false && excludeRedirect !== undefined){

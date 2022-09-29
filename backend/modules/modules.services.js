@@ -47,7 +47,7 @@ async function find(req, res, currentSchema){
         //Check result count:
         if(count > 0){
             //Excecute main query:
-            await currentSchema.Model.find(condition, formatted_proj).sort(sort).skip(req.query.skip).limit(req.query.limit)
+            await currentSchema.Model.find(condition, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
             .exec()
             .then((data) => {
                 //Check if have results:
@@ -461,9 +461,9 @@ async function findAggregation(req, res, currentSchema){
 
     //Add operations to the main aggregation (skip and limit bad count):
     if(formatted_proj != ''){ aggregate.push({ $project: formatted_proj }); }
-    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
     if(!isNaN(req.query.skip)){ aggregate.push({ $skip: req.query.skip }); }
     if(!isNaN(req.query.limit)){ aggregate.push({ $limit: req.query.limit }); }
+    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
 
     //Send DEBUG Message:
     mainServices.sendConsoleMessage('DEBUG', '\nfind aggregation [processed condition]: ' + JSON.stringify(aggregate));

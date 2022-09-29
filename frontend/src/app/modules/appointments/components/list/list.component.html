@@ -7,33 +7,24 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-
-        <div *ngIf="sharedProp.action.appointments_drafts === false; then thenBlockAppointmentsDrafts else elseBlockAppointmentsDrafts"></div>
-
-        <ng-template #thenBlockAppointmentsDrafts>
-          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </ng-template>
-
-        <ng-template #elseBlockAppointmentsDrafts>
-          <mat-icon matTooltip="Para poder editar citas debe continuar la cita en proceso o descartarla.">info</mat-icon>
-        </ng-template>
+        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
+          <mat-icon>edit</mat-icon>
+        </button>
       </td>
     </ng-container>
 
     <!-- flow_state -->
     <ng-container matColumnDef="flow_state">
-      <th mat-header-cell *matHeaderCellDef>Flujo de trabajo</th>
-      <td mat-cell *matCellDef="let element">
+      <th mat-header-cell *matHeaderCellDef class="column-alt text-center">Flujo de trabajo</th>
+      <td mat-cell *matCellDef="let element" class="column-alt text-center">
         <span *ngIf="element.flow_state">{{ appointmentsFlowStates[element.flow_state] }}</span>
       </td>
     </ng-container>
 
     <!-- date -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Fecha </th>
-      <td mat-cell *matCellDef="let element">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
         <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
       </td>
     </ng-container>
@@ -139,11 +130,59 @@
 
     <!-- status -->
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Estado </th>
-      <td mat-cell *matCellDef="let element">
+      <th mat-header-cell *matHeaderCellDef class="divider-alt"> Estado </th>
+      <td mat-cell *matCellDef="let element" class="divider-alt">
         <div *ngIf="element.status; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
         <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+      </td>
+    </ng-container>
+
+    <!-- domain -->
+    <ng-container matColumnDef="domain">
+      <th mat-header-cell *matHeaderCellDef class="text-center">Dominio</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="domain-container">
+          <!--referring-->
+          <small><strong>Solicitante: </strong></small>
+          <span *ngIf="element.referring; then thenBlockReferring else elseBlockReferring"></span>
+          <ng-template #thenBlockReferring>
+            <small>
+              <span *ngIf="element.referring.organization" innerHTML="{{ element.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.referring.branch" innerHTML=" ► {{ element.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.referring.service" innerHTML=" ► {{ element.referring.service.name | highlighter : sharedProp.filter }}"></span>
+            </small>
+          </ng-template>
+          <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+
+          <hr class="dashed" />
+
+          <!--imaging-->
+          <small><strong>Realizador: </strong></small>
+          <span *ngIf="element.imaging; then thenBlockImaging else elseBlockImaging"></span>
+          <ng-template #thenBlockImaging>
+            <small>
+              <span *ngIf="element.imaging.organization" innerHTML="{{ element.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.imaging.branch" innerHTML=" ► {{ element.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.imaging.service" innerHTML=" ► {{ element.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+            </small>
+          </ng-template>
+          <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+
+          <hr class="dashed" />
+
+          <!--reporting-->
+          <small><strong>Informador: </strong></small>
+          <span *ngIf="element.reporting; then thenBlockReporting else elseBlockReporting"></span>
+          <ng-template #thenBlockReporting>
+            <small>
+              <span *ngIf="element.reporting.organization" innerHTML="{{ element.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.reporting.branch" innerHTML=" ► {{ element.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.reporting.service" innerHTML=" ► {{ element.reporting.service.name | highlighter : sharedProp.filter }}"></span>
+            </small>
+          </ng-template>
+          <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+        </div>
       </td>
     </ng-container>
 

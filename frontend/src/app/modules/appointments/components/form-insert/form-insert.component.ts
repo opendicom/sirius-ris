@@ -398,19 +398,6 @@ export class FormInsertComponent implements OnInit {
   }
 
   onSubmit(){
-    //Set study IUID:
-    /* This method belongs to the backend:
-    this.sharedFunctions.setStudyIUID(this.sharedProp.current_imaging.branch._id, '2', (res, study_iuid) => {
-      //Check result:
-      if(res.success){
-        console.log(study_iuid);
-      } else {
-        //Send snakbar message:
-        this.sharedFunctions.sendMessage(res.message);
-      }
-    });
-    */
-
     //Validate CKEditor anamnesis (min length 10 + 7 chars [<p></p>]):
     if(this.form.value.anamnesis.length < 17){
       this.anamnesisValidator = false;
@@ -535,6 +522,11 @@ export class FormInsertComponent implements OnInit {
 
       //Save data:
       this.sharedFunctions.save('insert', this.sharedProp.element, '', mergedValues, [], (res) => {
+        //Delete appointment draft only if the operation was successful:
+        if(res.success === true){
+          this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
+        }
+
         //Response the form according to the result:
         this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
       });

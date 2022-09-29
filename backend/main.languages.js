@@ -71,7 +71,6 @@ module.exports = function(language){
             'wrong_date_format_slot'    : 'The format of the start and/or end datetime is wrong.',
             'batch_processed'           : 'Batch processed successfully.',
             'only_urgency_slot'         : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
-            'coordination_in_progress'  : 'The coordinating user already has a coordination in progress: ',
             'study_iuid_error'          : 'There was some problem trying to generate the Study IUID: ',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
@@ -157,7 +156,6 @@ module.exports = function(language){
             lang.ris.wrong_date_format_slot     = 'El formato de la fecha de inicio y/o fin NO es correcto.';
             lang.ris.batch_processed            = 'Lote procesado correctamente.';
             lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
-            lang.ris.coordination_in_progress   = 'El usuario coordinador ya posee una coordinación en curso: ';
             lang.ris.study_iuid_error           = 'Hubo algún problema al intentar generar el Study IUID: ';
 
             //RIS - Validate:

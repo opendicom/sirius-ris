@@ -40,7 +40,8 @@ export class ListComponent implements OnInit {
     'equipment',
     'modality',
     'urgency',
-    'status'
+    'status',
+    'domain'
   ];
 
   //Inject services to the constructor:
@@ -88,6 +89,18 @@ export class ListComponent implements OnInit {
     //Set initial request params:
     this.sharedProp.regex         = 'true';
     this.sharedProp.filterFields  = [
+      'imaging.organization.short_name',
+      'imaging.branch.short_name',
+      'imaging.service.name',
+
+      'referring.organization.short_name',
+      'referring.branch.short_name',
+      'referring.service.name',
+
+      'reporting.organization.short_name',
+      'reporting.branch.short_name',
+      'reporting.service.name',
+
       'patient.person.documents.document',
       'patient.person.name_01',
       'patient.person.name_02',
@@ -120,9 +133,6 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Check appointments_drafts (coordinations in progress to enable or disable add button):
-    this.checkAppointmentsDrafts();
-
     //Extract sent data (Parameters by routing):
     const id = this.objRoute.snapshot.params['_id'];
 
@@ -133,61 +143,5 @@ export class ListComponent implements OnInit {
 
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
-  }
-
-  checkAppointmentsDrafts(){
-    //Preserve add_buton value:
-    const add_button_value = this.sharedProp.action['add_button'];
-
-    //Set params:
-    const params = {
-      'filter[coordinator._id]': this.sharedProp.userLogged.user_id,
-
-      //Projection:
-      'proj[imaging.organization.short_name]': 1,
-      'proj[imaging.branch.short_name]': 1,
-      'proj[imaging.service.name]': 1,
-      'proj[start]': 1,
-      'proj[end]': 1,
-      'proj[urgency]': 1,
-      'proj[procedure.name]': 1,
-      'proj[procedure.informed_consent]': 1,
-      'proj[modality.code_meaning]': 1,
-      'proj[modality.code_value]': 1,
-      'proj[slot.equipment.name]':1,
-      'proj[slot.equipment.AET]':1,
-      'proj[patient.person.documents]': 1,
-      'proj[patient.person.name_01]': 1,
-      'proj[patient.person.name_02]': 1,
-      'proj[patient.person.surname_01]': 1,
-      'proj[patient.person.surname_02]': 1,
-      'proj[patient.person.gender]': 1,
-      'proj[patient.person.birth_date]': 1,
-      'proj[patient.status]': 1,
-      'proj[coordinator.person.name_01]': 1,
-      'proj[coordinator.person.name_02]': 1,
-      'proj[coordinator.person.surname_01]': 1,
-      'proj[coordinator.person.surname_02]': 1
-    }
-
-    //Find corrdinations in progress:
-    this.sharedFunctions.find('appointments_drafts', params, (res) => {
-
-      //Check operation result:
-      if(res.success === true && Object.keys(res.data).length > 0){
-        //Disable add buton:
-        this.sharedProp.action['add_button'] = false;
-
-        //Enable appointments drafts buttons:
-        this.sharedProp.action['appointments_drafts'] = res.data[0];
-
-      } else {
-        //Enable add buton (Set preserved value):
-        this.sharedProp.action['add_button'] = add_button_value;
-
-        //Disable appointments drafts buttons:
-        this.sharedProp.action['appointments_drafts'] = false;
-      }
-    }, true);
   }
 }

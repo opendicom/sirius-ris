@@ -7,12 +7,54 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Continuar" matTooltip="Continuar cita en curso">
+        <button mat-icon-button color="accent" (click)="resumeAppointmentDraft(element._id)" aria-label="Continuar" matTooltip="Continuar cita en curso">
           <mat-icon>published_with_changes</mat-icon>
         </button>
-        <button mat-icon-button color="accent" aria-label="Descartar" matTooltip="Descartar cita en curso">
+        <button mat-icon-button color="accent" (click)="deleteAppointmentsDrafts(element)" aria-label="Descartar" matTooltip="Descartar cita en curso">
           <mat-icon>delete_forever</mat-icon>
         </button>
+      </td>
+    </ng-container>
+
+    <!-- organization -->
+    <ng-container matColumnDef="organization">
+      <th mat-header-cell *matHeaderCellDef> Organización </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.imaging">
+          <span *ngIf="element.imaging.organization; then thenBlockImagingOrganization else elseBlockImagingOnization"></span>
+          <ng-template #thenBlockImagingOrganization>
+            <span innerHTML="{{ element.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
+          </ng-template>
+          <ng-template #elseBlockImagingOnization>(Sin dato)</ng-template>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- branch -->
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.imaging">
+          <span *ngIf="element.imaging.branch; then thenBlockImagingBranch else elseBlockImagingBranch"></span>
+          <ng-template #thenBlockImagingBranch>
+            <span innerHTML="{{ element.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
+          </ng-template>
+          <ng-template #elseBlockImagingBranch>(Sin dato)</ng-template>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- service -->
+    <ng-container matColumnDef="service">
+      <th mat-header-cell *matHeaderCellDef> Servicio </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.imaging">
+          <span *ngIf="element.imaging.service; then thenBlockImagingService else elseBlockImagingService"></span>
+          <ng-template #thenBlockImagingService>
+            <span innerHTML="{{ element.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+          </ng-template>
+          <ng-template #elseBlockImagingService>(Sin dato)</ng-template>
+        </span>
       </td>
     </ng-container>
 

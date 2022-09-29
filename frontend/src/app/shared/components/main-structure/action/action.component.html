@@ -17,28 +17,16 @@
     </button>
   </span>
 
+  <span *ngIf="sharedProp.action.manage_drafts">
+    &nbsp;
+    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> VER CITAS EN CURSO</button>
+  </span>
+
   <!-- Only superuser can add machine users -->
   <span *ngIf="sharedProp.action.add_machine && sharedProp.userLogged.permissions[0].role == 1">
     &nbsp;
     <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_machine }}">
       <mat-icon>add_box</mat-icon> AÑADIR USUARIO MAQUINA
-    </button>
-  </span>
-
-  <!-- Only superuser and administrators can manage all appointments drafts -->
-  <span *ngIf="sharedProp.action.appointments_drafts == false && sharedProp.action.manage_drafts && sharedProp.userLogged.permissions[0].role == 1">
-    &nbsp;
-    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> VER CITAS EN CURSO</button>
-  </span>
-
-  <span *ngIf="sharedProp.action.appointments_drafts">
-    &nbsp;
-    <button mat-flat-button color="accent" (click)="resumeAppointmentDraft(sharedProp.action.appointments_drafts._id)">
-      <mat-icon>published_with_changes</mat-icon> CONTINUAR CITA EN CURSO
-    </button>
-    &nbsp;
-    <button mat-flat-button (click)="deleteAppointmentsDrafts(sharedProp.action.appointments_drafts)">
-      <mat-icon>delete_forever</mat-icon> DESCARTAR CITA EN CURSO
     </button>
   </span>
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->

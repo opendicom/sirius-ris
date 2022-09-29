@@ -144,6 +144,11 @@
       <full-calendar #calendar [options]="calendarOptions"></full-calendar>
 
       <br/>
+
+      <button mat-flat-button appearance="fill" (click)="calendarComponent.getApi().changeView('resourceTimeGridDay')">Todos los equipos</button>
+      <button mat-flat-button appearance="fill" color="accent" (click)="calendarComponent.getApi().changeView('resourceTimeGridWeek')">STE</button>
+
+      <br/>
     </div>
 
     <!-- Slot info container -->

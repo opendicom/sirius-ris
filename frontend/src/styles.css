@@ -510,6 +510,10 @@ mark {
   margin: 0 1px 0 2px !important;
 }
 
+.fc .fc-cell-shaded, .fc .fc-day-disabled {
+  background-color: #202134be !important;
+}
+
 .invisible-datepicker {
   opacity: 0 !important;
   max-height: 0px !important;

@@ -204,35 +204,11 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$consents.clinical_trial", preserveNullAndEmptyArrays: true } },
 
         //Attached files lookup [Array]:
-        { $unwind: "$attached_files" },
         { "$lookup": {
             "from": "files",
             "localField": "attached_files",
             "foreignField": "_id",
             "as": "attached_files"
-         }},
-         { $unwind: "$attached_files" },
-
-         //Group array:
-        { $group: {
-            //Preserve _id:
-            _id             : '$_id',
-            
-            //Preserve root document:            
-            first: { "$first": "$$ROOT" },
-
-            //Group $lookup result to existing array:
-            attached_files: { "$push": "$attached_files" },
-        }},
-        
-        //Replace root document (Merge objects):
-        { $replaceRoot: {
-            newRoot: {
-                $mergeObjects: [
-                    "$first",
-                    { attached_files: "$attached_files" }
-                ]
-            }
         }},
 
         //------------------------------------------------------------------------------------------------------------//
