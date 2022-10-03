@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ApiClientService } from '@shared/services/api-client.service';                     // API Client Service
-import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
+import { Router } from '@angular/router';                                                   // Router
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
+import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import {                                                                                    // Enviroments
   app_setting,
   ISO_3166,
@@ -17,7 +18,6 @@ import {                                                                        
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
-import { Country, State, City }  from 'country-state-city';                                 // Country State City
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -36,11 +36,6 @@ export class FormInsertComponent implements OnInit {
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
-  //Get Country State City information (Default settings):
-  public allCountries   : any = Country.getAllCountries();
-  public currentStates  : any = State.getStatesOfCountry(this.settings.default_country_isoCode);
-  public currentCities  : any = City.getCitiesOfState(this.settings.default_country_isoCode, this.settings.default_state_isoCode);
-
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
   public editorConfig = CKEditorConfig;
@@ -53,32 +48,6 @@ export class FormInsertComponent implements OnInit {
   public minDate: Date;
   public maxDate: Date;
 
-  //Set references objects:
-  public availableOrganizations : any;
-  public availableBranches      : any;
-  public availableServices      : any;
-
-  //Set referring and reporting objects:
-  public referringOrganizations   : any;
-  public reportingUsers           : any;
-
-  //Initialize selected file objects:
-  public fileUploadProgress     : Number = 0;
-  public fileManagerController  : any = {
-    informed_consent  : {
-      files: {},
-      disabled: false
-    },
-    clinical_trial    : {
-      files: {},
-      disabled: false
-    },
-    attached_files    : {
-      files: {},
-      disabled: false
-    }
-  };
-
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -89,27 +58,29 @@ export class FormInsertComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    private apiClient       : ApiClientService,
-    private router          : Router,
-    private objRoute        : ActivatedRoute,
-    public formBuilder      : FormBuilder,
-    public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    private router              : Router,
+    public formBuilder          : FormBuilder,
+    public sharedProp           : SharedPropertiesService,
+    public sharedFunctions      : SharedFunctionsService,
+    public appointmentsService  : AppointmentsService,
+    public fileManager          : FileManagerService
   ) {
-    //--------------------------------------------------------------------------------------------------------------------//
-    // TEST DATA:
-    //--------------------------------------------------------------------------------------------------------------------//
-    /*
-    this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
-    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
-    this.sharedProp.current_modality = { "status": true, "_id": "6267e558bb4e2e4f54931fa7", "code_meaning": "Tomografía por emisión de positrones", "code_value": "PT", "createdAt": "2022-04-26T12:28:08.313Z", "updatedAt": "2022-05-17T23:11:41.203Z", "__v": 0 }
-    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
-    this.sharedProp.current_slot = '6315f41906f346001301990a';
-    this.sharedProp.current_equipment = { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } };
-    this.sharedProp.current_datetime = { "dateYear": 2022, "dateMonth": "09", "dateDay": "08", "startHours": "09", "startMinutes": 30, "endHours": 10, "endMinutes": 10, "start": "2022-09-08T09:30:00", "end": "2022-09-08T10:10:00" };
-    this.sharedProp.current_urgency = false;
-    */
-    //--------------------------------------------------------------------------------------------------------------------//
+    //Initialize selected file objects:
+    this.fileManager.uploadProgress = 0;
+    this.fileManager.controller = {
+      informed_consent  : {
+        files: {},
+        disabled: false
+      },
+      clinical_trial    : {
+        files: {},
+        disabled: false
+      },
+      attached_files    : {
+        files: {},
+        disabled: false
+      }
+    };
 
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -227,174 +198,13 @@ export class FormInsertComponent implements OnInit {
 
   ngOnInit(): void {
     //Find references:
-    this.findReferences();
+    this.appointmentsService.findReferences({ 'filter[status]': true });
 
     //Find referring organizations:
-    this.findReferringOrganizations();
+    this.appointmentsService.findReferringOrganizations();
 
     //Find referring and reporting information:
-    this.findReportingUsers(this.sharedProp.current_imaging.service._id);
-  }
-
-  setCurrentStates(country_isoCode: string){
-    //Set current states:
-    this.currentStates = State.getStatesOfCountry(country_isoCode);
-
-    //Disable category input:
-    this.form.get('current_address.city')?.disable();
-  }
-
-  setCurrentCities(country_isoCode: string, state_isoCode: string){
-    //Set current cities:
-    this.currentCities = City.getCitiesOfState(country_isoCode, state_isoCode);
-
-    //Disable category input:
-    this.form.get('current_address.city')?.enable();
-  }
-
-  onChangeContrast(event: any){
-    //Get div contrast_description from DOM:
-    const $contrast_description = document.getElementById('contrast_description');
-
-    if(event.value == 'true'){
-      //Display input:
-      $contrast_description?.classList.remove('non-display');
-    } else {
-      //Clear input:
-      this.form.get('contrast.description')?.setValue('');
-
-      //Hide input:
-      $contrast_description?.classList.add('non-display');
-    }
-  }
-
-  onCheckOtherPatology(event: any){
-    //Get div contrast_description from DOM:
-    const $private_health_other = document.getElementById('private_health_other');
-
-    if(event.checked == true){
-      //Display input:
-      $private_health_other?.classList.remove('non-display');
-    } else {
-      //Clear input:
-      this.form.get('private_health.other')?.setValue('');
-
-      //Hide input:
-      $private_health_other?.classList.add('non-display');
-    }
-  }
-
-  onCheckOtherImplants(event: any){
-    //Get div contrast_description from DOM:
-    const $implants_other = document.getElementById('implants_other');
-
-    if(event.checked == true){
-      //Display input:
-      $implants_other?.classList.remove('non-display');
-    } else {
-      //Clear input:
-      this.form.get('implants.other')?.setValue('');
-
-      //Hide input:
-      $implants_other?.classList.add('non-display');
-    }
-  }
-
-  async onChangeOutpatient(event: any){
-    //Get element from DOM:
-    const $elementDOM = document.getElementById('inpatient');
-
-    if(event.value == 'false'){
-      //Display element:
-      $elementDOM?.classList.remove('non-display');
-    } else {
-      //Set clear inputs:
-      const clear_inputs = ['inpatient.type', 'inpatient.where', 'inpatient.room', 'inpatient.contact'];
-
-      //Clear inputs:
-      await (await Promise.all(Object.keys(clear_inputs))).map((key) => {
-        this.form.get(clear_inputs[parseInt(key)])?.setValue('');
-      });
-
-      //Hide element:
-      $elementDOM?.classList.add('non-display');
-    }
-  }
-
-  onFileSelected(event: any, type: string){
-    //Upload selected file (RxJS):
-    this.apiClient.sendFileRequest(
-        'files/insert',
-        <File>event.target.files[0],
-        this.sharedProp.current_imaging.organization._id,
-        this.sharedProp.current_imaging.branch._id,
-        type
-      ).subscribe({
-      next: (res) => {
-        //Check operation status:
-        switch(res.operation_status){
-          case 'uploading':
-            //Disable upload button:
-            this.fileManagerController[type].disabled = true;
-
-            //Set upload progress:
-            this.fileUploadProgress = res.progress, 10;
-
-            break;
-
-          case 'finished':
-            //Check operation status (backend server response):
-            if(res.server_response.body.success === true){
-
-              //Add current atached file in atachedFiles object:
-              this.fileManagerController[type].files[res.server_response.body.data._id] = res.server_response.body.data.name;
-
-              //Send snakbar message:
-              this.sharedFunctions.sendMessage('Archivo subido exitosamente');
-            } else {
-              //Send snakbar message:
-              this.sharedFunctions.sendMessage(res.error.message);
-            }
-
-            //Enable upload button:
-            this.fileManagerController[type].disabled = false;
-
-            break;
-
-          case 'cancelled':
-            //Send snakbar message:
-            this.sharedFunctions.sendMessage(res.message);
-
-            break;
-        }
-      },
-      error: res => {
-        //Send snakbar message:
-        if(res.error.message){
-          this.sharedFunctions.sendMessage(res.error.message);
-        } else {
-          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
-        }
-      }
-    });
-  }
-
-  onDeleteFile(_id: any, type: string){
-    //Create operation handler:
-    const operationHandler = {
-      element         : 'files',
-      selected_items  : [_id],
-      excludeRedirect : true
-    }
-
-    //Open dialog to confirm:
-    this.sharedFunctions.openDialog('delete', operationHandler, (result) => {
-      //Check result:
-      if(result === true){
-        //Remove deleted file from atachedFiles object:
-        delete this.fileManagerController[type].files[_id];
-      }
-    });
+    this.appointmentsService.findReportingUsers(this.sharedProp.current_imaging.service._id, this.form);
   }
 
   onSubmit(){
@@ -431,20 +241,20 @@ export class FormInsertComponent implements OnInit {
       };
 
       //Add uploaded files:
-      if(Object.keys(this.fileManagerController.informed_consent.files).length > 0){
+      if(Object.keys(this.fileManager.controller.informed_consent.files).length > 0){
         //Prevent: Cannot set properties of undefined:
         if(!appointmentSaveData.consents){ appointmentSaveData['consents'] = {}; }
-        appointmentSaveData.consents['informed_consent'] = Object.keys(this.fileManagerController.informed_consent.files)[0];
+        appointmentSaveData.consents['informed_consent'] = Object.keys(this.fileManager.controller.informed_consent.files)[0];
       }
 
-      if(Object.keys(this.fileManagerController.clinical_trial.files).length > 0){
+      if(Object.keys(this.fileManager.controller.clinical_trial.files).length > 0){
         //Prevent: Cannot set properties of undefined:
         if(!appointmentSaveData.consents){ appointmentSaveData['consents'] = {}; }
-        appointmentSaveData.consents['clinical_trial'] = Object.keys(this.fileManagerController.clinical_trial.files)[0];
+        appointmentSaveData.consents['clinical_trial'] = Object.keys(this.fileManager.controller.clinical_trial.files)[0];
       }
 
-      if(Object.keys(this.fileManagerController.attached_files.files).length > 0){
-        appointmentSaveData['attached_files'] = Object.keys(this.fileManagerController.attached_files.files);
+      if(Object.keys(this.fileManager.controller.attached_files.files).length > 0){
+        appointmentSaveData['attached_files'] = Object.keys(this.fileManager.controller.attached_files.files);
       }
 
       //Merge Form Values in Appointments save data:
@@ -535,85 +345,6 @@ export class FormInsertComponent implements OnInit {
 
   onCancel(){
     //Redirect to the list:
-    this.sharedFunctions.gotoList('appointments', this.router);
-  }
-
-  findReferringOrganizations(){
-    //Set params:
-    const params = {
-      'rabc_exclude_code' : this.settings.rabc_exclude_code,
-      'filter[status]'    : true
-    };
-
-    //Find organizations:
-    this.sharedFunctions.find('organizations', params, (res) => {
-      this.referringOrganizations = res.data;
-    });
-  }
-
-  findReportingUsers(service_id: string){
-    //Set params:
-    const params = {
-      //Only people users:
-      'filter[person.name_01]': '',
-      'regex': true,
-
-      //Only Doctors users in selected service:
-      'filter[elemMatch][permissions][service]': service_id,
-      'filter[elemMatch][permissions][role]': 4,
-
-      //Exclude users with vacation true:
-      'filter[professional.vacation]': false,
-
-      //Only enabled users:
-      'filter[status]': true
-    };
-
-    //Find reporting users:
-    this.sharedFunctions.find('users', params, (res) => {
-      //Check data:
-      if(res.data.length > 0){
-        //Set reporting users:
-        this.reportingUsers = res.data;
-      } else {
-        //Clear previous values:
-        this.reportingUsers = [];
-        this.form.controls['reporting_user'].setValue('');
-
-        //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.');
-      }
-    });
-  }
-
-  findReferences(){
-    //Initialize params:
-    let params: any;
-
-    //Switch params:
-    switch(this.objRoute.snapshot.params['action']){
-      case 'insert':
-        params = { 'filter[status]': true };
-        break;
-
-      case 'update':
-        params = {};
-        break;
-    }
-
-    //Find organizations:
-    this.sharedFunctions.find('organizations', params, (res) => {
-      this.availableOrganizations = res.data;
-    });
-
-     //Find branches:
-     this.sharedFunctions.find('branches', params, (res) => {
-      this.availableBranches = res.data;
-    });
-
-    //Find services:
-    this.sharedFunctions.find('services', params, (res) => {
-      this.availableServices = res.data;
-    });
+    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 }

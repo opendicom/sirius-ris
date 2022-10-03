@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ENVIROMENT PRODUCTION:
+// ENVIROMENT:
 //--------------------------------------------------------------------------------------------------------------------//
 // Set Enviroment:
 export const environment = {
@@ -9,46 +9,20 @@ export const environment = {
 // Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
-//--------------------------------------------------------------------------------------------------------------------//
-// Set OID Structure base:
-// Reference in UY:
-// https://centrodeconocimiento.agesic.gub.uy/documents/207224/425682/Gu%C3%ADa+para+la+gesti%C3%B3n+de+OID.pdf/293df376-77d5-71d3-9490-ede702bbb583
-export const structOID =
-  '2.16.858.'         + // Base UNAOID UY.
-  '2.'                + // Identifica Objeto ( 0: Organizaciones, 1: Personas, 2: Objetos) UY.
-  '1xxxxxxx.'         + // ID Institución
-  '72769.'            + // ID PACS
-  'aaaammddhhmmss.'   + // Timestamp
-  'xxxxxx.'           + // Consecutivo interno
-  '8.'                + // PACS de ASSE
-  ''
-;
-// ID PACS:
-// 67430 Historia Clínica Electrónica
-// 71867 Repositorio de documentos electrónicos
-// 72591 Modelo de Plantilla Digital
-// 72768 Sistemas de Información de Salud (HIS, SIS,HealthInformationSystems)
-// 72769 Sistemas de Archivo y Transmisión de Imágenes (PACS, SATI, Picture And CommunicationInformationSystems)
-// 72770 Sistemas de Información Imagenológica (SII, RIS, IIS, ImagenologicalInformationSystem, RadiologicalInformationSystems)
-// 72771 Sistemas de Información de Laboratorios (sinónimos asociados: SIL, LIS, LaboratoryInformationSystems)
-//--------------------------------------------------------------------------------------------------------------------//
-
 // Set app default settings:
 export const app_setting = {
   backend_url: 'http://localhost:3001/',
-  secret_number: 1618,  //Used on simple crypt
+  rabc_exclude_code: 'exclude_code',
+  secret_number: 1618,    // Used on simple crypt
+  file_max_size: 10,      // Maximum size in MB allowed to upload files
   default_country: '858',
   default_country_isoCode: 'UY',
+  default_country_name: 'Uruguay',
   default_state_isoCode: 'MO',
-  default_city_isoCode: 'MO',
+  default_state_name: 'Montevideo',
+  default_city_name: 'Montevideo',
   default_doc_type: '1'
 };
-
-// Set self management params:
-export const self_management = {
-  referring: false,
-  reporting: true
-}
 
 // Document types:
 export const document_types = {
@@ -84,7 +58,9 @@ export const user_concessions = {
   4 : 'Listados de facturación',
   5 : 'Estadísticas generales',
   6 : 'Estadísticas médicas',
-  7 : 'Estadísticas del personal'
+  7 : 'Estadísticas del personal',
+  8 : 'Eliminación física de archivos',
+  9 : 'Supervisar citas en curso',
 }
 
 // User Types:
@@ -106,9 +82,23 @@ export const default_page_sizes = [10, 25, 50, 100];
 // Appointments flow states:
 export const appointments_flow_states = {
   'A01': 'Coordinado',
-  'A02': 'Cancelado',
-  'A03': 'Para eliminar'
+  'A02': 'Cancelado'
 };
+
+export const cancellation_reasons = {
+  1   : "Falla en equipo",
+  2   : "Falta consentimiento",
+  3   : "Indicacion incorrecta",
+  4   : "No se presento",
+  5   : "Sin preparacion o preparación incorrecta",
+	6   : "Claustrofóbia",
+  7   : "Embarazo",
+  8   : "Hiperglicemia",
+	9   : "Hipoglicemia",
+  10  : "Cursando infección",
+  11  : "Fallecimiento",
+  12  : "Otro"
+}
 
 // Studies flow states:
 export const studies_flow_states = {
@@ -167,7 +157,7 @@ export const CKEditorConfig = {
 // Default FullCalendar configuration:
 export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-  timeZone: 'UTC',
+  timeZone: 'local',
   allDaySlot: false,
   initialView: 'resourceTimeGridDay',
   slotLabelFormat: {
@@ -188,7 +178,7 @@ export const FullCalendarOptions: any = {
   eventColor: '#6130b6',
   eventTextColor: '#fff',
   headerToolbar: {
-    start: 'datepicker today prev,next',
+    start: 'datepicker today prev,next view_day,view_week',
     center: 'title',
     end: ''
   },

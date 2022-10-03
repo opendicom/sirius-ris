@@ -41,7 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SettingsComponent,
     NotFoundComponent,
 
-    //Dialogs components:
+    // Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
     SlotSelectComponent,
@@ -71,7 +71,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NotFoundComponent,
     SharedMaterialModule,
 
-    //Dialogs components:
+    // Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
     SlotSelectComponent,

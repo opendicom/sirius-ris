@@ -201,9 +201,11 @@
         <mat-form-field appearance="fill" class="large">
           <mat-label>Organización solicitante</mat-label>
           <mat-select formControlName="referring_organization" placeholder="Seleccione la organización solicitante">
-            <div *ngFor="let currentOrganization of referringOrganizations">
-              <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
-            </div>
+            <span *ngIf="appointmentsService.referringOrganizations">
+              <div *ngFor="let currentOrganization of appointmentsService.referringOrganizations">
+                <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+              </div>
+            </span>
           </mat-select>
         </mat-form-field>
 
@@ -216,10 +218,10 @@
         <mat-form-field appearance="fill" class="large">
           <mat-label>Servicio informador</mat-label>
           <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
-            <div *ngFor="let currentService of availableServices">
-              <div *ngFor="let currentBranch of availableBranches">
-                <div *ngFor="let currentOrganization of availableOrganizations">
-                  <mat-option (click)="findReportingUsers(currentService._id)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+            <div *ngFor="let currentService of appointmentsService.availableServices">
+              <div *ngFor="let currentBranch of appointmentsService.availableBranches">
+                <div *ngFor="let currentOrganization of appointmentsService.availableOrganizations">
+                  <mat-option (click)="appointmentsService.findReportingUsers(currentService._id, form)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
                 </div>
               </div>
             </div>
@@ -230,7 +232,7 @@
         <mat-form-field appearance="fill" class="large">
           <mat-label>Médico informador</mat-label>
           <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
-            <div *ngFor="let currentReporting of reportingUsers">
+            <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
               <mat-option value="{{ currentReporting._id }}">
                 <!--names-->
                 {{ currentReporting.person.name_01 }}
@@ -280,14 +282,14 @@
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
               <h4>País:</h4>
-              <span *ngIf="getKeys(allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
+              <span *ngIf="getKeys(appointmentsService.allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
 
               <ng-template #thenBlockCountries>
                 <mat-form-field appearance="fill" class="full">
                   <mat-label>País</mat-label>
                   <mat-select formControlName="country" placeholder="Seleccione el país">
-                    <div *ngFor="let currentCountry of allCountries">
-                      <mat-option (click)="setCurrentStates(currentCountry.isoCode)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
+                    <div *ngFor="let currentCountry of appointmentsService.allCountries">
+                      <mat-option (click)="appointmentsService.setCurrentStates(currentCountry.isoCode, form)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
                     </div>
                   </mat-select>
                 </mat-form-field>
@@ -304,14 +306,14 @@
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
               <h4>Estado:</h4>
-              <span *ngIf="getKeys(currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
+              <span *ngIf="getKeys(appointmentsService.currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
 
               <ng-template #thenBlockStates>
                 <mat-form-field appearance="fill" class="full">
                   <mat-label>Estado | Provincia | Departamento</mat-label>
                   <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
-                    <div *ngFor="let currentState of currentStates">
-                      <mat-option (click)="setCurrentCities(currentState.countryCode, currentState.isoCode)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
+                    <div *ngFor="let currentState of appointmentsService.currentStates">
+                      <mat-option (click)="appointmentsService.setCurrentCities(currentState.countryCode, currentState.isoCode, form)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
                     </div>
                   </mat-select>
                 </mat-form-field>
@@ -330,13 +332,13 @@
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
               <h4>Ciudad:</h4>
-              <span *ngIf="getKeys(currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
+              <span *ngIf="getKeys(appointmentsService.currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
 
               <ng-template #thenBlockCities>
                 <mat-form-field appearance="fill" class="full">
                   <mat-label>Ciudad</mat-label>
                   <mat-select formControlName="city" placeholder="Seleccione la ciudad">
-                    <div *ngFor="let currentCity of currentCities">
+                    <div *ngFor="let currentCity of appointmentsService.currentCities">
                       <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
                     </div>
                   </mat-select>
@@ -386,14 +388,14 @@
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                 <h4>Solicita contraste:</h4>
-                <mat-radio-group aria-label="Contraste" color="primary" formControlName="use_contrast" (change)="onChangeContrast($event)">
+                <mat-radio-group aria-label="Contraste" color="primary" formControlName="use_contrast" (change)="appointmentsService.onChangeContrast($event, form)">
                   <mat-radio-button value="true">Si</mat-radio-button>
                   <mat-radio-button value="false">No</mat-radio-button>
                 </mat-radio-group>
               </div> <!-- end fxLayout wrapper -->
 
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <div id="contrast_description" class="non-display">
+                <div [class.non-display]="appointmentsService.booleanContrast == false">
                   <h4>Tipo de contraste:</h4>
                   <mat-form-field appearance="fill" class="full">
                     <mat-label>Tipo de contraste</mat-label>
@@ -473,9 +475,9 @@
             </div> <!-- end fxLayout wrapper -->
           </div>
 
-          <mat-checkbox color="primary" (change)="onCheckOtherPatology($event)">Otro antecedente/patología</mat-checkbox><br/>
+          <mat-checkbox color="primary" (change)="appointmentsService.onCheckOtherPatology($event, form)">Otro antecedente/patología</mat-checkbox><br/>
 
-          <div id="private_health_other" class="non-display">
+          <div [class.non-display]="appointmentsService.booleanPatology == false">
             <mat-form-field appearance="fill" class="full">
               <mat-label>Otro antecedente/patología</mat-label>
               <input matInput type="text" formControlName="other" placeholder="Ingrese el o los antecedentes/patologías.">
@@ -518,9 +520,9 @@
               </div> <!-- end fxLayout wrapper -->
 
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox (change)="onCheckOtherImplants($event)" color="primary">Otro tipo de implante</mat-checkbox><br/>
+                <mat-checkbox (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">Otro tipo de implante</mat-checkbox><br/>
 
-                <div id="implants_other" class="non-display">
+                <div [class.non-display]="appointmentsService.booleanImplants == false">
                   <mat-form-field appearance="fill" class="full">
                     <mat-label>Otro tipo de implante</mat-label>
                     <input matInput type="text" formControlName="other" placeholder="Ingrese el o los tipos de impantes.">
@@ -554,7 +556,7 @@
         <h3 class="form-title text-center underline-fail-alt">Hospitalización:</h3>
         <br/>
 
-        <mat-radio-group aria-label="Hospitalización" color="primary" formControlName="outpatient" (change)="onChangeOutpatient($event)">
+        <mat-radio-group aria-label="Hospitalización" color="primary" formControlName="outpatient" (change)="appointmentsService.onChangeOutpatient($event, form)">
           <mat-radio-button value="true">Ambulatorio</mat-radio-button>
           <mat-radio-button value="false">Internado</mat-radio-button>
         </mat-radio-group>
@@ -562,7 +564,7 @@
         <br/>
 
         <!-- Inpatient start -->
-        <div formGroupName="inpatient" id="inpatient" class="non-display">
+        <div formGroupName="inpatient" [class.non-display]="appointmentsService.booleanInpatient == false">
           <br/><hr class="dashed" />
 
           <div fxLayout="row" fxLayoutAlign="start start">
@@ -612,43 +614,43 @@
         <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
         <br/>
 
-        <span *ngIf="getKeys(fileManagerController.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
+        <span *ngIf="getKeys(fileManager.controller.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
 
         <ng-template #thenBlockInformedConsent>
           <mat-chip-list>
-            <mat-chip *ngFor="let informedConsentFile of fileManagerController.informed_consent.files | keyvalue" class="primary-color">
-              <mat-icon (click)="sharedFunctions.downloadFile(informedConsentFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(informedConsentFile.key, 'informed_consent')">close</mat-icon>
+            <mat-chip *ngFor="let informedConsentFile of fileManager.controller.informed_consent.files | keyvalue" class="primary-color">
+              <mat-icon (click)="fileManager.downloadFile(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(informedConsentFile.key, 'informed_consent')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
         </ng-template>
 
         <ng-template #elseBlockInformedConsent>
-          <input type="file" (change)="onFileSelected($event, 'informed_consent')" #fileInputInformedConsent style="display: none" />
-          <button mat-flat-button type="button" [disabled]="fileManagerController['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
-            <span *ngIf="fileManagerController['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
-            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+          <input type="file" (change)="fileManager.onFileSelected($event, 'informed_consent')" #fileInputInformedConsent style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManager.controller['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
+            <span *ngIf="fileManager.controller['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
+            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
             <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> SUBIR CONSENTIMIENTO INFORMADO</ng-template>
           </button>
           <br/><br/>
         </ng-template>
 
-        <span *ngIf="getKeys(fileManagerController.clinical_trial.files).length > 0; then thenBlockClinicalTrial else elseBlockClinicalTrial"></span>
+        <span *ngIf="getKeys(fileManager.controller.clinical_trial.files).length > 0; then thenBlockClinicalTrial else elseBlockClinicalTrial"></span>
 
         <ng-template #thenBlockClinicalTrial>
           <mat-chip-list>
-            <mat-chip *ngFor="let clinicalTrialFile of fileManagerController.clinical_trial.files | keyvalue" class="default-color">
-              <mat-icon (click)="sharedFunctions.downloadFile(clinicalTrialFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
+            <mat-chip *ngFor="let clinicalTrialFile of fileManager.controller.clinical_trial.files | keyvalue" class="default-color">
+              <mat-icon (click)="fileManager.downloadFile(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
         </ng-template>
 
         <ng-template #elseBlockClinicalTrial>
-          <input type="file" (change)="onFileSelected($event, 'clinical_trial')" #fileInputClinicalTrial style="display: none" />
-          <button mat-flat-button type="button" [disabled]="fileManagerController['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
-            <span *ngIf="fileManagerController['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
-            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+          <input type="file" (change)="fileManager.onFileSelected($event, 'clinical_trial')" #fileInputClinicalTrial style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManager.controller['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
+            <span *ngIf="fileManager.controller['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
+            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
             <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> SUBIR CONSENTIMIENTO DE INVESTIGACIÓN</ng-template>
           </button>
           <br/><br/>
@@ -659,12 +661,12 @@
         <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
         <br/>
 
-        <span *ngIf="getKeys(fileManagerController.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
+        <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
 
         <ng-template #thenBlockAttached>
           <mat-chip-list>
-            <mat-chip *ngFor="let currentAtachedFile of fileManagerController.attached_files.files | keyvalue">
-              <mat-icon (click)="sharedFunctions.downloadFile(currentAtachedFile.key)">description</mat-icon><span (click)="sharedFunctions.downloadFile(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="onDeleteFile(currentAtachedFile.key, 'attached_files')">close</mat-icon>
+            <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
+              <mat-icon (click)="fileManager.downloadFile(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(currentAtachedFile.key, 'attached_files')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -679,10 +681,10 @@
         <hr class="dashed" /><br/>
 
         <div class="text-right">
-          <input type="file" (change)="onFileSelected($event, 'attached_files')" #fileInputAttached style="display: none" />
-          <button mat-flat-button type="button" [disabled]="fileManagerController['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
-            <span *ngIf="fileManagerController['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
-            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileUploadProgress }}%</small>)</ng-template>
+          <input type="file" (change)="fileManager.onFileSelected($event, 'attached_files')" #fileInputAttached style="display: none" />
+          <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
+            <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
+            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
             <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
           </button>
         </div>

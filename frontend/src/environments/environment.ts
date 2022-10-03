@@ -82,9 +82,23 @@ export const default_page_sizes = [10, 25, 50, 100];
 // Appointments flow states:
 export const appointments_flow_states = {
   'A01': 'Coordinado',
-  'A02': 'Cancelado',
-  'A03': 'Para eliminar'
+  'A02': 'Cancelado'
 };
+
+export const cancellation_reasons = {
+  1   : "Falla en equipo",
+  2   : "Falta consentimiento",
+  3   : "Indicacion incorrecta",
+  4   : "No se presento",
+  5   : "Sin preparacion o preparación incorrecta",
+	6   : "Claustrofóbia",
+  7   : "Embarazo",
+  8   : "Hiperglicemia",
+	9   : "Hipoglicemia",
+  10  : "Cursando infección",
+  11  : "Fallecimiento",
+  12  : "Otro"
+}
 
 // Studies flow states:
 export const studies_flow_states = {

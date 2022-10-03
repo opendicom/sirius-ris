@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { FileManagerService } from '@shared/services/file-manager.service';             // File manager service
 import { default_page_sizes, regexObjectId } from '@env/environment';                   // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -23,9 +24,10 @@ export class ListComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    private objRoute: ActivatedRoute,
-    public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    private objRoute        : ActivatedRoute,
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions  : SharedFunctionsService,
+    public fileManager      : FileManagerService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();

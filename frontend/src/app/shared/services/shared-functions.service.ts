@@ -786,37 +786,6 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // DOWNLOAD FILE:
-  //--------------------------------------------------------------------------------------------------------------------//
-  downloadFile(_id: any){
-    //Find selected file:
-    this.find('files', { 'filter[_id]': _id }, (res) => {
-      //Check data:
-      if(res.data){
-        //Set link source (base64):
-        const linkSource ='data:application/octet-stream;base64,' + res.data[0].base64;
-
-        //Create link to enable browser download dialog:
-        const downloadLink = document.createElement('a');
-
-        //Set downloadLink href:
-        downloadLink.href = linkSource;
-
-        //Set name of the file to download:
-        downloadLink.download = res.data[0].name;
-
-        //Trigger click (download):
-        downloadLink.click();
-      } else {
-        //Send snakbar message:
-        this.sendMessage('No se encontró el archivo [_id: ' + _id + ']: ' + res.message);
-      }
-    });
-  }
-  //--------------------------------------------------------------------------------------------------------------------//
-
-
-  //--------------------------------------------------------------------------------------------------------------------//
   // DATETIME FULLCALENDAR FORMATER & ADD ZERO:
   //--------------------------------------------------------------------------------------------------------------------//
   datetimeFulCalendarFormater(start: any, end: any): any{
@@ -856,6 +825,22 @@ export class SharedFunctionsService {
       i = "0" + i.toString()
     }
     return i;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CAPITALIZE FIRST LETTER:
+  //--------------------------------------------------------------------------------------------------------------------//
+  capitalizeFirstLetter(str: string): string {
+    //Converting string to lower case:
+    const toLowerString = str.toLocaleLowerCase();
+
+    //Converting first letter to uppercase:
+    const capitalizedString = toLowerString.charAt(0).toUpperCase() + toLowerString.slice(1);
+
+    //Return capitalized string:
+    return capitalizedString;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
     'surnames',
     'equipment',
     'modality',
+    'outpatient_inpatient',
     'urgency',
     'status',
     'domain'
