@@ -103,31 +103,39 @@ router.post(
     mainMiddlewares.allowedValidate(allowedSchemaKeys, appointments.AllowedUnsetValues),
     appointments.Validator,
     async (req, res) => {
-        //Set params for check duplicates:
-        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+        //Initialize duplicated control var:
+        let duplicated = false;
 
-        //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, appointments, params);
+        //Check duplicated if this params exists:
+        if(req.body.start != '' && req.body.end != '' && req.body.fk_patient != ''){
+            //Set params for check duplicates:
+            const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+
+            //Search for duplicates:
+            duplicated = await moduleServices.isDuplicated(req, res, appointments, params);
+        }
 
         //Check for duplicates:
         if(duplicated == false){
-            //Check fk_slot:
-            if(req.body.fk_slot !== undefined && req.body.fk_slot !== ''){
-                //Check if slot is available or not:
-                const available_slot = await moduleServices.checkSlot(req, res);
-                
-                if(available_slot == true){
-                    //Check urgency:
-                    const urgency_check = await moduleServices.checkUrgency(req, res, 'update');
+            //Initializate available_slot and urgency_check:
+            let available_slot = true;
+            let urgency_check = true;
 
-                    if(urgency_check === true){
-                        //Send to handler:
-                        saveHandler(req, res, appointments, 'update');
-                    }
-                }
-            } else {
-                //Return the result (HTML Response):
-                res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.fk_slot_required });
+            //Check Slot:
+            if(req.body.fk_slot != ''){
+                //Check if slot is available or not:
+                available_slot = await moduleServices.checkSlot(req, res);
+            }
+
+            //Check Urgency:
+            if(req.body.urgency != ''){
+                urgency_check = await moduleServices.checkUrgency(req, res, 'update');
+            }
+
+            //Check urgency and slot (Empty or not):
+            if(urgency_check === true && available_slot === true){
+                //Send to handler:
+                saveHandler(req, res, appointments, 'update');
             }
         }
     }

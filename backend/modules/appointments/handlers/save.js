@@ -51,6 +51,10 @@ module.exports = async (req, res, currentSchema, operation) => {
     }
     //----------------------------------------------------------------------------------------------------------------//
 
+    //Check if start and end has empty (update case without date):
+    let empty_datetimes = false;
+    if(req.body.start == '' && req.body.end == ''){ empty_datetimes = true; }
+
     //Convert start and end to date formats for comparison:
     const start = new Date(req.body.start);
     const end = new Date(req.body.end);
@@ -62,7 +66,7 @@ module.exports = async (req, res, currentSchema, operation) => {
     //Check that start and end date are the same:
     if(startStringDate == endStringDate){
         //Check that end is greater than start:
-        if(start < end){
+        if(start < end || (operation == 'update' && empty_datetimes)){
             //Excecute main query:
             switch(operation){
                 case 'insert':
