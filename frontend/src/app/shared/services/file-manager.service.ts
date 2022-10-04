@@ -25,9 +25,9 @@ export class FileManagerService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // ON FILE SELECTED:
+  // UPLOAD:
   //--------------------------------------------------------------------------------------------------------------------//
-  onFileSelected(event: any, type: string){
+  upload(event: any, type: string, reference_object: any = undefined){
     //Upload selected file (RxJS):
     this.apiClient.sendFileRequest(
         'files/insert',
@@ -36,7 +36,7 @@ export class FileManagerService {
         this.sharedProp.current_imaging.branch._id,
         type
       ).subscribe({
-      next: (res) => {
+      next: async (res) => {
         //Check operation status:
         switch(res.operation_status){
           case 'uploading':
@@ -51,6 +51,37 @@ export class FileManagerService {
           case 'finished':
             //Check operation status (backend server response):
             if(res.server_response.body.success === true){
+
+              //Check reference object (updates cases):
+              if(reference_object !== undefined){
+                //Create update data object:
+                let updateData: any = {};
+
+                //Add current file _id to reference:
+                if(type == 'attached_files'){
+                  reference_object.current_files.push(res.server_response.body.data._id);
+                  updateData[type] = reference_object.current_files;
+                } else {
+                  //Prevent: Cannot set properties of undefined:
+                  if(!updateData.consents){ updateData['consents'] = {}; }
+
+                  //Preserve previous consents fks:
+                  if(reference_object.preserve.files.length > 0){
+                    updateData.consents[reference_object.preserve.key] = reference_object.preserve.files;
+                  }
+
+                  //Set current file fk reference:
+                  updateData.consents[type] = res.server_response.body.data._id;
+                }
+
+                //Save ADD reference:
+                this.sharedFunctions.save('update', reference_object.element, reference_object._id, updateData, [], (resUpdate) => {
+                  if(resUpdate.success !== true){
+                    //Send snakbar message:
+                    this.sharedFunctions.sendMessage(resUpdate.message);
+                  }
+                });
+              }
 
               //Add current atached file in atachedFiles object:
               this.controller[type].files[res.server_response.body.data._id] = res.server_response.body.data.name;
@@ -88,9 +119,9 @@ export class FileManagerService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // ON DELETE FILE:
+  // DELETE:
   //--------------------------------------------------------------------------------------------------------------------//
-  onDeleteFile(_id: any, type: string){
+  delete(_id: any, type: string, reference_object: any = undefined){
     //Create operation handler:
     const operationHandler = {
       element         : 'files',
@@ -102,6 +133,33 @@ export class FileManagerService {
     this.sharedFunctions.openDialog('delete', operationHandler, (result) => {
       //Check result:
       if(result === true){
+        //Check reference object (updates cases):
+        if(reference_object !== undefined){
+          //Create update data object:
+          let updateData: any = {};
+
+          //Remove current file _id to reference:
+          if(type == 'attached_files' && reference_object.current_files.length > 1){
+            this.sharedFunctions.removeItemFromArray(reference_object.current_files, _id);
+
+            //Set update data object without deleted element:
+            updateData[type] = reference_object.current_files;
+
+          //Set unset params:
+          } else {
+            updateData['unset'] = {};
+            updateData.unset[type] = '';
+          }
+
+          //Save REMOVE reference:
+          this.sharedFunctions.save('update', reference_object.element, reference_object._id, updateData, [], (resUpdate) => {
+            if(resUpdate.success !== true){
+              //Send snakbar message:
+              this.sharedFunctions.sendMessage(resUpdate.message);
+            }
+          });
+        }
+
         //Remove deleted file from atachedFiles object:
         delete this.controller[type].files[_id];
       }
@@ -111,9 +169,9 @@ export class FileManagerService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // DOWNLOAD FILE:
+  // DOWNLOAD:
   //--------------------------------------------------------------------------------------------------------------------//
-  downloadFile(_id: any){
+  download(_id: any){
     //Find selected file:
     this.sharedFunctions.find('files', { 'filter[_id]': _id }, (res) => {
       //Check data:

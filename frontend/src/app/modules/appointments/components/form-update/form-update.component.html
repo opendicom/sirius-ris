@@ -652,14 +652,14 @@
           <ng-template #thenBlockInformedConsent>
             <mat-chip-list>
               <mat-chip *ngFor="let informedConsentFile of fileManager.controller.informed_consent.files | keyvalue" class="primary-color">
-                <mat-icon (click)="fileManager.downloadFile(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(informedConsentFile.key, 'informed_consent')">close</mat-icon>
+                <mat-icon (click)="fileManager.download(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.download(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(informedConsentFile.key, 'informed_consent', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.informed_consent.files) })">close</mat-icon>
               </mat-chip>
             </mat-chip-list>
             <br/>
           </ng-template>
 
           <ng-template #elseBlockInformedConsent>
-            <input type="file" (change)="fileManager.onFileSelected($event, 'informed_consent')" #fileInputInformedConsent style="display: none" />
+            <input type="file" (change)="fileManager.upload($event, 'informed_consent', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.informed_consent.files), 'preserve': { 'key': 'clinical_trial', 'files': getKeys(this.fileManager.controller.clinical_trial.files) } })" #fileInputInformedConsent style="display: none" />
             <button mat-flat-button type="button" [disabled]="fileManager.controller['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
               <span *ngIf="fileManager.controller['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
               <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
@@ -673,14 +673,14 @@
           <ng-template #thenBlockClinicalTrial>
             <mat-chip-list>
               <mat-chip *ngFor="let clinicalTrialFile of fileManager.controller.clinical_trial.files | keyvalue" class="default-color">
-                <mat-icon (click)="fileManager.downloadFile(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
+                <mat-icon (click)="fileManager.download(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.download(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(clinicalTrialFile.key, 'clinical_trial', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.clinical_trial.files) })">close</mat-icon>
               </mat-chip>
             </mat-chip-list>
             <br/>
           </ng-template>
 
           <ng-template #elseBlockClinicalTrial>
-            <input type="file" (change)="fileManager.onFileSelected($event, 'clinical_trial')" #fileInputClinicalTrial style="display: none" />
+            <input type="file" (change)="fileManager.upload($event, 'clinical_trial', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.clinical_trial.files), 'preserve': { 'key': 'informed_consent', 'files': getKeys(this.fileManager.controller.informed_consent.files) } })" #fileInputClinicalTrial style="display: none" />
             <button mat-flat-button type="button" [disabled]="fileManager.controller['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
               <span *ngIf="fileManager.controller['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
               <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
@@ -699,7 +699,7 @@
           <ng-template #thenBlockAttached>
             <mat-chip-list>
               <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
-                <mat-icon (click)="fileManager.downloadFile(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.downloadFile(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.onDeleteFile(currentAtachedFile.key, 'attached_files')">close</mat-icon>
+                <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })">close</mat-icon>
               </mat-chip>
             </mat-chip-list>
             <br/>
@@ -714,7 +714,7 @@
           <hr class="dashed" /><br/>
 
           <div class="text-right">
-            <input type="file" (change)="fileManager.onFileSelected($event, 'attached_files')" #fileInputAttached style="display: none" />
+            <input type="file" (change)="fileManager.upload($event, 'attached_files', { 'element': 'appointments', '_id': _id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })" #fileInputAttached style="display: none" />
             <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
               <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
               <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>

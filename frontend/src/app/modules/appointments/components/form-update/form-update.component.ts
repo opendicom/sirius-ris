@@ -389,14 +389,16 @@ export class FormUpdateComponent implements OnInit {
           }
 
           if(Object.keys(res.data[0].consents).length > 0){
-            if(Object.keys(res.data[0].consents.informed_consent).length > 0){
-              this.fileManager.controller['informed_consent'].files[res.data[0].consents.informed_consent._id] = res.data[0].consents.informed_consent.name;
+            if(res.data[0].consents.informed_consent !== undefined){
+              if(Object.keys(res.data[0].consents.informed_consent).length > 0){
+                this.fileManager.controller['informed_consent'].files[res.data[0].consents.informed_consent._id] = res.data[0].consents.informed_consent.name;
+              }
             }
-          }
 
-          if(Object.keys(res.data[0].consents).length > 0){
-            if(Object.keys(res.data[0].consents.clinical_trial).length > 0){
-              this.fileManager.controller['clinical_trial'].files[res.data[0].consents.clinical_trial._id] = res.data[0].consents.clinical_trial.name;
+            if(res.data[0].consents.clinical_trial !== undefined){
+              if(Object.keys(res.data[0].consents.clinical_trial).length > 0){
+                this.fileManager.controller['clinical_trial'].files[res.data[0].consents.clinical_trial._id] = res.data[0].consents.clinical_trial.name;
+              }
             }
           }
 
