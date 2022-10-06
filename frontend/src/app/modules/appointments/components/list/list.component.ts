@@ -12,7 +12,8 @@ import {                                                                        
   appointments_flow_states,
   ISO_3166,
   document_types,
-  gender_types
+  gender_types,
+  cancellation_reasons
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -23,10 +24,11 @@ import {                                                                        
 })
 export class ListComponent implements OnInit {
   //Set component properties:
-  public country_codes: any = ISO_3166;
-  public document_types: any = document_types;
-  public gender_types: any = gender_types;
-  public appointmentsFlowStates: any = appointments_flow_states;
+  public country_codes          : any = ISO_3166;
+  public document_types         : any = document_types;
+  public gender_types           : any = gender_types;
+  public appointmentsFlowStates : any = appointments_flow_states;
+  public cancellation_reasons   : any = cancellation_reasons;
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -37,8 +39,7 @@ export class ListComponent implements OnInit {
     'documents',
     'names',
     'surnames',
-    'equipment',
-    'modality',
+    'details',
     'outpatient_inpatient',
     'urgency',
     'status',
@@ -107,6 +108,8 @@ export class ListComponent implements OnInit {
       'patient.person.name_02',
       'patient.person.surname_01',
       'patient.person.surname_02',
+
+      'procedure.name',
       'slot.equipment.name',
       'modality.code_value'
     ];
@@ -117,6 +120,7 @@ export class ListComponent implements OnInit {
       'start': 1,
       'end': 1,
       'flow_state': 1,
+      'cancellation_reasons': 1,
       'outpatient': 1,
       'inpatient': 1,
       'patient': 1,
@@ -124,9 +128,11 @@ export class ListComponent implements OnInit {
       'status': 1,
       'slot.equipment.name': 1,
       'slot.equipment.AET': 1,
+      'procedure.name': 1,
+      'procedure.code': 1,
       'modality': 1
     };
-    this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
+    this.sharedProp.sort          = { 'urgency': 1, 'status': -1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:

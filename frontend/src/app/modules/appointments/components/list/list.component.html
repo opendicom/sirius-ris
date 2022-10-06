@@ -15,24 +15,24 @@
 
     <!-- flow_state -->
     <ng-container matColumnDef="flow_state">
-      <th mat-header-cell *matHeaderCellDef class="column-alt text-center">Flujo de trabajo</th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.flow_state">{{ appointmentsFlowStates[element.flow_state] }}</span>
+      <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de cita</th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <span class="badge {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ appointmentsFlowStates[element.flow_state] }}</span>
       </td>
     </ng-container>
 
     <!-- date -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha </th>
-      <td mat-cell *matCellDef="let element" class="text-center">
+      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+      <td mat-cell *matCellDef="let element" class="column-alt text-center">
         <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
       </td>
     </ng-container>
 
     <!-- schedule -->
     <ng-container matColumnDef="schedule">
-      <th mat-header-cell *matHeaderCellDef> Horario </th>
-      <td mat-cell *matCellDef="let element">
+      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
+      <td mat-cell *matCellDef="let element" class="column-alt text-center">
         <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
         <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
       </td>
@@ -40,7 +40,7 @@
 
     <!-- documents -->
     <ng-container matColumnDef="documents">
-      <th mat-header-cell *matHeaderCellDef> Documentos </th>
+      <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
       <td class="documents" mat-cell *matCellDef="let element">
         <span *ngIf="element.patient">
           <span *ngIf="element.patient.person">
@@ -88,10 +88,20 @@
       </td>
     </ng-container>
 
-    <!-- equipment -->
-    <ng-container matColumnDef="equipment">
-      <th mat-header-cell *matHeaderCellDef> Equipamiento </th>
+    <!-- details -->
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
       <td mat-cell *matCellDef="let element">
+        <!-- procedure -->
+        <span *ngIf="element.procedure">
+          <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
+            <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </span>
+
+        <div class="clear"></div><hr class="dashed" />
+
+        <!-- equipment -->
         <span *ngIf="element.slot">
           <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
           <ng-template #thenBlockTableEquipment>
@@ -101,13 +111,8 @@
           </ng-template>
           <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
         </span>
-      </td>
-    </ng-container>
 
-    <!-- modality -->
-    <ng-container matColumnDef="modality">
-      <th mat-header-cell *matHeaderCellDef> Modalidad </th>
-      <td mat-cell *matCellDef="let element">
+        <!-- modality -->
         <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
         <ng-template #thenBlockTableModality>
           <span class="badge" matTooltip="{{ element.modality.code_meaning }}">

@@ -37,8 +37,7 @@ export class ListDraftsComponent implements OnInit {
     'documents',
     'names',
     'surnames',
-    'equipment',
-    'modality',
+    'details',
     'urgency'
   ];
 
@@ -91,6 +90,7 @@ export class ListDraftsComponent implements OnInit {
       'patient.person.name_02',
       'patient.person.surname_01',
       'patient.person.surname_02',
+      'procedure.name',
       'slot.equipment.name',
       'modality.code_value'
     ];
@@ -102,6 +102,7 @@ export class ListDraftsComponent implements OnInit {
       'end': 1,
       'urgency': 1,
       'procedure.name': 1,
+      'procedure.code': 1,
       'procedure.informed_consent': 1,
       'modality.code_meaning': 1,
       'modality.code_value': 1,

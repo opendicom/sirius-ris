@@ -221,6 +221,12 @@ export class AppointmentsService {
       flow_state = form.value.flow_state;
     }
 
+    //Check cancellation reasons value:
+    if(flow_state !== 'A02'){
+      //Delete to prevent validation backend error:
+      delete form.value.cancellation_reasons;
+    }
+
     //Create save object (Set sharedProp current data):
     let appointmentSaveData: any = {
       imaging: {

@@ -81,8 +81,8 @@ export const default_page_sizes = [10, 25, 50, 100];
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Coordinado',
-  'A02': 'Cancelado'
+  'A01': 'Coordinada',
+  'A02': 'Cancelada'
 };
 
 export const cancellation_reasons = {

@@ -82,7 +82,7 @@ export class FormComponent implements OnInit {
       fk_modality       : new FormControl({ value: '', disabled: true }, Validators.required),
       informed_consent  : [ 'false' ],
       status            : [ 'true' ],
-      preparation       : [ '', [Validators.required] ]
+      preparation       : [ '' ]
     });
   }
 

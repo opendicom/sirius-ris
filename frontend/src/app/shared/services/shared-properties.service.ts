@@ -42,6 +42,7 @@ export class SharedPropertiesService {
   public current_datetime           : any;
   public current_urgency            : boolean = false;
   public current_appointment_draft  : any;
+  public current_study_iuid         : string = '';
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

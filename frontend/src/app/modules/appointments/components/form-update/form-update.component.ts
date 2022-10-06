@@ -215,6 +215,9 @@ export class FormUpdateComponent implements OnInit {
         //Check operation status:
         if(res.success === true){
           //Set sharedProp current data:
+          //Current Study IUID:
+          this.sharedProp.current_study_iuid = res.data[0].study_iuid;
+
           //Current Patient:
           this.sharedProp.current_patient = {
             _id       : res.data[0].patient._id,

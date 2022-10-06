@@ -47,19 +47,27 @@
       <div class="current-wrap preparation-wrap">
         <!-- preparation -->
         <div class="current-info">
-          <div *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
+          <div *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.preparation !== undefined && this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
 
           <ng-template #thenBlockPreparation>
             <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
           </ng-template>
 
           <ng-template #elseBlockPreparation>
-            <span>El procedimiento seleccionado no posee preparación previa.</span>
+            <span>El procedimiento seleccionado NO posee preparación previa.</span>
           </ng-template>
         </div>
 
         <div class="clear"></div>
       </div>
+
+      <!--Only superuser can view the study iuid value -->
+      <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 && this.sharedProp.current_study_iuid">
+        <hr class="dashed" />
+        <div class="text-right">
+          <small>Study IUID :</small> <span class="label-accent">{{ this.sharedProp.current_study_iuid }}</span>
+        </div>
+      </span>
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
