@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { Router } from '@angular/router';                                                   // Router
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
@@ -39,7 +41,9 @@ export class AppointmentsService {
 
   //Inject services to the constructor:
   constructor(
-    private sharedFunctions: SharedFunctionsService
+    private router          : Router,
+    public sharedProp       : SharedPropertiesService,
+    private sharedFunctions : SharedFunctionsService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -208,4 +212,133 @@ export class AppointmentsService {
     });
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  saveAppointment(operation: string, form: FormGroup, fileManager: any, _id: string = '', keysWithValues: any = []){
+    //Check operation type (Set flow state):
+    let flow_state = 'A01';
+    if(operation === 'update'){
+      flow_state = form.value.flow_state;
+    }
+
+    //Create save object (Set sharedProp current data):
+    let appointmentSaveData: any = {
+      imaging: {
+        organization  : this.sharedProp.current_imaging.organization._id,
+        branch        : this.sharedProp.current_imaging.branch._id,
+        service       : this.sharedProp.current_imaging.service._id
+      },
+      fk_patient    : this.sharedProp.current_patient._id,
+      start         : this.sharedProp.current_datetime.start + '.000Z',
+      end           : this.sharedProp.current_datetime.end + '.000Z',
+      flow_state    : flow_state,
+      fk_slot       : this.sharedProp.current_slot,
+      fk_procedure  : this.sharedProp.current_procedure._id,
+      urgency       : this.sharedProp.current_urgency
+    };
+
+    //Check operation type (Set files references):
+    if(operation === 'insert'){
+      //Add uploaded files:
+      if(Object.keys(fileManager.controller.informed_consent.files).length > 0){
+        //Prevent: Cannot set properties of undefined:
+        if(!appointmentSaveData.consents){ appointmentSaveData['consents'] = {}; }
+        appointmentSaveData.consents['informed_consent'] = Object.keys(fileManager.controller.informed_consent.files)[0];
+      }
+
+      if(Object.keys(fileManager.controller.clinical_trial.files).length > 0){
+        //Prevent: Cannot set properties of undefined:
+        if(!appointmentSaveData.consents){ appointmentSaveData['consents'] = {}; }
+        appointmentSaveData.consents['clinical_trial'] = Object.keys(fileManager.controller.clinical_trial.files)[0];
+      }
+
+      if(Object.keys(fileManager.controller.attached_files.files).length > 0){
+        appointmentSaveData['attached_files'] = Object.keys(fileManager.controller.attached_files.files);
+      }
+    }
+
+    //Merge Form Values in Appointments save data:
+    let mergedValues = {
+      ...appointmentSaveData,
+      ...form.value
+    };
+
+    //Data normalization - Referring:
+    mergedValues['referring'] = { organization: mergedValues.referring_organization };
+
+    //Data normalization - Reporting:
+    const reportingSplitted = mergedValues.reporting_domain.split('.');
+    mergedValues['reporting'] = {
+      organization  : reportingSplitted[0],
+      branch        : reportingSplitted[1],
+      service       : reportingSplitted[2]
+    };
+
+    //Data normalizarion - FK Reporting:
+    mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+
+    //Data normalization - Dates types:
+    mergedValues.report_before = this.sharedFunctions.setDatetimeFormat(mergedValues.report_before);
+
+    //Data normalization - Booleans types (mat-option cases):
+    if(typeof mergedValues.outpatient != "boolean"){ mergedValues.outpatient = mergedValues.outpatient.toLowerCase() == 'true' ? true : false; }
+    if(typeof mergedValues.contrast.use_contrast != "boolean"){ mergedValues.contrast.use_contrast = mergedValues.contrast.use_contrast.toLowerCase() == 'true' ? true : false; }
+    if(typeof mergedValues.status != "boolean"){ mergedValues.status = mergedValues.status.toLowerCase() == 'true' ? true : false; }
+
+    //Clean empty fields | Nested object cases - Check outpatient:
+    if(mergedValues.outpatient === true){
+      delete mergedValues.inpatient;
+    }
+
+    //Clean empty fields | Nested object cases - private_health.medication:
+    if(mergedValues.private_health.medication !== undefined){
+      if(mergedValues.private_health.medication.length == 0){
+        delete mergedValues.private_health.medication;
+      }
+    }
+
+    //Clean empty fields | Nested object cases - private_health.allergies:
+    if(mergedValues.private_health.allergies !== undefined){
+      if(mergedValues.private_health.allergies.length == 0){
+        delete mergedValues.private_health.allergies;
+      }
+    }
+
+    //Clean empty fields | Nested object cases - private_health.other:
+    if(mergedValues.private_health.other !== undefined){
+      if(mergedValues.private_health.other.length == 0){
+        delete mergedValues.private_health.other;
+      }
+    }
+
+    //Clean empty fields | Nested object cases - private_health.implants.other:
+    if(mergedValues.private_health.implants.other !== undefined){
+      if(mergedValues.private_health.implants.other.length == 0){
+        delete mergedValues.private_health.implants.other;
+      }
+    }
+
+    //Clean empty fields | Nested object cases - private_health.covid19.details:
+    if(mergedValues.private_health.covid19.details !== undefined && mergedValues.private_health.covid19.details !== null){
+      if(mergedValues.private_health.covid19.details.length == 0){
+        delete mergedValues.private_health.covid19.details;
+      }
+    }
+
+    //Delete temp values:
+    delete mergedValues.referring_organization;
+    delete mergedValues.reporting_domain;
+    delete mergedValues.reporting_user;
+
+    //Save data:
+    this.sharedFunctions.save(operation, 'appointments', _id, mergedValues, keysWithValues, (res) => {
+      //Delete appointment draft only if the operation was successful:
+      if(res.success === true && operation === 'insert'){
+        this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
+      }
+
+      //Response the form according to the result:
+      this.sharedFunctions.formResponder(res, 'appointments', this.router);
+    });
+  }
 }

@@ -298,6 +298,9 @@ export class FormUpdateComponent implements OnInit {
           //Check outpatient for display or not inpatient inputs:
           this.appointmentsService.onChangeOutpatient({ value: `${res.data[0].outpatient}` }, this.form);
 
+          //Check flow state for display or not cancellation reasons:
+          this.onClickFlowState(res.data[0].flow_state);
+
           //Send data to the form:
           this.setReactiveForm({
             referring_organization    : res.data[0].referring.organization._id,
@@ -310,7 +313,7 @@ export class FormUpdateComponent implements OnInit {
             contact                   : res.data[0].contact,
             status                    : [ `${res.data[0].status}` ], //Use back tip notation to convert string
             flow_state                : res.data[0].flow_state,
-            use_contrast            : [ `${res.data[0].cancellation_reasons}` ], //Use back tip notation to convert string
+            cancellation_reasons      : [ `${res.data[0].cancellation_reasons}` ], //Use back tip notation to convert string
 
             //Current address fields:
             current_address: this.formBuilder.group({
@@ -427,6 +430,11 @@ export class FormUpdateComponent implements OnInit {
       this.indicationsValidator = false;
     } else {
       this.indicationsValidator = true;
+    }
+
+    //Validate fields:
+    if(this.form.valid){
+      this.appointmentsService.saveAppointment('update', this.form, this.fileManager, this._id, this.keysWithValues);
     }
   }
 
