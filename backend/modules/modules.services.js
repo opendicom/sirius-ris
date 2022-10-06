@@ -989,6 +989,11 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         case 'appointments':
             //affectedCollections.push('studies');
             break;
+
+        case 'files':
+            affectedCollections.push('appointments');
+            //affectedCollections.push('studies');
+            break;
     }
 
     //Import affected schemas:
@@ -1006,6 +1011,9 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     let referring_condition = {};
     let reporting_condition = {};
     let patient_condition = {};
+    let informed_consent_condition = {};
+    let clinical_trial_condition = {};
+    let attached_condition = {};
     let extra_condition = {};
 
     //Execute queries into affected schemas (await foreach):
@@ -1063,6 +1071,33 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
             //Add patient contition in OR condition:
             filter.$or.push(patient_condition);
+        }
+
+        //Check if contain informed consent property:
+        if(ForeignKeys.Informed_Consent){
+            //Set informed consent condition:
+            informed_consent_condition[ForeignKeys.Informed_Consent] = _id;
+
+            //Add informed consent contition in OR condition:
+            filter.$or.push(informed_consent_condition);
+        }
+
+        //Check if contain clinical trial property:
+        if(ForeignKeys.Clinical_Trial){
+            //Set clinical trial condition:
+            clinical_trial_condition[ForeignKeys.Clinical_Trial] = _id;
+
+            //Add clinical trial contition in OR condition:
+            filter.$or.push(clinical_trial_condition);
+        }
+
+        //Check if contain attached property:
+        if(ForeignKeys.Attached){
+            //Set attached condition:
+            attached_condition[ForeignKeys.Attached] = _id;
+
+            //Add attached contition in OR condition:
+            filter.$or.push(attached_condition);
         }
 
         //Check if contain extra property:

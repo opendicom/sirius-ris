@@ -87,7 +87,7 @@ export class FileManagerService {
               this.controller[type].files[res.server_response.body.data._id] = res.server_response.body.data.name;
 
               //Send snakbar message:
-              this.sharedFunctions.sendMessage('Archivo subido exitosamente');
+              this.sharedFunctions.sendMessage('Archivo subido exitosamente', { duration: 2000 });
             } else {
               //Send snakbar message:
               this.sharedFunctions.sendMessage(res.error.message);
@@ -129,41 +129,36 @@ export class FileManagerService {
       excludeRedirect : true
     }
 
+    //Create update data object:
+    let updateData: any = {};
+
+    //Remove current file _id to reference:
+    if(type == 'attached_files' && reference_object.current_files.length > 1){
+      this.sharedFunctions.removeItemFromArray(reference_object.current_files, _id);
+
+      //Set update data object without deleted element:
+      updateData[type] = reference_object.current_files;
+
+    //Set unset params attached_files:
+    } else if(type == 'attached_files') {
+      updateData['unset'] = {};
+      updateData.unset[type] = '';
+
+    //Set unset params consents:
+    } else {
+      updateData['unset'] = {};
+      updateData.unset['consents'] = {};
+      updateData.unset.consents[type] = '';
+    }
+
     //Open dialog to confirm:
     this.sharedFunctions.openDialog('delete', operationHandler, (result) => {
       //Check result:
       if(result === true){
-        //Check reference object (updates cases):
-        if(reference_object !== undefined){
-          //Create update data object:
-          let updateData: any = {};
-
-          //Remove current file _id to reference:
-          if(type == 'attached_files' && reference_object.current_files.length > 1){
-            this.sharedFunctions.removeItemFromArray(reference_object.current_files, _id);
-
-            //Set update data object without deleted element:
-            updateData[type] = reference_object.current_files;
-
-          //Set unset params:
-          } else {
-            updateData['unset'] = {};
-            updateData.unset[type] = '';
-          }
-
-          //Save REMOVE reference:
-          this.sharedFunctions.save('update', reference_object.element, reference_object._id, updateData, [], (resUpdate) => {
-            if(resUpdate.success !== true){
-              //Send snakbar message:
-              this.sharedFunctions.sendMessage(resUpdate.message);
-            }
-          });
-        }
-
         //Remove deleted file from atachedFiles object:
         delete this.controller[type].files[_id];
       }
-    });
+    }, { reference_object: reference_object, updateData: updateData });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

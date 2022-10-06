@@ -353,7 +353,7 @@ export class SelectSlotComponent implements OnInit {
           return res;
         }),
 
-        //Filter that only success cases continue:
+        //Filter that only NO success cases continue:
         filter((res: any) => res.success !== true),
 
         //Search appointments - FullCalendar events (Return observable):

@@ -217,7 +217,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // OPEN DIALOG:
   //--------------------------------------------------------------------------------------------------------------------//
-  openDialog(operation: string, operationHandler: any = null, callback = (result: boolean) => {}): void {
+  openDialog(operation: string, operationHandler: any = null, callback = (result: boolean) => {}, removeReference: any = undefined): void {
     if(operation !== '' && operationHandler !== null){
       //Switch by operation types:
       switch(operation){
@@ -250,13 +250,41 @@ export class SharedFunctionsService {
 
               //Single delete:
               } else {
-                this.delete('single', operationHandler.element, operationHandler.selected_items[0], (res) => {
-                  //Response the deletion according to the result:
-                  const result = this.deleteResponder(res, operationHandler.element, operationHandler.router, excludeRedirect);
+                //Check if there are references to remove:
+                if(removeReference !== undefined){
+                  //REMOVE reference:
+                  const obsDelete = this.saveRxJS('update', removeReference.reference_object.element, removeReference.reference_object._id, removeReference.updateData, []).pipe(
+                    //Filter that only success cases continue:
+                    filter((res: any) => res.success === true),
 
-                  //Excecute callback:
-                  callback(result);
-                });
+                    //Remove single element (Return observable):
+                    mergeMap(() => this.deleteRxJS('single', operationHandler.element, operationHandler.selected_items[0]))
+                  );
+
+                  //Observe content (Subscribe):
+                  obsDelete.subscribe({
+                    next: (res) => {
+                      //Check operation status:
+                      if(res.success === true){
+                        //Response the deletion according to the result:
+                        const result = this.deleteResponder(res, operationHandler.element, operationHandler.router, excludeRedirect);
+
+                        //Excecute callback:
+                        callback(result);
+                      }
+                    }
+                  });
+
+                //Remove single element without references:
+                } else {
+                  this.delete('single', operationHandler.element, operationHandler.selected_items[0], (res) => {
+                    //Response the deletion according to the result:
+                    const result = this.deleteResponder(res, operationHandler.element, operationHandler.router, excludeRedirect);
+
+                    //Excecute callback:
+                    callback(result);
+                  });
+                }
               }
             }
           });
@@ -447,6 +475,68 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE - (SINGLE AND BATCH DELETE):
+  //--------------------------------------------------------------------------------------------------------------------//
+  delete(operation: string, element: string, selected_items: any, callback = (res: any) => {}): void {
+    //Initializate URL:
+    let url = '';
+
+    //Check operation:
+    if(operation != ''){
+      //Switch by operation:
+      switch(operation){
+        case 'single':
+          url = element + '/delete';
+          break;
+        case 'batch':
+          url = element + '/batch/delete';
+          break;
+        default:
+          this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
+          break;
+      }
+
+      //Check URL:
+      if(url !== ''){
+        //Set data to delete:
+        const data = {
+          _id         : selected_items,
+          delete_code : this.delete_code
+        };
+
+        //Delete data:
+        //Create observable obsDelete:
+        const obsDelete = this.apiClient.sendRequest('POST', url, data);
+
+        //Observe content (Subscribe):
+        obsDelete.subscribe({
+          next: res => {
+            //Excecute optional callback with response:
+            callback(res);
+          },
+          error: res => {
+            //Send snakbar message:
+            if(res.error.dependencies){
+              //Send dependencies error:
+              this.sendMessage(res.error.message + ' ' + JSON.stringify(res.error.dependencies));
+            } else if(res.error.message){
+              //Send other errors:
+              this.sendMessage(res.error.message);
+
+            } else {
+              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            }
+          }
+        });
+      }
+    } else {
+      this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // FIND RXJS - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
   findRxJS(element: string, params: any, findOne: boolean = false): Observable<any>{
@@ -552,60 +642,70 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // DELETE - (SINGLE AND BATCH DELETE):
+  // DELETE RXJS - (SINGLE AND BATCH DELETE):
   //--------------------------------------------------------------------------------------------------------------------//
-  delete(operation: string, element: string, selected_items: any, callback = (res: any) => {}): void {
+  deleteRxJS(operation: string, element: string, selected_items: any): Observable<any> {
     //Initializate URL:
     let url = '';
 
-    //Check operation:
-    if(operation != ''){
-      //Switch by operation:
-      switch(operation){
-        case 'single':
-          url = element + '/delete';
-          break;
-        case 'batch':
-          url = element + '/batch/delete';
-          break;
-        default:
-          this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
-          break;
-      }
+    //Return Observable:
+    return new Observable<any>((observer) => {
 
-      //Check URL:
-      if(url !== ''){
-        //Set data to delete:
-        const data = {
-          _id         : selected_items,
-          delete_code : this.delete_code
-        };
+      //Check operation:
+      if(operation != ''){
+        //Switch by operation:
+        switch(operation){
+          case 'single':
+            url = element + '/delete';
+            break;
+          case 'batch':
+            url = element + '/batch/delete';
+            break;
+          default:
+            this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
+            observer.next(false);
+            break;
+        }
 
-        //Delete data:
-        //Create observable obsDelete:
-        const obsDelete = this.apiClient.sendRequest('POST', url, data);
+        //Check URL:
+        if(url !== ''){
+          //Set data to delete:
+          const data = {
+            _id         : selected_items,
+            delete_code : this.delete_code
+          };
 
-        //Observe content (Subscribe):
-        obsDelete.subscribe({
-          next: res => {
-            //Excecute optional callback with response:
-            callback(res);
-          },
-          error: res => {
-            //Send snakbar message:
-            if(res.error.message){
-              //Send other errors:
-              this.sendMessage(res.error.message);
+          //Delete data:
+          //Create observable obsDelete:
+          const obsDelete = this.apiClient.sendRequest('POST', url, data);
 
-            } else {
-              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          //Observe content (Subscribe):
+          obsDelete.subscribe({
+            next: res => {
+              //Pass chunks of data between observables:
+              observer.next(res);
+            },
+            error: res => {
+              //Send snakbar message:
+              if(res.error.dependencies){
+                //Send dependencies error:
+                this.sendMessage(res.error.message + ' ' + JSON.stringify(res.error.dependencies));
+              } else if(res.error.message){
+                //Send other errors:
+                this.sendMessage(res.error.message);
+
+              } else {
+                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              }
+              observer.next(false);
             }
-          }
-        });
+          });
+        }
+      } else {
+        this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+        observer.next(false);
       }
-    } else {
-      this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
-    }
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -756,6 +856,9 @@ export class SharedFunctionsService {
       if(res.validate_errors){
         //Send snakbar message:
         this.sendMessage(res.message + ', ' + res.validate_errors);
+      } else if(res.dependencies){
+        //Send snakbar message:
+        this.sendMessage(res.message + ', ' + JSON.stringify(res.dependencies));
       } else {
         //Send snakbar message:
         this.sendMessage(res.message);

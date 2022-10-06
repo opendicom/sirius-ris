@@ -26,8 +26,11 @@ const Model = mongoose.model('files', Schema, 'files');  //Specify collection na
 
 //Add fk names (Sirius RIS logic):
 const ForeignKeys = {
-    Singular    : 'fk_file',
-    Plural      : 'fk_files'
+    Singular            : 'fk_file',
+    Plural              : 'fk_files',
+    Informed_Consent    : 'consents.informed_consent',
+    Clinical_Trial      : 'consents.clinical_trial',
+    Attached            : 'attached_files'
 };
 
 //Register allowed unset values:
