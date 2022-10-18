@@ -115,9 +115,7 @@
         <!-- modality -->
         <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
         <ng-template #thenBlockTableModality>
-          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">
-            <span innerHTML="{{ element.modality.code_value | highlighter : sharedProp.filter }}"></span>
-          </span>
+          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
         </ng-template>
         <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
       </td>

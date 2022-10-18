@@ -36,9 +36,14 @@ export class ListComponent implements OnInit {
       filters_form    : true,
       filters : {
         search        : true,
+        date          : false,
         date_range    : 'start-end',
+        status        : false,
+        flow_state    : false,
         urgency       : true,
+        modality      : 'modality._id', //FK name in schema
         pager         : true,
+        clear_filters : true
       }
     });
 
@@ -48,10 +53,14 @@ export class ListComponent implements OnInit {
     //Initialize action fields:
     this.sharedProp.filter        = '';
     this.sharedProp.urgency       = '';
+    this.sharedProp.status        = '';
+    this.sharedProp.flow_state    = '';
+    this.sharedProp.date          = '';
     this.sharedProp.date_range = {
       start : '',
       end   : ''
     };
+    this.sharedProp.modality      = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -59,7 +68,7 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'service.name', 'modality.code_value', 'equipments.name'];
+    this.sharedProp.filterFields  = ['organization.short_name', 'branch.short_name', 'service.name', 'equipment.name'];
     this.sharedProp.projection    = {
       'domain': 1,
       'fk_equipment': 1,

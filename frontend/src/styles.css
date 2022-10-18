@@ -230,23 +230,28 @@ mark {
   background-color: #27293d !important;
 }
 
-.mat-row:hover{
+.mat-cell {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.mat-row:hover {
   background-color: #2b2d42;
 }
 
-.mat-paginator{
+.mat-paginator {
   color: #ddd;
   background-color: #27293d;
 }
 
-.response-info{
+.response-info {
   font-size: 12px !important;
   padding: 10px;
   color: #ddd;
   background-color: #27293d !important;
 }
 
-.column-alt{
+.column-alt {
   background-color: #2e304b !important;
 }
 

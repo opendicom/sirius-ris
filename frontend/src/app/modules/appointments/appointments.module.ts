@@ -13,6 +13,8 @@ import { SelectProcedureComponent } from '@modules/appointments/components/selec
 import { SelectSlotComponent } from '@modules/appointments/components/select-slot/select-slot.component';
 import { FormInsertComponent } from '@modules/appointments/components/form-insert/form-insert.component';
 import { FormUpdateComponent } from '@modules/appointments/components/form-update/form-update.component';
+import { TabDetailsComponent } from '@modules/appointments/components/form-update/tab-details/tab-details.component';
+import { TabSlotComponent } from '@modules/appointments/components/form-update/tab-slot/tab-slot.component';
 import { ListDraftsComponent } from '@modules/appointments/components/list-drafts/list-drafts.component';
 
 // Import CKEditor Module:
@@ -41,6 +43,8 @@ FullCalendarModule.registerPlugins([
     SelectSlotComponent,
     FormInsertComponent,
     FormUpdateComponent,
+    TabDetailsComponent,
+    TabSlotComponent,
     ListDraftsComponent
   ],
   imports: [

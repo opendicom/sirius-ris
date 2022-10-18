@@ -27,11 +27,16 @@ export class SharedPropertiesService {
   //Action fields:
   public status         : string;
   public urgency        : string;
+  public flow_state     : string;
+  public date           : any;
   public date_range     : any;
+  public modality       : any;
   public selected_items : string[];
   public checked_items  : boolean[];
 
   //Current operation objects:
+  public current_id                 : string = '';
+  public current_keysWithValues     : Array<string> = [];
   public current_organization       : any; // To be able to add patients permissions.
   public current_patient            : any;
   public current_imaging            : any;
@@ -50,11 +55,14 @@ export class SharedPropertiesService {
     this.filter     = '';
     this.status     = '';
     this.urgency    = '';
+    this.flow_state = '';
     this.regex      = '';
+    this.date       = '';
     this.date_range = {
       start : '',
       end   : ''
     };
+    this.modality   = '';
 
     //Initialize selected items:
     this.selected_items = [];
@@ -115,27 +123,24 @@ export class SharedPropertiesService {
       string_filter += '"filter[and][urgency]": "' + this.urgency + '", ';
     }
 
+    //Check flow state - Filter (With AND Condition)::
+    if(this.flow_state !== ''){
+      string_filter += '"filter[and][flow_state]": "' + this.flow_state + '", ';
+    }
+
+    //Check Modality - Filter (With AND Condition)::
+    if(this.modality !== ''){
+      string_filter += '"filter[and][' + this.action.filters.modality + ']": "' + this.modality + '", ';
+    }
+
+    //Check Date - Filter (With AND Condition)::
+    if(this.date !== ''){
+      string_filter += this.setDateTimeStringFilter(this.date, this.date, this.action.filters.date);
+    }
+
     //Check Date Range - Filter (With AND Condition)::
     if(this.date_range.start !== '' && this.date_range.end !== ''){
-      //Set Datetime format:
-      const start = this._setDatetimeFormat(this.date_range.start);
-      let end = this._setDatetimeFormat(this.date_range.end, '23:59');
-
-      //Check if datetipe is not empty:
-      if(this.action.filters.date_range != ''){
-        switch(this.action.filters.date_range){
-          case 'start-end':
-            //Add date range into filter:
-            string_filter += '"filter[and][start][$gte]": "' + start + '", ';
-            string_filter += '"filter[and][end][$lte]": "' + end + '", ';
-            break;
-          default:
-            //Add date range into filter:
-            string_filter += '"filter[and][' + this.action.filters.date_range + '][$gte]": "' + start + '", ';
-            string_filter += '"filter[and][' + this.action.filters.date_range + '][$lte]": "' + end + '", ';
-            break;
-        }
-      }
+      string_filter += this.setDateTimeStringFilter(this.date_range.start, this.date_range.end, this.action.filters.date_range);
     }
 
     //Projection:
@@ -244,6 +249,39 @@ export class SharedPropertiesService {
   getTotalChecked(): number{
     //return the number of true values:
     return this.checked_items.filter(value => value === true).length;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET DATE TIME STRING FILTER:
+  //--------------------------------------------------------------------------------------------------------------------//
+  setDateTimeStringFilter(date_start: any, date_end: any, action_filters: any): string{
+    //Initialize result:
+    let result = '';
+
+    //Set Datetime format:
+    const start = this._setDatetimeFormat(date_start);
+    let end = this._setDatetimeFormat(date_end, '23:59');
+
+    //Check if datetipe is not empty:
+    if(action_filters != ''){
+      switch(action_filters){
+        case 'start-end':
+          //Add date range into filter:
+          result += '"filter[and][start][$gte]": "' + start + '", ';
+          result += '"filter[and][end][$lte]": "' + end + '", ';
+          break;
+        default:
+          //Add date range into filter:
+          result += '"filter[and][' + action_filters + '][$gte]": "' + start + '", ';
+          result += '"filter[and][' + action_filters + '][$lte]": "' + end + '", ';
+          break;
+      }
+    }
+
+    //Return result:
+    return result;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

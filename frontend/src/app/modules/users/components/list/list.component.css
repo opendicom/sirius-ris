@@ -1,7 +1,6 @@
 .documents {
   cursor: pointer;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  padding-left: 10px;
 }
 
 .machine {

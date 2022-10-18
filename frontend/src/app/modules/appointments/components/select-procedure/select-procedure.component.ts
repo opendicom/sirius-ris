@@ -26,7 +26,7 @@ export class SelectProcedureComponent implements OnInit {
   public availableBranches      : any;
   public availableServices      : any;
   public availableCategories    : any;
-  public fkProceduresIN         : any;
+  public fkProceduresIN         : string[] = [];
   public availableProcedures    : any;
 
   //Define Formgroup (Reactive form handling):
@@ -148,13 +148,19 @@ export class SelectProcedureComponent implements OnInit {
       this.sharedProp.current_modality !== '' && regexObjectId.test(this.sharedProp.current_modality)
     ){
       //Set params:
-      const params = {
+      let params : any = {
         'filter[and][domain.organization]': this.sharedProp.current_imaging.organization._id,
         'filter[and][domain.branch]': this.sharedProp.current_imaging.branch._id,
-        'filter[in][_id]': this.fkProceduresIN,
         'filter[and][fk_modality]': this.sharedProp.current_modality,
         'filter[and][status]': true
       };
+
+      //Set procedures filter key:
+      if(this.fkProceduresIN.length == 1){
+        params['filter[and][_id]'] = this.fkProceduresIN[0];
+      } else {
+        params['filter[in][_id]'] = this.fkProceduresIN;
+      }
 
       //Set available procedures:
       this.sharedFunctions.find('procedures', params, (res) => {

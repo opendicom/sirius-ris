@@ -52,9 +52,14 @@ export class ListComponent implements OnInit {
       filters_form    : true,
       filters : {
         search        : true,
+        date          : false,
         date_range    : false,
         status        : true,
+        urgency       : false,
+        flow_state    : false,
+        modality      : false,
         pager         : true,
+        clear_filters : true
       }
     });
 
@@ -63,7 +68,16 @@ export class ListComponent implements OnInit {
 
     //Initialize action fields:
     this.sharedProp.filter        = '';
+    this.sharedProp.urgency       = '';
     this.sharedProp.status        = '';
+    this.sharedProp.flow_state    = '';
+    this.sharedProp.date          = '';
+    this.sharedProp.date_range = {
+      start : '',
+      end   : ''
+    };
+    this.sharedProp.modality      = '';
+
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

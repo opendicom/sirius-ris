@@ -27,10 +27,21 @@
   background-color: #2d2d47;
 }
 
+.filters {
+  width: 80% !important;
+  font-size: 12px !important;
+}
+
 .button_filters {
   top: -4px;
-  padding-top: 7px !important;
-  padding-bottom: 7px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  font-size: 12px !important;
+}
+
+.clean_button {
+  background-color: #50328f !important;
+  color: rgba(255, 255, 255, 0.936) !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -43,7 +54,7 @@
   top: -4px;
   color: rgba(255, 255, 255, 0.678);
   font-size: 12px;
-  min-width: 320px;
+  min-width: 330px;
 }
 
 .pager-info {

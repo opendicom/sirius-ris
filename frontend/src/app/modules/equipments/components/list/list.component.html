@@ -68,9 +68,7 @@
         <span *ngIf="element.modalities; then thenBlockTableModalities else elseBlockTableModalities"></span>
         <ng-template #thenBlockTableModalities>
           <div *ngFor="let current of element.modalities">
-            <span class="badge" matTooltip="{{ current.code_meaning }}">
-              <span innerHTML="{{ current.code_value | highlighter : sharedProp.filter }}"></span>
-            </span>
+            <span class="badge" matTooltip="{{ current.code_meaning }}">{{ current.code_value }}</span>
           </div>
         </ng-template>
         <ng-template #elseBlockTableModalities>(Sin dato)</ng-template>

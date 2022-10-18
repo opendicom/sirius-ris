@@ -59,10 +59,14 @@ export class ListDraftsComponent implements OnInit {
       filters_form        : true,
       filters : {
         search        : true,
+        date          : false,
         date_range    : 'start-end',
         urgency       : true,
+        flow_state    : false,
         status        : false,
+        modality      : 'modality._id', //FK name in schema
         pager         : true,
+        clear_filters : true
       }
     });
 
@@ -73,10 +77,13 @@ export class ListDraftsComponent implements OnInit {
     this.sharedProp.filter        = '';
     this.sharedProp.urgency       = '';
     this.sharedProp.status        = '';
+    this.sharedProp.flow_state    = '';
+    this.sharedProp.date          = '';
     this.sharedProp.date_range = {
       start : '',
       end   : ''
     };
+    this.sharedProp.modality      = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -91,8 +98,7 @@ export class ListDraftsComponent implements OnInit {
       'patient.person.surname_01',
       'patient.person.surname_02',
       'procedure.name',
-      'slot.equipment.name',
-      'modality.code_value'
+      'slot.equipment.name'
     ];
     this.sharedProp.projection    = {
       'imaging.organization.short_name': 1,

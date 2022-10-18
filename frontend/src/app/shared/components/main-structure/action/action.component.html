@@ -34,7 +34,7 @@
 
 <div *ngIf="sharedProp.action.filters_form">
   <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
-    <div> <!-- start fxLayout wrapper -->
+    <div class="filters"> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
         <mat-label>Buscar</mat-label>
         <input matInput type="search" placeholder="Criterio de busqueda" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
@@ -49,6 +49,31 @@
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker (closed)="onSearch();"></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" (click)="picker.open()" *ngIf="sharedProp.action.filters.date">
+        <mat-label>Seleccione fecha</mat-label>
+        <input matInput [(ngModel)]="sharedProp.date" [matDatepicker]="picker" (keydown)="false">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker (closed)="onSearch();"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.flow_state">
+        <mat-label>Flujo de cita</mat-label>
+        <mat-select [(ngModel)]="sharedProp.flow_state" (selectionChange)="onSearch();">
+          <div *ngFor="let currentFS of appointmentsFS | keyvalue">
+            <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.modality">
+        <mat-label>Modalidad</mat-label>
+        <mat-select [(ngModel)]="sharedProp.modality" (selectionChange)="onSearch();">
+          <div *ngFor="let currentModality of modalities">
+            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }}</mat-option>
+          </div>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
@@ -67,11 +92,13 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-icon-button color="accent" matTooltip="Limpiar búsqueda" class="button_filters" (click)="onSearch(1, true);">
-        <mat-icon>close</mat-icon>
+      <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
+        <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
       </button>
 
-      <button mat-flat-button color="accent" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0"><mat-icon>delete_forever</mat-icon>&nbsp; <small>BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})</small></button>
+      <button mat-flat-button color="accent" class="button_filters" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0">
+        <mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})
+      </button>
     </div> <!-- end fxLayout wrapper -->
 
     <span class="mat-spacer"></span>

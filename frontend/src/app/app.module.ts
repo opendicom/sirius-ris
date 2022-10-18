@@ -51,6 +51,7 @@ import { ProcedureCategoriesModule } from '@modules/procedure-categories/procedu
 import { FilesModule } from '@modules/files/files.module';
 import { LogsModule } from '@modules/logs/logs.module';
 import { AppointmentsModule } from '@modules/appointments/appointments.module';
+import { CheckInModule } from '@modules/check-in/check-in.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -84,7 +85,8 @@ import { AppointmentsModule } from '@modules/appointments/appointments.module';
     ProcedureCategoriesModule,
     FilesModule,
     LogsModule,
-    AppointmentsModule
+    AppointmentsModule,
+    CheckInModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

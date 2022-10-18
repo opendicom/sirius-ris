@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';                                               // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes, regexObjectId } from '@env/environment';                   // Enviroment
+import { default_page_sizes, appointments_flow_states } from '@env/environment';        // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,8 +15,12 @@ import { default_page_sizes, regexObjectId } from '@env/environment';           
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-  public page_sizes: any = default_page_sizes;
-  public number_of_pages = [1];
+  public page_sizes           : any = default_page_sizes;
+  public number_of_pages      : any = [1];
+  public appointmentsFS       : any = appointments_flow_states;
+
+  //Set DB action properties:
+  public modalities : any;
 
   //Inject services to the constructor:
   constructor(
@@ -34,7 +38,10 @@ export class ActionComponent implements OnInit {
     this.sharedProp.filter = '';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    //Find DB action properties:
+    this.findModalities();
+  }
 
   //--------------------------------------------------------------------------------------------------------------------//
   // ON SEARCH:
@@ -46,12 +53,15 @@ export class ActionComponent implements OnInit {
       this.sharedProp.filter = '';
       this.sharedProp.status = '';
       this.sharedProp.urgency = '';
+      this.sharedProp.flow_state = '';
       this.sharedProp.pager.page_number = 1;
       this.sharedProp.pager.page_limit = this.page_sizes[0];
+      this.sharedProp.date = '';
       this.sharedProp.date_range = {
         start : '',
         end   : ''
       };
+      this.sharedProp.modality = '';
     }
 
     //Initialize selected items:
@@ -126,6 +136,20 @@ export class ActionComponent implements OnInit {
 
     //Open dialog to confirm:
     this.sharedFunctions.openDialog('delete', operationHandler);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND MODALITIES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findModalities(){
+    this.sharedFunctions.find('modalities', { 'filter[status]': true }, (res) => {
+      //Check result:
+      if(res.success === true){
+        this.modalities = res.data;
+      }
+    })
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

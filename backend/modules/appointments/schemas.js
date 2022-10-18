@@ -165,7 +165,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['extra_procedures', 'media', 'consents', 'inpatient', 'cancellation_reasons'];
+const AllowedUnsetValues = ['extra_procedures', 'media', 'consents', 'attached_files', 'inpatient', 'cancellation_reasons'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
