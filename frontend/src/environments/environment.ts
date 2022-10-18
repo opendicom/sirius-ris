@@ -78,6 +78,7 @@ export const gender_types = {
 
 //Pager defaults:
 export const default_page_sizes = [10, 25, 50, 100];
+export const check_in_default_size = 1000;
 
 // Appointments flow states:
 export const appointments_flow_states = {

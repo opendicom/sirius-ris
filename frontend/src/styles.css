@@ -366,6 +366,11 @@ mark {
 .unselected {
   border-bottom: 3px solid #f44336 !important;
 }
+
+.small {
+  font-size: 12px !important;
+  padding: 0px 7px 0px 0px !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 

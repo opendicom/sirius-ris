@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
-import { ISO_3166, document_types, gender_types } from '@env/environment';                      // Enviroments
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
+import { ISO_3166, document_types, gender_types, check_in_default_size } from '@env/environment'; // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -22,6 +22,7 @@ export class ListComponent implements OnInit {
   //Set visible columns of the list:
   public displayedColumns: string[] = [
     'order',
+    'element_action',
     'schedule',
     'documents',
     'names',
@@ -84,7 +85,7 @@ export class ListComponent implements OnInit {
     ];
     this.sharedProp.projection    = {};
     this.sharedProp.sort          = { 'procedure.name': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: 1000 };
+    this.sharedProp.pager         = { page_number: 1, page_limit: check_in_default_size };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

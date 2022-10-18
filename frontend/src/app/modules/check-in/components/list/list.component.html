@@ -9,6 +9,16 @@
       <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
     </ng-container>
 
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <button mat-flat-button class="small" color="primary" aria-label="Recepcionar">
+          <mat-icon>location_on</mat-icon> RECEPCIONAR
+        </button>
+      </td>
+    </ng-container>
+
     <!-- schedule -->
     <ng-container matColumnDef="schedule">
       <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
