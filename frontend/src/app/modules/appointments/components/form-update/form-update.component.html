@@ -1,5 +1,4 @@
-<form class="form-element"><!--</form> [formGroup]="form" (ngSubmit)="onSubmit()">-->
-
+<form class="form-element">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
       <h3 class="details-title">Detalles de la cita:</h3>
@@ -212,7 +211,7 @@
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
       <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

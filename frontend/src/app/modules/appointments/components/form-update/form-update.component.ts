@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -8,6 +8,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { app_setting, ISO_3166, document_types, gender_types } from '@env/environment';     // Enviroments
+
+// Child components:
+import { TabDetailsComponent } from '@modules/appointments/components/form-update/tab-details/tab-details.component';
+import { TabSlotComponent } from '@modules/appointments/components/form-update/tab-slot/tab-slot.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -16,6 +20,10 @@ import { app_setting, ISO_3166, document_types, gender_types } from '@env/enviro
   styleUrls: ['./form-update.component.css']
 })
 export class FormUpdateComponent implements OnInit {
+  //Import tabs components (Properties and Methods) [Child components]:
+  @ViewChild(TabDetailsComponent) tabDetails!:TabDetailsComponent;
+  @ViewChild(TabSlotComponent) tabSlot!:TabSlotComponent;
+
   //Set component properties:
   public settings             : any = app_setting;
   public country_codes        : any = ISO_3166;
@@ -35,6 +43,7 @@ export class FormUpdateComponent implements OnInit {
     private objRoute            : ActivatedRoute,
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
+    //private tabDetailsComponent : TabDetailsComponent
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -62,5 +71,10 @@ export class FormUpdateComponent implements OnInit {
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+  }
+
+  onSubmitMaster(){
+    //Send multiple submits:
+    this.tabDetails.onSubmit();
   }
 }

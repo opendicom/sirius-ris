@@ -84,7 +84,7 @@ export class ListComponent implements OnInit {
       'patient.person.surname_02'
     ];
     this.sharedProp.projection    = {};
-    this.sharedProp.sort          = { 'procedure.name': 1 };
+    this.sharedProp.sort          = { 'start': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: check_in_default_size };
 
     //Refresh request params:

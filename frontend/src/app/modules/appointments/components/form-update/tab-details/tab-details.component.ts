@@ -421,5 +421,4 @@ export class TabDetailsComponent implements OnInit {
       this.booleanCancelation = false;
     }
   }
-
 }
