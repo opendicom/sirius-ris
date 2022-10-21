@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,14 +16,8 @@ export class AppComponent {
   title = 'sirius-ris';
 
   //Inject services to the constructor (Create first actionProp):
-  constructor(public sharedProp: SharedPropertiesService) { }
-
-  // Fix FullCalendar bug first Render:
-  fixFullCalendar(){
-    // Fix info:
-    // https://github.com/fullcalendar/fullcalendar/issues/4976
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 250);
-  }
+  constructor(
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions  : SharedFunctionsService
+  ) { }
 }

@@ -31,8 +31,8 @@ export class SelectSlotComponent implements OnInit {
   public gender_types   : any = gender_types;
 
   //Min and max dates:
-  public minDate: Date;
-  public maxDate: Date;
+  public minDate: Date = new Date();
+  public maxDate: Date = new Date();
 
   //Set references objects:
   public currentModality      : any;
@@ -72,22 +72,6 @@ export class SelectSlotComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ) {
-    //--------------------------------------------------------------------------------------------------------------------//
-    // TEST DATA:
-    //--------------------------------------------------------------------------------------------------------------------//
-    /*
-    this.sharedProp.current_patient = { "_id": "62bef5cc67d1c30013f612f4", "status": true, "fk_person": "62bc68f266d77500136f5a32", "email": "milhouse.vanhouten@gmail.com", "permissions": [ { "concession": [], "organization": "6220b26e0feaeeabbd5b0d93", "role": 2 } ], "settings": [], "createdAt": "2022-07-01T13:25:32.539Z", "updatedAt": "2022-08-10T17:41:20.655Z", "__v": 0, "person": { "_id": "62bc68f266d77500136f5a32", "phone_numbers": [ "099654283", "24819374" ], "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "12345672" } ], "name_01": "MILHOUSE", "surname_01": "VAN HOUTEN", "birth_date": "2011-08-10T00:00:00.000Z", "gender": 1, "createdAt": "2022-06-29T15:00:02.159Z", "updatedAt": "2022-08-10T17:41:20.612Z", "__v": 0 } } ;
-    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
-    this.sharedProp.current_modality = "6267e558bb4e2e4f54931fa7";
-    this.sharedProp.current_procedure = { "_id": "62eabb5b959cca00137d2bf9", "name": "WHB FDG", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 40, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 20, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": true, "preparation": "<p>El paciente debe realizar 12 horas de ayuno.</p><p><strong>El paciente NO puede 24 hs previas al día del estudio:</strong></p><ul><li>Consumir azúcar.</li><li>Consumir bebidas alcohólicas.</li><li>Fumar.</li><li>Realizar ejercicio ni esfuerzos.</li></ul>" } ;
-    */
-    //--------------------------------------------------------------------------------------------------------------------//
-
-    //Set min and max dates (Datepicker):
-    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
-    this.minDate = dateRangeLimit.minDate;
-    this.maxDate = dateRangeLimit.maxDate;
-
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -98,6 +82,13 @@ export class SelectSlotComponent implements OnInit {
       add_button    : false,
       filters_form  : false,
     });
+  }
+
+  ngOnInit(): void {
+    //Set min and max dates (Datepicker):
+    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
+    this.minDate = dateRangeLimit.minDate;
+    this.maxDate = dateRangeLimit.maxDate;
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
@@ -165,17 +156,12 @@ export class SelectSlotComponent implements OnInit {
 
     //Bind dateClick event:
     this.calendarOptions.dateClick = this.onClickSlot.bind(this);
-  }
 
-  ngOnInit(): void {
     //Find references:
     this.findReferences();
 
     // Fix FullCalendar bug first Render:
-    // https://github.com/fullcalendar/fullcalendar/issues/4976
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 1);
+    this.sharedFunctions.fixFullCalendarRender();
 
     //Find slots:
     this.findSlots(false, true);
@@ -654,7 +640,7 @@ export class SelectSlotComponent implements OnInit {
         'filter[status]': true
       };
 
-      //Find organizations:
+      //Find modalities:
       this.sharedFunctions.find('modalities', params, (res) => {
         this.currentModality = res.data[0];
       });

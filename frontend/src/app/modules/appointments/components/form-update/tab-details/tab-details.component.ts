@@ -171,225 +171,169 @@ export class TabDetailsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  //Override ngOnInit execution to control initial execution manually:
+  ngOnInit(): void {}
+  manualOnInit(): void {
     //Check if element is not empty:
     if(this.sharedProp.current_id != ''){
-      //Request params:
-      const params = {
-        'filter[_id]': this.sharedProp.current_id,
-        'proj[attached_files.base64]': 0,
-        'proj[consents.informed_consent.base64]': 0,
-        'proj[consents.clinical_trial.base64]': 0
-      };
+      //Set min and max dates (Datepicker):
+      const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
 
-      //Find element to update:
-      this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
+      this.minDate = dateRangeLimit.minDate;
+      this.maxDate = dateRangeLimit.maxDate;
 
-        //Check operation status:
-        if(res.success === true){
-          //Set sharedProp current data:
-          //Current Study IUID:
-          this.sharedProp.current_study_iuid = res.data[0].study_iuid;
+      //Find references:
+      this.appointmentsService.findReferences();
 
-          //Current Patient:
-          this.sharedProp.current_patient = {
-            _id       : res.data[0].patient._id,
-            status    : res.data[0].patient.status,
-            fk_person : res.data[0].patient.fk_person,
-            person    : res.data[0].patient.person
-          };
+      //Find referring organizations:
+      this.appointmentsService.findReferringOrganizations();
 
-          //Current Imaging:
-          this.sharedProp.current_imaging = res.data[0].imaging;
+      //Find referring and reporting information:
+      this.appointmentsService.findReportingUsers(this.sharedFunctions.response.data[0].reporting.service._id, this.form);
 
-          //Current Modality:
-          this.sharedProp.current_modality = res.data[0].modality;
+      //Set selected reporting:
+      const selectedReporting = this.sharedFunctions.response.data[0].reporting.organization._id + '.' + this.sharedFunctions.response.data[0].reporting.branch._id + '.' + this.sharedFunctions.response.data[0].reporting.service._id;
 
-          //Current Procedure:
-          this.sharedProp.current_procedure = res.data[0].procedure;
+      //Check if inpatient:
+      let inpatient = { type: '', where: '', room: '', contact: '' };
+      if(this.sharedFunctions.response.data[0].inpatient){
+        inpatient = this.sharedFunctions.response.data[0].inpatient;
+      }
 
-          //Current Slot:
-          this.sharedProp.current_slot = res.data[0].slot._id;
+      //Check other values (Non-boolean string types):
+      let patologiesOther = 'false';
+      if(this.sharedFunctions.response.data[0].private_health.other !== undefined && this.sharedFunctions.response.data[0].private_health.other !== null && this.sharedFunctions.response.data[0].private_health.other !== ''){
+        //Set checkbox on true (string):
+        patologiesOther = 'true';
 
-          //Current Equipment:
-          this.sharedProp.current_equipment = {
-            details: {
-              name  : res.data[0].slot.equipment.name,
-              AET   : res.data[0].slot.equipment.AET
-            }
-          };
+        //Display input:
+        this.appointmentsService.onCheckOtherPatology({ checked: true }, this.form);
+      }
 
-          //Current Datetime:
-          this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
+      let implantsOther = 'false';
+      if(this.sharedFunctions.response.data[0].private_health.implants.other !== undefined && this.sharedFunctions.response.data[0].private_health.implants.other !== null && this.sharedFunctions.response.data[0].private_health.implants.other !== ''){
+        //Set checkbox on true (string):
+        implantsOther = 'true';
 
-          //Current Urgency:
-          this.sharedProp.current_urgency = res.data[0].urgency;
+        //Display input:
+        this.appointmentsService.onCheckOtherImplants({ checked: true }, this.form);
+      }
 
-          //Set min and max dates (Datepicker):
-          const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
+      //Check use contrast for display or not contrast detail input:
+      this.appointmentsService.onChangeContrast({ value: 'true' }, this.form);
 
-          this.minDate = dateRangeLimit.minDate;
-          this.maxDate = dateRangeLimit.maxDate;
+      //Check outpatient for display or not inpatient inputs:
+      this.appointmentsService.onChangeOutpatient({ value: `${this.sharedFunctions.response.data[0].outpatient}` }, this.form);
 
-          //Find references:
-          this.appointmentsService.findReferences();
+      //Check flow state for display or not cancellation reasons:
+      this.onClickFlowState(this.sharedFunctions.response.data[0].flow_state);
 
-          //Find referring organizations:
-          this.appointmentsService.findReferringOrganizations();
+      //Send data to the form:
+      this.setReactiveForm({
+        referring_organization    : this.sharedFunctions.response.data[0].referring.organization._id,
+        reporting_domain          : selectedReporting,
+        reporting_user            : this.sharedFunctions.response.data[0].reporting.fk_reporting._id,
 
-          //Find referring and reporting information:
-          this.appointmentsService.findReportingUsers(res.data[0].reporting.service._id, this.form);
+        anamnesis                 : this.sharedFunctions.response.data[0].anamnesis,
+        indications               : this.sharedFunctions.response.data[0].indications,
+        report_before             : new Date(this.sharedFunctions.response.data[0].report_before.slice(0, -8)),
+        contact                   : this.sharedFunctions.response.data[0].contact,
+        status                    : [ `${this.sharedFunctions.response.data[0].status}` ], //Use back tip notation to convert string
+        flow_state                : this.sharedFunctions.response.data[0].flow_state,
+        cancellation_reasons      : [ `${this.sharedFunctions.response.data[0].cancellation_reasons}` ], //Use back tip notation to convert string
 
-          //Set selected reporting:
-          const selectedReporting = res.data[0].reporting.organization._id + '.' + res.data[0].reporting.branch._id + '.' + res.data[0].reporting.service._id;
+        //Current address fields:
+        current_address: this.formBuilder.group({
+          country                 : this.sharedFunctions.capitalizeFirstLetter(this.sharedFunctions.response.data[0].current_address.country),
+          state                   : this.sharedFunctions.capitalizeFirstLetter(this.sharedFunctions.response.data[0].current_address.state),
+          city                    : this.sharedFunctions.capitalizeFirstLetter(this.sharedFunctions.response.data[0].current_address.city),
+          neighborhood            : this.sharedFunctions.response.data[0].current_address.neighborhood,
+          address                 : this.sharedFunctions.response.data[0].current_address.address
+        }),
 
-          //Check if inpatient:
-          let inpatient = { type: '', where: '', room: '', contact: '' };
-          if(res.data[0].inpatient){
-            inpatient = res.data[0].inpatient;
-          }
+        //Contrast fields:
+        contrast: this.formBuilder.group({
+          use_contrast            : [ `${this.sharedFunctions.response.data[0].contrast.use_contrast}` ], //Use back tip notation to convert string
+          description             : this.sharedFunctions.response.data[0].contrast.description
+        }),
 
-          //Check other values (Non-boolean string types):
-          let patologiesOther = 'false';
-          if(res.data[0].private_health.other !== undefined && res.data[0].private_health.other !== null && res.data[0].private_health.other !== ''){
-            //Set checkbox on true (string):
-            patologiesOther = 'true';
+        //Private health fields:
+        private_health: this.formBuilder.group({
+          height                  : this.sharedFunctions.response.data[0].private_health.height,
+          weight                  : this.sharedFunctions.response.data[0].private_health.weight,
+          diabetes                : this.sharedFunctions.response.data[0].private_health.diabetes,
+          hypertension            : this.sharedFunctions.response.data[0].private_health.hypertension,
+          epoc                    : this.sharedFunctions.response.data[0].private_health.epoc,
+          smoking                 : this.sharedFunctions.response.data[0].private_health.smoking,
+          malnutrition            : this.sharedFunctions.response.data[0].private_health.malnutrition,
+          obesity                 : this.sharedFunctions.response.data[0].private_health.obesity,
+          hiv                     : this.sharedFunctions.response.data[0].private_health.hiv,
+          renal_insufficiency     : this.sharedFunctions.response.data[0].private_health.renal_insufficiency,
+          heart_failure           : this.sharedFunctions.response.data[0].private_health.heart_failure,
+          ischemic_heart_disease  : this.sharedFunctions.response.data[0].private_health.ischemic_heart_disease,
+          valvulopathy            : this.sharedFunctions.response.data[0].private_health.valvulopathy,
+          arrhythmia              : this.sharedFunctions.response.data[0].private_health.arrhythmia,
+          cancer                  : this.sharedFunctions.response.data[0].private_health.cancer,
+          dementia                : this.sharedFunctions.response.data[0].private_health.dementia,
+          claustrophobia          : this.sharedFunctions.response.data[0].private_health.claustrophobia,
+          asthma                  : this.sharedFunctions.response.data[0].private_health.asthma,
+          hyperthyroidism         : this.sharedFunctions.response.data[0].private_health.hyperthyroidism,
+          hypothyroidism          : this.sharedFunctions.response.data[0].private_health.hypothyroidism,
+          pregnancy               : this.sharedFunctions.response.data[0].private_health.pregnancy,
+          other                   : this.sharedFunctions.response.data[0].private_health.other,
+          otherBoolean            : patologiesOther,
+          medication              : this.sharedFunctions.response.data[0].private_health.medication,
+          allergies               : this.sharedFunctions.response.data[0].private_health.allergies,
 
-            //Display input:
-            this.appointmentsService.onCheckOtherPatology({ checked: true }, this.form);
-          }
+          implants: this.formBuilder.group({
+            cochlear_implant      : this.sharedFunctions.response.data[0].private_health.implants.cochlear_implant,
+            cardiac_stent         : this.sharedFunctions.response.data[0].private_health.implants.cardiac_stent,
+            metal_prostheses      : this.sharedFunctions.response.data[0].private_health.implants.metal_prostheses,
+            metal_shards          : this.sharedFunctions.response.data[0].private_health.implants.metal_shards,
+            pacemaker             : this.sharedFunctions.response.data[0].private_health.implants.pacemaker,
+            other                 : this.sharedFunctions.response.data[0].private_health.implants.other,
+            otherBoolean          : implantsOther
+          }),
 
-          let implantsOther = 'false';
-          if(res.data[0].private_health.implants.other !== undefined && res.data[0].private_health.implants.other !== null && res.data[0].private_health.implants.other !== ''){
-            //Set checkbox on true (string):
-            implantsOther = 'true';
+          covid19: this.formBuilder.group({
+            had_covid             : this.sharedFunctions.response.data[0].private_health.covid19.had_covid,
+            vaccinated            : this.sharedFunctions.response.data[0].private_health.covid19.vaccinated,
+            details               : this.sharedFunctions.response.data[0].private_health.covid19.details
+          }),
+        }),
 
-            //Display input:
-            this.appointmentsService.onCheckOtherImplants({ checked: true }, this.form);
-          }
-
-          //Check use contrast for display or not contrast detail input:
-          this.appointmentsService.onChangeContrast({ value: 'true' }, this.form);
-
-          //Check outpatient for display or not inpatient inputs:
-          this.appointmentsService.onChangeOutpatient({ value: `${res.data[0].outpatient}` }, this.form);
-
-          //Check flow state for display or not cancellation reasons:
-          this.onClickFlowState(res.data[0].flow_state);
-
-          //Send data to the form:
-          this.setReactiveForm({
-            referring_organization    : res.data[0].referring.organization._id,
-            reporting_domain          : selectedReporting,
-            reporting_user            : res.data[0].reporting.fk_reporting._id,
-
-            anamnesis                 : res.data[0].anamnesis,
-            indications               : res.data[0].indications,
-            report_before             : new Date(res.data[0].report_before.slice(0, -8)),
-            contact                   : res.data[0].contact,
-            status                    : [ `${res.data[0].status}` ], //Use back tip notation to convert string
-            flow_state                : res.data[0].flow_state,
-            cancellation_reasons      : [ `${res.data[0].cancellation_reasons}` ], //Use back tip notation to convert string
-
-            //Current address fields:
-            current_address: this.formBuilder.group({
-              country                 : this.sharedFunctions.capitalizeFirstLetter(res.data[0].current_address.country),
-              state                   : this.sharedFunctions.capitalizeFirstLetter(res.data[0].current_address.state),
-              city                    : this.sharedFunctions.capitalizeFirstLetter(res.data[0].current_address.city),
-              neighborhood            : res.data[0].current_address.neighborhood,
-              address                 : res.data[0].current_address.address
-            }),
-
-            //Contrast fields:
-            contrast: this.formBuilder.group({
-              use_contrast            : [ `${res.data[0].contrast.use_contrast}` ], //Use back tip notation to convert string
-              description             : res.data[0].contrast.description
-            }),
-
-            //Private health fields:
-            private_health: this.formBuilder.group({
-              height                  : res.data[0].private_health.height,
-              weight                  : res.data[0].private_health.weight,
-              diabetes                : res.data[0].private_health.diabetes,
-              hypertension            : res.data[0].private_health.hypertension,
-              epoc                    : res.data[0].private_health.epoc,
-              smoking                 : res.data[0].private_health.smoking,
-              malnutrition            : res.data[0].private_health.malnutrition,
-              obesity                 : res.data[0].private_health.obesity,
-              hiv                     : res.data[0].private_health.hiv,
-              renal_insufficiency     : res.data[0].private_health.renal_insufficiency,
-              heart_failure           : res.data[0].private_health.heart_failure,
-              ischemic_heart_disease  : res.data[0].private_health.ischemic_heart_disease,
-              valvulopathy            : res.data[0].private_health.valvulopathy,
-              arrhythmia              : res.data[0].private_health.arrhythmia,
-              cancer                  : res.data[0].private_health.cancer,
-              dementia                : res.data[0].private_health.dementia,
-              claustrophobia          : res.data[0].private_health.claustrophobia,
-              asthma                  : res.data[0].private_health.asthma,
-              hyperthyroidism         : res.data[0].private_health.hyperthyroidism,
-              hypothyroidism          : res.data[0].private_health.hypothyroidism,
-              pregnancy               : res.data[0].private_health.pregnancy,
-              other                   : res.data[0].private_health.other,
-              otherBoolean            : patologiesOther,
-              medication              : res.data[0].private_health.medication,
-              allergies               : res.data[0].private_health.allergies,
-
-              implants: this.formBuilder.group({
-                cochlear_implant      : res.data[0].private_health.implants.cochlear_implant,
-                cardiac_stent         : res.data[0].private_health.implants.cardiac_stent,
-                metal_prostheses      : res.data[0].private_health.implants.metal_prostheses,
-                metal_shards          : res.data[0].private_health.implants.metal_shards,
-                pacemaker             : res.data[0].private_health.implants.pacemaker,
-                other                 : res.data[0].private_health.implants.other,
-                otherBoolean          : implantsOther
-              }),
-
-              covid19: this.formBuilder.group({
-                had_covid             : res.data[0].private_health.covid19.had_covid,
-                vaccinated            : res.data[0].private_health.covid19.vaccinated,
-                details               : res.data[0].private_health.covid19.details
-              }),
-            }),
-
-            outpatient                :  [ `${res.data[0].outpatient}` ], //Use back tip notation to convert string
-            inpatient: this.formBuilder.group({
-              type                    : [ `${inpatient.type}` ], //Use back tip notation to convert string
-              where                   : inpatient.where,
-              room                    : inpatient.room,
-              contact                 : inpatient.contact
-            })
-          });
-
-          //Add files into file manager controller:
-          if(res.data[0].attached_files.length > 0){
-            Promise.all(Object.keys(res.data[0].attached_files).map((key) => {
-              this.fileManager.controller['attached_files'].files[res.data[0].attached_files[key]._id] = res.data[0].attached_files[key].name;
-            }));
-          }
-
-          if(Object.keys(res.data[0].consents).length > 0){
-            if(res.data[0].consents.informed_consent !== undefined){
-              if(Object.keys(res.data[0].consents.informed_consent).length > 0){
-                this.fileManager.controller['informed_consent'].files[res.data[0].consents.informed_consent._id] = res.data[0].consents.informed_consent.name;
-              }
-            }
-
-            if(res.data[0].consents.clinical_trial !== undefined){
-              if(Object.keys(res.data[0].consents.clinical_trial).length > 0){
-                this.fileManager.controller['clinical_trial'].files[res.data[0].consents.clinical_trial._id] = res.data[0].consents.clinical_trial.name;
-              }
-            }
-          }
-
-          //Get property keys with values:
-          this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
-
-        } else {
-          //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
-          this.router.navigate(['/' + this.sharedProp.element + '/list']);
-        }
+        outpatient                :  [ `${this.sharedFunctions.response.data[0].outpatient}` ], //Use back tip notation to convert string
+        inpatient: this.formBuilder.group({
+          type                    : [ `${inpatient.type}` ], //Use back tip notation to convert string
+          where                   : inpatient.where,
+          room                    : inpatient.room,
+          contact                 : inpatient.contact
+        })
       });
+
+      //Add files into file manager controller:
+      if(this.sharedFunctions.response.data[0].attached_files.length > 0){
+        Promise.all(Object.keys(this.sharedFunctions.response.data[0].attached_files).map((key) => {
+          this.fileManager.controller['attached_files'].files[this.sharedFunctions.response.data[0].attached_files[key]._id] = this.sharedFunctions.response.data[0].attached_files[key].name;
+        }));
+      }
+
+      if(Object.keys(this.sharedFunctions.response.data[0].consents).length > 0){
+        if(this.sharedFunctions.response.data[0].consents.informed_consent !== undefined){
+          if(Object.keys(this.sharedFunctions.response.data[0].consents.informed_consent).length > 0){
+            this.fileManager.controller['informed_consent'].files[this.sharedFunctions.response.data[0].consents.informed_consent._id] = this.sharedFunctions.response.data[0].consents.informed_consent.name;
+          }
+        }
+
+        if(this.sharedFunctions.response.data[0].consents.clinical_trial !== undefined){
+          if(Object.keys(this.sharedFunctions.response.data[0].consents.clinical_trial).length > 0){
+            this.fileManager.controller['clinical_trial'].files[this.sharedFunctions.response.data[0].consents.clinical_trial._id] = this.sharedFunctions.response.data[0].consents.clinical_trial.name;
+          }
+        }
+      }
+
+      //Get property keys with values:
+      this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
     }
   }
 

@@ -20,8 +20,8 @@ import { regexObjectId, FullCalendarOptions } from '@env/environment';          
 })
 export class TabSlotComponent implements OnInit {
   //Min and max dates:
-  public minDate: Date;
-  public maxDate: Date;
+  public minDate: Date = new Date();
+  public maxDate: Date = new Date();
 
   //Set references objects:
   public currentModality      : any;
@@ -59,10 +59,15 @@ export class TabSlotComponent implements OnInit {
     private router: Router,
     public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
-  ){
+    public sharedFunctions: SharedFunctionsService
+  ){}
+
+  //Override ngOnInit execution to control initial execution manually:
+  ngOnInit(): void {}
+  manualOnInit(): void {
     //Set min and max dates (Datepicker):
-    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
+    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
+
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
@@ -132,17 +137,12 @@ export class TabSlotComponent implements OnInit {
 
     //Bind dateClick event:
     this.calendarOptions.dateClick = this.onClickSlot.bind(this);
-  }
 
-  ngOnInit(): void {
     //Find references:
     this.findReferences();
 
     // Fix FullCalendar bug first Render:
-    // https://github.com/fullcalendar/fullcalendar/issues/4976
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 1);
+    this.sharedFunctions.fixFullCalendarRender();
 
     //Find slots:
     this.findSlots(false, true);
@@ -600,11 +600,8 @@ export class TabSlotComponent implements OnInit {
 
     //Check current modality:
     if(this.sharedProp.current_modality !== undefined){
-      //Check if current modality is a valid ObjectId (Default case):
-      if(regexObjectId.test(this.sharedProp.current_modality)){
-        _id = this.sharedProp.current_modality;
-      //Current modality form component format (Back in browser case):
-      } else if(regexObjectId.test(this.sharedProp.current_modality._id)){
+      //Check if current modality is a valid ObjectId:
+      if(regexObjectId.test(this.sharedProp.current_modality._id)){
         _id = this.sharedProp.current_modality._id;
       }
     }
@@ -616,7 +613,7 @@ export class TabSlotComponent implements OnInit {
         'filter[status]': true
       };
 
-      //Find organizations:
+      //Find modalities:
       this.sharedFunctions.find('modalities', params, (res) => {
         this.currentModality = res.data[0];
       });
