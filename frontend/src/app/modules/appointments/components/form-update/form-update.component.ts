@@ -73,51 +73,16 @@ export class FormUpdateComponent implements OnInit {
       };
 
       //Find element to update:
-      this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
+      this.sharedFunctions.find(this.sharedProp.element, params, async (res) => {
 
         //Check operation status:
         if(res.success === true){
-          //Set sharedProp current data:
-          //Current Study IUID:
-          this.sharedProp.current_study_iuid = res.data[0].study_iuid;
-
-          //Current Patient:
-          this.sharedProp.current_patient = {
-            _id       : res.data[0].patient._id,
-            status    : res.data[0].patient.status,
-            fk_person : res.data[0].patient.fk_person,
-            person    : res.data[0].patient.person
-          };
-
-          //Current Imaging:
-          this.sharedProp.current_imaging = res.data[0].imaging;
-
-          //Current Modality:
-          this.sharedProp.current_modality = res.data[0].modality;
-
-          //Current Procedure:
-          this.sharedProp.current_procedure = res.data[0].procedure;
-
-          //Current Slot:
-          this.sharedProp.current_slot = res.data[0].slot._id;
-
-          //Current Equipment:
-          this.sharedProp.current_equipment = {
-            details: {
-              name  : res.data[0].slot.equipment.name,
-              AET   : res.data[0].slot.equipment.AET
-            }
-          };
-
-          //Current Datetime:
-          this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
-
-          //Current Urgency:
-          this.sharedProp.current_urgency = res.data[0].urgency;
+          //Set current data in sharedProp:
+          await this.setCurrentData(res.data[0]);
 
           //Excecute manual onInit childrens components:
           this.tabDetails.manualOnInit();
-          this.tabSlot.manualOnInit();
+          if(this.sharedProp.current_flow_state == 'A01'){ this.tabSlot.manualOnInit(); } //Only coordinated appointments have control in slot tab.
 
         } else {
           //Return to the list with request error message:
@@ -136,5 +101,61 @@ export class FormUpdateComponent implements OnInit {
   onSubmitMaster(){
     //Send multiple submits:
     this.tabDetails.onSubmit();
+    //if(this.sharedProp.current_flow_state == 'A01'){ this.tabSlot.onSubmit(); } //Only coordinated appointments have control in slot tab.
+  }
+
+  async setCurrentData(data: any){
+    //Current Study IUID:
+    this.sharedProp.current_study_iuid = data.study_iuid;
+
+    //Current Patient:
+    this.sharedProp.current_patient = {
+      _id       : data.patient._id,
+      status    : data.patient.status,
+      fk_person : data.patient.fk_person,
+      person    : data.patient.person
+    };
+
+    //Current Flow State:
+    this.sharedProp.current_flow_state = data.flow_state;
+
+    //Current Imaging:
+    this.sharedProp.current_imaging = data.imaging;
+
+    //Current Modality:
+    this.sharedProp.current_modality = data.modality;
+
+    //Set Current procedure with which it comes from the appointment until you get the details (Temp):
+    this.sharedProp.current_procedure = data.procedure;
+
+    //Find details of the Current Procedure:
+    const procedureParams = { 'filter[_id]': data.procedure._id };
+    this.sharedFunctions.find('procedures', procedureParams, (procedureRes) => {
+      //Check operation status:
+      if(procedureRes.success === true){
+        this.sharedProp.current_procedure = procedureRes.data[0];
+      } else {
+        //Return to the list with request error message:
+        this.sharedFunctions.sendMessage('Error al intentar cargar el procedimiento asociado: ' + procedureRes.message);
+        this.router.navigate(['/' + this.sharedProp.element + '/list']);
+      }
+    });
+
+    //Current Slot:
+    this.sharedProp.current_slot = data.slot._id;
+
+    //Current Equipment:
+    this.sharedProp.current_equipment = {
+      details: {
+        name  : data.slot.equipment.name,
+        AET   : data.slot.equipment.AET
+      }
+    };
+
+    //Current Datetime:
+    this.sharedProp.current_datetime = await this.sharedFunctions.datetimeFulCalendarFormater(new Date(data.start), new Date(data.end));
+
+    //Current Urgency:
+    this.sharedProp.current_urgency = data.urgency;
   }
 }

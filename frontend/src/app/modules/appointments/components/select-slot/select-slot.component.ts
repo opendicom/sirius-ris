@@ -46,7 +46,7 @@ export class SelectSlotComponent implements OnInit {
   public selectedEquipment    : any  | undefined;
   public selectedStart        : Date | undefined;
   public selectedEnd          : Date | undefined;
-  public selectedSlot         : any | undefined;
+  public selectedSlot         : any  | undefined;
 
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
@@ -196,6 +196,7 @@ export class SelectSlotComponent implements OnInit {
         //Clear selected elements:
         this.clearSelectedElements();
       }
+
       //Initialize Slot Background color:
       let slotBackgroundColor = '#05ff9f49';
 

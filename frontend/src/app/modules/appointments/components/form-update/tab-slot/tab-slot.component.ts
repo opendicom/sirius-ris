@@ -35,7 +35,7 @@ export class TabSlotComponent implements OnInit {
   public selectedEquipment    : any  | undefined;
   public selectedStart        : Date | undefined;
   public selectedEnd          : Date | undefined;
-  public selectedSlot         : any | undefined;
+  public selectedSlot         : any  | undefined;
 
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
@@ -70,7 +70,7 @@ export class TabSlotComponent implements OnInit {
   }
 
   //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder):
-  manualOnInit(): void {
+  async manualOnInit() {
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
 
@@ -176,6 +176,7 @@ export class TabSlotComponent implements OnInit {
         //Clear selected elements:
         this.clearSelectedElements();
       }
+
       //Initialize Slot Background color:
       let slotBackgroundColor = '#05ff9f49';
 

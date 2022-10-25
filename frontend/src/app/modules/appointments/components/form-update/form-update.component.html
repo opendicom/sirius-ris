@@ -160,7 +160,7 @@
             <div class="current-info text-center">
               <small>Procedimiento a realizar:</small><br/>
               <span class="badge-alt">
-                <span>{{ this.sharedProp.current_procedure.name }}</span>
+                <span *ngIf="this.sharedProp.current_procedure">{{ this.sharedProp.current_procedure.name }}</span>
               </span>
             </div>
 
@@ -175,7 +175,7 @@
             <!-- informed_consent -->
             <div class="current-info text-center">
               <small>Requiere consentimiento informado:</small><br/>
-              <span *ngIf="this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
+              <span *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
               <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="SI">done</mat-icon></ng-template>
               <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
             </div>
@@ -216,7 +216,7 @@
   </div>
 </form>
 
-<small>
+<small class="non-display">
   <br/><br/><hr class="dashed"/>
   <h4>Current patient:</h4>
   {{ this.sharedProp.current_patient | json }}<br/><br/><hr class="dashed"/>

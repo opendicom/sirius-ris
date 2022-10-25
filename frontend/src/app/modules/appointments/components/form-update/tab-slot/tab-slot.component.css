@@ -18,3 +18,9 @@
 .unselected {
   color: #bebec4;
 }
+
+.calendar-cancel-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}

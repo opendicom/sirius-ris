@@ -37,6 +37,7 @@ export class SharedPropertiesService {
   //Current operation objects:
   public current_id                 : string = '';
   public current_keysWithValues     : Array<string> = [];
+  public current_flow_state         : string = '';
   public current_organization       : any; // To be able to add patients permissions.
   public current_patient            : any;
   public current_imaging            : any;
