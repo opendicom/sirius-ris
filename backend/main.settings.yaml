@@ -25,6 +25,12 @@ ssl_certificates:
 cors_enabled: false
 cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
 
+# MWL MLLP (TCP Client):
+mwl_client:
+  enabled: true
+  host: 'localhost'
+  port: 2575
+
 # Set log level:
 # DEBUG > INFO > WARN > ERROR
 log_level: 'DEBUG'

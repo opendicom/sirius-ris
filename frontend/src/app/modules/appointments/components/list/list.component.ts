@@ -138,7 +138,7 @@ export class ListComponent implements OnInit {
       'procedure.code': 1,
       'modality': 1
     };
-    this.sharedProp.sort          = { 'urgency': 1, 'status': -1, 'imaging.organization._id': 1 };
+    this.sharedProp.sort          = { 'start': -1, 'urgency': 1, 'status': -1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
 
     //Refresh request params:

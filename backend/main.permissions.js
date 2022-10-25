@@ -21,6 +21,7 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update', 'delete'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+        mwl                     : ['insert']
     },
 
     //Administrator:
@@ -39,6 +40,7 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+        mwl                     : ['insert']
     }
 }
 

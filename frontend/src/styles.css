@@ -554,4 +554,10 @@ mark {
   border: none !important;
   font-weight: 500 !important;
 }
+
+.fc-bg-event > .fc-event-title {
+  color: #17191a !important;
+  font-weight: bold !important;
+  font-style: normal !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/

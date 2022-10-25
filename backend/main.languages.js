@@ -72,6 +72,8 @@ module.exports = function(language){
             'batch_processed'           : 'Batch processed successfully.',
             'only_urgency_slot'         : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
             'study_iuid_error'          : 'There was some problem trying to generate the Study IUID: ',
+            'mwl_success'               : 'Submitted to MWL successfully.',
+            'mwl_error'                 : 'An error occurred while sending an element to the MWL (MLLP).',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -157,6 +159,8 @@ module.exports = function(language){
             lang.ris.batch_processed            = 'Lote procesado correctamente.';
             lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
             lang.ris.study_iuid_error           = 'Hubo algún problema al intentar generar el Study IUID: ';
+            lang.ris.mwl_success                = 'Enviado a la MWL de forma exitosa.'
+            lang.ris.mwl_error                  = 'Ha ocurrido un error al envíar un elemento a la MWL (MLLP).';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

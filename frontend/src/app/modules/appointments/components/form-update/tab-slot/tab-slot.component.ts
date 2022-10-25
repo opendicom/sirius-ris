@@ -62,19 +62,20 @@ export class TabSlotComponent implements OnInit {
     public sharedFunctions: SharedFunctionsService
   ){}
 
-  //Override ngOnInit execution to control initial execution manually:
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //Set Reactive Form (First time):
+    this.setReactiveForm({
+      urgency           : ['false']
+    });
+  }
+
+  //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder):
   manualOnInit(): void {
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
 
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
-
-    //Set Reactive Form (First time):
-    this.setReactiveForm({
-      urgency           : ['false']
-    });
 
     //Set FullCalendar Languaje:
     this.calendarOptions['locale'] = esLocale;
@@ -146,6 +147,9 @@ export class TabSlotComponent implements OnInit {
 
     //Find slots:
     this.findSlots(false, true);
+
+    //Go to current appointment date:
+    this.calendarComponent.getApi().gotoDate(new Date(this.sharedProp.current_datetime.start));
   }
 
   openDatePicker(){
@@ -282,8 +286,11 @@ export class TabSlotComponent implements OnInit {
                       //Add resouces in calendar (Equipments):
                       this.calendarComponent.getApi().addResource(currentResource);
 
+                      //Check if current equipments exist in calendarResources:
+                      const resourceDuplicated = this.calendarResources.find(({ id } : any) => id === res.data[key].equipment._id);
+
                       //Add resouces in calendar resources object (To preserve in view changes cases):
-                      if(first_search == true){
+                      if(first_search == true && resourceDuplicated == undefined){
                         this.calendarResources.push(currentResource);
                       }
                     }
@@ -341,11 +348,22 @@ export class TabSlotComponent implements OnInit {
                   textColor = '#fff'
                 }
 
+                //Check if the current event is the appointment being edited:
+                let title = res.data[key].procedure.name;
+                let display = 'auto';
+                if(res.data[key]._id == this.sharedProp.current_id){
+                  backgroundColor = '#b0bec5';
+                  borderColor = '#909da4';
+                  title = res.data[key].procedure.name + ' [CITA EN EDICIÓN]';
+                  display = 'background';
+                }
+
                 //Add event in calendar (Appointment):
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
                   resourceId: res.data[key].slot.equipment._id,
-                  title: res.data[key].procedure.name,
+                  title: title,
+                  display: display,
                   start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,

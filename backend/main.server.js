@@ -30,6 +30,7 @@ module.exports = function() {
     const filesRoutes                   = require('./modules/files/routes');
     const appointmentsRoutes            = require('./modules/appointments/routes');
     const appointments_draftsRoutes     = require('./modules/appointments_drafts/routes');
+    const mwlRoutes                     = require('./modules/mwl/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -139,6 +140,12 @@ module.exports = function() {
     app.use('/appointments',            appointmentsRoutes);
     app.use('/appointments_drafts',     appointments_draftsRoutes);
 
+    //Check if MWL Client is enabled or disabled:
+    if(mainSettings.mwl_client.enabled === true){
+        //Set MWL routes:
+        app.use('/mwl', mwlRoutes);
+    }
+
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');
     console.log('\n' + consoleLn);
@@ -183,33 +190,40 @@ module.exports = function() {
     //Set default server path:
     app.get('/', (req, res) => {
         //Initialize webSerberOptions:
-        let webServerOptions = {
+        let sirius_backend = {
             HTTP    : { status: 'disabled', url: false },
             HTTPS   : { status: 'disabled', url: false, ssl_certificates: false }
         };
 
         //HTTP Enabled:
         if(mainSettings.webserver.http_enabled === true){
-            webServerOptions.HTTP.status    = 'enabled';
-            webServerOptions.HTTP.url       = 'http://' + mainSettings.webserver.host + ':' + mainSettings.webserver.http_port;
+            sirius_backend.HTTP.status    = 'enabled';
+            sirius_backend.HTTP.url       = 'http://' + mainSettings.webserver.host + ':' + mainSettings.webserver.http_port;
         }
 
         //HTTPS Enabled:
         if(mainSettings.webserver.https_enabled === true){
-            webServerOptions.HTTPS.status   = 'enabled';
-            webServerOptions.HTTPS.url      = 'https://' + mainSettings.webserver.host + ':' + mainSettings.webserver.https_port;
-            webServerOptions.HTTPS.ssl_certificates = mainSettings.ssl_certificates;
+            sirius_backend.HTTPS.status   = 'enabled';
+            sirius_backend.HTTPS.url      = 'https://' + mainSettings.webserver.host + ':' + mainSettings.webserver.https_port;
+            sirius_backend.HTTPS.ssl_certificates = mainSettings.ssl_certificates;
+        }
+
+        //MWL Client Enabled:
+        let sirius_mwl_client = 'disabled';
+        if(mainSettings.mwl_client.enabled === true){
+            sirius_mwl_client = mainSettings.mwl_client;
         }
 
         //Send HTTP/HTTPS Response:
         res.status(200).send({
             message: startMessage,
-            webServerOptions,
-            mongodb: {
+            log_level: mainSettings.log_level,
+            sirius_backend,
+            sirius_mongodb: {
                 status: cnxMongoDBStatus,
                 message: cnXMongoDBMessage
             },
-            log_level: mainSettings.log_level
+            sirius_mwl_client
         });
     });
 

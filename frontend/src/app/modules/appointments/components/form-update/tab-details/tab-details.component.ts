@@ -86,7 +86,9 @@ export class TabDetailsComponent implements OnInit {
 
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
+  }
 
+  ngOnInit(): void {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
@@ -171,8 +173,7 @@ export class TabDetailsComponent implements OnInit {
     });
   }
 
-  //Override ngOnInit execution to control initial execution manually:
-  ngOnInit(): void {}
+  //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder)::
   manualOnInit(): void {
     //Check if element is not empty:
     if(this.sharedProp.current_id != ''){

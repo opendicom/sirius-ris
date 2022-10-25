@@ -4,7 +4,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { app_setting, ISO_3166, document_types, gender_types } from '@env/environment';     // Enviroments
@@ -33,12 +32,8 @@ export class FormUpdateComponent implements OnInit {
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
-  //Define Formgroup (Reactive form handling):
-  public form!: FormGroup;
-
   //Inject services, components and router to the constructor:
   constructor(
-    public formBuilder          : FormBuilder,
     private router              : Router,
     private objRoute            : ActivatedRoute,
     public sharedProp           : SharedPropertiesService,
@@ -123,6 +118,7 @@ export class FormUpdateComponent implements OnInit {
           //Excecute manual onInit childrens components:
           this.tabDetails.manualOnInit();
           this.tabSlot.manualOnInit();
+
         } else {
           //Return to the list with request error message:
           this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);

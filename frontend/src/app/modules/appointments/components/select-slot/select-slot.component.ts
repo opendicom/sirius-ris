@@ -306,8 +306,11 @@ export class SelectSlotComponent implements OnInit {
                       //Add resouces in calendar (Equipments):
                       this.calendarComponent.getApi().addResource(currentResource);
 
+                      //Check if current equipments exist in calendarResources:
+                      const resourceDuplicated = this.calendarResources.find(({ id } : any) => id === res.data[key].equipment._id);
+
                       //Add resouces in calendar resources object (To preserve in view changes cases):
-                      if(first_search == true){
+                      if(first_search == true && resourceDuplicated == undefined){
                         this.calendarResources.push(currentResource);
                       }
                     }
