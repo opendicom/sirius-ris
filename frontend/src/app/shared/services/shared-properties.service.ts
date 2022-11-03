@@ -47,6 +47,7 @@ export class SharedPropertiesService {
   public current_equipment          : any;
   public current_datetime           : any;
   public current_urgency            : boolean = false;
+  public current_status             : boolean = false;
   public current_appointment_draft  : any;
   public current_study_iuid         : string = '';
 

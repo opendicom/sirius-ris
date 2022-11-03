@@ -312,6 +312,33 @@ function datetimeFulCalendarFormater(start, end){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET DICOM NAME PERSON FORMAT:
+//--------------------------------------------------------------------------------------------------------------------//
+function setDicomNamePersonFormat(name_01, name_02, surname_01, surname_02){
+    //Initialize surnames and names:
+    let surnames = '';
+    let names = '';
+
+    //Set Surnames:
+    if(surname_02 !== undefined && surname_02 !== null && surname_02 !== ''){
+        surnames = surname_01 + '>' + surname_02;
+    } else {
+        surnames = surname_01;
+    }
+
+    //Set Names:
+    if(name_02 !== undefined && name_02 !== null && name_02 !== ''){
+        names = name_01 + ' ' + name_02;
+    } else {
+        names = name_01;
+    }
+
+    //Return complete name in DICOM format:
+    return surnames + '^' + names;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // SET STORAGE:
 //--------------------------------------------------------------------------------------------------------------------//
 function setStorage(){
@@ -361,6 +388,7 @@ module.exports = {
     parseDate,
     strictCheck,
     datetimeFulCalendarFormater,
+    setDicomNamePersonFormat,
     setStorage
 };
 //--------------------------------------------------------------------------------------------------------------------//

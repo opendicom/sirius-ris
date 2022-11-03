@@ -138,6 +138,7 @@ const Schema = new mongoose.Schema({
     extra_procedures:       { type: [mongoose.ObjectId] },
     urgency:                { type: Boolean, required: true },
     study_iuid:             { type: String, match: /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm },
+    accession_number:       { type: String },
     anamnesis:              { type: String, required: true },
     indications:            { type: String, required: true },
     report_before:          { type: Date, required: true },

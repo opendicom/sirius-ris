@@ -70,12 +70,19 @@ export class TabSlotComponent implements OnInit {
   }
 
   //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder):
-  async manualOnInit() {
+  manualOnInit() {
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
 
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
+
+    //Set selected elements:
+    //this.selectedEquipment  = { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 60, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } };
+    this.selectedEquipment  = this.sharedProp.current_equipment;
+    this.selectedStart      = new Date(this.sharedProp.current_datetime.start  + '.000Z');
+    this.selectedEnd        = new Date(this.sharedProp.current_datetime.end  + '.000Z');
+    this.selectedSlot       = this.sharedProp.current_slot;
 
     //Set FullCalendar Languaje:
     this.calendarOptions['locale'] = esLocale;
@@ -147,9 +154,6 @@ export class TabSlotComponent implements OnInit {
 
     //Find slots:
     this.findSlots(false, true);
-
-    //Go to current appointment date:
-    this.calendarComponent.getApi().gotoDate(new Date(this.sharedProp.current_datetime.start));
   }
 
   openDatePicker(){
@@ -351,20 +355,20 @@ export class TabSlotComponent implements OnInit {
 
                 //Check if the current event is the appointment being edited:
                 let title = res.data[key].procedure.name;
-                let display = 'auto';
+                let id = res.data[key]._id;
                 if(res.data[key]._id == this.sharedProp.current_id){
+                  id = 'tentative';
                   backgroundColor = '#b0bec5';
                   borderColor = '#909da4';
-                  title = res.data[key].procedure.name + ' [CITA EN EDICIÓN]';
-                  display = 'background';
+                  textColor = '#17191a';
+                  title = res.data[key].procedure.name + ' [Editando actualmente]';
                 }
 
                 //Add event in calendar (Appointment):
                 this.calendarComponent.getApi().addEvent({
-                  id: res.data[key]._id,
+                  id: id,
                   resourceId: res.data[key].slot.equipment._id,
                   title: title,
-                  display: display,
                   start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,

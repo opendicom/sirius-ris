@@ -33,6 +33,7 @@
     "https": "^1.0.0",
     "js-yaml": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mllp-node": "^2.0.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.1",
     "multer": "^1.4.5-lts.1",

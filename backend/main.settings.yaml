@@ -7,13 +7,24 @@ db:
   pass: 'sirius_pass'
   name: 'sirius_db'
 
+# Set external PACS data:
+pacs:
+  host: 'localhost'
+  mllp_mwl: 2575
+
+# MLLP Server (MWL HL7 v2):
+mllp_server:
+  enabled: true
+  host: 'localhost'
+  port: 2178
+
 # Web server settings:
 webserver:
   host            : 'localhost'
   http_enabled    : true
-  http_port       : 3001
+  http_port       : 3000
   https_enabled   : false
-  https_port      : 8443
+  https_port      : 3001
 
 # SSL settings (Only if https_enabled is true):
 ssl_certificates:
@@ -24,12 +35,6 @@ ssl_certificates:
 # Set CORS and CORS whitelist:
 cors_enabled: false
 cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
-
-# MWL MLLP (TCP Client):
-mwl_client:
-  enabled: true
-  host: 'localhost'
-  port: 2575
 
 # Set log level:
 # DEBUG > INFO > WARN > ERROR

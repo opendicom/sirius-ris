@@ -20,8 +20,7 @@ services:
     volumes:
       - ./backend:/home/node/app
     ports:
-      - 3001:3001
-      - 8443:8443
+      - 3000:3000
     environment:
       TZ: 'America/Argentina/Buenos_Aires'
       NODE_ENV: production
@@ -42,8 +41,7 @@ services:
 #      - ./frontend/dist/sirius-ris:/usr/share/nginx/html:ro
 #      # - ./nginx/ssl:/etc/ssl/
 #    ports:
-#     - 80:80
-#     # - 8443:443
+#     - 4000:4000
 #    environment:
 #      TZ: 'America/Argentina/Buenos_Aires'
 #    restart: unless-stopped

@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// ENVIROMENT:
+// ENVIROMENT PROD:
 //--------------------------------------------------------------------------------------------------------------------//
 // Set Enviroment:
 export const environment = {
@@ -11,7 +11,7 @@ export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 // Set app default settings:
 export const app_setting = {
-  backend_url: 'http://localhost:3001/',
+  backend_url: 'http://localhost:3000/',
   rabc_exclude_code: 'exclude_code',
   secret_number: 1618,    // Used on simple crypt
   file_max_size: 10,      // Maximum size in MB allowed to upload files
@@ -78,11 +78,12 @@ export const gender_types = {
 
 //Pager defaults:
 export const default_page_sizes = [10, 25, 50, 100];
+export const check_in_default_size = 1000;
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Coordinado',
-  'A02': 'Cancelado'
+  'A01': 'Coordinada',
+  'A02': 'Cancelada'
 };
 
 export const cancellation_reasons = {

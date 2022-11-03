@@ -1,5 +1,5 @@
 <!-- Only coordinated appointments have control in slot tab -->
-<span [class.non-display]="this.sharedProp.current_flow_state !== 'A01'">
+<span [class.non-display]="sharedProp.current_flow_state !== 'A01' || sharedProp.current_status === false">
   <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="calendar-container divider-alt">
       <!-- FullCalendar Datepicker -->
@@ -110,12 +110,12 @@
   </form>
 </span>
 
-<span [class.non-display]="this.sharedProp.current_flow_state === 'A01'">
+<span [class.non-display]="sharedProp.current_flow_state === 'A01' && sharedProp.current_status === true">
   <form class="form-element text-center">
     <br/>
     <mat-icon class="calendar-cancel-icon">event_busy</mat-icon><br/>
 
-    <h4>Para poder editar los detalles de la coordinación de la cita, la misma debe estár en estado de flujo <strong>Coordinada</strong>.</h4>
+    <h4>Para poder editar los detalles de la coordinación de la cita, la misma debe encontrarse <strong>Activa</strong> y en estado de flujo como <strong>Coordinada</strong>.</h4>
     <br/><br/>
   </form>
 </span>

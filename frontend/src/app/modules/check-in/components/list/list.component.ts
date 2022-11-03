@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
 import { ISO_3166, document_types, gender_types, check_in_default_size } from '@env/environment'; // Enviroments
+import { ApiClientService } from '@shared/services/api-client.service';                           // API Client Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -35,7 +36,8 @@ export class ListComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private apiClient   : ApiClientService,
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -120,9 +122,36 @@ export class ListComponent implements OnInit {
         //First search (List):
         this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
       } else {
+        //Send message:
         this.sharedFunctions.sendMessage('Hubo un problema al determinar la modalidad por defecto.');
       }
     }, true);
   }
 
+  sendToMWL(event: any, _id: string){
+    //Insert MWL item:
+    //Use Api Client to prevent reload current list response [sharedFunctions.save -> this.response = res]:
+    this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': _id }).subscribe({
+      next: res => {
+        //Check result:
+        if(res.success === true){
+          console.log(res.accession_number);
+          console.log(event);
+        } else {
+          //Send message:
+          this.sharedFunctions.sendMessage(res.message + ' Detalle del error: ' + res.error);
+        }
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          //Send other errors:
+          this.sharedFunctions.sendMessage(res.error.message);
+
+        } else {
+          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
 }

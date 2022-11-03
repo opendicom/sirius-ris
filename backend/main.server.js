@@ -141,7 +141,7 @@ module.exports = function() {
     app.use('/appointments_drafts',     appointments_draftsRoutes);
 
     //Check if MWL Client is enabled or disabled:
-    if(mainSettings.mwl_client.enabled === true){
+    if(mainSettings.mllp_server.enabled === true){
         //Set MWL routes:
         app.use('/mwl', mwlRoutes);
     }
@@ -209,9 +209,9 @@ module.exports = function() {
         }
 
         //MWL Client Enabled:
-        let sirius_mwl_client = 'disabled';
-        if(mainSettings.mwl_client.enabled === true){
-            sirius_mwl_client = mainSettings.mwl_client;
+        let sirius_mllp = 'disabled';
+        if(mainSettings.mllp_server.enabled === true){
+            sirius_mllp = mainSettings.mllp_server;
         }
 
         //Send HTTP/HTTPS Response:
@@ -223,7 +223,8 @@ module.exports = function() {
                 status: cnxMongoDBStatus,
                 message: cnXMongoDBMessage
             },
-            sirius_mwl_client
+            sirius_mllp,
+            connected_with_pacs: mainSettings.pacs
         });
     });
 
