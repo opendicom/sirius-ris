@@ -88,6 +88,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.projection    = {
       'start': 1,
       'end': 1,
+      'accession_number': 1,
       'flow_state': 1,
       'outpatient': 1,
       'inpatient': 1,
@@ -128,29 +129,17 @@ export class ListComponent implements OnInit {
     }, true);
   }
 
-  sendToMWL(event: any, _id: string){
-    //Insert MWL item:
-    //Use Api Client to prevent reload current list response [sharedFunctions.save -> this.response = res]:
-    this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': _id }).subscribe({
-      next: res => {
-        //Check result:
-        if(res.success === true){
-          console.log(res.accession_number);
-          console.log(event);
-        } else {
-          //Send message:
-          this.sharedFunctions.sendMessage(res.message + ' Detalle del error: ' + res.error);
-        }
-      },
-      error: res => {
-        //Send snakbar message:
-        if(res.error.message){
-          //Send other errors:
-          this.sharedFunctions.sendMessage(res.error.message);
+  mwlResend(fk_appointment: string, accession_number: string){
+    //Create operation handler:
+    const operationHandler = {
+      accession_number  : accession_number
+    };
 
-        } else {
-          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
-        }
+    //Open dialog to decide what operation to perform:
+    this.sharedFunctions.openDialog('mwl_resend', operationHandler, (result) => {
+      //Check if result is true:
+      if(result){
+        this.sharedFunctions.sendToMWL(fk_appointment, true, { element: this.sharedProp.element, params: this.sharedProp.params });
       }
     });
   }

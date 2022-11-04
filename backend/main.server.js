@@ -147,7 +147,7 @@ module.exports = function() {
     }
 
     //Start message:
-    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss');
+    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false });
     console.log('\n' + consoleLn);
     console.log('| ' + startMessage);
     console.log(consoleLn);

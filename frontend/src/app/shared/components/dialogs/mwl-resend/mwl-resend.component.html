@@ -1,0 +1,19 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>fast_forward</mat-icon>&nbsp; Reenviar paciente a la MWL</h1>
+<div mat-dialog-content>
+  <br/>
+  El paciente seleccionado ya fué enviado de forma previa a la lista de trabajo del PACS.
+
+  <br/><br/>
+
+  <strong>Fecha y hora de envío:</strong> {{ data.accession_number | accno_date }}.
+
+  <br/><br/>
+
+  <h3>¿Desea reenviar dicho paciente a la MWL de PACS?</h3>
+
+</div>
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">NO</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, REENVIAR</button>
+</div>

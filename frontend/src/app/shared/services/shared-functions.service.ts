@@ -17,6 +17,7 @@ import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-event
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
+import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -375,6 +376,17 @@ export class SharedFunctionsService {
             }
           });
           break;
+
+        case 'mwl_resend':
+          //Create dialog observable:
+          const obsMWLResend = this.dialog.open(MwlResendComponent, { data: operationHandler });
+
+          //Observe content (Subscribe):
+          obsMWLResend.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+          break;
       }
     }
   }
@@ -709,6 +721,64 @@ export class SharedFunctionsService {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SEND TO MWL:
+  //--------------------------------------------------------------------------------------------------------------------//
+  sendToMWL(fk_appointment: string, refresh_list: boolean = false, list_params: any = {}){
+    //Insert MWL item:
+    //Use Api Client to prevent reload current list response [sharedFunctions.save -> this.response = res]:
+    this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': fk_appointment }).subscribe({
+      next: res => {
+        //Check result:
+        if(res.success === true){
+          //Chech if refresh current find:
+          if(refresh_list){
+            //Refresh list to update buttons that depend on ng directives (Accession Number MWL control).
+            this.find(list_params.element, list_params.params);
+          }
+
+          //Format date:
+          const formatted_date = this.accessionDateFormat(res.accession_number);
+
+          //Send message:
+          this.sendMessage('Enviado exitosamente a MWL ' + formatted_date.day + '/' + formatted_date.month + '/' + formatted_date.year + ' ' + formatted_date.hour + ':' + formatted_date.minute + ':' + formatted_date.second, { duration: 2000 });
+
+        } else {
+          //Send message:
+          this.sendMessage(res.message + ' Detalle del error: ' + res.error);
+        }
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          //Send other errors:
+          this.sendMessage(res.error.message);
+
+        } else {
+          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ACCESSION NUMBER DATE FORMAT:
+  //--------------------------------------------------------------------------------------------------------------------//
+  accessionDateFormat(accession_number: string): any{
+    return {
+      year        : accession_number.slice(0, 4),
+      month       : accession_number.slice(4, 6),
+      day         : accession_number.slice(6, 8),
+      hour        : accession_number.slice(8, 10),
+      minute      : accession_number.slice(10, 12),
+      second      : accession_number.slice(12, 14),
+      milisecond  : accession_number.slice(14, 18)
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   //--------------------------------------------------------------------------------------------------------------------//
   // GET LOGGED ORGANIZATION:

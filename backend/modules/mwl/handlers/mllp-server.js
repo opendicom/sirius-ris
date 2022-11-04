@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
             
             // Date time [ORC-7.4] (00400002,00400003):
             // Date time format: YYYYMMDDHHMM
-            const DT = moment().format('YYYYMMDDHmm');
+            const DT = moment().format('YYYYMMDDHmm', { trim: false }); //Trim false to keep leading zeros.
 
             // Procedure Priority HL7 codes:
             // S (Stat), A (ASAP), R (Routine), P (Pre-op), C (Callback), T (Timing).
@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
 
             // Accession number [OBR-18] (00080050):
             // 16 chars max.
-            const AN = moment().format('YYYYMMDDHmmssSSSS');
+            const AN = moment().format('YYYYMMDDHmmssSSSS', { trim: false }); //Trim false to keep leading zeros.
 
             // Requested Procedure ID [OBR-19] (00401001) <optional>:
             // If empty, manages the PACS dcm4chee.

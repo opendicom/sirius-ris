@@ -3148,7 +3148,7 @@ async function setStudyIUID(req, res) {
     const branches = require('./branches/schemas');
 
     //Get timestamp:
-    const timestamp = moment().format('YYYYMMDDHHmmss');
+    const timestamp = moment().format('YYYYMMDDHHmmss', { trim: false }); //Trim false to keep leading zeros.
 
     //Create Study IUID regex:
     const regexStudyIUD = /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm;

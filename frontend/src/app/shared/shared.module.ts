@@ -23,9 +23,11 @@ import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-event
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
+import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
+import { AccnoDatePipe } from '@shared/pipes/accno_date.pipe';
 
 // Required for bidirectional binding (ngModule):
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,9 +51,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TentativeExistComponent,
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
+    MwlResendComponent,
 
     // Shared pipes:
-    HighlighterPipe
+    HighlighterPipe,
+    AccnoDatePipe
   ],
   imports: [
     CommonModule,
@@ -79,9 +83,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TentativeExistComponent,
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
+    MwlResendComponent,
 
     // Shared pipes:
-    HighlighterPipe
+    HighlighterPipe,
+    AccnoDatePipe
   ]
 })
 export class SharedModule { }
