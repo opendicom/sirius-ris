@@ -5,8 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
-import { ISO_3166, document_types, gender_types, check_in_default_size } from '@env/environment'; // Enviroments
-import { ApiClientService } from '@shared/services/api-client.service';                           // API Client Service
+import { app_setting, ISO_3166, document_types, gender_types } from '@env/environment';           // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -36,8 +35,7 @@ export class ListComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService,
-    private apiClient   : ApiClientService,
+    public sharedFunctions: SharedFunctionsService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -100,7 +98,7 @@ export class ListComponent implements OnInit {
       'procedure.code': 1
     };
     this.sharedProp.sort          = { 'start': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: check_in_default_size };
+    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.check_in_default_size };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

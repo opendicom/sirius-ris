@@ -18,8 +18,7 @@ const subSchemaReferring = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
     branch:         { type: mongoose.ObjectId },
     service:        { type: mongoose.ObjectId },
-    fk_referring:   { type: mongoose.ObjectId },
-    accno:          { type: String }
+    fk_referring:   { type: mongoose.ObjectId }
 },
 { _id : false });
 
@@ -217,12 +216,6 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_referring NO es un ID MongoDB válido.'),
-
-    body('referring.accno')
-        .optional()
-        .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro referring accno ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -293,6 +286,9 @@ const Validator = [
         .trim()
         .isLength({ min: 3, max: 64 })
         .withMessage('El parametro study_iuid generado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+
+    body('accession_number')
+        .optional(),
 
     body('anamnesis')
         .trim()

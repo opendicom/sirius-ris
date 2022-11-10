@@ -947,6 +947,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('logs');
             affectedCollections.push('sessions');
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
 
         case 'people':
             affectedCollections.push('users');

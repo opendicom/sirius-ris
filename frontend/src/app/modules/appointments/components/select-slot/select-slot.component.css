@@ -42,3 +42,18 @@
 .unselected {
   color: #bebec4;
 }
+
+.friendly-pass-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 6px 0px 4px 12px;
+  margin-bottom: 10px;
+}
+
+.friendly-pass {
+  font-size: 16px;
+  background-color: #e2e3ec;
+  color: #12121d;
+  padding: 4px 7px 3px 9px;
+  border-radius: 2px;
+}

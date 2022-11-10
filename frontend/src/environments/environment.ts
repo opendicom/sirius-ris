@@ -11,17 +11,23 @@ export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 // Set app default settings:
 export const app_setting = {
-  backend_url: 'http://localhost:3000/',
-  rabc_exclude_code: 'exclude_code',
-  secret_number: 1618,    // Used on simple crypt
-  file_max_size: 10,      // Maximum size in MB allowed to upload files
-  default_country: '858',
-  default_country_isoCode: 'UY',
-  default_country_name: 'Uruguay',
-  default_state_isoCode: 'MO',
-  default_state_name: 'Montevideo',
-  default_city_name: 'Montevideo',
-  default_doc_type: '1'
+  backend_url             : 'http://localhost:3000/',
+  rabc_exclude_code       : 'exclude_code',
+  secret_number           : 1618,    // Used on simple crypt
+  file_max_size           : 10,      // Maximum size in MB allowed to upload files
+
+  //Pager defaults:
+  default_page_sizes      : [10, 25, 50, 100],
+  check_in_default_size   : 1000,
+
+  //Localization:
+  default_country         : '858',
+  default_country_isoCode : 'UY',
+  default_country_name    : 'Uruguay',
+  default_state_isoCode   : 'MO',
+  default_state_name      : 'Montevideo',
+  default_city_name       : 'Montevideo',
+  default_doc_type        : '1'
 };
 
 // Document types:
@@ -75,10 +81,6 @@ export const gender_types = {
   2: 'Femenino',
   3: 'Otros',
 };
-
-//Pager defaults:
-export const default_page_sizes = [10, 25, 50, 100];
-export const check_in_default_size = 1000;
 
 // Appointments flow states:
 export const appointments_flow_states = {
@@ -200,6 +202,30 @@ export const anonymous_doc = {
   document_types: 100,      // Reserved in document_types for this case.
   description: 'Anónimo'
 };
+
+// Lista de palabras:
+export const keywords = [
+  'eucalipto',
+  'pino',
+  'roble',
+  'cedro',
+  'romero',
+  'ficus',
+  'cactus',
+  'tacuara',
+  'manzano',
+  'higuera',
+  'tero',
+  'carpincho',
+  'mulita',
+  'yacare',
+  'cardenal',
+  'golondrina',
+  'benteveo',
+  'chaja',
+  'jaguar',
+  'dorado'
+];
 
 // Country codes (ISO-3166):
 export const ISO_3166 = {

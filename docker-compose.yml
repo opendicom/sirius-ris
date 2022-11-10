@@ -1,7 +1,16 @@
 version: "3"
 services:
-  sirius_database:
-    container_name: sirius_database_container
+#---------------------------------------------------------------------#
+# PACS - DCM4CHEE:
+#---------------------------------------------------------------------#
+
+#---------------------------------------------------------------------#
+
+#---------------------------------------------------------------------#
+# SIRIUS RIS:
+#---------------------------------------------------------------------#
+  opendicom_sirius_db:
+    container_name: opendicom_sirius_db
     image: mongo:latest
     volumes:
       - ./database/data:/data/db
@@ -12,10 +21,10 @@ services:
       TZ: 'America/Argentina/Buenos_Aires'
     restart: unless-stopped
     networks:
-      - sirius_net
+      - opendicom_net
 
-  sirius_backend:
-    container_name: sirius_backend_container
+  opendicom_sirius_backend:
+    container_name: opendicom_sirius_backend
     image: node:latest
     volumes:
       - ./backend:/home/node/app
@@ -28,13 +37,13 @@ services:
     working_dir: /home/node/app
     command: "npm start"
     depends_on:
-      - sirius_database
+      - opendicom_sirius_db
     restart: unless-stopped
     networks:
-      - sirius_net
+      - opendicom_net
 
-#  sirius_frontend:
-#    container_name: sirius_frontend_container
+#  opendicom_sirius_frontend:
+#    container_name: opendicom_sirius_frontend
 #    image: nginx:alpine
 #    volumes:
 #      - ./nginx/conf.d:/etc/nginx/conf.d/
@@ -44,9 +53,12 @@ services:
 #     - 4000:4000
 #    environment:
 #      TZ: 'America/Argentina/Buenos_Aires'
+#    depends_on:
+#      - opendicom_sirius_backend
 #    restart: unless-stopped
 #    networks:
 #      - sirius_net
+#---------------------------------------------------------------------#
 
 networks:
-  sirius_net:
+  opendicom_net:

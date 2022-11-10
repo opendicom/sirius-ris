@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
-import { app_setting } from '@env/environment';                               // Environment
+import { app_setting, keywords } from '@env/environment';                     // Environment
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
@@ -752,8 +752,13 @@ export class SharedFunctionsService {
       error: res => {
         //Send snakbar message:
         if(res.error.message){
-          //Send other errors:
-          this.sendMessage(res.error.message);
+          if(res.error.error.code === 'ECONNREFUSED'){
+            //Send connection error:
+            this.sendMessage(res.error.message + ' Error de conexión con el servidor MLLP MWL ' + res.error.error.address);
+          } else {
+            //Send other errors:
+            this.sendMessage(res.error.message + ' Detalle del error: ' + JSON.stringify(res.error.error));
+          }
 
         } else {
           this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
@@ -1027,6 +1032,32 @@ export class SharedFunctionsService {
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
     }, ms);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET FRIENDLY PASS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getFriendlyPass(): string {
+    //Initialize password:
+    let password = keywords[this.getRandomNumber(0, keywords.length)];
+
+
+    //Get a random number between 100 and 200:
+    let random_number = this.getRandomNumber(100, 998);
+
+    //Check that the random number is not 666 - Superstitions (-_-'):
+    while(random_number === 666){
+      random_number = this.getRandomNumber(100, 998);
+    }
+
+    //Return friendly password:
+    return password + random_number;
+  }
+
+  getRandomNumber(min: number, max: number): number{
+    return Math.floor(Math.random() * (max - min) + min)
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

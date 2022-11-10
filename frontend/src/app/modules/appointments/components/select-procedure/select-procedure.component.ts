@@ -64,6 +64,13 @@ export class SelectProcedureComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //--------------------------------------------------------------------------------------------------------------------//
+    // TEST:
+    //--------------------------------------------------------------------------------------------------------------------//
+    //this.sharedProp.current_patient = { "_id": "636c00db4866ea0013fd779d", "status": true, "password": "$argon2i$v=19$m=4096,t=3,p=1$RSCK1jKbL5VTDeeDuLYB7g$CbiqPEtGihjisoFaJAAI2rwaNtPEPriIJDumkmjT7Pk", "email": "jaimeroos@gmail.com", "permissions": [ { "concession": [], "role": 9, "organization": "6220b2610feaeeabbd5b0d84" } ], "fk_person": "636c00db4866ea0013fd7799", "settings": [], "createdAt": "2022-11-09T19:34:51.183Z", "updatedAt": "2022-11-09T19:40:42.674Z", "__v": 0, "person": { "_id": "636c00db4866ea0013fd7799", "phone_numbers": [ "097173921" ], "name_01": "JAIME", "surname_01": "ROOS", "gender": 1, "birth_date": "1953-11-12T00:00:00.000Z", "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "42648765" } ], "createdAt": "2022-11-09T19:34:51.052Z", "updatedAt": "2022-11-09T19:40:42.633Z", "__v": 0 } };
+    //this.sharedProp.current_friendly_pass = 'jaguar325';
+    //--------------------------------------------------------------------------------------------------------------------//
+
     //Find references:
     this.findReferences();
   }

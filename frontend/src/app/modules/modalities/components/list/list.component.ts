@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes, regexObjectId } from '@env/environment';                   // Enviroments
+import { app_setting, regexObjectId } from '@env/environment';                          // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -70,7 +70,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.filterFields  = ['code_meaning', 'code_value'];
     this.sharedProp.projection    = { code_meaning: 1, code_value: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

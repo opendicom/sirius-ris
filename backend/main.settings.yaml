@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
   #host: 'localhost'
-  host: 'sirius_database'
+  host: 'opendicom_sirius_db'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'
@@ -9,7 +9,7 @@ db:
 
 # Set external PACS data:
 pacs:
-  host: 'localhost'
+  host: 'pacs'
   mllp_mwl: 2575
 
 # MLLP Server (MWL HL7 v2):

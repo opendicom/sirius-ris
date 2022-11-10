@@ -74,10 +74,10 @@ module.exports = async (req, res) => {
                     break;
             }
 
-            // Referring physician (PV1-8, 00080090):
+            // Referring physician (PV1-8, 00080090) <optional>:
             // General practitioner.
+            // PV1||||||||^RF  <optional segment>
             const RF = '';
-
             
             // Date time [ORC-7.4] (00400002,00400003):
             // Date time format: YYYYMMDDHHMM
@@ -93,6 +93,15 @@ module.exports = async (req, res) => {
             // Procedure Description, Steps.
             const SD = data[0].procedure.name;
 
+            // Procedure Description ID, Steps (00080100) [Code Value]:
+            let SD_CODE = '-';
+            if(data[0].procedure.code) { SD_CODE = data[0].procedure.code; }
+
+            // Coding Scheme Designator (0008,0102) <optional>:
+            // Identifies the coding scheme in which the code for a term is defined.
+            // Standard coding scheme designators used in DICOM information interchange are listed in PS3.
+            const CSD = '';
+
             // Requesting Physician [OBR-16] (00321032) (Referring) Format (surname_01>surname_02^name_01 name_02)
             const RQ = '';
 
@@ -100,9 +109,9 @@ module.exports = async (req, res) => {
             // 16 chars max.
             const AN = moment().format('YYYYMMDDHmmssSSSS', { trim: false }); //Trim false to keep leading zeros.
 
-            // Requested Procedure ID [OBR-19] (00401001) <optional>:
-            // If empty, manages the PACS dcm4chee.
-            const RP = '';
+            // Requested Procedure ID [OBR-19] (00401001):
+            // req_proc_id: cannot be null:
+            const RP = data[0].procedure._id;
 
             // Scheduled step ID [OBR-20] (00400009) <optional>:
             const SS = '';
@@ -110,6 +119,10 @@ module.exports = async (req, res) => {
             // Scheduled station AET [OBR-21] (00400001) <optional>:
             // AET equipment.
             const AE = data[0].slot.equipment.AET;
+
+            // Scheduled Station Name (0040,0010) <optional> (unknown):
+            // The first component of this field is a string that identifies the particular piece of equipment. 
+            const SSN = data[0].slot.equipment.name;
             
             // Modality [OBR-24] (00080060) <code_value>:
             const MO = data[0].modality.code_value;
@@ -127,38 +140,21 @@ module.exports = async (req, res) => {
             const UI = data[0].study_iuid;
             //--------------------------------------------------------------------------------------------------------//
 
-            //--------------------------------------------------------------------------------------------------------//
-            // DUDAS:
-            //--------------------------------------------------------------------------------------------------------//
-            // 01. Contenido del primer segmento. ???
-            //--------------------------------------------------------------------------------------------------------//
-            // 02. Segmento faltante en el ejemplo:
-            // Referring physician (PV1-8, 00080090):
-            // Médico de cabecera. ???
-            // PV1||||||||^${ RF }
-            //--------------------------------------------------------------------------------------------------------//
-            // 03. SD
-            // Según .MD                    |^^SD|
-            // Segun archivo de ejemplo:    |^^^kdkdkdff^TAC DE CRANEO^CT|
-            // FALTA CONFIRMAR FORMA DEL CAMPO ???
-            //--------------------------------------------------------------------------------------------------------//
 
-            //Create HL7 Message:
-            const HL7_message = `MSH|^~\\&|MUCAM AGENDA|MUCAM|MEGA DCMH4CHE|MUCAM|||ORM^O01|13668358090840.5981941519013931||2.3.1|||||UY|ISO_IR 100
-            PID|||${ ID }^^^^${ II }||${ PN }||${ PB }|${ PS }
-            ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
-            OBR||||^^${ SD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
-            ZDS|${ UI }`;
+//--------------------------------------------------------------------------------------------------------------------//
+// CREATE HL7 MESSAGE:
+// Create message without indentation to avoid sending text tabs.
+//--------------------------------------------------------------------------------------------------------------------//
+const HL7_message = `MSH|^~\\&|||||||ORM^O01|||2.3.1
+PID|||${ ID }^^^^${ II }||${ PN }||${ PB }|${ PS }
+ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
+OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
+ZDS|${ UI }`;
+//--------------------------------------------------------------------------------------------------------------------//
 
-            const HL7_example = `MSH|^~\\&|MUCAM AGENDA|MUCAM|MEGA DCMH4CHE|MUCAM|||ORM^O01|13668358090840.5981941519013931||2.3.1|||||UY|ISO_IR 100
-            PID|||777777^^^^2.16.840.1.113883.2.14.2.1||Castillo^Juan||19871024
-            ORC|NW|2013424203649|||||^^^201304242036^^M~EDIUM||20130424203649||||||||MUCAM
-            OBR||987861||^^^kdkdkdff^TAC DE CRANEO^CT||||||||||||||987861|1|||||CT|||^^^201111301500
-            ZDS|987861`;
 
             //Send HL7 message to PACS server (MWL):
-            /*
-            server.send(mainSettings.pacs.host, mainSettings.pacs.mllp_mwl, HL7_example, (error, ack) => {
+            server.send(mainSettings.pacs.host, mainSettings.pacs.mllp_mwl, HL7_message, (error, ack) => {
                 //Check errors:
                 if(error){
                     //Send ERROR Message:
@@ -174,10 +170,6 @@ module.exports = async (req, res) => {
                     res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, ack: ack, hl7: HL7_message });
                 }
             });
-            */
-        
-            //Send successfully response:
-            res.status(200).send({ success: true, accession_number: AN, hl7: HL7_message, example: HL7_example, appointment: data });
         } else {
             //No data (empty result):
             res.status(200).send({ success: false, message: currentLang.ris.mwl_error, error: currentLang.db.query_no_data });

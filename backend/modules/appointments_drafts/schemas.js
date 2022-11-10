@@ -24,6 +24,7 @@ const Schema = new mongoose.Schema({
     fk_procedure:           { type: mongoose.ObjectId, required: true },
     extra_procedures:       { type: [mongoose.ObjectId] },
     urgency:                { type: Boolean, required: true },
+    friendly_pass:          { type: String }
 },
 { timestamps: true },
 { versionKey: false });
@@ -102,7 +103,10 @@ const Validator = [
         .trim()
         .isBoolean()
         .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
-        .toBoolean()
+        .toBoolean(),
+
+    body('friendly_pass')
+        .optional()
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

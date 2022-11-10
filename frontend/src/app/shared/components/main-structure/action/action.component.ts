@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';                                               // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { default_page_sizes, appointments_flow_states } from '@env/environment';        // Enviroment
+import { app_setting, appointments_flow_states } from '@env/environment';               // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,7 +15,7 @@ import { default_page_sizes, appointments_flow_states } from '@env/environment';
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-  public page_sizes           : any = default_page_sizes;
+  public page_sizes           : any = app_setting.default_page_sizes;
   public number_of_pages      : any = [1];
   public appointmentsFS       : any = appointments_flow_states;
 

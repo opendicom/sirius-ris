@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
 import {                                                                                        // Enviroments
-  default_page_sizes,
+  app_setting,
   regexObjectId,
   ISO_3166,
   document_types,
@@ -128,7 +128,7 @@ export class ListDraftsComponent implements OnInit {
       'coordinator.person.surname_02': 1
     };
     this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();
@@ -181,6 +181,7 @@ export class ListDraftsComponent implements OnInit {
         'proj[start]': 1,
         'proj[end]': 1,
         'proj[urgency]': 1,
+        'proj[friendly_pass]': 1,
 
         //Projection - Patient:
         'proj[patient._id]': 1,
@@ -259,6 +260,16 @@ export class ListDraftsComponent implements OnInit {
 
           //Current Urgency:
           this.sharedProp.current_urgency = res.data[0].urgency;
+
+          //Clear previous friendly passwords:
+          this.sharedProp.current_friendly_pass = '';
+
+          //Add friendly password if it exists in the draft:
+          if(res.data[0].friendly_pass){
+            if(res.data[0].friendly_pass !== ''){
+              this.sharedProp.current_friendly_pass = res.data[0].friendly_pass;
+            }
+          }
 
           //Current appointment draft:
           this.sharedProp.current_appointment_draft = res.data[0]._id;

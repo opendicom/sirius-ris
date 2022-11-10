@@ -64,6 +64,19 @@
 
           <div class="clear"></div>
         </div>
+
+        <hr class="dashed" /><br/>
+
+        <!-- friendly password -->
+        <h3 class="details-title">Clave de acceso:</h3>
+        <div class="friendly-pass-wrap" *ngIf="this.sharedProp.current_friendly_pass !== ''">
+          <div class="current-info">Contraseña aleatoria designada: </div>
+          <div class="current-info">
+            <span class="friendly-pass">{{ this.sharedProp.current_friendly_pass }}</span>
+          </div>
+          <div class="clear"></div><hr class="dashed" />
+          <small><strong>Nota: </strong>Una vez finalizado el ingreso de la cita la contraseña designada NO será accesible.</small>
+        </div>
       </div> <!-- end fxLayout wrapper -->
 
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->

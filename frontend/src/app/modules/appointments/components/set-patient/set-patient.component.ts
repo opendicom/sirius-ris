@@ -136,6 +136,9 @@ export class SetPatientComponent implements OnInit {
     //Find references:
     this.findReferences();
 
+    //Clear previous friendly passwords:
+    this.sharedProp.current_friendly_pass = '';
+
     //Get Logged User Information (Domain and domain type):
     const domain = this.sharedProp.userLogged.permissions[0].domain;
     const domainType = this.sharedProp.userLogged.permissions[0].type;
@@ -294,6 +297,11 @@ export class SetPatientComponent implements OnInit {
               this.form.get('user.password')?.updateValueAndValidity();
               this.form.get('user.password_repeat')?.updateValueAndValidity();
 
+              //Set friendly password for the user:
+              this.sharedProp.current_friendly_pass = this.sharedFunctions.getFriendlyPass();
+              this.form.get('user.password')?.setValue(this.sharedProp.current_friendly_pass);
+              this.form.get('user.password_repeat')?.setValue(this.sharedProp.current_friendly_pass);
+
               //Set operations:
               this.personOperation = 'update';
               this.userOperation = 'insert';
@@ -323,6 +331,11 @@ export class SetPatientComponent implements OnInit {
             this.form.get('user.password_repeat')?.setValidators([Validators.required]);
             this.form.get('user.password')?.updateValueAndValidity();
             this.form.get('user.password_repeat')?.updateValueAndValidity();
+
+            //Set friendly password for the user:
+            this.sharedProp.current_friendly_pass = this.sharedFunctions.getFriendlyPass();
+            this.form.get('user.password')?.setValue(this.sharedProp.current_friendly_pass);
+            this.form.get('user.password_repeat')?.setValue(this.sharedProp.current_friendly_pass);
 
             //Set operations:
             this.personOperation = 'insert';

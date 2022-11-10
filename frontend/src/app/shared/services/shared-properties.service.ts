@@ -50,6 +50,7 @@ export class SharedPropertiesService {
   public current_status             : boolean = false;
   public current_appointment_draft  : any;
   public current_study_iuid         : string = '';
+  public current_friendly_pass      : string = '';
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

@@ -488,12 +488,23 @@ export class TabSlotComponent implements OnInit {
     }
   }
 
-  onDelete(){
-    //Find slots method clear event previouly:
-    this.findSlots();
+  async onDelete(){
+    //Get calendar events (current in memory):
+    let calendarEvents = this.calendarComponent.getApi().getEvents();
 
-    //Set urgency input to false (Default value):
-    this.form.controls['urgency'].setValue('false');
+    //Find if tentative event already exist:
+    await Promise.all(Object.keys(calendarEvents).map((keyEvents) => {
+      if(calendarEvents[parseInt(keyEvents)]._def.publicId == 'tentative'){
+        //Get tentative event:
+        let tentative_event = this.calendarComponent.getApi().getEventById(calendarEvents[parseInt(keyEvents)]._def.publicId);
+
+        //Remove tentative event:
+        tentative_event?.remove();
+
+        //Clear selected elements:
+        this.clearSelectedElements();
+      }
+    }));
   }
 
   async onClickSlot(arg: any){

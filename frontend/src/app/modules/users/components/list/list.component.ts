@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                                               // Activated Route Interface
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';                           // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';                             // Shared Functions
-import { ISO_3166, document_types, gender_types, default_page_sizes, regexObjectId } from '@env/environment';   // Enviroments
+import { ActivatedRoute } from '@angular/router';                                                       // Activated Route Interface
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';                   // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';                     // Shared Functions
+import { app_setting, ISO_3166, document_types, gender_types, regexObjectId } from '@env/environment';  // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -103,7 +103,7 @@ export class ListComponent implements OnInit {
       'status': 1
     };
     this.sharedProp.sort          = { username: 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

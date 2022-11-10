@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                             // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
-import { app_setting, ISO_3166, default_page_sizes, regexObjectId } from '@env/environment';  // Enviroments
+import { app_setting, ISO_3166, regexObjectId } from '@env/environment';                      // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -73,7 +73,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.filterFields  = ['name', 'short_name', 'OID', 'structure_id', 'suffix'];
     this.sharedProp.projection    = { name: 1, short_name: 1, 'OID': 1, country_code: 1, structure_id: 1, suffix: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();
