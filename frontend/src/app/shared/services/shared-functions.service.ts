@@ -726,40 +726,56 @@ export class SharedFunctionsService {
   // SEND TO MWL:
   //--------------------------------------------------------------------------------------------------------------------//
   sendToMWL(fk_appointment: string, refresh_list: boolean = false, list_params: any = {}){
-    //Insert MWL item:
+    //Create MWL Observable:
     //Use Api Client to prevent reload current list response [sharedFunctions.save -> this.response = res]:
-    this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': fk_appointment }).subscribe({
-      next: res => {
-        //Check result:
+    const obsMWL = this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': fk_appointment }).pipe(
+      //Check first result (MWL insert):
+      map((res: any) => {
+        //Check operation status:
         if(res.success === true){
-          //Chech if refresh current find:
-          if(refresh_list){
-            //Refresh list to update buttons that depend on ng directives (Accession Number MWL control).
-            this.find(list_params.element, list_params.params);
-          }
-
           //Format date:
           const formatted_date = this.accessionDateFormat(res.accession_number);
 
           //Send message:
           this.sendMessage('Enviado exitosamente a MWL ' + formatted_date.day + '/' + formatted_date.month + '/' + formatted_date.year + ' ' + formatted_date.hour + ':' + formatted_date.minute + ':' + formatted_date.second, { duration: 2000 });
-
         } else {
           //Send message:
           this.sendMessage(res.message + ' Detalle del error: ' + res.error);
         }
+
+        //Return response:
+        return res;
+      }),
+
+      //Filter that only success cases continue:
+      filter((res: any) => res.success === true),
+
+      //Add accession_number to appointment (Return observable):
+      mergeMap((res: any) => this.apiClient.sendRequest('POST', 'appointments/update', { '_id': fk_appointment, 'accession_number': res.accession_number })
+    ));
+
+    //Observe content (Subscribe):
+    obsMWL.subscribe({
+      next: res => {
+        //Check result:
+        if(res.success === true){
+          //Check if refresh current find:
+          if(refresh_list){
+            //Refresh list to update buttons that depend on ng directives (Accession Number MWL control).
+            this.find(list_params.element, list_params.params);
+          }
+        }
       },
       error: res => {
         //Send snakbar message:
-        if(res.error.message){
-          if(res.error.error.code === 'ECONNREFUSED'){
-            //Send connection error:
-            this.sendMessage(res.error.message + ' Error de conexión con el servidor MLLP MWL ' + res.error.error.address);
+        if(res.message){
+          //Check if have details error:
+          if(res.error){
+            this.sendMessage(res.message + ' Error: ' + res.error);
           } else {
             //Send other errors:
-            this.sendMessage(res.error.message + ' Detalle del error: ' + JSON.stringify(res.error.error));
+            this.sendMessage(res.message);
           }
-
         } else {
           this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
         }
@@ -780,7 +796,7 @@ export class SharedFunctionsService {
       hour        : accession_number.slice(8, 10),
       minute      : accession_number.slice(10, 12),
       second      : accession_number.slice(12, 14),
-      milisecond  : accession_number.slice(14, 18)
+      milisecond  : accession_number.slice(14, 16)
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

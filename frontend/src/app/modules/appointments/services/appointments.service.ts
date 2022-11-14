@@ -214,7 +214,7 @@ export class AppointmentsService {
   //--------------------------------------------------------------------------------------------------------------------//
 
 
-  saveAppointment(operation: string, form: FormGroup, fileManager: any, _id: string = '', keysWithValues: any = []){
+  saveAppointment(operation: string, form: FormGroup, fileManager: any, _id: string = '', keysWithValues: any = [], callback = (res: any) => {}){
     //Check operation type (Set flow state):
     let flow_state = 'A01';
     if(operation === 'update'){
@@ -341,10 +341,13 @@ export class AppointmentsService {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
         this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
+
+        //Response the form according to the result:
+        this.sharedFunctions.formResponder(res, 'appointments', this.router);
       }
 
-      //Response the form according to the result:
-      this.sharedFunctions.formResponder(res, 'appointments', this.router);
+      //Execute callback:
+      callback(res);
     });
   }
 }

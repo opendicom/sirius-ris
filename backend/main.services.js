@@ -120,22 +120,22 @@ function sendConsoleMessage(level, message, details = false){
     switch(mainSettings.log_level){
         case 'DEBUG':
             if(level == 'DEBUG'){
-                console.info('\n[ DEBUG | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false }) + ' ] ' + message);
+                console.info('\n[ DEBUG | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false }) + ' ] ' + message);
                 if(details){ console.info('\n[ DEBUG: Details ]'); console.debug(details); }
             }
         case 'INFO':
             if(level == 'INFO'){
-                console.info('\n[ INFO | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false }) + ' ] ' + message);
+                console.info('\n[ INFO | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false }) + ' ] ' + message);
                 if(details){ console.info('\n[ INFO: Details ]'); console.info(details); }
             }
         case 'WARN':
             if(level == 'WARN'){
-                console.warn('\n[ WARN | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false }) + ' ] ' + message);
+                console.warn('\n[ WARN | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false }) + ' ] ' + message);
                 if(details){ console.warn('\n[ WARN: Details ]'); console.warn(details); }
             }
         case 'ERROR':
             if(level == 'ERROR'){
-                console.error('\n[ ERROR | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false }) + ' ] ' + message);
+                console.error('\n[ ERROR | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false }) + ' ] ' + message);
                 if(details){ console.error('\n[ ERROR: Details ]'); console.error(details); }
             }
             break;

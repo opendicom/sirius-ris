@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
-  #host: 'localhost'
-  host: 'opendicom_sirius_db'
+  host: 'localhost'
+  #host: 'opendicom_sirius_db'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'
@@ -9,14 +9,10 @@ db:
 
 # Set external PACS data:
 pacs:
-  host: 'pacs'
-  mllp_mwl: 2575
-
-# MLLP Server (MWL HL7 v2):
-mllp_server:
-  enabled: true
-  host: 'localhost'
-  port: 2178
+  host        : 'localhost'
+  #host        : 'opendicom_pacs'
+  port_dicom  : 11112
+  port_mllp   : 2575
 
 # Web server settings:
 webserver:
@@ -33,8 +29,8 @@ ssl_certificates:
   ca   : false
 
 # Set CORS and CORS whitelist:
-cors_enabled: false
-cors_whitelist : ['http://example.com:8080','https://another-example.com:443']
+cors_enabled    : false
+cors_whitelist  : ['http://example.com:8080','https://another-example.com:443']
 
 # Set log level:
 # DEBUG > INFO > WARN > ERROR

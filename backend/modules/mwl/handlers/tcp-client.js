@@ -2,7 +2,7 @@
 // HL7 CLIENT HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
-const mllp      = require('mllp-node');
+const net       = require('net');
 const moment    = require('moment');
 const mongoose  = require('mongoose');
 
@@ -13,9 +13,6 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 
 //Import schemas:
 const appointments = require('../../appointments/schemas');
-
-//Create MLLP Server:
-const server = new mllp.MLLPServer(mainSettings.mllp_server.host, mainSettings.mllp_server.port);
 
 module.exports = async (req, res) => {
     //Import appointment aggregate:
@@ -81,7 +78,7 @@ module.exports = async (req, res) => {
             
             // Date time [ORC-7.4] (00400002,00400003):
             // Date time format: YYYYMMDDHHMM
-            const DT = moment().format('YYYYMMDDHmm', { trim: false }); //Trim false to keep leading zeros.
+            const DT = moment().format('YYYYMMDDHHmm', { trim: false }); //Trim false to keep leading zeros.
 
             // Procedure Priority HL7 codes:
             // S (Stat), A (ASAP), R (Routine), P (Pre-op), C (Callback), T (Timing).
@@ -92,6 +89,7 @@ module.exports = async (req, res) => {
             // If it is a single step, the value of Requesting Procedure Description: RP desc/code [OBR-44^2] (00321060) [OBR-4.1^2^3] (00321064).
             // Procedure Description, Steps.
             const SD = data[0].procedure.name;
+            
 
             // Procedure Description ID, Steps (00080100) [Code Value]:
             let SD_CODE = '-';
@@ -107,7 +105,7 @@ module.exports = async (req, res) => {
 
             // Accession number [OBR-18] (00080050):
             // 16 chars max.
-            const AN = moment().format('YYYYMMDDHmmssSSSS', { trim: false }); //Trim false to keep leading zeros.
+            const AN = moment().format('YYYYMMDDHHmmssSS', { trim: false }); //Trim false to keep leading zeros.
 
             // Requested Procedure ID [OBR-19] (00401001):
             // req_proc_id: cannot be null:
@@ -146,6 +144,7 @@ module.exports = async (req, res) => {
 // Create message without indentation to avoid sending text tabs.
 //--------------------------------------------------------------------------------------------------------------------//
 const HL7_message = `MSH|^~\\&|||||||ORM^O01|||2.3.1
+IPC|||||||${ SSN }^^^|
 PID|||${ ID }^^^^${ II }||${ PN }||${ PB }|${ PS }
 ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
 OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
@@ -153,23 +152,53 @@ ZDS|${ UI }`;
 //--------------------------------------------------------------------------------------------------------------------//
 
 
-            //Send HL7 message to PACS server (MWL):
-            server.send(mainSettings.pacs.host, mainSettings.pacs.mllp_mwl, HL7_message, (error, ack) => {
-                //Check errors:
-                if(error){
-                    //Send ERROR Message:
-                    mainServices.sendConsoleMessage('ERROR', currentLang.ris.mwl_error, error);
+            //--------------------------------------------------------------------------------------------------------//
+            // TCP CLIENT CONNECTION:
+            //--------------------------------------------------------------------------------------------------------//
+            //Set destination server params:
+            const destinationServerTCP = {
+                port: mainSettings.pacs.port_mllp,
+                host: mainSettings.pacs.host
+            };
 
-                    //Return error message (HTML Response):
-                    res.status(500).send({ success: false, message: currentLang.ris.mwl_error, error: error });
-                } else {
-                    //Send DEBUG Message:
-                    mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [ACK received]', ack);
+            // HL7 Structure:
+            // Header + HL7 Message + Trailer + Carriage Return.
+            // VT : Vertical tab character (0x0b).
+            // FS : The trailer is a Field Separator character (0x1c).
+            // CR : Carriage return (0x0d).
+            const VT = String.fromCharCode(0x0b);
+            const FS = String.fromCharCode(0x1c);
+            const CR = String.fromCharCode(0x0d);
 
-                    //Send successfully response:
-                    res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, ack: ack, hl7: HL7_message });
-                }
+            //Create TCP client:
+            const client = net.createConnection(destinationServerTCP);
+
+            //Establish connection with TCP server:
+            client.on('connect', () => {
+                //Send HL7 message to PACS server vía TCP (MLLP) encoded in latin1 (MWL send):
+                client.write(VT + HL7_message + FS + CR, 'latin1');
+
+                //Close connection (End communication):
+                client.end();
+
+                //Send DEBUG Message:
+                mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [accession_number]: ' + AN);
+
+                //Send successfully response:
+                res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, hl7: HL7_message });
             });
+
+            //Handle errors:
+            client.on('error', (error) => {
+                //Send ERROR Message:
+                mainServices.sendConsoleMessage('ERROR', currentLang.ris.mwl_error, error.message);
+
+                //Return error message (HTML Response):
+                res.status(500).send({ success: false, message: currentLang.ris.mwl_error, error: error.message });
+            });
+            //--------------------------------------------------------------------------------------------------------//
+
+
         } else {
             //No data (empty result):
             res.status(200).send({ success: false, message: currentLang.ris.mwl_error, error: currentLang.db.query_no_data });

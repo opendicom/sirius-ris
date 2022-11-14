@@ -37,6 +37,12 @@ export class TabSlotComponent implements OnInit {
   public selectedEnd          : Date | undefined;
   public selectedSlot         : any  | undefined;
 
+  //Set initial elements:
+  public initialEquipment    : any  | undefined;
+  public initialStart        : Date | undefined;
+  public initialEnd          : Date | undefined;
+  public initialSlot         : any  | undefined;
+
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
@@ -77,12 +83,17 @@ export class TabSlotComponent implements OnInit {
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
-    //Set selected elements:
-    //this.selectedEquipment  = { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 60, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } };
+    //Set selected elements (First time):
     this.selectedEquipment  = this.sharedProp.current_equipment;
     this.selectedStart      = new Date(this.sharedProp.current_datetime.start  + '.000Z');
     this.selectedEnd        = new Date(this.sharedProp.current_datetime.end  + '.000Z');
     this.selectedSlot       = this.sharedProp.current_slot;
+
+    //Set selected elements (Preserve Initial):
+    this.initialEquipment  = this.sharedProp.current_equipment;
+    this.initialStart      = new Date(this.sharedProp.current_datetime.start  + '.000Z');
+    this.initialEnd        = new Date(this.sharedProp.current_datetime.end  + '.000Z');
+    this.initialSlot       = this.sharedProp.current_slot;
 
     //Set FullCalendar Languaje:
     this.calendarOptions['locale'] = esLocale;
@@ -176,9 +187,6 @@ export class TabSlotComponent implements OnInit {
       if(first_search == false){
         this.calendarComponent.getApi().removeAllEvents();
         this.calendarOptions['resources'] = [];
-
-        //Clear selected elements:
-        this.clearSelectedElements();
       }
 
       //Initialize Slot Background color:
@@ -362,6 +370,12 @@ export class TabSlotComponent implements OnInit {
                   borderColor = '#909da4';
                   textColor = '#17191a';
                   title = res.data[key].procedure.name + ' [Editando actualmente]';
+
+                  //Set selected elements (To preserve delete button):
+                  this.selectedEquipment  = this.sharedProp.current_equipment;
+                  this.selectedStart      = new Date(this.sharedProp.current_datetime.start  + '.000Z');
+                  this.selectedEnd        = new Date(this.sharedProp.current_datetime.end  + '.000Z');
+                  this.selectedSlot       = this.sharedProp.current_slot;
                 }
 
                 //Add event in calendar (Appointment):
@@ -456,9 +470,6 @@ export class TabSlotComponent implements OnInit {
   }
 
   onCheckUrgency(event: any){
-    //Clear selected elements:
-    this.clearSelectedElements();
-
     //Check if urgency is true or false (string):
     if(event.value == 'true'){
       //Get value (The interface calendarOptions for data type headertoolbar does not find property 'end'):
@@ -590,42 +601,39 @@ export class TabSlotComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-    //Set current selections in shared properties:
-    this.sharedProp.current_equipment = this.selectedEquipment;
-    this.sharedProp.current_slot = this.selectedSlot;
-    this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
-    this.sharedProp.current_modality = this.currentModality; //Replace current modality (All information from the modality).
+  onSubmit(): any{
+    //Initialize result:
+    let result: any = undefined;
 
-    //Data normalization - Booleans types (mat-option cases):
-    if(typeof this.form.value.urgency != "boolean"){ this.sharedProp.current_urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
+    //Check if the appointment was modified in slot coordination:
+    if (!(this.initialEquipment == this.selectedEquipment && this.initialStart?.toString() == this.selectedStart?.toString() && this.initialEnd?.toString() == this.selectedEnd?.toString() && this.initialSlot == this.selectedSlot)){
 
-    //Create save object (Data normalization):
-    let appointmentsDraftsSaveData = {
-      imaging : {
-        organization  : this.sharedProp.current_imaging.organization._id,
-        branch        : this.sharedProp.current_imaging.branch._id,
-        service       : this.sharedProp.current_imaging.service._id,
-      },
-      start           : this.sharedProp.current_datetime.start + '.000Z',
-      end             : this.sharedProp.current_datetime.end + '.000Z',
-      fk_patient      : this.sharedProp.current_patient._id,
-      fk_coordinator  : this.sharedProp.userLogged.user_id,
-      fk_slot         : this.sharedProp.current_slot,
-      fk_procedure    : this.sharedProp.current_procedure._id,
-      urgency         : this.sharedProp.current_urgency,
-    };
+      //Set current selections in shared properties:
+      this.sharedProp.current_equipment = this.selectedEquipment;
+      this.sharedProp.current_slot = this.selectedSlot;
+      this.sharedProp.current_datetime = this.sharedFunctions.datetimeFulCalendarFormater(this.selectedStart, this.selectedEnd);
 
-    //Save appointment draft in DB:
-    this.sharedFunctions.save('insert', 'appointments_drafts', '', appointmentsDraftsSaveData, [], (res) => {
-      //Set current appointment draft only if the operation was successful:
-      if(res.success === true){
-        this.sharedProp.current_appointment_draft = res.data._id;
-      }
+      //Data normalization - Booleans types (mat-option cases):
+      if(typeof this.form.value.urgency != "boolean"){ this.sharedProp.current_urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
 
-      //Response the form according to the result and redirect to appointments form in success case:
-      this.sharedFunctions.formResponder(res, '/appointments/form/insert', this.router, false, '¡Guardado de cita en proceso exitoso!');
-    });
+      //Create save object (Data normalization):
+      let appointmentsUpdateData = {
+        start           : this.sharedProp.current_datetime.start + '.000Z',
+        end             : this.sharedProp.current_datetime.end + '.000Z',
+        fk_coordinator  : this.sharedProp.userLogged.user_id,
+        fk_slot         : this.sharedProp.current_slot,
+        urgency         : this.sharedProp.current_urgency,
+      };
+
+      //Update appointment:
+      this.sharedFunctions.save('update', 'appointments', this.sharedProp.current_id, appointmentsUpdateData, [], (res) => {
+        //Set result:
+        result = res;
+      });
+    }
+
+    //Return result:
+    return result;
   }
 
   findReferences(){

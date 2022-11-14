@@ -84,7 +84,9 @@ export class FormUpdateComponent implements OnInit {
 
               //Excecute manual onInit childrens components:
               this.tabDetails.manualOnInit(res);
-              if(res.data[0].flow_state == 'A01' && res.data[0].status === true){ this.tabSlot.manualOnInit(); } //Only coordinated appointments have control in slot tab.
+
+              //Only coordinated appointments have control in slot tab.
+              if(res.data[0].flow_state == 'A01' && res.data[0].status === true){ this.tabSlot.manualOnInit(); }
             });
           });
         } else {
@@ -102,9 +104,33 @@ export class FormUpdateComponent implements OnInit {
   }
 
   onSubmitMaster(){
-    //Send multiple submits:
-    this.tabDetails.onSubmit();
-    //if(this.sharedProp.current_flow_state == 'A01'){ this.tabSlot.onSubmit(); } //Only coordinated appointments have control in slot tab.
+    //Check selected element in slot tab:
+    if(this.tabSlot.selectedEquipment !== undefined && this.tabSlot.selectedStart !== undefined && this.tabSlot.selectedEnd !== undefined && this.tabSlot.selectedSlot !== undefined){
+      //Send submits in controlled order (First send appointment details):
+      this.tabDetails.onSubmit((res) => {
+
+        //Check first operation status (Update appointment details):
+        if(res.success === true){
+
+          //Only coordinated appointments have control in slot tab:
+          if(this.sharedProp.current_flow_state == 'A01'){
+            //Send second update and obtain the result of operation:
+            const result = this.tabSlot.onSubmit();
+
+            //Check the result, in case it is not undefined replace first response with second:
+            if(result !== undefined){
+              res = result;
+            }
+          }
+        }
+
+        //Response the form according to the result:
+        this.sharedFunctions.formResponder(res, 'appointments', this.router);
+      });
+
+    } else {
+      this.sharedFunctions.sendMessage('Falta seleccionar en la pestaña de Detalles de la coordinación en qué momento se llevará a cabo la cita.')
+    }
   }
 
   async setCurrentData(res: any, callback = () => {}) {

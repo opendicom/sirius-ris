@@ -211,34 +211,7 @@
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
       <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>
-
-<small class="non-display">
-  <br/><br/><hr class="dashed"/>
-  <h4>Current patient:</h4>
-  {{ this.sharedProp.current_patient | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current imaging:</h4>
-  {{ this.sharedProp.current_imaging | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current modality:</h4>
-  {{ this.sharedProp.current_modality | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current procedure:</h4>
-  {{ this.sharedProp.current_procedure | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current equipment:</h4>
-  {{ this.sharedProp.current_equipment | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current slot:</h4>
-  {{ this.sharedProp.current_slot | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current urgency:</h4>
-  {{ this.sharedProp.current_urgency | json }}<br/><br/><hr class="dashed"/>
-
-  <h4>Current datetime:</h4>
-  {{ this.sharedProp.current_datetime | json }}<br/><br/><hr class="dashed"/>
-</small>

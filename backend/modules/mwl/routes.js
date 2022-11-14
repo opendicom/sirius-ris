@@ -14,7 +14,7 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const mllpServerHandler = require('./handlers/mllp-server');
+const tcpClientHandler = require('./handlers/tcp-client');
 
 //Create Router.
 const router = express.Router();
@@ -34,7 +34,7 @@ router.post(
             //Check _id is valid ObjectId:
             if(regexObjectId.test(req.body.fk_appointment)){
                 //Send to handler:
-                mllpServerHandler(req, res);
+                tcpClientHandler(req, res);
             } else {
                 //Send not valid referenced object mensaje:
                 res.status(405).send({ success: false, message: currentLang.db.not_valid_objectid });

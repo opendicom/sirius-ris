@@ -139,15 +139,10 @@ module.exports = function() {
     app.use('/files',                   filesRoutes);
     app.use('/appointments',            appointmentsRoutes);
     app.use('/appointments_drafts',     appointments_draftsRoutes);
-
-    //Check if MWL Client is enabled or disabled:
-    if(mainSettings.mllp_server.enabled === true){
-        //Set MWL routes:
-        app.use('/mwl', mwlRoutes);
-    }
+    app.use('/mwl',                     mwlRoutes);
 
     //Start message:
-    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY H:mm:ss', { trim: false });
+    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });
     console.log('\n' + consoleLn);
     console.log('| ' + startMessage);
     console.log(consoleLn);
@@ -208,23 +203,16 @@ module.exports = function() {
             sirius_backend.HTTPS.ssl_certificates = mainSettings.ssl_certificates;
         }
 
-        //MWL Client Enabled:
-        let sirius_mllp = 'disabled';
-        if(mainSettings.mllp_server.enabled === true){
-            sirius_mllp = mainSettings.mllp_server;
-        }
-
         //Send HTTP/HTTPS Response:
         res.status(200).send({
             message: startMessage,
             log_level: mainSettings.log_level,
             sirius_backend,
-            sirius_mongodb: {
+            sirius_db: {
                 status: cnxMongoDBStatus,
                 message: cnXMongoDBMessage
             },
-            sirius_mllp,
-            connected_with_pacs: mainSettings.pacs
+            pacs: mainSettings.pacs
         });
     });
 

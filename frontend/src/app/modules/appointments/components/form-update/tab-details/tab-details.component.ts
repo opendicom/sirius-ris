@@ -338,7 +338,7 @@ export class TabDetailsComponent implements OnInit {
     }
   }
 
-  onSubmit(){
+  onSubmit(callback = (res: any) => {}){
     //Validate CKEditor anamnesis (min length 10 + 7 chars [<p></p>]):
     if(this.form.value.anamnesis.length < 17){
       this.anamnesisValidator = false;
@@ -355,7 +355,10 @@ export class TabDetailsComponent implements OnInit {
 
     //Validate fields:
     if(this.form.valid){
-      this.appointmentsService.saveAppointment('update', this.form, this.fileManager, this.sharedProp.current_id, this.sharedProp.current_keysWithValues);
+      this.appointmentsService.saveAppointment('update', this.form, this.fileManager, this.sharedProp.current_id, this.sharedProp.current_keysWithValues, (res) => {
+        //Execute callback:
+        callback(res);
+      });
     }
   }
 
