@@ -728,9 +728,11 @@ export class SharedFunctionsService {
   sendToMWL(fk_appointment: string, refresh_list: boolean = false, list_params: any = {}){
     //Create MWL Observable:
     //Use Api Client to prevent reload current list response [sharedFunctions.save -> this.response = res]:
-    const obsMWL = this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': fk_appointment }).pipe(
-      //Check first result (MWL insert):
-      map((res: any) => {
+    const obsMWL = this.apiClient.sendRequest('POST', 'mwl/insert', { 'fk_appointment': fk_appointment });
+
+    //Observe content (Subscribe):
+    obsMWL.subscribe({
+      next: res => {
         //Check operation status:
         if(res.success === true){
           //Format date:
@@ -738,43 +740,26 @@ export class SharedFunctionsService {
 
           //Send message:
           this.sendMessage('Enviado exitosamente a MWL ' + formatted_date.day + '/' + formatted_date.month + '/' + formatted_date.year + ' ' + formatted_date.hour + ':' + formatted_date.minute + ':' + formatted_date.second, { duration: 2000 });
-        } else {
-          //Send message:
-          this.sendMessage(res.message + ' Detalle del error: ' + res.error);
-        }
 
-        //Return response:
-        return res;
-      }),
-
-      //Filter that only success cases continue:
-      filter((res: any) => res.success === true),
-
-      //Add accession_number to appointment (Return observable):
-      mergeMap((res: any) => this.apiClient.sendRequest('POST', 'appointments/update', { '_id': fk_appointment, 'accession_number': res.accession_number })
-    ));
-
-    //Observe content (Subscribe):
-    obsMWL.subscribe({
-      next: res => {
-        //Check result:
-        if(res.success === true){
           //Check if refresh current find:
           if(refresh_list){
             //Refresh list to update buttons that depend on ng directives (Accession Number MWL control).
             this.find(list_params.element, list_params.params);
           }
+        } else {
+          //Send message:
+          this.sendMessage(res.message + ' Detalle del error: ' + res.error);
         }
       },
       error: res => {
         //Send snakbar message:
-        if(res.message){
+        if(res.error.message){
           //Check if have details error:
-          if(res.error){
-            this.sendMessage(res.message + ' Error: ' + res.error);
+          if(res.error.error){
+            this.sendMessage(res.error.message + ' Error: ' + res.error.error);
           } else {
             //Send other errors:
-            this.sendMessage(res.message);
+            this.sendMessage(res.error.message);
           }
         } else {
           this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
@@ -1074,6 +1059,15 @@ export class SharedFunctionsService {
 
   getRandomNumber(min: number, max: number): number{
     return Math.floor(Math.random() * (max - min) + min)
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK CONCESSIONS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkConcessions(sharedProp: any, check: number[]): boolean {
+    return sharedProp.userLogged.permissions[0].concession.some((value: number) => check.includes(value))
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

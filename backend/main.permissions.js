@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Set user role permissions:
 const rolePermissions = {
-    //Superuser:
+    //Superusuario:
     1: {
         people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
         users                   : ['find', 'findOne', 'insert', 'update', 'delete'],            
@@ -24,7 +24,7 @@ const rolePermissions = {
         mwl                     : ['insert']
     },
 
-    //Administrator:
+    //Administrador:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
         users                   : ['find', 'findOne', 'insert', 'update'],
@@ -41,19 +41,101 @@ const rolePermissions = {
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
         mwl                     : ['insert']
+    },
+
+    //Médico:
+    4: {
+        people                  : ['find', 'findOne'],
+        users                   : ['find', 'findOne'],
+        logs                    : ['find', 'findOne'],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        appointments            : ['find', 'findOne']
+    },
+
+    //Coordinador:
+    7: {
+        people                  : ['find', 'findOne'],
+        users                   : ['find', 'findOne'],
+        logs                    : ['find', 'findOne'],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne', 'insert', 'update'],
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+    },
+
+    //Recepcionista:
+    8: {
+        people                  : ['find', 'findOne', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'insert', 'update'],
+        logs                    : ['find', 'findOne'],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : ['find', 'findOne'],
+        mwl                     : ['insert']
+    },
+
+    //Paciente:
+    9: {
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne'],
+        appointments            : ['find', 'findOne'],
     }
 }
 
 //Set user concessions:
 const concessionPermissions = {
-    //Sign report
-    1: { report: ['sign'] },
+    // 1 : Gestión de turnos:
+    1: {
+        slots : ['find', 'findOne', 'insert', 'update', 'batch/insert', 'batch/delete']
+    },
 
-    //Authenticate report:
-    2: { report: ['authenticate'] },
+    // 2 : Gestión de citas:
+    2: {
+        appointments            : ['find', 'findOne', 'insert', 'update'],
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete']
+    },
 
-    //Test:
-    3: { test: ['find', 'update'] }
+    // 3 : Calendario de citas:
+    3: {
+        slots                   : ['find', 'findOne'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : ['find', 'findOne']
+    },
+
+    // 4 : Gestión de recepciones:
+    4: {
+        mwl                     : ['insert'],
+        studies                 : ['find', 'findOne', 'insert', 'update']
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

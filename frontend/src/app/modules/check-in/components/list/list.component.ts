@@ -109,11 +109,34 @@ export class ListComponent implements OnInit {
   }
 
   setDefaultModality(){
-    this.sharedFunctions.find('modalities', { 'filter[status]': true, 'proj[_id]': 1 }, (res) => {
+    let element = 'modalities';
+    let params : any = { 'filter[status]': true, 'proj[_id]': 1 };
+    let findOne = true;
+
+    //Check if the user is logged in at the service level:
+    if(this.sharedProp.userLogged.permissions[0].type === 'service'){
+      element = 'services';
+      params  = { 'filter[_id]': this.sharedProp.userLogged.permissions[0].domain, 'proj[modality]': 1 };
+      findOne = false;
+    }
+
+    //Find and set default modality:
+    this.sharedFunctions.find(element, params, (res) => {
       //Check result:
       if(res.success === true){
-        //Set default Modality (First match - findOne):
-        this.sharedProp.modality = res.data[0]._id;
+
+        //Check if the user is logged in at the service level:
+        switch(element){
+          case 'modalities':
+            //Set default Modality (First match - findOne):
+            this.sharedProp.modality = res.data[0]._id;
+            break;
+
+          case 'services':
+            //Set default Modality (First match - findOne):
+            this.sharedProp.modality = res.data[0].modality._id;
+            break;
+        }
 
         //Refresh request params:
         this.sharedProp.paramsRefresh();
@@ -124,7 +147,7 @@ export class ListComponent implements OnInit {
         //Send message:
         this.sharedFunctions.sendMessage('Hubo un problema al determinar la modalidad por defecto.');
       }
-    }, true);
+    }, findOne);
   }
 
   mwlResend(fk_appointment: string, accession_number: string){

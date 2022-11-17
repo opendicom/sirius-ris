@@ -1,0 +1,10 @@
+.calendar-container {
+  float: none !important;
+  width: 98% !important;
+  padding: 1% !important;
+  background-color: #27293d !important;
+  border-radius: 0px 0px 4px 4px !important;
+}
+.calendar-container button{
+  margin-right: 8px !important;
+}

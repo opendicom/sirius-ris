@@ -4,34 +4,53 @@
 <h2>Menú principal</h2>
 
 <mat-list>
-  <h3>Coordinación</h3>
+  <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiónes: [1: Gestión de turnos, 2: Gestión de citas, 3: Calendario de citas) -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1, 2, 3]))">
+    <h3>Coordinación</h3>
 
-  <mat-list-item routerLink="/slots/list">
-    <mat-icon>date_range</mat-icon><span>Turnos</span>
-  </mat-list-item>
+    <!-- 1: Gestión de turnos -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1]))">
+      <mat-list-item routerLink="/slots/list">
+        <mat-icon>date_range</mat-icon><span>Turnos</span>
+      </mat-list-item>
 
-  <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
+    </div>
 
-  <mat-list-item routerLink="/appointments/list">
-    <mat-icon>event_available</mat-icon><span>Citas</span>
-  </mat-list-item>
+    <!-- 2: Gestión de citas -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [2]))">
+      <mat-list-item routerLink="/appointments/list">
+        <mat-icon>event_available</mat-icon><span>Citas</span>
+      </mat-list-item>
 
+      <mat-divider></mat-divider>
+    </div>
 
-  <h3>Recepción</h3>
+    <!-- 3: Calendario de citas -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [3]))">
+      <mat-list-item routerLink="/calendar/slots_appointments">
+        <mat-icon>calendar_month</mat-icon><span>Calendario</span>
+      </mat-list-item>
+    </div>
+  </div>
 
-  <mat-list-item routerLink="/check-in/list">
-    <mat-icon>today</mat-icon><span>Recepciones</span>
-  </mat-list-item>
+  <!-- Superusuario, Administrador, Recepcionista, Concesiones: [4: Gestión de recepciones] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
+    <h3>Recepción</h3>
 
+    <mat-list-item routerLink="/check-in/list">
+      <mat-icon>today</mat-icon><span>Recepciones</span>
+    </mat-list-item>
+  </div>
 
-  <h3>Realización</h3>
+  <!-- 1: Superusuario (En desarrollo) -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+    <h3>Realización</h3>
 
-  <mat-list-item>
-    <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
-  </mat-list-item>
+    <mat-list-item>
+      <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
+    </mat-list-item>
 
-
-  <span *ngIf="sharedProp.userLogged.permissions[0].role == 1">
     <h3>Funciones avanzadas</h3>
 
     <mat-list-item>
@@ -55,16 +74,16 @@
     <mat-list-item>
       <mat-icon>attach_money</mat-icon><span>Facturación</span>
     </mat-list-item>
+  </div>
 
-  </span>
+  <!-- 1: Superusuario, 2: Administrador -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2">
+    <h3>Administrador</h3>
 
-  <br/>
-
-  <h3>Administrador</h3>
-
-  <mat-list-item routerLink="/settings">
-    <mat-icon>settings</mat-icon><span>Configuración de sistema</span>
-  </mat-list-item>
+    <mat-list-item routerLink="/settings">
+      <mat-icon>settings</mat-icon><span>Configuración de sistema</span>
+    </mat-list-item>
+  </div>
 
 </mat-list>
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->

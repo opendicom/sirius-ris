@@ -3220,7 +3220,7 @@ async function setStudyIUID(req, res) {
                 //Set operation status:
                 operation_status = true;
             } else {
-                //Hubo algún problema al generar el Study IUID:
+                //Problem to generate Study IUID:
                 res.status(500).send({ success: false, message: currentLang.ris.study_iuid_error + study_iuid });
             }
         }

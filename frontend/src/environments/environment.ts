@@ -58,6 +58,11 @@ export const user_roles = {
 
 // User Concessions:
 export const user_concessions = {
+  1 : 'Gestión de turnos',
+  2 : 'Gestión de citas',
+  3 : 'Calendario de citas',
+  4 : 'Gestión de recepciones',
+  /*
   1 : 'Búsquedas avanzadas',
   2 : 'Firmar informes',
   3 : 'Autenticar informes',
@@ -67,6 +72,7 @@ export const user_concessions = {
   7 : 'Estadísticas del personal',
   8 : 'Eliminación física de archivos',
   9 : 'Supervisar citas en curso',
+  */
 }
 
 // User Types:

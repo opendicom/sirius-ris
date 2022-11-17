@@ -52,6 +52,7 @@ import { FilesModule } from '@modules/files/files.module';
 import { LogsModule } from '@modules/logs/logs.module';
 import { AppointmentsModule } from '@modules/appointments/appointments.module';
 import { CheckInModule } from '@modules/check-in/check-in.module';
+import { CalendarModule } from '@modules/calendar/calendar.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -86,7 +87,8 @@ import { CheckInModule } from '@modules/check-in/check-in.module';
     FilesModule,
     LogsModule,
     AppointmentsModule,
-    CheckInModule
+    CheckInModule,
+    CalendarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

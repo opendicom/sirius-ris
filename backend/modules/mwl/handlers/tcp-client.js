@@ -108,7 +108,7 @@ module.exports = async (req, res) => {
             const AN = moment().format('YYYYMMDDHHmmssSS', { trim: false }); //Trim false to keep leading zeros.
 
             // Requested Procedure ID [OBR-19] (00401001):
-            // req_proc_id: cannot be null:
+            // req_proc_id: cannot be null | 16 chars max:
             const RP = data[0].procedure._id;
 
             // Scheduled step ID [OBR-20] (00400009) <optional>:
@@ -137,14 +137,16 @@ module.exports = async (req, res) => {
             // UI studyUID [ZDS-1] (0020000D):
             const UI = data[0].study_iuid;
             //--------------------------------------------------------------------------------------------------------//
+            
 
+// SEGMENT:
+// IPC|||||||${ SSN }^^^
 
 //--------------------------------------------------------------------------------------------------------------------//
 // CREATE HL7 MESSAGE:
 // Create message without indentation to avoid sending text tabs.
 //--------------------------------------------------------------------------------------------------------------------//
 const HL7_message = `MSH|^~\\&|||||||ORM^O01|||2.3.1
-IPC|||||||${ SSN }^^^|
 PID|||${ ID }^^^^${ II }||${ PN }||${ PB }|${ PS }
 ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
 OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
@@ -174,18 +176,32 @@ ZDS|${ UI }`;
             const client = net.createConnection(destinationServerTCP);
 
             //Establish connection with TCP server:
-            client.on('connect', () => {
+            client.on('connect', async () => {
                 //Send HL7 message to PACS server vía TCP (MLLP) encoded in latin1 (MWL send):
                 client.write(VT + HL7_message + FS + CR, 'latin1');
 
                 //Close connection (End communication):
                 client.end();
 
-                //Send DEBUG Message:
-                mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [accession_number]: ' + AN);
+                //Add accession_number to appointment (update appointment):
+                await appointments.Model.findOneAndUpdate({ _id: req.body.fk_appointment }, { 'accession_number': AN }, { new: true })
+                .then(async (data) => {
+                    //Check if have results:
+                    if(data) {
+                        //Send DEBUG Message:
+                        mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [accession_number]: ' + AN);
 
-                //Send successfully response:
-                res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, hl7: HL7_message });
+                        //Send successfully response:
+                        res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, hl7: HL7_message });
+                    } else {
+                        //Dont match (empty result):
+                        res.status(200).send({ success: false,  message: currentLang.ris.mwl_error, error: currentLang.db.id_no_results });
+                    }
+                })
+                .catch((err) => {
+                    //Send DB error:
+                    mainServices.sendError(res, currentLang.db.update_error, err);
+                });
             });
 
             //Handle errors:

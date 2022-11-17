@@ -1,0 +1,20 @@
+<div class="calendar-container">
+  <!-- FullCalendar Datepicker -->
+  <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
+    <mat-label>Seleccione fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (keydown)="false" (dateChange)="onChangeDate($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- FullCalendar -->
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+  <br/>
+
+  <button mat-flat-button type="button" appearance="fill" (click)="setResources('ALL')">Todos los equipos</button>
+  <span *ngFor="let currentResource of calendarResources">
+    <button mat-flat-button type="button" appearance="fill" color="accent" (click)="setResources(currentResource.id)">{{ currentResource.title.split('|')[0] }}</button>
+  </span>
+  <br/>
+</div>
