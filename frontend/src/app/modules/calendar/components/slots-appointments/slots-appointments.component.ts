@@ -59,7 +59,8 @@ export class SlotsAppointmentsComponent implements OnInit {
     // Pending:
     // - Set imaging inputs (Service mat-select input [appointments]).
     // - Set date range limit (current year +- 1 month).
-    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e4350723c7409775733c", "name": "Tomografía" } };
+    // - Set branc slotMinTime and slotMaxTime.
+    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
     //--------------------------------------------------------------------------------------------------------------------//
 
     //Set default modality:
@@ -466,7 +467,6 @@ export class SlotsAppointmentsComponent implements OnInit {
     this.sharedFunctions.find(element, params, (res) => {
       //Check result:
       if(res.success === true){
-
         //Check if the user is logged in at the service level:
         switch(element){
           case 'modalities':

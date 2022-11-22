@@ -47,7 +47,11 @@ async function find(req, res, currentSchema){
         //Check result count:
         if(count > 0){
             //Excecute main query:
-            await currentSchema.Model.find(condition, formatted_proj).skip(req.query.skip).limit(req.query.limit).sort(sort)
+            await currentSchema.Model.find(condition, formatted_proj)
+            .sort({ '_id': -1 })    //Add default first sort (last records first).
+            .skip(req.query.skip)
+            .limit(req.query.limit)
+            .sort(sort)
             .exec()
             .then((data) => {
                 //Check if have results:
@@ -461,6 +465,7 @@ async function findAggregation(req, res, currentSchema){
 
     //Add operations to the main aggregation (skip and limit bad count):
     if(formatted_proj != ''){ aggregate.push({ $project: formatted_proj }); }
+    aggregate.push({ $sort: { '_id': -1 } }); //Add default first sort (last records first).
     if(!isNaN(req.query.skip)){ aggregate.push({ $skip: req.query.skip }); }
     if(!isNaN(req.query.limit)){ aggregate.push({ $limit: req.query.limit }); }
     if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
@@ -2108,7 +2113,7 @@ async function domainIs (domain, res) {
 //--------------------------------------------------------------------------------------------------------------------//
 // ADD DOMAIN CONDITION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function addDomainCondition(req, res, domainType){
+async function addDomainCondition(req, res, domainType, completeDomain){
     //Get information for the request:
     let filter      = req.query.filter;
     const user_id   = req.decoded.sub;
@@ -2156,14 +2161,26 @@ async function addDomainCondition(req, res, domainType){
                             //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
                             if(!filter.and){ req.query.filter['and'] = []; }
 
-                            //Add domain condition:
-                            req.query.filter.and['_id'] = domain;
-                        } else {
-                            //Add domain condition:
-                            req.query.filter['_id'] = domain;
-                        }
-                        //BRANCH AND SERVICE should not be accessed here due to role control.
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = domain;
 
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = completeDomain.organization;
+                            }
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = domain;
+
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = completeDomain.organization;
+                            }
+                        }
                         break;
 
                     case 'branches':
@@ -2180,8 +2197,11 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter.and['_id'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = completeDomain.branch;
                             }
-                            //SERVICE you should not access here because of role control.
 
                         } else {
                             //Switch by domain type: 
@@ -2192,8 +2212,11 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter['_id'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = completeDomain.branch;
                             }
-                            //SERVICE you should not access here because of role control.
                         }
                         break;
 
@@ -2245,24 +2268,21 @@ async function addDomainCondition(req, res, domainType){
                                 //Add domain condition:
                                 req.query.filter.and['branch.fk_organization'] = domain;
 
-                            } else if(domainType == 'branches'){
+                            } else if(domainType == 'branches' || domainType == 'services'){
                                 //Add domain condition:
-                                req.query.filter.and['fk_branch'] = domain;
-                            
+                                req.query.filter.and['fk_branch'] = completeDomain.branch;
                             }
-                            //SERVICE you should not access here because of role control.
+                            
                         } else {
                             //Switch by domain type: 
                             if(domainType == 'organizations'){
                                 //Add domain condition:
                                 req.query.filter['branch.fk_organization'] = domain;
 
-                            } else if(domainType == 'branches'){
+                            } else if(domainType == 'branches' || domainType == 'services'){
                                 //Add domain condition:
-                                req.query.filter['fk_branch'] = domain;
-                            
+                                req.query.filter['fk_branch'] = completeDomain.branch;                            
                             }
-                            //SERVICE you should not access here because of role control.
                         }
                         break;
 
@@ -2316,7 +2336,13 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter.and['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition (Limited permission):
+                                //If the user is logged in with the service domain, he will be able to see the procedures of the branch, not of the organization (there are no procedures per service).
+                                req.query.filter.and['domain.branch'] = completeDomain.branch;
                             }
+
                         } else {
                             //Switch by domain type: 
                             if(domainType == 'organizations'){
@@ -2326,6 +2352,11 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition (Limited permission):
+                                //If the user is logged in with the service domain, he will be able to see the procedures of the branch, not of the organization (there are no procedures per service).
+                                req.query.filter['domain.branch'] = completeDomain.branch;
                             }
                         }
                         break;
@@ -2344,7 +2375,13 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter.and['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition (Limited permission):
+                                //If the user is logged in with the service domain, he will be able to see the procedure categories of the branch, not of the organization (there are no procedure categories per service).
+                                req.query.filter.and['domain.branch'] = completeDomain.branch;
                             }
+
                         } else {
                             //Switch by domain type: 
                             if(domainType == 'organizations'){
@@ -2354,6 +2391,11 @@ async function addDomainCondition(req, res, domainType){
                             } else if(domainType == 'branches'){
                                 //Add domain condition:
                                 req.query.filter['domain.branch'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition (Limited permission):
+                                //If the user is logged in with the service domain, he will be able to see the procedure categories of the branch, not of the organization (there are no procedure categories per service).
+                                req.query.filter['domain.branch'] = completeDomain.branch;
                             }
                         }
                         break;
@@ -2369,9 +2411,9 @@ async function addDomainCondition(req, res, domainType){
                                 //Add domain condition:
                                 req.query.filter.and['domain.organization'] = domain;
 
-                            } else if(domainType == 'branches'){
+                            } else if(domainType == 'branches' || domainType == 'services'){
                                 //Add domain condition:
-                                req.query.filter.and['domain.branch'] = domain;
+                                req.query.filter.and['domain.branch'] = completeDomain.branch;
                             }
                         } else {
                             //Switch by domain type: 
@@ -2379,9 +2421,9 @@ async function addDomainCondition(req, res, domainType){
                                 //Add domain condition:
                                 req.query.filter['domain.organization'] = domain;
 
-                            } else if(domainType == 'branches'){
+                            } else if(domainType == 'branches' || domainType == 'services'){
                                 //Add domain condition:
-                                req.query.filter['domain.branch'] = domain;
+                                req.query.filter['domain.branch'] = completeDomain.branch;
                             }
                         }
                         break;
@@ -2691,7 +2733,10 @@ async function addDomainCondition(req, res, domainType){
                                         // Not allowed.
                                         // A user authenticated with domain type at the 'branch or service level'
                                         // cannot insert permissions with 'organization level'.
-                                        operationResult = false; /* Operation rejected */
+                                        // Except if it is patient permission (patient creation).
+                                        if(req.body.permissions[current].role !== 9){
+                                            operationResult = false; /* Operation rejected */
+                                        }
 
                                     //Permission branch:
                                     } else if(req.body.permissions[current].branch){
@@ -2783,7 +2828,8 @@ async function addDomainCondition(req, res, domainType){
                                     (((req.body.permissions[current].role >= 2 && req.body.permissions[current].role <= 8) && (role != 1 && role != 2)) || ((req.body.permissions[current].role >= 2 && req.body.permissions[current].role <= 8) && (role != 1 && role != 2))) ||
 
                                     //Add Patient [Allowed: Superuser, Administrator, Recepcionist]:
-                                    (req.body.permissions[current].role == 9 && (role != 1 && role != 2 && role != 8)) ||
+                                    //(req.body.permissions[current].role == 9 && (role != 1 && role != 2 && role != 8)) ||
+                                    // Condition cancelled: Now this is controlled by main permissions and concesions.
                                     
                                     //Add Functional user [Allowed: Superuser, Administrator]:
                                     (req.body.permissions[current].role == 1 && (role != 1 && role != 2)) )
@@ -3236,6 +3282,96 @@ async function setStudyIUID(req, res) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// GET COMPLETE DOMAIN:
+//--------------------------------------------------------------------------------------------------------------------//
+async function getCompleteDomain(domain, type){
+    //Import schemas:
+    const services = require('./services/schemas');
+    const branches = require('./branches/schemas');
+
+    //Initializate complete domain
+    let completeDomain = {
+        organization    : undefined,
+        branch          : undefined,
+        service         : undefined
+    };
+
+    //Switch by domain type:
+    switch(type){
+        case 'organizations':
+            //Set organization _id with current domain as ObjectId type:
+            completeDomain['organization'] = mongoose.Types.ObjectId(domain);
+            break;
+
+        case 'branches':
+            //Set branch _id with current domain as ObjectId type:
+            completeDomain['branch'] = mongoose.Types.ObjectId(domain);
+
+            //Find domain branch to obtain fk_organization:
+            await branches.Model.findById(domain, { fk_organization: 1 })
+            .exec()
+            .then((branch_data) => {
+
+                //Check if have results:
+                if(branch_data){
+
+                    //Set organization _id with fk_organization as ObjectId type:
+                    completeDomain['organization'] = mongoose.Types.ObjectId(branch_data.fk_organization);
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+            break;
+
+        case 'services':
+            //Set service _id with current domain as ObjectId type:
+            completeDomain['service'] = mongoose.Types.ObjectId(domain);
+
+            //Find domain service to obtain fk_branch://Search in Branches:
+            await services.Model.findById(domain, { fk_branch: 1 })
+            .exec()
+            .then(async (service_data) => {
+
+                //Check if have results:
+                if(service_data){
+
+                    //Set branch _id with fk_branch as ObjectId type:
+                    completeDomain['branch'] = mongoose.Types.ObjectId(service_data.fk_branch);
+                    
+                    //Find referenced branch to obtain fk_organization:
+                    await branches.Model.findById(service_data.fk_branch, { fk_organization: 1 })
+                    .exec()
+                    .then((branch_data) => {
+
+                        //Check if have results:
+                        if(branch_data){
+                            
+                            //Set organization _id with fk_organization as ObjectId type:
+                            completeDomain['organization'] = mongoose.Types.ObjectId(branch_data.fk_organization);
+                        }
+                    })
+                    .catch((err) => {
+                        //Send error:
+                        mainServices.sendError(res, currentLang.db.query_error, err);
+                    });
+                }
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+            
+            break;
+    }
+
+    //Return complete domain:
+    return completeDomain;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -3262,6 +3398,7 @@ module.exports = {
     domainIs,
     addDomainCondition,
     validatePermissions,
-    setStudyIUID
+    setStudyIUID,
+    getCompleteDomain
 };
 //--------------------------------------------------------------------------------------------------------------------//

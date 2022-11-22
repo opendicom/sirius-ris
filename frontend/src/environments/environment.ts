@@ -46,21 +46,21 @@ export const document_types = {
 export const user_roles = {
   1:  'Superusuario',
   2:  'Administrador',
-  3:  'Supervisor',
+  //3:  'Supervisor',
   4:  'Médico',
-  5:  'Técnico',
-  6:  'Enfermero',
+  //5:  'Técnico',
+  //6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',
-  10: 'Funcional'  //Empty role for concessions (Generic user)
+  //10: 'Funcional'  //Empty role for concessions (Generic user)
 };
 
 // User Concessions:
 export const user_concessions = {
   1 : 'Gestión de turnos',
   2 : 'Gestión de citas',
-  3 : 'Calendario de citas',
+  //3 : 'Calendario de citas',
   4 : 'Gestión de recepciones',
   /*
   1 : 'Búsquedas avanzadas',

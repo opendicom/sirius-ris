@@ -132,17 +132,17 @@ export class SharedPropertiesService {
     }
 
     //Check Modality - Filter (With AND Condition)::
-    if(this.modality !== ''){
+    if(Object.keys(this.action.filters).length > 0 && this.modality !== ''){
       string_filter += '"filter[and][' + this.action.filters.modality + ']": "' + this.modality + '", ';
     }
 
     //Check Date - Filter (With AND Condition)::
-    if(this.date !== ''){
+    if(Object.keys(this.action.filters).length > 0 && this.date !== ''){
       string_filter += this.setDateTimeStringFilter(this.date, this.date, this.action.filters.date);
     }
 
     //Check Date Range - Filter (With AND Condition)::
-    if(this.date_range.start !== '' && this.date_range.end !== ''){
+    if(Object.keys(this.action.filters).length > 0 && this.date_range.start !== '' && this.date_range.end !== ''){
       string_filter += this.setDateTimeStringFilter(this.date_range.start, this.date_range.end, this.action.filters.date_range);
     }
 

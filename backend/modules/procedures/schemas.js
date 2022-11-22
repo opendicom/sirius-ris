@@ -92,6 +92,7 @@ const Validator = [
         .withMessage('El parametro duration es requerido y debe ser numérico [minutos].'),
 
     body('preparation')
+        .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),

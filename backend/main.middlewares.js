@@ -18,7 +18,7 @@ const moduleServices = require('./modules/modules.services');
 const mainLanguages = require('./main.languages');
 
 //--------------------------------------------------------------------------------------------------------------------//
-//  ALLOWED VALIDATE:
+// ALLOWED VALIDATE:
 //--------------------------------------------------------------------------------------------------------------------//
 // Allowed Validate checks the schema of the current model which elements can be set and which cannot.
 // The allowed elements are returned in a set object to be validated.
@@ -270,6 +270,9 @@ const roleAccessBasedControl = async (req, res, next) => {
 
             //What the domain corresponds to:
             const domainType = await moduleServices.domainIs(userAuth.domain, res);
+
+            //Set complete domain:
+            const completeDomain = await moduleServices.getCompleteDomain(userAuth.domain, domainType);
             
             //Exclude Superuser role:
             if(userAuth.role != 1){
@@ -280,7 +283,7 @@ const roleAccessBasedControl = async (req, res, next) => {
                     mainServices.sendConsoleMessage('DEBUG', currentLang.rabc.exclude_code);
                 } else {
                     //Add domain as condition:
-                    domainResult = await moduleServices.addDomainCondition(req, res, domainType);
+                    domainResult = await moduleServices.addDomainCondition(req, res, domainType, completeDomain);
                 }
             }
 

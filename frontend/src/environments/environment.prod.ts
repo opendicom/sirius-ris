@@ -58,6 +58,11 @@ export const user_roles = {
 
 // User Concessions:
 export const user_concessions = {
+  1 : 'Gestión de turnos',
+  2 : 'Gestión de citas',
+  //3 : 'Calendario de citas',
+  4 : 'Gestión de recepciones',
+  /*
   1 : 'Búsquedas avanzadas',
   2 : 'Firmar informes',
   3 : 'Autenticar informes',
@@ -67,6 +72,7 @@ export const user_concessions = {
   7 : 'Estadísticas del personal',
   8 : 'Eliminación física de archivos',
   9 : 'Supervisar citas en curso',
+  */
 }
 
 // User Types:
@@ -202,6 +208,30 @@ export const anonymous_doc = {
   document_types: 100,      // Reserved in document_types for this case.
   description: 'Anónimo'
 };
+
+// Lista de palabras:
+export const keywords = [
+  'eucalipto',
+  'pino',
+  'roble',
+  'cedro',
+  'romero',
+  'ficus',
+  'cactus',
+  'tacuara',
+  'manzano',
+  'higuera',
+  'tero',
+  'carpincho',
+  'mulita',
+  'yacare',
+  'cardenal',
+  'golondrina',
+  'benteveo',
+  'chaja',
+  'jaguar',
+  'dorado'
+];
 
 // Country codes (ISO-3166):
 export const ISO_3166 = {
