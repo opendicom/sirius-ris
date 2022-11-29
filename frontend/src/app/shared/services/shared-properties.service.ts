@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { UsersAuthService } from '@auth/services/users-auth.service';         // Users Auth Service
+import { regexObjectId } from '@env/environment';                             // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -111,8 +112,15 @@ export class SharedPropertiesService {
 
     //Check Word Search - Filter (With OR Condition):
     if(this.filter != ''){
-      for(let key in this.filterFields){
-        string_filter += '"filter[or][' + this.filterFields[key] + ']": "' + this.filter + '", ';
+      //Check if filter is valid ObjectId:
+      if(this.filter !== undefined && regexObjectId.test(this.filter)){
+        string_filter += '"filter[and][_id]": "' + this.filter + '", ';
+
+      //Create OR condition for defined filter fields:
+      } else {
+        for(let key in this.filterFields){
+          string_filter += '"filter[or][' + this.filterFields[key] + ']": "' + this.filter + '", ';
+        }
       }
     }
 
