@@ -119,7 +119,7 @@ module.exports = function() {
         }
 
         //Log level message:
-        console.log(' • Log level : ' + mainSettings.log_level + '\n')
+        console.log(' • Log level : ' + mainSettings.log_level + '\n');
     });
 
     //Set modules routes:

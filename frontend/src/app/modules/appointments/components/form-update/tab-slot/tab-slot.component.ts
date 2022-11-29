@@ -601,12 +601,9 @@ export class TabSlotComponent implements OnInit {
     }
   }
 
-  onSubmit(): any{
-    //Initialize result:
-    let result: any = undefined;
-
-    //Check if the appointment was modified in slot coordination:
-    if (!(this.initialEquipment == this.selectedEquipment && this.initialStart?.toString() == this.selectedStart?.toString() && this.initialEnd?.toString() == this.selectedEnd?.toString() && this.initialSlot == this.selectedSlot)){
+  onSubmit(callback = () => {}){
+    //Only coordinated appointments have control in slot tab and Check if the appointment was modified in slot coordination:
+    if (this.sharedProp.current_flow_state == 'A01' && !(this.initialEquipment == this.selectedEquipment && this.initialStart?.toString() == this.selectedStart?.toString() && this.initialEnd?.toString() == this.selectedEnd?.toString() && this.initialSlot == this.selectedSlot)){
 
       //Set current selections in shared properties:
       this.sharedProp.current_equipment = this.selectedEquipment;
@@ -615,25 +612,10 @@ export class TabSlotComponent implements OnInit {
 
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.urgency != "boolean"){ this.sharedProp.current_urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
-
-      //Create save object (Data normalization):
-      let appointmentsUpdateData = {
-        start           : this.sharedProp.current_datetime.start + '.000Z',
-        end             : this.sharedProp.current_datetime.end + '.000Z',
-        fk_coordinator  : this.sharedProp.userLogged.user_id,
-        fk_slot         : this.sharedProp.current_slot,
-        urgency         : this.sharedProp.current_urgency,
-      };
-
-      //Update appointment:
-      this.sharedFunctions.save('update', 'appointments', this.sharedProp.current_id, appointmentsUpdateData, [], (res) => {
-        //Set result:
-        result = res;
-      });
     }
 
-    //Return result:
-    return result;
+    //Execute callback:
+    callback();
   }
 
   findReferences(){

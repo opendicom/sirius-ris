@@ -68,7 +68,7 @@ export class FormComponent implements OnInit {
       fk_organization : ['', [Validators.required]],
       short_name      : ['', [Validators.required]],
       name            : ['', [Validators.required]],
-      OID             : [''],
+      OID             : ['', [Validators.required]],
       country_code    : [ this.settings.default_country, [Validators.required]],
       structure_id    : [''],
       suffix          : [''],

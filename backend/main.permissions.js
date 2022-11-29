@@ -29,6 +29,7 @@ const rolePermissions = {
         people                  : ['find', 'findOne', 'insert', 'update'],
         users                   : ['find', 'findOne', 'insert', 'update'],
         logs                    : ['find', 'findOne'],
+        sessions                : [],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -48,6 +49,7 @@ const rolePermissions = {
         people                  : ['find', 'findOne'],
         users                   : ['find', 'findOne'],
         logs                    : ['find', 'findOne'],
+        sessions                : [],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -56,7 +58,10 @@ const rolePermissions = {
         slots                   : ['find', 'findOne'],
         procedures              : ['find', 'findOne'],
         procedure_categories    : ['find', 'findOne'],
-        appointments            : ['find', 'findOne']
+        files                   : ['find', 'findOne'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : [],
+        mwl                     : []
     },
 
     //Coordinador:
@@ -64,6 +69,7 @@ const rolePermissions = {
         people                  : ['find', 'findOne', 'insert', 'update'],
         users                   : ['find', 'findOne', 'insert', 'update'],
         logs                    : ['find', 'findOne'],
+        sessions                : [],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -75,6 +81,7 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+        mwl                     : []
     },
 
     //Recepcionista:
@@ -82,6 +89,7 @@ const rolePermissions = {
         people                  : ['find', 'findOne'],
         users                   : ['find', 'findOne'],
         logs                    : ['find', 'findOne'],
+        sessions                : [],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -92,12 +100,15 @@ const rolePermissions = {
         procedure_categories    : ['find', 'findOne'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'update'],
-        mwl                     : ['insert'],
-        /*studies                 : ['find', 'findOne', 'insert', 'update']*/
+        appointments_drafts     : [],
+        mwl                     : ['insert']
     },
 
     //Paciente:
     9: {
+        people                  : [],
+        users                   : [],
+        logs                    : [],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -106,8 +117,10 @@ const rolePermissions = {
         slots                   : ['find', 'findOne'],
         procedures              : ['find', 'findOne'],
         procedure_categories    : ['find', 'findOne'],
-        files                   : ['find', 'findOne'],
+        files                   : [],
         appointments            : ['find', 'findOne'],
+        appointments_drafts     : [],
+        mwl                     : []
     }
 }
 
@@ -122,6 +135,7 @@ const concessionPermissions = {
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
         users                   : ['find', 'findOne', 'insert', 'update'],
+        slots                   : ['find', 'findOne'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete']
     },
@@ -135,8 +149,8 @@ const concessionPermissions = {
 
     // 4 : Gestión de recepciones:
     4: {
-        mwl                     : ['insert'],
-        /*studies                 : ['find', 'findOne', 'insert', 'update']*/
+        appointments            : ['find', 'findOne'],
+        mwl                     : ['insert']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

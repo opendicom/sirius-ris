@@ -106,26 +106,14 @@ export class FormUpdateComponent implements OnInit {
   onSubmitMaster(){
     //Check selected element in slot tab:
     if(this.tabSlot.selectedEquipment !== undefined && this.tabSlot.selectedStart !== undefined && this.tabSlot.selectedEnd !== undefined && this.tabSlot.selectedSlot !== undefined){
-      //Send submits in controlled order (First send appointment details):
-      this.tabDetails.onSubmit((res) => {
+      //Send first submit in controlled order (Set appointments tab slot info, only if this has changes):
+      this.tabSlot.onSubmit(() => {
 
-        //Check first operation status (Update appointment details):
-        if(res.success === true){
-
-          //Only coordinated appointments have control in slot tab:
-          if(this.sharedProp.current_flow_state == 'A01'){
-            //Send second update and obtain the result of operation:
-            const result = this.tabSlot.onSubmit();
-
-            //Check the result, in case it is not undefined replace first response with second:
-            if(result !== undefined){
-              res = result;
-            }
-          }
-        }
-
-        //Response the form according to the result:
-        this.sharedFunctions.formResponder(res, 'appointments', this.router);
+        //Send second submit in controlled order (Update appointment):
+        this.tabDetails.onSubmit((res) => {
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, 'appointments', this.router);
+        });
       });
 
     } else {
@@ -185,6 +173,9 @@ export class FormUpdateComponent implements OnInit {
   setProcedureDetails(procedure_id: string, callback = () => {}){
     //Set params:
     const params = { 'filter[_id]': procedure_id };
+
+    //Set urgency current value in radio button:
+    this.tabSlot.form.controls['urgency'].setValue(this.sharedProp.current_urgency.toString());
 
     //Find details of the Current Procedure:
     this.sharedFunctions.find('procedures', params, async (procedureRes) => {

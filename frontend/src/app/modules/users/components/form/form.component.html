@@ -262,7 +262,7 @@
           <h4>Rol:</h4>
           <mat-form-field appearance="fill" class="medium">
             <mat-label>Rol</mat-label>
-            <mat-select formControlName="role" (selectionChange)="onSetRole($event)">
+            <mat-select formControlName="role" (selectionChange)="userService.onSetRole($event, form)">
               <div *ngFor="let currentRole of userRoles | keyvalue">
                 <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
                 <ng-template #thenBlockRole>
@@ -281,9 +281,9 @@
 
           <h4>Tipo de dominio:</h4>
           <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
-            <mat-radio-button value ="organization" [disabled]="disableRadioOrganization" >Organización</mat-radio-button>
-            <mat-radio-button value ="branch" [disabled]="disableRadioBranch">Sucursal</mat-radio-button>
-            <mat-radio-button value ="service" [disabled]="disableRadioService">Servicio</mat-radio-button>
+            <mat-radio-button value ="organization" [disabled]="userService.disableRadioOrganization">Organización</mat-radio-button>
+            <mat-radio-button value ="branch" [disabled]="userService.disableRadioBranch">Sucursal</mat-radio-button>
+            <mat-radio-button value ="service" [disabled]="userService.disableRadioService">Servicio</mat-radio-button>
           </mat-radio-group>
 
           <br/><br/>

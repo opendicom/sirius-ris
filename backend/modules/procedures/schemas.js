@@ -74,8 +74,8 @@ const Validator = [
     body('name')
         .optional()
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El código ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .isLength({ min: 3, max: 40 })
+        .withMessage('El código ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
 
     body('equipments')
         .isArray()

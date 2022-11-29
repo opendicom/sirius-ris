@@ -3,12 +3,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';                       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
-import { FullCalendarOptions } from '@env/environment';                                     // Enviroments
+import { app_setting, FullCalendarOptions } from '@env/environment';                        // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -17,6 +18,14 @@ import { FullCalendarOptions } from '@env/environment';                         
   styleUrls: ['./slots-appointments.component.css']
 })
 export class SlotsAppointmentsComponent implements OnInit {
+  //Set references objects:
+  public availableOrganizations: any;
+  public availableBranches: any;
+  public availableServices: any;
+
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
+
   //Min and max dates:
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
@@ -35,11 +44,23 @@ export class SlotsAppointmentsComponent implements OnInit {
   //Initializate Calendar Resources:
   public calendarResources: any = [];
 
+  //Define Formgroup (Reactive form handling):
+  public form!: FormGroup;
+
+  //Set Reactive form:
+  private setReactiveForm(fields: any): void{
+    this.form = this.formBuilder.group(fields);
+  }
+
   //Inject services to the constructor:
   constructor(
+    public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
+    //Pass Service Method:
+    this.getKeys = this.sharedFunctions.getKeys;
+
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -50,24 +71,40 @@ export class SlotsAppointmentsComponent implements OnInit {
       add_button      : false,
       filters_form    : false
     });
+
+    //Set pager default values to prevent undefined pager error:
+    this.sharedProp.pager = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+
+    //Set Reactive Form (First time):
+    this.setReactiveForm({
+      domain : ['']
+    });
   }
 
   ngOnInit(): void {
-    //--------------------------------------------------------------------------------------------------------------------//
-    // TEST:
-    //--------------------------------------------------------------------------------------------------------------------//
-    // Pending:
-    // - Set imaging inputs (Service mat-select input [appointments]).
-    // - Set date range limit (current year +- 1 month).
-    // - Set branc slotMinTime and slotMaxTime.
-    this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e576bb4e2e4f54931fab", "name": "PET-CT" } };
-    //--------------------------------------------------------------------------------------------------------------------//
+    //Clear current imaging:
+    this.sharedProp.current_imaging = {};
 
-    //Set default modality:
-    this.setDefaultModality();
+    //Find references:
+    this.findReferences();
+
+    //Set current date:
+    const today = new Date();
+
+    //Get current date separately:
+    const currentYear   = today.getFullYear();
+    const currentMonth  = today.getMonth();
+    const currentDay    = today.getDate();
+
+    //Set date range limit manually:
+    // Min date: 1 month back from today.
+    // Max date: 11 months forward from today.
+    const dateRangeLimit = {
+      minDate: new Date(currentYear, currentMonth - 1, 1),
+      maxDate: new Date(currentYear, currentMonth + 11, currentDay)
+    };
 
     //Set min and max dates (Datepicker):
-    const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date('2022-05-01')); //Today
     this.minDate = dateRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
@@ -134,9 +171,6 @@ export class SlotsAppointmentsComponent implements OnInit {
       }
     }
 
-    //Bind dateClick event:
-    this.calendarOptions.dateClick = this.onClickSlot.bind(this);
-
     // Fix FullCalendar bug first Render:
     this.sharedFunctions.fixFullCalendarRender();
 
@@ -159,7 +193,7 @@ export class SlotsAppointmentsComponent implements OnInit {
 
   findSlots(urgency: boolean = false, first_search: boolean = false){
     //Check current imaging and current procedure:
-    if(this.sharedProp.current_imaging !== undefined){
+    if(this.sharedProp.current_imaging !== undefined && Object.keys(this.sharedProp.current_imaging).length > 0){
       //Clear FullCalendar:
       if(first_search == false){
         this.calendarComponent.getApi().removeAllEvents();
@@ -424,14 +458,6 @@ export class SlotsAppointmentsComponent implements OnInit {
     }
   }
 
-  async onClickSlot(arg: any){
-    //Check that you click within the slot (Background event):
-    if(!arg.jsEvent.target.classList.contains('fc-bg-event')) {
-      //Open dialog:
-      this.sharedFunctions.openDialog('slot_select', 'stuff_data');
-    }
-  }
-
   async setResources(resource_id: string){
     //Set one or all resources (Equipments):
     if(resource_id == 'ALL'){
@@ -451,44 +477,35 @@ export class SlotsAppointmentsComponent implements OnInit {
     }
   }
 
-  setDefaultModality(){
-    let element = 'modalities';
-    let params : any = { 'filter[status]': true, 'proj[_id]': 1 };
-    let findOne = true;
+  onSetDomain(organization_id: string, branch_id: string, service_id: string){
+    //Set current imaging with selected domain:
+    this.sharedProp.current_imaging = {
+      'organization'  : { '_id' : organization_id },
+      'branch'        : { '_id' : branch_id },
+      'service'       : { '_id' : service_id }
+    };
 
-    //Check if the user is logged in at the service level:
-    if(this.sharedProp.userLogged.permissions[0].type === 'service'){
-      element = 'services';
-      params  = { 'filter[_id]': this.sharedProp.userLogged.permissions[0].domain, 'proj[modality]': 1 };
-      findOne = false;
-    }
+    //Find slots:
+    this.findSlots();
+  }
 
-    //Find and set default modality:
-    this.sharedFunctions.find(element, params, (res) => {
-      //Check result:
-      if(res.success === true){
-        //Check if the user is logged in at the service level:
-        switch(element){
-          case 'modalities':
-            //Set default Modality (First match - findOne):
-            this.sharedProp.modality = res.data[0]._id;
-            break;
+  findReferences(){
+    //Set params:
+    let params: any = { 'filter[status]': true };
 
-          case 'services':
-            //Set default Modality (First match - findOne):
-            this.sharedProp.modality = res.data[0].modality._id;
-            break;
-        }
+    //Find organizations:
+    this.sharedFunctions.find('organizations', params, (res) => {
+      this.availableOrganizations = res.data;
+    });
 
-        //Refresh request params:
-        this.sharedProp.paramsRefresh();
+    //Find branches:
+    this.sharedFunctions.find('branches', params, (res) => {
+      this.availableBranches = res.data;
+    });
 
-        //First search (List):
-        this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
-      } else {
-        //Send message:
-        this.sharedFunctions.sendMessage('Hubo un problema al determinar la modalidad por defecto.');
-      }
-    }, findOne);
+    //Find services:
+    this.sharedFunctions.find('services', params, (res) => {
+      this.availableServices = res.data;
+    });
   }
 }

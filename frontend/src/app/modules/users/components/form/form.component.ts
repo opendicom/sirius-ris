@@ -80,11 +80,6 @@ export class FormComponent implements OnInit {
   private userKeysWithValues    : Array<string> = [];
   public form_action            : any;
 
-  //Radio buttons individual disable controller:
-  public disableRadioOrganization  : boolean = false;
-  public disableRadioBranch        : boolean = false;
-  public disableRadioService       : boolean = false;
-
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
     this.form = this.formBuilder.group(fields);
@@ -619,29 +614,6 @@ export class FormComponent implements OnInit {
     this.form.get('user.professional[description]')?.setValue('');
     this.form.get('user.professional[workload]')?.setValue('');
     this.form.get('user.professional[vacation]')?.setValue('false');
-  }
-
-  onSetRole(event: any){
-    //Switch by selected role:
-    switch(event.value){
-      //Superusuario and Administrador:
-      case '1':
-      case '2':
-        //Set domain type value as organization:
-        this.form.controls['domain_type'].setValue('organization');
-
-        //Disable other domain types options:
-        this.disableRadioBranch = true;
-        this.disableRadioService = true;
-        break;
-
-      //Remaining roles:
-      default:
-        //Enable other domain types options:
-        this.disableRadioBranch = false;
-        this.disableRadioService = false;
-        break;
-    }
   }
 
   onCheckConcession(event: any, key: any){

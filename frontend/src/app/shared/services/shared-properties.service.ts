@@ -132,17 +132,17 @@ export class SharedPropertiesService {
     }
 
     //Check Modality - Filter (With AND Condition)::
-    if(Object.keys(this.action.filters).length > 0 && this.modality !== ''){
+    if(this.action.filters_form === true && this.modality !== ''){
       string_filter += '"filter[and][' + this.action.filters.modality + ']": "' + this.modality + '", ';
     }
 
     //Check Date - Filter (With AND Condition)::
-    if(Object.keys(this.action.filters).length > 0 && this.date !== ''){
+    if(this.action.filters_form === true && this.date !== ''){
       string_filter += this.setDateTimeStringFilter(this.date, this.date, this.action.filters.date);
     }
 
     //Check Date Range - Filter (With AND Condition)::
-    if(Object.keys(this.action.filters).length > 0 && this.date_range.start !== '' && this.date_range.end !== ''){
+    if(this.action.filters_form === true && this.date_range.start !== '' && this.date_range.end !== ''){
       string_filter += this.setDateTimeStringFilter(this.date_range.start, this.date_range.end, this.action.filters.date_range);
     }
 
@@ -159,6 +159,7 @@ export class SharedPropertiesService {
     //Pager:
     string_pager = '"pager[page_number]": "' + this.pager['page_number'] + '", ';
     string_pager += '"pager[page_limit]": "' + this.pager['page_limit'] + '"';
+
 
     //Concat string params:
     const string_params = '{ ' + string_regex + string_filter + string_proj + string_sort + string_pager + ' }';

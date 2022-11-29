@@ -60,7 +60,7 @@ export const user_roles = {
 export const user_concessions = {
   1 : 'Gestión de turnos',
   2 : 'Gestión de citas',
-  //3 : 'Calendario de citas',
+  3 : 'Calendario de citas',
   4 : 'Gestión de recepciones',
   /*
   1 : 'Búsquedas avanzadas',
@@ -164,11 +164,13 @@ export const CKEditorConfig = {
 };
 
 // Default FullCalendar configuration:
+export const FullCalendarSupportedViews = ['resourceTimeGridDay', 'resourceTimeGridWeek'];
+
 export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
   timeZone: 'local',
   allDaySlot: false,
-  initialView: 'resourceTimeGridDay',
+  initialView: FullCalendarSupportedViews[0],
   slotLabelFormat: {
     hour: '2-digit',
     minute: '2-digit',

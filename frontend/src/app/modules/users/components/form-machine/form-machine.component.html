@@ -84,11 +84,31 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
 
+          <h4>Rol:</h4>
+          <mat-form-field appearance="fill" class="medium">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role" (selectionChange)="userService.onSetRole($event, form)">
+              <div *ngFor="let currentRole of userRoles | keyvalue">
+                <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
+                <ng-template #thenBlockRole>
+                  <!--Only superuser can add Superuser role -->
+                  <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
+
+                <ng-template #elseBlockRole>
+                  <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                </ng-template>
+              </div>
+            </mat-select>
+          </mat-form-field>
+
+          <br/><hr class="dashed" /><br/>
+
           <h4>Tipo de dominio:</h4>
           <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
-            <mat-radio-button value="organization">Organización</mat-radio-button>
-            <mat-radio-button value="branch">Sucursal</mat-radio-button>
-            <mat-radio-button value="service">Servicio</mat-radio-button>
+            <mat-radio-button value="organization" [disabled]="userService.disableRadioOrganization">Organización</mat-radio-button>
+            <mat-radio-button value="branch" [disabled]="userService.disableRadioBranch">Sucursal</mat-radio-button>
+            <mat-radio-button value="service" [disabled]="userService.disableRadioService">Servicio</mat-radio-button>
           </mat-radio-group>
 
           <br/><br/><hr class="dashed" /><br/>
@@ -140,24 +160,6 @@
               </mat-form-field>
             </span>
           </div>
-
-          <h4>Rol:</h4>
-          <mat-form-field appearance="fill" class="medium">
-            <mat-label>Rol</mat-label>
-            <mat-select formControlName="role">
-              <div *ngFor="let currentRole of userRoles | keyvalue">
-                <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
-                <ng-template #thenBlockRole>
-                  <!--Only superuser can add Superuser role -->
-                  <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
-                </ng-template>
-
-                <ng-template #elseBlockRole>
-                  <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
-                </ng-template>
-              </div>
-            </mat-select>
-          </mat-form-field>
 
           <br/><hr class="dashed" /><br/>
 

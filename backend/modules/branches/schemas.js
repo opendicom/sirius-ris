@@ -7,14 +7,14 @@ const { body }      = require('express-validator');
 
 //Define Schema:
 const Schema = new mongoose.Schema({
-    fk_organization:    { type: mongoose.ObjectId, required: true },
-    name:               { type: String, required: true },
-    short_name:         { type: String, required: true },
-    OID:                { type: String },
-    country_code:       { type: String, required: true },
-    structure_id:       { type: String },
-    suffix:             { type: String },
-    status:             { type: Boolean, required: true, default: false },
+    fk_organization:        { type: mongoose.ObjectId, required: true },
+    name:                   { type: String, required: true },
+    short_name:             { type: String, required: true },
+    OID:                    { type: String, required: true },
+    country_code:           { type: String, required: true },
+    structure_id:           { type: String },
+    suffix:                 { type: String },
+    status:                 { type: Boolean, required: true, default: false }
 },
 { timestamps: true },
 { versionKey: false });
@@ -56,7 +56,6 @@ const Validator = [
         .withMessage('El primer nombre corto ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
 
     body('OID')
-        .optional()
         .trim()
         .isLength({ min: 1, max: 64 })
         .withMessage('El OID ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),

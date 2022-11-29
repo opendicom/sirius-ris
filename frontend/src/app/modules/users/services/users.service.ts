@@ -11,6 +11,10 @@ import { FormGroup } from '@angular/forms';                                     
   providedIn: 'root'
 })
 export class UsersService {
+  //Radio buttons individual disable controller:
+  public disableRadioOrganization  : boolean = false;
+  public disableRadioBranch        : boolean = false;
+  public disableRadioService       : boolean = false;
 
   //Inject services to the constructor:
   constructor(
@@ -142,4 +146,27 @@ export class UsersService {
     return current_id;
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+  onSetRole(event: any, form: FormGroup){
+    //Switch by selected role:
+    switch(event.value){
+      //Superusuario and Administrador:
+      case '1':
+      case '2':
+        //Set domain type value as organization:
+        form.controls['domain_type'].setValue('organization');
+
+        //Disable other domain types options:
+        this.disableRadioBranch = true;
+        this.disableRadioService = true;
+        break;
+
+      //Remaining roles:
+      default:
+        //Enable other domain types options:
+        this.disableRadioBranch = false;
+        this.disableRadioService = false;
+        break;
+    }
+  }
 }

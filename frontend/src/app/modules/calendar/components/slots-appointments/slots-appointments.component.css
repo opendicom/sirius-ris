@@ -1,10 +1,27 @@
 .calendar-container {
   float: none !important;
   width: 98% !important;
-  padding: 1% !important;
+  padding: 0% 1% 1% 1% !important;
+  margin-top: 0px;
   background-color: #27293d !important;
   border-radius: 0px 0px 4px 4px !important;
 }
-.calendar-container button{
+.calendar-container button {
   margin-right: 8px !important;
+}
+
+.service-container {
+  background-color: #232338;
+  border-bottom: 2px solid;
+  -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+     border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+  border-image-slice: 1;
+  padding-top: 1%;
+  padding-left: 1%;
+}
+
+.select-icon {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
 }

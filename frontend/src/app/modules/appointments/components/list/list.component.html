@@ -10,6 +10,10 @@
         <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
           <mat-icon>edit</mat-icon>
         </button>
+
+        <button mat-icon-button color="accent" aria-label="PDF de cita" matTooltip="PDF de cita" (click)="pdfService.createPDF('appointment', element._id)">
+          <mat-icon>description</mat-icon>
+        </button>
       </td>
     </ng-container>
 

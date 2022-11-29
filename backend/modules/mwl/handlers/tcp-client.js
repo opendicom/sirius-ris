@@ -5,6 +5,7 @@
 const net       = require('net');
 const moment    = require('moment');
 const mongoose  = require('mongoose');
+const cryptojs  = require("crypto-js");
 
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
@@ -109,7 +110,7 @@ module.exports = async (req, res) => {
 
             // Requested Procedure ID [OBR-19] (00401001):
             // req_proc_id: cannot be null | 16 chars max:
-            const RP = data[0].procedure._id;
+            const RP = cryptojs.HmacSHA1("00401001", data[0].procedure._id.toString()).toString().slice(0,16); //Generate unique hash (fixed length) with procedure _id.
 
             // Scheduled step ID [OBR-20] (00400009) <optional>:
             const SS = '';
