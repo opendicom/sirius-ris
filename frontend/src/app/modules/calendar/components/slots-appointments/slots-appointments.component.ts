@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';                       // Reactive form handling tools
+import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
@@ -191,13 +191,18 @@ export class SlotsAppointmentsComponent implements OnInit {
     this.calendarComponent.getApi().gotoDate(new Date(event.value))
   }
 
-  findSlots(urgency: boolean = false, first_search: boolean = false){
+  findSlots(urgency: boolean = false, first_search: boolean = false, change_service: boolean = false){
     //Check current imaging and current procedure:
     if(this.sharedProp.current_imaging !== undefined && Object.keys(this.sharedProp.current_imaging).length > 0){
       //Clear FullCalendar:
-      if(first_search == false){
+      if(first_search == false || change_service == true){
         this.calendarComponent.getApi().removeAllEvents();
         this.calendarOptions['resources'] = [];
+      }
+
+      //Clear calendar resource only if change service:
+      if(change_service == true){
+        this.calendarResources = [];
       }
 
       //Initialize Slot Background color:
@@ -311,7 +316,7 @@ export class SlotsAppointmentsComponent implements OnInit {
                   const resourceDuplicated = this.calendarResources.find(({ id } : any) => id === res.data[key].equipment._id);
 
                   //Add resouces in calendar resources object (To preserve in view changes cases):
-                  if(first_search == true && resourceDuplicated == undefined){
+                  if((first_search == true || change_service == true) && resourceDuplicated == undefined){
                     this.calendarResources.push(currentResource);
                   }
                 }
@@ -486,7 +491,7 @@ export class SlotsAppointmentsComponent implements OnInit {
     };
 
     //Find slots:
-    this.findSlots();
+    this.findSlots(false, false, true);
   }
 
   findReferences(){

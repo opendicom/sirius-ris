@@ -965,7 +965,7 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // DATETIME FULLCALENDAR FORMATER & ADD ZERO:
+  // DATETIME FULLCALENDAR FORMATER:
   //--------------------------------------------------------------------------------------------------------------------//
   datetimeFulCalendarFormater(start: any, end: any): any{
     //Date:
@@ -998,7 +998,32 @@ export class SharedFunctionsService {
       end           : endStr
     }
   }
+  //--------------------------------------------------------------------------------------------------------------------//
 
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET TIMESTAMP:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getTimeStamp(): string{
+    //Get now:
+    const today = new Date();
+
+    //Structure today date:
+    const year   = today.getFullYear();
+    const month  = today.toLocaleString("es-AR", { month: "2-digit" });
+    const day    = today.toLocaleString("es-AR", { day: "2-digit" })
+    const hours    = this.addZero(today.getHours());
+    const minutes  = this.addZero(today.getUTCMinutes());
+
+    //Return timestamp:
+    return '' + year + month + day + hours + minutes;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ADD ZERO:
+  //--------------------------------------------------------------------------------------------------------------------//
   addZero(i: any) {
     if(i < 10){
       i = "0" + i.toString()
