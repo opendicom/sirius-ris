@@ -2837,6 +2837,18 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             }));
                         }
                         break;
+
+                    case 'slots':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services' && req.body.domain.service !== domain){
+                            operationResult = false; /* Operation rejected */
+                        }
+                        
+                        break;
                 }
                 //NO break;
             
@@ -2844,19 +2856,19 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             case 'update':
                 //Set restrictions according to schema [INSERT AND UPDATE]:
                 switch(schema){
+                    case 'organizations':
+                        // No restrictions here.
+                        // The Superuser role is unique role can access here.
+                        break;
+
                     case 'branches':
                         // No restrictions here.
                         // The Superuser role is unique role can access here.
                         break;
                     
                     case 'services':
-                        //To add a service you must have domain access at the organization or branch level:
-                        if(domainType == 'services'){
-                            operationResult = false; /* Operation rejected */
-
-                        //Current case to eval:
-                        } else if(  (domainType == 'organizations' && checkDomainReference(res, 'branches', { fk_organization: domain }) == false) ||
-                                    (domainType == 'branches' && req.body.fk_branch !== domain) ){
+                        //To add a service it can only be domainType organization (Administrator role only)
+                        if(domainType == 'branches' || domainType == 'services'){
                             operationResult = false; /* Operation rejected */
                         }
                         break;
@@ -2872,21 +2884,30 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         break;
 
                     case 'slots':
-                        //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
-                            operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
-                            operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'services' && req.body.domain.service !== domain && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
-                            operationResult = false; /* Operation rejected */
+                        //Get DB Domain Reference:
+                        const dbDomainReference = await getDomainReference('slots', req.body._id, { 'domain' : 1 });
+
+                        //Check DB Domain Reference:
+                        if(dbDomainReference !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && dbDomainReference.domain.organization != domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'branches' && dbDomainReference.domain.branch != domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && dbDomainReference.domain.service != domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
                         }
+                        
                         break;
 
                     case 'procedures':
                         //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain){
                             operationResult = false; /* Operation rejected */
                         } else if(domainType == 'services'){
                             // The user cannot access here with that level of permission (Only Superuser and Administrator role can access here).
@@ -2896,9 +2917,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
                     case 'procedure_categories':
                         //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain){
                             operationResult = false; /* Operation rejected */
                         } else if(domainType == 'services'){
                             // The user cannot access here with that level of permission (Only Superuser and Administrator role can access here).
@@ -2908,33 +2929,33 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
                     case 'files':
                         //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.domain.organization !== domain && checkDomainReference(res, 'organizations', { 'domain.organization': domain }) == false){
+                        if(domainType == 'organizations' && req.body.domain.organization !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.domain.branch !== domain && checkDomainReference(res, 'branches', { 'domain.branch': domain }) == false){
+                        } else if(domainType == 'branches' && req.body.domain.branch !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'services' && checkDomainReference(res, 'services', { 'domain.service': domain }) == false){
+                        } else if(domainType == 'services'){
                             operationResult = false; /* Operation rejected */
                         }
                         break;
 
                     case 'appointments':
                         //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.imaging.organization !== domain && checkDomainReference(res, 'organizations', { 'imaging.organization': domain }) == false){
+                        if(domainType == 'organizations' && req.body.imaging.organization !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.imaging.branch !== domain && checkDomainReference(res, 'branches', { 'imaging.branch': domain }) == false){
+                        } else if(domainType == 'branches' && req.body.imaging.branch !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'services' && req.body.imaging.service !== domain && checkDomainReference(res, 'services', { 'imaging.service': domain }) == false){
+                        } else if(domainType == 'services' && req.body.imaging.service !== domain){
                             operationResult = false; /* Operation rejected */
                         }
                         break;
 
                     case 'appointments_drafts':
                         //Current cases to eval:
-                        if(domainType == 'organizations' && req.body.imaging.organization !== domain && checkDomainReference(res, 'organizations', { 'imaging.organization': domain }) == false){
+                        if(domainType == 'organizations' && req.body.imaging.organization !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'branches' && req.body.imaging.branch !== domain && checkDomainReference(res, 'branches', { 'imaging.branch': domain }) == false){
+                        } else if(domainType == 'branches' && req.body.imaging.branch !== domain){
                             operationResult = false; /* Operation rejected */
-                        } else if(domainType == 'services' && req.body.imaging.service !== domain && checkDomainReference(res, 'services', { 'imaging.service': domain }) == false){
+                        } else if(domainType == 'services' && req.body.imaging.service !== domain){
                             operationResult = false; /* Operation rejected */
                         }
                         break;
@@ -3070,6 +3091,36 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// GET DOMAIN REFERENCE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function getDomainReference(schemaName, _id, domainProj){
+    //Initializate result:
+    let result = false;
+
+    //Import current Schema:
+    const currentSchema = require('./' + schemaName + '/schemas');
+    
+    //Find domain reference by Id:
+    await currentSchema.Model.findById(_id, domainProj)
+    .exec()
+    .then((data) => {
+        //Check if have results:
+        if(data){
+            result = data;
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK OBJECT ID:
 //--------------------------------------------------------------------------------------------------------------------//
 function checkObjectId(objId){
@@ -3088,45 +3139,6 @@ function checkObjectId(objId){
     } else {
         return false;
     }
-}
-//--------------------------------------------------------------------------------------------------------------------//
-
-//--------------------------------------------------------------------------------------------------------------------//
-// CHECK DOMAIN REFERENCE:
-//--------------------------------------------------------------------------------------------------------------------//
-async function checkDomainReference(res, schemaName, filter){
-    //Import current Schema:
-    const currentSchema = require('./' + schemaName + '/schemas');
-
-    //Initialize result:
-    let result = false;
-
-    //Check filter is not empty:
-    if(filter){
-        //Execute check query:
-        await currentSchema.Model.findOne(filter, { _id: 1 })
-        .exec()
-        .then((data) => {
-            //Check if have results:
-            if(data){
-                //Set result true:
-                result = true;
-            } else {
-                //Send not valid referenced object mensaje:
-                res.status(405).send({ success: false, message: currentLang.ris.operation_not_allowed });
-            }
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.query_error, err);
-        });
-    } else {
-        //Send error:
-        mainServices.sendError(res, currentLang.ris.empty_domain_JWT);
-    }
-
-    //Return result:
-    return result;
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -254,6 +254,7 @@ export class SharedFunctionsService {
                 //Check if there are references to remove:
                 if(removeReference !== undefined){
                   //REMOVE reference:
+                  console.log(removeReference.updateData);
                   const obsDelete = this.saveRxJS('update', removeReference.reference_object.element, removeReference.reference_object._id, removeReference.updateData, []).pipe(
                     //Filter that only success cases continue:
                     filter((res: any) => res.success === true),

@@ -26,14 +26,24 @@ module.exports = async (req, res, currentSchema, operation) => {
     const startStringDate = JSON.stringify(start).split('T')[0].slice(1);
     const endStringDate = JSON.stringify(end).split('T')[0].slice(1);
 
+    //Check if is update without editing dates:
+    if(operation == 'update' && (req.body.start == '' || req.body.start == undefined || req.body.start == null || req.body.end == '' || req.body.end == undefined || req.body.end == null)){
+        await moduleServices.update(req, res, currentSchema, referencedElements);
+        
     //Check that start and end date are the same:
-    if(startStringDate == endStringDate){
+    } else if(startStringDate == endStringDate){
         //Check that end is greater than start:
         if(start < end){
             //Excecute main query:
             switch(operation){
                 case 'insert':
-                    await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    //Check that the request has a domain:
+                    if(req.body.domain){
+                        await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    } else {
+                        //Bad request:
+                        res.status(400).send({ success: false, message: currentLang.http.bad_request });
+                    }
                     break;
                 case 'update':
                     await moduleServices.update(req, res, currentSchema, referencedElements);
