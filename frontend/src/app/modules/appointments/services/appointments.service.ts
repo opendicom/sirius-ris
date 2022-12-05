@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';                                                   // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { PdfService } from '@shared/services/pdf.service';                                      // PDF Service
 import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
 import {                                                                                    // Enviroments
@@ -43,7 +44,8 @@ export class AppointmentsService {
   constructor(
     private router          : Router,
     public sharedProp       : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService
+    private sharedFunctions : SharedFunctionsService,
+    public pdfService       : PdfService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -341,6 +343,11 @@ export class AppointmentsService {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
         this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
+
+        //Create appointment PDF with pain password:
+        if(this.sharedProp.current_friendly_pass !== ''){
+          this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass);
+        }
 
         //Response the form according to the result:
         this.sharedFunctions.formResponder(res, 'appointments', this.router);

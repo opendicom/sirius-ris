@@ -37,6 +37,10 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  },
+    "strictTemplates": true,
+
+    //To prevent 'This module can only be referenced with ECMAScript imports/exports' [html-to-pdfmake module]:
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
 }

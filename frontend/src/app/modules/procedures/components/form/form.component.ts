@@ -22,15 +22,18 @@ export class FormComponent implements OnInit {
   public editorConfig = CKEditorConfig;
 
   //Set references objects:
-  public availableOrganizations: any;
-  public availableBranches: any;
-  public availableModalities: any;
-  public availableEquipments: any;
+  public availableOrganizations : any;
+  public availableBranches      : any;
+  public availableModalities    : any;
+  public availableEquipments    : any;
 
   //Initialize selected objects:
-  private selectedModalities: string[] = [];
-  public selectedEquipments: any = {};
-  public selectedDurations: any = {};
+  public selectedModalities : string[] = [];
+  public selectedEquipments : any = {};
+  public selectedDurations  : any = {};
+
+  //Initialize enable coefficient PET-CT input:
+  public enableCoefPETInput : boolean = false;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -82,7 +85,8 @@ export class FormComponent implements OnInit {
       fk_modality       : new FormControl({ value: '', disabled: true }, Validators.required),
       informed_consent  : [ 'false' ],
       status            : [ 'true' ],
-      preparation       : [ '' ]
+      preparation       : [ '' ],
+      coefficient       : [ '', [Validators.required] ]
     });
   }
 
@@ -110,7 +114,7 @@ export class FormComponent implements OnInit {
         const params = { 'filter[_id]': this._id };
 
         //Find element to update:
-        this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
+        this.sharedFunctions.find(this.sharedProp.element, params, async (res) => {
           //Check operation status:
           if(res.success === true){
             //Find references (disabled inputs):
@@ -125,11 +129,18 @@ export class FormComponent implements OnInit {
               equipments        : new FormControl({ value: [] }, Validators.required),
               status            : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
               informed_consent  : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
-              preparation       : res.data[0].preparation
+              preparation       : res.data[0].preparation,
+              coefficient       : res.data[0].coefficient
             });
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":
             this.form.controls['equipments'].setValue([]);
+
+            //Check if selected Modality is PET-CT:
+            if(await this.isPET(res.data[0].fk_modality)){
+              //Set enable coefficient PET-CT input:
+              this.enableCoefPETInput = true;
+            }
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -240,7 +251,45 @@ export class FormComponent implements OnInit {
     }
   }
 
+  async onChangeModality(event: any){
+    //Reset enable coefficient PET-CT input:
+    this.enableCoefPETInput = false;
+
+    //Check if selected Modality is PET-CT:
+    if(await this.isPET(event.value)){
+      //Set enable coefficient PET-CT input:
+      this.enableCoefPETInput = true;
+    }
+  }
+
+  async isPET(_id: string): Promise<boolean>{
+    //Initialize result:
+    let result = false;
+
+    //Find in avalable modalities (await foreach):
+    await Promise.all(Object.keys(this.availableModalities).map((key) => {
+      //Check if modality _id is PET-CT:
+      if(this.availableModalities[key]._id == _id && this.availableModalities[key].code_value == 'PT'){
+        //Set enable coefficient PET-CT input:
+        result = true;
+      }
+    }));
+
+    //Return result:
+    return result;
+  }
+
   async onSubmit(){
+    //Validate coefficient only in PET-CT Procedures:
+    if(this.enableCoefPETInput === false){
+      this.form.controls['coefficient'].clearValidators();
+      this.form.controls['coefficient'].updateValueAndValidity();
+      this.form.controls['coefficient'].setValue('');
+    } else {
+      this.form.controls['coefficient'].setValidators([Validators.required]);
+      this.form.controls['coefficient'].updateValueAndValidity();
+    }
+
     //Validate fields:
     if(this.form.valid){
       //Data normalization - Domain:

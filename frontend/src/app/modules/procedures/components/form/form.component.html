@@ -43,12 +43,20 @@
       <h4>Modalidad:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Modalidad</mat-label>
-        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad">
+        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad" (selectionChange)="onChangeModality($event)">
           <div *ngFor="let currentModality of availableModalities">
             <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
+
+      <div [class.non-display]="enableCoefPETInput === false">
+        <h4>Coeficiente <span class="label-info">Solo para procedimientos PET-CT</span>:</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Coeficiente</mat-label>
+          <input type="text" matInput formControlName="coefficient">
+        </mat-form-field>
+      </div>
 
       <h4>Estado:</h4>
       <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
