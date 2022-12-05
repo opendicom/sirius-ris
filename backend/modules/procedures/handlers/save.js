@@ -26,10 +26,51 @@ module.exports = async (req, res, currentSchema, operation) => {
     //Excecute main query:
     switch(operation){
         case 'insert':
-            await moduleServices.insert(req, res, currentSchema, referencedElements);
+            //Check if is PET-CT procedure:
+            if(await moduleServices.isPET(req.body.fk_modality)){
+                //Require coefficient in PET-CT Procedures:
+                if(req.body.coefficient !== '' && req.body.coefficient !== undefined && req.body.coefficient !== null){
+                    //Replace commas with dots:
+                    req.body.coefficient = req.body.coefficient.replace(',', '.');
+
+                    //Check that the entered coefficient is numeric:
+                    if(isNaN(req.body.coefficient)){
+                        //Return the result (HTML Response):
+                        res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.pet_coef_NaN });
+                    } else {
+                        //Save PET-CT procedure:
+                        await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    }
+
+                } else {
+                    //Return the result (HTML Response):
+                    res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.pet_coef_required });
+                }
+            } else {
+                //Save others procedures:
+                await moduleServices.insert(req, res, currentSchema, referencedElements);
+            }
+            
             break;
         case 'update':
-            await moduleServices.update(req, res, currentSchema, referencedElements);
+            //Check and normalize coefficient in PET-CT cases:
+            if(req.body.coefficient !== '' && req.body.coefficient !== undefined && req.body.coefficient !== null){
+                //Replace commas with dots:
+                req.body.coefficient = req.body.coefficient.replace(',', '.');
+
+                //Check that the entered coefficient is numeric:
+                if(isNaN(req.body.coefficient)){
+                    //Return the result (HTML Response):
+                    res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: currentLang.ris.validate.pet_coef_NaN });
+                } else {
+                    //Update PET-CT procedure:
+                    await moduleServices.update(req, res, currentSchema, referencedElements);
+                }
+            } else {
+                //Update others procedures:
+                await moduleServices.update(req, res, currentSchema, referencedElements);
+            }
+
             break;
         default:
             res.status(500).send({ success: false, message: currentLang.db.not_allowed_save });
@@ -37,3 +78,4 @@ module.exports = async (req, res, currentSchema, operation) => {
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
+

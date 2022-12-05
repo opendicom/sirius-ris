@@ -84,7 +84,9 @@ module.exports = function(language){
                 'time_format'               : 'The start or end time format is incorrect [Supported format: HH:MM (24h)].',
                 'urgency_boolean'           : 'The urgency parameter must be boolean [true, false].',
                 'valid_permission'          : 'You must enter at least one valid permission to the user.',
-                'fk_slot_required'          : 'The fk_slot parameter must be specified (it is required for the operation).'
+                'fk_slot_required'          : 'The fk_slot parameter must be specified (it is required for the operation).',
+                'pet_coef_required'         : 'PET-CT procedures require coefficient for the calculation of the dose.',
+                'pet_coef_NaN'              : 'The coefficient entered must be numeric.'
             }
         }
 
@@ -173,6 +175,8 @@ module.exports = function(language){
             lang.ris.validate.urgency_boolean           = 'El parametro urgencia debe ser booleano [true, false].';
             lang.ris.validate.valid_permission          = 'Debe ingresar al menos un permiso válido al usuario.';
             lang.ris.validate.fk_slot_required          = 'El parametro fk_slot debe ser especificado (es requerido para la operación).';
+            lang.ris.validate.pet_coef_required         = 'Los procedimientos PET-CT requieren coeficiente para el cálculo de la dosis.';
+            lang.ris.validate.pet_coef_NaN              = 'El coeficiente ingresado debe ser numérico.';
 
             break;
     }

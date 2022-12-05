@@ -3452,6 +3452,35 @@ async function getCompleteDomain(domain, type){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// IS PET-CT METHOD:
+//--------------------------------------------------------------------------------------------------------------------//
+async function isPET(_id){
+    //Initialize result:
+    let result = false;
+
+    //Import current Schema:
+    const modalities = require('./modalities/schemas');
+
+    //Find domain reference by Id:
+    await modalities.Model.findById(_id, { 'code_value': 1 })
+    .exec()
+    .then((data) => {
+        //Check if have results:
+        if(data.code_value == 'PT'){
+            result = true;
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -3479,6 +3508,7 @@ module.exports = {
     addDomainCondition,
     validatePermissions,
     setStudyIUID,
-    getCompleteDomain
+    getCompleteDomain,
+    isPET
 };
 //--------------------------------------------------------------------------------------------------------------------//

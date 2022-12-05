@@ -29,6 +29,7 @@ const Schema = new mongoose.Schema({
     preparation:        { type: String },
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
+    coefficient:        { type: String }
 },
 { timestamps: true },
 { versionKey: false });
@@ -107,7 +108,13 @@ const Validator = [
         .trim()
         .isBoolean()
         .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
-        .toBoolean()
+        .toBoolean(),
+    
+    body('coefficient')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 10 })
+        .withMessage('El parametro coefficient ingresado es demasiado corto o demasiado largo (min: 1, max: 10 [caracteres]).')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 
