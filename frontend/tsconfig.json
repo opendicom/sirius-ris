@@ -31,7 +31,11 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+
+    //To prevent 'This module can only be referenced with ECMAScript imports/exports' [html-to-pdfmake module]:
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

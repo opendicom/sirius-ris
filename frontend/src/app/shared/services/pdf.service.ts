@@ -7,13 +7,14 @@ import { ApiClientService } from '@shared/services/api-client.service';         
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { map } from 'rxjs/operators';                                                   // Reactive Extensions (RxJS)
 import { regexObjectId } from '@env/environment';                                       // Enviroments
+
+//PDF Make:
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
-
-//import * as htmlToPdfmake from 'html-to-pdfmake';
-//import htmlToPdfmake from 'html-to-pdfmake';
+//HTML to PDF Make:
+import htmlToPdfmake from 'html-to-pdfmake';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -28,9 +29,10 @@ export class PdfService {
   ) { }
 
   test(){
-    //const html = htmlToPdfmake('<p><strong>Hola</strong> Mundo!</p>');
-    //const docDefinition = { content: html };
-    //pdfMake.createPdf(docDefinition).download();
+    console.log('Entra!!');
+    const html = htmlToPdfmake('<p><strong>Hola</strong> Mundo!</p>');
+    const docDefinition = { content: html };
+    pdfMake.createPdf(docDefinition).download();
   }
 
   createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined){
