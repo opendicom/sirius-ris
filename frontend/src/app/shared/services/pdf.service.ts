@@ -28,13 +28,6 @@ export class PdfService {
     private apiClient   : ApiClientService,
   ) { }
 
-  test(){
-    console.log('Entra!!');
-    const html = htmlToPdfmake('<p><strong>Hola</strong> Mundo!</p>');
-    const docDefinition = { content: html };
-    pdfMake.createPdf(docDefinition).download();
-  }
-
   createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined){
     //Initialize document:
     let docDefinition : any;
@@ -79,6 +72,9 @@ export class PdfService {
                 //Start and End datetime:
                 const datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
 
+                //Convert HTML to PDF Make syntax:
+                const htmlPreparation = htmlToPdfmake(res.data[0].procedure.preparation);
+
                 //Define document structure:
                 docDefinition = {
                   content: [
@@ -121,7 +117,7 @@ export class PdfService {
                         widths: ['*'],
                         body: [
                           [{ text: 'PREPARACIÓN PREVIA', style: 'header_table' }],
-                          [res.data[0].procedure.preparation]
+                          [ htmlPreparation ]
                         ]
                       }
                     }
