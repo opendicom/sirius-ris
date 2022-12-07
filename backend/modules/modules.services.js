@@ -3051,7 +3051,14 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                                 //Check cases where the domain type does not match the permission domain:
                                 //Permission organization:
                                 } else if(req.body.permissions[current].organization){
-                                    // Not allowed.
+
+                                    //Add update user patient data exception:
+                                    if(req.body.permissions[current].role == 9){
+                                        //Set operation result (allowed):
+                                        operationResult = true;
+                                    }
+                                    
+                                    // OR Not allowed.
                                     // A user authenticated with domain type at the 'branch or service level'
                                     // cannot change the permissions of another user with permissions at the 'organization level'.
 
