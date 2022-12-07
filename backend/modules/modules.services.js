@@ -2129,8 +2129,6 @@ async function addDomainCondition(req, res, domainType, completeDomain){
     if(domainType !== 'organizations' && domainType !== 'branches' && domainType !== 'services'){
         operationResult = false; /* Operation rejected */
     } else {
-        //Initializate insertCheck:
-        let insertCheck = false;
 
         //Switch by method:
         switch(method){
@@ -2711,9 +2709,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             //------------------------------------------------------------------------------------------------------------//
             // INSERT:
             case 'insert':
-                //Set insert check:
-                insertCheck = true;
-
+                
                 //Set restrictions according to schema [INSERT ONLY]:
                 switch(schema){
                     case 'organizations':
@@ -2918,7 +2914,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                 }
                 break;
             
-            // INSERT AND UPDATE (Use insertCheck to control):
+            // UPDATE:
             case 'update':
                 //Set restrictions according to schema [INSERT AND UPDATE]:
                 switch(schema){
@@ -3034,113 +3030,111 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         break;
 
                     case 'users':
-                        //Check insert (Apply only update case):
-                        if(insertCheck === false){ 
-                            //Check that permissions are being established or modified:
-                            if(req.body.permissions){
-                                //Set operation result (rejected):
-                                operationResult = false;
+                        //Check that permissions are being established or modified:
+                        if(req.body.permissions){
+                            //Set operation result (rejected):
+                            operationResult = false;
 
-                                //Loop in permisions array (Await foreach):
-                                await Promise.all(Object.keys(req.body.permissions).map(async (current) => {
+                            //Loop in permisions array (Await foreach):
+                            await Promise.all(Object.keys(req.body.permissions).map(async (current) => {
                                     
-                                    //Current cases:
-                                    //With a single element that meets the condition will be enough to allow the operation.
-                                    //The rest of the permissions that do not meet the condition may belong to another organization.
-                                    if( (domainType == 'organizations' && req.body.permissions[current].organization === domain) ||
-                                        (domainType == 'branches' && req.body.permissions[current].branch === domain) ||
-                                        (domainType == 'services' && req.body.permissions[current].service === domain) ){
+                                //Current cases:
+                                //With a single element that meets the condition will be enough to allow the operation.
+                                //The rest of the permissions that do not meet the condition may belong to another organization.
+                                if( (domainType == 'organizations' && req.body.permissions[current].organization === domain) ||
+                                    (domainType == 'branches' && req.body.permissions[current].branch === domain) ||
+                                    (domainType == 'services' && req.body.permissions[current].service === domain) ){
 
-                                        //Set operation result (allowed):
-                                        operationResult = true;
+                                    //Set operation result (allowed):
+                                    operationResult = true;
 
-                                    //Check cases where the domain type does not match the permission domain:
-                                    //Permission organization:
-                                    } else if(req.body.permissions[current].organization){
-                                        // Not allowed.
-                                        // A user authenticated with domain type at the 'branch or service level'
-                                        // cannot change the permissions of another user with permissions at the 'organization level'.
+                                //Check cases where the domain type does not match the permission domain:
+                                //Permission organization:
+                                } else if(req.body.permissions[current].organization){
+                                    // Not allowed.
+                                    // A user authenticated with domain type at the 'branch or service level'
+                                    // cannot change the permissions of another user with permissions at the 'organization level'.
 
-                                    //Permission branch:
-                                    } else if(req.body.permissions[current].branch){
-                                        //Import branches schema:
-                                        const branches = require('./branches/schemas');
+                                //Permission branch:
+                                } else if(req.body.permissions[current].branch){
+                                    //Import branches schema:
+                                    const branches = require('./branches/schemas');
 
-                                        //FindById associated branch:
-                                        await branches.Model.findById(req.body.permissions[current].branch, { _id: 1, fk_organization: 1 })
-                                        .exec()
-                                        .then(async (branchData) => {
-                                            //Check if have results:
-                                            if(branchData){
+                                    //FindById associated branch:
+                                    await branches.Model.findById(req.body.permissions[current].branch, { _id: 1, fk_organization: 1 })
+                                    .exec()
+                                    .then(async (branchData) => {
+                                        //Check if have results:
+                                        if(branchData){
 
-                                                //Domain type organization case:
-                                                if(domainType == 'organizations' && branchData.fk_organization == domain){
-                                                    //Set operation result (allowed):
-                                                    operationResult = true;
+                                            //Domain type organization case:
+                                            if(domainType == 'organizations' && branchData.fk_organization == domain){
+                                                //Set operation result (allowed):
+                                                operationResult = true;
 
-                                                //Domain type service case:
-                                                } else if(domainType == 'services'){
-                                                    // Not allowed.
-                                                    // A user authenticated with domain type at 'service level' cannot change 
-                                                    // the permissions of another user with permissions at 'branch level'.
-                                                }
+                                            //Domain type service case:
+                                            } else if(domainType == 'services'){
+                                                // Not allowed.
+                                                // A user authenticated with domain type at 'service level' cannot change 
+                                                // the permissions of another user with permissions at 'branch level'.
                                             }
-                                        })
-                                        .catch((err) => {
-                                            //Send error:
-                                            mainServices.sendError(res, currentLang.db.query_error, err);
-                                        });
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        //Send error:
+                                        mainServices.sendError(res, currentLang.db.query_error, err);
+                                    });
 
-                                    //Permission service:
-                                    } else if(req.body.permissions[current].service){
-                                        //Import services schema:
-                                        const services = require('./services/schemas');
+                                //Permission service:
+                                } else if(req.body.permissions[current].service){
+                                    //Import services schema:
+                                    const services = require('./services/schemas');
 
-                                        //FindById current permission service:
-                                        await services.Model.findById(req.body.permissions[current].service, { _id: 1, fk_branch: 1 })
-                                        .exec()
-                                        .then(async (serviceData) => {
-                                            //Check if have results:
-                                            if(serviceData){
+                                    //FindById current permission service:
+                                    await services.Model.findById(req.body.permissions[current].service, { _id: 1, fk_branch: 1 })
+                                    .exec()
+                                    .then(async (serviceData) => {
+                                        //Check if have results:
+                                        if(serviceData){
 
-                                                //Import branches schema:
-                                                const branches = require('./branches/schemas');
+                                            //Import branches schema:
+                                            const branches = require('./branches/schemas');
 
-                                                //FindById associated branch:
-                                                await branches.Model.findById(serviceData.fk_branch, { _id: 1, fk_organization: 1 })
-                                                .exec()
-                                                .then(async (branchData) => {
-                                                    //Check if have results:
-                                                    if(branchData){                                                
+                                            //FindById associated branch:
+                                            await branches.Model.findById(serviceData.fk_branch, { _id: 1, fk_organization: 1 })
+                                            .exec()
+                                            .then(async (branchData) => {
+                                                //Check if have results:
+                                                if(branchData){                                                
 
-                                                        //Domain type branch case:
-                                                        if(domainType == 'branches' && branchData._id == domain){
-                                                            //Set operation result (allowed):
-                                                            operationResult = true;
-                                                        //Domain type organization case:
-                                                        } else if(domainType == 'organizations' && branchData.fk_organization == domain){
-                                                            //Set operation result (allowed):
-                                                            operationResult = true;
-                                                        }
-
+                                                    //Domain type branch case:
+                                                    if(domainType == 'branches' && branchData._id == domain){
+                                                        //Set operation result (allowed):
+                                                        operationResult = true;
+                                                    //Domain type organization case:
+                                                    } else if(domainType == 'organizations' && branchData.fk_organization == domain){
+                                                        //Set operation result (allowed):
+                                                        operationResult = true;
                                                     }
-                                                })
-                                                .catch((err) => {
-                                                    //Send error:
-                                                    mainServices.sendError(res, currentLang.db.query_error, err);
-                                                });
-                                            }
-                                        })
-                                        .catch((err) => {
-                                            //Send error:
-                                            mainServices.sendError(res, currentLang.db.query_error, err);
-                                        });
-                                    }
 
-                                    //In the event of an update, the roles are not controlled since they may belong to another organization.
-                                }));
-                            }
+                                                }
+                                            })
+                                            .catch((err) => {
+                                                //Send error:
+                                                mainServices.sendError(res, currentLang.db.query_error, err);
+                                            });
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        //Send error:
+                                        mainServices.sendError(res, currentLang.db.query_error, err);
+                                    });
+                                }
+
+                                //In the event of an update, the roles are not controlled since they may belong to another organization.
+                            }));
                         }
+                        
                         break;
                 }
                 break;

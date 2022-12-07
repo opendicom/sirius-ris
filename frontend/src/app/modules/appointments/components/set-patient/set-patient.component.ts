@@ -145,11 +145,12 @@ export class SetPatientComponent implements OnInit {
 
     //Set current organization (To be able to add patients permissions):
     this.sharedFunctions.getLoggedOrganization(domain, domainType, (result) => {
+      //Set organization in shared properties:
       this.sharedProp.current_organization = result;
-    });
 
-    //Set organization input value (FormControl):
-    this.form.get('user.organization')?.setValue(this.sharedProp.current_organization);
+      //Set organization input value (FormControl):
+      this.form.get('user.organization')?.setValue(result);
+    });
   }
 
   validateDocument(){

@@ -1096,4 +1096,25 @@ export class SharedFunctionsService {
     return sharedProp.userLogged.permissions[0].concession.some((value: number) => check.includes(value))
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ARRAY COUNT VALUES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async arrayCountValues(array: any[]){
+    //Initialize count object:
+    const count: any = {};
+
+    await Promise.all(Object.keys(array).map((key) => {
+      if (count[array[parseInt(key, 10)]]) {
+        count[array[parseInt(key, 10)]] += 1;
+      } else {
+        count[array[parseInt(key, 10)]] = 1;
+      }
+    }));
+
+    //Return count:
+    return count;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
