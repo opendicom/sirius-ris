@@ -1117,4 +1117,32 @@ export class SharedFunctionsService {
     return count;
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DUPLICATED SURNAMES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async duplicatedSurnames(res: any){
+    //Clear all surnames in repetition controller:
+    let duplicatedSurnamesController : any = {
+      repeatedSurnames  : {},
+      allSurnames       : [],
+    }
+
+    //Keep all surnames:
+    await Promise.all(Object.keys(res.data).map((key) => {
+      duplicatedSurnamesController.allSurnames.push(res.data[key].patient.person.surname_01);
+
+      if(res.data[key].patient.person.surname_02 !== '' && res.data[key].patient.person.surname_02 !== undefined && res.data[key].patient.person.surname_02 !== null){
+        duplicatedSurnamesController.allSurnames.push(res.data[key].patient.person.surname_02);
+      }
+    }));
+
+    //Count repeated surnames:
+    duplicatedSurnamesController.repeatedSurnames = await this.arrayCountValues(duplicatedSurnamesController.allSurnames);
+
+    //Return repetition controller:
+    return duplicatedSurnamesController;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

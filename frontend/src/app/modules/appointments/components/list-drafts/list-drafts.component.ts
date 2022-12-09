@@ -56,6 +56,7 @@ export class ListDraftsComponent implements OnInit {
       content_title       : 'Listado de citas en curso',
       content_icon        : 'free_cancellation',
       add_button          : false,
+      duplicated_surnames : false,    // Check duplicated surnames
       filters_form        : true,
       filters : {
         search        : true,

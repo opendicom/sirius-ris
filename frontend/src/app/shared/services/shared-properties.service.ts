@@ -35,6 +35,12 @@ export class SharedPropertiesService {
   public selected_items : string[];
   public checked_items  : boolean[];
 
+  //Duplicated surnames controller:
+  public duplicatedSurnamesController: any = {
+    repeatedSurnames  : {},
+    allSurnames       : [],
+  }
+
   //Current operation objects:
   public current_id                 : string = '';
   public current_keysWithValues     : Array<string> = [];

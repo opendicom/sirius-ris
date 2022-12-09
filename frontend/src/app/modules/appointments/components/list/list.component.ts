@@ -64,6 +64,7 @@ export class ListComponent implements OnInit {
       add_button          : '/appointments/set_patient',
       manage_drafts       : '/appointments/list_drafts',
       appointments_drafts : false,
+      duplicated_surnames : false,    // Check duplicated surnames
       filters_form        : true,
       filters : {
         search        : true,
@@ -72,7 +73,7 @@ export class ListComponent implements OnInit {
         urgency       : true,
         status        : true,
         flow_state    : true,
-        modality      : 'modality._id', //FK name in schema
+        modality      : 'modality._id',   //FK name in schema
         pager         : true,
         clear_filters : true
       }

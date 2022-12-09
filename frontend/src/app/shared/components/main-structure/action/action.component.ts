@@ -62,6 +62,12 @@ export class ActionComponent implements OnInit {
         end   : ''
       };
       this.sharedProp.modality = '';
+
+      //Initialize duplicated surnames controller:
+      this.sharedProp.duplicatedSurnamesController = {
+        repeatedSurnames  : {},
+        allSurnames       : [],
+      }
     }
 
     //Initialize selected items:
@@ -80,7 +86,13 @@ export class ActionComponent implements OnInit {
     this.sharedProp.paramsRefresh();
 
     //Find:
-    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, async (res) => {
+      //Check if duplicate surnames check is required:
+      if(this.sharedProp.action.duplicated_surnames === true){
+        //Count duplicated surnames:
+        this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
+      }
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

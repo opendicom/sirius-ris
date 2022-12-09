@@ -78,15 +78,15 @@
         <span *ngIf="element.patient">
           <span *ngIf="element.patient.person">
             <span
-              matTooltip="{{ repetitionController.repeatedSurnames[element.patient.person.surname_01] > 1 ? 'ATENCIÓN: Apellido duplicado.' : ''}}"
-              [class.repeated_surname]="repetitionController.repeatedSurnames[element.patient.person.surname_01] > 1"
+              matTooltip="{{ sharedProp.duplicatedSurnamesController.repeatedSurnames[element.patient.person.surname_01] > 1 ? 'ATENCIÓN: Apellido duplicado.' : ''}}"
+              [class.repeated_surname]="sharedProp.duplicatedSurnamesController.repeatedSurnames[element.patient.person.surname_01] > 1"
               innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"
             ></span>
 
             <span *ngIf="element.patient.person.surname_02">
               <span
-                matTooltip="{{ repetitionController.repeatedSurnames[element.patient.person.surname_02] > 1 ? 'ATENCIÓN: Apellido duplicado.' : ''}}"
-                [class.repeated_surname]="repetitionController.repeatedSurnames[element.patient.person.surname_02] > 1"
+                matTooltip="{{ sharedProp.duplicatedSurnamesController.repeatedSurnames[element.patient.person.surname_02] > 1 ? 'ATENCIÓN: Apellido duplicado.' : ''}}"
+                [class.repeated_surname]="sharedProp.duplicatedSurnamesController.repeatedSurnames[element.patient.person.surname_02] > 1"
                 innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"
               ></span>
             </span>

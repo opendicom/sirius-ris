@@ -29,10 +29,11 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Listado de modalidades',
-      content_icon    : 'multiple_stop',
-      add_button      : '/modalities/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
-      filters_form    : true,
+      content_title       : 'Listado de modalidades',
+      content_icon        : 'multiple_stop',
+      add_button          : '/modalities/form/insert/0',    // Zero indicates empty :id (Activated Route) [content is ignored]
+      duplicated_surnames : false,                          // Check duplicated surnames
+      filters_form        : true,
       filters : {
         search        : true,
         date          : false,

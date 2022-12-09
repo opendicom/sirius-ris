@@ -29,11 +29,12 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Listado de turnos',
-      content_icon    : 'date_range',
-      add_button      : '/slots/form/insert/0', //Zero indicates empty :id (Activated Route) [content is ignored]
-      add_slots_batch : '/slots/batch',
-      filters_form    : true,
+      content_title       : 'Listado de turnos',
+      content_icon        : 'date_range',
+      add_button          : '/slots/form/insert/0',   // Zero indicates empty :id (Activated Route) [content is ignored]
+      add_slots_batch     : '/slots/batch',
+      duplicated_surnames : false,                    // Check duplicated surnames
+      filters_form        : true,
       filters : {
         search        : true,
         date          : false,

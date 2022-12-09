@@ -19,12 +19,6 @@ export class ListComponent implements OnInit {
   public document_types         : any = document_types;
   public gender_types           : any = gender_types;
 
-  //Initialize repetition controller:
-  public repetitionController: any = {
-    repeatedSurnames  : {},
-    allSurnames       : [],
-  }
-
   //Set visible columns of the list:
   public displayedColumns: string[] = [
     'order',
@@ -51,6 +45,7 @@ export class ListComponent implements OnInit {
       content_title       : 'Recepción de pacientes',
       content_icon        : 'today',
       add_button          : false,
+      duplicated_surnames : true,   // Check duplicated surnames
       filters_form        : true,
       filters : {
         search        : true,
@@ -149,21 +144,8 @@ export class ListComponent implements OnInit {
 
         //First search (List):
         this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, async (res) => {
-
-          //Clear all surnames in repetition controller:
-          this.repetitionController.allSurnames = [];
-
-          //Keep all surnames:
-          await Promise.all(Object.keys(res.data).map((key) => {
-            this.repetitionController.allSurnames.push(res.data[key].patient.person.surname_01);
-
-            if(res.data[key].patient.person.surname_02 !== '' && res.data[key].patient.person.surname_02 !== undefined && res.data[key].patient.person.surname_02 !== null){
-              this.repetitionController.allSurnames.push(res.data[key].patient.person.surname_02);
-            }
-          }));
-
-          //Count repeated surnames:
-          this.repetitionController.repeatedSurnames = await this.sharedFunctions.arrayCountValues(this.repetitionController.allSurnames);
+          //Count duplicated surnames:
+          this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
         });
 
       } else {
