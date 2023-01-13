@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -17,6 +17,9 @@ import {                                                                        
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
+
+// Child components:
+import { TabSlotComponent } from '@modules/appointments/components/form-update/tab-slot/tab-slot.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -25,6 +28,9 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
   styleUrls: ['./tab-details.component.css']
 })
 export class TabDetailsComponent implements OnInit {
+  //Import tabs components (Properties and Methods) [Child components]:
+  @ViewChild(TabSlotComponent) tabSlot!:TabSlotComponent;
+
   //Set component properties:
   public settings             : any = app_setting;
   public inpatient_types      : any = inpatient_types;
@@ -363,10 +369,22 @@ export class TabDetailsComponent implements OnInit {
   }
 
   onClickFlowState(value: any){
-    if(value == 'A02'){
-      this.booleanCancelation = true;
-    } else {
-      this.booleanCancelation = false;
+    switch(value){
+      case 'A01':
+        this.booleanCancelation = false;
+
+        //Refresh current_flow_state in sharedProp for enable slot tab:
+        this.sharedProp.current_flow_state = 'A01';
+
+        //Excecute manual onInit:
+        this.tabSlot.test();
+        break;  
+      case 'A02':
+        this.booleanCancelation = true;
+
+        //Refresh current_flow_state in sharedProp for disable slot tab:
+        this.sharedProp.current_flow_state = 'A02';
+        break;
     }
   }
 }

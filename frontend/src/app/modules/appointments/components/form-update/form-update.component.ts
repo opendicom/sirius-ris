@@ -85,7 +85,7 @@ export class FormUpdateComponent implements OnInit {
               //Excecute manual onInit childrens components:
               this.tabDetails.manualOnInit(res);
 
-              //Only coordinated appointments have control in slot tab.
+              //Only coordinated appointments have control in slot tab:
               if(res.data[0].flow_state == 'A01' && res.data[0].status === true){ this.tabSlot.manualOnInit(); }
             });
           });

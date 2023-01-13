@@ -19,6 +19,7 @@ backend/target/
 frontend/.angular/cache/*
 
 # IDE - VISUAL STUDIO CODE:
+.vscode/*
 frontend/.vscode/*
 frontend/!.vscode/settings.json
 frontend/!.vscode/tasks.json

@@ -21,7 +21,8 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update', 'delete'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
-        mwl                     : ['insert']
+        mwl                     : ['insert'],
+        pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
     },
 
     //Administrador:
@@ -41,7 +42,8 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
-        mwl                     : ['insert']
+        mwl                     : ['insert'],
+        pathologies             : ['find', 'findOne', 'insert', 'update'],
     },
 
     //Médico:
@@ -61,7 +63,8 @@ const rolePermissions = {
         files                   : ['find', 'findOne'],
         appointments            : ['find', 'findOne'],
         appointments_drafts     : [],
-        mwl                     : []
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
     },
 
     //Coordinador:
@@ -81,7 +84,8 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
-        mwl                     : []
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
     },
 
     //Recepcionista:
@@ -101,7 +105,8 @@ const rolePermissions = {
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'update'],
         appointments_drafts     : [],
-        mwl                     : ['insert']
+        mwl                     : ['insert'],
+        pathologies             : ['find', 'findOne'],
     },
 
     //Paciente:
@@ -120,7 +125,8 @@ const rolePermissions = {
         files                   : [],
         appointments            : ['find', 'findOne'],
         appointments_drafts     : [],
-        mwl                     : []
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
     }
 }
 

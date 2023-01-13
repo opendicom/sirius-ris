@@ -993,12 +993,15 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             break;
 
         case 'appointments':
-            //affectedCollections.push('studies');
+            //affectedCollections.push('performing');
             break;
 
         case 'files':
             affectedCollections.push('appointments');
-            //affectedCollections.push('studies');
+            break;
+
+        case 'pathologies':
+            //affectedCollections.push('reports');
             break;
     }
 
@@ -2537,6 +2540,58 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             }
     
                             break;
+
+                        case 'branches':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['fk_organization'] = domain;
+                            
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['_id'] = completeDomain.branch;
+                            }
+
+                        } else {
+                            //Switch by domain type: 
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['fk_organization'] = domain;
+                            
+                            } else if(domainType == 'branches'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = domain;
+
+                            } else if(domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['_id'] = completeDomain.branch;
+                            }
+                        }
+                        break;
+
+                    case 'pathologies':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+    
+                            //Add domain condition:
+                            req.query.filter.and['fk_organization'] = completeDomain.organization;
+    
+                        } else {
+                            //Add domain condition:
+                            req.query.filter['fk_organization'] = completeDomain.organization;
+                        }
+                        break;
                         
                     case 'users':
                         //Create explicit $OR operator:
@@ -2785,6 +2840,17 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         }
                         break;
 
+                    case 'pathologies':
+                        //Current cases to eval:
+                        if(domainType == 'organizations' && req.body.fk_organization !== domain){
+                            operationResult = false; /* Operation rejected */
+                        
+                        //To insert a pathology it can only be domainType organization (Administrator role only):
+                        } else if(domainType == 'branches' || domainType == 'services'){
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
                     case 'people':
                         //No restrictions here.
                         //People must be accessible from all organizations (single database of people).
@@ -3017,6 +3083,25 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             } else if(domainType == 'branches' && referencedAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
                             } else if(domainType == 'services' && referencedAppointment.imaging.service != domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
+                    case 'pathologies':
+                        //Get Domain Reference:
+                        const referencedPathology = await getDomainReference(schema, req.body._id, { 'fk_organization' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedPathology !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && referencedPathology.fk_organization != domain){
+                                operationResult = false; /* Operation rejected */
+
+                            //To update a procedure it can only be domainType organization (Administrator role only):
+                            } else if(domainType == 'branches' || domainType == 'services'){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {

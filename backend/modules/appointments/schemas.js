@@ -255,6 +255,11 @@ const Validator = [
 
     body('end').trim(),
 
+    body('flow_state')
+        .trim()
+        .isLength({ min: 3, max: 3 })
+        .withMessage('El parametro flow_state ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
+
     body('fk_slot')
         .trim()
         .isMongoId()

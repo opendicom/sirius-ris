@@ -704,4 +704,9 @@ export class TabSlotComponent implements OnInit {
       }));
     }
   }
+
+  test(){
+    alert('TEST WORKS!!');
+    console.log('TEST WORKS!!');
+  }
 }

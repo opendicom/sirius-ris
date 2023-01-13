@@ -115,10 +115,11 @@ export const studies_flow_states = {
   'S02': 'Para entrevistar',
   'S03': 'Para inyectar/preparar',
   'S04': 'Para consola',              // Adquisición de imágenes
-  'S05': 'Para liberar',
+  'S05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
   'S06': 'Para informar',
-  'S07': 'Cancelado',
-  'S08': 'Para eliminar'
+  'S07': 'Terminado (sin informe)',
+  'S08': 'Cancelado',
+  'S09': 'Para eliminar'
 };
 
 // Reports flow states:

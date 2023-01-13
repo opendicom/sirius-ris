@@ -39,16 +39,16 @@ services:
 #    volumes:
 #      - ./nginx/conf.d:/etc/nginx/conf.d/
 #      - ./frontend/dist/sirius-ris:/usr/share/nginx/html:ro
-#      # - ./nginx/ssl:/etc/ssl/
+#      - ./nginx/ssl:/etc/ssl/
 #    ports:
-#     - 4000:4000
+#     - 4000:80
 #    environment:
 #      TZ: 'America/Argentina/Buenos_Aires'
 #    depends_on:
 #      - opendicom_sirius_backend
 #    restart: unless-stopped
 #    networks:
-#      - sirius_net
+#      - opendicom_net
 
 networks:
   opendicom_net:
