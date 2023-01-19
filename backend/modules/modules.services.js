@@ -1003,6 +1003,10 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         case 'pathologies':
             //affectedCollections.push('reports');
             break;
+
+        case 'performing':
+            //affectedCollections.push('reports');
+            break;
     }
 
     //Import affected schemas:
@@ -1889,6 +1893,90 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                     return filter;
                 });
                 break;
+
+            case 'performing':
+            filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_appointment'] != undefined){ filter[asPrefix + 'fk_appointment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment']); };
+                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
+
+                if(filter[asPrefix + 'injection.injection_technician'] != undefined){ filter[asPrefix + 'injection.injection_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician']); };
+                if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
+                
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'date'][explicitOperator] = new Date(filter[asPrefix + 'date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'date'] = new Date(filter[asPrefix + 'date']);
+                        }
+                    });
+                }
+
+                if(filter[asPrefix + 'cancellation_reasons'] != undefined){ filter[asPrefix + 'cancellation_reasons'] = parseInt(filter[asPrefix + 'cancellation_reasons'], 10); }
+                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+
+                //Injection:
+                if(filter[asPrefix + 'injection.administered_volume'] != undefined){ filter[asPrefix + 'injection.administered_volume'] = parseInt(filter[asPrefix + 'injection.administered_volume'], 10); }
+                if(filter[asPrefix + 'injection.injection_technician'] != undefined){ filter[asPrefix + 'injection.injection_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician']); };
+
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'injection.administration_time'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'injection.administration_time'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'injection.administration_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.administration_time'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'injection.administration_time'] = new Date(filter[asPrefix + 'injection.administration_time']);
+                        }
+                    });
+                }
+
+                //PET-CT:
+                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'], 10); }
+                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'], 10); }
+                if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseInt(filter[asPrefix + 'injection.pet_ct.administred_activity'], 10); }
+
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'injection.pet_ct.syringe_full_time'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_full_time'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'injection.pet_ct.syringe_full_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_full_time'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'injection.pet_ct.syringe_full_time'] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_full_time']);
+                        }
+                    });
+                }
+
+                if(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'injection.pet_ct.syringe_empty_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'injection.pet_ct.syringe_empty_time'] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_empty_time']);
+                        }
+                    });
+                }
+
+                //Acquisition:
+                if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
+                
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'acquisition.time'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'acquisition.time'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'acquisition.time'][explicitOperator] = new Date(filter[asPrefix + 'acquisition.time'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'acquisition.time'] = new Date(filter[asPrefix + 'acquisition.time']);
+                        }
+                    });
+                }
+
+                return filter;
+            });
+            break;
     }
 
     //Return adjusted filter:
@@ -2541,41 +2629,8 @@ async function addDomainCondition(req, res, domainType, completeDomain){
     
                             break;
 
-                        case 'branches':
-                        //Check whether it has operator or not:
-                        if(haveOperator){
-                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
-                            if(!filter.and){ req.query.filter['and'] = []; }
-
-                            //Switch by domain type: 
-                            if(domainType == 'organizations'){
-                                //Add domain condition:
-                                req.query.filter.and['fk_organization'] = domain;
-                            
-                            } else if(domainType == 'branches'){
-                                //Add domain condition:
-                                req.query.filter.and['_id'] = domain;
-
-                            } else if(domainType == 'services'){
-                                //Add domain condition:
-                                req.query.filter.and['_id'] = completeDomain.branch;
-                            }
-
-                        } else {
-                            //Switch by domain type: 
-                            if(domainType == 'organizations'){
-                                //Add domain condition:
-                                req.query.filter['fk_organization'] = domain;
-                            
-                            } else if(domainType == 'branches'){
-                                //Add domain condition:
-                                req.query.filter['_id'] = domain;
-
-                            } else if(domainType == 'services'){
-                                //Add domain condition:
-                                req.query.filter['_id'] = completeDomain.branch;
-                            }
-                        }
+                    case 'performing':
+                        //CONTINUAR ACÁ!!!
                         break;
 
                     case 'pathologies':

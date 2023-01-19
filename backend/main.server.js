@@ -32,6 +32,7 @@ module.exports = function() {
     const appointments_draftsRoutes     = require('./modules/appointments_drafts/routes');
     const mwlRoutes                     = require('./modules/mwl/routes');
     const pathologiesRoutes             = require('./modules/pathologies/routes');
+    const performingRoutes              = require('./modules/performing/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -142,6 +143,7 @@ module.exports = function() {
     app.use('/appointments_drafts',     appointments_draftsRoutes);
     app.use('/mwl',                     mwlRoutes);
     app.use('/pathologies',             pathologiesRoutes);
+    app.use('/performing',              performingRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });

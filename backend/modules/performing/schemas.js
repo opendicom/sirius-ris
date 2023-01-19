@@ -88,7 +88,12 @@ const Validator = [
         .isLength({ min: 3, max: 3 })
         .withMessage('El parametro flow_state ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
 
-    body('date').trim(),
+    body('date')
+        .not()
+        .isEmpty()
+        .trim()
+        .toDate()
+        .withMessage('El parametro date es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
 
     body('fk_equipment')
         .trim()
@@ -106,6 +111,7 @@ const Validator = [
         .withMessage('El parametro extra_procedures debe ser un array.'),
 
     body('extra_procedures.*')
+        .if(body('extra_procedures').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
         .withMessage('El parametro extra_procedures.* NO es un ID MongoDB válido.'),
@@ -128,28 +134,33 @@ const Validator = [
     body('anesthetic').optional(),
 
     body('anesthetic.procedure')
+        .if(body('anesthetic').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro anesthetic.procedure ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
 
     body('anesthetic.professional_id')
+        .if(body('anesthetic').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 30 })
         .withMessage('El parametro anesthetic.professional_id ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('anesthetic.document')
+        .if(body('anesthetic').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 25 })
         .withMessage('El parametro anesthetic.document ingresado es demasiado corto o demasiado largo (min: 3, max: 25 [caracteres]).'),
 
     body('anesthetic.name')
+        .if(body('anesthetic').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 30 })
         .withMessage('El parametro anesthetic.name ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     
     body('anesthetic.surname')
+        .if(body('anesthetic').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 10, max: 30 })
+        .isLength({ min: 3, max: 30 })
         .withMessage('El parametro anesthetic.surname ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
@@ -166,18 +177,27 @@ const Validator = [
         .withMessage('El parametro injection.batch ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('injection.administered_volume')
+        .if(body('injection').exists())   // Check if parent exists.
         .trim()
         .isInt()
         .withMessage('El parametro injection.administered_volume debe ser numérico.'),
 
-    body('injection.administration_time').trim(),
+    body('injection.administration_time')
+        .if(body('injection').exists())   // Check if parent exists.
+        .not()
+        .isEmpty()
+        .trim()
+        .toDate()
+        .withMessage('El parametro injection.administration_time es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
 
     body('injection.injection_technician')
+        .if(body('injection').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
         .withMessage('El parametro injection.injection_technician NO es un ID MongoDB válido.'),
 
     body('injection.observations')
+        .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro injection.observations ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
@@ -186,23 +206,30 @@ const Validator = [
     body('injection.pet_ct').optional(),
 
     body('injection.pet_ct.syringe_activity_full')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
         .isInt()
         .withMessage('El parametro injection.pet_ct.syringe_activity_full debe ser numérico.'),
 
     body('injection.pet_ct.syringe_activity_empty')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
         .isInt()
         .withMessage('El parametro injection.pet_ct.syringe_activity_empty debe ser numérico.'),
 
     body('injection.pet_ct.administred_activity')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
         .isInt()
         .withMessage('El parametro injection.pet_ct.administred_activity debe ser numérico.'),
 
-    body('injection.pet_ct.syringe_full_time').trim(),
+    body('injection.pet_ct.syringe_full_time')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
+        .trim(),
 
-    body('injection.pet_ct.syringe_empty_time').trim(),
+    body('injection.pet_ct.syringe_empty_time')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
+        .trim(),
     //----------------------------------------------------------------------------------------------------------------//
 
 
@@ -211,14 +238,22 @@ const Validator = [
     //----------------------------------------------------------------------------------------------------------------//
     body('acquisition').optional(),
 
-    body('acquisition.time').trim(),
+    body('acquisition.time')
+        .if(body('acquisition').exists())   // Check if parent exists.
+        .not()
+        .isEmpty()
+        .trim()
+        .toDate()
+        .withMessage('El parametro acquisition.time es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
 
     body('acquisition.console_technician')
+        .if(body('acquisition').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
         .withMessage('El parametro acquisition.console_technician NO es un ID MongoDB válido.'),
 
     body('acquisition.observations')
+        .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro acquisition.observations ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),

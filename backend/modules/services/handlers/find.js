@@ -51,6 +51,38 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$organization", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
+
+        //------------------------------------------------------------------------------------------------------------//
+        // REMOVE DUPLICATED VALUES (SET DEFAULT PROJECTION):
+        // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
+        //------------------------------------------------------------------------------------------------------------//
+        { $project: {
+            //Self:
+            'createdAt': 0,
+            'updatedAt': 0,
+            '__v': 0,
+
+            //Organization:
+            'organization.createdAt': 0,
+            'organization.updatedAt': 0,
+            'organization.__v': 0,
+
+            //Branch:
+            'branch.createdAt': 0,
+            'branch.updatedAt': 0,
+            'branch.__v': 0,
+
+            //Modality:
+            'modality.createdAt': 0,
+            'modality.updatedAt': 0,
+            'modality.__v': 0,
+
+            //Equipments:
+            'equipments.createdAt': 0,
+            'equipments.updatedAt': 0,
+            'equipments.__v': 0
+        }}
+        //------------------------------------------------------------------------------------------------------------//
     ];    
 
     //Correct data types for match operation:

@@ -125,14 +125,125 @@ module.exports = async (req, res, currentSchema) => {
         // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
         //------------------------------------------------------------------------------------------------------------//
         { $project: {
-            'fk_slot': 0,
+            //Self:
+            'createdAt': 0,
+            'updatedAt': 0,
+            '__v': 0,
+
+            //Imaging:
+            'imaging.organization.createdAt': 0,
+            'imaging.organization.updatedAt': 0,
+            'imaging.organization.__v': 0,
+
+            'imaging.branch.createdAt': 0,
+            'imaging.branch.updatedAt': 0,
+            'imaging.branch.__v': 0,
+
+            'imaging.service.createdAt': 0,
+            'imaging.service.updatedAt': 0,
+            'imaging.service.__v': 0,
+
+            //Referring:
+            'referring.organization.createdAt': 0,
+            'referring.organization.updatedAt': 0,
+            'referring.organization.__v': 0,
+
+            'referring.branch.createdAt': 0,
+            'referring.branch.updatedAt': 0,
+            'referring.branch.__v': 0,
+
+            'referring.service.createdAt': 0,
+            'referring.service.updatedAt': 0,
+            'referring.service.__v': 0,
+
+            'referring.fk_referring.fk_person': 0,
+            'referring.fk_referring.password': 0,
+            'referring.fk_referring.permissions': 0,
+            'referring.fk_referring.settings': 0,
+            'referring.fk_referring.createdAt': 0,
+            'referring.fk_referring.updatedAt': 0,
+            'referring.fk_referring.__v': 0,
+
+            //Reporting:
+            'reporting.organization.createdAt': 0,
+            'reporting.organization.updatedAt': 0,
+            'reporting.organization.__v': 0,
+
+            'reporting.branch.createdAt': 0,
+            'reporting.branch.updatedAt': 0,
+            'reporting.branch.__v': 0,
+
+            'reporting.service.createdAt': 0,
+            'reporting.service.updatedAt': 0,
+            'reporting.service.__v': 0,
+
+            'reporting.fk_reporting.fk_person': 0,
+            'reporting.fk_reporting.password': 0,
+            'reporting.fk_reporting.permissions': 0,
+            'reporting.fk_reporting.settings': 0,
+            'reporting.fk_reporting.createdAt': 0,
+            'reporting.fk_reporting.updatedAt': 0,
+            'reporting.fk_reporting.__v': 0,
+
+            //Imaging -> Service -> Modality:
+            'modality.createdAt': 0,
+            'modality.updatedAt': 0,
+            'modality.__v': 0,
+
+            //Patient:
             'fk_patient': 0,
-            'patient.permissions': 0, 
+            'patient.fk_person': 0,
             'patient.password': 0,
-            'fk_coordinator': 0, 
-            'coordinator.permissions': 0, 
-            'coordinator.password': 0, 
-            'fk_procedure': 0
+            'patient.permissions': 0,
+            'patient.settings': 0,
+            'patient.createdAt': 0,
+            'patient.updatedAt': 0,
+            'patient.__v': 0,
+            'patient.person.createdAt': 0,
+            'patient.person.updatedAt': 0,
+            'patient.person.__v': 0,
+
+            //Coordinator:
+            'coordinator.fk_person': 0,
+            'coordinator.password': 0,
+            'coordinator.permissions': 0,
+            'coordinator.settings': 0,
+            'coordinator.createdAt': 0,
+            'coordinator.updatedAt': 0,
+            'coordinator.__v': 0,
+            'coordinator.person.createdAt': 0,
+            'coordinator.person.updatedAt': 0,
+            'coordinator.person.__v': 0,
+
+            //Slot:
+            'fk_slot': 0,
+            'slot.createdAt': 0,
+            'slot.updatedAt': 0,
+            'slot.__v': 0,
+
+            //Slot -> Equipment:
+            'slot.equipment.createdAt': 0,
+            'slot.equipment.updatedAt': 0,
+            'slot.equipment.__v': 0,
+
+            //Procedure:
+            'fk_procedure': 0,
+            'procedure.createdAt': 0,
+            'procedure.updatedAt': 0,
+            'procedure.__v': 0,
+            
+            //Attached files:
+            'attached_files.createdAt': 0,
+            'attached_files.updatedAt': 0,
+            'attached_files.__v': 0,
+
+            //Consents:
+            'consents.informed_consent.createdAt': 0,
+            'consents.informed_consent.updatedAt': 0,
+            'consents.informed_consent.__v': 0,
+            'consents.clinical_trial.createdAt': 0,
+            'consents.clinical_trial.updatedAt': 0,
+            'consents.clinical_trial.__v': 0
         }}
         //------------------------------------------------------------------------------------------------------------//
     ];    

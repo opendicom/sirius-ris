@@ -109,8 +109,8 @@ export const cancellation_reasons = {
   12  : "Otro"
 }
 
-// Studies flow states:
-export const studies_flow_states = {
+// Performing flow states:
+export const performing_flow_states = {
   'S01': 'Recepción',
   'S02': 'Para entrevistar',
   'S03': 'Para inyectar/preparar',
