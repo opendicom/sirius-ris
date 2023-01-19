@@ -358,6 +358,8 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'appointments', 'appointment');
         filter = await moduleServices.adjustDataTypes(filter, 'equipments', 'equipment');
         filter = await moduleServices.adjustDataTypes(filter, 'procedures', 'procedure');
+        filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'patient');
 
         //Set condition:
         const condition = await moduleServices.setCondition(filter, regex);

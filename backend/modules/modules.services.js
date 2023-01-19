@@ -1723,33 +1723,16 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'appointments':
             filter = adjustCondition(filter, (filter) => {
-                //Imaging:
-                if(filter[asPrefix + 'imaging.organization'] != undefined){ filter[asPrefix + 'imaging.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization']); };
-                if(filter[asPrefix + 'imaging.branch'] != undefined){ filter[asPrefix + 'imaging.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch']); };
-                if(filter[asPrefix + 'imaging.service'] != undefined){ filter[asPrefix + 'imaging.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service']); };
-
                 //Imaging - Post aggregate lookup:
                 if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
                 if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
                 if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
-
-                //Referring:
-                if(filter[asPrefix + 'referring.organization'] != undefined){ filter[asPrefix + 'referring.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization']); };
-                if(filter[asPrefix + 'referring.branch'] != undefined){ filter[asPrefix + 'referring.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch']); };
-                if(filter[asPrefix + 'referring.service'] != undefined){ filter[asPrefix + 'referring.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service']); };
-                if(filter[asPrefix + 'referring.fk_referring'] != undefined){ filter[asPrefix + 'referring.fk_referring'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring']); };
 
                 //Referring - Post aggregate lookup:
                 if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
                 if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
                 if(filter[asPrefix + 'referring.service._id'] != undefined){ filter[asPrefix + 'referring.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service._id']); };
                 if(filter[asPrefix + 'referring.fk_referring._id'] != undefined){ filter[asPrefix + 'referring.fk_referring._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring._id']); };
-
-                //Reporting:
-                if(filter[asPrefix + 'reporting.organization'] != undefined){ filter[asPrefix + 'reporting.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization']); };
-                if(filter[asPrefix + 'reporting.branch'] != undefined){ filter[asPrefix + 'reporting.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch']); };
-                if(filter[asPrefix + 'reporting.service'] != undefined){ filter[asPrefix + 'reporting.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service']); };
-                if(filter[asPrefix + 'reporting.fk_reporting'] != undefined){ filter[asPrefix + 'reporting.fk_reporting'] = filter[asPrefix + 'reporting.fk_reporting'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting']); }
 
                 //Reporting - Post aggregate lookup:
                 if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
@@ -1850,11 +1833,6 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
             case 'appointments_drafts':
                 filter = adjustCondition(filter, (filter) => {
-                    //Imaging:
-                    if(filter[asPrefix + 'imaging.organization'] != undefined){ filter[asPrefix + 'imaging.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization']); };
-                    if(filter[asPrefix + 'imaging.branch'] != undefined){ filter[asPrefix + 'imaging.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch']); };
-                    if(filter[asPrefix + 'imaging.service'] != undefined){ filter[asPrefix + 'imaging.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service']); };
-    
                     //Imaging - Post aggregate lookup:
                     if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
                     if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
@@ -1896,15 +1874,13 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
             case 'performing':
             filter = adjustCondition(filter, (filter) => {
+                //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_appointment'] != undefined){ filter[asPrefix + 'fk_appointment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment']); };
                 if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
                 if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
 
-                if(filter[asPrefix + 'injection.injection_technician'] != undefined){ filter[asPrefix + 'injection.injection_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician']); };
-                if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
-                
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'date'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'date'], (explicitOperator) => {
@@ -1917,13 +1893,10 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 if(filter[asPrefix + 'cancellation_reasons'] != undefined){ filter[asPrefix + 'cancellation_reasons'] = parseInt(filter[asPrefix + 'cancellation_reasons'], 10); }
-                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };                
 
                 //Injection:
                 if(filter[asPrefix + 'injection.administered_volume'] != undefined){ filter[asPrefix + 'injection.administered_volume'] = parseInt(filter[asPrefix + 'injection.administered_volume'], 10); }
-                if(filter[asPrefix + 'injection.injection_technician'] != undefined){ filter[asPrefix + 'injection.injection_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician']); };
-
-                //Set allowed explicit operators:
                 if(filter[asPrefix + 'injection.administration_time'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'injection.administration_time'], (explicitOperator) => {
                         if(explicitOperator){
@@ -1934,12 +1907,46 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                     });
                 }
 
+                //Injection technician - Post aggregate lookup:
+                if(filter[asPrefix + 'injection.injection_technician._id'] != undefined){ filter[asPrefix + 'injection.injection_technician._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician._id']); };
+                if(filter[asPrefix + 'injection.injection_technician.status'] != undefined){ filter[asPrefix + 'injection.injection_technician.status'] = mainServices.stringToBoolean(filter[asPrefix + 'injection.injection_technician.status']); };
+                if(filter[asPrefix + 'injection.injection_technician.person._id'] != undefined){ filter[asPrefix + 'injection.injection_technician.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician.person._id']); };
+                if(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'], 10); }
+                if(filter[asPrefix + 'injection.injection_technician.person.gender'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.gender'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.gender'], 10); }
+                if(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] = filter[asPrefix + 'injection.injection_technician.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'], 10); }
+                
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'injection.injection_technician.person.birth_date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'injection.injection_technician.person.birth_date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'injection.injection_technician.person.birth_date'][explicitOperator] = new Date(filter[asPrefix + 'injection.injection_technician.person.birth_date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'injection.injection_technician.person.birth_date'] = new Date(filter[asPrefix + 'injection.injection_technician.person.birth_date']);
+                        }
+                    });
+                }
+
+                //Acquisition console technician - Post aggregate lookup:
+                if(filter[asPrefix + 'acquisition.console_technician._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician._id']); };
+                if(filter[asPrefix + 'acquisition.console_technician.status'] != undefined){ filter[asPrefix + 'acquisition.console_technician.status'] = mainServices.stringToBoolean(filter[asPrefix + 'acquisition.console_technician.status']); };
+                if(filter[asPrefix + 'acquisition.console_technician.person._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician.person._id']); };
+                if(filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'], 10); }
+                if(filter[asPrefix + 'acquisition.console_technician.person.gender'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.gender'] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.gender'], 10); }
+                if(filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'] = filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'], 10); }
+                if(filter[asPrefix + 'acquisition.console_technician.person.birth_date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'acquisition.console_technician.person.birth_date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'acquisition.console_technician.person.birth_date'][explicitOperator] = new Date(filter[asPrefix + 'acquisition.console_technician.person.birth_date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'acquisition.console_technician.person.birth_date'] = new Date(filter[asPrefix + 'acquisition.console_technician.person.birth_date']);
+                        }
+                    });
+                }
+
                 //PET-CT:
                 if(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseInt(filter[asPrefix + 'injection.pet_ct.administred_activity'], 10); }
-
-                //Set allowed explicit operators:
                 if(filter[asPrefix + 'injection.pet_ct.syringe_full_time'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_full_time'], (explicitOperator) => {
                         if(explicitOperator){
@@ -1950,6 +1957,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                     });
                 }
 
+                //Set allowed explicit operators:
                 if(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'], (explicitOperator) => {
                         if(explicitOperator){
@@ -1962,8 +1970,6 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
                 //Acquisition:
                 if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
-                
-                //Set allowed explicit operators:
                 if(filter[asPrefix + 'acquisition.time'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'acquisition.time'], (explicitOperator) => {
                         if(explicitOperator){
@@ -2630,7 +2636,66 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             break;
 
                     case 'performing':
-                        //CONTINUAR ACÁ!!!
+                        //Initializate composite domain objects:
+                        let appointment_imaging = {};
+                        let appointment_referring = {};
+                        let appointment_fk_referring = {};
+                        let appointment_reporting = {};
+                        let appointment_fk_reporting = {};
+
+                        //Create filter and first explicit $AND operator (if not exist):
+                        if(!filter){ req.query.filter = {}; }
+                        req.query.filter['$and'] = [];
+
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            appointment_imaging['appointment.imaging.organization._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.organization._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.organization._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+
+                        } else if(domainType == 'branches'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            appointment_imaging['appointment.imaging.branch._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.branch._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.branch._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+
+                        } else if(domainType == 'services'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            appointment_imaging['appointment.imaging.service._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.service._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.service._id'] = mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+                        }
                         break;
 
                     case 'pathologies':

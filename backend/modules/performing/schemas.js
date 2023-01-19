@@ -71,7 +71,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = [];
+const AllowedUnsetValues = ['extra_procedures', 'cancellation_reasons', 'anesthetic', 'injection',  'injection.pet_ct', 'acquisition'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
