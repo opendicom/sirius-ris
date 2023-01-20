@@ -37,7 +37,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = [];
+const AllowedUnsetValues = ['findings', 'medical_signatures', 'pathologies'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

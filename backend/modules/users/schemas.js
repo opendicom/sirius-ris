@@ -60,7 +60,9 @@ const ForeignKeys = {
     Plural      : 'fk_users',
     Patient     : 'fk_patient',
     Referring   : 'fk_referring',
-    Reporting   : 'fk_reporting'
+    Reporting   : 'fk_reporting',
+    Injection   : 'injection_technician',
+    Console     : 'console_technician'
 };
 
 //Register allowed unset values:

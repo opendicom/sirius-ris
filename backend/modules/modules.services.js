@@ -953,6 +953,8 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('sessions');
             affectedCollections.push('appointments');
             affectedCollections.push('appointments_drafts');
+            affectedCollections.push('performing');
+            //affectedCollections.push('signatures');
 
         case 'people':
             affectedCollections.push('users');
@@ -960,40 +962,63 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
         case 'organizations':
             affectedCollections.push('branches');
+            affectedCollections.push('slots');
+            affectedCollections.push('procedures');
+            affectedCollections.push('procedure_categories');
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
+            affectedCollections.push('files');
+            //affectedCollections.push('pathologies');
             break;
 
         case 'branches':
             affectedCollections.push('services');
+            affectedCollections.push('equipments');
+            affectedCollections.push('slots');
+            affectedCollections.push('procedures');
+            affectedCollections.push('procedure_categories');
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
+            affectedCollections.push('files');
             break;
 
         case 'services':
             affectedCollections.push('slots');
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
             break;
 
         case 'modalities':
             affectedCollections.push('services');
             affectedCollections.push('equipments');
+            affectedCollections.push('procedures');
             break;
 
         case 'equipments':
             affectedCollections.push('services');
+            affectedCollections.push('procedures');
+            affectedCollections.push('slots');
+            affectedCollections.push('performing');
+            //affectedCollections.push('procedure_templates');
             break;
 
         case 'slots':
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
             break;
 
         case 'procedures':
             affectedCollections.push('slots');
             affectedCollections.push('procedure_categories');
             affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
+            affectedCollections.push('performing');
+            //affectedCollections.push('reports');
+            //affectedCollections.push('procedure_templates');
             break;
 
         case 'appointments':
-            //affectedCollections.push('performing');
+            affectedCollections.push('performing');
             break;
 
         case 'files':
@@ -1006,6 +1031,10 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
         case 'performing':
             //affectedCollections.push('reports');
+            break;
+
+        case 'reports':
+            //Nothing at the moment.
             break;
     }
 
@@ -1027,6 +1056,8 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     let informed_consent_condition = {};
     let clinical_trial_condition = {};
     let attached_condition = {};
+    let injection_condition = {};
+    let console_condition = {};
     let extra_condition = {};
 
     //Execute queries into affected schemas (await foreach):
@@ -1111,6 +1142,24 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
             //Add attached contition in OR condition:
             filter.$or.push(attached_condition);
+        }
+
+        //Check if contain injection technician property:
+        if(ForeignKeys.Injection){
+            //Set injection condition:
+            injection_condition[ForeignKeys.Injection] = mongoose.Types.ObjectId(_id);
+
+            //Add injection contition in OR condition:
+            filter.$or.push(injection_condition);
+        }
+
+        //Check if contain console technician property:
+        if(ForeignKeys.Console){
+            //Set console condition:
+            console_condition[ForeignKeys.Console] = mongoose.Types.ObjectId(_id);
+
+            //Add console contition in OR condition:
+            filter.$or.push(console_condition);
         }
 
         //Check if contain extra property:
