@@ -344,16 +344,20 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'branches', 'referring.branch');
         filter = await moduleServices.adjustDataTypes(filter, 'services', 'referring.service');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'referring.fk_referring');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'referring.fk_referring.person');
+        
 
         //Reporting:
         filter = await moduleServices.adjustDataTypes(filter, 'organizations', 'reporting.organization');
         filter = await moduleServices.adjustDataTypes(filter, 'branches', 'reporting.branch');
         filter = await moduleServices.adjustDataTypes(filter, 'services', 'reporting.service');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'reporting.fk_reporting');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'reporting.fk_reporting.person');
 
         //Schema:
         filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'patient');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'patient.person');
         filter = await moduleServices.adjustDataTypes(filter, 'slots', 'slot');
         filter = await moduleServices.adjustDataTypes(filter, 'equipments', 'slot.equipment');
         filter = await moduleServices.adjustDataTypes(filter, 'procedures', 'procedure');

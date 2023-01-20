@@ -24,6 +24,7 @@ const rolePermissions = {
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
         performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'delete'],
     },
 
     //Administrador:
@@ -46,6 +47,7 @@ const rolePermissions = {
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update'],
         performing              : ['find', 'findOne', 'insert', 'update'],
+        reports                 : ['find', 'findOne', 'insert', 'update'],
     },
 
     //Médico:
@@ -68,6 +70,7 @@ const rolePermissions = {
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne', 'insert', 'update'],
     },
 
     //Coordinador:
@@ -90,6 +93,7 @@ const rolePermissions = {
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
         performing              : [],
+        reports                 : [],
     },
 
     //Recepcionista:
@@ -112,6 +116,7 @@ const rolePermissions = {
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'insert', 'update'],
+        reports                 : [],
     },
 
     //Paciente:
@@ -133,6 +138,7 @@ const rolePermissions = {
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne'],
     }
 }
 

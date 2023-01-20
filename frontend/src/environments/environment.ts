@@ -118,8 +118,7 @@ export const performing_flow_states = {
   'S05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
   'S06': 'Para informar',
   'S07': 'Terminado (sin informe)',
-  'S08': 'Cancelado',
-  'S09': 'Para eliminar'
+  'S08': 'Cancelado'
 };
 
 // Reports flow states:

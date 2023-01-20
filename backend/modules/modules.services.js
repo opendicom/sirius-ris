@@ -1880,48 +1880,48 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
             });
             break;
 
-            case 'appointments_drafts':
-                filter = adjustCondition(filter, (filter) => {
-                    //Imaging - Post aggregate lookup:
-                    if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
-                    if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
-                    if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
+        case 'appointments_drafts':
+            filter = adjustCondition(filter, (filter) => {
+                //Imaging - Post aggregate lookup:
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
     
-                    //Set allowed explicit operators:
-                    if(filter[asPrefix + 'start'] != undefined){
-                        setExplicitOperator(filter[asPrefix + 'start'], (explicitOperator) => {
-                            if(explicitOperator){
-                                filter[asPrefix + 'start'][explicitOperator] = new Date(filter[asPrefix + 'start'][explicitOperator]);
-                            } else {
-                                filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']);
-                            }
-                        });
-                    }
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'start'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'start'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'start'][explicitOperator] = new Date(filter[asPrefix + 'start'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'start'] = new Date(filter[asPrefix + 'start']);
+                        }
+                    });
+                 }
     
-                    if(filter[asPrefix + 'end'] != undefined){
-                        setExplicitOperator(filter[asPrefix + 'end'], (explicitOperator) => {
-                            if(explicitOperator){
-                                filter[asPrefix + 'end'][explicitOperator] = new Date(filter[asPrefix + 'end'][explicitOperator]);
-                            } else {
-                                filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']);
-                            }
-                        });
-                    }
+                if(filter[asPrefix + 'end'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'end'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'end'][explicitOperator] = new Date(filter[asPrefix + 'end'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'end'] = new Date(filter[asPrefix + 'end']);
+                        }
+                    });
+                }
     
-                    //Schema:
-                    if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                    if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
-                    if(filter[asPrefix + 'fk_coordinator'] != undefined){ filter[asPrefix + 'fk_coordinator'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_coordinator']); };
-                    if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
-                    if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                    if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
-                    if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
+                if(filter[asPrefix + 'fk_coordinator'] != undefined){ filter[asPrefix + 'fk_coordinator'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_coordinator']); };
+                if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
+                if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
     
-                    return filter;
-                });
-                break;
+                return filter;
+            });
+            break;
 
-            case 'performing':
+        case 'performing':
             filter = adjustCondition(filter, (filter) => {
                 //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
@@ -1963,7 +1963,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'], 10); }
                 if(filter[asPrefix + 'injection.injection_technician.person.gender'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.gender'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.gender'], 10); }
                 if(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] = filter[asPrefix + 'injection.injection_technician.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'], 10); }
-                
+                    
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'injection.injection_technician.person.birth_date'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'injection.injection_technician.person.birth_date'], (explicitOperator) => {
@@ -2028,6 +2028,19 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                         }
                     });
                 }
+
+                return filter;
+            });
+            break;
+
+        case 'reports':
+            filter = adjustCondition(filter, (filter) => {
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_performing'] != undefined){ filter[asPrefix + 'fk_performing'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_performing']); };
+                if(filter[asPrefix + 'findings.fk_procedure'] != undefined){ filter[asPrefix + 'findings.fk_procedure'] = filter[asPrefix + 'findings.fk_procedure'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'findings.fk_procedure']); }
+                if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
+                if(filter[asPrefix + 'pathologies'] != undefined){ filter[asPrefix + 'pathologies'] = filter[asPrefix + 'pathologies'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'pathologies']); }
 
                 return filter;
             });
@@ -2747,6 +2760,69 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         }
                         break;
 
+                    case 'reports':
+                        //Initializate composite domain objects:
+                        let performing_appointment_imaging = {};
+                        let performing_appointment_referring = {};
+                        let performing_appointment_fk_referring = {};
+                        let performing_appointment_reporting = {};
+                        let performing_appointment_fk_reporting = {};
+
+                        //Create filter and first explicit $AND operator (if not exist):
+                        if(!filter){ req.query.filter = {}; }
+                        req.query.filter['$and'] = [];
+
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            performing_appointment_imaging['appointment.imaging.organization._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.organization._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.organization._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+
+                        } else if(domainType == 'branches'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            performing_appointment_imaging['appointment.imaging.branch._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.branch._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.branch._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+
+                        } else if(domainType == 'services'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            performing_appointment_imaging['appointment.imaging.service._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.service._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.service._id'] = mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
+
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+                        }
+                        break;
+
                     case 'pathologies':
                         //Check whether it has operator or not:
                         if(haveOperator){
@@ -3009,6 +3085,45 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         }
                         break;
 
+                    case 'performing':
+                        //Get Domain Reference:
+                        const referencedAppointment = await getDomainReference('appointments', req.body.fk_appointment, { 'domain' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedAppointment !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && referencedAppointment.imaging.organization !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'branches' && referencedAppointment.imaging.branch !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencedAppointment.imaging.service !== domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
+                    case 'reports':
+                        //Get Domain Reference:
+                        const referencePerforming = await getDomainReference('performing', req.body.fk_performing, { 'fk_appointment' : 1 });
+                        const referencePerformingAppointment = await getDomainReference('appointments', referencePerforming.fk_appointment, { 'domain' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedAppointment !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && referencePerformingAppointment.imaging.organization !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'branches' && referencePerformingAppointment.imaging.branch !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencePerformingAppointment.imaging.service !== domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
                     case 'pathologies':
                         //Current cases to eval:
                         if(domainType == 'organizations' && req.body.fk_organization !== domain){
@@ -3252,6 +3367,47 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             } else if(domainType == 'branches' && referencedAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
                             } else if(domainType == 'services' && referencedAppointment.imaging.service != domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
+                    case 'performing':
+                        //Get Domain Reference:
+                        const referencedFK = await getDomainReference(schema, req.body._id, { 'fk_appointment' : 1 });
+                        const referencedFKAppointment = await getDomainReference('appointments', referencedFK.fk_appointment, { 'domain' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedFKAppointment !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && referencedFKAppointment.imaging.organization !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'branches' && referencedFKAppointment.imaging.branch !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencedFKAppointment.imaging.service !== domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
+                    case 'reports':
+                        //Get Domain Reference:
+                        const referenceSelfFK = await getDomainReference(schema, req.body._id, { 'fk_performing' : 1 });
+                        const referencePerformingFK = await getDomainReference('performing', referenceSelfFK.fk_performing, { 'fk_appointment' : 1 });
+                        const referencePerformingFKAppointment = await getDomainReference('appointments', referencePerformingFK.fk_appointment, { 'domain' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencePerformingFKAppointment !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations' && referencePerformingFKAppointment.imaging.organization !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'branches' && referencePerformingFKAppointment.imaging.branch !== domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencePerformingFKAppointment.imaging.service !== domain){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {

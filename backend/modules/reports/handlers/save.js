@@ -28,7 +28,6 @@ module.exports = async (req, res, currentSchema, operation) => {
         let referencedElements = [];
         if(req.body.fk_appointment){ referencedElements.push([ req.body.fk_performing, 'performing' ]); }
         
-        /* TEMP DISABLED (WORK IN PROGRESS):
         //Set referenced elements (FKs - Check existence) [Arrays case]:
         if(req.body.fk_medical_signatures){
             for(let currentKey in req.body.fk_medical_signatures){
@@ -41,7 +40,6 @@ module.exports = async (req, res, currentSchema, operation) => {
                 referencedElements.push([ req.body.fk_pathologies[currentKey], 'pathologies' ]);
             }
         }
-        */
 
         //Excecute main query:
         switch(operation){
