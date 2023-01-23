@@ -1,0 +1,54 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" fxLayoutAlign="start start">
+  
+      <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+        <!-- Only superuser can set patient organization -->
+        <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
+          <h4>Organización:</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>Organización</mat-label>
+            <mat-select formControlName="fk_organization"  placeholder="Seleccione la organización">
+              <div *ngFor="let currentOrganization of availableOrganizations">
+                <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <h4>Nombre:</h4>
+        <mat-form-field appearance="fill" class="medium">
+          <mat-label>Nombre</mat-label>
+          <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre de la patología">
+        </mat-form-field>
+  
+        <h4>Descripción:</h4>
+          <mat-form-field appearance="fill" class="full">
+          <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" placeholder="Escriba aquí la descripción de la patología."></textarea>
+        </mat-form-field>
+  
+        <hr class="dashed" /><br/>
+  
+        <h4>Estado:</h4>
+        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+          <mat-radio-button value="true">Activo</mat-radio-button>
+          <mat-radio-button value="false">Inactivo</mat-radio-button>
+        </mat-radio-group>
+  
+        <br/><br/>
+      </div> <!-- end fxLayout wrapper -->
+  
+      <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+        <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+      </div> <!-- end fxLayout wrapper -->
+  
+    </div>
+  
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+      <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  </form>
+  

@@ -123,7 +123,7 @@ export class SetPatientComponent implements OnInit {
       user: this.formBuilder.group({
         'password'          : [ '', [Validators.required]],
         'password_repeat'   : [ '', [Validators.required]],
-        'email'             : [ '', []],
+        'email'             : [ '', [Validators.required]],
         'status'            : [ 'true', []],
 
         //Patient organization input (Only Superuser):

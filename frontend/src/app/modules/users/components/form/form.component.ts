@@ -133,7 +133,7 @@ export class FormComponent implements OnInit {
       user: this.formBuilder.group({
         'password'                  : [ '', [Validators.required]],
         'password_repeat'           : [ '', [Validators.required]],
-        'email'                     : [ '', []],
+        'email'                     : [ '', [Validators.required]],
         'status'                    : [ 'true', []],
         'professional[id]'          : [ '', []],
         'professional[description]' : [ '', []],

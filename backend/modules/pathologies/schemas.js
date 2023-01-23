@@ -7,9 +7,10 @@ const { body }      = require('express-validator');
 
 //Define Schema:
 const Schema = new mongoose.Schema({
-    name:           { type: String, required: true },
-    description:    { type: String },
-    status:         { type: Boolean, required: true, default: false },
+    fk_organization:    { type: mongoose.ObjectId, required: true },
+    name:               { type: String, required: true },
+    description:        { type: String },
+    status:             { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -31,6 +32,11 @@ const AllowedUnsetValues = ['description'];
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('fk_organization')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_organization NO es un ID MongoDB válido.'),
+        
     body('name')
         .trim()
         .isLength({ min: 3, max: 50 })

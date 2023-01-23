@@ -968,7 +968,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments');
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('files');
-            //affectedCollections.push('pathologies');
+            affectedCollections.push('pathologies');
             break;
 
         case 'branches':
@@ -1013,7 +1013,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments');
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('performing');
-            //affectedCollections.push('reports');
+            affectedCollections.push('reports');
             //affectedCollections.push('procedure_templates');
             break;
 
@@ -1026,11 +1026,11 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             break;
 
         case 'pathologies':
-            //affectedCollections.push('reports');
+            affectedCollections.push('reports');
             break;
 
         case 'performing':
-            //affectedCollections.push('reports');
+            affectedCollections.push('reports');
             break;
 
         case 'reports':
