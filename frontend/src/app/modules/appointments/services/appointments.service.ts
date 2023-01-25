@@ -155,7 +155,7 @@ export class AppointmentsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // FIND REPORTING USERS:
+  // FIND REPORTING USERS (FIND BY SERVICE):
   //--------------------------------------------------------------------------------------------------------------------//
   findReportingUsers(service_id: string, form: FormGroup){
     //Set params:
@@ -164,9 +164,9 @@ export class AppointmentsService {
       'filter[person.name_01]': '',
       'regex': true,
 
-      //Only Doctors users in selected service:
-      'filter[elemMatch][permissions][service]': service_id,
-      'filter[elemMatch][permissions][role]': 4,
+      //Only Doctors users in selected service, current branch and current organization (findByService):
+      'service': service_id,
+      'role': 4,
 
       //Exclude users with vacation true:
       'filter[professional.vacation]': false,
@@ -175,7 +175,7 @@ export class AppointmentsService {
       'filter[status]': true
     };
 
-    //Find reporting users:
+    //Find by service reporting users (last true parameter):
     this.sharedFunctions.find('users', params, (res) => {
       //Check data:
       if(res.data.length > 0){
@@ -189,7 +189,7 @@ export class AppointmentsService {
         //Send message:
         this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.');
       }
-    });
+    }, false, true);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

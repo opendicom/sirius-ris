@@ -397,14 +397,15 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false): void {
+  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false, findByService: boolean = false): void {
     //Initialize operation type:
     let operation = 'find';
 
     //Check if findOne is true:
-    if(findOne){
-      operation = 'findOne';
-    }
+    if(findOne){ operation = 'findOne'; }
+
+    //Check if findByService is true (Only the users module uses this case):
+    if(findByService){ operation = 'findByService'; }
 
     //Check if element is not empty:
     if(element != ''){
@@ -552,14 +553,15 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND RXJS - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  findRxJS(element: string, params: any, findOne: boolean = false): Observable<any>{
+  findRxJS(element: string, params: any, findOne: boolean = false, findByService: boolean = false): Observable<any>{
     //Initialize operation type:
     let operation = 'find';
 
     //Check if findOne is true:
-    if(findOne){
-      operation = 'findOne';
-    }
+    if(findOne){ operation = 'findOne'; }
+
+    //Check if findByService is true (Only the users module uses this case):
+    if(findByService){ operation = 'findByService'; }
 
     //Return Observable:
     return new Observable<any>((observer) => {

@@ -86,7 +86,9 @@ module.exports = function(language){
                 'valid_permission'          : 'You must enter at least one valid permission to the user.',
                 'fk_slot_required'          : 'The fk_slot parameter must be specified (it is required for the operation).',
                 'pet_coef_required'         : 'PET-CT procedures require coefficient for the calculation of the dose.',
-                'pet_coef_NaN'              : 'The coefficient entered must be numeric.'
+                'pet_coef_NaN'              : 'The coefficient entered must be numeric.',
+                'service_invalid_ObjectId'  : 'The service parameter is not a valid ObjectId.',
+                'role_NaN'                  : 'The role parameter is NOT a numeric value or is NOT within the valid role numbers.'
             }
         }
 
@@ -177,6 +179,8 @@ module.exports = function(language){
             lang.ris.validate.fk_slot_required          = 'El parametro fk_slot debe ser especificado (es requerido para la operación).';
             lang.ris.validate.pet_coef_required         = 'Los procedimientos PET-CT requieren coeficiente para el cálculo de la dosis.';
             lang.ris.validate.pet_coef_NaN              = 'El coeficiente ingresado debe ser numérico.';
+            lang.ris.validate.service_invalid_ObjectId  = 'El parámetro service no es un ObjectId válido.';
+            lang.ris.validate.role_NaN                  = 'El parámetro role NO es un valor numerico o NO esta comprendido dentro de los numeros de roles válidos.';
 
             break;
     }

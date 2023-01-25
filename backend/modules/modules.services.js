@@ -2296,6 +2296,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             //------------------------------------------------------------------------------------------------------------//
             case 'find':
             case 'findOne':
+            case 'findByService':  // Only the users module uses this case.
                 //If filter has no operator, add domain condition with no operator:
                 let haveOperator = false;
                 
@@ -3917,6 +3918,7 @@ module.exports = {
     setCondition,
     domainIs,
     addDomainCondition,
+    checkObjectId,
     validatePermissions,
     setStudyIUID,
     getCompleteDomain,

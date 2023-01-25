@@ -7,7 +7,7 @@ const rolePermissions = {
     //Superusuario:
     1: {
         people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
-        users                   : ['find', 'findOne', 'insert', 'update', 'delete'],            
+        users                   : ['find', 'findOne', 'findByService', 'insert', 'update', 'delete'],            
         logs                    : ['find', 'findOne'],
         sessions                : ['find', 'findOne', 'delete'],
         modalities              : ['find', 'findOne', 'insert', 'update', 'delete'],
@@ -30,7 +30,7 @@ const rolePermissions = {
     //Administrador:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'insert', 'update'],
         logs                    : ['find', 'findOne'],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -99,7 +99,7 @@ const rolePermissions = {
     //Recepcionista:
     8: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne'],
+        users                   : ['find', 'findOne', 'findByService'],
         logs                    : ['find', 'findOne'],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -152,7 +152,7 @@ const concessionPermissions = {
     // 2 : Gestión de citas:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'insert', 'update'],
         slots                   : ['find', 'findOne'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete']
