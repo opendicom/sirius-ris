@@ -11,6 +11,7 @@ database/config/
 backend/target/
 
 # FRONTEND:
+frontend/dist/
 /dist/
 /tmp/
 /out-tsc/

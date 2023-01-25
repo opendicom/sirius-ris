@@ -46,21 +46,21 @@ export const document_types = {
 export const user_roles = {
   1:  'Superusuario',
   2:  'Administrador',
-  3:  'Supervisor',
+  //3:  'Supervisor',
   4:  'Médico',
-  5:  'Técnico',
-  6:  'Enfermero',
+  //5:  'Técnico',
+  //6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',
-  10: 'Funcional'  //Empty role for concessions (Generic user)
+  //10: 'Funcional'  //Empty role for concessions (Generic user)
 };
 
 // User Concessions:
 export const user_concessions = {
   1 : 'Gestión de turnos',
   2 : 'Gestión de citas',
-  //3 : 'Calendario de citas',
+  3 : 'Calendario de citas',
   4 : 'Gestión de recepciones',
   /*
   1 : 'Búsquedas avanzadas',
@@ -109,16 +109,16 @@ export const cancellation_reasons = {
   12  : "Otro"
 }
 
-// Studies flow states:
-export const studies_flow_states = {
+// Performing flow states:
+export const performing_flow_states = {
   'S01': 'Recepción',
   'S02': 'Para entrevistar',
   'S03': 'Para inyectar/preparar',
   'S04': 'Para consola',              // Adquisición de imágenes
-  'S05': 'Para liberar',
+  'S05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
   'S06': 'Para informar',
-  'S07': 'Cancelado',
-  'S08': 'Para eliminar'
+  'S07': 'Terminado (sin informe)',
+  'S08': 'Cancelado'
 };
 
 // Reports flow states:
@@ -164,11 +164,13 @@ export const CKEditorConfig = {
 };
 
 // Default FullCalendar configuration:
+export const FullCalendarSupportedViews = ['resourceTimeGridDay', 'resourceTimeGridWeek'];
+
 export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
   timeZone: 'local',
   allDaySlot: false,
-  initialView: 'resourceTimeGridDay',
+  initialView: FullCalendarSupportedViews[0],
   slotLabelFormat: {
     hour: '2-digit',
     minute: '2-digit',
