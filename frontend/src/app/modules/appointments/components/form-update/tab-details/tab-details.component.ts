@@ -95,8 +95,8 @@ export class TabDetailsComponent implements OnInit {
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
 
-      anamnesis                 : [ '', [Validators.required] ],
-      indications               : [ '', [Validators.required] ],
+      anamnesis                 : [ '' ],
+      indications               : [ '' ],
       report_before             : [ '', [Validators.required] ],
       contact                   : [ '', [Validators.required] ],
       status                    : [ 'true', [Validators.required] ],
@@ -339,19 +339,19 @@ export class TabDetailsComponent implements OnInit {
   }
 
   onSubmit(callback = (res: any) => {}){
-    //Validate CKEditor anamnesis (min length 10 + 7 chars [<p></p>]):
-    if(this.form.value.anamnesis.length < 17){
-      this.anamnesisValidator = false;
-    } else {
-      this.anamnesisValidator = true;
-    }
+    // DISABLED | Validate CKEditor anamnesis (min length 10 + 7 chars [<p></p>]):
+    // if(this.form.value.anamnesis.length < 17){
+    //   this.anamnesisValidator = false;
+    // } else {
+    //   this.anamnesisValidator = true;
+    // }
 
-    //Validate CKEditor indications (min length 10 + 7 chars [<p></p>]):
-    if(this.form.value.indications.length < 17){
-      this.indicationsValidator = false;
-    } else {
-      this.indicationsValidator = true;
-    }
+    // DISABLED | Validate CKEditor indications (min length 10 + 7 chars [<p></p>]):
+    // if(this.form.value.indications.length < 17){
+    //   this.indicationsValidator = false;
+    // } else {
+    //   this.indicationsValidator = true;
+    // }
 
     //Validate fields:
     if(this.form.valid){

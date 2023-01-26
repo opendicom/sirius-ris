@@ -138,8 +138,8 @@ const Schema = new mongoose.Schema({
     urgency:                { type: Boolean, required: true },
     study_iuid:             { type: String, match: /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm },
     accession_number:       { type: String },
-    anamnesis:              { type: String, required: true },
-    indications:            { type: String, required: true },
+    anamnesis:              { type: String },
+    indications:            { type: String },
     report_before:          { type: Date, required: true },
     media:                  { type: subSchemaMedia },
     contrast:               { type: subSchemaContrast, required: true },
@@ -296,11 +296,13 @@ const Validator = [
         .optional(),
 
     body('anamnesis')
+        .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro anamnesis ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
 
     body('indications')
+        .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
         .withMessage('El parametro indications ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
