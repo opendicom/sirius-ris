@@ -12,15 +12,70 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Initialize duplicated control var:
     let duplicated = false;
-    
-    //Check duplicated if this params exists:
-    if(req.body.fk_appointment != ''){
-        //Set params for check duplicates:
-        const params = { fk_appointment: req.body.fk_appointment };
 
-        //Search for duplicates:
-        duplicated = await moduleServices.isDuplicated(req, res, currentSchema, params);
+    //Initializate fk_appointment and date:
+    let fk_appointment = undefined;
+    let date = undefined;
+
+    //Set fk_appointment - Insert or update case:
+    if(req.body.fk_appointment != ''){
+        fk_appointment = req.body.fk_appointment;
+
+    //Set fk_appointment - Update case:
+    } else if(req.body._id != ''){
+        //Find performing by _id:
+        await currentSchema.Model.findById(req.body._id, { fk_appointment: 1, date: 1 })
+        .exec()
+        .then((data) => {
+            //Check for results (not empty):
+            if(data){
+                //Convert Mongoose object to Javascript object:
+                data = data.toObject();
+
+                //Set FK appointment:
+                fk_appointment = data.fk_appointment;
+
+                //Set performing date (To check duplicates):
+                date = data.date;
+            }
+        })
+        .catch((err) => {
+            //Send error:
+            mainServices.sendError(res, currentLang.db.query_error, err);
+        });
     }
+    
+    //Check if request has checkin_time:
+    if(req.body.checkin_time){
+        //Set performing date preserving the appointment date:
+        req.body.date = await moduleServices.setPerformingDate(fk_appointment, req.body.checkin_time);
+
+        //Check duplicates with setted date:
+        date = req.body.date;
+
+        //Update set checking_time case:
+        if(req.validatedResult){
+            //Adjust update set for multiple fields to set:
+            if(req.validatedResult.set != false){
+                req.validatedResult.set['date'] = req.body.date;
+
+            //Create update set for date field:
+            } else {
+                req.validatedResult['set'] = {
+                    date: req.body.date
+                }
+            }
+
+            //Delete property checkin_time from blocked to avoid sending wrong message as response:
+            delete req.validatedResult.blocked.checkin_time;
+        }
+    }
+
+    //Set params for check duplicates:
+    const params = { fk_appointment: fk_appointment, date: date };
+
+    //Search for duplicates:
+    duplicated = await moduleServices.isDuplicated(req, res, currentSchema, params);
 
     //Check for duplicates:
     if(duplicated == false){

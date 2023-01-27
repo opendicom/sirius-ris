@@ -88,12 +88,11 @@ const Validator = [
         .isLength({ min: 3, max: 3 })
         .withMessage('El parametro flow_state ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
 
-    body('date')
-        .not()
-        .isEmpty()
+    //Validate checkin_time and build performing date preserving the appointment date:
+    body('checkin_time')
         .trim()
-        .toDate()
-        .withMessage('El parametro date es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
+        .matches(/^([01][0-9]|2[0-3]):([0-5][0-9])$/)
+        .withMessage('El parametro checkin_time no puede ser vacío [Formato: HH:MM | 24 hs].'),
 
     body('fk_equipment')
         .trim()

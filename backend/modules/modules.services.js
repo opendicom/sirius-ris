@@ -3893,6 +3893,44 @@ async function isPET(_id){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET PERFORMING DATE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setPerformingDate(fk_appointment, checking_time){
+    //Initializate result:
+    let result = null;
+
+    //Import appointments Schema:
+    const appointments = require('./appointments/schemas');
+
+    //Find appointment by _id:
+    await appointments.Model.findById(fk_appointment, { start: 1 })
+    .exec()
+    .then((data) => {
+        //Check for results (not empty):
+        if(data){
+            //Convert Mongoose object to Javascript object:
+            data = data.toObject();
+
+            //Date:
+            const dateYear   = data.start.getFullYear();
+            const dateMonth  = data.start.toLocaleString("es-AR", { month: "2-digit" });
+            const dateDay    = data.start.toLocaleString("es-AR", { day: "2-digit" })
+
+            //Set date format in result:
+            result = dateYear + '-' + dateMonth + '-' + dateDay + 'T' + checking_time + ':00.000Z';
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return new Date(result);
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -3922,6 +3960,7 @@ module.exports = {
     validatePermissions,
     setStudyIUID,
     getCompleteDomain,
-    isPET
+    isPET,
+    setPerformingDate
 };
 //--------------------------------------------------------------------------------------------------------------------//
