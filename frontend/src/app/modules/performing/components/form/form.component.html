@@ -1,0 +1,249 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" fxLayoutAlign="start start">
+      <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+        <h3 class="details-title">Detalles de la realización:</h3>
+        <div class="current-wrap">
+          <!-- appointment_date -->
+          <div class="current-info divider-alt">
+            <small>Fecha de cita:</small><br/>
+            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
+          </div>
+          
+          <!-- checkin_time -->
+          <div class="current-info divider-alt">
+            <small>Hora de recepción:</small><br/>
+            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">09:35</span>
+          </div>
+          
+          <!-- equipment -->
+          <div class="current-info text-center divider-alt">
+            <small>Equipamiento:</small><br/>
+            <span *ngIf="this.sharedProp.current_equipment" class="badge-accent" matTooltip="{{ 'AET: ' + this.sharedProp.current_equipment.details.AET }}">
+              <span>{{ this.sharedProp.current_equipment.details.name }}</span>
+            </span>
+          </div>
+          
+          <!-- urgency -->
+          <div class="current-info text-center">
+            <small>Urgencia:</small><br/>
+            <div *ngIf="this.sharedProp.current_urgency; then thenBlockUrgency else elseBlockUrgency"></div>
+            <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+            <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          </div>
+
+          <div class="clear"></div>
+        </div>
+
+        <!-- flow_state -->
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+            <h4>Flujo de trabajo:</h4>
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>Flujo de trabajo</mat-label>
+              <mat-select formControlName="flow_state">-->
+                <div *ngFor="let currentFS of performingFS | keyvalue">
+                  <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div> <!-- end fxLayout wrapper -->
+
+          <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+            <div [class.non-display]="booleanCancelation == false">
+              <h4>Motivos de cancelación:</h4>
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Motivos de cancelación</mat-label>
+                <mat-select formControlName="cancellation_reasons">-->
+                  <div *ngFor="let currentReason of cancellation_reasons | keyvalue">
+                    <mat-option value="{{ currentReason.key }}">{{ currentReason.value }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div> <!-- end fxLayout wrapper -->
+        </div>
+
+        <h4>Estado:</h4>
+        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+          <mat-radio-button value="true">Activo</mat-radio-button>
+          <mat-radio-button value="false">Inactivo</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="clear"></div><br/><hr class="dashed" />
+
+        <div class="text-center">
+          <small>Study IUID</small><br/><span class="label-accent">{{ this.sharedProp.current_study_iuid }}</span>
+        </div>
+      </div> <!-- end fxLayout wrapper -->
+  
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <span *ngIf="this.sharedProp.current_patient">
+          <span *ngIf="this.sharedProp.current_patient.person">
+            <h3 class="details-title">Datos del paciente:</h3>
+            <div class="current-wrap">
+              <!-- documents -->
+              <div class="current-info">
+                <small>Documento/s:</small><br/>
+                <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                    <span>{{ current.document }}</span>
+                  </span>
+                  <br/>
+                </span>
+              </div>
+              
+              <!-- names -->
+              <div class="current-info">
+                <small>Nombre completo:</small><br/>
+                <span class="current-firts">
+                  <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
+  
+                  <span *ngIf="this.sharedProp.current_patient.person.name_02">
+                    <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
+                  </span>
+  
+                  <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
+  
+                  <span *ngIf="this.sharedProp.current_patient.person.surname_02">
+                    <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
+                  </span>
+                </span>
+              </div>
+              
+              <div class="clear"></div>
+            </div>
+  
+            <div class="clear"></div>
+  
+            <div class="current-wrap">
+              <!-- birth_date -->
+              <div class="current-info">
+                <small>Fecha de nacimiento:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+              </div>
+              
+              <!-- genre -->
+              <div class="current-info text-center">
+                <small>Género:</small><br/>
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                  <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                  <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                  <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                </span>
+              </div>
+              
+              <!-- status -->
+              <div class="current-info text-center">
+                <small>Estado:</small><br/>
+                <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+              </div>
+              
+              <div class="clear"></div>
+            </div>
+  
+          </span>
+        </span>
+  
+        <hr class="dashed"/><br/>
+        
+        <span *ngIf="this.sharedProp.current_imaging">
+          <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
+            <h3 class="details-title">Realización del estudio:</h3>
+  
+            <div class="current-wrap">
+              <!-- imaging -->
+              <div class="current-info">
+                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
+              </div>
+  
+              <div class="clear"></div>
+            </div>
+  
+            <div class="clear"></div>
+  
+            <div class="current-wrap">
+              <!-- procedure -->
+              <div class="current-info text-center">
+                <small>Procedimiento a realizar:</small><br/>
+                <span class="badge-alt">
+                  <span *ngIf="this.sharedProp.current_procedure">{{ this.sharedProp.current_procedure.name }}</span>
+                </span>
+              </div>
+  
+              <!-- modality -->
+              <div class="current-info text-center">
+                <small>Modalidad:</small><br/>
+                <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
+                  <span>{{ this.sharedProp.current_modality.code_value }}</span>
+                </span>
+              </div>
+  
+              <!-- informed_consent -->
+              <div class="current-info text-center">
+                <small>Requiere consentimiento informado:</small><br/>
+                <span *ngIf="this.sharedProp.current_procedure && this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="SI">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+  
+          </span>
+        </span>
+
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  
+    <hr class="dashed"/>
+
+    <mat-tab-group>
+
+        <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita</ng-template>
+            Detalles de la cita...
+            <br/>
+        </mat-tab>
+        <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+        <!-- PREPARATION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label><mat-icon class="tab-icon">vaccines</mat-icon> Preparación</ng-template>
+            Preparación del paciente...
+            <br/>
+        </mat-tab>
+        <!-- PREPARATION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label><mat-icon class="tab-icon">monitor_heart</mat-icon> Anestesia</ng-template>
+            Procedimiento de anestesia...
+            <br/>
+        </mat-tab>
+        <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label><mat-icon class="tab-icon">airline_seat_flat</mat-icon> Adquisición</ng-template>
+            Detalles de la adquisición...
+            <br/>
+        </mat-tab>
+        <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+
+    </mat-tab-group>
+
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="button" color="primary" (click)="onSubmit()" >GUARDAR</button>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

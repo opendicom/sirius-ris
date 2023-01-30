@@ -58,6 +58,7 @@ export class SharedPropertiesService {
   public current_appointment_draft  : any;
   public current_study_iuid         : string = '';
   public current_friendly_pass      : string = '';
+  public current_appointment        : string = '';
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

@@ -47,27 +47,33 @@ module.exports = async (req, res, currentSchema, operation) => {
     
     //Check if request has checkin_time:
     if(req.body.checkin_time){
-        //Set performing date preserving the appointment date:
-        req.body.date = await moduleServices.setPerformingDate(fk_appointment, req.body.checkin_time);
+        //Create Check-in Time Regular Expresión to test format HH:MM | 24hs:
+        const checkin_time_regex = /^([01][0-9]|2[0-3]):([0-5][0-9])$/;
 
-        //Check duplicates with setted date:
-        date = req.body.date;
+        //If it does not comply with the regular expression in case of update it will remain as a blocked attribute.
+        if(checkin_time_regex.test(req.body.checkin_time)){
+            //Set performing date preserving the appointment date:
+            req.body.date = await moduleServices.setPerformingDate(fk_appointment, req.body.checkin_time);
 
-        //Update set checking_time case:
-        if(req.validatedResult){
-            //Adjust update set for multiple fields to set:
-            if(req.validatedResult.set != false){
-                req.validatedResult.set['date'] = req.body.date;
+            //Check duplicates with setted date:
+            date = req.body.date;
 
-            //Create update set for date field:
-            } else {
-                req.validatedResult['set'] = {
-                    date: req.body.date
+            //Update set checking_time case:
+            if(req.validatedResult){
+                //Adjust update set for multiple fields to set:
+                if(req.validatedResult.set != false){
+                    req.validatedResult.set['date'] = req.body.date;
+
+                //Create update set for date field:
+                } else {
+                    req.validatedResult['set'] = {
+                        date: req.body.date
+                    }
                 }
-            }
 
-            //Delete property checkin_time from blocked to avoid sending wrong message as response:
-            delete req.validatedResult.blocked.checkin_time;
+                //Delete property checkin_time from blocked to avoid sending wrong message as response:
+                delete req.validatedResult.blocked.checkin_time;
+            }
         }
     }
 

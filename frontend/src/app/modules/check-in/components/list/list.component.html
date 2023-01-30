@@ -21,7 +21,7 @@
         </ng-template>
 
         <ng-template #elseAccessionNumber>
-          <button mat-flat-button class="small_button" type="button" color="primary" aria-label="Recepcionar" (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })">
+          <button mat-flat-button class="small_button" type="button" color="primary" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
             <mat-icon>location_on</mat-icon> RECEPCIONAR
           </button>
         </ng-template>
