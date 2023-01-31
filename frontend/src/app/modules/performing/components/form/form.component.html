@@ -1,4 +1,4 @@
-<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="form-element" [formGroup]="form">
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
         <h3 class="details-title">Detalles de la realización:</h3>
@@ -12,7 +12,7 @@
           <!-- checkin_time -->
           <div class="current-info divider-alt">
             <small>Hora de recepción:</small><br/>
-            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">09:35</span>
+            <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ checkin_time }}</span>
           </div>
           
           <!-- equipment -->
@@ -40,7 +40,7 @@
             <h4>Flujo de trabajo:</h4>
             <mat-form-field appearance="fill" class="full">
               <mat-label>Flujo de trabajo</mat-label>
-              <mat-select formControlName="flow_state">-->
+              <mat-select formControlName="flow_state">
                 <div *ngFor="let currentFS of performingFS | keyvalue">
                   <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
                 </div>
@@ -206,8 +206,7 @@
         <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
         <mat-tab>
             <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita</ng-template>
-            Detalles de la cita...
-            <br/>
+            <app-tab-details></app-tab-details>
         </mat-tab>
         <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
@@ -215,8 +214,7 @@
         <!-- PREPARATION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
         <mat-tab>
             <ng-template mat-tab-label><mat-icon class="tab-icon">vaccines</mat-icon> Preparación</ng-template>
-            Preparación del paciente...
-            <br/>
+            <app-tab-preparation></app-tab-preparation>
         </mat-tab>
         <!-- PREPARATION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
 
@@ -224,8 +222,7 @@
         <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
         <mat-tab>
             <ng-template mat-tab-label><mat-icon class="tab-icon">monitor_heart</mat-icon> Anestesia</ng-template>
-            Procedimiento de anestesia...
-            <br/>
+            <app-tab-anesthesia></app-tab-anesthesia>
         </mat-tab>
         <!-- ANESTHESIA TAB: --------------------------------------------------------------------------------------------------------------------------- -->
 
@@ -233,8 +230,7 @@
         <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
         <mat-tab>
             <ng-template mat-tab-label><mat-icon class="tab-icon">airline_seat_flat</mat-icon> Adquisición</ng-template>
-            Detalles de la adquisición...
-            <br/>
+            <app-tab-acquisition></app-tab-acquisition>
         </mat-tab>
         <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
 
@@ -243,7 +239,7 @@
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="button" color="primary" (click)="onSubmit()" >GUARDAR</button>
+        <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

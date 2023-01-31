@@ -17,7 +17,10 @@ import {                                                                        
 } from '@env/environment';
 
 // Child components:
-import { TabDetailsComponent } from '@modules/appointments/components/form-update/tab-details/tab-details.component';
+import { TabDetailsComponent } from '@modules/performing/components/form/tab-details/tab-details.component';
+import { TabPreparationComponent } from '@modules/performing/components/form/tab-preparation/tab-preparation.component';
+import { TabAnesthesiaComponent } from '@modules/performing/components/form/tab-anesthesia/tab-anesthesia.component';
+import { TabAcquisitionComponent } from '@modules/performing/components/form/tab-acquisition/tab-acquisition.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -28,6 +31,9 @@ import { TabDetailsComponent } from '@modules/appointments/components/form-updat
 export class FormComponent implements OnInit {
   //Import tabs components (Properties and Methods) [Child components]:
   @ViewChild(TabDetailsComponent) tabDetails!:TabDetailsComponent;
+  @ViewChild(TabPreparationComponent) tabPreparation!:TabPreparationComponent;
+  @ViewChild(TabAnesthesiaComponent) tabAnesthesia!:TabAnesthesiaComponent;
+  @ViewChild(TabAcquisitionComponent) tabAcquisition!:TabAcquisitionComponent;
 
   //Set component properties:
   public settings             : any = app_setting;
@@ -55,6 +61,9 @@ export class FormComponent implements OnInit {
 
   //Boolean class binding objects:
   public booleanCancelation : Boolean = false;
+
+  //Set checkin_time:
+  public checkin_time = this.setCheckInTime();
 
   //Inject services, components and router to the constructor:
   constructor(
@@ -115,13 +124,8 @@ export class FormComponent implements OnInit {
 
             //Set current data in sharedProp:
             this.setCurrentAppointmentData(res, () => {
-
-              //Set procedure details:
-              //this.setProcedureDetails(res.data[0].procedure._id, () => {
-
-                //Excecute manual onInit childrens components:
-                //this.tabDetails.manualOnInit(res);
-              //});
+              //Excecute manual onInit childrens components:
+              this.tabDetails.manualOnInit(res);
             });
           } else {
             //Return to the list with request error message:
@@ -149,7 +153,18 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(){}
+  onSubmitMaster(){
+    //Send first submit in controlled order (Update appointment):
+    this.tabDetails.onSubmit((res) => {
+
+      //FIRST TIME 'insert':
+      // - SEND MWL.
+      // - formResponder -> check-in list component.
+
+      //Response the form according to the result:
+      this.sharedFunctions.formResponder(res, 'performing', this.router);
+    });
+  }
 
   onCancel(){
     //Redirect to the list:
@@ -197,6 +212,18 @@ export class FormComponent implements OnInit {
 
     //Execute callback (Control sync exec):
     callback();
+  }
+
+  setCheckInTime(): string {
+    //Get current date (time):
+    const now = new Date();
+
+    //Extract hours and minutes:
+    const hours    = this.sharedFunctions.addZero(now.getHours());
+    const minutes  = this.sharedFunctions.addZero(now.getMinutes());
+    
+    //Return result (string):
+    return hours + ':' + minutes;
   }
 
 }

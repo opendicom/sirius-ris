@@ -291,7 +291,7 @@ export class AppointmentsService {
     //Data normalization - Booleans types (mat-option cases):
     if(typeof mergedValues.outpatient != "boolean"){ mergedValues.outpatient = mergedValues.outpatient.toLowerCase() == 'true' ? true : false; }
     if(typeof mergedValues.contrast.use_contrast != "boolean"){ mergedValues.contrast.use_contrast = mergedValues.contrast.use_contrast.toLowerCase() == 'true' ? true : false; }
-    if(typeof mergedValues.status != "boolean"){ mergedValues.status = mergedValues.status.toLowerCase() == 'true' ? true : false; }
+    if(mergedValues.status){ if(typeof mergedValues.status != "boolean"){ mergedValues.status = mergedValues.status.toLowerCase() == 'true' ? true : false; } }
 
     //Clean empty fields | Nested object cases - Check outpatient:
     if(mergedValues.outpatient === true){

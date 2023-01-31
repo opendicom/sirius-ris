@@ -4,13 +4,25 @@
     padding: 8px;
     border-radius: 5px;
 }
-  
+
 .documents {
     padding-left: 10px;
 }
-  
+
 mat-chip.line-break {
     height: auto;
     line-height: 1.1em;
 }
-  
+
+/* Appointments Flow States: */
+.P01, .P02, .P03, .P04 {
+    background-color: #d53a9d;
+}
+
+.P05, .P06 {
+    background-color: #05ff9f87;
+}
+
+.P07 {
+    background-color: #ff6f69;
+}
