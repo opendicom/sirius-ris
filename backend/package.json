@@ -2,6 +2,8 @@
   "name": "sirius-ris",
   "version": "1.0.0",
   "description": "Sirius RIS is a Radiology Information System",
+  "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
+  "license": "MPL-2.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,8 +23,6 @@
     "NodeJS",
     "MongoDB"
   ],
-  "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "argon2": "^0.28.5",
     "cors": "^2.8.5",

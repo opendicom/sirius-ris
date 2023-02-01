@@ -53,6 +53,7 @@ const Schema = new mongoose.Schema({
     fk_procedure:           { type: mongoose.ObjectId, required: true },
     extra_procedures:       { type: [mongoose.ObjectId] },
     cancellation_reasons:   { type: Number },
+    urgency:                { type: Boolean, required: true },
     status:                 { type: Boolean, required: true, default: false },
     anesthetic:             { type: subSchemaAnesthetic },
     injection:              { type: subSchemaInjection },
@@ -120,6 +121,12 @@ const Validator = [
         .trim()
         .isInt()
         .withMessage('El parametro cancellation_reasons debe ser numérico.'),
+
+    body('urgency')
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
     
     body('status')
         .trim()

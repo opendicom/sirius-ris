@@ -112,12 +112,13 @@ export const cancellation_reasons = {
 // Performing flow states:
 export const performing_flow_states = {
   'P01': 'Recepción',
-  'P02': 'Preparación/Inyección',
-  'P03': 'Adquisición',
-  'P04': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
-  'P05': 'Para informar',
-  'P06': 'Terminado (sin informe)',
-  'P07': 'Cancelado'
+  'P02': 'Entrevista',
+  'P03': 'Preparación/Inyección',
+  'P04': 'Adquisición',
+  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
+  'P06': 'Para informar',
+  'P07': 'Terminado (sin informe)',
+  'P08': 'Cancelado'
 };
 
 // Reports flow states:

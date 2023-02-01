@@ -1929,7 +1929,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
                 if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
-
+                if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
+                
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'date'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'date'], (explicitOperator) => {

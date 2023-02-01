@@ -1147,4 +1147,31 @@ export class SharedFunctionsService {
     return duplicatedSurnamesController;
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND SERVICE USERS (FIND BY SERVICE):
+  //--------------------------------------------------------------------------------------------------------------------//
+  findServiceUsers(service_id: string, role: number, callback = (res: any) => {}){
+    //Set params:
+    const params = {
+      //Only people users:
+      'filter[person.name_01]': '',
+      'regex': true,
+
+      //Only selected role users in selected service, current branch and current organization (findByService):
+      'service': service_id,
+      'role': role,
+
+      //Exclude users with vacation true:
+      'filter[professional.vacation]': false,
+
+      //Only enabled users:
+      'filter[status]': true
+    };
+
+    //Find by service selected role users (last true parameter):
+    this.find('users', params, (res) => callback(res), false, true);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

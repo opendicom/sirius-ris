@@ -1,6 +1,8 @@
 {
   "name": "sirius-ris",
   "version": "1.0.0",
+  "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
+  "license": "MPL-2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

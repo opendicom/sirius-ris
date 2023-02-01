@@ -13,14 +13,13 @@ import {                                                                        
   document_types, 
   gender_types, 
   performing_flow_states,
-  cancellation_reasons
+  cancellation_reasons,
+  CKEditorConfig
 } from '@env/environment';
+import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 
 // Child components:
 import { TabDetailsComponent } from '@modules/performing/components/form/tab-details/tab-details.component';
-import { TabPreparationComponent } from '@modules/performing/components/form/tab-preparation/tab-preparation.component';
-import { TabAnesthesiaComponent } from '@modules/performing/components/form/tab-anesthesia/tab-anesthesia.component';
-import { TabAcquisitionComponent } from '@modules/performing/components/form/tab-acquisition/tab-acquisition.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -31,9 +30,6 @@ import { TabAcquisitionComponent } from '@modules/performing/components/form/tab
 export class FormComponent implements OnInit {
   //Import tabs components (Properties and Methods) [Child components]:
   @ViewChild(TabDetailsComponent) tabDetails!:TabDetailsComponent;
-  @ViewChild(TabPreparationComponent) tabPreparation!:TabPreparationComponent;
-  @ViewChild(TabAnesthesiaComponent) tabAnesthesia!:TabAnesthesiaComponent;
-  @ViewChild(TabAcquisitionComponent) tabAcquisition!:TabAcquisitionComponent;
 
   //Set component properties:
   public settings             : any = app_setting;
@@ -42,6 +38,19 @@ export class FormComponent implements OnInit {
   public gender_types         : any = gender_types;
   public performingFS         : any = performing_flow_states;
   public cancellation_reasons : any = cancellation_reasons;
+
+  //Create CKEditor component and configure them:
+  public procedureEditor                = customBuildEditor;
+  public acquisitionObservationsEditor  = customBuildEditor;
+  public editorConfig                   = CKEditorConfig;
+
+  //Initializate validation tab errors:
+  public injectionTabErrors   : boolean = false;
+  public anesthesiaTabErrors  : boolean = false;
+  public acquisitionTabErrors : boolean = false;
+
+  //Initialize Technician Users:
+  public technicianUsers      : any = [];
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -92,9 +101,48 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      flow_state            : ['P01', [Validators.required]],
-      cancellation_reasons  : [ '' ],
-      status                : ['true'],
+      flow_state                : ['P01', [Validators.required]],
+      cancellation_reasons      : [ '' ],
+      status                    : ['true'],
+      urgency                   : ['false'],  // First time preserve appointment value.
+
+      //Injection fields:
+      injection: this.formBuilder.group({
+        'enabled'               : [ 'false' ],  //Enable or disable injection fields.
+        'batch'                 : [ '' ],
+        /*
+        'administered_volume'   : [ '', [Validators.required]],
+        'administration_time'   : [ '', [Validators.required]],
+        'injection_technician'  : [ '', [Validators.required]],
+        'observations'          : [ '' ],
+
+        //PET-CT fields:
+        pet_ct: this.formBuilder.group({
+          'syringe_activity_full'   : [ '', [Validators.required]],
+          'syringe_activity_empty'  : [ '', [Validators.required]],
+          'administred_activity'    : [ '', [Validators.required]],
+          'syringe_full_time'       : [ '', [Validators.required]],
+          'syringe_empty_time'      : [ '', [Validators.required]],
+        })
+        */
+      }),
+
+      //Anesthesia fields:
+      anesthesia: this.formBuilder.group({
+        'enabled'               : [ 'false' ],  //Enable or disable anesthesia fields.
+        'professional_id'       : [ '', [Validators.required]],
+        'document'              : [ '', [Validators.required]],
+        'name'                  : [ '', [Validators.required]],
+        'surname'               : [ '', [Validators.required]],
+        'procedure'             : [ '', [Validators.required]],
+      }),
+      
+      //Acquisition fields:
+      acquisition: this.formBuilder.group({
+        'time'                  : [ '', [Validators.required]],
+        'console_technician'    : [ '', [Validators.required]],
+        'observations'          : [ '' ]
+      }),
     });
   }
 
@@ -121,6 +169,21 @@ export class FormComponent implements OnInit {
         this.sharedFunctions.find('appointments', params, (res) => {
           //Check operation status:
           if(res.success === true){
+            //Find service users (Technicians):
+            this.sharedFunctions.findServiceUsers(res.data[0].imaging.service._id, 5, (res) => {
+              //Check data:
+              if(res.data.length > 0){
+                //Set technician users:
+                this.technicianUsers = res.data;
+              } else {
+                //Clear previous values:
+                this.technicianUsers = [];
+                this.form.get('acquisition.console_technician')?.setValue('');
+
+                //Send message:
+                this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún técnico.');
+              }
+            });
 
             //Set current data in sharedProp:
             this.setCurrentAppointmentData(res, () => {
@@ -154,16 +217,44 @@ export class FormComponent implements OnInit {
   }
 
   onSubmitMaster(){
-    //Send first submit in controlled order (Update appointment):
-    this.tabDetails.onSubmit((res) => {
+    //Fix Angular validate:
+    //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state.
+    this.form.markAllAsTouched();
 
-      //FIRST TIME 'insert':
-      // - SEND MWL.
-      // - formResponder -> check-in list component.
+    //Check injection tab errors:
+    if(this.form.controls['injection'].status == 'VALID'){
+      this.injectionTabErrors = false;
+    } else {
+      this.injectionTabErrors = true;
+    }
 
-      //Response the form according to the result:
-      this.sharedFunctions.formResponder(res, 'performing', this.router);
-    });
+    //Check anesthesia tab errors:
+    if(this.form.controls['anesthesia'].status == 'VALID'){
+      this.anesthesiaTabErrors = false;
+    } else {
+      this.anesthesiaTabErrors = true;
+    }
+
+    //Check acquisition tab errors:
+    if(this.form.controls['acquisition'].status == 'VALID'){
+      this.acquisitionTabErrors = false;
+    } else {
+      this.acquisitionTabErrors = true;
+    }
+
+    //Validate fields:
+    if(this.form.valid){
+      //Send first submit in controlled order (Update appointment):
+      this.tabDetails.onSubmit((res) => {
+
+        //FIRST TIME 'insert':
+        // - SEND MWL.
+        // - formResponder -> check-in list component.
+
+        //Response the form according to the result:
+        this.sharedFunctions.formResponder(res, 'performing', this.router);
+      });
+    }
   }
 
   onCancel(){
@@ -225,5 +316,4 @@ export class FormComponent implements OnInit {
     //Return result (string):
     return hours + ':' + minutes;
   }
-
 }
