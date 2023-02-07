@@ -93,7 +93,7 @@ module.exports = async (req, res, currentSchema, operation) => {
 
         //Nested references:
         if(req.body.injection){
-            if(req.body.injection.injection_technician){ referencedElements.push([ req.body.injection.injection_technician, 'users' ]); }    
+            if(req.body.injection.injection_user){ referencedElements.push([ req.body.injection.injection_user, 'users' ]); }    
         }
 
         if(req.body.acquisition){

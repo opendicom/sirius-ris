@@ -69,16 +69,12 @@
       <br/><hr class="dashed" /><br/>
 
       <h4>Anamnesis:</h4>
-      <div [class.unselected]="anamnesisValidator == false">
-        <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
-      </div>
+      <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed" /><br/>
 
       <h4>Indicaciones:</h4>
-      <div [class.unselected]="indicationsValidator == false">
-        <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
-      </div>
+      <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed" /><br/>
 

@@ -190,23 +190,23 @@ module.exports = async (req, res, currentSchema) => {
         }},
         { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
 
-        //Injection technician Users (Lookup & Unwind):
+        //Injection user (Lookup & Unwind):
         { $lookup: {
             from: 'users',
-            localField: 'injection.injection_technician',
+            localField: 'injection.injection_user',
             foreignField: '_id',
-            as: 'injection.injection_technician',
+            as: 'injection.injection_user',
         }},
-        { $unwind: { path: "$injection.injection_technician", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$injection.injection_user", preserveNullAndEmptyArrays: true } },
 
         //Injection technician (User) -> People (Lookup & Unwind):
         { $lookup: {
             from: 'people',
-            localField: 'injection.injection_technician.fk_person',
+            localField: 'injection.injection_user.fk_person',
             foreignField: '_id',
-            as: 'injection.injection_technician.person',
+            as: 'injection.injection_user.person',
         }},
-        { $unwind: { path: "$injection.injection_technician.person", preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$injection.injection_user.person", preserveNullAndEmptyArrays: true } },
 
         //Acquisition console technician Users (Lookup & Unwind):
         { $lookup: {
@@ -325,16 +325,16 @@ module.exports = async (req, res, currentSchema) => {
             'modality.__v': 0,
 
             //Injection:
-            'injection.injection_technician.fk_person': 0,
-            'injection.injection_technician.password': 0,
-            'injection.injection_technician.permissions': 0,
-            'injection.injection_technician.settings': 0,
-            'injection.injection_technician.createdAt': 0,
-            'injection.injection_technician.updatedAt': 0,
-            'injection.injection_technician.__v': 0,
-            'injection.injection_technician.person.createdAt': 0,
-            'injection.injection_technician.person.updatedAt': 0,
-            'injection.injection_technician.person.__v': 0,
+            'injection.injection_user.fk_person': 0,
+            'injection.injection_user.password': 0,
+            'injection.injection_user.permissions': 0,
+            'injection.injection_user.settings': 0,
+            'injection.injection_user.createdAt': 0,
+            'injection.injection_user.updatedAt': 0,
+            'injection.injection_user.__v': 0,
+            'injection.injection_user.person.createdAt': 0,
+            'injection.injection_user.person.updatedAt': 0,
+            'injection.injection_user.person.__v': 0,
 
             //Acquisition:
             'acquisition.console_technician.fk_person': 0,
@@ -361,8 +361,8 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'patient');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'patient.person');
-        filter = await moduleServices.adjustDataTypes(filter, 'users', 'injection.injection_technician');
-        filter = await moduleServices.adjustDataTypes(filter, 'people', 'injection.injection_technician.person');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'injection.injection_user');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'injection.injection_user.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'acquisition.console_technician');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'acquisition.console_technician.person');
 

@@ -17,6 +17,7 @@ const subSchemaAnesthetic = new mongoose.Schema({
 
 //Define PET-CT Sub-Schema:
 const subSchemaPETCT = new mongoose.Schema({
+    batch:                  { type: String },
     syringe_activity_full:  { type: Number, required: true },
     syringe_activity_empty: { type: Number, required: true },
     administred_activity:   { type: Number, required: true },
@@ -27,11 +28,9 @@ const subSchemaPETCT = new mongoose.Schema({
 
 //Define Injection Sub-Schema:
 const subSchemaInjection = new mongoose.Schema({
-    batch:                  { type: String },
     administered_volume:    { type: Number, required: true },
     administration_time:    { type: Date, required: true },
-    injection_technician:   { type: mongoose.ObjectId, required: true },
-    observations:           { type: String },
+    injection_user:         { type: mongoose.ObjectId, required: true },
     pet_ct:                 { type: subSchemaPETCT }
 },
 { _id : false });
@@ -57,7 +56,8 @@ const Schema = new mongoose.Schema({
     status:                 { type: Boolean, required: true, default: false },
     anesthetic:             { type: subSchemaAnesthetic },
     injection:              { type: subSchemaInjection },
-    acquisition:            { type: subSchemaAcquisition }
+    acquisition:            { type: subSchemaAcquisition },
+    observations:           { type: String }
 },
 { timestamps: true },
 { versionKey: false });
@@ -134,6 +134,12 @@ const Validator = [
         .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
         .toBoolean(),
 
+    body('observations')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 1000 })
+        .withMessage('El parametro observations ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        
     //----------------------------------------------------------------------------------------------------------------//
     // ANESTHETIC:
     //----------------------------------------------------------------------------------------------------------------//
@@ -176,12 +182,6 @@ const Validator = [
     //----------------------------------------------------------------------------------------------------------------//
     body('injection').optional(),
 
-    body('injection.batch')
-        .optional()
-        .trim()
-        .isLength({ min: 10, max: 30 })
-        .withMessage('El parametro injection.batch ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
-
     body('injection.administered_volume')
         .if(body('injection').exists())   // Check if parent exists.
         .trim()
@@ -196,20 +196,20 @@ const Validator = [
         .toDate()
         .withMessage('El parametro injection.administration_time es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
 
-    body('injection.injection_technician')
+    body('injection.injection_user')
         .if(body('injection').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
-        .withMessage('El parametro injection.injection_technician NO es un ID MongoDB válido.'),
-
-    body('injection.observations')
-        .optional()
-        .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro injection.observations ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage('El parametro injection.injection_user NO es un ID MongoDB válido.'),
 
     // PET-CT:
     body('injection.pet_ct').optional(),
+
+    body('injection.batch')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 30 })
+        .withMessage('El parametro injection.pet_ct.batch ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('injection.pet_ct.syringe_activity_full')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.

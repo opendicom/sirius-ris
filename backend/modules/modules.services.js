@@ -1958,20 +1958,20 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 //Injection technician - Post aggregate lookup:
-                if(filter[asPrefix + 'injection.injection_technician._id'] != undefined){ filter[asPrefix + 'injection.injection_technician._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician._id']); };
-                if(filter[asPrefix + 'injection.injection_technician.status'] != undefined){ filter[asPrefix + 'injection.injection_technician.status'] = mainServices.stringToBoolean(filter[asPrefix + 'injection.injection_technician.status']); };
-                if(filter[asPrefix + 'injection.injection_technician.person._id'] != undefined){ filter[asPrefix + 'injection.injection_technician.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_technician.person._id']); };
-                if(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.documents.doc_type'], 10); }
-                if(filter[asPrefix + 'injection.injection_technician.person.gender'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.gender'] = parseInt(filter[asPrefix + 'injection.injection_technician.person.gender'], 10); }
-                if(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.injection_technician.person.phone_numbers'] = filter[asPrefix + 'injection.injection_technician.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.injection_technician.person.phone_numbers'], 10); }
+                if(filter[asPrefix + 'injection.injection_user._id'] != undefined){ filter[asPrefix + 'injection.injection_user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user._id']); };
+                if(filter[asPrefix + 'injection.injection_user.status'] != undefined){ filter[asPrefix + 'injection.injection_user.status'] = mainServices.stringToBoolean(filter[asPrefix + 'injection.injection_user.status']); };
+                if(filter[asPrefix + 'injection.injection_user.person._id'] != undefined){ filter[asPrefix + 'injection.injection_user.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user.person._id']); };
+                if(filter[asPrefix + 'injection.injection_user.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.injection_user.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.injection_user.person.documents.doc_type'], 10); }
+                if(filter[asPrefix + 'injection.injection_user.person.gender'] != undefined){ filter[asPrefix + 'injection.injection_user.person.gender'] = parseInt(filter[asPrefix + 'injection.injection_user.person.gender'], 10); }
+                if(filter[asPrefix + 'injection.injection_user.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.injection_user.person.phone_numbers'] = filter[asPrefix + 'injection.injection_user.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.injection_user.person.phone_numbers'], 10); }
                     
                 //Set allowed explicit operators:
-                if(filter[asPrefix + 'injection.injection_technician.person.birth_date'] != undefined){
-                    setExplicitOperator(filter[asPrefix + 'injection.injection_technician.person.birth_date'], (explicitOperator) => {
+                if(filter[asPrefix + 'injection.injection_user.person.birth_date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'injection.injection_user.person.birth_date'], (explicitOperator) => {
                         if(explicitOperator){
-                            filter[asPrefix + 'injection.injection_technician.person.birth_date'][explicitOperator] = new Date(filter[asPrefix + 'injection.injection_technician.person.birth_date'][explicitOperator]);
+                            filter[asPrefix + 'injection.injection_user.person.birth_date'][explicitOperator] = new Date(filter[asPrefix + 'injection.injection_user.person.birth_date'][explicitOperator]);
                         } else {
-                            filter[asPrefix + 'injection.injection_technician.person.birth_date'] = new Date(filter[asPrefix + 'injection.injection_technician.person.birth_date']);
+                            filter[asPrefix + 'injection.injection_user.person.birth_date'] = new Date(filter[asPrefix + 'injection.injection_user.person.birth_date']);
                         }
                     });
                 }

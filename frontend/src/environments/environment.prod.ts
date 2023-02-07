@@ -48,7 +48,7 @@ export const user_roles = {
   2:  'Administrador',
   //3:  'Supervisor',
   4:  'Médico',
-  //5:  'Técnico',
+  5:  'Técnico',
   //6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',

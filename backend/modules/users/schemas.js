@@ -61,7 +61,7 @@ const ForeignKeys = {
     Patient     : 'fk_patient',
     Referring   : 'fk_referring',
     Reporting   : 'fk_reporting',
-    Injection   : 'injection_technician',
+    Injection   : 'injection_user',
     Console     : 'console_technician'
 };
 
