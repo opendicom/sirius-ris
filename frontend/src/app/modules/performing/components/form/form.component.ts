@@ -57,6 +57,7 @@ export class FormComponent implements OnInit {
 
   //Boolean class binding objects:
   public booleanAnesthesia      : Boolean = false;
+  public booleanContrast        : Boolean = false;
 
   //Create CKEditor validator:
   public anesthesiaValidator = true;
@@ -66,9 +67,13 @@ export class FormComponent implements OnInit {
   public availableEquipments    : any;
 
   //Initialize local current objects:
-  public current_branch_id      : string = '';
-  public current_modality_id    : string = '';
-  public current_procedure_id   : string = '';
+  public current_branch_id            : string = '';
+  public current_modality_id          : string = '';
+  public current_modality_code_value  : string = '';
+  public current_procedure_id         : string = '';
+
+  //Initializate performing local current flow state:
+  public current_flow_state           : string = 'P01';
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -119,7 +124,7 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      flow_state                : ['P01', [Validators.required]],
+      flow_state                : [ this.current_flow_state, [Validators.required]],
       fk_equipment              : [ '', [Validators.required]],
       fk_procedure              : [ '', [Validators.required]],
       cancellation_reasons      : [ '' ],
@@ -190,7 +195,11 @@ export class FormComponent implements OnInit {
             //Set current local objects:
             this.current_branch_id = resAppointments.data[0].imaging.branch._id;
             this.current_modality_id = resAppointments.data[0].modality._id;
+            this.current_modality_code_value = resAppointments.data[0].modality.code_value;
             this.current_procedure_id = resAppointments.data[0].procedure._id;
+
+            //Set whether to use contrast:
+            this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
             
             //Find available equipments and available procedures for selected equipment:
             this.setEquipment(resAppointments.data[0].slot.fk_equipment);
@@ -475,5 +484,10 @@ export class FormComponent implements OnInit {
       //Hide inputs:
       this.booleanAnesthesia = false;
     }
+  }
+
+  setFlowState(flow_state: any){
+    //Set current flow state:
+    this.current_flow_state = flow_state.toString(); 
   }
 }

@@ -18,11 +18,21 @@
           <!-- imaging -->
           <span *ngIf="this.sharedProp.current_imaging">
             <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
-              <div class="current-info">
+              <div class="current-info divider-alt">
                 <small>Organización ► Sucursal ► Servicio:</small><br/>
                 <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
               </div>
             </span>
+          </span>
+
+          <!-- modality -->
+          <span *ngIf="this.sharedProp.current_modality">
+            <div class="current-info text-center">
+              <small>Modalidad:</small><br/>
+              <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
+                <span>{{ this.sharedProp.current_modality.code_value }}</span>
+              </span>
+            </div>
           </span>
 
           <div class="clear"></div>
@@ -115,7 +125,7 @@
               <mat-label>Flujo de trabajo</mat-label>
               <mat-select formControlName="flow_state">
                 <div *ngFor="let currentFS of performingFS | keyvalue">
-                  <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                  <mat-option value="{{ currentFS.key }}" (click)="setFlowState(currentFS.key)">{{ currentFS.value }}</mat-option>
                 </div>
               </mat-select>
             </mat-form-field>
@@ -192,7 +202,7 @@
 
                 <hr class="dashed" /><br/>
                   
-                <div formGroupName="injection">
+                <div formGroupName="injection" [class.non-display]="booleanContrast == false">
                   <h4>Volumen administrado: <span class="label-info">mL</span></h4>
                   <mat-form-field appearance="fill" class="medium">
                     <mat-label>Volumen administrado</mat-label>
@@ -211,7 +221,7 @@
                 
                 <br/><hr class="dashed" /><br/>
 
-                <div formGroupName="injection">
+                <div formGroupName="injection" [class.non-display]="booleanContrast == false">
                   <h4>Responsable de inyección:</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>Responsable de inyección</mat-label>
@@ -236,7 +246,11 @@
 
               </div> <!-- end fxLayout wrapper -->
       
-              <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+              <div class="input-wrapper text-center" [class.non-display]="current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
+                <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+              </div> <!-- end fxLayout wrapper -->
+
+              <div class="input-wrapper" [class.non-display]="current_modality_code_value != 'PT'"> <!-- start fxLayout wrapper -->
                 <div formGroupName="injection">
                   <h3 class="form-title text-center underline-fail-alt">Datos de inyección PET-CT:</h3>
                   <br/>
