@@ -52,6 +52,9 @@ export class FormComponent implements OnInit {
   public anesthesiaTabErrors    : boolean = false;
   public acquisitionTabErrors   : boolean = false;
 
+  //Initializate available flow states:
+  public availableFS            : any = {};
+
   //Initialize Technician Users:
   public technicianUsers        : any = [];
 
@@ -134,7 +137,6 @@ export class FormComponent implements OnInit {
 
       //Injection fields:
       injection: this.formBuilder.group({
-        'enabled'               : [ 'false' ],  //Enable or disable injection fields.
         'administered_volume'   : [ '', [Validators.required]],
         'administration_time'   : [ '', [Validators.required]],
         'injection_user'        : [ '', [Validators.required]],
@@ -162,8 +164,8 @@ export class FormComponent implements OnInit {
       
       //Acquisition fields:
       acquisition: this.formBuilder.group({
-        'time'                  : [ '', [Validators.required]],
-        'console_technician'    : [ '', [Validators.required]],
+        'time'                  : [ '' ],
+        'console_technician'    : [ '' ],
         'observations'          : [ '' ]
       }),
     });
@@ -187,6 +189,12 @@ export class FormComponent implements OnInit {
           'proj[consents.informed_consent.base64]': 0,
           'proj[consents.clinical_trial.base64]': 0
         };
+
+        //Set available flow states:
+        this.setAvailableFlowStates('P01');
+
+        //Set flow state (first time | enable validators):
+        this.setFlowState('P01');
 
         //Find element to update:
         this.sharedFunctions.find('appointments', params, (resAppointments) => {
@@ -272,10 +280,14 @@ export class FormComponent implements OnInit {
     }
 
     //Check injection tab errors:
-    if(this.form.controls['injection'].status == 'VALID'){
-      this.injectionTabErrors = false;
+    if(this.form.value.hasOwnProperty('injection')){
+      if(this.form.controls['injection'].status == 'VALID'){
+        this.injectionTabErrors = false;
+      } else {
+        this.injectionTabErrors = true;
+      }
     } else {
-      this.injectionTabErrors = true;
+      this.injectionTabErrors = false;
     }
 
     //Check anesthesia tab errors:
@@ -286,24 +298,78 @@ export class FormComponent implements OnInit {
     }
 
     //Check acquisition tab errors:
-    if(this.form.controls['acquisition'].status == 'VALID'){
-      this.acquisitionTabErrors = false;
+    if(this.form.value.hasOwnProperty('acquisition')){
+      if(this.form.controls['acquisition'].status == 'VALID'){
+        this.acquisitionTabErrors = false;
+      } else {
+        this.acquisitionTabErrors = true;
+      }
     } else {
-      this.acquisitionTabErrors = true;
+      this.acquisitionTabErrors = false;
     }
-
+    
     //Validate fields:
     if(this.form.valid){
-      //Send first submit in controlled order (Update appointment):
-      this.tabDetails.onSubmit((res) => {
+      //Check cancellation reasons value:
+      if(this.form.value.flow_state !== 'P08'){
+        //Delete to prevent validation backend error:
+        delete this.form.value.cancellation_reasons;
+      }
 
-        //FIRST TIME 'insert':
-        // - SEND MWL.
-        // - formResponder -> check-in list component.
+      //Check anesthesia value:
+      if(this.form.value.hasOwnProperty('anesthesia') && this.form.value.anesthesia.use_anesthesia == 'false'){
+        //Delete to prevent validation backend error:
+        delete this.form.value.anesthesia;
+      }
 
+      //Check performing observations:
+      if(this.form.value.hasOwnProperty('observations') && this.form.value.observations.length == 0){
+        //Delete to prevent validation backend error:
+        delete this.form.value.observations;
+      }
+
+      //Data normalization - Booleans types (mat-option cases):
+      if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+      if(typeof this.form.value.urgency != "boolean"){ this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
+
+
+      //Check current action:
+      if(this.form_action == 'insert'){
+        //Set fk_appointment in form:
+        this.form.value.fk_appointment = this.sharedProp.current_appointment;
+
+        //Set check-in time in form:
+        this.form.value.checkin_time = this.checkin_time;
+      }
+
+      console.log(this.form.value);
+
+      //Save performing data:
+      //this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
         //Response the form according to the result:
-        this.sharedFunctions.formResponder(res, 'performing', this.router);
+        //this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+      //});
+
+
+      //Send first submit in controlled order (Update appointment):
+      /*
+      this.tabDetails.onSubmit((res) => {
+        //Check current action:
+        if(this.form_action == 'insert'){
+          //SEND PATIENT TO MWL ACCORDING FLOW_STATE ('P04')
+          this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, 'check-in', this.router);
+        } else {
+          //SEND PATIENT TO MWL ACCORDING FLOW_STATE ('P04')
+          this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+          
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, 'performing', this.router);
+        }
       });
+      */
     }
   }
 
@@ -489,5 +555,193 @@ export class FormComponent implements OnInit {
   setFlowState(flow_state: any){
     //Set current flow state:
     this.current_flow_state = flow_state.toString(); 
+
+    //Set validators according current flow state:
+    switch(this.current_flow_state){
+      case 'P01': // Recepción
+      case 'P02': // Entrevista
+      case 'P03': // Preparación/Inyección
+        //Remove all validators:
+        this.setValidators('acquisition', 'remove');
+        this.setValidators('injection', 'remove');
+        this.setValidators('pet_ct', 'remove');
+        break;
+
+      case 'P04': // Adquisición
+        //Remove acquisition validators:
+        this.setValidators('acquisition', 'remove');
+
+        //Enable injection validators if applicable:
+        if(this.booleanContrast == true){
+          //Enable injection validators:
+          this.setValidators('injection', 'enable');
+
+          //Enable PET validators if applicable:
+          if(this.current_modality_code_value == 'PT'){
+            //Enable PET validators:
+            this.setValidators('pet_ct', 'enable');
+          }
+        }
+        break;
+
+      case 'P05': // Verificación de imágenes
+      case 'P06': // Para informar
+      case 'P07': // Terminado (sin informe)
+        //Enable acquisition validators:
+        this.setValidators('acquisition', 'enable');
+
+        //Enable injection validators if applicable:
+        if(this.booleanContrast == true){
+          //Enable injection validators:
+          this.setValidators('injection', 'enable');
+
+          //Enable PET validators if applicable:
+          if(this.current_modality_code_value == 'PT'){
+            //Enable PET validators:
+            this.setValidators('pet_ct', 'enable');
+          }
+        }
+        break;
+
+      case 'P08': // Cancelado
+        //Remove all validators:
+        this.setValidators('acquisition', 'remove');
+        this.setValidators('injection', 'remove');
+        this.setValidators('pet_ct', 'remove');
+        break;
+    }
+  }
+
+  setValidators(element: string, operation: string){
+    switch(element){
+      case 'injection':
+        switch(operation){
+          case 'enable':
+            //Enable injection validators:
+            this.form.get('injection.administered_volume')?.setValidators([Validators.required]);
+            this.form.get('injection.administration_time')?.setValidators([Validators.required]);
+            this.form.get('injection.injection_user')?.setValidators([Validators.required]);
+            this.form.get('injection.administered_volume')?.updateValueAndValidity();
+            this.form.get('injection.administration_time')?.updateValueAndValidity();
+            this.form.get('injection.injection_user')?.updateValueAndValidity();
+
+            //Enable injection inputs:
+            this.form.get('injection.administered_volume')?.enable();
+            this.form.get('injection.administration_time')?.enable();
+            this.form.get('injection.injection_user')?.enable();
+            break;
+
+          case 'remove':
+            //Remove injection validators:
+            this.form.get('injection.administered_volume')?.clearValidators();
+            this.form.get('injection.administration_time')?.clearValidators();
+            this.form.get('injection.injection_user')?.clearValidators();
+            this.form.get('injection.administered_volume')?.updateValueAndValidity();
+            this.form.get('injection.administration_time')?.updateValueAndValidity();
+            this.form.get('injection.injection_user')?.updateValueAndValidity();
+
+            //Disable injection inputs:
+            this.form.get('injection.administered_volume')?.disable();
+            this.form.get('injection.administration_time')?.disable();
+            this.form.get('injection.injection_user')?.disable();
+            break;
+        }
+        break;
+
+      case 'pet_ct':
+        switch(operation){
+          case 'enable':
+            //Enable PET validators:
+            this.form.get('injection.pet_ct.syringe_activity_full')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.administred_activity')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_full_time')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_empty_time')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.administred_activity')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
+
+            //Enable PET inputs:
+            this.form.get('injection.pet_ct.batch')?.enable();
+            this.form.get('injection.pet_ct.syringe_activity_full')?.enable();
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.enable();
+            this.form.get('injection.pet_ct.administred_activity')?.enable();
+            this.form.get('injection.pet_ct.syringe_full_time')?.enable();
+            this.form.get('injection.pet_ct.syringe_empty_time')?.enable();
+            break;
+
+          case 'remove':
+            //Remove PET validators:
+            this.form.get('injection.pet_ct.syringe_activity_full')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.clearValidators();
+            this.form.get('injection.pet_ct.administred_activity')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_full_time')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_empty_time')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.administred_activity')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
+
+            //Disable PET inputs:
+            this.form.get('injection.pet_ct.batch')?.disable();
+            this.form.get('injection.pet_ct.syringe_activity_full')?.disable();
+            this.form.get('injection.pet_ct.syringe_activity_empty')?.disable();
+            this.form.get('injection.pet_ct.administred_activity')?.disable();
+            this.form.get('injection.pet_ct.syringe_full_time')?.disable();
+            this.form.get('injection.pet_ct.syringe_empty_time')?.disable();
+            break;
+        }
+        break;
+
+      case 'acquisition':
+        switch(operation){
+          case 'enable':
+            //Enable acquisition validators:
+            this.form.get('acquisition.time')?.setValidators([Validators.required]);
+            this.form.get('acquisition.console_technician')?.setValidators([Validators.required]);
+            this.form.get('acquisition.time')?.updateValueAndValidity();
+            this.form.get('acquisition.console_technician')?.updateValueAndValidity();
+
+            //Enable acquisition inputs:
+            this.form.get('acquisition.time')?.enable();
+            this.form.get('acquisition.console_technician')?.enable();
+            this.form.get('acquisition.observations')?.enable();
+            break;
+
+          case 'remove':
+            //Remove acquisition validators:
+            this.form.get('acquisition.time')?.clearValidators();
+            this.form.get('acquisition.console_technician')?.clearValidators();
+            this.form.get('acquisition.time')?.updateValueAndValidity();
+            this.form.get('acquisition.console_technician')?.updateValueAndValidity();
+
+            //Disable acquisition inputs:
+            this.form.get('acquisition.time')?.disable();
+            this.form.get('acquisition.console_technician')?.disable();
+            this.form.get('acquisition.observations')?.disable();
+            break;
+        }
+        break;
+    }
+  }
+
+  async setAvailableFlowStates(currentFS: string){
+    //Initialize found flag:
+    let foundFlag = false;
+
+    //Loop in enviroment flow states list (await foreach):
+    await Promise.all(Object.keys(this.performingFS).map((key) => {
+      //Check that currentFS is equal to key or that currentFS has already been entered/found:
+      if(currentFS === key || foundFlag){
+        //Add current flow state into available flow states:
+        this.availableFS[key] = this.performingFS[key];
+
+        //Set found flag as true:
+        foundFlag= true;
+      }
+    }));
   }
 }

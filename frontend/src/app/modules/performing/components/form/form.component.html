@@ -124,7 +124,7 @@
             <mat-form-field appearance="fill" class="full">
               <mat-label>Flujo de trabajo</mat-label>
               <mat-select formControlName="flow_state">
-                <div *ngFor="let currentFS of performingFS | keyvalue">
+                <div *ngFor="let currentFS of availableFS | keyvalue">
                   <mat-option value="{{ currentFS.key }}" (click)="setFlowState(currentFS.key)">{{ currentFS.value }}</mat-option>
                 </div>
               </mat-select>
