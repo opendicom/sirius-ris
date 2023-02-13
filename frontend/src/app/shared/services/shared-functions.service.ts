@@ -1174,4 +1174,27 @@ export class SharedFunctionsService {
     this.find('users', params, (res) => callback(res), false, true);
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CALCULATE DOSE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  calculateDose(weight: string, coefficient: string): string{
+    //Parse weight and coefficient to float:
+    const numberWeight = parseFloat(weight);
+		const numberCoefficient = parseFloat(coefficient);
+
+    //Calculate dose:
+		const numberDose: number = numberWeight * numberCoefficient;
+
+    //Check if calculated dose is
+		if(isNaN(numberDose)){
+      //Send message:
+      this.sendMessage('Ocurrió un error al calcular la dosis recomendada', 2000);
+    }
+		
+    //Return calculated dose:
+    return numberDose.toFixed(2)
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

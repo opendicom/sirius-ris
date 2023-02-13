@@ -328,4 +328,15 @@ export class TabDetailsComponent implements OnInit {
     });
   }
 
+  setWeight(event: any){
+    //Set current weight:
+    this.sharedProp.current_weight = event.target.value;
+
+    //Calculate recomended dose if modality is PT:
+    if(this.sharedProp.current_modality_code_value == 'PT'){    
+      //Calculate recomended dose:
+      this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
+    }
+  }
+
 }

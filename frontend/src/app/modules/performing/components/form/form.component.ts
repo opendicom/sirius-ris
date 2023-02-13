@@ -20,7 +20,6 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 
 // Child components:
 import { TabDetailsComponent } from '@modules/performing/components/form/tab-details/tab-details.component';
-import { stat } from 'fs';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -72,7 +71,6 @@ export class FormComponent implements OnInit {
   //Initialize local current objects:
   public current_branch_id            : string = '';
   public current_modality_id          : string = '';
-  public current_modality_code_value  : string = '';
   public current_procedure_id         : string = '';
 
   //Initializate performing local current flow state:
@@ -200,11 +198,21 @@ export class FormComponent implements OnInit {
         this.sharedFunctions.find('appointments', params, (resAppointments) => {
           //Check operation status:
           if(resAppointments.success === true){
-            //Set current local objects:
+            //Set current objects:
             this.current_branch_id = resAppointments.data[0].imaging.branch._id;
             this.current_modality_id = resAppointments.data[0].modality._id;
-            this.current_modality_code_value = resAppointments.data[0].modality.code_value;
+            this.sharedProp.current_modality_code_value = resAppointments.data[0].modality.code_value;
             this.current_procedure_id = resAppointments.data[0].procedure._id;
+
+            //Calculate recomended dose if modality is PT:
+            if(this.sharedProp.current_modality_code_value == 'PT'){
+              //Set sharedProp current objects (PET Dose):
+              this.sharedProp.current_weight = resAppointments.data[0].private_health.weight;
+              this.sharedProp.current_coefficient = resAppointments.data[0].procedure.coefficient;
+
+              //Calculate recomended dose:
+              this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
+            }
 
             //Set whether to use contrast:
             this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
@@ -503,9 +511,21 @@ export class FormComponent implements OnInit {
     });
   }
 
-  setProcedure(procedure_id: string){
+  setProcedure(procedure_id: string, coefficient: any){
     //Set current procedure _id:
-    this.current_procedure_id = procedure_id; 
+    this.current_procedure_id = procedure_id;
+
+    //Calculate recomended dose if modality is PT:
+    if(this.sharedProp.current_modality_code_value == 'PT'){
+      //Check coefficient:
+      if(coefficient !== undefined && coefficient !== null && coefficient !== ''){
+        //Set current coefficient:
+        this.sharedProp.current_coefficient = coefficient;
+      }
+    
+      //Calculate recomended dose:
+      this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
+    }
   }
 
   onChangeAnesthesia(event: any, form: FormGroup){
@@ -577,7 +597,7 @@ export class FormComponent implements OnInit {
           this.setValidators('injection', 'enable');
 
           //Enable PET validators if applicable:
-          if(this.current_modality_code_value == 'PT'){
+          if(this.sharedProp.current_modality_code_value == 'PT'){
             //Enable PET validators:
             this.setValidators('pet_ct', 'enable');
           }
@@ -596,7 +616,7 @@ export class FormComponent implements OnInit {
           this.setValidators('injection', 'enable');
 
           //Enable PET validators if applicable:
-          if(this.current_modality_code_value == 'PT'){
+          if(this.sharedProp.current_modality_code_value == 'PT'){
             //Enable PET validators:
             this.setValidators('pet_ct', 'enable');
           }

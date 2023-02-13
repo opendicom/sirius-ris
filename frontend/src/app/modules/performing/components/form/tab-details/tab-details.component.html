@@ -233,7 +233,7 @@
               <h4>Peso <span class="label-info">Kilogramos</span>:</h4>
               <mat-form-field appearance="fill" class="large">
                 <mat-label>Peso</mat-label>
-                <input type="text" matInput formControlName="weight" min="1" max="300">
+                <input type="text" (change)="setWeight($event)" matInput formControlName="weight" min="1" max="300">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>

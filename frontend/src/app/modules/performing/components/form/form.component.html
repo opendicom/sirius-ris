@@ -195,7 +195,7 @@
                   <mat-label>Procedimiento</mat-label>
                   <mat-select formControlName="fk_procedure" placeholder="Seleccione el procedimiento">
                     <div *ngFor="let currentProcedure of availableProcedures">
-                      <mat-option (click)="setProcedure(currentProcedure._id)" value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
+                      <mat-option (click)="setProcedure(currentProcedure._id, currentProcedure.coefficient)" value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
                     </div>
                   </mat-select>
                 </mat-form-field>
@@ -246,22 +246,30 @@
 
               </div> <!-- end fxLayout wrapper -->
       
-              <div class="input-wrapper text-center" [class.non-display]="current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
+              <div class="input-wrapper text-center" [class.non-display]="sharedProp.current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
                 <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
               </div> <!-- end fxLayout wrapper -->
 
-              <div class="input-wrapper" [class.non-display]="current_modality_code_value != 'PT'"> <!-- start fxLayout wrapper -->
+              <div class="input-wrapper" [class.non-display]="sharedProp.current_modality_code_value != 'PT'"> <!-- start fxLayout wrapper -->
                 <div formGroupName="injection">
                   <h3 class="form-title text-center underline-fail-alt">Datos de inyección PET-CT:</h3>
                   <br/>
                   
                   <div formGroupName="pet_ct">
-                    <h4>Lote:</h4>
-                    <mat-form-field appearance="fill" class="medium">
-                      <mat-label>Lote</mat-label>
-                      <input matInput type="text" formControlName="batch" placeholder="Ingrese el lote">
-                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Lote:</h4>
+                        <mat-form-field appearance="fill" class="medium">
+                          <mat-label>Lote</mat-label>
+                          <input matInput type="text" formControlName="batch" placeholder="Ingrese el lote">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
 
+                      <div class="input-wrapper sub-wrapper dose"> <!-- start fxLayout wrapper -->
+                        <h4 class="badge-accent badge-dose">DOSIS RECOMENDADA: {{ sharedProp.recomended_dose }} MBq</h4>
+                        <small>Dósis recomendada <strong>=</strong> Peso <strong>*</strong> Coeficiente de procedimiento</small>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
                     <hr class="dashed" /><br/>
 
                     <h4>Actividad administrada <span class="label-info">MBq</span>:</h4>

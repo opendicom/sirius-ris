@@ -60,6 +60,12 @@ export class SharedPropertiesService {
   public current_friendly_pass      : string = '';
   public current_appointment        : string = '';
 
+  //Current operation object PET-CT for cases:
+  public current_modality_code_value  : string = '';
+  public current_weight               : string = '';
+  public current_coefficient          : string = '';
+  public recomended_dose              : string = '';
+
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
     //Initialize filter (empty):
