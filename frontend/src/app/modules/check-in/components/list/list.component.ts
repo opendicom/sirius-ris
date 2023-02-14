@@ -27,6 +27,9 @@ export class ListComponent implements OnInit {
     'documents',
     'names',
     'surnames',
+    'gender',
+    'height',
+    'weight',
     'details',
     'outpatient_inpatient',
     'urgency'
@@ -96,7 +99,11 @@ export class ListComponent implements OnInit {
       'slot.equipment.name': 1,
       'slot.equipment.AET': 1,
       'procedure.name': 1,
-      'procedure.code': 1
+      'procedure.code': 1,
+      'procedure.coefficient': 1,
+      'private_health.height': 1,
+      'private_health.weight': 1
+
     };
     this.sharedProp.sort          = { 'start': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.check_in_default_size };
@@ -111,7 +118,7 @@ export class ListComponent implements OnInit {
 
   setDefaultModality(){
     let element = 'modalities';
-    let params : any = { 'filter[status]': true, 'proj[_id]': 1 };
+    let params : any = { 'filter[status]': true, 'proj[_id]': 1, 'proj[code_value]': 1 };
     let findOne = true;
 
     //Check if the user is logged in at the service level:
@@ -131,11 +138,17 @@ export class ListComponent implements OnInit {
           case 'modalities':
             //Set default Modality (First match - findOne):
             this.sharedProp.modality = res.data[0]._id;
+
+            //Set current code value (To filter PET-CT cases):
+            this.sharedProp.current_modality_code_value = res.data[0].code_value;
             break;
 
           case 'services':
             //Set default Modality (First match - findOne):
             this.sharedProp.modality = res.data[0].modality._id;
+
+            //Set current code value (To filter PET-CT cases):
+            this.sharedProp.current_modality_code_value = res.data[0].modality.code_value;
             break;
         }
 

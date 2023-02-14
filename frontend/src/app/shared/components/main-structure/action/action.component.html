@@ -71,7 +71,7 @@
         <mat-label>Modalidad</mat-label>
         <mat-select [(ngModel)]="sharedProp.modality" (selectionChange)="onSearch();">
           <div *ngFor="let currentModality of modalities">
-            <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }}</mat-option>
+            <mat-option value="{{ currentModality._id }}" (click)="setCurrentCodeValue(currentModality.code_value)">{{ currentModality.code_value }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>

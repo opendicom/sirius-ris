@@ -10,3 +10,19 @@
   cursor: pointer;
   margin-left: 5px;
 }
+
+.badge-dose{
+  opacity: 0.8;
+}
+
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}

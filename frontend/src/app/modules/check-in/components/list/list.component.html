@@ -95,6 +95,38 @@
       </td>
     </ng-container>
 
+    <!-- gender -->
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Género </th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <span *ngIf="element.patient">
+          <span *ngIf="element.patient.person">
+            <div [ngSwitch]="element.patient.person.gender" matTooltip="{{ gender_types[element.patient.person.gender] }}">
+              <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+              <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+              <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+            </div>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- height -->
+    <ng-container matColumnDef="height" class="text-center">
+      <th mat-header-cell *matHeaderCellDef> Altura </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.private_health">{{ element.private_health.height }} <small>cm</small></span>
+      </td>
+    </ng-container>
+
+    <!-- weight -->
+    <ng-container matColumnDef="weight" class="text-center">
+      <th mat-header-cell *matHeaderCellDef> Peso </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.private_health">{{ element.private_health.weight }} <small>kg</small></span>
+      </td>
+    </ng-container>
+
     <!-- details -->
     <ng-container matColumnDef="details">
       <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
@@ -103,6 +135,13 @@
         <span *ngIf="element.procedure">
           <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
             <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
+          </span>
+        </span>
+
+        <!-- recomended_dose -->
+        <span *ngIf="sharedProp.current_modality_code_value && sharedProp.current_modality_code_value == 'PT'">
+          <span class="badge-warn badge-dose" matTooltip="Dósis recomendada">
+            <span>{{ sharedFunctions.calculateDose(element.private_health.weight, element.procedure.coefficient) }} MBq</span>
           </span>
         </span>
 

@@ -1186,12 +1186,6 @@ export class SharedFunctionsService {
 
     //Calculate dose:
 		const numberDose: number = numberWeight * numberCoefficient;
-
-    //Check if calculated dose is
-		if(isNaN(numberDose)){
-      //Send message:
-      this.sendMessage('Ocurrió un error al calcular la dosis recomendada', 2000);
-    }
 		
     //Return calculated dose:
     return numberDose.toFixed(2)
