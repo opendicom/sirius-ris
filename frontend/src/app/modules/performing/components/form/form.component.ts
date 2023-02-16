@@ -96,7 +96,7 @@ export class FormComponent implements OnInit {
   public booleanCancelation : Boolean = false;
 
   //Set checkin_time:
-  public checkin_time = this.setCheckInTime();
+  public checkin_time = this.getTimeNow();
 
   //Inject services, components and router to the constructor:
   constructor(
@@ -340,7 +340,6 @@ export class FormComponent implements OnInit {
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
       if(typeof this.form.value.urgency != "boolean"){ this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
 
-
       //Check current action:
       if(this.form_action == 'insert'){
         //Set fk_appointment in form:
@@ -353,10 +352,10 @@ export class FormComponent implements OnInit {
       console.log(this.form.value);
 
       //Save performing data:
-      //this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
         //Response the form according to the result:
-        //this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
-      //});
+        this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router,);
+      });
 
 
       //Send first submit in controlled order (Update appointment):
@@ -429,7 +428,7 @@ export class FormComponent implements OnInit {
     callback();
   }
 
-  setCheckInTime(): string {
+  getTimeNow(): string {
     //Get current date (time):
     const now = new Date();
 
@@ -763,5 +762,12 @@ export class FormComponent implements OnInit {
         foundFlag= true;
       }
     }));
+  }
+
+  setTimeNow(input_name: string){
+    //Check if is disabled input:
+    if(this.form.get(input_name)?.status !== 'DISABLED'){
+      this.form.get(input_name)?.setValue(this.getTimeNow());
+    }
   }
 }

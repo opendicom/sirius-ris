@@ -1947,15 +1947,6 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
                 //Injection:
                 if(filter[asPrefix + 'injection.administered_volume'] != undefined){ filter[asPrefix + 'injection.administered_volume'] = parseInt(filter[asPrefix + 'injection.administered_volume'], 10); }
-                if(filter[asPrefix + 'injection.administration_time'] != undefined){
-                    setExplicitOperator(filter[asPrefix + 'injection.administration_time'], (explicitOperator) => {
-                        if(explicitOperator){
-                            filter[asPrefix + 'injection.administration_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.administration_time'][explicitOperator]);
-                        } else {
-                            filter[asPrefix + 'injection.administration_time'] = new Date(filter[asPrefix + 'injection.administration_time']);
-                        }
-                    });
-                }
 
                 //Injection technician - Post aggregate lookup:
                 if(filter[asPrefix + 'injection.injection_user._id'] != undefined){ filter[asPrefix + 'injection.injection_user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user._id']); };
@@ -1997,38 +1988,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseInt(filter[asPrefix + 'injection.pet_ct.administred_activity'], 10); }
-                if(filter[asPrefix + 'injection.pet_ct.syringe_full_time'] != undefined){
-                    setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_full_time'], (explicitOperator) => {
-                        if(explicitOperator){
-                            filter[asPrefix + 'injection.pet_ct.syringe_full_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_full_time'][explicitOperator]);
-                        } else {
-                            filter[asPrefix + 'injection.pet_ct.syringe_full_time'] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_full_time']);
-                        }
-                    });
-                }
-
-                //Set allowed explicit operators:
-                if(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'] != undefined){
-                    setExplicitOperator(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'], (explicitOperator) => {
-                        if(explicitOperator){
-                            filter[asPrefix + 'injection.pet_ct.syringe_empty_time'][explicitOperator] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_empty_time'][explicitOperator]);
-                        } else {
-                            filter[asPrefix + 'injection.pet_ct.syringe_empty_time'] = new Date(filter[asPrefix + 'injection.pet_ct.syringe_empty_time']);
-                        }
-                    });
-                }
 
                 //Acquisition:
                 if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
-                if(filter[asPrefix + 'acquisition.time'] != undefined){
-                    setExplicitOperator(filter[asPrefix + 'acquisition.time'], (explicitOperator) => {
-                        if(explicitOperator){
-                            filter[asPrefix + 'acquisition.time'][explicitOperator] = new Date(filter[asPrefix + 'acquisition.time'][explicitOperator]);
-                        } else {
-                            filter[asPrefix + 'acquisition.time'] = new Date(filter[asPrefix + 'acquisition.time']);
-                        }
-                    });
-                }
 
                 return filter;
             });

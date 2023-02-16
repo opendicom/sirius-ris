@@ -213,6 +213,7 @@
                   <mat-form-field appearance="fill">
                     <mat-label>Hora de inyección</mat-label>
                     <input type="time" matInput formControlName="administration_time" min="00:00" max="24:00">
+                    <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.administration_time');"><mat-icon>timer</mat-icon></button>
                   </mat-form-field>
                 </div>
 
@@ -286,6 +287,7 @@
                         <mat-form-field appearance="fill" class="large">
                           <mat-label>Hora jeringa llena</mat-label>
                           <input type="time" matInput formControlName="syringe_full_time" min="00:00" max="24:00">
+                          <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_full_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
             
@@ -304,6 +306,7 @@
                         <mat-form-field appearance="fill" class="large">
                           <mat-label>Hora jeringa vacía</mat-label>
                           <input type="time" matInput formControlName="syringe_empty_time" min="00:00" max="24:00">
+                          <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_empty_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
             
@@ -431,6 +434,7 @@
                   <mat-form-field appearance="fill">
                     <mat-label>Hora de adquisición</mat-label>
                     <input type="time" matInput formControlName="time" min="00:00" max="24:00">
+                    <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('acquisition.time');"><mat-icon>timer</mat-icon></button>
                   </mat-form-field>
 
                   <h4>Observaciones:</h4>

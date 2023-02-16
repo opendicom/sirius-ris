@@ -21,15 +21,15 @@ const subSchemaPETCT = new mongoose.Schema({
     syringe_activity_full:  { type: Number, required: true },
     syringe_activity_empty: { type: Number, required: true },
     administred_activity:   { type: Number, required: true },
-    syringe_full_time:      { type: Date, required: true },
-    syringe_empty_time:     { type: Date, required: true },
+    syringe_full_time:      { type: String, required: true },
+    syringe_empty_time:     { type: String, required: true },
 },
 { _id : false });
 
 //Define Injection Sub-Schema:
 const subSchemaInjection = new mongoose.Schema({
     administered_volume:    { type: Number, required: true },
-    administration_time:    { type: Date, required: true },
+    administration_time:    { type: String, required: true },
     injection_user:         { type: mongoose.ObjectId, required: true },
     pet_ct:                 { type: subSchemaPETCT }
 },
@@ -37,7 +37,7 @@ const subSchemaInjection = new mongoose.Schema({
 
 //Define Acquisition Sub-Schema:
 const subSchemaAcquisition = new mongoose.Schema({
-    time:                   { type: Date, required: true },
+    time:                   { type: String, required: true },
     console_technician:     { type: mongoose.ObjectId, required: true },
     observations:           { type: String }
 },
@@ -190,11 +190,9 @@ const Validator = [
 
     body('injection.administration_time')
         .if(body('injection').exists())   // Check if parent exists.
-        .not()
-        .isEmpty()
         .trim()
-        .toDate()
-        .withMessage('El parametro injection.administration_time es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
+        .matches(/^([01][0-9]|2[0-3]):([0-5][0-9])$/)
+        .withMessage('El parametro injection.administration_time no puede ser vacío [Formato: HH:MM | 24 hs].'),
 
     body('injection.injection_user')
         .if(body('injection').exists())   // Check if parent exists.
@@ -214,28 +212,32 @@ const Validator = [
     body('injection.pet_ct.syringe_activity_full')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
-        .isInt()
-        .withMessage('El parametro injection.pet_ct.syringe_activity_full debe ser numérico.'),
+        .isDecimal()
+        .withMessage('El parametro injection.pet_ct.syringe_activity_full debe ser numérico (decimal).'),
 
     body('injection.pet_ct.syringe_activity_empty')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
-        .isInt()
-        .withMessage('El parametro injection.pet_ct.syringe_activity_empty debe ser numérico.'),
+        .isDecimal()
+        .withMessage('El parametro injection.pet_ct.syringe_activity_empty debe ser numérico (decimal).'),
 
     body('injection.pet_ct.administred_activity')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .trim()
-        .isInt()
-        .withMessage('El parametro injection.pet_ct.administred_activity debe ser numérico.'),
+        .isDecimal()
+        .withMessage('El parametro injection.pet_ct.administred_activity debe ser numérico (decimal).'),
 
     body('injection.pet_ct.syringe_full_time')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.
-        .trim(),
+        .trim()
+        .matches(/^([01][0-9]|2[0-3]):([0-5][0-9])$/)
+        .withMessage('El parametro injection.pet_ct.syringe_full_time no puede ser vacío [Formato: HH:MM | 24 hs].'),
 
     body('injection.pet_ct.syringe_empty_time')
         .if(body('injection.pet_ct').exists())   // Check if parent exists.
-        .trim(),
+        .trim()
+        .matches(/^([01][0-9]|2[0-3]):([0-5][0-9])$/)
+        .withMessage('El parametro injection.pet_ct.syringe_empty_time no puede ser vacío [Formato: HH:MM | 24 hs].'),
     //----------------------------------------------------------------------------------------------------------------//
 
 
@@ -246,11 +248,9 @@ const Validator = [
 
     body('acquisition.time')
         .if(body('acquisition').exists())   // Check if parent exists.
-        .not()
-        .isEmpty()
         .trim()
-        .toDate()
-        .withMessage('El parametro acquisition.time es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
+        .matches(/^([01][0-9]|2[0-3]):([0-5][0-9])$/)
+        .withMessage('El parametro acquisition.time no puede ser vacío [Formato: HH:MM | 24 hs].'),
 
     body('acquisition.console_technician')
         .if(body('acquisition').exists())   // Check if parent exists.

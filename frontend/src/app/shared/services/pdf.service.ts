@@ -73,7 +73,10 @@ export class PdfService {
                 const datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
 
                 //Convert HTML to PDF Make syntax:
-                const htmlPreparation = htmlToPdfmake(res.data[0].procedure.preparation);
+                let htmlPreparation = htmlToPdfmake('<p>El procedimiento a realizar <strong>NO posee preparación previa.</strong><p>');
+                if(res.data[0].procedure.preparation !== undefined && res.data[0].procedure.preparation !== '' && res.data[0].procedure.preparation.length > 0){
+                  htmlPreparation = htmlToPdfmake(res.data[0].procedure.preparation);
+                }
 
                 //Define document structure:
                 docDefinition = {
