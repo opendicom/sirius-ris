@@ -14,23 +14,11 @@ import { TabDetailsComponent } from '@modules/performing/components/form/tab-det
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
-// Import all Input Control directives:
-import * as IC from '@shared/directives/input-control.directive';
-
 @NgModule({
     declarations: [
         ListComponent,
         FormComponent,
-        TabDetailsComponent,
-
-        //Input Control:
-        IC.numbersDirective,
-        IC.numbersWSDirective,
-        IC.numbersWDDirective,
-        IC.lettersDirective,
-        IC.lettersWSDirective,
-        IC.specialCharsDirective,
-        IC.specialCharsWSDirective
+        TabDetailsComponent
     ],
     imports: [
         CommonModule,

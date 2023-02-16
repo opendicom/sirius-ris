@@ -31,7 +31,7 @@
           <span *ngFor="let currentDuration of getKeys(selectedDurations);">
             <mat-form-field appearance="fill">
               <mat-label>{{ selectedDurations[currentDuration].name }}</mat-label>
-              <input matInput type="text" [(ngModel)]="selectedDurations[currentDuration].duration" [ngModelOptions]="{standalone: true}" required placeholder="Duración en minutos">
+              <input matInput icNumbers type="text" [(ngModel)]="selectedDurations[currentDuration].duration" [ngModelOptions]="{standalone: true}" required placeholder="Duración en minutos">
             </mat-form-field>
           </span>
         </span>
@@ -54,7 +54,7 @@
         <h4>Coeficiente <span class="label-info">MBq/kg</span>:</h4>
         <mat-form-field appearance="fill">
           <mat-label>Coeficiente</mat-label>
-          <input type="text" matInput formControlName="coefficient">
+          <input icNumbersWD type="text" matInput formControlName="coefficient">
         </mat-form-field>
       </div>
 

@@ -147,7 +147,7 @@ function inputControl(event: any, validationType: string, allowSpaces: boolean =
       allowedChars = arrayRange(65, 90).concat( arrayRange(97, 122) );
 
       //Add some special chars:
-      allowedChars.push(39, 193, 201, 205, 209, 211, 218, 225, 233, 237, 241, 243, 250);
+      allowedChars.push(39, 59, 193, 201, 205, 209, 211, 218, 225, 233, 237, 241, 243, 250);
       break;
   }
   

@@ -32,6 +32,9 @@ import { AccnoDatePipe } from '@shared/pipes/accno_date.pipe';
 // Required for bidirectional binding (ngModule):
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// Import all Input Control directives:
+import * as IC from '@shared/directives/input-control.directive';
+
 @NgModule({
   declarations: [
     // Shared components:
@@ -55,7 +58,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
     // Shared pipes:
     HighlighterPipe,
-    AccnoDatePipe
+    AccnoDatePipe,
+
+    //Input Control:
+    IC.numbersDirective,
+    IC.numbersWSDirective,
+    IC.numbersWDDirective,
+    IC.lettersDirective,
+    IC.lettersWSDirective,
+    IC.specialCharsDirective,
+    IC.specialCharsWSDirective
   ],
   imports: [
     CommonModule,
@@ -87,7 +99,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
     // Shared pipes:
     HighlighterPipe,
-    AccnoDatePipe
+    AccnoDatePipe,
+
+    //Input Control:
+    IC.numbersDirective,
+    IC.numbersWSDirective,
+    IC.numbersWDDirective,
+    IC.lettersDirective,
+    IC.lettersWSDirective,
+    IC.specialCharsDirective,
+    IC.specialCharsWSDirective
   ]
 })
 export class SharedModule { }

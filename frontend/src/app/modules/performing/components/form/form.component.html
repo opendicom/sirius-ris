@@ -206,7 +206,7 @@
                   <h4>Volumen administrado: <span class="label-info">mL</span></h4>
                   <mat-form-field appearance="fill" class="medium">
                     <mat-label>Volumen administrado</mat-label>
-                    <input matInput type="text" formControlName="administered_volume" placeholder="Ingrese el volumen administrado">
+                    <input matInput icNumbersWD type="text" formControlName="administered_volume" placeholder="Ingrese el volumen administrado">
                   </mat-form-field>
 
                   <h4>Hora de inyección <span class="label-info">Formato 24 hs</span>:</h4>
@@ -275,7 +275,7 @@
                     <h4>Actividad administrada <span class="label-info">MBq</span>:</h4>
                     <mat-form-field appearance="fill" class="large">
                       <mat-label>Actividad administrada</mat-label>
-                      <input type="number" step="0.01" matInput formControlName="administred_activity" min="1" max="300">
+                      <input icNumbersWD type="text" matInput formControlName="administred_activity" min="1" max="900">
                     </mat-form-field>
 
                     <hr class="dashed" /><br/>
@@ -293,7 +293,7 @@
                         <h4>Actividad jeringa llena <span class="label-info">MBq</span>:</h4>
                         <mat-form-field appearance="fill" class="large">
                           <mat-label>Actividad jeringa llena</mat-label>
-                          <input type="number" step="0.01" matInput formControlName="syringe_activity_full" min="1" max="300">
+                          <input icNumbersWD type="text" matInput formControlName="syringe_activity_full" min="1" max="900">
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>
@@ -311,7 +311,7 @@
                         <h4>Actividad jeringa vacía <span class="label-info">MBq</span>:</h4>
                         <mat-form-field appearance="fill" class="large">
                           <mat-label>Actividad jeringa vacía</mat-label>
-                          <input type="number" step="0.01" matInput formControlName="syringe_activity_empty" min="1" max="300">
+                          <input icNumbersWD type="text" matInput formControlName="syringe_activity_empty" min="1" max="900">
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>

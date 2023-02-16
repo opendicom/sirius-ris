@@ -74,12 +74,12 @@
             <h4>Nombres:</h4>
             <mat-form-field appearance="fill" class="medium">
               <mat-label>Primer nombre</mat-label>
-              <input matInput type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
+              <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
               <mat-label>Segundo nombre</mat-label>
-              <input matInput type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
+              <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
             </mat-form-field>
 
             <br/>
@@ -87,12 +87,12 @@
             <h4>Apellidos:</h4>
             <mat-form-field appearance="fill" class="medium">
               <mat-label>Primer apellido</mat-label>
-              <input matInput type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
               <mat-label>Segundo apellido</mat-label>
-              <input matInput type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
@@ -122,7 +122,7 @@
             <h4>Teléfono de contacto:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>Número de teléfono</mat-label>
-              <input matInput type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
               <mat-icon matSuffix>phone</mat-icon>
               <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
             </mat-form-field>
@@ -132,7 +132,7 @@
             <h4>Contacto alternativo:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>Número de teléfono</mat-label>
-              <input matInput type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+              <input matInput icNumbers type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
               <mat-icon matSuffix>phone</mat-icon>
               <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
             </mat-form-field>
