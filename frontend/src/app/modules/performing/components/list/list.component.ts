@@ -36,6 +36,7 @@ export class ListComponent implements OnInit {
     'element_action',
     'flow_state',
     'date',
+    'checkin_time',
     'documents',
     'names',
     'surnames',
@@ -61,6 +62,8 @@ export class ListComponent implements OnInit {
       content_title       : 'Listado de estudios',
       content_icon        : 'assignment_ind',
       add_button          : false,
+      duplicated_surnames : true,     // Check duplicated surnames
+      nested_element      : false,    // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

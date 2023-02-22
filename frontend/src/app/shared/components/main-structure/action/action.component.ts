@@ -6,7 +6,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';                                               // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { app_setting, appointments_flow_states } from '@env/environment';               // Enviroment
+import {                                                                                // Enviroment
+  app_setting,
+  appointments_flow_states,
+  performing_flow_states,
+  report_flow_states
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -17,10 +22,17 @@ import { app_setting, appointments_flow_states } from '@env/environment';       
 export class ActionComponent implements OnInit {
   public page_sizes           : any = app_setting.default_page_sizes;
   public number_of_pages      : any = [1];
-  public appointmentsFS       : any = appointments_flow_states;
+  public flow_states          : any = {
+    appointments  : appointments_flow_states,
+    performing    : performing_flow_states,
+    reports       : report_flow_states
+  };
 
   //Set DB action properties:
   public modalities : any;
+
+  //Initializate nestedIN:
+  public nestedIN   : string[] = [];
 
   //Inject services to the constructor:
   constructor(
@@ -87,10 +99,16 @@ export class ActionComponent implements OnInit {
 
     //Find:
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, async (res) => {
-      //Check if duplicate surnames check is required:
-      if(this.sharedProp.action.duplicated_surnames === true){
-        //Count duplicated surnames:
-        this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
+      //Check operation status:
+      if(res.success === true){
+        //Check if duplicate surnames check is required:
+        if(this.sharedProp.action.duplicated_surnames === true){
+          //Count duplicated surnames:
+          this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
+        }
+
+        //Find nested elements (Inverse reference | No aggregation cases):
+        if(this.sharedProp.action.nested_element){ this.sharedFunctions.findNestedElements(res, this.sharedProp.action.nested_element); }
       }
     });
   }

@@ -5,7 +5,14 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
-import { app_setting, ISO_3166, document_types, gender_types } from '@env/environment';           // Enviroments
+import {                                                                                          // Enviroments
+  app_setting,
+  ISO_3166,
+  document_types,
+  gender_types,
+  performing_flow_states,
+  cancellation_reasons
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,6 +25,11 @@ export class ListComponent implements OnInit {
   public country_codes          : any = ISO_3166;
   public document_types         : any = document_types;
   public gender_types           : any = gender_types;
+  public performing_flow_states : any = performing_flow_states;
+  public cancellation_reasons   : any = cancellation_reasons;
+
+  //Re-define method in component to use in HTML view:
+  public getKeys: any;
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -40,6 +52,9 @@ export class ListComponent implements OnInit {
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
+    //Pass Service Method:
+    this.getKeys = this.sharedFunctions.getKeys;
+
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
@@ -48,7 +63,8 @@ export class ListComponent implements OnInit {
       content_title       : 'Recepción de pacientes',
       content_icon        : 'today',
       add_button          : false,
-      duplicated_surnames : true,   // Check duplicated surnames
+      duplicated_surnames : true,         // Check duplicated surnames
+      nested_element      : 'performing', // Set nested element
       filters_form        : true,
       filters : {
         search        : true,
@@ -152,13 +168,19 @@ export class ListComponent implements OnInit {
             break;
         }
 
-        //Refresh request params:
+        //Refresh request params to preserve appointments params:
         this.sharedProp.paramsRefresh();
 
         //First search (List):
         this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, async (res) => {
-          //Count duplicated surnames:
-          this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
+          //Check operation status:
+          if(res.success === true){
+            //Count duplicated surnames:
+            this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
+
+            //Find nested elements (Inverse reference | No aggregation cases):
+            if(this.sharedProp.action.nested_element){ this.sharedFunctions.findNestedElements(res, this.sharedProp.action.nested_element); }
+          }
         });
 
       } else {
@@ -181,5 +203,11 @@ export class ListComponent implements OnInit {
         this.sharedFunctions.sendToMWL(fk_appointment, true, { element: this.sharedProp.element, params: this.sharedProp.params });
       }
     });
+  }
+
+  matchIN(object: any, fk_name: string, _id: string){
+    return object.filter((currentNested: { [x: string]: string; }) => {
+      return currentNested[fk_name] === _id
+    })
   }
 }

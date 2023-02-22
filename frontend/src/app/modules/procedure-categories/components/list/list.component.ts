@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
       content_icon        : 'category',
       add_button          : '/procedure_categories/form/insert/0',  // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                                  // Check duplicated surnames
+      nested_element      : false,                                  // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

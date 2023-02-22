@@ -180,74 +180,14 @@ export class FormComponent implements OnInit {
         //In the case 'insert' the _id is fk_appointment.
         this.sharedProp.current_appointment = this.objRoute.snapshot.params['_id'];
 
-        //Request params:
-        const params = {
-          'filter[_id]': this.sharedProp.current_appointment,
-          'proj[attached_files.base64]': 0,
-          'proj[consents.informed_consent.base64]': 0,
-          'proj[consents.clinical_trial.base64]': 0
-        };
-
         //Set available flow states:
         this.setAvailableFlowStates('P01');
 
         //Set flow state (first time | enable validators):
         this.setFlowState('P01');
 
-        //Find element to update:
-        this.sharedFunctions.find('appointments', params, (resAppointments) => {
-          //Check operation status:
-          if(resAppointments.success === true){
-            //Set current objects:
-            this.current_branch_id = resAppointments.data[0].imaging.branch._id;
-            this.current_modality_id = resAppointments.data[0].modality._id;
-            this.sharedProp.current_modality_code_value = resAppointments.data[0].modality.code_value;
-            this.current_procedure_id = resAppointments.data[0].procedure._id;
-
-            //Calculate recomended dose if modality is PT:
-            if(this.sharedProp.current_modality_code_value == 'PT'){
-              //Set sharedProp current objects (PET Dose):
-              this.sharedProp.current_weight = resAppointments.data[0].private_health.weight;
-              this.sharedProp.current_coefficient = resAppointments.data[0].procedure.coefficient;
-
-              //Calculate recomended dose:
-              this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
-            }
-
-            //Set whether to use contrast:
-            this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
-            
-            //Find available equipments and available procedures for selected equipment:
-            this.setEquipment(resAppointments.data[0].slot.fk_equipment);
-
-            //Find service users (Technicians):
-            this.sharedFunctions.findServiceUsers(resAppointments.data[0].imaging.service._id, 5, (resServiceUsers) => {
-              //Check data:
-              if(resServiceUsers.data.length > 0){
-                //Set technician users:
-                this.technicianUsers = resServiceUsers.data;
-              } else {
-                //Clear previous values:
-                this.technicianUsers = [];
-                this.form.get('acquisition.console_technician')?.setValue('');
-
-                //Send message:
-                this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún técnico.');
-              }
-            });
-
-            //Set current data in sharedProp:
-            this.setCurrentAppointmentData(resAppointments, () => {
-              //Excecute manual onInit childrens components:
-              this.tabDetails.manualOnInit(resAppointments);
-            });
-
-          } else {
-            //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resAppointments.message);
-            this.router.navigate(['/' + this.sharedProp.element + '/list']);
-          }
-        });
+        //Find referenced appointment:
+        this.findReferencedAppointment('check-in');
 
         break;
 
@@ -255,7 +195,111 @@ export class FormComponent implements OnInit {
         //Extract sent data (Parameters by routing).
         //In the case 'update' the _id is performing _id.
         this.sharedProp.current_id = this.objRoute.snapshot.params['_id'];
+
+        //Set performing params:
+        const performing_params = {
+          'filter[_id]': this.sharedProp.current_id
+        };
         
+        //Find element to update (findById):
+        this.sharedFunctions.find('performing', performing_params, (resPerforming) => {
+          //Ininitalizate optional objects controllers:
+          let hasAnesthesia = false;
+
+          //Check operation status:
+          if(resPerforming.success === true){
+            //Set checkin_time:
+            this.checkin_time = resPerforming.data[0].date.split('T')[1].slice(0,5);
+
+            //Set current appointment:
+            this.sharedProp.current_appointment = resPerforming.data[0].fk_appointment;
+
+            //Find referenced appointment:
+            this.findReferencedAppointment('performing');
+
+            //Set Current procedure:
+            this.sharedProp.current_procedure = resPerforming.data[0].fk_procedure;
+            //this.setProcedure(resPerforming.data[0].fk_procedure, resPerforming.data[0].procedure.coefficient);  CONTINUAR ACA!!!
+
+            //Set Current Equipment:
+            this.sharedProp.current_equipment = {
+              fk_equipment: resPerforming.data[0].fk_equipment,
+              details: {
+                name  : resPerforming.data[0].equipment.name,
+                AET   : resPerforming.data[0].equipment.AET
+              }
+            };
+            //this.setEquipment(resPerforming.data[0].fk_equipment); CONTINUAR ACA!!!
+
+            //Set available flow states:
+            this.setAvailableFlowStates(resPerforming.data[0].flow_state);
+
+            //Check if exist anesthesia property in current performing:
+            if(resPerforming.data[0].hasOwnProperty('anesthesia')){
+              hasAnesthesia = true;
+            }
+
+            //Send data to the form:
+            this.setReactiveForm({
+              flow_state                : [ resPerforming.data[0].flow_state, [Validators.required]],
+              fk_equipment              : [ resPerforming.data[0].fk_equipment, [Validators.required]],
+              fk_procedure              : [ resPerforming.data[0].fk_procedure, [Validators.required]],
+              cancellation_reasons      : [ '' ],
+              status                    : [ `${resPerforming.data[0].status}` ], //Use back tip notation to convert string
+              urgency                   : [ `${resPerforming.data[0].urgency}` ], //Use back tip notation to convert string
+              observations              : [ resPerforming.data[0].observations ],
+        
+              //Injection fields:
+              /*
+              injection: this.formBuilder.group({
+                'administered_volume'   : [ resPerforming.data[0].injection.administered_volume, [Validators.required]],
+                'administration_time'   : [ resPerforming.data[0].injection.administration_time, [Validators.required]],
+                'injection_user'        : [ resPerforming.data[0].injection.injection_user, [Validators.required]],
+        
+                //PET-CT fields:
+                pet_ct: this.formBuilder.group({
+                  'batch'                   : [ resPerforming.data[0].injection.pet_ct.batch ],
+                  'syringe_activity_full'   : [ resPerforming.data[0].injection.pet_ct.syringe_activity_full, [Validators.required]],
+                  'syringe_activity_empty'  : [ resPerforming.data[0].injection.pet_ct.syringe_activity_empty, [Validators.required]],
+                  'administred_activity'    : [ resPerforming.data[0].injection.pet_ct.administred_activity, [Validators.required]],
+                  'syringe_full_time'       : [ resPerforming.data[0].injection.pet_ct.syringe_full_time, [Validators.required]],
+                  'syringe_empty_time'      : [ resPerforming.data[0].injection.pet_ct.syringe_empty_time, [Validators.required]],
+                })
+              }),
+              */
+        
+              //Anesthesia fields:
+              /*
+              anesthesia: this.formBuilder.group({
+                'use_anesthesia'        : [ `${hasAnesthesia}`, [Validators.required] ], //Use back tip notation to convert string | Enable or disable anesthesia fields.
+                'professional_id'       : [ resPerforming.data[0].anesthesia.professional_id ],
+                'document'              : [ resPerforming.data[0].anesthesia.document ],
+                'name'                  : [ resPerforming.data[0].anesthesia.name ],
+                'surname'               : [ resPerforming.data[0].anesthesia.surname ],
+                'procedure'             : [ resPerforming.data[0].anesthesia.procedure ],
+              }),
+              */
+
+              //Acquisition fields:
+              /*
+              acquisition: this.formBuilder.group({
+                'time'                  : [ resPerforming.data[0].acquisition.time ],
+                'console_technician'    : [ resPerforming.data[0].acquisition.console_technician ],
+                'observations'          : [ resPerforming.data[0].acquisition.observations ]
+              }),
+              */
+            });
+
+            //Set flow state (enable validators):
+            this.setFlowState(resPerforming.data[0].flow_state);
+
+          } else {
+            //Return to the list with request error message:
+            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resPerforming.message);
+            this.router.navigate(['/' + this.sharedProp.element + '/list']);
+          }
+        });
+
         break;
 
       default:
@@ -349,34 +393,40 @@ export class FormComponent implements OnInit {
         this.form.value.checkin_time = this.checkin_time;
       }
 
-      console.log(this.form.value);
-
       //Save performing data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
-        //Response the form according to the result:
-        this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router,);
-      });
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (resPerforming) => {
+        //Handle messages and destinations by form action:
+        let message = '';
+        let destination = '';
 
+        switch(this.form_action){
+          case 'insert':
+            message = 'insertar';
+            destination = 'check-in';
+            break;
 
-      //Send first submit in controlled order (Update appointment):
-      /*
-      this.tabDetails.onSubmit((res) => {
-        //Check current action:
-        if(this.form_action == 'insert'){
-          //SEND PATIENT TO MWL ACCORDING FLOW_STATE ('P04')
-          this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+          case 'update':
+            message = 'editar';
+            destination = 'performing';
+            break;
+        }
 
-          //Response the form according to the result:
-          this.sharedFunctions.formResponder(res, 'check-in', this.router);
+        //Check operation status:
+        if(resPerforming.success === true){
+          //Send second submit in controlled order (Update appointment):
+          this.tabDetails.onSubmit((resAppointments) => {
+            //Send patient to MWL according flow state ('P04'):
+            //this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+            
+            //Response the form according to the result:
+            this.sharedFunctions.formResponder(resAppointments, destination, this.router);
+
+          });
         } else {
-          //SEND PATIENT TO MWL ACCORDING FLOW_STATE ('P04')
-          this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
-          
-          //Response the form according to the result:
-          this.sharedFunctions.formResponder(res, 'performing', this.router);
+          //Return to the list with request error message:
+          this.sharedFunctions.sendMessage('Error al intentar ' + message + ' el elemento: ' + resPerforming.message);
         }
       });
-      */
     }
   }
 
@@ -400,11 +450,11 @@ export class FormComponent implements OnInit {
     //Current Imaging:
     this.sharedProp.current_imaging = res.data[0].imaging;
 
+    //Current Modality:
+    this.sharedProp.current_modality = res.data[0].modality;
+
     //Check if it is the first time to set the values of the appointment (insert):
     if(this.form_action == 'insert'){
-      //Current Modality:
-      this.sharedProp.current_modality = res.data[0].modality;
-
       //Set Current procedure with which it comes from the appointment until you get the details (Temp):
       this.sharedProp.current_procedure = res.data[0].procedure;
 
@@ -769,5 +819,69 @@ export class FormComponent implements OnInit {
     if(this.form.get(input_name)?.status !== 'DISABLED'){
       this.form.get(input_name)?.setValue(this.getTimeNow());
     }
+  }
+
+  findReferencedAppointment(destination: string){
+    //Set appointments params:
+    const appointments_params = {
+      'filter[_id]': this.sharedProp.current_appointment,
+      'proj[attached_files.base64]': 0,
+      'proj[consents.informed_consent.base64]': 0,
+      'proj[consents.clinical_trial.base64]': 0
+    };
+
+    this.sharedFunctions.find('appointments', appointments_params, (resAppointments) => {
+      //Check operation status:
+      if(resAppointments.success === true){
+        //Set current objects:
+        this.current_branch_id = resAppointments.data[0].imaging.branch._id;
+        this.current_modality_id = resAppointments.data[0].modality._id;
+        this.sharedProp.current_modality_code_value = resAppointments.data[0].modality.code_value;
+        this.current_procedure_id = resAppointments.data[0].procedure._id;
+
+        //Calculate recomended dose if modality is PT:
+        if(this.sharedProp.current_modality_code_value == 'PT'){
+          //Set sharedProp current objects (PET Dose):
+          this.sharedProp.current_weight = resAppointments.data[0].private_health.weight;
+          this.sharedProp.current_coefficient = resAppointments.data[0].procedure.coefficient;
+
+          //Calculate recomended dose:
+          this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
+        }
+
+        //Set whether to use contrast:
+        this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
+        
+        //Find available equipments and available procedures for selected equipment:
+        this.setEquipment(resAppointments.data[0].slot.fk_equipment);
+
+        //Find service users (Technicians):
+        this.sharedFunctions.findServiceUsers(resAppointments.data[0].imaging.service._id, 5, (resServiceUsers) => {
+          //Check data:
+          if(resServiceUsers.data.length > 0){
+            //Set technician users:
+            this.technicianUsers = resServiceUsers.data;
+          } else {
+            //Clear previous values:
+            this.technicianUsers = [];
+            this.form.get('acquisition.console_technician')?.setValue('');
+
+            //Send message:
+            this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún técnico.');
+          }
+        });
+
+        //Set current data in sharedProp:
+        this.setCurrentAppointmentData(resAppointments, () => {
+          //Excecute manual onInit childrens components:
+          this.tabDetails.manualOnInit(resAppointments);
+        });
+
+      } else {
+        //Return to the list with request error message:
+        this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resAppointments.message);
+        this.router.navigate(['/' + destination + '/list']);
+      }
+    });
   }
 }

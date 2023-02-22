@@ -33,6 +33,7 @@ export class ListComponent implements OnInit {
       content_icon        : 'format_list_numbered',
       add_button          : '/procedures/form/insert/0',    // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                          // Check duplicated surnames
+      nested_element      : false,                          // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

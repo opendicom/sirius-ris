@@ -65,6 +65,7 @@ export class ListComponent implements OnInit {
       manage_drafts       : '/appointments/list_drafts',
       appointments_drafts : false,
       duplicated_surnames : false,    // Check duplicated surnames
+      nested_element      : false,    // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

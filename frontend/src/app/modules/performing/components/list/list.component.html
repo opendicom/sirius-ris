@@ -23,7 +23,7 @@
 
     <!-- flow_state -->
     <ng-container matColumnDef="flow_state">
-      <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de cita</th>
+      <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de estudio</th>
       <td mat-cell *matCellDef="let element" class="text-center">
         <span class="badge {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performing_flow_states[element.flow_state] }}</span>
       </td>
@@ -34,6 +34,14 @@
       <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
       <td mat-cell *matCellDef="let element" class="column-alt text-center">
         <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+      </td>
+    </ng-container>
+
+    <!-- checkin_time -->
+    <ng-container matColumnDef="checkin_time">
+      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Hora de recepción </th>
+      <td mat-cell *matCellDef="let element" class="column-alt text-center">
+        <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
       </td>
     </ng-container>
 

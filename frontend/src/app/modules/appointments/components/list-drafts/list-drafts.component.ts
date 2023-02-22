@@ -57,6 +57,7 @@ export class ListDraftsComponent implements OnInit {
       content_icon        : 'free_cancellation',
       add_button          : false,
       duplicated_surnames : false,    // Check duplicated surnames
+      nested_element      : false,    // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

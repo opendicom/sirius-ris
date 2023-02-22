@@ -24,8 +24,9 @@ import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-re
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  public response       : any = {};
-  public delete_code    : string = '';
+  public response         : any = {};
+  public nested_response  : any = {};
+  public delete_code      : string = '';
 
   constructor(
     private apiClient   : ApiClientService,
@@ -397,7 +398,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false, findByService: boolean = false): void {
+  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false, findByService: boolean = false, saveResponse: boolean = true): void {
     //Initialize operation type:
     let operation = 'find';
 
@@ -415,7 +416,10 @@ export class SharedFunctionsService {
       //Observe content (Subscribe):
       obsFind.subscribe({
         next: res => {
-          this.response = res;
+          //Check if you want to save the response in sharedFunctions.response:
+          if(saveResponse){
+            this.response = res;
+          }
 
           //Excecute optional callback with response:
           callback(res);
@@ -439,7 +443,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SAVE - (INSERT & UPDATE):
   //--------------------------------------------------------------------------------------------------------------------//
-  save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}): void {
+  save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}, saveResponse: boolean = true): void {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
 
@@ -460,7 +464,10 @@ export class SharedFunctionsService {
         //Observe content (Subscribe):
         obsSave.subscribe({
           next: res => {
-            this.response = res;
+            //Check if you want to save the response in sharedFunctions.response:
+            if(saveResponse){
+              this.response = res;
+            }
 
             //Excecute optional callback with response:
             callback(res);
@@ -553,7 +560,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND RXJS - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  findRxJS(element: string, params: any, findOne: boolean = false, findByService: boolean = false): Observable<any>{
+  findRxJS(element: string, params: any, findOne: boolean = false, findByService: boolean = false, saveResponse: boolean = true): Observable<any>{
     //Initialize operation type:
     let operation = 'find';
 
@@ -574,7 +581,10 @@ export class SharedFunctionsService {
         //Observe content (Subscribe):
         obsFind.subscribe({
           next: res => {
-            this.response = res;
+            //Check if you want to save the response in sharedFunctions.response:
+            if(saveResponse){
+              this.response = res;
+            }
 
             //Pass chunks of data between observables:
             observer.next(res);
@@ -601,7 +611,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SAVE RXJS - (INSERT & UPDATE):
   //--------------------------------------------------------------------------------------------------------------------//
-  saveRxJS(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = []): Observable<any> {
+  saveRxJS(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], saveResponse: boolean = true): Observable<any> {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
 
@@ -625,7 +635,10 @@ export class SharedFunctionsService {
           //Observe content (Subscribe):
           obsSave.subscribe({
             next: res => {
-              this.response = res;
+              //Check if you want to save the response in sharedFunctions.response:
+              if(saveResponse){
+                this.response = res;
+              }
 
               //Pass chunks of data between observables:
               observer.next(res);
@@ -1172,6 +1185,36 @@ export class SharedFunctionsService {
 
     //Find by service selected role users (last true parameter):
     this.find('users', params, (res) => callback(res), false, true);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND NESTED ELEMENTS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async findNestedElements(res: any, element: any){
+    //Initialize nested IN array:
+    let nestedIN : any = [];
+
+    //Preserve _ids from last search (await foreach):
+    await Promise.all(Object.keys(res.data).map((key) => {
+      nestedIN.push(res.data[key]._id);
+    }));
+
+    //Set params:
+    const params = {
+      'filter[status]'  : true,
+      'filter[in][fk_appointment]' : nestedIN
+    }
+    
+    //Search only if there are results in the previous search:
+    if(nestedIN.length > 0){
+      //Find nested elements:
+      this.find(element, params, (nestedRes) => {
+        //Save result in nested response objents:
+        this.nested_response = nestedRes;
+      }, false, false, false);
+    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

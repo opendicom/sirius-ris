@@ -34,6 +34,7 @@ export class ListComponent implements OnInit {
       add_button          : '/slots/form/insert/0',   // Zero indicates empty :id (Activated Route) [content is ignored]
       add_slots_batch     : '/slots/batch',
       duplicated_surnames : false,                    // Check duplicated surnames
+      nested_element      : false,                    // Set nested element
       filters_form        : true,
       filters : {
         search        : true,

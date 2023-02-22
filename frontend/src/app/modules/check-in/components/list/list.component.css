@@ -26,3 +26,7 @@
 .other {
   color: #05ffa1;
 }
+
+.badge-mini {
+  float: none !important;
+}

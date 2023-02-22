@@ -9,15 +9,6 @@
   padding-left: 10px;
 }
 
-/* Appointments Flow States: */
-.A01 {
-  background-color: #05ff9f87;
-}
-
-.A02 {
-  background-color: #ff6f69;
-}
-
 mat-chip.line-break {
   height: auto;
   line-height: 1.1em;

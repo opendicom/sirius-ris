@@ -386,13 +386,13 @@ const Validator = [
     //----------------------------------------------------------------------------------------------------------------//
     body('private_health.height')
         .trim()
-        .isInt()
-        .withMessage('El parametro height es requerido y debe ser numérico.'),
+        .isDecimal()
+        .withMessage('El parametro height es requerido y debe ser numérico (decimal).'),
 
     body('private_health.weight')
         .trim()
-        .isInt()
-        .withMessage('El parametro weight es requerido y debe ser numérico.'),
+        .isDecimal()
+        .withMessage('El parametro weight es requerido y debe ser numérico (decimal).'),
 
     body('private_health.diabetes')
         .trim()

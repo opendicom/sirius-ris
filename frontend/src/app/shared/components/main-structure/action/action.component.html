@@ -59,14 +59,14 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.flow_state">
-        <mat-label>Flujo de cita</mat-label>
+        <mat-label>Flujo del elemento</mat-label>
         <mat-select [(ngModel)]="sharedProp.flow_state" (selectionChange)="onSearch();">
-          <div *ngFor="let currentFS of appointmentsFS | keyvalue">
+          <div *ngFor="let currentFS of flow_states[sharedProp.element] | keyvalue">
             <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
-
+      
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.modality">
         <mat-label>Modalidad</mat-label>
         <mat-select [(ngModel)]="sharedProp.modality" (selectionChange)="onSearch();">
