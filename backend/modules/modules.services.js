@@ -1739,6 +1739,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
                 if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
                 if(filter[asPrefix + 'informed_consent'] != undefined){ filter[asPrefix + 'informed_consent'] = mainServices.stringToBoolean(filter[asPrefix + 'informed_consent']); };
+                if(filter[asPrefix + 'coefficient'] != undefined){ filter[asPrefix + 'coefficient'] = parseFloat(filter[asPrefix + 'coefficient']); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
 
                 return filter;
@@ -1837,7 +1838,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
                 //Private health:
                 if(filter[asPrefix + 'private_health.height'] != undefined){ filter[asPrefix + 'private_health.height'] = parseInt(filter[asPrefix + 'private_health.height'], 10); }
-                if(filter[asPrefix + 'private_health.weight'] != undefined){ filter[asPrefix + 'private_health.weight'] = parseInt(filter[asPrefix + 'private_health.weight'], 10); }
+                if(filter[asPrefix + 'private_health.weight'] != undefined){ filter[asPrefix + 'private_health.weight'] = parseFloat(filter[asPrefix + 'private_health.weight']); }
                 if(filter[asPrefix + 'private_health.diabetes'] != undefined){ filter[asPrefix + 'private_health.diabetes'] = mainServices.stringToBoolean(filter[asPrefix + 'private_health.diabetes']); };
                 if(filter[asPrefix + 'private_health.hypertension'] != undefined){ filter[asPrefix + 'private_health.hypertension'] = mainServices.stringToBoolean(filter[asPrefix + 'private_health.hypertension']); };
                 if(filter[asPrefix + 'private_health.epoc'] != undefined){ filter[asPrefix + 'private_health.epoc'] = mainServices.stringToBoolean(filter[asPrefix + 'private_health.epoc']); };
@@ -1985,9 +1986,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 //PET-CT:
-                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'], 10); }
-                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] = parseInt(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'], 10); }
-                if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseInt(filter[asPrefix + 'injection.pet_ct.administred_activity'], 10); }
+                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_full'] = parseFloat(filter[asPrefix + 'injection.pet_ct.syringe_activity_full']); }
+                if(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] != undefined){ filter[asPrefix + 'injection.pet_ct.syringe_activity_empty'] = parseFloat(filter[asPrefix + 'injection.pet_ct.syringe_activity_empty']); }
+                if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseFloat(filter[asPrefix + 'injection.pet_ct.administred_activity']); }
 
                 //Acquisition:
                 if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };

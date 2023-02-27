@@ -29,7 +29,7 @@ const Schema = new mongoose.Schema({
     preparation:        { type: String },
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
-    coefficient:        { type: String }
+    coefficient:        { type: Number }
 },
 { timestamps: true },
 { versionKey: false });
@@ -113,8 +113,8 @@ const Validator = [
     body('coefficient')
         .optional()
         .trim()
-        .isLength({ min: 1, max: 10 })
-        .withMessage('El parametro coefficient ingresado es demasiado corto o demasiado largo (min: 1, max: 10 [caracteres]).')
+        .isDecimal()
+        .withMessage('El parametro coefficient es requerido y debe ser numérico (decimal).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -39,7 +39,7 @@ const preSchema = new mongoose.Schema({
     fk_person:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
-    email:              { type: String, required: true, match: /.+\@.+\..+/ },
+    email:              { type: String, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
     settings:           { type: [subSchemaSettings] },
@@ -89,6 +89,7 @@ const Validator = [
         .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
 
     body('email')
+        .optional()
         .trim()
         .isEmail()
         .withMessage('El valor ingresado NO es una dirección de correo válida.')
