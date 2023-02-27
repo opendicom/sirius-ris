@@ -54,8 +54,9 @@ export class FormComponent implements OnInit {
   //Initializate available flow states:
   public availableFS            : any = {};
 
-  //Initialize Technician Users:
-  public technicianUsers        : any = [];
+  //Initialize Service Users:
+  public technicianServiceUsers : any[] = [];
+  public injectionServiceUsers  : any[] = [];
 
   //Boolean class binding objects:
   public booleanAnesthesia      : Boolean = false;
@@ -135,18 +136,18 @@ export class FormComponent implements OnInit {
 
       //Injection fields:
       injection: this.formBuilder.group({
-        'administered_volume'   : [ '', [Validators.required]],
-        'administration_time'   : [ '', [Validators.required]],
-        'injection_user'        : [ '', [Validators.required]],
+        'administered_volume'   : [ '' ],
+        'administration_time'   : [ '' ],
+        'injection_user'        : [ '' ],
 
         //PET-CT fields:
         pet_ct: this.formBuilder.group({
           'batch'                   : [ '' ],
-          'syringe_activity_full'   : [ '', [Validators.required]],
-          'syringe_activity_empty'  : [ '', [Validators.required]],
-          'administred_activity'    : [ '', [Validators.required]],
-          'syringe_full_time'       : [ '', [Validators.required]],
-          'syringe_empty_time'      : [ '', [Validators.required]],
+          'syringe_activity_full'   : [ '' ],
+          'syringe_activity_empty'  : [ '' ],
+          'administred_activity'    : [ '' ],
+          'syringe_full_time'       : [ '' ],
+          'syringe_empty_time'      : [ '' ],
         })
       }),
 
@@ -169,7 +170,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
 
@@ -194,20 +195,17 @@ export class FormComponent implements OnInit {
       case 'update':
         //Extract sent data (Parameters by routing).
         //In the case 'update' the _id is performing _id.
-        this.sharedProp.current_id = this.objRoute.snapshot.params['_id'];
+        this._id = this.objRoute.snapshot.params['_id'];
 
         //Set performing params:
         const performing_params = {
-          'filter[_id]': this.sharedProp.current_id
+          'filter[_id]': this._id
         };
         
         //Find element to update (findById):
         this.sharedFunctions.find('performing', performing_params, (resPerforming) => {
-          //Ininitalizate optional objects controllers:
-          let hasAnesthesia = false;
-
-          //Check operation status:
-          if(resPerforming.success === true){
+          //Check operation status and data:
+          if(resPerforming.success === true && resPerforming.data.length > 0){
             //Set checkin_time:
             this.checkin_time = resPerforming.data[0].date.split('T')[1].slice(0,5);
 
@@ -215,29 +213,26 @@ export class FormComponent implements OnInit {
             this.sharedProp.current_appointment = resPerforming.data[0].fk_appointment;
 
             //Find referenced appointment:
-            this.findReferencedAppointment('performing');
+            // Set current equipment and current procedure inside callback to make sure
+            // you have current_branch_id and current_modality_id values loaded.
+            this.findReferencedAppointment('performing', (res) => {
+              //Set Current Equipment:
+              this.sharedProp.current_equipment = {
+                fk_equipment: resPerforming.data[0].fk_equipment,
+                details: {
+                  name  : resPerforming.data[0].equipment.name,
+                  AET   : resPerforming.data[0].equipment.AET
+                }
+              };
+              this.setEquipment(resPerforming.data[0].fk_equipment);
 
-            //Set Current procedure:
-            this.sharedProp.current_procedure = resPerforming.data[0].fk_procedure;
-            //this.setProcedure(resPerforming.data[0].fk_procedure, resPerforming.data[0].procedure.coefficient);  CONTINUAR ACA!!!
-
-            //Set Current Equipment:
-            this.sharedProp.current_equipment = {
-              fk_equipment: resPerforming.data[0].fk_equipment,
-              details: {
-                name  : resPerforming.data[0].equipment.name,
-                AET   : resPerforming.data[0].equipment.AET
-              }
-            };
-            //this.setEquipment(resPerforming.data[0].fk_equipment); CONTINUAR ACA!!!
+              //Set Current procedure:
+              this.sharedProp.current_procedure = resPerforming.data[0].fk_procedure;
+              this.setProcedure(resPerforming.data[0].fk_procedure, resPerforming.data[0].procedure.coefficient);
+            });
 
             //Set available flow states:
             this.setAvailableFlowStates(resPerforming.data[0].flow_state);
-
-            //Check if exist anesthesia property in current performing:
-            if(resPerforming.data[0].hasOwnProperty('anesthesia')){
-              hasAnesthesia = true;
-            }
 
             //Send data to the form:
             this.setReactiveForm({
@@ -248,50 +243,85 @@ export class FormComponent implements OnInit {
               status                    : [ `${resPerforming.data[0].status}` ], //Use back tip notation to convert string
               urgency                   : [ `${resPerforming.data[0].urgency}` ], //Use back tip notation to convert string
               observations              : [ resPerforming.data[0].observations ],
-        
-              //Injection fields:
-              /*
+
+              //Injection fields (They need to exist in advance):
               injection: this.formBuilder.group({
-                'administered_volume'   : [ resPerforming.data[0].injection.administered_volume, [Validators.required]],
-                'administration_time'   : [ resPerforming.data[0].injection.administration_time, [Validators.required]],
-                'injection_user'        : [ resPerforming.data[0].injection.injection_user, [Validators.required]],
-        
+                'administered_volume'   : [ '' ],
+                'administration_time'   : [ '' ],
+                'injection_user'        : [ '' ],
+
                 //PET-CT fields:
                 pet_ct: this.formBuilder.group({
-                  'batch'                   : [ resPerforming.data[0].injection.pet_ct.batch ],
-                  'syringe_activity_full'   : [ resPerforming.data[0].injection.pet_ct.syringe_activity_full, [Validators.required]],
-                  'syringe_activity_empty'  : [ resPerforming.data[0].injection.pet_ct.syringe_activity_empty, [Validators.required]],
-                  'administred_activity'    : [ resPerforming.data[0].injection.pet_ct.administred_activity, [Validators.required]],
-                  'syringe_full_time'       : [ resPerforming.data[0].injection.pet_ct.syringe_full_time, [Validators.required]],
-                  'syringe_empty_time'      : [ resPerforming.data[0].injection.pet_ct.syringe_empty_time, [Validators.required]],
+                  'batch'                   : [ '' ],
+                  'syringe_activity_full'   : [ '' ],
+                  'syringe_activity_empty'  : [ '' ],
+                  'administred_activity'    : [ '' ],
+                  'syringe_full_time'       : [ '' ],
+                  'syringe_empty_time'      : [ '' ],
                 })
               }),
-              */
-        
-              //Anesthesia fields:
-              /*
-              anesthesia: this.formBuilder.group({
-                'use_anesthesia'        : [ `${hasAnesthesia}`, [Validators.required] ], //Use back tip notation to convert string | Enable or disable anesthesia fields.
-                'professional_id'       : [ resPerforming.data[0].anesthesia.professional_id ],
-                'document'              : [ resPerforming.data[0].anesthesia.document ],
-                'name'                  : [ resPerforming.data[0].anesthesia.name ],
-                'surname'               : [ resPerforming.data[0].anesthesia.surname ],
-                'procedure'             : [ resPerforming.data[0].anesthesia.procedure ],
-              }),
-              */
 
-              //Acquisition fields:
-              /*
-              acquisition: this.formBuilder.group({
-                'time'                  : [ resPerforming.data[0].acquisition.time ],
-                'console_technician'    : [ resPerforming.data[0].acquisition.console_technician ],
-                'observations'          : [ resPerforming.data[0].acquisition.observations ]
+              //Anesthesia fields (They need to exist in advance):
+              anesthesia: this.formBuilder.group({
+                'use_anesthesia'        : [ 'false', [Validators.required] ], //Use back tip notation to convert string | Enable or disable anesthesia fields.
+                'professional_id'       : [ '' ],
+                'document'              : [ '' ],
+                'name'                  : [ '' ],
+                'surname'               : [ '' ],
+                'procedure'             : [ '' ],
               }),
-              */
+
+              //Acquisition fields (They need to exist in advance):
+              acquisition: this.formBuilder.group({
+                'time'                  : [ '' ],
+                'console_technician'    : [ '' ],
+                'observations'          : [ '' ]
+              }),
             });
 
-            //Set flow state (enable validators):
-            this.setFlowState(resPerforming.data[0].flow_state);
+            //Check if exist injection property in current performing:
+            if(resPerforming.data[0].hasOwnProperty('injection')){
+              //Set injection fields in form:
+              this.form.get('injection.administered_volume')?.setValue(resPerforming.data[0].injection.administered_volume);
+              this.form.get('injection.administration_time')?.setValue(resPerforming.data[0].injection.administration_time);
+              this.form.get('injection.injection_user')?.setValue(resPerforming.data[0].injection.injection_user._id);
+
+              //Check if exist pet_ct property in current performing > injection:
+              if(resPerforming.data[0].injection.hasOwnProperty('pet_ct')){
+                //Set injection.pet_ct fields in form:
+                this.form.get('injection.pet_ct.batch')?.setValue(resPerforming.data[0].injection.pet_ct.batch);
+                this.form.get('injection.pet_ct.syringe_activity_full')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_activity_full);
+                this.form.get('injection.pet_ct.syringe_activity_empty')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_activity_empty);
+                this.form.get('injection.pet_ct.administred_activity')?.setValue(resPerforming.data[0].injection.pet_ct.administred_activity);
+                this.form.get('injection.pet_ct.syringe_full_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_full_time);
+                this.form.get('injection.pet_ct.syringe_empty_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_empty_time);
+              }
+            }
+
+            //Check if exist anesthesia property in current performing:
+            if(resPerforming.data[0].hasOwnProperty('anesthesia')){
+              //Set anesthesia fields in form:
+              this.form.get('anesthesia.use_anesthesia')?.setValue('true');
+              this.form.get('anesthesia.professional_id')?.setValue(resPerforming.data[0].anesthesia.professional_id);
+              this.form.get('anesthesia.document')?.setValue(resPerforming.data[0].anesthesia.document);
+              this.form.get('anesthesia.name')?.setValue(resPerforming.data[0].anesthesia.name);
+              this.form.get('anesthesia.surname')?.setValue(resPerforming.data[0].anesthesia.surname);
+              this.form.get('anesthesia.procedure')?.setValue(resPerforming.data[0].anesthesia.procedure);
+
+              //Enable anesthesia validators:
+              this.onChangeAnesthesia({ value: 'true' }, this.form);
+            }
+
+            //Check if exist acquisition property in current performing:
+            if(resPerforming.data[0].hasOwnProperty('acquisition')){
+              //Set acquisition fields in form:
+              this.form.get('acquisition.time')?.setValue(resPerforming.data[0].acquisition.time);
+              this.form.get('acquisition.console_technician')?.setValue(resPerforming.data[0].acquisition.console_technician._id);
+              this.form.get('acquisition.observations')?.setValue(resPerforming.data[0].acquisition.observations);
+            }              
+
+            //Set flow state (Enable validators):
+            this.setFlowState(resPerforming.data[0].flow_state);  
 
           } else {
             //Return to the list with request error message:
@@ -362,39 +392,45 @@ export class FormComponent implements OnInit {
     
     //Validate fields:
     if(this.form.valid){
+      //Create save object to preserve data types in form.value (Clone objects with spread operator):
+      let performingSaveData = { ...this.form.value };
+
       //Check cancellation reasons value:
-      if(this.form.value.flow_state !== 'P08'){
+      if(performingSaveData.flow_state !== 'P08'){
         //Delete to prevent validation backend error:
-        delete this.form.value.cancellation_reasons;
+        delete performingSaveData.cancellation_reasons;
       }
 
       //Check anesthesia value:
-      if(this.form.value.hasOwnProperty('anesthesia') && this.form.value.anesthesia.use_anesthesia == 'false'){
+      if(performingSaveData.hasOwnProperty('anesthesia') && performingSaveData.anesthesia.use_anesthesia == 'false'){
         //Delete to prevent validation backend error:
-        delete this.form.value.anesthesia;
+        delete performingSaveData.anesthesia;
+      } else if(performingSaveData.hasOwnProperty('anesthesia') && performingSaveData.anesthesia.use_anesthesia == 'true'){
+        //Delete use_anesthesia field (Prevent validation error):
+        delete performingSaveData.anesthesia.use_anesthesia;
       }
 
       //Check performing observations:
-      if(this.form.value.hasOwnProperty('observations') && this.form.value.observations.length == 0){
+      if(performingSaveData.hasOwnProperty('observations') && performingSaveData.observations.length == 0){
         //Delete to prevent validation backend error:
-        delete this.form.value.observations;
+        delete performingSaveData.observations;
       }
 
       //Data normalization - Booleans types (mat-option cases):
-      if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
-      if(typeof this.form.value.urgency != "boolean"){ this.form.value.urgency = this.form.value.urgency.toLowerCase() == 'true' ? true : false; }
+      if(typeof performingSaveData.status != "boolean"){ performingSaveData.status = performingSaveData.status.toLowerCase() == 'true' ? true : false; }
+      if(typeof performingSaveData.urgency != "boolean"){ performingSaveData.urgency = performingSaveData.urgency.toLowerCase() == 'true' ? true : false; }
 
       //Check current action:
       if(this.form_action == 'insert'){
         //Set fk_appointment in form:
-        this.form.value.fk_appointment = this.sharedProp.current_appointment;
+        performingSaveData.fk_appointment = this.sharedProp.current_appointment;
 
         //Set check-in time in form:
-        this.form.value.checkin_time = this.checkin_time;
+        performingSaveData.checkin_time = this.checkin_time;
       }
 
       //Save performing data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (resPerforming) => {
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, performingSaveData, this.keysWithValues, (resPerforming) => {
         //Handle messages and destinations by form action:
         let message = '';
         let destination = '';
@@ -821,7 +857,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  findReferencedAppointment(destination: string){
+  findReferencedAppointment(destination: string, callback = (res: any) => {}){
     //Set appointments params:
     const appointments_params = {
       'filter[_id]': this.sharedProp.current_appointment,
@@ -830,7 +866,7 @@ export class FormComponent implements OnInit {
       'proj[consents.clinical_trial.base64]': 0
     };
 
-    this.sharedFunctions.find('appointments', appointments_params, (resAppointments) => {
+    this.sharedFunctions.find('appointments', appointments_params, async (resAppointments) => {
       //Check operation status:
       if(resAppointments.success === true){
         //Set current objects:
@@ -852,24 +888,16 @@ export class FormComponent implements OnInit {
         //Set whether to use contrast:
         this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
         
-        //Find available equipments and available procedures for selected equipment:
-        this.setEquipment(resAppointments.data[0].slot.fk_equipment);
+        //Find available equipments and available procedures for selected equipment (insert case only):
+        if(this.form_action == 'insert'){
+          this.setEquipment(resAppointments.data[0].slot.fk_equipment);
+        }
 
-        //Find service users (Technicians):
-        this.sharedFunctions.findServiceUsers(resAppointments.data[0].imaging.service._id, 5, (resServiceUsers) => {
-          //Check data:
-          if(resServiceUsers.data.length > 0){
-            //Set technician users:
-            this.technicianUsers = resServiceUsers.data;
-          } else {
-            //Clear previous values:
-            this.technicianUsers = [];
-            this.form.get('acquisition.console_technician')?.setValue('');
+        //Find service users (Técnicos):
+        this.setServiceUsers(resAppointments.data[0].imaging.service._id, 5);
 
-            //Send message:
-            this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún técnico.');
-          }
-        });
+        //Find service users (Enfermeros):
+        this.setServiceUsers(resAppointments.data[0].imaging.service._id, 6);
 
         //Set current data in sharedProp:
         this.setCurrentAppointmentData(resAppointments, () => {
@@ -877,10 +905,50 @@ export class FormComponent implements OnInit {
           this.tabDetails.manualOnInit(resAppointments);
         });
 
+        //Execute callback:
+        callback(resAppointments);
+
       } else {
         //Return to the list with request error message:
         this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resAppointments.message);
         this.router.navigate(['/' + destination + '/list']);
+      }
+    });
+  }
+
+  setServiceUsers(fk_service: string, user_role: number){
+    this.sharedFunctions.findServiceUsers(fk_service, user_role, (resServiceUsers) => {
+      //Check data:
+      if(resServiceUsers.data.length > 0){
+        //Set service users by user roles:
+        switch(user_role){
+          //Técnicos:
+          case 5:
+            //Set technician users:
+            this.technicianServiceUsers = resServiceUsers.data;
+
+            //Set injection users:
+            this.injectionServiceUsers  = this.injectionServiceUsers.concat(resServiceUsers.data);
+
+            //Remove duplicates from an array (User with multiple role case):
+            this.injectionServiceUsers = [...new Set(this.injectionServiceUsers)];
+            break;
+
+          //Enfermeros:
+          case 6:
+            //Set injection users:
+            this.injectionServiceUsers  = this.injectionServiceUsers.concat(resServiceUsers.data);
+
+            //Remove duplicates from an array (User with multiple role case):
+            this.injectionServiceUsers = [...new Set(this.injectionServiceUsers)];
+            break;
+        }
+      }
+
+      //Check if service users object is empty:
+      if(this.technicianServiceUsers.length == 0 && this.injectionServiceUsers){
+        //Send message:
+        this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado usuarios de servicio (técnicos y/o enfermeros).');
       }
     });
   }

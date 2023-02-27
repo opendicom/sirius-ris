@@ -12,7 +12,7 @@
     <!-- element action -->
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
-      <td mat-cell *matCellDef="let element" class="text-center">
+      <td mat-cell *matCellDef="let element" class="text-center" style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
         
         <span *ngIf="sharedFunctions.nested_response">
           <span *ngIf="sharedFunctions.nested_response.data">
@@ -34,10 +34,27 @@
                     <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
                       <mat-icon>add_location_alt</mat-icon>
                     </button>
-  
+                    
+                    <br/>
+
                     <!-- performing flow_state -->
-                    <br/><hr class="dashed" />
                     <small class="badge badge-mini {{ currentNested.flow_state }}" matTooltip="{{ cancellation_reasons[currentNested.cancellation_reasons] }}" *ngIf="currentNested.flow_state">{{ performing_flow_states[currentNested.flow_state] }}</small>
+
+                    <!-- MWL -->
+                    <span *ngIf="element.accession_number; then thenBlockMWL else elseBlockMWL;"></span>
+                    <ng-template  #thenBlockMWL>
+                      <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviado a MWL: {{ element.accession_number | accno_date }}" (click)="mwlResend(element._id, element.accession_number)">
+                        <mat-icon>done_all</mat-icon>
+                      </button>
+                    </ng-template >
+                    
+                    <ng-template  #elseBlockMWL>
+                      <!-- adjust soft alt (one performing per appointment case) ;D -->
+                      <button mat-icon-button class="small_button" style="width: 0px !important; opacity: 0px !important;"></button>
+                    </ng-template >
+
+                    <hr class="soft-alt"/>
+
                   </span>
                 </span>
               </ng-template>
@@ -60,13 +77,6 @@
             
           </span>
         </span>
-
-        <!-- MWL -->
-        <div *ngIf="element.accession_number;">
-          <button mat-icon-button class="small_button"  color="accent" type="button" matTooltip="Enviado a MWL: {{ element.accession_number | accno_date }}" (click)="mwlResend(element._id, element.accession_number)">
-            <mat-icon>done_all</mat-icon>
-          </button>
-        </div>
 
       </td>
     </ng-container>

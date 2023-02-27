@@ -49,7 +49,7 @@ export const user_roles = {
   //3:  'Supervisor',
   4:  'Médico',
   5:  'Técnico',
-  //6:  'Enfermero',
+  6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',

@@ -1180,7 +1180,12 @@ export class SharedFunctionsService {
       'filter[professional.vacation]': false,
 
       //Only enabled users:
-      'filter[status]': true
+      'filter[status]': true,
+
+      //Projection:
+      'proj[password]': 0,
+      'proj[permissions]': 0,
+      'proj[settings]': 0
     };
 
     //Find by service selected role users (last true parameter):
@@ -1201,10 +1206,16 @@ export class SharedFunctionsService {
       nestedIN.push(res.data[key]._id);
     }));
 
-    //Set params:
-    const params = {
+    //Set initial params:
+    let params: any = {
       'filter[status]'  : true,
-      'filter[in][fk_appointment]' : nestedIN
+    }
+
+    //Check only one element nested case:
+    if(nestedIN.length == 1){
+      params['filter[fk_appointment]'] = nestedIN[0];
+    } else if(nestedIN.length > 1){
+      params['filter[in][fk_appointment]'] = nestedIN;
     }
     
     //Search only if there are results in the previous search:

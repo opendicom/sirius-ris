@@ -5,8 +5,8 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
-//Define Anesthetic Sub-Schema:
-const subSchemaAnesthetic = new mongoose.Schema({
+//Define Anesthesia Sub-Schema:
+const subSchemaAnesthesia = new mongoose.Schema({
     procedure:          { type: String, required: true },
     professional_id:    { type: String, required: true },
     document:           { type: String, required: true },
@@ -54,7 +54,7 @@ const Schema = new mongoose.Schema({
     cancellation_reasons:   { type: Number },
     urgency:                { type: Boolean, required: true },
     status:                 { type: Boolean, required: true, default: false },
-    anesthetic:             { type: subSchemaAnesthetic },
+    anesthesia:             { type: subSchemaAnesthesia },
     injection:              { type: subSchemaInjection },
     acquisition:            { type: subSchemaAcquisition },
     observations:           { type: String }
@@ -72,7 +72,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['extra_procedures', 'cancellation_reasons', 'anesthetic', 'injection',  'injection.pet_ct', 'acquisition'];
+const AllowedUnsetValues = ['extra_procedures', 'cancellation_reasons', 'anesthesia', 'injection',  'injection.pet_ct', 'acquisition'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -141,39 +141,39 @@ const Validator = [
         .withMessage('El parametro observations ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
         
     //----------------------------------------------------------------------------------------------------------------//
-    // ANESTHETIC:
+    // ANESTHESIA:
     //----------------------------------------------------------------------------------------------------------------//
-    body('anesthetic').optional(),
+    body('anesthesia').optional(),
 
-    body('anesthetic.procedure')
-        .if(body('anesthetic').exists())   // Check if parent exists.
+    body('anesthesia.procedure')
+        .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro anesthetic.procedure ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage('El parametro anesthesia.procedure ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
 
-    body('anesthetic.professional_id')
-        .if(body('anesthetic').exists())   // Check if parent exists.
+    body('anesthesia.professional_id')
+        .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro anesthetic.professional_id ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage('El parametro anesthesia.professional_id ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
-    body('anesthetic.document')
-        .if(body('anesthetic').exists())   // Check if parent exists.
+    body('anesthesia.document')
+        .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 25 })
-        .withMessage('El parametro anesthetic.document ingresado es demasiado corto o demasiado largo (min: 3, max: 25 [caracteres]).'),
+        .withMessage('El parametro anesthesia.document ingresado es demasiado corto o demasiado largo (min: 3, max: 25 [caracteres]).'),
 
-    body('anesthetic.name')
-        .if(body('anesthetic').exists())   // Check if parent exists.
+    body('anesthesia.name')
+        .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro anesthetic.name ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage('El parametro anesthesia.name ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     
-    body('anesthetic.surname')
-        .if(body('anesthetic').exists())   // Check if parent exists.
+    body('anesthesia.surname')
+        .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro anesthetic.surname ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage('El parametro anesthesia.surname ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
 

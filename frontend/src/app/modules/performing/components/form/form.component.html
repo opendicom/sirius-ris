@@ -227,20 +227,22 @@
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>Responsable de inyección</mat-label>
                     <mat-select formControlName="injection_user" placeholder="Seleccione el responsable de inyección">
-                      <div *ngFor="let currentConsoleTechnician of technicianUsers">
-                        <mat-option value="{{ currentConsoleTechnician._id }}">
-                          <!--names-->
-                          {{ currentConsoleTechnician.person.name_01 }}
-                          <span *ngIf="currentConsoleTechnician.person.name_02">
-                            {{ ' ' + currentConsoleTechnician.person.name_02 }}
-                          </span>
-                          <!--surnames-->
-                          {{ ' ' + currentConsoleTechnician.person.surname_01 }}
-                          <span *ngIf="currentConsoleTechnician.person.surname_02">
-                            {{ ' ' + currentConsoleTechnician.person.surname_02 }}
-                          </span>
-                        </mat-option>
-                      </div>
+                      <span *ngIf="this.injectionServiceUsers">
+                        <div *ngFor="let currentConsoleTechnician of this.injectionServiceUsers">
+                          <mat-option value="{{ currentConsoleTechnician._id }}">
+                            <!--names-->
+                            {{ currentConsoleTechnician.person.name_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.name_02">
+                              {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                            </span>
+                            <!--surnames-->
+                            {{ ' ' + currentConsoleTechnician.person.surname_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.surname_02">
+                              {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                            </span>
+                          </mat-option>
+                        </div>
+                      </span>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -375,7 +377,7 @@
                   <h4>Nombre:</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>Nombre</mat-label>
-                    <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+                    <input matInput icSpecialCharsWS type="text" formControlName="name" placeholder="Ingrese el nombre">
                   </mat-form-field>
           
                   <br/>
@@ -383,7 +385,7 @@
                   <h4>Apellido:</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>Apellido</mat-label>
-                    <input matInput type="text" formControlName="surname" placeholder="Ingrese el apellido">
+                    <input matInput icSpecialCharsWS type="text" formControlName="surname" placeholder="Ingrese el apellido">
                   </mat-form-field>
                 </div> <!-- end fxLayout wrapper -->
           
@@ -446,20 +448,22 @@
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>Técnico en consola</mat-label>
                     <mat-select formControlName="console_technician" placeholder="Seleccione el técnico en consola">
-                      <div *ngFor="let currentConsoleTechnician of technicianUsers">
-                        <mat-option value="{{ currentConsoleTechnician._id }}">
-                          <!--names-->
-                          {{ currentConsoleTechnician.person.name_01 }}
-                          <span *ngIf="currentConsoleTechnician.person.name_02">
-                            {{ ' ' + currentConsoleTechnician.person.name_02 }}
-                          </span>
-                          <!--surnames-->
-                          {{ ' ' + currentConsoleTechnician.person.surname_01 }}
-                          <span *ngIf="currentConsoleTechnician.person.surname_02">
-                            {{ ' ' + currentConsoleTechnician.person.surname_02 }}
-                          </span>
-                        </mat-option>
-                      </div>
+                      <span *ngIf="this.technicianServiceUsers">
+                        <div *ngFor="let currentConsoleTechnician of this.technicianServiceUsers"><!-- 5 Técnicos-->
+                          <mat-option value="{{ currentConsoleTechnician._id }}">
+                            <!--names-->
+                            {{ currentConsoleTechnician.person.name_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.name_02">
+                              {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                            </span>
+                            <!--surnames-->
+                            {{ ' ' + currentConsoleTechnician.person.surname_01 }}
+                            <span *ngIf="currentConsoleTechnician.person.surname_02">
+                              {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                            </span>
+                          </mat-option>
+                        </div>
+                      </span>
                     </mat-select>
                   </mat-form-field>
                 </div>
