@@ -234,6 +234,9 @@ export class FormComponent implements OnInit {
             //Set available flow states:
             this.setAvailableFlowStates(resPerforming.data[0].flow_state);
 
+            //Prevent undefined CKEditor fields:
+            if(resPerforming.data[0].observations == undefined ){ resPerforming.data[0].observations = ''; }
+
             //Send data to the form:
             this.setReactiveForm({
               flow_state                : [ resPerforming.data[0].flow_state, [Validators.required]],
@@ -279,12 +282,19 @@ export class FormComponent implements OnInit {
               }),
             });
 
+            //Get property keys with values:
+            this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+
             //Check if exist injection property in current performing:
             if(resPerforming.data[0].hasOwnProperty('injection')){
               //Set injection fields in form:
               this.form.get('injection.administered_volume')?.setValue(resPerforming.data[0].injection.administered_volume);
               this.form.get('injection.administration_time')?.setValue(resPerforming.data[0].injection.administration_time);
               this.form.get('injection.injection_user')?.setValue(resPerforming.data[0].injection.injection_user._id);
+
+              //Get nested property keys with values:
+              const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.injection, false, true);
+              nestedkeysWithValues.forEach(current => { this.keysWithValues.push('injection.' + current); });
 
               //Check if exist pet_ct property in current performing > injection:
               if(resPerforming.data[0].injection.hasOwnProperty('pet_ct')){
@@ -295,6 +305,10 @@ export class FormComponent implements OnInit {
                 this.form.get('injection.pet_ct.administred_activity')?.setValue(resPerforming.data[0].injection.pet_ct.administred_activity);
                 this.form.get('injection.pet_ct.syringe_full_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_full_time);
                 this.form.get('injection.pet_ct.syringe_empty_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_empty_time);
+
+                //Get nested property keys with values:
+                const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.injection.pet_ct, false, true);
+                nestedkeysWithValues.forEach(current => { this.keysWithValues.push('injection.pet_ct.' + current); });
               }
             }
 
@@ -310,6 +324,10 @@ export class FormComponent implements OnInit {
 
               //Enable anesthesia validators:
               this.onChangeAnesthesia({ value: 'true' }, this.form);
+
+              //Get nested property keys with values:
+              const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.anesthesia, false, true);
+              nestedkeysWithValues.forEach(current => { this.keysWithValues.push('anesthesia.' + current); });
             }
 
             //Check if exist acquisition property in current performing:
@@ -318,10 +336,14 @@ export class FormComponent implements OnInit {
               this.form.get('acquisition.time')?.setValue(resPerforming.data[0].acquisition.time);
               this.form.get('acquisition.console_technician')?.setValue(resPerforming.data[0].acquisition.console_technician._id);
               this.form.get('acquisition.observations')?.setValue(resPerforming.data[0].acquisition.observations);
+
+              //Get nested property keys with values:
+              const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.acquisition, false, true);
+              nestedkeysWithValues.forEach(current => { this.keysWithValues.push('acquisition.' + current); });
             }              
 
             //Set flow state (Enable validators):
-            this.setFlowState(resPerforming.data[0].flow_state);  
+            this.setFlowState(resPerforming.data[0].flow_state);
 
           } else {
             //Return to the list with request error message:
@@ -342,7 +364,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmitMaster(){
+  async onSubmitMaster(){
     //Fix Angular validate:
     //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state.
     this.form.markAllAsTouched();
@@ -410,8 +432,38 @@ export class FormComponent implements OnInit {
         delete performingSaveData.anesthesia.use_anesthesia;
       }
 
+      // TEST:
+      // REVISAR INSERT DE INJECTION, ACQUISITION Y PERFORMING OBSERVATIONS!!!
+      // Eliminar propiedad vacía solo en casos de insert.
+      // CONTINUAR ACÁ!!!!
+
+      //Check injection values (Prevent validation errors):
+      //Update case allow empty observations field (unset value case).
+      if(performingSaveData.hasOwnProperty('injection') && this.form_action == 'insert'){
+        await Promise.all(Object.keys(performingSaveData.injection).map(key => {
+          //Check empty fields:
+          if(performingSaveData.hasOwnProperty('injection') && (performingSaveData.injection[key] === null || performingSaveData.injection[key] === undefined || performingSaveData.injection[key] === '')){
+            delete performingSaveData.injection;
+          }
+        }));
+      }
+     
+      //Check acquisition values:
+      //Update case allow empty observations field (unset value case).
+      if(performingSaveData.hasOwnProperty('acquisition') && this.form_action == 'insert'){
+        await Promise.all(Object.keys(performingSaveData.acquisition).map(key => {
+          //Check empty fields:
+          if(key !== 'observation'){  //Acquisition Observations is optional.
+            if(performingSaveData.hasOwnProperty('acquisition') && (performingSaveData.acquisition[key] === null || performingSaveData.acquisition[key] === undefined || performingSaveData.acquisition[key] === '')){
+              delete performingSaveData.acquisition;
+            }
+          }
+        }));
+      }
+
       //Check performing observations:
-      if(performingSaveData.hasOwnProperty('observations') && performingSaveData.observations.length == 0){
+      //Update case allow empty observations field (unset value case).
+      if(performingSaveData.hasOwnProperty('observations') && performingSaveData.observations.length == 0 && this.form_action == 'insert'){
         //Delete to prevent validation backend error:
         delete performingSaveData.observations;
       }
@@ -428,6 +480,9 @@ export class FormComponent implements OnInit {
         //Set check-in time in form:
         performingSaveData.checkin_time = this.checkin_time;
       }
+
+      console.log('\nInitial save data [performingSaveData]:');
+      console.log(performingSaveData);
 
       //Save performing data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, performingSaveData, this.keysWithValues, (resPerforming) => {
@@ -451,8 +506,10 @@ export class FormComponent implements OnInit {
         if(resPerforming.success === true){
           //Send second submit in controlled order (Update appointment):
           this.tabDetails.onSubmit((resAppointments) => {
-            //Send patient to MWL according flow state ('P04'):
-            //this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+            //Send patient to MWL:
+            if(this.form_action == 'insert'){
+              this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+            }
             
             //Response the form according to the result:
             this.sharedFunctions.formResponder(resAppointments, destination, this.router);
@@ -691,7 +748,8 @@ export class FormComponent implements OnInit {
 
       case 'P05': // Verificación de imágenes
       case 'P06': // Para informar
-      case 'P07': // Terminado (sin informe)
+      case 'P07': // Terminado (con informe)
+      case 'P08': // Terminado (sin informe)
         //Enable acquisition validators:
         this.setValidators('acquisition', 'enable');
 
@@ -708,7 +766,7 @@ export class FormComponent implements OnInit {
         }
         break;
 
-      case 'P08': // Cancelado
+      case 'P09': // Cancelado
         //Remove all validators:
         this.setValidators('acquisition', 'remove');
         this.setValidators('injection', 'remove');

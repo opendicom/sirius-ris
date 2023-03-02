@@ -1,0 +1,237 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+    <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+      <h3 class="details-title">Detalles de la realización:</h3>
+      <div *ngIf="performingData" class="current-wrap">
+        <!-- performing_date -->
+        <div class="current-info divider-alt">
+          <small>Fecha de estudio:</small><br/>
+          <span *ngIf="performingFormattedDate" class="appointment-firts">{{ performingFormattedDate.dateDay + '/' + performingFormattedDate.dateMonth + '/' + performingFormattedDate.dateYear }}</span>
+        </div>
+        
+        <!-- checkin_time -->
+        <div class="current-info divider-alt">
+          <small>Hora de recepción:</small><br/>
+          <span *ngIf="performingFormattedDate" class="appointment-firts">{{ performingFormattedDate.startHours + ':' + performingFormattedDate.startMinutes }}</span>
+        </div>
+        
+        <!-- imaging -->
+        <span *ngIf="performingData.appointment">
+          <span *ngIf="performingData.appointment.imaging">
+            <span *ngIf="performingData.appointment.imaging.organization && performingData.appointment.imaging.branch && performingData.appointment.imaging.service">
+              <div class="current-info">
+                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <span class="current-firts">{{ performingData.appointment.imaging.organization.short_name + ' ► ' + performingData.appointment.imaging.branch.short_name + ' ► ' + performingData.appointment.imaging.service.name }}</span>
+              </div>
+            </span>
+          </span>
+        </span>
+
+        <div class="clear"></div>
+      </div>
+
+      <!-- patient -->
+      <span *ngIf="performingData.patient">
+        <span *ngIf="performingData.patient.person">
+          <h3 class="details-title">Datos del paciente:</h3>
+          <div class="current-wrap">
+            <!-- documents -->
+            <div class="current-info">
+              <small>Documento/s:</small><br/>
+              <span *ngFor="let current of performingData.patient.person.documents" >
+                <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span>{{ current.document }}</span>
+                </span>
+                <br/>
+              </span>
+            </div>
+            
+            <!-- names -->
+            <div class="current-info">
+              <small>Nombre completo:</small><br/>
+              <span class="current-firts">
+                <span>{{ performingData.patient.person.name_01 }}</span>
+
+                <span *ngIf="performingData.patient.person.name_02">
+                  <span> {{ performingData.patient.person.name_02 }}</span>
+                </span>
+
+                <span> {{ performingData.patient.person.surname_01 }}</span>
+
+                <span *ngIf="performingData.patient.person.surname_02">
+                  <span> {{ performingData.patient.person.surname_02 }}</span>
+                </span>
+              </span>
+            </div>
+            
+            <div class="clear"></div>
+          </div>
+
+          <div class="clear"></div>
+
+          <div class="current-wrap">
+            <!-- birth_date -->
+            <div class="current-info">
+              <small>Fecha de nacimiento:</small><br/>
+              <span class="current-firts">{{ performingData.patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+            </div>
+            
+            <!-- genre -->
+            <div class="current-info text-center">
+              <small>Género:</small><br/>
+              <span [ngSwitch]="performingData.patient.person.gender" matTooltip="{{ gender_types[performingData.patient.person.gender] }}">
+                <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+              </span>
+            </div>
+            
+            <!-- status -->
+            <div class="current-info text-center">
+              <small>Estado:</small><br/>
+              <span *ngIf="performingData.patient.status; then thenBlock else elseBlock"></span>
+              <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+            </div>
+            
+            <div class="clear"></div>
+          </div>
+
+        </span>
+      </span>
+
+      <hr class="dashed" />
+
+      <div *ngIf="performingData.appointment" class="text-center">
+        <small>Study IUID</small><br/><span class="label-accent">{{ performingData.appointment.study_iuid }}</span>
+      </div>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h3 class="details-title">Detalles del estudio:</h3>
+      <div class="current-wrap">
+        <!-- procedure -->
+        <div class="current-info text-center divider-alt">
+          <small>Procedimiento realizado:</small><br/>
+          <span class="badge-alt">
+            <span *ngIf="performingData.procedure">{{ performingData.procedure.name }}</span>
+          </span>
+        </div>
+
+        <!-- equipment -->
+        <div class="current-info text-center divider-alt">
+          <small>Equipamiento:</small><br/>
+          <span *ngIf="performingData.equipment" class="badge-accent" matTooltip="{{ 'AET: ' + performingData.equipment.AET }}">
+            <span>{{ performingData.equipment.name }}</span>
+          </span>
+        </div>
+
+        <!-- modality -->
+        <div class="current-info text-center">
+          <small>Modalidad:</small><br/>
+          <span *ngIf="performingData.modality" class="badge" matTooltip="{{ performingData.modality.code_meaning }}">
+            <span>{{ performingData.modality.code_value }}</span>
+          </span>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="current-wrap">
+          <!-- urgency -->
+          <div class="current-info text-center">
+            <small>Urgencia:</small><br/>
+            <div *ngIf="performingData.urgency; then thenBlockUrgency else elseBlockUrgency"></div>
+            <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+            <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          </div>
+
+          <!--hospitalization-->
+          <!--appointment_pdf-->
+          
+          <div class="clear"></div>
+      </div>
+
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+
+  <hr class="dashed"/>
+
+    <mat-tab-group>
+
+        <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">feed</mat-icon> Resumen
+            </ng-template>
+
+            <div class="tab-content">
+              <small>{{ performingData | json }}</small>
+            </div>
+            
+        </mat-tab>
+        <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+        <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">edit</mat-icon> Informe
+            </ng-template>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+  
+                <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+                    <h4>Dato clínico:</h4>
+                    <div [class.unselected]="clinicalInfoValidator == false">
+                        <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
+                    </div>
+
+                    <br/>
+
+                    <h4>Descripción de procedimiento:</h4>
+                    <div [class.unselected]="procedureDescriptionValidator == false">
+                        <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
+                    </div>
+                </div> <!-- end fxLayout wrapper -->
+            
+                <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                  <h4>Hallazgos:</h4>
+
+                  <br/>
+
+                  <h4>En suma:</h4>
+                  <div [class.unselected]="summaryValidator == false">
+                      <ckeditor formControlName="summary" #procedureDescription [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
+                  </div>
+                </div> <!-- end fxLayout wrapper -->
+            
+            </div>
+        </mat-tab>
+        <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+        <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">visibility</mat-icon> Imágenes
+            </ng-template>
+
+            <div class="tab-content">
+              <h4>Cornerstone | Weasis | OsiriX</h4>
+            </div>
+        </mat-tab>
+        <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+    </mat-tab-group>
+  
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+      <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  </form>
+  

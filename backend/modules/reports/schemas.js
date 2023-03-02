@@ -20,7 +20,7 @@ const Schema = new mongoose.Schema({
     clinical_info:          { type: String, required: true },
     procedure_description:  { type: String, required: true },
     findings:               { type: [subSchemaFindings] },
-    sumary:                 { type: String },
+    summary:                { type: String },
     medical_signatures:     { type: [mongoose.ObjectId] },
     pathologies:            { type: [mongoose.ObjectId] }
 },
@@ -84,11 +84,11 @@ const Validator = [
         .isLength({ min: 3, max: 50 })
         .withMessage('El parametro findings.*.title ingresado es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
 
-    body('sumary')
+    body('summary')
         .optional()
         .trim()
         .isLength({ min: 10, max: 10000 })
-        .withMessage('El parametro sumary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
+        .withMessage('El parametro summary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
 
     body('medical_signatures')
         .optional()

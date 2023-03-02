@@ -49,7 +49,7 @@ export const user_roles = {
   //3:  'Supervisor',
   4:  'Médico',
   5:  'Técnico',
-  //6:  'Enfermero',
+  6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',
@@ -117,12 +117,13 @@ export const performing_flow_states = {
   'P04': 'Adquisición',
   'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
   'P06': 'Para informar',
-  'P07': 'Terminado (sin informe)',
-  'P08': 'Cancelado'
+  'P07': 'Terminado (con informe)',
+  'P08': 'Terminado (sin informe)',
+  'P09': 'Cancelado'
 };
 
 // Reports flow states:
-export const report_flow_states = {
+export const reports_flow_states = {
   'R01': 'Informe borrador',
   'R02': 'Informe firmado',
   'R03': 'Informe autenticado',

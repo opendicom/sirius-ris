@@ -41,27 +41,6 @@
   margin-bottom: 5px !important;
 }
 
-.preparation-wrap {
-  background-color: #43466ea6;
-  min-height: 200px;
-  padding-top: 5px;
-}
-
-.primary-color{
-  background-color: #c2185b;
-  color: #fff;
-}
- 
-.default-color{
-  background-color: #424242;
-  color: #fff;
-}
-
-.dose{
-  text-align: center;
-  opacity: 0.8;
-}
-
-.badge-dose{
-  float: none !important;
+.tab-content {
+  padding: 15px;
 }
