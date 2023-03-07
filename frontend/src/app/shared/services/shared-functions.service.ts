@@ -446,15 +446,6 @@ export class SharedFunctionsService {
   save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}, saveResponse: boolean = true): void {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
-
-    // TEST:
-    if(element == 'performing'){
-      console.log('\nExceptions [exceptions]:');
-      console.log(exceptions);
-
-      console.log('\nFinally save data [data]:');
-      console.log(data);
-    }
     
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){

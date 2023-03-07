@@ -131,6 +131,10 @@ export class TabDetailsComponent implements OnInit {
       //Check outpatient for display or not inpatient inputs:
       this.appointmentsService.onChangeOutpatient({ value: `${res.data[0].outpatient}` }, this.form);
 
+      //Prevent undefined error on CKEditor fields:
+      if(res.data[0].anamnesis == undefined ){ res.data[0].anamnesis = ''; }
+      if(res.data[0].indications == undefined ){ res.data[0].indications = ''; }
+
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],

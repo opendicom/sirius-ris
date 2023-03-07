@@ -120,6 +120,9 @@ export class FormComponent implements OnInit {
             //Find references (disabled inputs):
             this.onChangeBranch(false, res.data[0]);
 
+            //Prevent undefined error on CKEditor fields:
+            if(res.data[0].preparation == undefined ){ res.data[0].preparation = ''; }
+
             //Send data to the form:
             this.setReactiveForm({
               domain            : res.data[0].domain.organization + '.' + res.data[0].domain.branch,

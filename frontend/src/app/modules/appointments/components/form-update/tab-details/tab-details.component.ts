@@ -145,6 +145,10 @@ export class TabDetailsComponent implements OnInit {
       //Check flow state for display or not cancellation reasons:
       this.onClickFlowState(res.data[0].flow_state);
 
+      //Prevent undefined error on CKEditor fields:
+      if(res.data[0].anamnesis == undefined ){ res.data[0].anamnesis = ''; }
+      if(res.data[0].indications == undefined ){ res.data[0].indications = ''; }
+
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],

@@ -232,21 +232,36 @@ export class AppointmentsService {
       delete form.value.cancellation_reasons;
     }
 
-    //Create save object (Set sharedProp current data):
-    let appointmentSaveData: any = {
-      imaging: {
-        organization  : this.sharedProp.current_imaging.organization._id,
-        branch        : this.sharedProp.current_imaging.branch._id,
-        service       : this.sharedProp.current_imaging.service._id
-      },
-      fk_patient    : this.sharedProp.current_patient._id,
-      start         : this.sharedProp.current_datetime.start + '.000Z',
-      end           : this.sharedProp.current_datetime.end + '.000Z',
-      flow_state    : flow_state,
-      fk_slot       : this.sharedProp.current_slot,
-      fk_procedure  : this.sharedProp.current_procedure._id,
-      urgency       : this.sharedProp.current_urgency
-    };
+    //Initializate save object<:
+    let appointmentSaveData: any = {};
+
+    //Check if appointment is being saved from performing (Tab details update):
+    if(this.sharedProp.element == 'performing'){
+      //Performing case - Update appointment from tab details (Only domain data to facilitate RABC):
+      appointmentSaveData = {
+        imaging: {
+          organization  : this.sharedProp.current_imaging.organization._id,
+          branch        : this.sharedProp.current_imaging.branch._id,
+          service       : this.sharedProp.current_imaging.service._id
+        }
+      };
+    } else {
+      //Normal case - Create save object (Set sharedProp current data):
+      appointmentSaveData = {
+        imaging: {
+          organization  : this.sharedProp.current_imaging.organization._id,
+          branch        : this.sharedProp.current_imaging.branch._id,
+          service       : this.sharedProp.current_imaging.service._id
+        },
+        fk_patient    : this.sharedProp.current_patient._id,
+        start         : this.sharedProp.current_datetime.start + '.000Z',
+        end           : this.sharedProp.current_datetime.end + '.000Z',
+        flow_state    : flow_state,
+        fk_slot       : this.sharedProp.current_slot,
+        fk_procedure  : this.sharedProp.current_procedure._id,
+        urgency       : this.sharedProp.current_urgency
+      };
+    }
 
     //Check operation type (Set files references):
     if(operation === 'insert'){

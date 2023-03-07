@@ -234,7 +234,7 @@ export class FormComponent implements OnInit {
             //Set available flow states:
             this.setAvailableFlowStates(resPerforming.data[0].flow_state);
 
-            //Prevent undefined CKEditor fields:
+            //Prevent undefined error on CKEditor fields:
             if(resPerforming.data[0].observations == undefined ){ resPerforming.data[0].observations = ''; }
 
             //Send data to the form:
@@ -314,6 +314,9 @@ export class FormComponent implements OnInit {
 
             //Check if exist anesthesia property in current performing:
             if(resPerforming.data[0].hasOwnProperty('anesthesia')){
+              //Prevent undefined error on CKEditor fields:
+              if(resPerforming.data[0].anesthesia.procedure == undefined ){ resPerforming.data[0].anesthesia.procedure = ''; }
+
               //Set anesthesia fields in form:
               this.form.get('anesthesia.use_anesthesia')?.setValue('true');
               this.form.get('anesthesia.professional_id')?.setValue(resPerforming.data[0].anesthesia.professional_id);
@@ -332,6 +335,9 @@ export class FormComponent implements OnInit {
 
             //Check if exist acquisition property in current performing:
             if(resPerforming.data[0].hasOwnProperty('acquisition')){
+              //Prevent undefined error on CKEditor fields:
+              if(resPerforming.data[0].acquisition.observations == undefined ){ resPerforming.data[0].acquisition.observations = ''; }
+
               //Set acquisition fields in form:
               this.form.get('acquisition.time')?.setValue(resPerforming.data[0].acquisition.time);
               this.form.get('acquisition.console_technician')?.setValue(resPerforming.data[0].acquisition.console_technician._id);
@@ -432,11 +438,6 @@ export class FormComponent implements OnInit {
         delete performingSaveData.anesthesia.use_anesthesia;
       }
 
-      // TEST:
-      // REVISAR INSERT DE INJECTION, ACQUISITION Y PERFORMING OBSERVATIONS!!!
-      // Eliminar propiedad vacía solo en casos de insert.
-      // CONTINUAR ACÁ!!!!
-
       //Check injection values (Prevent validation errors):
       //Update case allow empty observations field (unset value case).
       if(performingSaveData.hasOwnProperty('injection') && this.form_action == 'insert'){
@@ -481,9 +482,6 @@ export class FormComponent implements OnInit {
         performingSaveData.checkin_time = this.checkin_time;
       }
 
-      console.log('\nInitial save data [performingSaveData]:');
-      console.log(performingSaveData);
-
       //Save performing data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, performingSaveData, this.keysWithValues, (resPerforming) => {
         //Handle messages and destinations by form action:
@@ -508,7 +506,7 @@ export class FormComponent implements OnInit {
           this.tabDetails.onSubmit((resAppointments) => {
             //Send patient to MWL:
             if(this.form_action == 'insert'){
-              this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+              //this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
             }
             
             //Response the form according to the result:
