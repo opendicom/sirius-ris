@@ -41,6 +41,13 @@
   margin-bottom: 5px !important;
 }
 
-.tab-content {
-  padding: 15px;
+.details-wrap {
+  background-color: #43466ea6;
+  min-height: 200px;
+  padding-top: 5px;
+}
+
+li {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }

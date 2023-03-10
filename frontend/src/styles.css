@@ -251,10 +251,14 @@ mark {
 }
 
 .P07, .P08 {
+  background-color: #733ad5a9;
+}
+
+.P09, .P10 {
   background-color: #05ff9f87;
 }
 
-.P09 {
+.P11 {
   background-color: #ff6f69;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -292,6 +296,8 @@ mark {
 
 .column-alt {
   background-color: #2e304b !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
 }
 
 /* Table Header color:

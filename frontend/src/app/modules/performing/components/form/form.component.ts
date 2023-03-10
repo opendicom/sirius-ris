@@ -746,8 +746,10 @@ export class FormComponent implements OnInit {
 
       case 'P05': // Verificación de imágenes
       case 'P06': // Para informar
-      case 'P07': // Terminado (con informe)
-      case 'P08': // Terminado (sin informe)
+      case 'P07': // Informe borrador
+      case 'P08': // Informe firmado
+      case 'P09': // Terminado (con informe)
+      case 'P10': // Terminado (sin informe)
         //Enable acquisition validators:
         this.setValidators('acquisition', 'enable');
 
@@ -764,7 +766,7 @@ export class FormComponent implements OnInit {
         }
         break;
 
-      case 'P09': // Cancelado
+      case 'P11': // Cancelado
         //Remove all validators:
         this.setValidators('acquisition', 'remove');
         this.setValidators('injection', 'remove');
@@ -897,8 +899,17 @@ export class FormComponent implements OnInit {
     await Promise.all(Object.keys(this.performingFS).map((key) => {
       //Check that currentFS is equal to key or that currentFS has already been entered/found:
       if(currentFS === key || foundFlag){
-        //Add current flow state into available flow states:
-        this.availableFS[key] = this.performingFS[key];
+        //Do not allow P07, P08 and P09 flow_states on insert case (flow_states controlled from backend):
+        if(this.form_action == 'insert' && (key == 'P07' || key == 'P08' || key == 'P09')){
+          //Don add currentFS into availableFS.
+        } else {
+          if((currentFS !== 'P07' && key == 'P07') || (currentFS !== 'P08' && key == 'P08') || (currentFS !== 'P09' && key == 'P09')){
+            //Don add currentFS into availableFS.
+          } else {
+            //Add current flow state into available flow states:
+            this.availableFS[key] = this.performingFS[key];
+          }
+        }
 
         //Set found flag as true:
         foundFlag= true;

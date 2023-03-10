@@ -2006,6 +2006,19 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
                 if(filter[asPrefix + 'pathologies'] != undefined){ filter[asPrefix + 'pathologies'] = filter[asPrefix + 'pathologies'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'pathologies']); }
 
+                //Authenticated:
+                if(filter[asPrefix + 'authenticated.fk_user'] != undefined){ filter[asPrefix + 'authenticated.fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.fk_user']); };
+                if(filter[asPrefix + 'authenticated.user._id'] != undefined){ filter[asPrefix + 'authenticated.user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.user._id']); };
+                if(filter[asPrefix + 'authenticated.datetime'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'authenticated.datetime'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'authenticated.datetime'][explicitOperator] = new Date(filter[asPrefix + 'authenticated.datetime'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'authenticated.datetime'] = new Date(filter[asPrefix + 'authenticated.datetime']);
+                        }
+                    });
+                }
+
                 return filter;
             });
             break;

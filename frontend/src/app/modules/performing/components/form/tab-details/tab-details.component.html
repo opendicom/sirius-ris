@@ -242,31 +242,31 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="diabetes" color="primary">Diabetes</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypertension" color="primary">Hipertensión</mat-checkbox><br/>
-              <mat-checkbox formControlName="epoc" color="primary">EPOC</mat-checkbox><br/>
-              <mat-checkbox formControlName="smoking" color="primary">Tabaquismo</mat-checkbox><br/>
-              <mat-checkbox formControlName="malnutrition" color="primary">Desnutrición</mat-checkbox><br/>
-              <mat-checkbox formControlName="obesity" color="primary">Obesidad</mat-checkbox><br/>
-              <mat-checkbox formControlName="asthma" color="primary">Asma</mat-checkbox><br/>
+              <mat-checkbox formControlName="diabetes" color="primary">{{ privateHealthLang.ES['diabetes'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypertension" color="primary">{{ privateHealthLang.ES['hypertension'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="epoc" color="primary">{{ privateHealthLang.ES['epoc'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="smoking" color="primary">{{ privateHealthLang.ES['smoking'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="malnutrition" color="primary">{{ privateHealthLang.ES['malnutrition'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="obesity" color="primary">{{ privateHealthLang.ES['obesity'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="asthma" color="primary">{{ privateHealthLang.ES['asthma'] }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="pregnancy" color="primary">Embarazo</mat-checkbox><br/>
-              <mat-checkbox formControlName="claustrophobia" color="primary">Claustrofobia</mat-checkbox><br/>
-              <mat-checkbox formControlName="renal_insufficiency" color="primary">Insuficiencia renal</mat-checkbox><br/>
-              <mat-checkbox formControlName="heart_failure" color="primary">Insuficiencia cardíaca</mat-checkbox><br/>
-              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">Cardiopatía isquémica</mat-checkbox><br/>
-              <mat-checkbox formControlName="valvulopathy" color="primary">Valvulopatía</mat-checkbox><br/>
-              <mat-checkbox formControlName="arrhythmia" color="primary">Arritmia</mat-checkbox><br/>
+              <mat-checkbox formControlName="pregnancy" color="primary">{{ privateHealthLang.ES['pregnancy'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="claustrophobia" color="primary">{{ privateHealthLang.ES['claustrophobia'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="renal_insufficiency" color="primary">{{ privateHealthLang.ES['renal_insufficiency'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="heart_failure" color="primary">{{ privateHealthLang.ES['heart_failure'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">{{ privateHealthLang.ES['ischemic_heart_disease'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="valvulopathy" color="primary">{{ privateHealthLang.ES['valvulopathy'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="arrhythmia" color="primary">{{ privateHealthLang.ES['arrhythmia'] }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="hiv" color="primary">HIV</mat-checkbox><br/>
-              <mat-checkbox formControlName="cancer" color="primary">Cancer</mat-checkbox><br/>
-              <mat-checkbox formControlName="dementia" color="primary">Demencia</mat-checkbox><br/>
-              <mat-checkbox formControlName="hyperthyroidism" color="primary">Hipertiroidismo</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypothyroidism" color="primary">Hipotiroidismo</mat-checkbox><br/>
+              <mat-checkbox formControlName="hiv" color="primary">{{ privateHealthLang.ES['hiv'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="cancer" color="primary">{{ privateHealthLang.ES['cancer'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="dementia" color="primary">{{ privateHealthLang.ES['dementia'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hyperthyroidism" color="primary">{{ privateHealthLang.ES['hyperthyroidism'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypothyroidism" color="primary">{{ privateHealthLang.ES['hypothyroidism'] }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
           </div>
   
@@ -274,7 +274,7 @@
   
           <div [class.non-display]="appointmentsService.booleanPatology == false">
             <mat-form-field appearance="fill" class="full">
-              <mat-label>Otro antecedente/patología</mat-label>
+              <mat-label>{{ privateHealthLang.ES['other'] }}</mat-label>
               <input matInput type="text" formControlName="other" placeholder="Ingrese el o los antecedentes/patologías.">
             </mat-form-field>
           </div>
@@ -283,17 +283,17 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Medicación:</h4>
+              <h4>{{ privateHealthLang.ES['medication'] }}:</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Medicación</mat-label>
+                <mat-label>{{ privateHealthLang.ES['medication'] }}</mat-label>
                 <input matInput type="text" formControlName="medication" placeholder="Indique si consume algún tipo de medicación.">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Alergias:</h4>
+              <h4>{{ privateHealthLang.ES['allergies'] }}:</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Alergias</mat-label>
+                <mat-label>{{ privateHealthLang.ES['allergies'] }}</mat-label>
                 <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
@@ -307,11 +307,11 @@
           <div formGroupName="implants">
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox formControlName="cochlear_implant" color="primary">Implante coclear</mat-checkbox><br/>
-                <mat-checkbox formControlName="cardiac_stent" color="primary">Stent cardíaco</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_prostheses" color="primary">Protesis metálicas</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_shards" color="primary">Esquirlas metálicas</mat-checkbox><br/>
-                <mat-checkbox formControlName="pacemaker" color="primary">Marcapasos</mat-checkbox><br/>
+                <mat-checkbox formControlName="cochlear_implant" color="primary">{{ privateHealthLang.ES.implants['cochlear_implant'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="cardiac_stent" color="primary">{{ privateHealthLang.ES.implants['cardiac_stent'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_prostheses" color="primary">{{ privateHealthLang.ES.implants['metal_prostheses'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_shards" color="primary">{{ privateHealthLang.ES.implants['metal_shards'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="pacemaker" color="primary">{{ privateHealthLang.ES.implants['pacemaker'] }}</mat-checkbox><br/>
               </div> <!-- end fxLayout wrapper -->
   
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
@@ -319,7 +319,7 @@
   
                 <div [class.non-display]="appointmentsService.booleanImplants == false">
                   <mat-form-field appearance="fill" class="full">
-                    <mat-label>Otro tipo de implante</mat-label>
+                    <mat-label>{{ privateHealthLang.ES.implants['other'] }}</mat-label>
                     <input matInput type="text" formControlName="other" placeholder="Ingrese el o los tipos de impantes.">
                   </mat-form-field>
                 </div>
@@ -332,15 +332,15 @@
           <br/>
   
           <div formGroupName="covid19">
-            <mat-checkbox formControlName="had_covid" color="primary">Tuvo COVID-19</mat-checkbox><br/>
-            <mat-checkbox formControlName="vaccinated" color="primary">Posee vacunación contra COVID-19</mat-checkbox><br/>
+            <mat-checkbox formControlName="had_covid" color="primary">{{ privateHealthLang.ES.covid19['had_covid'] }}</mat-checkbox><br/>
+            <mat-checkbox formControlName="vaccinated" color="primary">{{ privateHealthLang.ES.covid19['vaccinated'] }}</mat-checkbox><br/>
   
             <br/>
   
             <h4>Detalles:</h4>
             <mat-form-field appearance="fill" class="full">
               <mat-label>Detalles</mat-label>
-              <input matInput type="text" formControlName="details" placeholder="Indique detalles (Ej. tipo de dosis Sinovac, Phizer).">
+              <input matInput type="text" formControlName="details" placeholder="Indique {{ privateHealthLang.ES.covid19['details'] }}">
             </mat-form-field>
           </div>
         </div>

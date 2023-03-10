@@ -14,6 +14,7 @@ import {                                                                        
   inpatient_types,
   appointments_flow_states,
   cancellation_reasons,
+  privateHealthLang,
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
@@ -30,6 +31,7 @@ export class TabDetailsComponent implements OnInit {
   public inpatient_types      : any = inpatient_types;
   public appointmentsFS       : any = appointments_flow_states;
   public cancellation_reasons : any = cancellation_reasons;
+  public privateHealthLang    : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;

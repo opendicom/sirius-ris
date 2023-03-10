@@ -73,7 +73,7 @@ export const user_concessions = {
   8 : 'Eliminación física de archivos',
   9 : 'Supervisar citas en curso',
   */
-}
+};
 
 // User Types:
 export const user_types = {
@@ -94,6 +94,26 @@ export const appointments_flow_states = {
   'A02': 'Cancelada'
 };
 
+// Performing flow states:
+export const performing_flow_states = {
+  'P01': 'Recepción',
+  'P02': 'Entrevista',
+  'P03': 'Preparación/Inyección',
+  'P04': 'Adquisición',
+  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección/asociación de imágenes.
+  'P06': 'Para informar',
+
+  // Flow states controlled from backend:
+  // Report and signature save handlers.
+  'P07': 'Informe borrador',          // Al momento que exista un report con fk_performing = _id | insert report.
+  'P08': 'Informe firmado',           // Condición anterior + Que exista una firma al menos con fk_report = _id (report) | insert signature.
+  'P09': 'Terminado (con informe)',   // Condiciones anteriores + autenticated object exist (Estado sin remoción, solo enmiendas).
+
+  'P10': 'Terminado (sin informe)',
+  'P11': 'Cancelado'
+};
+
+// Cancellation reasons (Appointment and performing):
 export const cancellation_reasons = {
   1   : "Falla en equipo",
   2   : "Falta consentimiento",
@@ -107,28 +127,54 @@ export const cancellation_reasons = {
   10  : "Cursando infección",
   11  : "Fallecimiento",
   12  : "Otro"
-}
-
-// Performing flow states:
-export const performing_flow_states = {
-  'P01': 'Recepción',
-  'P02': 'Entrevista',
-  'P03': 'Preparación/Inyección',
-  'P04': 'Adquisición',
-  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
-  'P06': 'Para informar',
-  'P07': 'Terminado (con informe)',
-  'P08': 'Terminado (sin informe)',
-  'P09': 'Cancelado'
 };
 
-// Reports flow states:
-export const reports_flow_states = {
-  'R01': 'Informe borrador',
-  'R02': 'Informe firmado',
-  'R03': 'Informe autenticado',
-  'R04': 'Para eliminar'
-}
+// Private health Lang:
+export const privateHealthLang = {
+  'ES' : {
+    'diabetes'                : 'Diabetes',
+    'hypertension'            : 'Hipertensión',
+    'epoc'                    : 'EPOC',
+    'smoking'                 : 'Tabaquismo',
+    'malnutrition'            : 'Desnutrición',
+    'obesity'                 : 'Obesidad',
+    'asthma'                  : 'Asma',
+    'pregnancy'               : 'Embarazo',
+    'claustrophobia'          : 'Claustrofobia',
+    'renal_insufficiency'     : 'Insuficiencia renal',
+    'heart_failure'           : 'Insuficiencia cardíaca',
+    'ischemic_heart_disease'  : 'Cardiopatía isquémica',
+    'valvulopathy'            : 'Valvulopatía',
+    'arrhythmia'              : 'Arritmia',
+    'hiv'                     : 'HIV',
+    'cancer'                  : 'Cáncer',
+    'dementia'                : 'Demencia',
+    'hyperthyroidism'         : 'Hipertiroidismo',
+    'hypothyroidism'          : 'Hipotiroidismo',
+    'other'                   : 'Otro antecedente/patología',
+
+    //Medication and allergies:
+    'medication'              : 'Medicación',
+    'allergies'               : 'Alergias',
+
+    //Implants:
+    'implants': {
+      'cochlear_implant'      : 'Implante coclear',
+      'cardiac_stent'         : 'Stent cardíaco',
+      'metal_prostheses'      : 'Prótesis metálicas',
+      'metal_shards'          : 'Esquirlas metálicas',
+      'pacemaker'             : 'Marcapasos',
+      'other'                 : 'Otro tipo de implante'
+    },
+
+    //COVID-19:
+    'covid19': {
+      'had_covid'             : 'Tuvo COVID-19',
+      'vaccinated'            : 'Posee vacunación contra COVID-19',
+      'details'               : 'Detalles (Ej. tipo de dosis Sinovac, Phizer).',
+    }
+  }
+};
 
 // Default CKEditor configuration:
 export const CKEditorConfig = {

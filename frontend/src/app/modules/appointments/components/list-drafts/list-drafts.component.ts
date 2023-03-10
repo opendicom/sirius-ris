@@ -37,6 +37,7 @@ export class ListDraftsComponent implements OnInit {
     'documents',
     'names',
     'surnames',
+    'patient_age',
     'details',
     'urgency'
   ];

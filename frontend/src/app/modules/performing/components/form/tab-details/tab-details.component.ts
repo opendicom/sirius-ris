@@ -9,7 +9,12 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
-import { app_setting, inpatient_types, CKEditorConfig } from '@env/environment';            // Enviroments
+import {                                                                                    // Enviroments
+  app_setting,
+  inpatient_types,
+  privateHealthLang,
+  CKEditorConfig
+} from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -20,8 +25,9 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class TabDetailsComponent implements OnInit {
   //Set component properties:
-  public settings             : any = app_setting;
-  public inpatient_types      : any = inpatient_types;
+  public settings           : any = app_setting;
+  public inpatient_types    : any = inpatient_types;
+  public privateHealthLang  : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;

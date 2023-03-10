@@ -13,16 +13,23 @@ const subSchemaFindings = new mongoose.Schema({
 },
 { _id : false });
 
+//Define Authenticated Sub-Schema:
+const subSchemaAuthenticated = new mongoose.Schema({
+    datetime:               { type: Date, required: true },
+    fk_user:                { type: mongoose.ObjectId, required: true }
+},
+{ _id : false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_performing:          { type: mongoose.ObjectId, required: true },
-    flow_state:             { type: String, required: true },
     clinical_info:          { type: String, required: true },
     procedure_description:  { type: String, required: true },
     findings:               { type: [subSchemaFindings] },
     summary:                { type: String },
     medical_signatures:     { type: [mongoose.ObjectId] },
-    pathologies:            { type: [mongoose.ObjectId] }
+    pathologies:            { type: [mongoose.ObjectId] },
+    authenticated:          { type: subSchemaAuthenticated }
 },
 { timestamps: true },
 { versionKey: false });
@@ -48,11 +55,6 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro fk_performing NO es un ID MongoDB válido.'),
-
-    body('flow_state')
-        .trim()
-        .isLength({ min: 3, max: 3 })
-        .withMessage('El parametro flow_state ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
 
     body('clinical_info')
         .trim()
@@ -107,6 +109,24 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage('El parametro pathologies NO es un ID MongoDB válido.'),
+
+    //----------------------------------------------------------------------------------------------------------------//
+    // AUTHENTICATED:
+    //----------------------------------------------------------------------------------------------------------------//
+    body('authenticated').optional(),
+
+    body('authenticated.datetime')
+        .if(body('authenticated').exists())   // Check if parent exists.
+        .trim()
+        .toDate()
+        .withMessage('El parametro authenticated.datetime es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
+
+    body('fk_user')
+        .if(body('authenticated').exists())   // Check if parent exists.
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_user NO es un ID MongoDB válido.')
+    //----------------------------------------------------------------------------------------------------------------//
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

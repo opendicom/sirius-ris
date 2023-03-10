@@ -1027,7 +1027,7 @@ export class SharedFunctionsService {
     //Structure today date:
     const year   = today.getFullYear();
     const month  = today.toLocaleString("es-AR", { month: "2-digit" });
-    const day    = today.toLocaleString("es-AR", { day: "2-digit" })
+    const day    = today.toLocaleString("es-AR", { day: "2-digit" });
     const hours    = this.addZero(today.getHours());
     const minutes  = this.addZero(today.getUTCMinutes());
 
@@ -1243,6 +1243,60 @@ export class SharedFunctionsService {
 		
     //Return calculated dose:
     return numberDose.toFixed(2)
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CALCULATE AGE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  calculateAge(birth_date: any, moment_date: string = ''): string{
+    //Format birth date to Date:
+    birth_date = new Date(birth_date);
+
+    //Structure birth date:
+    const year   = birth_date.getFullYear();
+    const month  = birth_date.toLocaleString("es-AR", { month: "2-digit" });
+    const day    = birth_date.toLocaleString("es-AR", { day: "2-digit" });
+
+    //Initializate today date:
+    let today = new Date();
+
+    //Check moment date to set today date:
+    if(moment_date !== '' || moment_date !== undefined || moment_date !== null){
+      today = new Date(moment_date);
+    }
+
+    //Calculate age (in years):
+    let age = today.getFullYear() - year;
+    if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)){
+      age--;
+    }
+    
+    //Return calculated age:
+    //In case the calculated age is less than one year:
+    if(age <= 0){
+      //Calculate age (in months):
+      let months_age = parseInt(today.toLocaleString("es-AR", { month: "2-digit" }), 10) - parseInt(month, 10);
+
+      //Check months:
+      if(months_age <= 0){
+        //Set age (in days):
+        return parseInt(today.toLocaleString("es-AR", { day: "2-digit" }), 10) + ' días';
+
+      } else if(months_age == 1) {
+        return months_age + ' mes';
+
+      } else {
+        return months_age + ' meses';
+      }
+      
+    } else if(age == 1) {
+      return age + ' año';
+
+    } else {
+      return age + ' años';
+    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

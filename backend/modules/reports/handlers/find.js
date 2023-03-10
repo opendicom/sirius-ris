@@ -172,6 +172,28 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$patient.person", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
+        //------------------------------------------------------------------------------------------------------------//
+        // PERFORMING -> AUTHENTICATED USER:
+        //------------------------------------------------------------------------------------------------------------//
+        //Authenticated user (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'authenticated.fk_user',
+            foreignField: '_id',
+            as: 'authenticated.user',
+        }},
+        { $unwind: { path: "$authenticated.user", preserveNullAndEmptyArrays: true } },
+
+        //Authenticated user -> Person (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'authenticated.user.fk_person',
+            foreignField: '_id',
+            as: 'authenticated.user.person',
+        }},
+        { $unwind: { path: "$authenticated.user.person", preserveNullAndEmptyArrays: true } },
+        //------------------------------------------------------------------------------------------------------------//
+
         //Performing Equipment (Lookup & Unwind):
         { $lookup: {
             from: 'equipments',
@@ -323,6 +345,19 @@ module.exports = async (req, res, currentSchema) => {
             'appointment.reporting.fk_reporting.updatedAt': 0,
             'appointment.reporting.fk_reporting.__v': 0,
 
+            //Authenticated user:
+            'authenticated.fk_user': 0,
+            'authenticated.user.fk_person': 0,
+            'authenticated.user.password': 0,
+            'authenticated.user.permissions': 0,
+            'authenticated.user.settings': 0,
+            'authenticated.user.createdAt': 0,
+            'authenticated.user.updatedAt': 0,
+            'authenticated.user.__v': 0,
+            'authenticated.user.person.createdAt': 0,
+            'authenticated.user.person.updatedAt': 0,
+            'authenticated.user.person.__v': 0,
+
             //Equipment:
             'equipment.createdAt': 0,
             'equipment.updatedAt': 0,
@@ -380,6 +415,8 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'performing.injection.injection_user.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'performing.acquisition.console_technician');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'performing.acquisition.console_technician.person');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'authenticated.user');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'authenticated.user.person');
 
         //Set condition:
         const condition = await moduleServices.setCondition(filter, regex);

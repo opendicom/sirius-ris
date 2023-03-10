@@ -15,6 +15,7 @@ import {                                                                        
   document_types,
   gender_types,
   inpatient_types,
+  privateHealthLang,
   CKEditorConfig
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
@@ -27,11 +28,12 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormInsertComponent implements OnInit {
   //Set component properties:
-  public settings         : any = app_setting;
-  public country_codes    : any = ISO_3166;
-  public document_types   : any = document_types;
-  public gender_types     : any = gender_types;
-  public inpatient_types  : any = inpatient_types;
+  public settings           : any = app_setting;
+  public country_codes      : any = ISO_3166;
+  public document_types     : any = document_types;
+  public gender_types       : any = gender_types;
+  public inpatient_types    : any = inpatient_types;
+  public privateHealthLang  : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
