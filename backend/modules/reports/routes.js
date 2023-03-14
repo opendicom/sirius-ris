@@ -94,6 +94,18 @@ router.post(
         moduleServices._delete(req, res, reports);
     }
 );
+
+//AUTHENTICATE:
+router.post(
+    '/authenticate',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    //reports.Validator, //Validate inside save handler.
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, reports, 'insert');
+    }
+);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

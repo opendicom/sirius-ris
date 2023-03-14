@@ -263,8 +263,9 @@ module.exports = async (req, res, currentSchema) => {
         //------------------------------------------------------------------------------------------------------------//
         { $project: {
             //Self:
-            'createdAt': 0,
-            'updatedAt': 0,
+            // In reports createdAt and updatedAt are required by default.
+            //'createdAt': 0, 
+            //'updatedAt': 0,
             '__v': 0,
 
             //Performing:

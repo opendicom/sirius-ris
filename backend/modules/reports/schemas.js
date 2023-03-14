@@ -29,7 +29,7 @@ const Schema = new mongoose.Schema({
     summary:                { type: String },
     medical_signatures:     { type: [mongoose.ObjectId] },
     pathologies:            { type: [mongoose.ObjectId] },
-    authenticated:          { type: subSchemaAuthenticated }
+    //authenticated:          { type: subSchemaAuthenticated }   //Not required in request, set on authenticate URL.
 },
 { timestamps: true },
 { versionKey: false });
@@ -113,19 +113,22 @@ const Validator = [
     //----------------------------------------------------------------------------------------------------------------//
     // AUTHENTICATED:
     //----------------------------------------------------------------------------------------------------------------//
-    body('authenticated').optional(),
-
+    //body('authenticated').optional(),
+    /*
     body('authenticated.datetime')
         .if(body('authenticated').exists())   // Check if parent exists.
+        .not()
+        .isEmpty()
         .trim()
         .toDate()
         .withMessage('El parametro authenticated.datetime es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
 
-    body('fk_user')
+    body('authenticated.fk_user')
         .if(body('authenticated').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_user NO es un ID MongoDB válido.')
+        .withMessage('El parametro authenticated.fk_user NO es un ID MongoDB válido.')
+    */
     //----------------------------------------------------------------------------------------------------------------//
 ];
 //--------------------------------------------------------------------------------------------------------------------//

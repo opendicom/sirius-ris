@@ -3907,6 +3907,115 @@ async function setPerformingDate(fk_appointment, checking_time){
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
+
+//--------------------------------------------------------------------------------------------------------------------//
+// PERFORMING FLOW STATES CONTROLLER:
+//--------------------------------------------------------------------------------------------------------------------//
+async function performingFSController(req, operation){
+    //Initialize result:
+    let result = {
+        'success' : false,
+        'message' : 'La realización del estudio no se encuentra en estado para poder ser informada.'
+    };
+
+    //Import performing Schema:
+    const performing = require('./performing/schemas');
+
+    //Switch by operation:
+    switch(operation){
+        //Insert report:
+        case 'insert_report':
+            //Set amend value from the request:
+            const amend = mainServices.stringToBoolean(req.body.amend);
+
+            //Find performing by _id:
+            await performing.Model.findById(req.body.fk_performing, { flow_state: 1 })
+            .exec()
+            .then(async (performingData) => {
+                //Check for results (not empty):
+                if(performingData){
+                    //Convert Mongoose object to Javascript object:
+                    performingData = performingData.toObject();
+
+                    switch(performingData.flow_state){
+                        //P06 (Para informar | First insert):
+                        case 'P06':
+                            //Update performing flow state to P07 (Informe borrador):
+                            result = await setPerformingFS(req.body.fk_performing, 'P07');
+                            break;
+
+                        //P09 (Terminado (con informe) | Amend insert):
+                        case 'P09':
+                            //Check if is an amend:
+                            if(amend !== undefined && amend === true){
+                                //Update performing flow state to P07 (Informe borrador):
+                                result = await setPerformingFS(req.body.fk_performing, 'P07');
+                            }
+                            break;
+                    }
+                }
+            })
+            .catch((err) => {
+                //Set result - Find performing error:
+                result = {
+                    'success' : false,
+                    'message' : currentLang.db.query_error + ' ' + err
+                };
+            });
+
+            break;
+
+        case 'update_report':
+            break;
+    }
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET PERFORMING FLOW STATE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setPerformingFS(_id, flow_state){
+    //Import performing Schema:
+    const performing = require('./performing/schemas');
+
+    //Initialize result:
+    let result = {};
+
+    //Set update data:
+    const updateData = { $set: { 'flow_state': flow_state }};
+
+    //Update flow state:
+    await performing.Model.findOneAndUpdate({ _id: _id }, updateData, { new: true })
+    .then(async (data) => {
+        //Check if have results:
+        if(data) {
+            //Set success true result:
+            result = { 'success' : true };
+        } else {
+            //Set result - Dont match (empty result):
+            result = {
+                'success' : false,
+                'message' : currentLang.db.id_no_results
+            };
+        }
+
+    })
+    .catch((err) => {
+        //Set result - Update performing error:
+        result = {
+            'success' : false,
+            'message' : currentLang.db.update_error + ' ' + err
+        };
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
 //--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
@@ -3938,6 +4047,7 @@ module.exports = {
     setStudyIUID,
     getCompleteDomain,
     isPET,
-    setPerformingDate
+    setPerformingDate,
+    performingFSController
 };
 //--------------------------------------------------------------------------------------------------------------------//
