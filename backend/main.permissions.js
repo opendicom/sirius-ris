@@ -24,7 +24,8 @@ const rolePermissions = {
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
         performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
-        reports                 : ['find', 'findOne', 'insert', 'update', 'delete'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
+        signatures              : ['find', 'findOne', 'insert', 'delete'],
     },
 
     //Administrador:
@@ -48,6 +49,7 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne', 'insert', 'update'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne', 'insert', 'update'],
+        signatures              : ['find', 'findOne'],
     },
 
     //Médico:
@@ -71,6 +73,7 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update'],
+        signatures              : ['find', 'findOne', 'insert'],
     },
 
     //Coordinador:
@@ -94,6 +97,7 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : [],
         reports                 : [],
+        signatures              : [],
     },
 
     //Recepcionista:
@@ -117,6 +121,7 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : [],
+        signatures              : [],
     },
 
     //Paciente:
@@ -139,6 +144,7 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne'],
     }
 }
 
@@ -170,6 +176,18 @@ const concessionPermissions = {
         appointments            : ['find', 'findOne'],
         mwl                     : ['insert']
     }
+
+    // 5 : Gestión de estudios:
+    // 6 : Gestión de informes:
+    // 7 : Firmar informes:
+    // 8 : Autenticar informes:
+    // 9 : Búsquedas avanzadas:
+    // 10 : Listados de facturación:
+    // 11 : Estadísticas generales:
+    // 12 : Estadísticas médicas:
+    // 13 : Estadísticas del personal:
+    // 15 : Eliminación física de archivos:
+    // 16 : Supervisar citas en curso:
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

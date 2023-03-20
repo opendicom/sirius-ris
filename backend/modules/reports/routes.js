@@ -14,8 +14,10 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 const mainMiddlewares = require('../../main.middlewares');
 
 //Import Handlers:
-const findHandler   = require('./handlers/find');
-const saveHandler   = require('./handlers/save');
+const findHandler           = require('./handlers/find');
+const saveHandler           = require('./handlers/save');
+const authenticateHandler   = require('./handlers/authenticate');
+const setPathologiesHandler = require('./handlers/set.pathologies');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -100,10 +102,20 @@ router.post(
     '/authenticate',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
-    //reports.Validator, //Validate inside save handler.
     (req, res) => {
         //Send to handler:
-        saveHandler(req, res, reports, 'insert');
+        authenticateHandler(req, res, reports);
+    }
+);
+
+//SET PATHOLOGIES:
+router.post(
+    '/setPathologies',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    (req, res) => {
+        //Send to handler:
+        setPathologiesHandler(req, res, reports);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

@@ -34,6 +34,7 @@ module.exports = function() {
     const pathologiesRoutes             = require('./modules/pathologies/routes');
     const performingRoutes              = require('./modules/performing/routes');
     const reportsRoutes                 = require('./modules/reports/routes');
+    const signaturesRoutes              = require('./modules/signatures/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -146,6 +147,7 @@ module.exports = function() {
     app.use('/pathologies',             pathologiesRoutes);
     app.use('/performing',              performingRoutes);
     app.use('/reports',                 reportsRoutes);
+    app.use('/signatures',              signaturesRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });

@@ -63,17 +63,20 @@ module.exports = function(language){
             'exclude_code'                  : 'Domain condition was avoided from RABC by exclusion policy (rabc_exclude_code was applied)'
         },
         ris: {
-            'operation_not_allowed'     : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
-            'empty_domain_JWT'          : 'To check for a domain reference, the filter parameter can NOT be empty.',
-            'duplicated_person'         : 'The person you are trying to insert already exists in the database.',
-            'same_document'             : 'Unable to update entered information. There is already another person with the same document in the database.',
-            'unavailable_slot'          : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
-            'wrong_date_format_slot'    : 'The format of the start and/or end datetime is wrong.',
-            'batch_processed'           : 'Batch processed successfully.',
-            'only_urgency_slot'         : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
-            'study_iuid_error'          : 'There was some problem trying to generate the Study IUID: ',
-            'mwl_success'               : 'Submitted to MWL successfully.',
-            'mwl_error'                 : 'An error occurred while sending an element to the MWL (MLLP).',
+            'operation_not_allowed'         : 'Operation NOT allowed, the domain indicated from the JWT does NOT allow the desired operation.',
+            'empty_domain_JWT'              : 'To check for a domain reference, the filter parameter can NOT be empty.',
+            'duplicated_person'             : 'The person you are trying to insert already exists in the database.',
+            'same_document'                 : 'Unable to update entered information. There is already another person with the same document in the database.',
+            'unavailable_slot'              : 'The indicated start and/or end is not available in the slot. Used by the appointment _id: ',
+            'wrong_date_format_slot'        : 'The format of the start and/or end datetime is wrong.',
+            'batch_processed'               : 'Batch processed successfully.',
+            'only_urgency_slot'             : 'The appointment cannot be coordinated on an urgency slot unless it is an urgencies.',
+            'study_iuid_error'              : 'There was some problem trying to generate the Study IUID: ',
+            'mwl_success'                   : 'Submitted to MWL successfully.',
+            'mwl_error'                     : 'An error occurred while sending an element to the MWL (MLLP).',
+            'wrong_performing_flow_state'   : 'The performing of the study is not in a flow state to be informed.',
+            'wrong_report_flow_state'       : 'The performing of the study is not in a flow state to be signed.',
+            'wrong_report_id'               : 'No report found with the specified _id.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -154,17 +157,20 @@ module.exports = function(language){
             lang.rabc.exclude_code                  = 'La condicion de dominio fué evitada del RABC por politica de exclusión (se aplicó rabc_exclude_code).';
 
             //RIS:
-            lang.ris.operation_not_allowed      = 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.';
-            lang.ris.empty_domain_JWT           = 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.';
-            lang.ris.duplicated_person          = 'La persona que está intentando ingresar ya existe en la base de datos.';
-            lang.ris.same_document              = 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.';
-            lang.ris.unavailable_slot           = 'El inicio y/o fin indicado no se encuentra disponible en el turno. Utilizado por la cita _id: ';
-            lang.ris.wrong_date_format_slot     = 'El formato de la fecha de inicio y/o fin NO es correcto.';
-            lang.ris.batch_processed            = 'Lote procesado correctamente.';
-            lang.ris.only_urgency_slot          = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
-            lang.ris.study_iuid_error           = 'Hubo algún problema al intentar generar el Study IUID: ';
-            lang.ris.mwl_success                = 'Enviado a la MWL de forma exitosa.'
-            lang.ris.mwl_error                  = 'Ha ocurrido un error al envíar un elemento a la MWL (MLLP).';
+            lang.ris.operation_not_allowed          = 'Operación NO permitida, el dominio indicado desde el JWT NO permite la operación deseada.';
+            lang.ris.empty_domain_JWT               = 'Para chequear una referencia de dominio, el parametro filter NO puede ser vacío.';
+            lang.ris.duplicated_person              = 'La persona que está intentando ingresar ya existe en la base de datos.';
+            lang.ris.same_document                  = 'No se puede actualizar la información ingresada. Ya existe otra persona con el mismo documento en la base de datos.';
+            lang.ris.unavailable_slot               = 'El inicio y/o fin indicado no se encuentra disponible en el turno. Utilizado por la cita _id: ';
+            lang.ris.wrong_date_format_slot         = 'El formato de la fecha de inicio y/o fin NO es correcto.';
+            lang.ris.batch_processed                = 'Lote procesado correctamente.';
+            lang.ris.only_urgency_slot              = 'No se puede coordinar la cita sobre un turno de urgencias a menos que la misma sea una urgencia.';
+            lang.ris.study_iuid_error               = 'Hubo algún problema al intentar generar el Study IUID: ';
+            lang.ris.mwl_success                    = 'Enviado a la MWL de forma exitosa.'
+            lang.ris.mwl_error                      = 'Ha ocurrido un error al envíar un elemento a la MWL (MLLP).';
+            lang.ris.wrong_performing_flow_state    = 'La realización del estudio no se encuentra en estado para poder ser informada.';
+            lang.ris.wrong_report_flow_state        = 'La realización del estudio no se encuentra en estado para poder ser firmada.';
+            lang.ris.wrong_report_id                = 'No se encontró ningún informe con el _id especificado.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

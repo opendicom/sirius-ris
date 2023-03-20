@@ -6,6 +6,7 @@ const mongoose              = require('mongoose');                          // M
 const moment                = require('moment');                            // Moment
 const ObjectId              = require('mongoose').Types.ObjectId;           // To check ObjectId Type
 const { validationResult }  = require('express-validator');                 // Express-validator Middleware
+const SHA256                = require("crypto-js/sha256");
 
 //Import app modules:
 const mainServices  = require('../main.services');                          // Main services
@@ -177,7 +178,7 @@ async function findOne(req, res, currentSchema){
 // INSERT:
 // Creates a new record in the database.
 //--------------------------------------------------------------------------------------------------------------------//
-async function insert(req, res, currentSchema, referencedElements = false, successResponse = true){
+async function insert(req, res, currentSchema, referencedElements = false, successResponse = true, callback = () => {}){
     //Get validation result:
     const errors = validationResult(req);
 
@@ -232,6 +233,9 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
 
                     //Set header sent property to check if header have already been sent:
                     res.headerSent = true;
+
+                    //Excecute callback with result:
+                    await callback(data);
                 }
             })
             .catch((err) => {
@@ -254,7 +258,7 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
 // Validate against the current model and if positive, updates an existing record in the database according to the
 // ID and specified parameters.
 //--------------------------------------------------------------------------------------------------------------------//
-async function update(req, res, currentSchema, referencedElements = false){
+async function update(req, res, currentSchema, referencedElements = false, callback = () => {}){
     //Validate ID request:
     if(!mainServices.validateRequestID(req.body._id, res)) return;
 
@@ -332,6 +336,9 @@ async function update(req, res, currentSchema, referencedElements = false){
                         blocked_attributes: req.validatedResult.blocked,
                         blocked_unset: req.validatedResult.blocked_unset
                     });
+
+                    //Excecute callback with result:
+                    await callback(data);
                 } else {
                     //Dont match (empty result):
                     res.status(200).send({ success: true, message: currentLang.db.id_no_results });
@@ -954,7 +961,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments');
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('performing');
-            //affectedCollections.push('signatures');
+            affectedCollections.push('signatures');
 
         case 'people':
             affectedCollections.push('users');
@@ -1036,6 +1043,10 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         case 'reports':
             //Nothing at the moment.
             break;
+
+        case 'signatures':
+            affectedCollections.push('reports');
+            break;
     }
 
     //Import affected schemas:
@@ -1059,6 +1070,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     let injection_condition = {};
     let console_condition = {};
     let extra_condition = {};
+    let medical_signatures_condition = {};
 
     //Execute queries into affected schemas (await foreach):
     await Promise.all(affectedCollections.map(async (value, key) => {
@@ -1169,6 +1181,15 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
             //Add extra contition in OR condition:
             filter.$or.push(extra_condition);
+        }
+
+        //Check if contain medical signatures property:
+        if(ForeignKeys.MSignatures){
+            //Set medical signatures condition:
+            medical_signatures_condition[ForeignKeys.MSignatures] = _id;
+
+            //Add medical signatures contition in OR condition:
+            filter.$or.push(medical_signatures_condition);
         }
 
         //Execute current query:
@@ -2018,6 +2039,16 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                         }
                     });
                 }
+
+                return filter;
+            });
+            break;
+        
+        case 'signatures':
+            filter = adjustCondition(filter, (filter) => {
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
 
                 return filter;
             });
@@ -3909,68 +3940,142 @@ async function setPerformingDate(fk_appointment, checking_time){
 
 
 //--------------------------------------------------------------------------------------------------------------------//
-// PERFORMING FLOW STATES CONTROLLER:
+// REPORTS SAVE CONTROLLER:
 //--------------------------------------------------------------------------------------------------------------------//
-async function performingFSController(req, operation){
+async function reportsSaveController(operation, handlerObj){
     //Initialize result:
     let result = {
         'success' : false,
-        'message' : 'La realización del estudio no se encuentra en estado para poder ser informada.'
+        'message' : handlerObj.error_message
     };
-
-    //Import performing Schema:
-    const performing = require('./performing/schemas');
 
     //Switch by operation:
     switch(operation){
-        //Insert report:
+        // Insert report:
+        // handlerObj = { fk_performing, amend, error_message };
         case 'insert_report':
-            //Set amend value from the request:
-            const amend = mainServices.stringToBoolean(req.body.amend);
-
+            //Format amend to boolean:
+            if(handlerObj.amend === undefined || handlerObj.amend === null){
+                handlerObj.amend = false;
+            } else {
+                handlerObj.amend = mainServices.stringToBoolean(handlerObj.amend);
+            }
+            
             //Find performing by _id:
-            await performing.Model.findById(req.body.fk_performing, { flow_state: 1 })
-            .exec()
-            .then(async (performingData) => {
+            await findPerforming(handlerObj.fk_performing, { flow_state: 1 }, async (performingData) => {
                 //Check for results (not empty):
                 if(performingData){
                     //Convert Mongoose object to Javascript object:
                     performingData = performingData.toObject();
 
+                    //Switch by flow state:
                     switch(performingData.flow_state){
                         //P06 (Para informar | First insert):
                         case 'P06':
                             //Update performing flow state to P07 (Informe borrador):
-                            result = await setPerformingFS(req.body.fk_performing, 'P07');
+                            result = await setPerformingFS(handlerObj.fk_performing, 'P07');
                             break;
 
                         //P09 (Terminado (con informe) | Amend insert):
                         case 'P09':
                             //Check if is an amend:
-                            if(amend !== undefined && amend === true){
+                            if(handlerObj.amend !== undefined && handlerObj.amend === true){
                                 //Update performing flow state to P07 (Informe borrador):
-                                result = await setPerformingFS(req.body.fk_performing, 'P07');
+                                result = await setPerformingFS(handlerObj.fk_performing, 'P07');
                             }
                             break;
                     }
                 }
-            })
-            .catch((err) => {
-                //Set result - Find performing error:
-                result = {
-                    'success' : false,
-                    'message' : currentLang.db.query_error + ' ' + err
-                };
             });
-
             break;
 
+        // Update report:
+        // handlerObj = { fk_performing, error_message };
         case 'update_report':
+            //Find performing by _id:
+            await findPerforming(handlerObj.fk_performing, { flow_state: 1 }, async (performingData) => {
+                //Check for results (not empty):
+                if(performingData){
+                    //Convert Mongoose object to Javascript object:
+                    performingData = performingData.toObject();
+
+                    //Switch by flow state:
+                    switch(performingData.flow_state){
+                        //P07 (Informe borrador informar | Normal update):
+                        case 'P07':
+                            //Set success true result:
+                            result = { 'success' : true };
+                            break;
+
+                        //P08 (Informe firmado | Update and destroy signatures):
+                        case 'P08':
+                            //Update performing flow state to P07 (Informe borrador):
+                            result = await setPerformingFS(handlerObj.fk_performing, 'P07');
+                            break;
+                    }
+                }
+            });
+            break;
+
+        // Sign report:
+        // handlerObj = { fk_performing, error_message };
+        case 'sign_report':
+            //Find performing by _id:
+            await findPerforming(handlerObj.fk_performing, { flow_state: 1 }, async (performingData) => {
+                //Check for results (not empty):
+                if(performingData){
+                    //Convert Mongoose object to Javascript object:
+                    performingData = performingData.toObject();
+
+                    //Switch by flow state:
+                    switch(performingData.flow_state){
+                        //P07 (Informe borrador | First sign):
+                        case 'P07':
+                            //Update performing flow state to P08 (Informe firmado):
+                            result = await setPerformingFS(handlerObj.fk_performing, 'P08');
+                            break;
+
+                        //P08 (Informe firmado | Only add signature in the save handler):
+                        case 'P08':
+                            //Set success true result:
+                            result = { 'success' : true };
+                            break;
+                    }
+                }
+            });
+            break;
+
+        // Authenticate report:
+        case 'authenticate_report':
             break;
     }
 
     //Return result:
     return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// FIND PERFORMING:
+//--------------------------------------------------------------------------------------------------------------------//
+async function findPerforming(fk_performing, proj, callback){
+    //Import performing Schema:
+    const performing = require('./performing/schemas');
+
+    //Find performing by _id:
+    await performing.Model.findById(fk_performing, proj)
+    .exec()
+    .then(async (performingData) => {
+        //Execute callback with performing data:
+        await callback(performingData);
+    })
+    .catch((err) => {
+        //Set result - Find performing error:
+        result = {
+            'success' : false,
+            'message' : currentLang.db.query_error + ' ' + err
+        };
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -4017,6 +4122,172 @@ async function setPerformingFS(_id, flow_state){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// ADD SIGN TO REPORT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function addSignatureToReport(reportData, signature_id){
+    //Import reports Schema:
+    const reports = require('./reports/schemas');
+
+    //Get saved signatures:
+    let medical_signatures = [...reportData.medical_signatures];
+
+    //Add current signature to saved signatures:
+    medical_signatures.push(signature_id);
+    
+    //Set update data:
+    const updateData = { $set: { 'medical_signatures': medical_signatures }};
+
+    //Update medical signatures in report:
+    await reports.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
+    .then(async (data) => {
+        //Send DEBUG Message:
+        mainServices.sendConsoleMessage('DEBUG', '\ninsert [sign report]: ' + JSON.stringify({ report_id: reportData._id, user_id: signature_id }));
+    })
+    .catch((err) => {
+        //Send ERROR Message:
+        mainServices.sendConsoleMessage('ERROR', '\ninsert [sign report]: Failed, ' + JSON.stringify({ report_id: reportData._id, user_id: signature_id }), err);
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// REMOVE ALL SIGNATURES FROM REPORT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function removeAllSignaturesFromReport(reportData){
+    //Import reports Schema:
+    const reports       = require('./reports/schemas');
+    const signatures    = require('./signatures/schemas');
+
+    //Set update data:
+    const updateData = { $set: { 'medical_signatures': [] }};
+
+    //Update medical signatures in report:
+    await reports.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
+    .then(async (data) => {
+
+        //Delete all referenced signatures:
+        await signatures.Model.deleteMany({ _id: { '$in': reportData.medical_signatures }})
+        .exec()
+        .then((data) => {
+            if(data) {
+                //Send DEBUG Message:
+                mainServices.sendConsoleMessage('DEBUG', '\nupdate [remove signatures from report]: ' + JSON.stringify({ report_id: reportData._id }));
+            } else {
+                //Send ERROR Message:
+                mainServices.sendConsoleMessage('ERROR', '\ndelete [delete signature]: Failed, ' + JSON.stringify({ report_id: reportData._id }), currentLang.db.delete_id_no_results);
+            }
+        })
+        .catch((err) => {
+            //Send ERROR Message:
+            mainServices.sendConsoleMessage('ERROR', '\ndelete [delete signature]: Failed, ' + JSON.stringify({ report_id: reportData._id }), err);
+        });
+        
+    })
+    .catch((err) => {
+        //Send ERROR Message:
+        mainServices.sendConsoleMessage('ERROR', '\nupdate [remove signatures from report]: Failed, ' + JSON.stringify({ report_id: reportData._id }), err);
+    });
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK SHA2 REPORT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkSHA2Report(sha2_report, medical_signatures){
+    //Import signatures Schema:
+    const signatures = require('./signatures/schemas');
+
+    //Initializate result:
+    let result = { success: true };
+
+    //Find signatures by _id:
+    await signatures.Model.find({ _id: { '$in': medical_signatures }})
+    .exec()
+    .then(async (signaturesData) => {
+        //Check if have results:
+        if(signaturesData){
+            //Check found signatures (await foreach):
+            await Promise.all(Object.keys(signaturesData).map((key) => {
+                //Check sha2:
+                if(signaturesData[key].sha2 !== sha2_report){
+                    result = {
+                        success: false,
+                        message: 'No coincide el hash de integridad (SHA-2) de al menos una de las firmas.'
+                    };
+                }
+            }));
+            
+        } else {
+            //No data (empty result):
+            result = {
+                success: false,
+                message: 'No se hallaron las firmas referenciadas al informe.'
+            };
+        }
+    })
+    .catch((err) => {
+        //Send DB error:
+        result = {
+            success: false,
+            message: 'Error durante la consulta a la base de datos: ' + err
+        };
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET SHA2 REPORT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setSHA2Report(report_id){
+    //Import reports Schema:
+    const reports = require('./reports/schemas');
+
+    //Initializate result:
+    let result = { success: false, message: undefined };
+
+    //Find referenced report:
+    await reports.Model.findById(report_id)
+    .exec()
+    .then(async (reportData) => {
+        //Check if have results:
+        if(reportData){
+            //Create compare report:
+            //Remove medical_signatures and updatedAt from report to enable multiple signatures.
+            //Also remove pathologies because can be added in the future.
+            const compare_report = {
+                fk_performing           : reportData.fk_performing,
+                clinical_info           : reportData.clinical_info,
+                procedure_description   : reportData.procedure_description,
+                findings                : reportData.findings,
+                summary                 : reportData.summary,
+                createdAt               : reportData.createdAt
+            };
+
+            //Generate SHA-2
+            const sha2_report = await SHA256(compare_report).toString();
+
+            //Set result:
+            result = { success: true, sha2: sha2_report, report_data: reportData };
+
+        } else {
+            //No data (empty result):
+            result = { success: false, message: currentLang.ris.wrong_report_id };
+        }
+    })
+    .catch((err) => {
+        //Query db error:
+        result = { success: false, message: currentLang.db.query_error + ' - ' + err};
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -4048,6 +4319,10 @@ module.exports = {
     getCompleteDomain,
     isPET,
     setPerformingDate,
-    performingFSController
+    reportsSaveController,
+    addSignatureToReport,
+    removeAllSignaturesFromReport,
+    checkSHA2Report,
+    setSHA2Report
 };
 //--------------------------------------------------------------------------------------------------------------------//

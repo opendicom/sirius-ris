@@ -15,8 +15,8 @@ const subSchemaFindings = new mongoose.Schema({
 
 //Define Authenticated Sub-Schema:
 const subSchemaAuthenticated = new mongoose.Schema({
-    datetime:               { type: Date, required: true },
-    fk_user:                { type: mongoose.ObjectId, required: true }
+    datetime:               { type: Date },                 //Not required in the main request, set on authenticate handler.
+    fk_user:                { type: mongoose.ObjectId }     //Not required in the main request, set on authenticate handler.
 },
 { _id : false });
 
@@ -27,9 +27,9 @@ const Schema = new mongoose.Schema({
     procedure_description:  { type: String, required: true },
     findings:               { type: [subSchemaFindings] },
     summary:                { type: String },
-    medical_signatures:     { type: [mongoose.ObjectId] },
-    pathologies:            { type: [mongoose.ObjectId] },
-    //authenticated:          { type: subSchemaAuthenticated }   //Not required in request, set on authenticate URL.
+    medical_signatures:     { type: [mongoose.ObjectId] },      //Not required in the main request, managed from reports and signatures handlers.
+    pathologies:            { type: [mongoose.ObjectId] },      //Not required in the main request, set on set pathologies handler.
+    authenticated:          { type: subSchemaAuthenticated }    //Not required in the main request, set on authenticate handler.
 },
 { timestamps: true },
 { versionKey: false });
@@ -92,15 +92,7 @@ const Validator = [
         .isLength({ min: 10, max: 10000 })
         .withMessage('El parametro summary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
 
-    body('medical_signatures')
-        .optional()
-        .isArray(),
-
-    body('medical_signatures.*')
-        .trim()
-        .isMongoId()
-        .withMessage('El parametro medical_signatures NO es un ID MongoDB válido.'),
-
+    /*
     body('pathologies')
         .optional()
         .isArray(),
@@ -114,7 +106,6 @@ const Validator = [
     // AUTHENTICATED:
     //----------------------------------------------------------------------------------------------------------------//
     //body('authenticated').optional(),
-    /*
     body('authenticated.datetime')
         .if(body('authenticated').exists())   // Check if parent exists.
         .not()
