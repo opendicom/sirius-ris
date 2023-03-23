@@ -4046,7 +4046,25 @@ async function reportsSaveController(operation, handlerObj){
             break;
 
         // Authenticate report:
+        // handlerObj = { fk_performing, error_message };
         case 'authenticate_report':
+            //Find performing by _id:
+            await findPerforming(handlerObj.fk_performing, { flow_state: 1 }, async (performingData) => {
+                //Check for results (not empty):
+                if(performingData){
+                    //Convert Mongoose object to Javascript object:
+                    performingData = performingData.toObject();
+
+                    //Switch by flow state:
+                    switch(performingData.flow_state){
+                        //P08 (Informe firmado | Add authenticate object in report):
+                        case 'P08':
+                            //Update performing flow state to P09 (Terminado (con informe)):
+                            result = await setPerformingFS(handlerObj.fk_performing, 'P09');
+                            break;
+                    }
+                }
+            });
             break;
     }
 

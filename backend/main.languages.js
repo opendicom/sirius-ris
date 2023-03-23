@@ -77,6 +77,9 @@ module.exports = function(language){
             'wrong_performing_flow_state'   : 'The performing of the study is not in a flow state to be informed.',
             'wrong_report_flow_state'       : 'The performing of the study is not in a flow state to be signed.',
             'wrong_report_id'               : 'No report found with the specified _id.',
+            'report_auth_error'             : 'The performing of the study is not in a flow state to be authenticate.',
+            'report_auth_success'           : 'Report authenticated successfully.',
+            'report_without_signatures'     : 'The report you want to authenticate is not signed.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -171,6 +174,9 @@ module.exports = function(language){
             lang.ris.wrong_performing_flow_state    = 'La realización del estudio no se encuentra en estado para poder ser informada.';
             lang.ris.wrong_report_flow_state        = 'La realización del estudio no se encuentra en estado para poder ser firmada.';
             lang.ris.wrong_report_id                = 'No se encontró ningún informe con el _id especificado.';
+            lang.ris.report_auth_error              = 'La realización del estudio no se encuentra en estado para poder ser autenticada.';
+            lang.ris.report_auth_success            = 'Informe autenticado existosamente.';
+            lang.ris.report_without_signatures      = 'El informe que desea autenitcar no se encuentra firmado.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';
