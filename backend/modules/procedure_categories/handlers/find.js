@@ -31,7 +31,7 @@ module.exports = async (req, res, currentSchema) => {
             as: 'branch',
         }},
 
-        //Procedures lookup:
+        //Procedures lookup [Array]:
         { $lookup: {
             from: 'procedures',
             localField: 'fk_procedures',

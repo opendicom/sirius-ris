@@ -204,11 +204,11 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$consents.clinical_trial", preserveNullAndEmptyArrays: true } },
 
         //Attached files lookup [Array]:
-        { "$lookup": {
-            "from": "files",
-            "localField": "attached_files",
-            "foreignField": "_id",
-            "as": "attached_files"
+        { $lookup: {
+            from: 'files',
+            localField: 'attached_files',
+            foreignField: '_id',
+            as: 'attached_files'
         }},
 
         //------------------------------------------------------------------------------------------------------------//

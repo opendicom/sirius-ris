@@ -48,7 +48,7 @@ const rolePermissions = {
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update'],
         performing              : ['find', 'findOne', 'insert', 'update'],
-        reports                 : ['find', 'findOne', 'insert', 'update'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
     },
 
@@ -72,7 +72,7 @@ const rolePermissions = {
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
-        reports                 : ['find', 'findOne', 'insert', 'update'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert'],
     },
 

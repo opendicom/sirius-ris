@@ -258,6 +258,71 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$performing.acquisition.console_technician.person", preserveNullAndEmptyArrays: true } },
 
         //------------------------------------------------------------------------------------------------------------//
+        // PATHOLOGIES:
+        //------------------------------------------------------------------------------------------------------------//
+        //Pathologies lookup [Array]:
+        { $lookup: {
+            from: 'pathologies',
+            localField: 'pathologies',
+            foreignField: '_id',
+            as: 'pathologies'
+        }},
+        //------------------------------------------------------------------------------------------------------------//
+
+        //------------------------------------------------------------------------------------------------------------//
+        // MEDICAL SIGNATURES:
+        //------------------------------------------------------------------------------------------------------------//
+        //Medical signatures lookup [Array of Objects]:
+        { $lookup: {
+            from: 'signatures',
+            localField: 'medical_signatures',
+            foreignField: '_id',
+            as: 'medical_signatures'
+        }},
+        { $unwind: { path: "$medical_signatures", preserveNullAndEmptyArrays: true } },
+
+        //User signatures lookup (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'medical_signatures.fk_user',
+            foreignField: '_id',
+            as: 'medical_signatures.user',
+        }},
+        { $unwind: { path: "$medical_signatures.user", preserveNullAndEmptyArrays: true } },
+
+        //User signatures -> Person (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'medical_signatures.user.fk_person',
+            foreignField: '_id',
+            as: 'medical_signatures.user.person',
+        }},
+        { $unwind: { path: "$medical_signatures.user.person", preserveNullAndEmptyArrays: true } },
+
+        //Group array of objects:
+        { $group: {
+            //Preserve _id:
+            _id             : '$_id',
+            
+            //Preserve root document:            
+            first: { "$first": "$$ROOT" },
+
+            //Group $lookup result to existing array:
+            medical_signatures: { "$push": "$medical_signatures" },
+        }},
+
+        //Replace root document (Merge objects):
+        { $replaceRoot: {
+            newRoot: {
+                $mergeObjects: [
+                    "$first",
+                    { medical_signatures: "$medical_signatures" }
+                ]
+            }
+        }},
+        //------------------------------------------------------------------------------------------------------------//
+
+        //------------------------------------------------------------------------------------------------------------//
         // REMOVE DUPLICATED VALUES (SET DEFAULT PROJECTION):
         // Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
         //------------------------------------------------------------------------------------------------------------//
@@ -396,7 +461,29 @@ module.exports = async (req, res, currentSchema) => {
             'performing.acquisition.console_technician.__v': 0,
             'performing.acquisition.console_technician.person.createdAt': 0,
             'performing.acquisition.console_technician.person.updatedAt': 0,
-            'performing.acquisition.console_technician.person.__v': 0
+            'performing.acquisition.console_technician.person.__v': 0,
+
+            //Pathologies:
+            'pathologies.createdAt': 0,
+            'pathologies.updatedAt': 0,
+            'pathologies.__v': 0,
+
+            //Medical signatures
+            //'user_signatures.createdAt': 0,
+            'medical_signatures.updatedAt': 0,
+            'medical_signatures.__v': 0,
+
+            //User signatures:
+            'medical_signatures.user.fk_person': 0,
+            'medical_signatures.user.password': 0,
+            'medical_signatures.user.permissions': 0,
+            'medical_signatures.user.settings': 0,
+            'medical_signatures.user.createdAt': 0,
+            'medical_signatures.user.updatedAt': 0,
+            'medical_signatures.user.__v': 0,
+            'medical_signatures.user.person.createdAt': 0,
+            'medical_signatures.user.person.updatedAt': 0,
+            'medical_signatures.user.person.__v': 0
         }}
         //------------------------------------------------------------------------------------------------------------//
     ];    
@@ -418,6 +505,8 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'performing.acquisition.console_technician.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'authenticated.user');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'authenticated.user.person');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'medical_signatures.user');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'medical_signatures.user.person');
 
         //Set condition:
         const condition = await moduleServices.setCondition(filter, regex);

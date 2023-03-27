@@ -2029,7 +2029,6 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
                 //Authenticated:
                 if(filter[asPrefix + 'authenticated.fk_user'] != undefined){ filter[asPrefix + 'authenticated.fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.fk_user']); };
-                if(filter[asPrefix + 'authenticated.user._id'] != undefined){ filter[asPrefix + 'authenticated.user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.user._id']); };
                 if(filter[asPrefix + 'authenticated.datetime'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'authenticated.datetime'], (explicitOperator) => {
                         if(explicitOperator){
@@ -3131,6 +3130,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else {
                             operationResult = false;  /* Operation rejected */
                         }
+                        break;
+
+                    case 'signatures':
+                        // No restrictions here.
+                        // All users can sign as long as they have the concession to do so.
                         break;
 
                     case 'pathologies':

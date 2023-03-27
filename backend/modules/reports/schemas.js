@@ -92,7 +92,6 @@ const Validator = [
         .isLength({ min: 10, max: 10000 })
         .withMessage('El parametro summary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
 
-    /*
     body('pathologies')
         .optional()
         .isArray(),
@@ -100,27 +99,7 @@ const Validator = [
     body('pathologies.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro pathologies NO es un ID MongoDB válido.'),
-
-    //----------------------------------------------------------------------------------------------------------------//
-    // AUTHENTICATED:
-    //----------------------------------------------------------------------------------------------------------------//
-    //body('authenticated').optional(),
-    body('authenticated.datetime')
-        .if(body('authenticated').exists())   // Check if parent exists.
-        .not()
-        .isEmpty()
-        .trim()
-        .toDate()
-        .withMessage('El parametro authenticated.datetime es una fecha y no puede ser vacío [AAAA-MM-DD:HH:MM.000Z].'),
-
-    body('authenticated.fk_user')
-        .if(body('authenticated').exists())   // Check if parent exists.
-        .trim()
-        .isMongoId()
-        .withMessage('El parametro authenticated.fk_user NO es un ID MongoDB válido.')
-    */
-    //----------------------------------------------------------------------------------------------------------------//
+        .withMessage('El parametro pathologies NO es un ID MongoDB válido.')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

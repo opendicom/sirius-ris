@@ -39,7 +39,7 @@ module.exports = async (req, res, currentSchema) => {
             as: 'modality',
         }},
 
-        //Equipments lookup:
+        //Equipments lookup [Array]:
         { $lookup: {
             from: 'equipments',
             localField: 'fk_equipments',

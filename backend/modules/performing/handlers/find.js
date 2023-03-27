@@ -167,11 +167,11 @@ module.exports = async (req, res, currentSchema) => {
         // APPOINTMENT ATTACHED FILES:
         //------------------------------------------------------------------------------------------------------------//
         //Attached files lookup [Array]:
-        { "$lookup": {
-            "from": "files",
-            "localField": "appointment.attached_files",
-            "foreignField": "_id",
-            "as": "appointment.attached_files"
+        { $lookup: {
+            from: 'files',
+            localField: 'appointment.attached_files',
+            foreignField: '_id',
+            as: 'appointment.attached_files'
         }},
         //------------------------------------------------------------------------------------------------------------//
 

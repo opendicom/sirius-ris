@@ -31,7 +31,7 @@ module.exports = async (req, res, currentSchema) => {
             as: 'organization',
         }},
 
-        //Modalities lookup:
+        //Modalities lookup [Array]:
         { $lookup: {
             from: 'modalities',
             localField: 'fk_modalities',
