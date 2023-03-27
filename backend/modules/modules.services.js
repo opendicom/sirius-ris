@@ -976,6 +976,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('files');
             affectedCollections.push('pathologies');
+            affectedCollections.push('signatures');
             break;
 
         case 'branches':
@@ -2047,6 +2048,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
             filter = adjustCondition(filter, (filter) => {
                 //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
 
                 return filter;
@@ -2831,6 +2833,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         }
                         break;
 
+                    case 'signatures':
                     case 'pathologies':
                         //Check whether it has operator or not:
                         if(haveOperator){
@@ -3135,6 +3138,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                     case 'signatures':
                         // No restrictions here.
                         // All users can sign as long as they have the concession to do so.
+                        // fk_organization field is setted in save handler with the domain auth.
                         break;
 
                     case 'pathologies':

@@ -43,6 +43,10 @@ module.exports = async (req, res, currentSchema) => {
             'updatedAt': 0,
             '__v': 0,
 
+            //Remove fk organization from the response:
+            //FK Organization is a field for the RABC.
+            'fk_organization': 0,
+
             //User:
             'user.fk_person': 0,
             'user.password': 0,

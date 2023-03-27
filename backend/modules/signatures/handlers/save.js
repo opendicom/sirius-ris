@@ -25,6 +25,12 @@ module.exports = async (req, res, currentSchema, operation) => {
         concession: req.decoded.session.concession
     };
 
+    //What the domain corresponds to:
+    const domainType = await moduleServices.domainIs(userAuth.domain, res);
+
+    //Set complete domain:
+    const completeDomain = await moduleServices.getCompleteDomain(userAuth.domain, domainType);
+
     //Check that the user has entered their password:
     if(req.body.password !== undefined && req.body.password !== null && req.body.password !== ''){
         //Find authenticated user information:
@@ -70,6 +76,9 @@ module.exports = async (req, res, currentSchema, operation) => {
 
                                         //Check for duplicates:
                                         if(duplicated == false){
+                                            //Add fK_organization into the request:
+                                            req.body['fk_organization'] = completeDomain.organization;
+                                            
                                             //Add fk_user into the request:
                                             req.body['fk_user'] = userAuth._id;
 
