@@ -271,7 +271,7 @@ async function update(req, res, currentSchema, referencedElements = false, callb
     //Check validation result (express-validator):
     if(!errors.isEmpty()){
         //Get keys of the elements allowed to set:
-        const setKeys = Object.keys(req.validatedResult.set)
+        const setKeys = Object.keys(req.validatedResult.set);
 
         //Check if the elements to be set contain errors:
         errors.array().forEach(element => {
@@ -4282,7 +4282,7 @@ async function setSHA2Report(report_id){
         if(reportData){
             //Create compare report:
             //Remove medical_signatures and updatedAt from report to enable multiple signatures.
-            //Also remove pathologies because can be added in the future.
+            //Also remove fk_pathologies because can be added in the future.
             const compare_report = {
                 fk_performing           : reportData.fk_performing,
                 clinical_info           : reportData.clinical_info,

@@ -263,7 +263,7 @@ module.exports = async (req, res, currentSchema) => {
         //Pathologies lookup [Array]:
         { $lookup: {
             from: 'pathologies',
-            localField: 'pathologies',
+            localField: 'fk_pathologies',
             foreignField: '_id',
             as: 'pathologies'
         }},

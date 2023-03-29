@@ -28,7 +28,7 @@ const Schema = new mongoose.Schema({
     findings:               { type: [subSchemaFindings] },
     summary:                { type: String },
     medical_signatures:     { type: [mongoose.ObjectId] },      //Not required in the main request, managed from reports and signatures handlers.
-    pathologies:            { type: [mongoose.ObjectId] },      //Not required in the main request, set on set pathologies handler.
+    fk_pathologies:         { type: [mongoose.ObjectId] },      //Not required in the main request, set on set pathologies handler.
     authenticated:          { type: subSchemaAuthenticated }    //Not required in the main request, set on authenticate handler.
 },
 { timestamps: true },
@@ -44,7 +44,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['findings', 'medical_signatures', 'pathologies'];
+const AllowedUnsetValues = ['findings', 'medical_signatures', 'fk_pathologies'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -92,14 +92,14 @@ const Validator = [
         .isLength({ min: 10, max: 10000 })
         .withMessage('El parametro summary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
 
-    body('pathologies')
+    body('fk_pathologies')
         .optional()
         .isArray(),
     
-    body('pathologies.*')
+    body('fk_pathologies.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro pathologies NO es un ID MongoDB válido.')
+        .withMessage('El parametro fk_pathologies NO es un ID MongoDB válido.')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 
