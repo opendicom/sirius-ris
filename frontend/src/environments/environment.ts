@@ -217,7 +217,7 @@ export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
   timeZone: 'local',
   allDaySlot: false,
-  initialView: FullCalendarSupportedViews[0],
+  initialView: FullCalendarSupportedViews[1],
   slotLabelFormat: {
     hour: '2-digit',
     minute: '2-digit',

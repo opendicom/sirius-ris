@@ -33,7 +33,7 @@
 
           <!-- update_report -->
           <span *ngSwitchCase="'P07'">
-            <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/ID_REPORT">
+            <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
               <mat-icon>edit_note</mat-icon>
             </button>
             <br />

@@ -168,221 +168,356 @@
           <div class="clear"></div>
       </div>
 
-      <hr class="dashed" />
-
-      <h4>Flujo de trabajo:</h4>
-      <mat-form-field appearance="fill" class="full">
-        <mat-label>Flujo de trabajo</mat-label>
-        <mat-select formControlName="flow_state">
-          <div *ngFor="let currentFS of availableFS | keyvalue">
-            <mat-option value="{{ currentFS.key }}" (click)="setFlowState(currentFS.key)">{{ currentFS.value }}</mat-option>
-          </div>
-        </mat-select>
-      </mat-form-field>
-
     </div> <!-- end fxLayout wrapper -->
   </div>
 
   <hr class="dashed"/>
 
-    <mat-tab-group>
+  <mat-tab-group>
 
-        <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
-        <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="tab-icon">feed</mat-icon> Resumen
+    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">feed</mat-icon> Resumen
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+          <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">Informe requerido antes de <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
+          <br/>
+
+          <h4>Anamnesis:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- anamnesis -->
+            <div class="current-info">
+              <div *ngIf="performingData.appointment && performingData.appointment.anamnesis !== undefined && performingData.appointment.anamnesis.length > 0; then thenBlockAnamnesis else elseBlockAnamnesis"></div>
+          
+              <ng-template #thenBlockAnamnesis>
+                <span innerHTML="{{ performingData.appointment.anamnesis }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockAnamnesis>
+                <span>El estudio NO posee anamnesis.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+          </div>
+
+          <br/>
+
+          <h4>Indicaciones:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- indications -->
+            <div class="current-info">
+              <div *ngIf="performingData.appointment && performingData.appointment.indications !== undefined && performingData.appointment.indications.length > 0; then thenBlockIndications else elseBlockIndications"></div>
+          
+              <ng-template #thenBlockIndications>
+                <span innerHTML="{{ performingData.appointment.indications }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockIndications>
+                <span>El estudio NO posee indicaciones.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+          </div>
+
+          <br/>
+
+        </div> <!-- end fxLayout wrapper -->
+          
+        <div *ngIf="performingData.appointment && performingData.appointment.private_health && performingData.patient" class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
+
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+              <ul>
+                <li *ngIf="performingData.patient.person"><strong>Edad: </strong><span matTooltip="Edad al momento de la realización">{{ sharedFunctions.calculateAge(performingData.patient.person.birth_date, performingData.date) }}</span></li>
+                <li><strong>Altura:</strong> {{ performingData.appointment.private_health.height }} centímetros</li>
+                <li><strong>Peso:</strong> {{ performingData.appointment.private_health.weight }} kilogramos</li>
+              </ul>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+              <ul>
+                <li><strong>Medicación:</strong> {{ performingData.appointment.private_health.medication }}</li>
+                <li><strong>Alergias:</strong> {{ performingData.appointment.private_health.allergies }}</li>
+              </ul>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+
+          <hr class="dashed" />
+
+          <ul>
+            <!-- Private health -->
+            <span *ngIf="privatehealthAllAreFalse; then thenBlockPrivateHealth else elseBlockPrivateHealth"></span>
+            
+            <ng-template #thenBlockPrivateHealth>
+              <li>Sin antecedentes médicos</li>
             </ng-template>
-
-            <div fxLayout="row" fxLayoutAlign="start start">
-              <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-                <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">Informe requerido antes de <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
-                <br/>
-
-                <h4>Anamnesis:</h4>
-                <div class="current-wrap details-wrap">
-                  <!-- anamnesis -->
-                  <div class="current-info">
-                    <div *ngIf="performingData.appointment && performingData.appointment.anamnesis !== undefined && performingData.appointment.anamnesis.length > 0; then thenBlockAnamnesis else elseBlockAnamnesis"></div>
-          
-                    <ng-template #thenBlockAnamnesis>
-                      <span innerHTML="{{ performingData.appointment.anamnesis }}"></span>
-                    </ng-template>
-          
-                    <ng-template #elseBlockAnamnesis>
-                      <span>El estudio NO posee anamnesis.</span>
-                    </ng-template>
-                  </div>
-          
-                  <div class="clear"></div>
-                </div>
-
-                <br/>
-
-                <h4>Indicaciones:</h4>
-                <div class="current-wrap details-wrap">
-                  <!-- indications -->
-                  <div class="current-info">
-                    <div *ngIf="performingData.appointment && performingData.appointment.indications !== undefined && performingData.appointment.indications.length > 0; then thenBlockIndications else elseBlockIndications"></div>
-          
-                    <ng-template #thenBlockIndications>
-                      <span innerHTML="{{ performingData.appointment.indications }}"></span>
-                    </ng-template>
-          
-                    <ng-template #elseBlockIndications>
-                      <span>El estudio NO posee indicaciones.</span>
-                    </ng-template>
-                  </div>
-          
-                  <div class="clear"></div>
-                </div>
-
-                <br/>
-
-              </div> <!-- end fxLayout wrapper -->
-          
-              <div *ngIf="performingData.appointment && performingData.appointment.private_health && performingData.patient" class="input-wrapper"> <!-- start fxLayout wrapper -->
-                <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
-
-                <div fxLayout="row" fxLayoutAlign="start start">
-                  <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
-                    <ul>
-                      <li *ngIf="performingData.patient.person"><strong>Edad: </strong><span matTooltip="Edad al momento de la realización">{{ sharedFunctions.calculateAge(performingData.patient.person.birth_date, performingData.date) }}</span></li>
-                      <li><strong>Altura:</strong> {{ performingData.appointment.private_health.height }} centímetros</li>
-                      <li><strong>Peso:</strong> {{ performingData.appointment.private_health.weight }} kilogramos</li>
-                    </ul>
-                  </div> <!-- end fxLayout wrapper -->
-
-                  <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-                    <ul>
-                      <li><strong>Medicación:</strong> {{ performingData.appointment.private_health.medication }}</li>
-                      <li><strong>Alergias:</strong> {{ performingData.appointment.private_health.allergies }}</li>
-                    </ul>
-                  </div> <!-- end fxLayout wrapper -->
-                </div>
-
-                <hr class="dashed" />
-                
-                <ul>
-                  <li>Antecedentes/Patologías:</li>
+      
+            <ng-template #elseBlockPrivateHealth>
+              <li>Antecedentes médicos:<br/>
+                <div class="extra-spacing">
                   <span *ngFor="let currentHealth of performingData.appointment.private_health | keyvalue" >
                     <span *ngIf="currentHealth.value == true" class="label-info">{{ privateHealthLang.ES['' + currentHealth.key] }}</span>
                   </span>
-                </ul>
-
-                <hr class="dashed" />
-                
-                <ul>
-                  <li>Implantes:</li>
-                  <span *ngFor="let currentImplant of performingData.appointment.private_health.implants| keyvalue" >
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <hr class="soft-alt" />
+            </ng-template>
+            
+            <!--Implants-->
+            <span *ngIf="implantsAllAreFalse; then thenBlockImplants else elseBlockImplants"></span>
+      
+            <ng-template #thenBlockImplants>
+              <li>Sin implantes</li>
+            </ng-template>
+      
+            <ng-template #elseBlockImplants>
+              <li>Implantes:<br/>
+                <div class="extra-spacing">
+                  <span *ngFor="let currentImplant of performingData.appointment.private_health.implants | keyvalue" >
                     <span *ngIf="currentImplant.value == true" class="label-info">{{ privateHealthLang.ES.implants['' + currentImplant.key] }}</span>
                   </span>
-                </ul>
-
-                <!-- ATTACHED FILES -->
-                <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
-                <br/>
-          
-                <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
-          
-                <ng-template #thenBlockAttached>
-                  <mat-chip-list>
-                    <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
-                      <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files', { 'element': 'appointments', '_id': performingData.appointment._id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })">close</mat-icon>
-                    </mat-chip>
-                  </mat-chip-list>
-                  <br/>
-                </ng-template>
-          
-                <ng-template #elseBlockAttached>
-                  <div class="text-center">
-                    <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
-                  </div>
-                </ng-template>
-          
-                <hr class="dashed" /><br/>
-          
-                <div class="text-right">
-                  <input type="file" (change)="fileManager.upload($event, 'attached_files', { 'element': 'appointments', '_id': performingData.appointment._id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })" #fileInputAttached style="display: none" />
-                  <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
-                    <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
-                    <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-                    <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
-                  </button>
+                  <div class="clear"></div>
                 </div>
+              </li>
+            </ng-template>
+          </ul>
+
+          <!-- COVID-19-->
+          <span *ngIf="performingData.appointment.private_health.covid19">
+            <h3 class="form-title text-center underline-fail">COVID-19:</h3>
+            <br/>
+            <ul>
+              <span *ngIf="performingData.appointment.private_health.covid19.had_covid; then thenBlockHadCovid19 else elseBlockHadCovid19"></span>
+              <ng-template #thenBlockHadCovid19>
+                <li>Tuvo COVID-19.</li>
+              </ng-template>
+              <ng-template #elseBlockHadCovid19>
+                <li><strong>NO</strong> tuvo COVID-19.</li>
+              </ng-template>
+
+              <span *ngIf="performingData.appointment.private_health.covid19.vaccinated; then thenBlockVaccinated else elseBlockVaccinated"></span>
+              <ng-template #thenBlockVaccinated>
+                <li>Posee vacunación contra COVID-19.</li>
+              </ng-template>
+              <ng-template #elseBlockVaccinated>
+                <li><strong>NO</strong> posee vacunación contra COVID-19.</li>
+              </ng-template>
+
+              <li *ngIf="performingData.appointment.private_health.covid19.details !== '' && performingData.appointment.private_health.covid19.details !== undefined && performingData.appointment.private_health.covid19.details !== null">
+                {{ performingData.appointment.private_health.covid19.details }}
+              </li>
+            </ul>
+          </span>
           
+          <br/>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="clear"></div>
+      </div>
+    </mat-tab>
+    <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+    <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">edit</mat-icon> Informe
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <h3 class="underline-ok">Dato clínico:</h3>
+          <div [class.unselected]="clinicalInfoValidator == false">
+            <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
+          </div>
+
+          <br/><hr class="soft-alt" /><br/>
+
+          <h3 class="underline-ok">Descripción de procedimiento:</h3>
+          <div [class.unselected]="procedureDescriptionValidator == false">
+            <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
+          </div>
+
+          <br/><hr class="soft-alt" /><br/>
+        
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Título de hallazgos</mat-label>
+            <input matInput type="text" formControlName="findings_title" placeholder="Ingrese el título de hallazgos">
+          </mat-form-field>
+
+          <div [class.unselected]="findingsValidator == false">
+            <ckeditor formControlName="findings" #findings [editor]="findingsEditor" [config]="editorConfig" data=""></ckeditor>
+          </div>
+
+          <br/><hr class="soft-alt" /><br/>
+
+          <h3 class="underline-ok">En suma:</h3>
+          <div [class.unselected]="summaryValidator == false">
+            <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
+          </div>
+          
+          <br/>
+        </div> <!-- end fxLayout wrapper -->
+            
+      </div>
+    </mat-tab>
+    <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+    
+    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab *ngIf="amendmentsData !== false">
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">rule</mat-icon> Enmiendas
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+
+          <span *ngFor="let current_report of amendmentsData; let i = index">
+            <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ amendmentsData.length - i  + ' de ' + amendmentsData.length }}</h3>
+            <h3 class="form-title">
+              Fecha de creación: 
+              <span class="label-accent">{{ current_report.createdAt }}</span><br/>
+
+              Autenticado por: 
+              <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
+                {{ current_report.authenticated.user.person.name_01 }}
+                <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
+
+                {{ ' ' + current_report.authenticated.user.person.surname_01 }}
+                <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
+              </span><br/>
+
+              Firmado por:
+              <span *ngFor="let current_signature of current_report.medical_signatures">
+                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                  {{ current_signature.user.person.name_01 }}
+                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+
+                  {{ ' ' + current_signature.user.person.surname_01 }}
+                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+                </span>
+              </span>
+            </h3>
+
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Haga click aquí para mostrar u ocultar el contenido del informe Nº {{ amendmentsData.length - i }}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                
                 <br/>
 
-              </div> <!-- end fxLayout wrapper -->
-
-              <div class="clear"></div>
-            </div>
-
-        </mat-tab>
-        <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
-
-
-        <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
-        <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="tab-icon">edit</mat-icon> Informe
-            </ng-template>
-
-            <div fxLayout="row" fxLayoutAlign="start start">
-  
-                <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-                    <h4>Dato clínico:</h4>
-                    <div [class.unselected]="clinicalInfoValidator == false">
-                        <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
-                    </div>
-
-                    <br/>
-
-                    <h4>Descripción de procedimiento:</h4>
-                    <div [class.unselected]="procedureDescriptionValidator == false">
-                        <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
-                    </div>
-
-                    <br/>
-                </div> <!-- end fxLayout wrapper -->
-            
-                <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-                  <h4>Hallazgos:</h4>
-                  <div [class.unselected]="summaryValidator == false">
-                    <ckeditor formControlName="summary" #findings [editor]="findingsEditor" [config]="editorConfig" data=""></ckeditor>
-                  </div>
+                <div class="report-wrap">
+                  <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
+                  <span innerHTML="{{ current_report.clinical_info }}"></span>
+      
+                  <br/><hr class="soft-alt" /><br/>
+      
+                  <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
+                  <span innerHTML="{{ current_report.procedure_description }}"></span>
+      
+                  <br/><hr class="soft-alt" /><br/>
+      
+                  <h3 class="report-underline"><strong>{{ current_report.findings[0].title }}:</strong></h3>
+                  <span innerHTML="{{ current_report.findings[0].procedure_findings }}"></span>
+      
+                  <br/><hr class="soft-alt" /><br/>
+      
+                  <h3 class="report-underline"><strong>En suma:</strong></h3>
+                  <span innerHTML="{{ current_report.summary }}"></span>
+      
                   <br/>
+                </div>
 
-                  <h4>En suma:</h4>
-                  <div [class.unselected]="summaryValidator == false">
-                      <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
-                  </div>
+              </mat-expansion-panel>
+            </mat-accordion>
 
-                  <br/>
-                </div> <!-- end fxLayout wrapper -->
-            
+            <br/><br/>
+          </span>
+
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
+    </mat-tab>
+    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">visibility</mat-icon> Imágenes
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>Cornerstone | Weasis | OsiriX</h4>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
+
+
+    <!-- FILES TAB: ------------------------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">folder</mat-icon> Archivos
+      </ng-template>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper">
+          <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+          <br/>
+              
+          <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
+              
+          <ng-template #thenBlockAttached>
+            <mat-chip-list>
+              <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
+                <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files', { 'element': 'appointments', '_id': performingData.appointment._id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })">close</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+            <br/>
+          </ng-template>
+              
+          <ng-template #elseBlockAttached>
+            <div class="text-center">
+              <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
             </div>
-        </mat-tab>
-        <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
+          </ng-template>
+              
+          <hr class="dashed" /><br/>
+              
+          <div class="text-right">
+            <input type="file" (change)="fileManager.upload($event, 'attached_files', { 'element': 'appointments', '_id': performingData.appointment._id, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })" #fileInputAttached style="display: none" />
+            <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
+              <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
+              <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+              <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
+            </button>
+          </div>
 
-        <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
-        <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="tab-icon">visibility</mat-icon> Imágenes
-            </ng-template>
+          <br/>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    </mat-tab>
+    <!-- FILES TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
-            <div class="tab-content">
-              <h4>Cornerstone | Weasis | OsiriX</h4>
-            </div>
-        </mat-tab>
-        <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
-
-    </mat-tab-group>
+  </mat-tab-group>
   
-    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
-      <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
-      </div> <!-- end fxLayout wrapper -->
-    </div>
-  </form>
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>
   

@@ -85,6 +85,9 @@ module.exports = async (req, res, currentSchema, operation) => {
                         res.status(422).send({ success: false, message: updateResult.message });
                     }
 
+                } else {
+                    //Dont match (empty result):
+                    res.status(200).send({ success: true, message: currentLang.db.id_no_results });
                 }
             })
             .catch((err) => {

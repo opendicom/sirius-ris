@@ -46,33 +46,33 @@ export const document_types = {
 export const user_roles = {
   1:  'Superusuario',
   2:  'Administrador',
-  //3:  'Supervisor',
+  3:  'Supervisor',
   4:  'Médico',
   5:  'Técnico',
   6:  'Enfermero',
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',
-  //10: 'Funcional'  //Empty role for concessions (Generic user)
+  10: 'Funcional'  //Empty role for concessions (Generic user)
 };
 
 // User Concessions:
 export const user_concessions = {
-  1 : 'Gestión de turnos',
-  2 : 'Gestión de citas',
-  3 : 'Calendario de citas',
-  4 : 'Gestión de recepciones',
-  /*
-  1 : 'Búsquedas avanzadas',
-  2 : 'Firmar informes',
-  3 : 'Autenticar informes',
-  4 : 'Listados de facturación',
-  5 : 'Estadísticas generales',
-  6 : 'Estadísticas médicas',
-  7 : 'Estadísticas del personal',
-  8 : 'Eliminación física de archivos',
-  9 : 'Supervisar citas en curso',
-  */
+  1   : 'Gestión de turnos',
+  2   : 'Gestión de citas',
+  3   : 'Calendario de citas',
+  4   : 'Gestión de recepciones',
+  //5   : 'Gestión de estudios',
+  //6   : 'Gestión de informes',
+  //7   : 'Firmar informes',
+  //8   : 'Autenticar informes',
+  //9   : 'Búsquedas avanzadas',
+  //10  : 'Listados de facturación',
+  //11  : 'Estadísticas generales',
+  //12  : 'Estadísticas médicas',
+  //13  : 'Estadísticas del personal',
+  //15  : 'Eliminación física de archivos',
+  //16  : 'Supervisar citas en curso',
 };
 
 // User Types:
@@ -94,6 +94,26 @@ export const appointments_flow_states = {
   'A02': 'Cancelada'
 };
 
+// Performing flow states:
+export const performing_flow_states = {
+  'P01': 'Recepción',
+  'P02': 'Entrevista',
+  'P03': 'Preparación/Inyección',
+  'P04': 'Adquisición',
+  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección/asociación de imágenes.
+  'P06': 'Para informar',
+
+  // Flow states controlled from backend:
+  // Report and signature save handlers.
+  'P07': 'Informe borrador',          // Al momento que exista un report con fk_performing = _id | insert report.
+  'P08': 'Informe firmado',           // Condición anterior + Que exista una firma al menos con fk_report = _id (report) | insert signature.
+  'P09': 'Terminado (con informe)',   // Condiciones anteriores + autenticated object exist (Estado sin remoción, solo enmiendas).
+
+  'P10': 'Terminado (sin informe)',
+  'P11': 'Cancelado'
+};
+
+// Cancellation reasons (Appointment and performing):
 export const cancellation_reasons = {
   1   : "Falla en equipo",
   2   : "Falta consentimiento",
@@ -107,27 +127,6 @@ export const cancellation_reasons = {
   10  : "Cursando infección",
   11  : "Fallecimiento",
   12  : "Otro"
-};
-
-// Performing flow states:
-export const performing_flow_states = {
-  'P01': 'Recepción',
-  'P02': 'Entrevista',
-  'P03': 'Preparación/Inyección',
-  'P04': 'Adquisición',
-  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección
-  'P06': 'Para informar',
-  'P07': 'Terminado (con informe)',
-  'P08': 'Terminado (sin informe)',
-  'P09': 'Cancelado'
-};
-
-// Reports flow states:
-export const reports_flow_states = {
-  'R01': 'Informe borrador',
-  'R02': 'Informe firmado',
-  'R03': 'Informe autenticado',
-  'R04': 'Para eliminar'
 };
 
 // Private health Lang:
@@ -218,7 +217,7 @@ export const FullCalendarOptions: any = {
   schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
   timeZone: 'local',
   allDaySlot: false,
-  initialView: FullCalendarSupportedViews[0],
+  initialView: FullCalendarSupportedViews[1],
   slotLabelFormat: {
     hour: '2-digit',
     minute: '2-digit',

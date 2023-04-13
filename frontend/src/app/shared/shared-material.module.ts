@@ -25,6 +25,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const MatModules = [
   MatGridListModule,
@@ -51,7 +52,8 @@ const MatModules = [
   MatChipsModule,
   MatAutocompleteModule,
   MatDialogModule,
-  MatTabsModule
+  MatTabsModule,
+  MatExpansionModule
 ];
 
 @NgModule({

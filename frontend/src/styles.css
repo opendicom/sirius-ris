@@ -396,6 +396,11 @@ mark {
   color: #fff;
 }
 
+.mat-expansion-panel {
+  background-color: #3d3f51;
+  color: #fff;
+}
+
 .tab-icon {
   margin-right: 8px;
 }

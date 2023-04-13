@@ -10,7 +10,6 @@ import {                                                                        
   app_setting,
   appointments_flow_states,
   performing_flow_states,
-  reports_flow_states
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -24,8 +23,7 @@ export class ActionComponent implements OnInit {
   public number_of_pages      : any = [1];
   public flow_states          : any = {
     appointments  : appointments_flow_states,
-    performing    : performing_flow_states,
-    reports       : reports_flow_states
+    performing    : performing_flow_states
   };
 
   //Set DB action properties:

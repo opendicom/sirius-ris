@@ -51,3 +51,16 @@ li {
   margin-top: 6px;
   margin-bottom: 6px;
 }
+
+.extra-spacing {
+  margin-top: 10px !important;
+  margin-bottom: 14px !important;
+}
+
+.mat-expansion-panel {
+  background-color: #43466e73;
+}
+
+.report-underline {
+  border-bottom: 3px solid #4e4e79d8;
+}

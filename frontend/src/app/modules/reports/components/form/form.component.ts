@@ -14,7 +14,6 @@ import {                                                                        
   ISO_3166, 
   document_types, 
   gender_types, 
-  reports_flow_states,
   privateHealthLang,
   CKEditorConfig
 } from '@env/environment';
@@ -32,7 +31,6 @@ export class FormComponent implements OnInit {
   public country_codes          : any = ISO_3166;
   public document_types         : any = document_types;
   public gender_types           : any = gender_types;
-  public reportsFS              : any = reports_flow_states;
   public privateHealthLang      : any = privateHealthLang;
 
   //Initializate available flow states:
@@ -48,11 +46,14 @@ export class FormComponent implements OnInit {
   //Create CKEditor validators:
   public clinicalInfoValidator          : boolean = true;
   public procedureDescriptionValidator  : boolean = true;
+  public findingsValidator              : boolean = true;
   public summaryValidator               : boolean = true;
 
-  //Initializate performing data:
+  //Initializate data objects:
   public performingData           : any = {};
   public performingFormattedDate  : any = {};
+  public reportData               : any = {};
+  public amendmentsData           : any = false;
 
   //Initializate performing local current flow state:
   public current_flow_state           : string = 'R01';
@@ -65,6 +66,10 @@ export class FormComponent implements OnInit {
   private keysWithValues  : Array<string> = [];
   public form_action      : any;
   public fk_performing    : string = '';
+
+  //Initializate all are false objects:
+  public privatehealthAllAreFalse   : boolean = true;
+  public implantsAllAreFalse        : boolean = true;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -123,62 +128,89 @@ export class FormComponent implements OnInit {
       flow_state              : [ this.current_flow_state, [Validators.required]],
       clinical_info           : ['', [Validators.required]],
       procedure_description   : ['', [Validators.required]],
-      summary                 : ['', [Validators.required]]
+      summary                 : ['', [Validators.required]],
+      findings_title          : ['', [Validators.required]],
+      findings                : ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
+    this.fk_performing = this.objRoute.snapshot.params['_id'];  // In reports form "action _id = fk_performing"
 
-    //Extract sent data (Parameters by routing) | In reports action _id = fk_performing:
-    this.fk_performing = this.objRoute.snapshot.params['_id'];
+    //Switch by form action:
+    switch(this.form_action){
+      case 'insert':
+        //Find and set performing data:
+        this.setPerformingData(this.fk_performing);
+        break;
 
-    //Check if element is not empty:
-    if(this.fk_performing != ''){
-      //Request params:
-      const params = { 'filter[_id]': this.fk_performing };
+      case 'update':
+        //Set params:
+        const params = {
+          'filter[fk_performing]'       : this.fk_performing,
 
-      //Find element to update:
-      this.sharedFunctions.find('performing', params, async (performingRes) => {
-        //Check operation status:
-        if(performingRes.success === true){
-          //Set performing data:
-          this.performingData = performingRes.data[0];
-          this.performingFormattedDate = await this.sharedFunctions.datetimeFulCalendarFormater(new Date(this.performingData.date), new Date(this.performingData.date));
-          
-          //Set available flow states:
-          this.setAvailableFlowStates('R01');
+          //Project only report content, not performing content (multiple reports | amendments):
+          'proj[clinical_info]'         : 1,
+          'proj[procedure_description]' : 1,
+          'proj[findings]'              : 1,
+          'proj[summary]'               : 1,
+          'proj[medical_signatures]'    : 1,
+          'proj[authenticated]'         : 1,
+          'proj[pathologies]'           : 1,
+          'proj[createdAt]'             : 1,
 
-          //Set flow state (first time | enable validators):
-          this.setFlowState('R01');
+          //Make sure the first report is the most recent:
+          'sort[createdAt]'             : -1
+        };
 
-          //Add files into file manager controller:
-          if(this.performingData.appointment.attached_files.length > 0){
-            Promise.all(Object.keys(this.performingData.appointment.attached_files).map((key) => {
-              this.fileManager.controller['attached_files'].files[this.performingData.appointment.attached_files[key]._id] = this.performingData.appointment.attached_files[key].name;
-            }));
+        //Find reports by fk_performing:
+        this.sharedFunctions.find('reports', params, async (reportsRes) => {
+          //Check operation status:
+          if(reportsRes.success === true){
+            //Check amend cases:
+            if(this.sharedFunctions.getKeys(reportsRes.data, false, true).length > 1){
+              //Set history report data object (Clone objects with spread operator):
+              this.amendmentsData = [... reportsRes.data];
+
+              //Delete current report from the history (first element):
+              this.amendmentsData.shift();
+            }
+
+            //Set report data with the last report (amend cases):
+            this.reportData = reportsRes.data[0];
+
+            //Find and set performing data:
+            this.setPerformingData(this.fk_performing);
+
+            //Send data to the form:
+            this.setReactiveForm({
+              clinical_info         : this.reportData.clinical_info,
+              procedure_description : this.reportData.procedure_description,
+              summary               : this.reportData.summary,
+
+              //Force the use of the first finding (current procedure finding), extra_procedures will be added in the future.
+              findings_title        : this.reportData.findings[0].title,
+              findings              : this.reportData.findings[0].procedure_findings
+            });
+
+          } else {
+            //Return to the list with request error message:
+            this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + reportsRes.message);
+            this.router.navigate(['/performing/list']);
           }
-          
-          //Find report by _id (update case):
-          //Send data to the form:
-          /*
-          this.setReactiveForm({
-            clinical_info         : res.data[0].clinical_info,
-            procedure_description : res.data[0].procedure_description,
-            summary               : res.data[0].summary
-          });
-          */
+        });
 
-          //Get property keys with values:
-          this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+        break;
 
-        } else {
-          //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + performingRes.message);
-          this.router.navigate(['/' + this.sharedProp.element + '/list']);
-        }
-      });
+      default:
+        //Return to the list with request error message:
+        this.sharedFunctions.sendMessage('Error al intentar editar el elemento: La acción indicada sobre el formulario es incorrecta [insert | update].');
+  
+        //Redirect to the list:
+        this.sharedFunctions.gotoList('performing', this.router);
+        break;
     }
   }
 
@@ -206,25 +238,73 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 
-  async setAvailableFlowStates(currentFS: string){
-    //Initialize found flag:
-    let foundFlag = false;
+  async checkPrivateHealth(obj: any) {
+    //Initializate result:
+    let result = true;
 
-    //Loop in enviroment flow states list (await foreach):
-    await Promise.all(Object.keys(this.reportsFS).map((key) => {
-      //Check that currentFS is equal to key or that currentFS has already been entered/found:
-      if(currentFS === key || foundFlag){
-        //Add current flow state into available flow states:
-        this.availableFS[key] = this.reportsFS[key];
-
-        //Set found flag as true:
-        foundFlag= true;
+    //Search true values in object | keyvalue (await foreach)::
+    await Promise.all(Object.keys(obj).map(key => {
+      if (typeof obj[key] == 'boolean' && obj[key] !== false) {
+        result = false;
       }
     }));
+
+    //Return result:
+    return result;
   }
 
-  setFlowState(flow_state: any){
-    //Set current flow state:
-    this.current_flow_state = flow_state.toString();
+  async checkImplants(obj: any) {
+    //Initializate result:
+    let result = true;
+
+    //Search true values in object | keyvalue (await foreach)::
+    await Promise.all(Object.keys(obj).map(key => {
+      if(obj[key] !== false && obj[key] !== 'No'){
+        result = false;
+      }
+    }));
+
+    //Return result:
+    return result;
+  }
+
+  async setPerformingData(fk_performing: string) {
+    //Check if element is not empty:
+    if(fk_performing != ''){
+      //Set params:
+      const params = { 'filter[_id]': fk_performing };
+
+      //Find referenced performing:
+      this.sharedFunctions.find('performing', params, async (performingRes) => {
+        //Check operation status:
+        if(performingRes.success === true){
+          //Set performing data:
+          this.performingData = performingRes.data[0];
+          this.performingFormattedDate = await this.sharedFunctions.datetimeFulCalendarFormater(new Date(this.performingData.date), new Date(this.performingData.date));
+
+          //Set current imaging (Necesario para file manager):
+          this.sharedProp.current_imaging = this.performingData.appointment.imaging;
+
+          //Add files into file manager controller:
+          if(this.performingData.appointment.attached_files.length > 0){
+            Promise.all(Object.keys(this.performingData.appointment.attached_files).map((key) => {
+              this.fileManager.controller['attached_files'].files[this.performingData.appointment.attached_files[key]._id] = this.performingData.appointment.attached_files[key].name;
+            }));
+          }
+
+          //Set all are false or not object values:
+          this.privatehealthAllAreFalse = await this.checkPrivateHealth(this.performingData.appointment.private_health);
+          this.implantsAllAreFalse = await this.checkImplants(this.performingData.appointment.private_health.implants);
+
+          //Get property keys with values:
+          this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+
+        } else {
+          //Return to the list with request error message:
+          this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + performingRes.message);
+          this.router.navigate(['/performing/list']);
+        }
+      });
+    }
   }
 }
