@@ -27,36 +27,34 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormComponent implements OnInit {
   //Set component properties:
-  public settings               : any = app_setting;
-  public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public gender_types           : any = gender_types;
-  public privateHealthLang      : any = privateHealthLang;
+  public settings                       : any = app_setting;
+  public country_codes                  : any = ISO_3166;
+  public document_types                 : any = document_types;
+  public gender_types                   : any = gender_types;
+  public privateHealthLang              : any = privateHealthLang;
 
   //Initializate available flow states:
-  public availableFS          : any = {};
+  public availableFS                    : any = {};
 
   //Create CKEditor component and configure them:
-  public clinicalInfoEditor         = customBuildEditor;
-  public procedureDescriptionEditor = customBuildEditor;
-  public findingsEditor             = customBuildEditor;
-  public summaryEditor              = customBuildEditor;
-  public editorConfig               = CKEditorConfig;
+  public clinicalInfoEditor             = customBuildEditor;
+  public procedureDescriptionEditor     = customBuildEditor;
+  public procedure_findingsEditor       = customBuildEditor;
+  public summaryEditor                  = customBuildEditor;
+  public editorConfig                   = CKEditorConfig;
 
   //Create CKEditor validators:
   public clinicalInfoValidator          : boolean = true;
   public procedureDescriptionValidator  : boolean = true;
-  public findingsValidator              : boolean = true;
-  public summaryValidator               : boolean = true;
+
+  //Initializate validation tab errors:
+  public reportTabErrors                : boolean = false;
 
   //Initializate data objects:
-  public performingData           : any = {};
-  public performingFormattedDate  : any = {};
-  public reportData               : any = {};
-  public amendmentsData           : any = false;
-
-  //Initializate performing local current flow state:
-  public current_flow_state           : string = 'R01';
+  public performingData                 : any = {};
+  public performingFormattedDate        : any = {};
+  public reportData                     : any = {};
+  public amendmentsData                 : any = false;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -125,12 +123,11 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      flow_state              : [ this.current_flow_state, [Validators.required]],
       clinical_info           : ['', [Validators.required]],
       procedure_description   : ['', [Validators.required]],
-      summary                 : ['', [Validators.required]],
-      findings_title          : ['', [Validators.required]],
-      findings                : ['', [Validators.required]]
+      summary                 : [''],
+      findings_title          : [''],
+      procedure_findings      : ['']
     });
   }
 
@@ -181,18 +178,42 @@ export class FormComponent implements OnInit {
             //Set report data with the last report (amend cases):
             this.reportData = reportsRes.data[0];
 
+            //Set report _id:
+            this._id = this.reportData._id;
+
             //Find and set performing data:
-            this.setPerformingData(this.fk_performing);
+            await this.setPerformingData(this.fk_performing, (performingRes) => {
+              //Prevent undefined error on CKEditor fields:
+              if(this.reportData.clinical_info == undefined ){ this.reportData.clinical_info = ''; }
+              if(this.reportData.procedure_description == undefined ){ this.reportData.procedure_description = ''; }
+              if(this.reportData.summary == undefined ){ this.reportData.summary = ''; }
 
-            //Send data to the form:
-            this.setReactiveForm({
-              clinical_info         : this.reportData.clinical_info,
-              procedure_description : this.reportData.procedure_description,
-              summary               : this.reportData.summary,
+              //Set findings object:
+              let finding_title = '';
+              let procedure_findings = '';
 
-              //Force the use of the first finding (current procedure finding), extra_procedures will be added in the future.
-              findings_title        : this.reportData.findings[0].title,
-              findings              : this.reportData.findings[0].procedure_findings
+              //Prevent undefined error on CKEditor fields:
+              if(this.reportData.findings == undefined || this.reportData.findings.length == 0 ){
+                finding_title = 'Hallázgos de ' + this.performingData.procedure.name;
+                procedure_findings = '';
+              } else {
+                finding_title = this.reportData.findings[0].title;
+                procedure_findings = this.reportData.findings[0].procedure_findings;
+              }
+
+              //Send data to the form:
+              this.setReactiveForm({
+                clinical_info         : this.reportData.clinical_info,
+                procedure_description : this.reportData.procedure_description,
+                summary               : this.reportData.summary,
+
+                //Force the use of the first finding (current procedure finding), extra_procedures will be added in the future.
+                findings_title        : finding_title,
+                procedure_findings    : procedure_findings
+              });
+
+              //Get property keys with values:
+              this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
             });
 
           } else {
@@ -215,27 +236,73 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit(){
-    //Validate CKEditor anesthesia (min length 10 + 7 chars [<p></p>]):
-    if(this.form.value.anesthesia.procedure.length < 17){
+    //Validate CKEditor clinical_info (min length 10 + 7 chars [<p></p>]):
+    if(this.form.value.clinical_info.length < 17){
       this.clinicalInfoValidator = false;
     } else {
       this.clinicalInfoValidator = true;
     }
 
+    //Validate CKEditor procedure_description (min length 10 + 7 chars [<p></p>]):
+    if(this.form.value.procedure_description.length < 17){
+      this.procedureDescriptionValidator = false;
+    } else {
+      this.procedureDescriptionValidator = true;
+    }
+
     //Validate fields:
     if(this.form.valid){
-      //Test:
-      console.log(this.form.value);
+      //Set reportTab errors false (single tab with form):
+      this.reportTabErrors = false;
 
-      //Data normalization:
+      //Create save object to preserve data types in form.value (Clone objects with spread operator):
+      let reportSaveData = { ...this.form.value };
+
+      //Data normalization - Findings object:
+      if(reportSaveData.procedure_findings.length > 17){
+        //Overwrite finding value format:
+        reportSaveData['findings'] = [{
+          fk_procedure        : this.performingData.procedure._id,
+          title               : reportSaveData.findings_title,
+          procedure_findings  : reportSaveData.procedure_findings
+        }];
+      };
+
+      //Set fk_performing in save object:
+      reportSaveData['fk_performing'] = this.fk_performing;
+
+      //Delete temp values:
+      delete reportSaveData.findings_title;
+      delete reportSaveData.procedure_findings;
+
+      //Add findings field if procedure_findings exist in keysWithValues:
+      if(this.keysWithValues.find((str) => str === 'procedure_findings')){
+        this.keysWithValues.push('findings');
+
+        //Remove procedure_findings from keysWithValues:
+        this.sharedFunctions.removeItemFromArray(this.keysWithValues, 'procedure_findings');
+      };
+
+      //Remove findings_title from keysWithValues:
+      this.sharedFunctions.removeItemFromArray(this.keysWithValues, 'findings_title');
+
       //Save report data:
-      //If Report is finished -> Update performing flow state.
-    }
-  }
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, reportSaveData, this.keysWithValues, (resReportSave) => {
+        //Response the form according to the result:
+        this.sharedFunctions.formResponder(resReportSave, 'reports', this.router, false);
 
-  onCancel(){
-    //Redirect to the list:
-    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+        //Reload a component:
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+
+        //Redirecto to this form:
+        this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing]);
+      });
+
+    } else {
+      //Set reportTab errors true (single tab with form):
+      this.reportTabErrors = true;
+    }
   }
 
   async checkPrivateHealth(obj: any) {
@@ -268,7 +335,7 @@ export class FormComponent implements OnInit {
     return result;
   }
 
-  async setPerformingData(fk_performing: string) {
+  async setPerformingData(fk_performing: string, callback = (res: any) => {}) {
     //Check if element is not empty:
     if(fk_performing != ''){
       //Set params:
@@ -296,9 +363,13 @@ export class FormComponent implements OnInit {
           this.privatehealthAllAreFalse = await this.checkPrivateHealth(this.performingData.appointment.private_health);
           this.implantsAllAreFalse = await this.checkImplants(this.performingData.appointment.private_health.implants);
 
-          //Get property keys with values:
-          this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+          //Set findings title (only insert cases):
+          if(this.form_action == 'insert'){
+            this.form.controls['findings_title'].setValue('Hallázgos de ' + this.performingData.procedure.name);
+          }
 
+          //Excecute optional callback with response:
+          callback(performingRes);
         } else {
           //Return to the list with request error message:
           this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + performingRes.message);

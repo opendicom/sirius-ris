@@ -329,6 +329,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">edit</mat-icon> Informe
+        <mat-icon *ngIf="reportTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
@@ -340,7 +341,7 @@
 
           <br/><hr class="soft-alt" /><br/>
 
-          <h3 class="underline-ok">Descripción de procedimiento:</h3>
+          <h3 class="underline-ok">Procedimiento:</h3>
           <div [class.unselected]="procedureDescriptionValidator == false">
             <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
           </div>
@@ -352,16 +353,12 @@
             <input matInput type="text" formControlName="findings_title" placeholder="Ingrese el título de hallazgos">
           </mat-form-field>
 
-          <div [class.unselected]="findingsValidator == false">
-            <ckeditor formControlName="findings" #findings [editor]="findingsEditor" [config]="editorConfig" data=""></ckeditor>
-          </div>
+          <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="editorConfig" data=""></ckeditor>
 
           <br/><hr class="soft-alt" /><br/>
 
           <h3 class="underline-ok">En suma:</h3>
-          <div [class.unselected]="summaryValidator == false">
-            <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
-          </div>
+          <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
           
           <br/>
         </div> <!-- end fxLayout wrapper -->
@@ -515,7 +512,7 @@
   
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+      <button mat-flat-button type="button" routerLink="/performing/list">VOLVER AL LISTADO</button>
       <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
