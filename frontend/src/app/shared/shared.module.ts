@@ -24,6 +24,7 @@ import { TentativeExistComponent } from '@shared/components/dialogs/tentative-ex
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
+import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -55,6 +56,7 @@ import * as IC from '@shared/directives/input-control.directive';
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
     MwlResendComponent,
+    ReportReviewComponent,
 
     // Shared pipes:
     HighlighterPipe,
@@ -96,7 +98,8 @@ import * as IC from '@shared/directives/input-control.directive';
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
     MwlResendComponent,
-
+    ReportReviewComponent,
+    
     // Shared pipes:
     HighlighterPipe,
     AccnoDatePipe,

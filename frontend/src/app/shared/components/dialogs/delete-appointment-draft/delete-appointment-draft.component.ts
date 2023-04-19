@@ -22,7 +22,7 @@ export class DeleteAppointmentDraftComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,  //Inject MAT_DIALOG_DATA to pass data:
+    @Inject(MAT_DIALOG_DATA) public data: any,  //Inject MAT_DIALOG_DATA to pass data
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService
   ) { }

@@ -1,0 +1,16 @@
+.report-wrap {
+    background-color: #3d3f51;
+    color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.sign-button {
+    background: #733ad5a9;
+    color: #ffffff;
+}
+
+.form-element {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

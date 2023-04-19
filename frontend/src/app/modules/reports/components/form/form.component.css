@@ -64,3 +64,13 @@ li {
 .report-underline {
   border-bottom: 3px solid #4e4e79d8;
 }
+
+.pathologies-title {
+  position: relative;
+  top: -6px;
+}
+
+.sign-button {
+  background: #733ad5a9;
+  color: #ffffff;
+}

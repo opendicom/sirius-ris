@@ -237,20 +237,20 @@ mark {
 }
 
 .A02 {
-  background-color: #ff6f69;
+  background-color: #ff6e69d3;
 }
 
 /* Performing: */
-.P01, .P02, .P03, .P04, .P05 {
+.P01, .P02, .P03, .P04, .P05, .P06 {
   background-color: #607d8b87;
   
 }
 
-.P06 {
-  background-color: #d53a9cd5;
+.P07 {
+  background-color: #d53a9cc9;
 }
 
-.P07, .P08 {
+.P08 {
   background-color: #733ad5a9;
 }
 
@@ -259,7 +259,7 @@ mark {
 }
 
 .P11 {
-  background-color: #ff6f69;
+  background-color: #ff6e69d3;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -386,30 +386,21 @@ mark {
   background: #2d2d47;
 }
 
-.mat-menu-content {
+.mat-menu-content, .mat-select-panel, .mat-autocomplete-panel, .mat-expansion-panel {
   background-color: #3d3f51;
   color: #fff;
 }
 
-.mat-select-panel {
-  background-color: #3d3f51;
-  color: #fff;
-}
-
-.mat-expansion-panel {
-  background-color: #3d3f51;
-  color: #fff;
+.mat-selected {
+  background-color: #353644 !important;
+  color: #fff !important;
 }
 
 .tab-icon {
   margin-right: 8px;
 }
 
-.validate-error-tab {
-  color: #f44336;
-}
-
-.validate-error{
+.validate-error-tab, .validate-error{
   color: #f44336;
 }
 

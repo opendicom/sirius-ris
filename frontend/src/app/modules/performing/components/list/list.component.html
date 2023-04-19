@@ -26,17 +26,33 @@
           <!-- insert_report -->
           <span *ngSwitchCase="'P06'">
             <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Crear informe" aria-label="Crear informe" routerLink="/reports/form/insert/{{ element._id }}">
-              <mat-icon>edit_note</mat-icon>
+              <mat-icon>playlist_add</mat-icon>
             </button>
-            <br />
+            <br/>
           </span>
 
-          <!-- update_report -->
+          <!-- update_report and sign_report -->
           <span *ngSwitchCase="'P07'">
             <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
               <mat-icon>edit_note</mat-icon>
             </button>
-            <br />
+
+            <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar  informe" color="accent">
+              <mat-icon>manage_search</mat-icon>
+            </button>
+            <br/>
+          </span>
+
+          <!-- sign_report and authenticate_report -->
+          <span *ngSwitchCase="'P08'">
+            <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
+              <mat-icon>edit_note</mat-icon>
+            </button>
+
+            <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar  informe" color="accent">
+              <mat-icon>manage_search</mat-icon>
+            </button>
+            <br/>
           </span>
         </span>
 

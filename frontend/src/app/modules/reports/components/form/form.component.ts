@@ -4,7 +4,8 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';           // Reactive form handling tools
+import { startWith, map } from 'rxjs/operators';                                            // Reactive Extensions (RxJS)
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
@@ -33,8 +34,10 @@ export class FormComponent implements OnInit {
   public gender_types                   : any = gender_types;
   public privateHealthLang              : any = privateHealthLang;
 
-  //Initializate available flow states:
+  //Set references objects:
   public availableFS                    : any = {};
+  public availablePathologies           : any[] = [];
+  public filteredPathologies            : any[] = [];
 
   //Create CKEditor component and configure them:
   public clinicalInfoEditor             = customBuildEditor;
@@ -64,6 +67,7 @@ export class FormComponent implements OnInit {
   private keysWithValues  : Array<string> = [];
   public form_action      : any;
   public fk_performing    : string = '';
+  public tabIndex         : number = 0;
 
   //Initializate all are false objects:
   public privatehealthAllAreFalse   : boolean = true;
@@ -127,14 +131,23 @@ export class FormComponent implements OnInit {
       procedure_description   : ['', [Validators.required]],
       summary                 : [''],
       findings_title          : [''],
-      procedure_findings      : ['']
+      procedure_findings      : [''],
+      pathologies_input       : ['']
     });
   }
 
   ngOnInit(): void {
+    //Find references:
+    this.findReferences();
+
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
     this.fk_performing = this.objRoute.snapshot.params['_id'];  // In reports form "action _id = fk_performing"
+    
+    //Set tabIndex with parameters by routing (if exist):
+    if(this.objRoute.snapshot.params['tabIndex'] !== null && this.objRoute.snapshot.params['tabIndex'] !== undefined && !isNaN(this.objRoute.snapshot.params['tabIndex'])){
+      this.tabIndex = this.objRoute.snapshot.params['tabIndex'];
+    }
 
     //Switch by form action:
     switch(this.form_action){
@@ -209,7 +222,8 @@ export class FormComponent implements OnInit {
 
                 //Force the use of the first finding (current procedure finding), extra_procedures will be added in the future.
                 findings_title        : finding_title,
-                procedure_findings    : procedure_findings
+                procedure_findings    : procedure_findings,
+                pathologies_input     : []
               });
 
               //Get property keys with values:
@@ -266,6 +280,9 @@ export class FormComponent implements OnInit {
           title               : reportSaveData.findings_title,
           procedure_findings  : reportSaveData.procedure_findings
         }];
+      //Update unset findings field case (empty CKEditor <= 7 chars '<p></p>'):
+      } else if(reportSaveData.procedure_findings.length <= 7 && this.form_action == 'update'){
+        reportSaveData['findings'] = '';  //Empty string to unset previous value.
       };
 
       //Set fk_performing in save object:
@@ -295,8 +312,8 @@ export class FormComponent implements OnInit {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
 
-        //Redirecto to this form:
-        this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing]);
+        //Redirecto to this form (Set Tab 1 | Report form tab):
+        this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing + '/1']);
       });
 
     } else {
@@ -377,5 +394,38 @@ export class FormComponent implements OnInit {
         }
       });
     }
+  }
+
+  filterPathologies(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter pathologies:
+    this.filteredPathologies = this.availablePathologies.filter(option => option.name.toUpperCase().includes(filterValue));
+  }
+  
+  findReferences(){
+    //Initialize params:
+    let params: any;
+
+    //Switch params:
+    switch(this.objRoute.snapshot.params['action']){
+      case 'insert':
+        params = {
+          'filter[status]': true,
+          'proj[name]': 1
+        };
+        break;
+
+      case 'update':
+        params = { 'proj[name]': 1 };
+        break;
+    }
+
+    //Find pathologies:
+    this.sharedFunctions.find('pathologies', params, (res) => {
+      this.availablePathologies = [... res.data];
+      this.filteredPathologies = [... res.data];
+    });
   }
 }

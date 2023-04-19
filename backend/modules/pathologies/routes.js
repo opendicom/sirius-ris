@@ -93,10 +93,6 @@ router.post(
         //Search for duplicates:
         const duplicated = await moduleServices.isDuplicated(req, res, pathologies, { name: req.body.name });
 
-        //Data normalization - toUpperCase for pathology name:
-        //Fix allowedValidate case: NO Data normalization because body is cloned in set object.
-        if(req.validatedResult.set.name !== undefined && req.validatedResult.set.name !== ''){ req.validatedResult.set.name = req.validatedResult.set.name.toUpperCase(); }
-
         //Check for duplicates:
         if(duplicated == false){
             //Save data:
@@ -115,6 +111,10 @@ router.post(
     async (req, res) => {
         //Search for duplicates:
         const duplicated = await moduleServices.isDuplicated(req, res, pathologies, { name: req.body.name });
+
+        //Data normalization - toUpperCase for pathology name:
+        //Fix allowedValidate case: NO Data normalization because body is cloned in set object.
+        if(req.validatedResult.set.name !== undefined && req.validatedResult.set.name !== ''){ req.validatedResult.set.name = req.validatedResult.set.name.toUpperCase(); }
 
         //Check for duplicates:
         if(duplicated == false){

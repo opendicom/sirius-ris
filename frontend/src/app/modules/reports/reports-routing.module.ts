@@ -9,6 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'form/:action/:_id', component: FormComponent },
+      { path: 'form/:action/:_id/:tabIndex', component: FormComponent },
       
       // Not Found Page (404 Not Found):
       { path: '404', component: NotFoundComponent},

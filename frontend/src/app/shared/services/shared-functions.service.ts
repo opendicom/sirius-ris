@@ -18,6 +18,7 @@ import { TentativeExistComponent } from '@shared/components/dialogs/tentative-ex
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
+import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -385,6 +386,17 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsMWLResend.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+          break;
+
+        case 'report_review':
+          //Create dialog observable:
+          const obsReportReview = this.dialog.open(ReportReviewComponent, { data: operationHandler });
+
+          //Observe content (Subscribe):
+          obsReportReview.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });

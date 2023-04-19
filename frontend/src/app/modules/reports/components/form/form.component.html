@@ -173,7 +173,7 @@
 
   <hr class="dashed"/>
 
-  <mat-tab-group>
+  <mat-tab-group [selectedIndex]="tabIndex">
 
     <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
@@ -332,6 +332,33 @@
         <mat-icon *ngIf="reportTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
       </ng-template>
 
+      <div class="action-wrapper" fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> Patologías:</span></span>
+          <br/>
+          <mat-form-field class="full" appearance="fill">
+            <mat-label>Patologías</mat-label>
+            <input type="text" matInput formControlName="pathologies_input" (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
+            <mat-autocomplete #autoPathologies="matAutocomplete">
+              <mat-option *ngFor="let currentPathology of filteredPathologies" [value]="currentPathology.name">
+                {{ currentPathology.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <div class="text-center"><span class="label-info">El informe no posee patologías asignadas</span></div>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper text-right"> <!-- start fxLayout wrapper -->
+          <button mat-mini-fab class="small_button" type="submit" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button> <!-- [disabled]="form_data.invalid" -->
+          <button mat-mini-fab class="small_button sign-button" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
+          <button mat-mini-fab class="small_button" type="button" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
+          <button mat-mini-fab class="small_button" type="button" matTooltip="Cerrar" routerLink="/performing/list" color="basic"><mat-icon>close</mat-icon></button>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           <h3 class="underline-ok">Dato clínico:</h3>
@@ -366,87 +393,6 @@
       </div>
     </mat-tab>
     <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
-
-    
-    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
-    <mat-tab *ngIf="amendmentsData !== false">
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">rule</mat-icon> Enmiendas
-      </ng-template>
-
-      <div fxLayout="row" fxLayoutAlign="start start">
-        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-
-          <span *ngFor="let current_report of amendmentsData; let i = index">
-            <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ amendmentsData.length - i  + ' de ' + amendmentsData.length }}</h3>
-            <h3 class="form-title">
-              Fecha de creación: 
-              <span class="label-accent">{{ current_report.createdAt }}</span><br/>
-
-              Autenticado por: 
-              <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
-                {{ current_report.authenticated.user.person.name_01 }}
-                <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
-
-                {{ ' ' + current_report.authenticated.user.person.surname_01 }}
-                <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
-              </span><br/>
-
-              Firmado por:
-              <span *ngFor="let current_signature of current_report.medical_signatures">
-                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
-                  {{ current_signature.user.person.name_01 }}
-                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
-
-                  {{ ' ' + current_signature.user.person.surname_01 }}
-                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
-                </span>
-              </span>
-            </h3>
-
-            <mat-accordion>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Haga click aquí para mostrar u ocultar el contenido del informe Nº {{ amendmentsData.length - i }}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                
-                <br/>
-
-                <div class="report-wrap">
-                  <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
-                  <span innerHTML="{{ current_report.clinical_info }}"></span>
-      
-                  <br/><hr class="soft-alt" /><br/>
-      
-                  <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
-                  <span innerHTML="{{ current_report.procedure_description }}"></span>
-      
-                  <br/><hr class="soft-alt" /><br/>
-      
-                  <h3 class="report-underline"><strong>{{ current_report.findings[0].title }}:</strong></h3>
-                  <span innerHTML="{{ current_report.findings[0].procedure_findings }}"></span>
-      
-                  <br/><hr class="soft-alt" /><br/>
-      
-                  <h3 class="report-underline"><strong>En suma:</strong></h3>
-                  <span innerHTML="{{ current_report.summary }}"></span>
-      
-                  <br/>
-                </div>
-
-              </mat-expansion-panel>
-            </mat-accordion>
-
-            <br/><br/>
-          </span>
-
-        </div> <!-- end fxLayout wrapper -->
-      </div>
-
-    </mat-tab>
-    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
 
 
     <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
@@ -508,13 +454,94 @@
     </mat-tab>
     <!-- FILES TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
+
+    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab *ngIf="amendmentsData !== false">
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">rule</mat-icon> Enmiendas
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+
+          <span *ngFor="let current_report of amendmentsData; let i = index">
+            <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ amendmentsData.length - i  + ' de ' + amendmentsData.length }}</h3>
+            <h3 class="form-title">
+              Fecha de creación: 
+              <span class="label-accent">{{ current_report.createdAt }}</span><br/>
+
+              Autenticado por: 
+              <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
+                {{ current_report.authenticated.user.person.name_01 }}
+                <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
+
+                {{ ' ' + current_report.authenticated.user.person.surname_01 }}
+                <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
+              </span><br/>
+
+              Firmado por:
+              <span *ngFor="let current_signature of current_report.medical_signatures">
+                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                  {{ current_signature.user.person.name_01 }}
+                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+
+                  {{ ' ' + current_signature.user.person.surname_01 }}
+                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+                </span>
+              </span>
+            </h3>
+
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Haga click aquí para mostrar u ocultar el contenido del informe Nº {{ amendmentsData.length - i }}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                
+                <br/>
+
+                <div class="report-wrap">
+                  <span *ngIf="current_report.clinical_info">
+                    <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
+                    <span innerHTML="{{ current_report.clinical_info }}"></span>
+                  </span>
+
+                  <span *ngIf="current_report.procedure_description">
+                    <br/><hr class="soft-alt" /><br/>
+      
+                    <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
+                    <span innerHTML="{{ current_report.procedure_description }}"></span>
+                  </span>
+                  
+                  <span *ngIf="current_report.findings[0]">
+                    <br/><hr class="soft-alt" /><br/>
+      
+                    <h3 class="report-underline"><strong>{{ current_report.findings[0].title }}:</strong></h3>
+                    <span innerHTML="{{ current_report.findings[0].procedure_findings }}"></span>
+                  </span>
+                  
+                  <span *ngIf="current_report.summary">
+                    <br/><hr class="soft-alt" /><br/>
+        
+                    <h3 class="report-underline"><strong>En suma:</strong></h3>
+                    <span innerHTML="{{ current_report.summary }}"></span>
+                  </span>
+                  <br/>
+                </div>
+
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <br/><br/>
+          </span>
+
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
+    </mat-tab>
+    <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
+
   </mat-tab-group>
-  
-  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
-    <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" routerLink="/performing/list">VOLVER AL LISTADO</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
-    </div> <!-- end fxLayout wrapper -->
-  </div>
 </form>
   
