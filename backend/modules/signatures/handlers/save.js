@@ -68,12 +68,8 @@ module.exports = async (req, res, currentSchema, operation) => {
 
                                     //Check if is safe to sign:
                                     if(secure_sign.success){
-                                        //Set params for check duplicates:
-                                        //const params = { fk_user: userAuth._id, sha2: sha2_result.sha2 };
-
                                         //Search for duplicates:
-                                        //const duplicated = await moduleServices.isDuplicated(req, res, currentSchema, params);
-                                        const duplicated = false;
+                                        duplicated = await moduleServices.checkSignature(res, req.body.fk_report, userAuth._id);
 
                                         //Check for duplicates:
                                         if(duplicated == false){

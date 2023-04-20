@@ -203,9 +203,7 @@ export class ListComponent implements OnInit {
         };
 
         //Open dialog to decide what operation to perform:
-        this.sharedFunctions.openDialog('report_review', operationHandler, (result) => {
-          console.log(result);
-        });
+        this.sharedFunctions.openDialog('report_review', operationHandler);
 
       } else {
         //Return to the list with request error message:

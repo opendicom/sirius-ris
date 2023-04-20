@@ -30,7 +30,7 @@
               <span class="label-fail">SIN AUTENTICAR</span><br/>
             </ng-template>
 
-            <span *ngIf="data.last_report.medical_signatures.user !== undefined && data.last_report.medical_signatures.user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
+            <span *ngIf="data.last_report.medical_signatures[0].user !== undefined && data.last_report.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
             <ng-template #thenBlockSignatures>
               Firmado por:
               <span *ngFor="let current_signature of data.last_report.medical_signatures">
@@ -80,18 +80,42 @@
         </div> <!-- end fxLayout wrapper -->
       </div>
 
-      <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: #2d2d47;">
-        <div> <!-- start fxLayout wrapper -->
-          <mat-form-field appearance="fill" class="full">
-            <mat-label>Contraseña</mat-label>
-            <input matInput type="password" placeholder="Ingrese su contraseña">
-          </mat-form-field>
-          <br/>
-          <button mat-flat-button type="button" class="sign-button"><mat-icon>draw</mat-icon> FIRMAR</button>
-          <button mat-flat-button type="button" color="primary"><mat-icon>workspace_premium</mat-icon> AUTENTICAR</button>
-          <button mat-flat-button type="button" color="accent"><mat-icon>draw</mat-icon> FIRMAR Y AUTENTICAR <mat-icon>workspace_premium</mat-icon></button>
-        </div> <!-- end fxLayout wrapper -->
-      </div>
+      <!-- FORMS: --------------------------------------------------------------------------------------------------------------------- -->
+      <span *ngIf="data.last_report.authenticated.user !== undefined && data.last_report.authenticated.user.person !== undefined; then thenBlockAuthenticated else elseBlockAuthenticated"></span>
+      <ng-template #thenBlockAuthenticated>
+        <div class="settings-card">
+          <mat-icon>info</mat-icon><strong class="amend-title"> Recuerde que al enmendar un informe:</strong>
+          <ul>
+            <li>Se creará un <strong>nuevo informe</strong> asociado a la realización actual.</li>
+            <li>Dicha realización volverá al estado de flujo de <strong>Informe borrador</strong> con el contenido del último informe autenticado para comenzar a editar una enmienda.</li>
+            <li>Todos los infomes previos firmados y autenticados permaneceran en la base de datos por reglamentación legal.</li>
+          </ul>
+
+          <hr class="soft-alt"/><br/>
+
+          <div class="text-right">
+            <button mat-flat-button type="button" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #elseBlockAuthenticated>
+        <form [formGroup]="form">
+          <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: #2d2d47;">
+            <div> <!-- start fxLayout wrapper -->
+              <mat-form-field appearance="fill" class="full">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" formControlName="password" placeholder="Ingrese su contraseña">
+              </mat-form-field>
+              <br/>
+              <button mat-flat-button type="button" (click)="onSubmit('sign')" class="sign-button"><mat-icon>draw</mat-icon> FIRMAR</button>
+              <button mat-flat-button type="button" (click)="onSubmit('authenticate')" color="primary"><mat-icon>workspace_premium</mat-icon> AUTENTICAR</button>
+              <button mat-flat-button type="button" (click)="onSubmit('sign-authenticate')" color="accent"><mat-icon>draw</mat-icon> FIRMAR Y AUTENTICAR <mat-icon>workspace_premium</mat-icon></button>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
+        </form>
+      </ng-template>
+      <!-- FORMS: --------------------------------------------------------------------------------------------------------------------- -->
     </mat-tab>
     <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
 

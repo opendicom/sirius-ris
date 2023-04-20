@@ -1562,7 +1562,6 @@ async function checkPerson(req, res){
 
             //Set documents OR condition (await foreach):
             await Promise.all(Object.keys(req.body.documents).map((current) => {
-                console.log(req.body.documents[current]);
                 filter.$or.push({
                     'documents.doc_country_code': req.body.documents[current].doc_country_code,
                     'documents.doc_type': req.body.documents[current].doc_type,
@@ -1601,6 +1600,58 @@ async function checkPerson(req, res){
                     //Send duplicate message:
                     res.status(422).send({ success: false, message: currentLang.ris.same_document, data: data });
                 }
+            }
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.query_error, err);
+    });
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// CHECK SIGNATURE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkSignature(res, fk_report, fk_user){
+    //Import schemas:
+    const reports       = require('./reports/schemas');
+    const signatures    = require('./signatures/schemas');
+
+    //Initialize result:
+    result = false;
+
+    //Find report by _id:
+    await reports.Model.findById(fk_report, { medical_signatures: 1 })
+    .exec()
+    .then(async (reportData) => {
+        //Check data:
+        if(reportData){
+            if(reportData.medical_signatures.length > 0){
+
+                //Find signatures:
+                await signatures.Model.find({ _id: { '$in': reportData.medical_signatures } }, { fk_user: 1 })
+                .exec()
+                .then(async (signaturesData) => {
+
+                    //Find fk_user on signatures result (await foreach):
+                    await Promise.all(Object.keys(signaturesData).map((key) => {
+                        if(signaturesData[key].fk_user == fk_user){
+                            //Set result (duplicated):
+                            result = true;
+
+                            //Send duplicate message:
+                            res.status(422).send({ success: false, message: currentLang.ris.report_signed });
+                        }
+                    }));
+                })
+                .catch((err) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, err);
+                });
             }
         }
     })
@@ -4329,6 +4380,7 @@ module.exports = {
     checkSlot,
     checkUrgency,
     checkPerson,
+    checkSignature,
     adjustDataTypes,
     ckeckElement,
     insertLog,

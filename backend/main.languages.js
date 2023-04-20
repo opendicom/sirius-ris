@@ -80,6 +80,7 @@ module.exports = function(language){
             'report_auth_error'             : 'The performing of the study is not in a flow state to be authenticate.',
             'report_auth_success'           : 'Report authenticated successfully.',
             'report_without_signatures'     : 'The report you want to authenticate is not signed.',
+            'report_signed'                 : 'The report you are trying to sign is already signed by the indicated user.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -177,6 +178,7 @@ module.exports = function(language){
             lang.ris.report_auth_error              = 'La realización del estudio no se encuentra en estado para poder ser autenticada.';
             lang.ris.report_auth_success            = 'Informe autenticado existosamente.';
             lang.ris.report_without_signatures      = 'El informe que desea autenitcar no se encuentra firmado.';
+            lang.ris.report_signed                  = 'El informe que se está intentando firmar ya se encuentra firmado por el usuario indicado.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';
