@@ -1,4 +1,4 @@
-<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="form-element" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
       <h3 class="details-title">Detalles de la realización:</h3>
@@ -167,6 +167,27 @@
           
           <div class="clear"></div>
       </div>
+
+      <!--medical_signatures-->
+      <span *ngIf="reportData && reportData.medical_signatures !== undefined">
+        <br/><hr class="dashed"/>
+        <h3>Firmas:</h3>
+        <span *ngIf="reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
+        <ng-template #thenBlockSignatures>
+          <span *ngFor="let current_signature of reportData.medical_signatures">
+            <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+              {{ current_signature.user.person.name_01 }}
+              <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+
+              {{ ' ' + current_signature.user.person.surname_01 }}
+              <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+            </span>
+          </span>
+        </ng-template>
+        <ng-template #elseBlockSignatures>
+          <span class="label-fail">SIN FIRMAR</span>
+        </ng-template>
+      </span>
 
     </div> <!-- end fxLayout wrapper -->
   </div>
@@ -340,7 +361,7 @@
             <mat-label>Patologías</mat-label>
             <input type="text" matInput formControlName="pathologies_input" (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
             <mat-autocomplete #autoPathologies="matAutocomplete">
-              <mat-option *ngFor="let currentPathology of filteredPathologies" [value]="currentPathology.name">
+              <mat-option (click)="addPathology(currentPathology)" *ngFor="let currentPathology of filteredPathologies" [value]="currentPathology.name">
                 {{ currentPathology.name }}
               </mat-option>
             </mat-autocomplete>
@@ -348,14 +369,32 @@
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <div class="text-center"><span class="label-info">El informe no posee patologías asignadas</span></div>
+          <span *ngIf="selectedPathologies.length > 0; then thenBlockPathologies else elseBlockPathologies"></span>
+          <ng-template #thenBlockPathologies>
+            <small>
+              <mat-chip-list>
+                <mat-chip class="mat-pathology" *ngFor="let currentPathology of selectedPathologies; let i = index">
+                  <small>{{ currentPathology.name }}</small> 
+                  <mat-icon matTooltip="Quitar patología" (click)="removePathology(currentPathology)">close</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </small>
+          </ng-template>
+          <ng-template #elseBlockPathologies>
+            <div class="text-center"><span class="label-info">El informe no posee patologías asignadas</span></div>
+          </ng-template>
         </div> <!-- end fxLayout wrapper -->
 
-        <div class="input-wrapper text-right"> <!-- start fxLayout wrapper -->
-          <button mat-mini-fab class="small_button" type="submit" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button> <!-- [disabled]="form_data.invalid" -->
-          <button mat-mini-fab class="small_button sign-button" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
-          <button mat-mini-fab class="small_button" type="button" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
+        <div class="input-wrapper text-right" [class.signatures-warn]="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined"> <!-- start fxLayout wrapper -->
+          <button mat-mini-fab class="small_button" type="button" (click)="onSubmit('save')" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button>
+          <button mat-mini-fab class="small_button sign-button"   (click)="passwordRequest('save-sign')" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
+          <button mat-mini-fab class="small_button" type="button" (click)="passwordRequest('save-sign-authenticate')" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
           <button mat-mini-fab class="small_button" type="button" matTooltip="Cerrar" routerLink="/performing/list" color="basic"><mat-icon>close</mat-icon></button>
+
+          <!--signatures_warn-->
+          <div class="text-left" *ngIf="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined">
+            <small><hr class="dashed" /><strong>ADVERTENCIA:</strong> Este informe <strong>se encuentra firmado</strong>, si lo guarda se tomará como una acción de edición y <strong>eliminará todas las firmas</strong> existentes en el mismo.</small>
+          </div>
         </div> <!-- end fxLayout wrapper -->
       </div>
 
@@ -466,30 +505,52 @@
 
           <span *ngFor="let current_report of amendmentsData; let i = index">
             <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ amendmentsData.length - i  + ' de ' + amendmentsData.length }}</h3>
-            <h3 class="form-title">
-              Fecha de creación: 
-              <span class="label-accent">{{ current_report.createdAt }}</span><br/>
 
-              Autenticado por: 
-              <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
-                {{ current_report.authenticated.user.person.name_01 }}
-                <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                <h3 class="form-title">
+                  Fecha de creación: 
+                  <span class="label-accent">{{ current_report.createdAt }}</span><br/>
 
-                {{ ' ' + current_report.authenticated.user.person.surname_01 }}
-                <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
-              </span><br/>
+                  Autenticado por: 
+                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
+                    {{ current_report.authenticated.user.person.name_01 }}
+                    <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
 
-              Firmado por:
-              <span *ngFor="let current_signature of current_report.medical_signatures">
-                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
-                  {{ current_signature.user.person.name_01 }}
-                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+                    {{ ' ' + current_report.authenticated.user.person.surname_01 }}
+                    <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
+                  </span><br/>
 
-                  {{ ' ' + current_signature.user.person.surname_01 }}
-                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
-                </span>
-              </span>
-            </h3>
+                  Firmado por:
+                  <span *ngFor="let current_signature of current_report.medical_signatures">
+                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                      {{ current_signature.user.person.name_01 }}
+                      <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+
+                      {{ ' ' + current_signature.user.person.surname_01 }}
+                      <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+                    </span>
+                  </span>
+                </h3>
+              </div> <!-- end fxLayout wrapper -->
+
+              <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                <span *ngIf="current_report.pathologies.length > 0; then thenBlockCurrentPathologies else elseBlockCurrentPathologies"></span>
+                <ng-template #thenBlockCurrentPathologies>
+                  <small>
+                    <br/>
+                    <mat-chip-list>
+                      <mat-chip class="mat-pathology" *ngFor="let currentPathology of current_report.pathologies; let i = index">
+                        <small>{{ currentPathology.name }}</small>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </small>
+                </ng-template>
+                <ng-template #elseBlockCurrentPathologies>
+                  <span class="label-accent">El informe no posee patologías asignadas</span>
+                </ng-template>
+              </div> <!-- end fxLayout wrapper -->
+            </div>
 
             <mat-accordion>
               <mat-expansion-panel>

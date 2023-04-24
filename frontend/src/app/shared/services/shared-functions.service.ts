@@ -19,20 +19,22 @@ import { EventDetailsComponent } from '@shared/components/dialogs/event-details/
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
+import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  public response         : any = {};
-  public nested_response  : any = {};
-  public delete_code      : string = '';
+  public response           : any = {};
+  public nested_response    : any = {};
+  public delete_code        : string = '';
+  public requested_password : string = '';
 
   constructor(
-    private apiClient   : ApiClientService,
-    private snackBar    : MatSnackBar,
-    private dialog      : MatDialog
+    private apiClient       : ApiClientService,
+    private snackBar        : MatSnackBar,
+    private dialog          : MatDialog
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -378,8 +380,10 @@ export class SharedFunctionsService {
               });
             }
           });
+
           break;
 
+        //MWL RE-SEND DIALOG:
         case 'mwl_resend':
           //Create dialog observable:
           const obsMWLResend = this.dialog.open(MwlResendComponent, { data: operationHandler });
@@ -389,8 +393,10 @@ export class SharedFunctionsService {
             //Excecute callback:
             callback(result);
           });
+
           break;
 
+        //REPORT REVIEW (SIGN, AUTH & AMEND)
         case 'report_review':
           //Create dialog observable:
           const obsReportReview = this.dialog.open(ReportReviewComponent, { data: operationHandler });
@@ -400,6 +406,20 @@ export class SharedFunctionsService {
             //Excecute callback:
             callback(result);
           });
+
+          break;
+
+        //REQUEST USER PASSWORD DIALOG:
+        case 'password_request':
+          //Create dialog observable:
+          const obsPasswordRequest = this.dialog.open(PasswordRequestComponent);
+
+          //Observe content (Subscribe):
+          obsPasswordRequest.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
           break;
       }
     }

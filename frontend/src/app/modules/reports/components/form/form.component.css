@@ -74,3 +74,12 @@ li {
   background: #733ad5a9;
   color: #ffffff;
 }
+
+.signatures-warn {
+  background-color: #733ad522;
+  border-radius: 5px;
+}
+
+.mat-pathology {
+  background-color: #05ff9f8e !important;
+}

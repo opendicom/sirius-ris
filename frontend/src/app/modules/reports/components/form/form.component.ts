@@ -4,10 +4,10 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';           // Reactive form handling tools
-import { startWith, map } from 'rxjs/operators';                                            // Reactive Extensions (RxJS)
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { ReportsService } from '@modules/reports/services/reports.service';                 // Reports Services
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import {                                                                                    // Enviroments
@@ -38,6 +38,7 @@ export class FormComponent implements OnInit {
   public availableFS                    : any = {};
   public availablePathologies           : any[] = [];
   public filteredPathologies            : any[] = [];
+  public selectedPathologies            : any[] = [];
 
   //Create CKEditor component and configure them:
   public clinicalInfoEditor             = customBuildEditor;
@@ -89,6 +90,7 @@ export class FormComponent implements OnInit {
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
     public fileManager      : FileManagerService,
+    public reportsService   : ReportsService,
     public pdfService       : PdfService
   ){
     //Pass Service Method:
@@ -230,6 +232,9 @@ export class FormComponent implements OnInit {
               this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
             });
 
+            //Initialize pathologies:
+            this.initializeSelectedPathologies(this.reportData.pathologies);
+
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + reportsRes.message);
@@ -249,7 +254,20 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(){
+  passwordRequest(current_operation: string){
+    //Clear previous password:
+    this.sharedFunctions.requested_password = '';
+
+    //Open dialog to request user password:
+    this.sharedFunctions.openDialog('password_request', {}, (result) => {
+      //Check dialog result:
+      if(result){
+        this.onSubmit(current_operation);
+      }
+    });
+  }
+  
+  async onSubmit(current_operation: string = 'save'){
     //Validate CKEditor clinical_info (min length 10 + 7 chars [<p></p>]):
     if(this.form.value.clinical_info.length < 17){
       this.clinicalInfoValidator = false;
@@ -288,7 +306,17 @@ export class FormComponent implements OnInit {
       //Set fk_performing in save object:
       reportSaveData['fk_performing'] = this.fk_performing;
 
+      //Data normalization - Pathologies:
+      if(this.selectedPathologies.length > 0){
+        reportSaveData['fk_pathologies'] = [];
+        //Add all selected pathologies into fk_pathologies array (await foreach):
+        await Promise.all(Object.keys(this.selectedPathologies).map((key: any) =>{
+          reportSaveData.fk_pathologies.push(this.selectedPathologies[key]._id);
+        }));
+      }
+
       //Delete temp values:
+      delete reportSaveData.pathologies_input;
       delete reportSaveData.findings_title;
       delete reportSaveData.procedure_findings;
 
@@ -305,17 +333,51 @@ export class FormComponent implements OnInit {
 
       //Save report data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, reportSaveData, this.keysWithValues, (resReportSave) => {
-        //Response the form according to the result:
-        this.sharedFunctions.formResponder(resReportSave, 'reports', this.router, false);
+        //Switch by current operation:
+        switch(current_operation){
+          case 'save':
+            //Response the form according to the result:
+            this.sharedFunctions.formResponder(resReportSave, 'reports', this.router, false);
 
-        //Reload a component:
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
+            //Reload a component:
+            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+            this.router.onSameUrlNavigation = 'reload';
 
-        //Redirecto to this form (Set Tab 1 | Report form tab):
-        this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing + '/1']);
+            //Redirecto to this form (Set Tab 1 | Report form tab):
+            this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing + '/1']);
+            break;
+          
+          case 'save-sign':
+            //Check save report operation result:
+            if(resReportSave.success === true){
+              //Sign report (callback exec only on success):
+              this.reportsService.sign(resReportSave.data._id, this.sharedFunctions.requested_password, () => {
+                //Clear requested password:
+                this.sharedFunctions.requested_password = '';
+
+                //Redirect to performing list:
+                this.router.navigate(['/performing/list']);
+              });
+            }
+            break;
+
+          case 'save-sign-authenticate':
+            //Check save report operation result:
+            if(resReportSave.success === true){
+              //Sign and authenticate report (callback exec only on success):
+              this.reportsService.sign(resReportSave.data._id, this.sharedFunctions.requested_password, () => {
+                this.reportsService.authenticate(resReportSave.data._id, this.sharedFunctions.requested_password, () => {
+                  //Clear requested password:
+                  this.sharedFunctions.requested_password = '';
+
+                  //Redirect to performing list:
+                  this.router.navigate(['/performing/list']);
+                });
+              });
+            }
+            break;
+        }
       });
-
     } else {
       //Set reportTab errors true (single tab with form):
       this.reportTabErrors = true;
@@ -403,6 +465,40 @@ export class FormComponent implements OnInit {
     //Filter pathologies:
     this.filteredPathologies = this.availablePathologies.filter(option => option.name.toUpperCase().includes(filterValue));
   }
+
+  addPathology(currentPathology: any){
+    //Add current pathology into selected pathologies array (check duplicates):
+    if(this.selectedPathologies.filter(element => element._id === currentPathology._id).length <= 0){
+      this.selectedPathologies.push(currentPathology);
+    }
+
+    //Remove currentPathology from availablePathologies:
+    this.sharedFunctions.removeItemFromArray(this.availablePathologies, currentPathology);
+
+    //Clear pathologies input:
+    this.form.controls['pathologies_input'].setValue('');
+    
+    //Clear filter pathologies:
+    this.filterPathologies({ srcElement : { value: '' } });
+  }
+
+  removePathology(currentPathology: any){
+    //Remove current Pathology from selected pathologies:
+    this.sharedFunctions.removeItemFromArray(this.selectedPathologies, currentPathology);
+
+    //Add removed pathology into availablePathologies and filteredPathologies (check duplicates):
+    if(this.availablePathologies.filter(element => element._id === currentPathology._id).length <= 0){
+      this.availablePathologies.push(currentPathology);
+    }
+    
+    //Clear pathologies input:
+    this.form.controls['pathologies_input'].setValue('');
+
+    //Clear filter pathologies:
+    this.filterPathologies({ srcElement : { value: '' } });
+
+    console.log(this.availablePathologies);
+  }
   
   findReferences(){
     //Initialize params:
@@ -427,5 +523,16 @@ export class FormComponent implements OnInit {
       this.availablePathologies = [... res.data];
       this.filteredPathologies = [... res.data];
     });
+  }
+
+  async initializeSelectedPathologies(pathologies:any){
+    //Loop in pathologies aggregation result (await foreach):
+    await Promise.all(Object.keys(pathologies).map((key: any) => {
+      //Set current pathology:
+      const currentPathology = { _id: pathologies[key]._id, name: pathologies[key].name };
+
+      //Add into selected pathologies:
+      this.selectedPathologies.push(currentPathology);
+    }));
   }
 }

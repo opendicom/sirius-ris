@@ -11,42 +11,63 @@
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <h3 class="form-title">
-            Fecha de creación: 
-            <span class="label-accent">{{ data.last_report.createdAt }}</span><br/>
 
-            <span *ngIf="data.last_report.authenticated.user !== undefined && data.last_report.authenticated.user.person !== undefined; then thenBlockAuthenticate else elseBlockAuthenticate"></span>
-            <ng-template #thenBlockAuthenticate>
-              Autenticado por: 
-              <span class="label-alt" matTooltip="Autenticado: {{ data.last_report.authenticated.datetime }}">
-                {{ data.last_report.authenticated.user.person.name_01 }}
-                <span *ngIf="data.last_report.authenticated.user.person.name_02">{{ ' ' + data.last_report.authenticated.user.person.name_02 }}</span>
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+              <h3 class="form-title">
+                Fecha de creación: 
+                <span class="label-accent">{{ data.last_report.createdAt }}</span><br/>
+    
+                <span *ngIf="data.last_report.authenticated.user !== undefined && data.last_report.authenticated.user.person !== undefined; then thenBlockAuthenticate else elseBlockAuthenticate"></span>
+                <ng-template #thenBlockAuthenticate>
+                  Autenticado por: 
+                  <span class="label-alt" matTooltip="Autenticado: {{ data.last_report.authenticated.datetime }}">
+                    {{ data.last_report.authenticated.user.person.name_01 }}
+                    <span *ngIf="data.last_report.authenticated.user.person.name_02">{{ ' ' + data.last_report.authenticated.user.person.name_02 }}</span>
+    
+                    {{ ' ' + data.last_report.authenticated.user.person.surname_01 }}
+                    <span *ngIf="data.last_report.authenticated.user.person.surname_02">{{ ' ' + data.last_report.authenticated.user.person.surname_02 }}</span>
+                  </span><br/>
+                </ng-template>
+                <ng-template #elseBlockAuthenticate>
+                  <span class="label-fail">SIN AUTENTICAR</span><br/>
+                </ng-template>
+    
+                <span *ngIf="data.last_report.medical_signatures[0].user !== undefined && data.last_report.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
+                <ng-template #thenBlockSignatures>
+                  Firmado por:
+                  <span *ngFor="let current_signature of data.last_report.medical_signatures">
+                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                      {{ current_signature.user.person.name_01 }}
+                      <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+    
+                      {{ ' ' + current_signature.user.person.surname_01 }}
+                      <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+                    </span>
+                  </span>
+                </ng-template>
+                <ng-template #elseBlockSignatures>
+                  <span class="label-fail">SIN FIRMAR</span>
+                </ng-template>
+              </h3>
+            </div> <!-- end fxLayout wrapper -->
 
-                {{ ' ' + data.last_report.authenticated.user.person.surname_01 }}
-                <span *ngIf="data.last_report.authenticated.user.person.surname_02">{{ ' ' + data.last_report.authenticated.user.person.surname_02 }}</span>
-              </span><br/>
-            </ng-template>
-            <ng-template #elseBlockAuthenticate>
-              <span class="label-fail">SIN AUTENTICAR</span><br/>
-            </ng-template>
-
-            <span *ngIf="data.last_report.medical_signatures[0].user !== undefined && data.last_report.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
-            <ng-template #thenBlockSignatures>
-              Firmado por:
-              <span *ngFor="let current_signature of data.last_report.medical_signatures">
-                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
-                  {{ current_signature.user.person.name_01 }}
-                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
-
-                  {{ ' ' + current_signature.user.person.surname_01 }}
-                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
-                </span>
-              </span>
-            </ng-template>
-            <ng-template #elseBlockSignatures>
-              <span class="label-fail">SIN FIRMAR</span>
-            </ng-template>
-          </h3>
+            <div class="input-wrapper text-right"> <!-- start fxLayout wrapper -->
+              <span *ngIf="data.last_report.pathologies.length > 0; then thenBlockPathologies else elseBlockPathologies"></span>
+              <ng-template #thenBlockPathologies>
+                <small>
+                  <mat-chip-list>
+                    <mat-chip class="mat-pathology" *ngFor="let currentPathology of data.last_report.pathologies; let i = index">
+                      <small>{{ currentPathology.name }}</small>
+                    </mat-chip>
+                  </mat-chip-list>
+                </small>
+              </ng-template>
+              <ng-template #elseBlockPathologies>
+                <span class="label-accent">El informe no posee patologías asignadas</span>
+              </ng-template>
+            </div> <!-- end fxLayout wrapper -->
+          </div>
 
           <div class="report-wrap">
             <span *ngIf="data.last_report.clinical_info">
@@ -94,7 +115,7 @@
           <hr class="soft-alt"/><br/>
 
           <div class="text-right">
-            <button mat-flat-button type="button" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
+            <button mat-flat-button type="button" (click)="onSubmit('amend')" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
           </div>
         </div>
       </ng-template>
@@ -130,30 +151,51 @@
 
           <span *ngFor="let current_report of data.amendments_data; let i = index">
             <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ data.amendments_data.length - i  + ' de ' + data.amendments_data.length }}</h3>
-            <h3 class="form-title">
-              Fecha de creación: 
-              <span class="label-accent">{{ current_report.createdAt }}</span><br/>
 
-              Autenticado por: 
-              <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
-                {{ current_report.authenticated.user.person.name_01 }}
-                <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                <h3 class="form-title">
+                  Fecha de creación: 
+                  <span class="label-accent">{{ current_report.createdAt }}</span><br/>
 
-                {{ ' ' + current_report.authenticated.user.person.surname_01 }}
-                <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
-              </span><br/>
+                  Autenticado por: 
+                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
+                    {{ current_report.authenticated.user.person.name_01 }}
+                    <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
 
-              Firmado por:
-              <span *ngFor="let current_signature of current_report.medical_signatures">
-                <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
-                  {{ current_signature.user.person.name_01 }}
-                  <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+                    {{ ' ' + current_report.authenticated.user.person.surname_01 }}
+                    <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
+                  </span><br/>
 
-                  {{ ' ' + current_signature.user.person.surname_01 }}
-                  <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
-                </span>
-              </span>
-            </h3>
+                  Firmado por:
+                  <span *ngFor="let current_signature of current_report.medical_signatures">
+                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                      {{ current_signature.user.person.name_01 }}
+                      <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
+
+                      {{ ' ' + current_signature.user.person.surname_01 }}
+                      <span *ngIf="current_signature.user.person.surname_02">{{ ' ' + current_signature.user.person.surname_02 }}</span>
+                    </span>
+                  </span>
+                </h3>
+              </div> <!-- end fxLayout wrapper -->
+
+              <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                <span *ngIf="current_report.pathologies.length > 0; then thenBlockCurrentPathologies else elseBlockCurrentPathologies"></span>
+                <ng-template #thenBlockCurrentPathologies>
+                  <small>
+                    <mat-chip-list>
+                      <mat-chip class="mat-pathology" *ngFor="let currentPathology of current_report.pathologies; let i = index">
+                        <small>{{ currentPathology.name }}</small>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </small>
+                </ng-template>
+                <ng-template #elseBlockCurrentPathologies>
+                  <span class="label-accent">El informe no posee patologías asignadas</span>
+                </ng-template>
+              </div> <!-- end fxLayout wrapper -->
+            </div>
 
             <mat-accordion>
               <mat-expansion-panel>

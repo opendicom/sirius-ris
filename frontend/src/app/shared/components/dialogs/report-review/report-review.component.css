@@ -29,3 +29,7 @@
     position: relative;
     top: -6px;
 }
+
+.mat-pathology {
+    background-color: #05ff9f8e !important;
+}

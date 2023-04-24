@@ -90,7 +90,16 @@ export class ReportReviewComponent implements OnInit {
           });
           break;
       }
+
+    //Amend case (Form without password field):
+    } else if (operation === 'amend'){
+      this.reportsService.amend(this.data.last_report._id, () => {
+        //Close dialog:
+        this.current_dialog.closeAll();
+
+        //Reload last search (Performing list):
+        this.sharedFunctions.find('performing', this.sharedProp.params);
+      });
     }
   }
-
 }
