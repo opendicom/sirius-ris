@@ -11,8 +11,8 @@
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="accent" aria-label="PDF de cita" matTooltip="PDF de cita" (click)="pdfService.createPDF('appointment', element.fk_appointment)">
-          <mat-icon>picture_as_pdf</mat-icon>
+        <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
+          <mat-icon>cloud_download</mat-icon>
         </button>
       </td>
     </ng-container>

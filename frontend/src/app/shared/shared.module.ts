@@ -26,6 +26,7 @@ import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/dele
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
+import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -59,6 +60,7 @@ import * as IC from '@shared/directives/input-control.directive';
     MwlResendComponent,
     ReportReviewComponent,
     PasswordRequestComponent,
+    PerformingDownloadsComponent,
 
     // Shared pipes:
     HighlighterPipe,
@@ -102,6 +104,7 @@ import * as IC from '@shared/directives/input-control.directive';
     MwlResendComponent,
     ReportReviewComponent,
     PasswordRequestComponent,
+    PerformingDownloadsComponent,
     
     // Shared pipes:
     HighlighterPipe,

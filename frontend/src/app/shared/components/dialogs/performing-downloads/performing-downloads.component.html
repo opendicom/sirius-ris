@@ -1,0 +1,112 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>cloud_download</mat-icon>&nbsp; Archivos asociados</h1>
+<div mat-dialog-content>
+  
+  <h3 class="details-title">Datos de la realización:</h3>
+  
+  <!-- imaging -->
+  <div class="current-info divider-alt">
+    <small>Organización ► Sucursal ► Servicio:</small><br/>
+    <span class="current-firts">{{ data.appointment.imaging.organization.short_name + ' ► ' + data.appointment.imaging.branch.short_name + ' ► ' + data.appointment.imaging.service.name }}</span>
+  </div>
+
+  <!-- date -->
+  <div class="current-info divider-alt">
+    <small>Fecha:</small><br/>
+    <span class="performing-firts">{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+  </div>
+
+  <!-- time -->
+  <div class="current-info divider-alt">
+    <small>Hora:</small><br/>
+    <span class="performing-firts">{{ data.date | date : "HH:mm" : "UTC" }}</span>
+  </div>
+
+  <!-- procedure -->
+  <div class="current-info text-center divider-alt">
+    <small>Procedimiento a realizar:</small><br/>
+    <span class="badge-alt">
+      <span>{{ data.procedure.name }}</span>
+    </span>
+  </div>
+
+  <!-- modality -->
+  <div class="current-info text-center">
+    <small>Modalidad:</small><br/>
+    <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
+      <span>{{ data.modality.code_value }}</span>
+    </span>
+  </div>
+
+  <div class="clear"></div>
+  <hr class="dashed" />
+
+  <!-- documents -->
+  <div class="current-info divider-alt">
+    <small>Documento/s:</small><br/>
+    <span *ngFor="let current of data.patient.person.documents" >
+      <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+      <span matTooltip="{{ document_types[current.doc_type] }}">
+        <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+      </span>
+      <br/>
+    </span>
+  </div>
+  
+  <!-- names -->
+  <div class="current-info">
+    <small>Nombre completo:</small><br/>
+    <span class="current-firts">
+      <span>{{ data.patient.person.name_01 }}</span>
+
+      <span *ngIf="data.patient.person.name_02">
+        <span> {{ data.patient.person.name_02 }}</span>
+      </span>
+
+      <span> {{ data.patient.person.surname_01 }}</span>
+
+      <span *ngIf="data.patient.person.surname_02">
+        <span> {{ data.patient.person.surname_02 }}</span>
+      </span>
+    </span>
+  </div>
+
+  <div class="clear"></div>
+  <hr class="dashed" /><br/>
+
+  <button mat-flat-button type="button" class="download-button" (click)="pdfService.createPDF('appointment', data.fk_appointment)">
+    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>PDF DE CITA</small>
+  </button>
+
+  &nbsp;
+
+  <button mat-flat-button type="button" class="download-button" (click)="pdfService.createPDF('report', data._id)">
+    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>PDF DE INFORME</small>
+  </button>
+
+  <div class="clear"></div>
+  <br/><hr class="soft-alt" /><br/>
+
+  <h3 class="details-title underline-fail-alt">Archivos adjuntos:</h3>
+  <br/>
+
+  <span *ngIf="data.appointment.attached_files.length > 0; then thenBlockAttached else elseBlockAttached"></span>
+  <ng-template #thenBlockAttached>
+    <mat-chip-list>
+      <mat-chip *ngFor="let currentAtachedFile of data.appointment.attached_files">
+        <mat-icon (click)="fileManager.download(currentAtachedFile._id)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile._id)"> &nbsp;{{ currentAtachedFile.name }}</span>
+      </mat-chip>
+    </mat-chip-list>
+    <br/>
+  </ng-template>
+              
+  <ng-template #elseBlockAttached>
+    <div class="text-center">
+      <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+    </div>
+  </ng-template>
+</div>
+
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+</div>

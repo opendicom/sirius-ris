@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -20,6 +20,7 @@ import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/dele
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
+import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -421,8 +422,29 @@ export class SharedFunctionsService {
           });
 
           break;
+
+        //PERFORMING DOWNLOAD CONTENTS DIALOG:
+        case 'performing_downloads':
+          this.basicDialog(PerformingDownloadsComponent, operationHandler, (result) => { callback(result) });
+          break;
       }
     }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // BASIC DIALOG:
+  //--------------------------------------------------------------------------------------------------------------------//
+  basicDialog(component: any, operationHandler: any = null, callback = (result: any) => {}){
+    //Create dialog observable:
+    const obsBasicDialog = this.dialog.open(component, { data: operationHandler });
+
+    //Observe content (Subscribe):
+    obsBasicDialog.afterClosed().subscribe(result => {
+      //Excecute callback:
+      callback(result);
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

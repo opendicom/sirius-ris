@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
-import { PdfService } from '@shared/services/pdf.service';                                      // PDF Service
 import {                                                                                        // Enviroments
   app_setting,
   regexObjectId,
@@ -52,8 +51,7 @@ export class ListComponent implements OnInit {
   constructor(
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService,
-    public pdfService       : PdfService
+    public sharedFunctions  : SharedFunctionsService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -130,6 +128,8 @@ export class ListComponent implements OnInit {
       'appointment.outpatient': 1,
       'appointment.inpatient': 1,
       'appointment.urgency': 1,
+      'appointment.attached_files._id': 1,    //Only _id and name for performing downloads dialog.
+      'appointment.attached_files.name': 1,   //Only _id and name for performing downloads dialog.
       'fk_appointment': 1,
       'date': 1,
       'flow_state': 1,
@@ -212,4 +212,8 @@ export class ListComponent implements OnInit {
     }, false, false, false);
   }
 
+  performingDownloads(current_performing: any){
+    //Open dialog to display downloadable files:
+    this.sharedFunctions.openDialog('performing_downloads', current_performing);
+  }
 }

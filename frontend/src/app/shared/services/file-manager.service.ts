@@ -189,7 +189,7 @@ export class FileManagerService {
         //Send snakbar message:
         this.sharedFunctions.sendMessage('No se encontró el archivo [_id: ' + _id + ']: ' + res.message);
       }
-    });
+    }, false, false, false);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

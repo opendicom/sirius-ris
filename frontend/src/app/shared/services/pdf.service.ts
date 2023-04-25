@@ -37,13 +37,15 @@ export class PdfService {
       friendly_pass = 'La contraseña ya no es accesible.';
     }
 
-    //Set PDF document by type:
-    switch(type){
-      // PDF APPOINTMENT:
-      case 'appointment':
-        if(_id !== undefined && regexObjectId.test(_id)){
+    //Check _id:
+    if(_id !== undefined && regexObjectId.test(_id)){
+
+      //Set PDF document by type:
+      switch(type){
+        // PDF APPOINTMENT:
+        case 'appointment':
           //Set params:
-          const params = {
+          const appointmentsParams = {
             'filter[_id]': _id,
             'proj[attached_files.base64]': 0,
             'proj[consents.informed_consent.base64]': 0,
@@ -52,7 +54,7 @@ export class PdfService {
 
           //Find appointment by _id:
           //Use Api Client to prevent reload current list response [sharedFunctions.find -> this.response = res].
-          const obsAppointment = this.apiClient.sendRequest('GET', 'appointments/find', params).pipe(
+          const obsAppointment = this.apiClient.sendRequest('GET', 'appointments/find', appointmentsParams).pipe(
             map(async (res: any) => {
               //Check operation status:
               if(res.success === true){
@@ -191,20 +193,36 @@ export class PdfService {
             }
           });
 
-        } else {
-          //Send message:
-          this.sharedFunctions.sendMessage('El _id especificado no es válido (No es ObjectId).');
-        }
-
         break;
 
-      // PDF STUDY:
-      case 'study':
-        break;
+        // PDF REPORT:
+        case 'report':
+          //Set params:
+          const reportParams = {
+            'filter[fk_performing]'       : _id,
 
-      // PDF REPORT:
-      case 'report':
-        break;
+            //Project only report content, not performing content (multiple reports | amendments):
+            'proj[clinical_info]'         : 1,
+            'proj[procedure_description]' : 1,
+            'proj[findings]'              : 1,
+            'proj[summary]'               : 1,
+            'proj[medical_signatures]'    : 1,
+            'proj[authenticated]'         : 1,
+
+            //Make sure the first report is the most recent:
+            'sort[createdAt]'             : -1
+          };
+
+          //Find report by _id:
+          //Use Api Client to prevent reload current list response [sharedFunctions.find -> this.response = res].
+          const obsReport = this.apiClient.sendRequest('GET', 'reports/find', reportParams).pipe(
+          );
+          break;
+      }
+
+    } else {
+      //Send message:
+      this.sharedFunctions.sendMessage('El _id especificado no es válido (No es ObjectId).');
     }
   }
 }
