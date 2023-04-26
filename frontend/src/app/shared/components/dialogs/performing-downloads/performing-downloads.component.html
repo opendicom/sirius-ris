@@ -79,7 +79,7 @@
 
   &nbsp;
 
-  <button mat-flat-button type="button" class="download-button" (click)="pdfService.createPDF('report', data._id)">
+  <button *ngIf="data.flow_state === 'P09'" mat-flat-button type="button" class="download-report" (click)="pdfService.createPDF('report', data._id)">
     <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>PDF DE INFORME</small>
   </button>
 
