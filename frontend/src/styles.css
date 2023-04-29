@@ -329,6 +329,8 @@ mark {
 .form-element{
   background-color: #27293d;
   border-radius: 4px;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
 }
 
 .input-wrapper{

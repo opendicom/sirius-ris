@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Set user role permissions:
 const rolePermissions = {
-    //Superusuario:
+    // Superusuario:
     1: {
         people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
         users                   : ['find', 'findOne', 'findByService', 'insert', 'update', 'delete'],            
@@ -25,15 +25,15 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
         performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
-        signatures              : ['find', 'findOne', 'insert', 'delete'],
+        signatures              : ['find', 'findOne', 'insert', 'delete']
     },
 
-    //Administrador:
+    // Administrador:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
         users                   : ['find', 'findOne', 'findByService', 'insert', 'update'],
         logs                    : ['find', 'findOne'],
-        sessions                : [],
+        sessions                : ['find', 'findOne'],
         modalities              : ['find', 'findOne'],
         organizations           : ['find', 'findOne'],
         branches                : ['find', 'findOne'],
@@ -49,13 +49,13 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne', 'insert', 'update'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
-        signatures              : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
     },
 
-    //Médico:
-    4: {
+    // Supervisor:
+    3: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne'],
+        users                   : ['find', 'findOne', 'findByService'],
         logs                    : ['find', 'findOne'],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -66,20 +66,92 @@ const rolePermissions = {
         slots                   : ['find', 'findOne'],
         procedures              : ['find', 'findOne'],
         procedure_categories    : ['find', 'findOne'],
-        files                   : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : [],
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'authenticate', 'setPathologies'],
+        signatures              : ['find', 'findOne', 'insert']
+    },
+
+    // Médico:
+    4: {
+        people                  : ['find', 'findOne'],
+        users                   : ['find', 'findOne', 'findByService'],
+        logs                    : ['find', 'findOne'],
+        sessions                : [],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne'],
         appointments_drafts     : [],
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
-        signatures              : ['find', 'findOne', 'insert'],
+        signatures              : ['find', 'findOne']
     },
 
-    //Coordinador:
+    // Técnico:
+    5: {
+        people                  : ['find', 'findOne'],
+        users                   : ['find', 'findOne', 'findByService'],
+        logs                    : ['find', 'findOne'],
+        sessions                : [],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : [],
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
+    },
+
+    // Enfermero:
+    6: {
+        people                  : ['find', 'findOne'],
+        users                   : ['find', 'findOne', 'findByService'],
+        logs                    : ['find', 'findOne'],
+        sessions                : [],
+        modalities              : ['find', 'findOne'],
+        organizations           : ['find', 'findOne'],
+        branches                : ['find', 'findOne'],
+        services                : ['find', 'findOne'],
+        equipments              : ['find', 'findOne'],
+        slots                   : ['find', 'findOne'],
+        procedures              : ['find', 'findOne'],
+        procedure_categories    : ['find', 'findOne'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne'],
+        appointments_drafts     : [],
+        mwl                     : [],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
+    },
+
+    // Coordinador:
     7: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'insert', 'update'],
         logs                    : ['find', 'findOne'],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -97,10 +169,10 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : [],
         reports                 : [],
-        signatures              : [],
+        signatures              : []
     },
 
-    //Recepcionista:
+    // Recepcionista:
     8: {
         people                  : ['find', 'findOne'],
         users                   : ['find', 'findOne', 'findByService'],
@@ -121,10 +193,10 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : [],
-        signatures              : [],
+        signatures              : []
     },
 
-    //Paciente:
+    // Paciente:
     9: {
         people                  : [],
         users                   : [],
@@ -144,7 +216,31 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne'],
-        signatures              : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
+    },
+
+    // Funcional [Empty role for concessions (Generic user)]:
+    10: {
+        people                  : [],
+        users                   : [],            
+        logs                    : [],
+        sessions                : [],
+        modalities              : [],
+        organizations           : [],
+        branches                : [],
+        services                : [],
+        equipments              : [],
+        slots                   : [],
+        procedures              : [],
+        procedure_categories    : [],
+        files                   : [],
+        appointments            : [],
+        appointments_drafts     : [],
+        mwl                     : [],
+        pathologies             : [],
+        performing              : [],
+        reports                 : [],
+        signatures              : []
     }
 }
 
@@ -174,18 +270,63 @@ const concessionPermissions = {
     // 4 : Gestión de recepciones:
     4: {
         appointments            : ['find', 'findOne'],
-        mwl                     : ['insert']
-    }
+        mwl                     : ['insert'],
+        performing              : ['find', 'findOne', 'insert', 'update']
+    },
 
     // 5 : Gestión de estudios:
+    5: {
+        users                   : ['find', 'findOne', 'findByService'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne', 'update'],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne', 'insert', 'update'],
+        reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
+    },
+
     // 6 : Gestión de informes:
+    6: {
+        users                   : ['find', 'findOne', 'findByService'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne'],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
+        signatures              : ['find', 'findOne']
+    },
+
     // 7 : Firmar informes:
+    7: {
+        users                   : ['find', 'findOne', 'findByService'],
+        appointments            : ['find', 'findOne'],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne', 'insert']
+    },
+
     // 8 : Autenticar informes:
-    // 9 : Búsquedas avanzadas:
-    // 10 : Listados de facturación:
-    // 11 : Estadísticas generales:
-    // 12 : Estadísticas médicas:
-    // 13 : Estadísticas del personal:
+    8: {
+        users                   : ['find', 'findOne', 'findByService'],
+        appointments            : ['find', 'findOne'],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne'],
+        reports                 : ['find', 'findOne', 'authenticate'],
+        signatures              : ['find', 'findOne']
+    },
+
+    // 9  : Enmendar informes:
+    // This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
+    9: {
+        reports                 : ['insert']
+    }
+    
+    // 10 : Búsquedas avanzadas:
+    // 11 : Listados de facturación:
+    // 12 : Estadísticas generales:
+    // 13 : Estadísticas médicas:
+    // 14 : Estadísticas del personal:
     // 15 : Eliminación física de archivos:
     // 16 : Supervisar citas en curso:
 }

@@ -387,8 +387,17 @@
 
         <div class="input-wrapper text-right" [class.signatures-warn]="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined"> <!-- start fxLayout wrapper -->
           <button mat-mini-fab class="small_button" type="button" (click)="onSubmit('save')" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button>
-          <button mat-mini-fab class="small_button sign-button"   (click)="passwordRequest('save-sign')" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
-          <button mat-mini-fab class="small_button" type="button" (click)="passwordRequest('save-sign-authenticate')" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
+
+          <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes] -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7]))">
+            <button mat-mini-fab class="small_button sign-button"   (click)="passwordRequest('save-sign')" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
+          </span>
+
+          <!-- Superusuario, Supervisor, (Concesiones: [7: Firmar informes] AND [8: Autenticar informes]) -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || ((sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7])) && (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8])))">
+            <button mat-mini-fab class="small_button" type="button" (click)="passwordRequest('save-sign-authenticate')" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
+          </span>
+          
           <button mat-mini-fab class="small_button" type="button" matTooltip="Cerrar" routerLink="/performing/list" color="basic"><mat-icon>close</mat-icon></button>
 
           <!--signatures_warn-->

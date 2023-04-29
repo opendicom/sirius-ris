@@ -104,34 +104,51 @@
       <!-- FORMS: --------------------------------------------------------------------------------------------------------------------- -->
       <span *ngIf="data.last_report.authenticated.user !== undefined && data.last_report.authenticated.user.person !== undefined; then thenBlockAuthenticated else elseBlockAuthenticated"></span>
       <ng-template #thenBlockAuthenticated>
-        <div class="settings-card">
-          <mat-icon>info</mat-icon><strong class="amend-title"> Recuerde que al enmendar un informe:</strong>
-          <ul>
-            <li>Se creará un <strong>nuevo informe</strong> asociado a la realización actual.</li>
-            <li>Dicha realización volverá al estado de flujo de <strong>Informe borrador</strong> con el contenido del último informe autenticado para comenzar a editar una enmienda.</li>
-            <li>Todos los infomes previos firmados y autenticados permaneceran en la base de datos por reglamentación legal.</li>
-          </ul>
+        <!--ammend_report-->
+        <!-- Superusuario, Supervisor, Concesiones: [9: Enmendar informes] -->
+        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [9]))">
+          <div class="settings-card">
+            <mat-icon>info</mat-icon><strong class="amend-title"> Recuerde que al enmendar un informe:</strong>
+            <ul>
+              <li>Se creará un <strong>nuevo informe</strong> asociado a la realización actual.</li>
+              <li>Dicha realización volverá al estado de flujo de <strong>Informe borrador</strong> con el contenido del último informe autenticado para comenzar a editar una enmienda.</li>
+              <li>Todos los infomes previos firmados y autenticados permaneceran en la base de datos por reglamentación legal.</li>
+            </ul>
 
-          <hr class="soft-alt"/><br/>
+            <hr class="soft-alt"/><br/>
 
-          <div class="text-right">
-            <button mat-flat-button type="button" (click)="onSubmit('amend')" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
+            <div class="text-right">
+              <button mat-flat-button type="button" (click)="onSubmit('amend')" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
+            </div>
           </div>
-        </div>
+        </span>
       </ng-template>
 
       <ng-template #elseBlockAuthenticated>
-        <form [formGroup]="form">
+        <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes, 8: Autenticar informes] -->
+        <form *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7, 8]))" [formGroup]="form">
           <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: #2d2d47;">
-            <div> <!-- start fxLayout wrapper -->
+            <div class="text-right"> <!-- start fxLayout wrapper -->
               <mat-form-field appearance="fill" class="full">
                 <mat-label>Contraseña</mat-label>
                 <input matInput type="password" formControlName="password" placeholder="Ingrese su contraseña">
               </mat-form-field>
               <br/>
-              <button mat-flat-button type="button" (click)="onSubmit('sign')" class="sign-button"><mat-icon>draw</mat-icon> FIRMAR</button>
-              <button mat-flat-button type="button" (click)="onSubmit('authenticate')" color="primary"><mat-icon>workspace_premium</mat-icon> AUTENTICAR</button>
-              <button mat-flat-button type="button" (click)="onSubmit('sign-authenticate')" color="accent"><mat-icon>draw</mat-icon> FIRMAR Y AUTENTICAR <mat-icon>workspace_premium</mat-icon></button>
+
+              <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7]))">
+                <button mat-flat-button type="button" (click)="onSubmit('sign')" class="sign-button"><mat-icon>draw</mat-icon> FIRMAR</button>
+              </span>
+
+              <!-- Superusuario, Supervisor, Concesiones: [8: Autenticar informes] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8]))">
+                <button mat-flat-button type="button" (click)="onSubmit('authenticate')" color="primary"><mat-icon>workspace_premium</mat-icon> AUTENTICAR</button>
+              </span>
+
+              <!-- Superusuario, Supervisor, (Concesiones: [7: Firmar informes] AND [8: Autenticar informes]) -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || ((sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7])) && (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8])))">
+                <button mat-flat-button type="button" (click)="onSubmit('sign-authenticate')" color="accent"><mat-icon>draw</mat-icon> FIRMAR Y AUTENTICAR <mat-icon>workspace_premium</mat-icon></button>
+              </span>
             </div> <!-- end fxLayout wrapper -->
           </div>
         </form>

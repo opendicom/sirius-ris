@@ -707,6 +707,7 @@ export class FormComponent implements OnInit {
           delete userSaveData['professional[description]'];
           delete userSaveData['professional[workload]'];
           delete userSaveData['professional[vacation]'];
+          delete userSaveData['password_repeat'];
 
           //Check person_id and user_id with regex ObjectId:
           if(regexObjectId.test(this.person_id) === false){

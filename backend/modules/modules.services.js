@@ -3149,16 +3149,16 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
                     case 'performing':
                         //Get Domain Reference:
-                        const referencedAppointment = await getDomainReference('appointments', req.body.fk_appointment, { 'domain' : 1 });
+                        const referencedAppointment = await getDomainReference('appointments', req.body.fk_appointment, { 'imaging' : 1 });
 
                         //Check Domain Reference:
                         if(referencedAppointment !== false){
                             //Current cases to eval:
-                            if(domainType == 'organizations' && referencedAppointment.imaging.organization !== domain){
+                            if(domainType == 'organizations' && referencedAppointment.imaging.organization != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'branches' && referencedAppointment.imaging.branch !== domain){
+                            } else if(domainType == 'branches' && referencedAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'services' && referencedAppointment.imaging.service !== domain){
+                            } else if(domainType == 'services' && referencedAppointment.imaging.service != domain){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {
@@ -3169,16 +3169,16 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                     case 'reports':
                         //Get Domain Reference:
                         const referencePerforming = await getDomainReference('performing', req.body.fk_performing, { 'fk_appointment' : 1 });
-                        const referencePerformingAppointment = await getDomainReference('appointments', referencePerforming.fk_appointment, { 'domain' : 1 });
+                        const referencePerformingAppointment = await getDomainReference('appointments', referencePerforming.fk_appointment, { 'imaging' : 1 });
 
                         //Check Domain Reference:
                         if(referencedAppointment !== false){
                             //Current cases to eval:
-                            if(domainType == 'organizations' && referencePerformingAppointment.imaging.organization !== domain){
+                            if(domainType == 'organizations' && referencePerformingAppointment.imaging.organization != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'branches' && referencePerformingAppointment.imaging.branch !== domain){
+                            } else if(domainType == 'branches' && referencePerformingAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'services' && referencePerformingAppointment.imaging.service !== domain){
+                            } else if(domainType == 'services' && referencePerformingAppointment.imaging.service != domain){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {
@@ -3445,16 +3445,16 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                     case 'performing':
                         //Get Domain Reference:
                         const referencedFK = await getDomainReference(schema, req.body._id, { 'fk_appointment' : 1 });
-                        const referencedFKAppointment = await getDomainReference('appointments', referencedFK.fk_appointment, { 'domain' : 1 });
+                        const referencedFKAppointment = await getDomainReference('appointments', referencedFK.fk_appointment, { 'imaging' : 1 });
 
                         //Check Domain Reference:
                         if(referencedFKAppointment !== false){
                             //Current cases to eval:
-                            if(domainType == 'organizations' && referencedFKAppointment.imaging.organization !== domain){
+                            if(domainType == 'organizations' && referencedFKAppointment.imaging.organization != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'branches' && referencedFKAppointment.imaging.branch !== domain){
+                            } else if(domainType == 'branches' && referencedFKAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'services' && referencedFKAppointment.imaging.service !== domain){
+                            } else if(domainType == 'services' && referencedFKAppointment.imaging.service != domain){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {
@@ -3466,16 +3466,16 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         //Get Domain Reference:
                         const referenceSelfFK = await getDomainReference(schema, req.body._id, { 'fk_performing' : 1 });
                         const referencePerformingFK = await getDomainReference('performing', referenceSelfFK.fk_performing, { 'fk_appointment' : 1 });
-                        const referencePerformingFKAppointment = await getDomainReference('appointments', referencePerformingFK.fk_appointment, { 'domain' : 1 });
+                        const referencePerformingFKAppointment = await getDomainReference('appointments', referencePerformingFK.fk_appointment, { 'imaging' : 1 });
 
                         //Check Domain Reference:
                         if(referencePerformingFKAppointment !== false){
                             //Current cases to eval:
-                            if(domainType == 'organizations' && referencePerformingFKAppointment.imaging.organization !== domain){
+                            if(domainType == 'organizations' && referencePerformingFKAppointment.imaging.organization != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'branches' && referencePerformingFKAppointment.imaging.branch !== domain){
+                            } else if(domainType == 'branches' && referencePerformingFKAppointment.imaging.branch != domain){
                                 operationResult = false; /* Operation rejected */
-                            } else if(domainType == 'services' && referencePerformingFKAppointment.imaging.service !== domain){
+                            } else if(domainType == 'services' && referencePerformingFKAppointment.imaging.service != domain){
                                 operationResult = false; /* Operation rejected */
                             }
                         } else {

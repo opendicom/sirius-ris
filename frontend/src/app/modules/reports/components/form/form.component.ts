@@ -496,8 +496,6 @@ export class FormComponent implements OnInit {
 
     //Clear filter pathologies:
     this.filterPathologies({ srcElement : { value: '' } });
-
-    console.log(this.availablePathologies);
   }
   
   findReferences(){

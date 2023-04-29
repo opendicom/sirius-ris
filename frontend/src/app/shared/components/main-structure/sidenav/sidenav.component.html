@@ -34,8 +34,8 @@
     </div>
   </div>
 
-  <!-- Superusuario, Administrador, Recepcionista, Concesiones: [4: Gestión de recepciones] -->
-  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
+  <!-- Superusuario, Administrador, Técnico, Enfermero, Recepcionista, Concesiones: [4: Gestión de recepciones] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
     <h3>Recepción</h3>
 
     <mat-list-item routerLink="/check-in/list">
@@ -43,14 +43,17 @@
     </mat-list-item>
   </div>
 
-  <!-- 1: Superusuario (En desarrollo) -->
-  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+  <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [5: Gestión de estudios] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
     <h3>Realización</h3>
 
     <mat-list-item routerLink="/performing/list">
       <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
     </mat-list-item>
+  </div>
 
+  <!-- 1: Superusuario (En desarrollo) -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
     <h3>Funciones avanzadas</h3>
 
     <mat-list-item>
