@@ -165,7 +165,7 @@
   
     <hr class="dashed"/>
 
-    <mat-tab-group>
+    <mat-tab-group [selectedIndex]="tabIndex">
 
         <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
         <mat-tab>
@@ -269,54 +269,88 @@
                       </div> <!-- end fxLayout wrapper -->
 
                       <div class="input-wrapper sub-wrapper dose"> <!-- start fxLayout wrapper -->
-                        <h4 class="badge-warn badge-dose">DOSIS RECOMENDADA: {{ sharedProp.recomended_dose }} MBq</h4>
+                        <h4>DOSIS RECOMENDADA:</h4>
+                        <span class="badge-warn badge-dose MBq">{{ sharedProp.recomended_dose }} MBq</span>
+                        <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(sharedProp.recomended_dose) }} mCi</span>
+                        <div class="clear"></div>
+                        <br/>
                         <small>Dósis recomendada <strong>=</strong> Peso <strong>*</strong> Coeficiente de procedimiento</small>
                       </div> <!-- end fxLayout wrapper -->
                     </div>
                     <hr class="dashed" /><br/>
 
-                    <h4>Actividad administrada <span class="label-info">MBq</span>:</h4>
-                    <mat-form-field appearance="fill" class="large">
-                      <mat-label>Actividad administrada</mat-label>
-                      <input icNumbersWD type="text" matInput formControlName="administred_activity" min="1" max="900">
-                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity_mCi', 'mCi')" type="text" matInput formControlName="administred_activity" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity', 'MBq')" type="text" matInput formControlName="administred_activity_mCi" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
 
                     <hr class="dashed" /><br/>
 
                     <div fxLayout="row" fxLayoutAlign="start start">
-                      <div class="input-wrapper sub-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                         <h4>Hora jeringa llena <span class="label-info">Formato 24 hs</span>:</h4>
-                        <mat-form-field appearance="fill" class="large">
+                        <mat-form-field appearance="fill" class="full">
                           <mat-label>Hora jeringa llena</mat-label>
                           <input type="time" matInput formControlName="syringe_full_time" min="00:00" max="24:00">
                           <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_full_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
             
-                      <div class="input-wrapper sub-wrapper text-center"> <!-- start fxLayout wrapper -->
-                        <h4>Actividad jeringa llena <span class="label-info">MBq</span>:</h4>
-                        <mat-form-field appearance="fill" class="large">
-                          <mat-label>Actividad jeringa llena</mat-label>
-                          <input icNumbersWD type="text" matInput formControlName="syringe_activity_full" min="1" max="900">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa llena <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa llena MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_full_mCi', 'mCi')" type="text" matInput formControlName="syringe_activity_full" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa llena <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa llena mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_full', 'MBq')"  type="text" matInput formControlName="syringe_activity_full_mCi" min="1" max="900">
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>
 
+                    <hr class="dashed" /><br/>
+
                     <div fxLayout="row" fxLayoutAlign="start start">
-                      <div class="input-wrapper sub-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                         <h4>Hora jeringa vacía <span class="label-info">Formato 24 hs</span>:</h4>
-                        <mat-form-field appearance="fill" class="large">
+                        <mat-form-field appearance="fill" class="full">
                           <mat-label>Hora jeringa vacía</mat-label>
                           <input type="time" matInput formControlName="syringe_empty_time" min="00:00" max="24:00">
                           <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.pet_ct.syringe_empty_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
             
-                      <div class="input-wrapper sub-wrapper text-center"> <!-- start fxLayout wrapper -->
-                        <h4>Actividad jeringa vacía <span class="label-info">MBq</span>:</h4>
-                        <mat-form-field appearance="fill" class="large">
-                          <mat-label>Actividad jeringa vacía</mat-label>
-                          <input icNumbersWD type="text" matInput formControlName="syringe_activity_empty" min="1" max="900">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa vacía <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa vacía MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_empty_mCi', 'mCi')" type="text" matInput formControlName="syringe_activity_empty" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad jeringa vacía <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad jeringa vacía mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_empty', 'MBq')" type="text" matInput formControlName="syringe_activity_empty_mCi" min="1" max="900">
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>

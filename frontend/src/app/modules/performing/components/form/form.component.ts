@@ -81,9 +81,10 @@ export class FormComponent implements OnInit {
   public form!: FormGroup;
 
   //Define id and form_action variables (Activated Route):
-  public _id: string = '';
-  private keysWithValues: Array<string> = [];
-  public form_action: any;
+  public _id              : string = '';
+  private keysWithValues  : Array<string> = [];
+  public form_action      : any;
+  public tabIndex         : number = 0;
 
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
@@ -142,12 +143,15 @@ export class FormComponent implements OnInit {
 
         //PET-CT fields:
         pet_ct: this.formBuilder.group({
-          'batch'                   : [ '' ],
-          'syringe_activity_full'   : [ '' ],
-          'syringe_activity_empty'  : [ '' ],
-          'administred_activity'    : [ '' ],
-          'syringe_full_time'       : [ '' ],
-          'syringe_empty_time'      : [ '' ],
+          'batch'                     : [ '' ],
+          'syringe_activity_full'     : [ '' ],
+          'syringe_activity_full_mCi' : [ '' ],
+          'syringe_activity_empty'    : [ '' ],
+          'syringe_activity_empty_mCi': [ '' ],
+          'administred_activity'      : [ '' ],
+          'administred_activity_mCi'  : [ '' ],
+          'syringe_full_time'         : [ '' ],
+          'syringe_empty_time'        : [ '' ],
         })
       }),
 
@@ -173,6 +177,11 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
+
+    //Set tabIndex with parameters by routing (if exist):
+    if(this.objRoute.snapshot.params['tabIndex'] !== null && this.objRoute.snapshot.params['tabIndex'] !== undefined && !isNaN(this.objRoute.snapshot.params['tabIndex'])){
+      this.tabIndex = this.objRoute.snapshot.params['tabIndex'];
+    }
 
     //Switch by form action:
     switch(this.form_action){
@@ -255,12 +264,15 @@ export class FormComponent implements OnInit {
 
                 //PET-CT fields:
                 pet_ct: this.formBuilder.group({
-                  'batch'                   : [ '' ],
-                  'syringe_activity_full'   : [ '' ],
-                  'syringe_activity_empty'  : [ '' ],
-                  'administred_activity'    : [ '' ],
-                  'syringe_full_time'       : [ '' ],
-                  'syringe_empty_time'      : [ '' ],
+                  'batch'                     : [ '' ],
+                  'syringe_activity_full'     : [ '' ],
+                  'syringe_activity_full_mCi' : [ '' ],
+                  'syringe_activity_empty'    : [ '' ],
+                  'syringe_activity_empty_mCi': [ '' ],
+                  'administred_activity'      : [ '' ],
+                  'administred_activity_mCi'  : [ '' ],
+                  'syringe_full_time'         : [ '' ],
+                  'syringe_empty_time'        : [ '' ],
                 })
               }),
 
@@ -305,6 +317,11 @@ export class FormComponent implements OnInit {
                 this.form.get('injection.pet_ct.administred_activity')?.setValue(resPerforming.data[0].injection.pet_ct.administred_activity);
                 this.form.get('injection.pet_ct.syringe_full_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_full_time);
                 this.form.get('injection.pet_ct.syringe_empty_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_empty_time);
+
+                //Convert MBq to mCi and set mCi into fields values:
+                this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(this.sharedFunctions.MBqTomCi(resPerforming.data[0].injection.pet_ct.administred_activity));
+                this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.setValue(this.sharedFunctions.MBqTomCi(resPerforming.data[0].injection.pet_ct.syringe_activity_full));
+                this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.setValue(this.sharedFunctions.MBqTomCi(resPerforming.data[0].injection.pet_ct.syringe_activity_empty));
 
                 //Get nested property keys with values:
                 const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.injection.pet_ct, false, true);
@@ -443,7 +460,7 @@ export class FormComponent implements OnInit {
       if(performingSaveData.hasOwnProperty('injection') && this.form_action == 'insert'){
         await Promise.all(Object.keys(performingSaveData.injection).map(key => {
           //Check empty fields:
-          if(performingSaveData.hasOwnProperty('injection') && (performingSaveData.injection[key] === null || performingSaveData.injection[key] === undefined || performingSaveData.injection[key] === '')){
+          if(performingSaveData.injection[key] === null || performingSaveData.injection[key] === undefined || performingSaveData.injection[key] === ''){
             delete performingSaveData.injection;
           }
         }));
@@ -454,10 +471,13 @@ export class FormComponent implements OnInit {
       if(performingSaveData.hasOwnProperty('acquisition') && this.form_action == 'insert'){
         await Promise.all(Object.keys(performingSaveData.acquisition).map(key => {
           //Check empty fields:
-          if(key !== 'observation'){  //Acquisition Observations is optional.
-            if(performingSaveData.hasOwnProperty('acquisition') && (performingSaveData.acquisition[key] === null || performingSaveData.acquisition[key] === undefined || performingSaveData.acquisition[key] === '')){
+          if(key !== 'observations'){  //Acquisition Observations is optional.
+            if(performingSaveData.acquisition[key] === null || performingSaveData.acquisition[key] === undefined || performingSaveData.acquisition[key] === ''){
               delete performingSaveData.acquisition;
             }
+          //Prevent length validation error (min length 10 + 7 chars [<p></p>]):
+          } else if(performingSaveData.acquisition.observations.length < 17) {
+            delete performingSaveData.acquisition.observations;
           }
         }));
       }
@@ -499,6 +519,11 @@ export class FormComponent implements OnInit {
             destination = 'performing';
             break;
         }
+
+        //Delete temp values:
+        if(resPerforming.injection.administred_activity_mCi){ delete resPerforming.injection.administred_activity_mCi; }
+        if(resPerforming.injection.syringe_activity_full_mCi){ delete resPerforming.injection.syringe_activity_full_mCi; }
+        if(resPerforming.injection.syringe_activity_empty_mCi){ delete resPerforming.injection.syringe_activity_empty_mCi; }
 
         //Check operation status:
         if(resPerforming.success === true){
@@ -1018,5 +1043,26 @@ export class FormComponent implements OnInit {
         this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado usuarios de servicio (técnicos y/o enfermeros).');
       }
     });
+  }
+
+  convertActivity(event: any, destinationFieldName: string, destinationUnit: string){
+    //Get activity (origin):
+    let activity = event.srcElement.value;
+
+    //Switch by unit:
+    switch(destinationUnit){
+      case 'MBq':
+        //Set activity to MBq (convert):
+        activity = this.sharedFunctions.mCiToMBq(event.srcElement.value);
+        break;
+
+      case 'mCi':
+        //Set activity to mCI (convert):
+        activity = this.sharedFunctions.MBqTomCi(event.srcElement.value);
+        break;
+    }
+
+    //Set field value:
+    this.form.get('injection.pet_ct.' + destinationFieldName)?.setValue(activity);
   }
 }

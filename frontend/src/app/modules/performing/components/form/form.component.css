@@ -60,8 +60,20 @@
 .dose{
   text-align: center;
   opacity: 0.8;
+  background-color: #43466e79;
+  border-radius: 5px;
 }
 
 .badge-dose{
   float: none !important;
+}
+
+.MBq {
+  background-color: #05ff9f8e !important;
+  color: #fff;
+}
+
+.mCi {
+  background-color: #ff6e69d2 !important;
+  color: #fff;
 }

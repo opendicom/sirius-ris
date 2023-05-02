@@ -205,8 +205,14 @@
 
         <!-- recomended_dose -->
         <span *ngIf="sharedProp.current_modality_code_value && sharedProp.current_modality_code_value == 'PT'">
-          <span class="badge-warn badge-dose" matTooltip="Dósis recomendada">
+          <div class="clear"></div><hr class="dashed" />
+          
+          <span class="badge-warn badge-dose MBq" matTooltip="Dósis recomendada">
             <span>{{ sharedFunctions.calculateDose(element.private_health.weight, element.procedure.coefficient) }} MBq</span>
+          </span>
+
+          <span class="badge-warn badge-dose mCi" matTooltip="Dósis recomendada">
+            <span>{{ sharedFunctions.MBqTomCi(sharedFunctions.calculateDose(element.private_health.weight, element.procedure.coefficient)) }} mCi</span>
           </span>
         </span>
 

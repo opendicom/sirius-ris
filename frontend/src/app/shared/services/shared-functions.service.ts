@@ -1353,4 +1353,42 @@ export class SharedFunctionsService {
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // MBq to mCI:
+  // Megabecquerel to Millicurie Conversion.
+  //--------------------------------------------------------------------------------------------------------------------//
+  MBqTomCi(MBq: number | string): number {
+    //Initializate result:
+    let result = 0;
+
+    //Check input value exist and concert:
+    if(MBq !== undefined && MBq !== null){
+      return parseFloat(MBq.toString()) * 0.027027027027027;
+    }
+
+    //Return result:
+    return result;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // mCI to MBq:
+  // Millicurie to Megabecquerel Conversion.
+  //--------------------------------------------------------------------------------------------------------------------//
+  mCiToMBq(mCi: number | string): number {
+    //Initializate result:
+    let result = 0;
+
+    //Check input value exist and concert:
+    if(mCi !== undefined && mCi !== null){
+      result = parseFloat(mCi.toString()) * 37;
+    }
+
+    //Return result:
+    return result;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
