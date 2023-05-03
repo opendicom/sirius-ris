@@ -7,9 +7,27 @@
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}">
-          <mat-icon>edit</mat-icon>
-        </button>
+        
+        <!-- reporting indicator -->
+        <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+          <span *ngIf="element.appointment">
+            <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
+            <ng-template #thenBlockReporting>
+              <mat-icon class="reporting-indicator" matTooltip="Este estudio se encuentra asignado al usuario" color="primary">circle</mat-icon>
+            </ng-template>
+            <ng-template #elseBlockReporting>
+              <mat-icon class="reporting-indicator" matTooltip="Este estudio NO se encuentra asignado al usuario, pero es visible debido a su acceso (dominio)" color="accent">circle</mat-icon>
+            </ng-template>
+          </span>
+        </span>
+
+        <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
+        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
+          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}/performing">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </span>
 
         <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
           <mat-icon>cloud_download</mat-icon>

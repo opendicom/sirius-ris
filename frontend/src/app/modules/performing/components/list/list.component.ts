@@ -56,6 +56,14 @@ export class ListComponent implements OnInit {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
+    //Initializate reporting action button (disabled):
+    let reporting = false;
+
+    //Enable reporting button if the user is Superuser, Supervisor, Médico:
+    if(this.sharedProp.userLogged.permissions[0].role == 1 || this.sharedProp.userLogged.permissions[0].role == 3 || this.sharedProp.userLogged.permissions[0].role == 4){
+      reporting = true;
+    }
+
     //Set action properties:
     sharedProp.actionSetter({
       content_title       : 'Listado de estudios',
@@ -67,11 +75,12 @@ export class ListComponent implements OnInit {
       filters : {
         search        : true,
         date          : false,
-        date_range    : 'start-end',
+        date_range    : 'date',
         urgency       : true,
         status        : true,
         flow_state    : true,
         modality      : 'modality._id',   //FK name in schema
+        reporting     : reporting,
         pager         : true,
         clear_filters : true
       }
@@ -91,6 +100,7 @@ export class ListComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
+    this.sharedProp.reporting     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -143,6 +153,11 @@ export class ListComponent implements OnInit {
     };
     this.sharedProp.sort          = { 'date': -1, 'urgency': 1, 'status': -1, 'appointment.imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+
+    //Default the studies assigned to the user to the list (Médico):
+    if(this.sharedProp.userLogged.permissions[0].role == 4){
+      this.sharedProp.reporting = this.sharedProp.userLogged.user_id;
+    }
 
     //Refresh request params:
     sharedProp.paramsRefresh();

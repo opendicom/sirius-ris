@@ -109,6 +109,7 @@ export class UsersAuthService {
           //Initialize domain type and description:
           let domainType = '';
           let domainDescription = '';
+          let concession : any = [];
 
           //Preserve domain type and description:
           await Promise.all(Object.keys(siriusAuth.permissions).map((key) => {
@@ -117,6 +118,7 @@ export class UsersAuthService {
               //Set domain type and description:
               domainType = siriusAuth.permissions[key].type;
               domainDescription = siriusAuth.permissions[key].description;
+              concession = siriusAuth.permissions[key].concession;
             }
           }));
 
@@ -128,7 +130,8 @@ export class UsersAuthService {
             domain: form_data.value.domain,
             type: domainType,
             description: domainDescription,
-            role: parseInt(form_data.value.role, 10)
+            role: parseInt(form_data.value.role, 10),
+            concession: concession
           }];
 
           //Add token into authentication object:

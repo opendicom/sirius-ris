@@ -411,6 +411,7 @@
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           <h3 class="underline-ok">Dato clínico:</h3>
           <div [class.unselected]="clinicalInfoValidator == false">
+            <span class="label-editor">min: 10, max: 10000</span>
             <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
           </div>
 
@@ -418,6 +419,7 @@
 
           <h3 class="underline-ok">Procedimiento:</h3>
           <div [class.unselected]="procedureDescriptionValidator == false">
+            <span class="label-editor">min: 10, max: 10000</span>
             <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
           </div>
 
@@ -428,11 +430,13 @@
             <input matInput type="text" formControlName="findings_title" placeholder="Ingrese el título de hallazgos">
           </mat-form-field>
 
+          <span class="label-editor">min: 10, max: 10000</span>
           <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="editorConfig" data=""></ckeditor>
 
           <br/><hr class="soft-alt" /><br/>
 
           <h3 class="underline-ok">En suma:</h3>
+          <span class="label-editor">min: 10, max: 10000</span>
           <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
           
           <br/>

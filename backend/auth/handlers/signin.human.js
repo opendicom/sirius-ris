@@ -189,7 +189,8 @@ module.exports = async (req, res) => {
                                                             domain: orgData._id,
                                                             type: 'organization',
                                                             description: orgData.short_name,
-                                                            role: value['role']
+                                                            role: value['role'],
+                                                            concession: peopleData.user.permissions[key].concession
                                                         };
                                                     }
                                                 }
@@ -242,7 +243,8 @@ module.exports = async (req, res) => {
                                                         domain: branchData._id,
                                                         type: 'branch',
                                                         description: branchData.organization.short_name + ' - ' + branchData.short_name,
-                                                        role: value['role']
+                                                        role: value['role'],
+                                                        concession: peopleData.user.permissions[key].concession
                                                     };
                                                 }
                                             })
@@ -310,7 +312,8 @@ module.exports = async (req, res) => {
                                                         domain: servData._id,
                                                         type: 'service',
                                                         description: servData.organization.short_name + ' - ' + servData.branch.short_name + ' - ' + servData.name,
-                                                        role: value['role']
+                                                        role: value['role'],
+                                                        concession: peopleData.user.permissions[key].concession
                                                     };
                                                 }
                                             })

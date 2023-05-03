@@ -46,6 +46,7 @@ export class ListComponent implements OnInit {
         flow_state    : false,
         status        : true,
         modality      : false,
+        reporting     : false,
         pager         : true,
         clear_filters : true
       }
@@ -65,6 +66,7 @@ export class ListComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
+    this.sharedProp.reporting     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

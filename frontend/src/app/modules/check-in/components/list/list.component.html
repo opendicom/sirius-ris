@@ -26,12 +26,12 @@
                 <span *ngFor="let currentNested of sharedFunctions.nested_response.data">
                   <span *ngIf="element._id == currentNested.fk_appointment">
                     <!-- update performing -->
-                    <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Editar estudio" aria-label="Editar" routerLink="/performing/form/update/{{ currentNested._id }}">
+                    <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Editar estudio" aria-label="Editar" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
                       <mat-icon>edit</mat-icon>
                     </button>
       
                     <!-- insert more performing as same fk_appointment -->
-                    <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
+                    <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
                       <mat-icon>add_location_alt</mat-icon>
                     </button>
                     
@@ -61,7 +61,7 @@
 
               <ng-template #elseBlockMatch>
                 <!-- insert first performing | Duplicated button on diferent cases -->
-                <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
+                <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                   <mat-icon>location_on</mat-icon>
                 </button>
               </ng-template>
@@ -70,7 +70,7 @@
 
             <ng-template #elseBlockPerforming>
               <!-- insert first performing | Duplicated button on diferent cases -->
-              <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
+              <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                 <mat-icon>location_on</mat-icon>
               </button>
             </ng-template>

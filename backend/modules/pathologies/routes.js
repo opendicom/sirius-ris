@@ -13,6 +13,10 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
 
+//Import Handlers:
+const findHandler   = require('./handlers/find');
+const saveHandler   = require('./handlers/save');
+
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
@@ -27,59 +31,30 @@ const allowedSchemaKeys = mainServices.getSchemaKeys(pathologies, true);      //
 const router = express.Router();
 
 //Routes:
-//FIND - FIND BY ID:
+//FIND:
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'find';
-
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'find':
-                moduleServices.find(req, res, pathologies);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, pathologies);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, pathologies);
     }
 );
 
-//FIND ONE - FIND BY ID:
+//FIND ONE:
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'findOne';
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
 
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'findOne':
-                moduleServices.findOne(req, res, pathologies);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, pathologies);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, pathologies);
     }
 );
 
@@ -89,15 +64,9 @@ router.post(
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     pathologies.Validator,
-    async (req, res) => {
-        //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, pathologies, { name: req.body.name });
-
-        //Check for duplicates:
-        if(duplicated == false){
-            //Save data:
-            moduleServices.insert(req, res, pathologies);
-        }
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, pathologies, 'insert');
     }
 );
 
@@ -108,19 +77,9 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, pathologies.AllowedUnsetValues),
     pathologies.Validator,
-    async (req, res) => {
-        //Search for duplicates:
-        const duplicated = await moduleServices.isDuplicated(req, res, pathologies, { name: req.body.name });
-
-        //Data normalization - toUpperCase for pathology name:
-        //Fix allowedValidate case: NO Data normalization because body is cloned in set object.
-        if(req.validatedResult.set.name !== undefined && req.validatedResult.set.name !== ''){ req.validatedResult.set.name = req.validatedResult.set.name.toUpperCase(); }
-
-        //Check for duplicates:
-        if(duplicated == false){
-            //Save data:
-            moduleServices.update(req, res, pathologies);
-        }
+    (req, res) => { 
+        //Send to handler:
+        saveHandler(req, res, pathologies, 'update');
     }
 );
 
@@ -130,7 +89,10 @@ router.post(
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
-    (req, res) => { moduleServices._delete(req, res, pathologies); }
+    (req, res) => {
+        //Send to module service:
+        moduleServices._delete(req, res, pathologies);
+    }
 );
 
 //--------------------------------------------------------------------------------------------------------------------//

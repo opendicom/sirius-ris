@@ -59,6 +59,7 @@ export class ListComponent implements OnInit {
         urgency       : false,
         flow_state    : false,
         modality      : false,
+        reporting     : false,
         pager         : true,
         clear_filters : true
       }
@@ -78,7 +79,7 @@ export class ListComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
-
+    this.sharedProp.reporting     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

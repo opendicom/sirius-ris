@@ -217,7 +217,7 @@
                   </mat-form-field>
                 </div>
 
-                <h4>Observaciones:</h4>
+                <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
                 <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="editorConfig" data=""></ckeditor>
                 
                 <br/><hr class="dashed" /><br/>
@@ -427,7 +427,7 @@
                   <h3 class="form-title text-center underline-fail-alt">Procedimiento de anestesia:</h3>
                   <br/>
                   
-                  <h4>Procedimiento realizado:</h4>
+                  <h4>Procedimiento realizado <span class="label-info">min: 10, max: 1000</span>:</h4>
                   <div [class.unselected]="anesthesiaValidator == false">
                     <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="editorConfig" data=""></ckeditor>
                   </div>
@@ -473,7 +473,7 @@
                     <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('acquisition.time');"><mat-icon>timer</mat-icon></button>
                   </mat-form-field>
 
-                  <h4>Observaciones:</h4>
+                  <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
                   <ckeditor formControlName="observations" #acquisitionObservations [editor]="acquisitionObservationsEditor" [config]="editorConfig" data=""></ckeditor>
 
                   <br/><hr class="dashed"/><br/>

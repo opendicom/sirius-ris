@@ -11,7 +11,8 @@ const routes: Routes = [
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
       { path: 'form/:action/:_id', component: FormComponent },
-      { path: 'form/:action/:_id/:tabIndex', component: FormComponent },
+      { path: 'form/:action/:_id/:origin', component: FormComponent },
+      { path: 'form/:action/:_id/:origin/:tabIndex', component: FormComponent },
       { path: '**', redirectTo: 'list' },
     ]
   }

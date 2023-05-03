@@ -16,7 +16,7 @@ import { app_setting, regexObjectId } from '@env/environment';                  
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'name', 'description', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'name', 'description', 'status'];
 
   //Inject services to the constructor:
   constructor(
@@ -43,6 +43,7 @@ export class ListComponent implements OnInit {
         urgency       : false,
         flow_state    : false,
         modality      : false,
+        reporting     : false,
         pager         : true,
         clear_filters : true
       }
@@ -62,6 +63,7 @@ export class ListComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
+    this.sharedProp.reporting     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -69,8 +71,8 @@ export class ListComponent implements OnInit {
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';
-    this.sharedProp.filterFields  = ['name', 'description'];
-    this.sharedProp.projection    = { name: 1, description: 1, status: 1 };
+    this.sharedProp.filterFields  = ['name', 'description', 'organization.short_name'];
+    this.sharedProp.projection    = { name: 1, description: 1, organization: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
 

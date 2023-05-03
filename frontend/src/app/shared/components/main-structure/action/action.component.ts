@@ -72,6 +72,7 @@ export class ActionComponent implements OnInit {
         end   : ''
       };
       this.sharedProp.modality = '';
+      this.sharedProp.reporting = '';
 
       //Initialize duplicated surnames controller:
       this.sharedProp.duplicatedSurnamesController = {
@@ -188,6 +189,19 @@ export class ActionComponent implements OnInit {
   setCurrentCodeValue(code_value: string){
     //Set current code value (To filter PET-CT cases):
     this.sharedProp.current_modality_code_value = code_value;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET REPORTING USER:
+  //--------------------------------------------------------------------------------------------------------------------//
+  setReportingUser(){
+    //Set reporting user:
+    this.sharedProp.reporting = this.sharedProp.userLogged.user_id;
+
+    //Find:
+    this.onSearch();
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

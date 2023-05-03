@@ -13,6 +13,18 @@
       </td>
     </ng-container>
 
+    <!-- organization -->
+    <ng-container matColumnDef="organization">
+      <th mat-header-cell *matHeaderCellDef> Organización </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
+        <ng-template #thenBlockTableOrganization>
+          <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableOrganization>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
     <!-- name -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>

@@ -37,7 +37,7 @@
     <div class="filters"> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
         <mat-label>Buscar</mat-label>
-        <input matInput type="search" placeholder="Criterio de busqueda" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
+        <input matInput type="search" placeholder="Criterio de busqueda [RegEx]" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
@@ -91,6 +91,10 @@
           <mat-option value="false">Normal</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <button mat-flat-button color="primary" matTooltip="Mostrar solo los estudios asignados al usuario" class="button_filters" (click)="setReportingUser();" *ngIf="sharedProp.action.filters.reporting">
+        <mat-icon>move_to_inbox</mat-icon>&nbsp; VER SOLO ESTUDIOS ASIGNADOS
+      </button>
 
       <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
         <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA

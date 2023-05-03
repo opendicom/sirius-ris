@@ -34,6 +34,7 @@ export class SharedPropertiesService {
   public modality       : any;
   public selected_items : string[];
   public checked_items  : boolean[];
+  public reporting      : string;
 
   //Duplicated surnames controller:
   public duplicatedSurnamesController: any = {
@@ -80,6 +81,7 @@ export class SharedPropertiesService {
       end   : ''
     };
     this.modality   = '';
+    this.reporting  = '';
 
     //Initialize selected items:
     this.selected_items = [];
@@ -165,6 +167,11 @@ export class SharedPropertiesService {
     //Check Date Range - Filter (With AND Condition)::
     if(this.action.filters_form === true && this.date_range.start !== '' && this.date_range.end !== ''){
       string_filter += this.setDateTimeStringFilter(this.date_range.start, this.date_range.end, this.action.filters.date_range);
+    }
+
+    //Check reporting user - Filter (With AND Condition)::
+    if(this.reporting !== ''){
+      string_filter += '"filter[and][appointment.reporting.fk_reporting._id]": "' + this.reporting + '", ';
     }
 
     //Projection:

@@ -83,3 +83,14 @@ li {
 .mat-pathology {
   background-color: #05ff9f8e !important;
 }
+
+.label-editor {
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #607d8b;
+  border-radius: 5px 5px 0px 0px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

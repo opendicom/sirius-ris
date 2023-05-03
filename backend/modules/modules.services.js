@@ -1276,19 +1276,16 @@ async function isDuplicated(req, res, currentSchema, params, message = ''){
             //Check operation:
             //INSERT:
             if(req.body._id == undefined){
-                //Check if have results:
-                if(data){
-                    //Set result (duplicated):
-                    result = true;
+                //Set result (duplicated):
+                result = true;
 
-                    //Set message:
-                    if(message === '' || message === undefined || message === null){
-                        message = currentLang.db.insert_duplicate;
-                    }
-
-                    //Send duplicate message:
-                    res.status(422).send({ success: false, message: message + data._id });
+                //Set message:
+                if(message === '' || message === undefined || message === null){
+                    message = currentLang.db.insert_duplicate;
                 }
+
+                //Send duplicate message:
+                res.status(422).send({ success: false, message: message + data._id });
 
             //UPDATE
             } else {
@@ -1666,6 +1663,148 @@ async function checkSignature(res, fk_report, fk_user){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK PATHOLOGY:
+//--------------------------------------------------------------------------------------------------------------------//
+async function checkPathology(req, res, operation){
+    //Import schemas:
+    const organizations = require('./organizations/schemas');
+    const pathologies   = require('./pathologies/schemas');
+
+    //Initialize result:
+    result = false;
+
+    //Switch by operation:
+    switch(operation){
+        case 'insert':
+            //fk_organization is required to insert:
+            if(req.body.fk_organization){
+                //Find organization by _id:
+                await organizations.Model.findById(req.body.fk_organization, { _id: 1 })
+                .exec()
+                .then(async (organizationData) => {
+                    //Check organizationData data:
+                    if(organizationData){
+                        //Set duplicated check params:
+                        const duplicatedCheckParams = {
+                            fk_organization: req.body.fk_organization,
+                            name: req.body.name.toUpperCase()
+                        };
+
+                        //Search for duplicates:
+                        result = await isDuplicated(req, res, pathologies, duplicatedCheckParams);
+                    }
+                })
+                .catch((organizationError) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, organizationError);
+                });
+            } //Without else, it passes but will be stopped by validator.
+            
+            break;
+        case 'update':
+            //The parameters that are verified to set duplicate are the combination of name and fk_organization:
+            if(req.body.name && req.body.fk_organization){
+                //Find organization by _id:
+                await organizations.Model.findById(req.body.fk_organization, { _id: 1 })
+                .exec()
+                .then(async (organizationData) => {
+                    //Check organizationData data:
+                    if(organizationData){
+                        //Set duplicated check params:
+                        const duplicatedCheckParams = {
+                            fk_organization: req.body.fk_organization,
+                            name: req.body.name.toUpperCase()
+                        };
+
+                        //Search for duplicates:
+                        result = await isDuplicated(req, res, pathologies, duplicatedCheckParams);
+                    }
+                })
+                .catch((organizationError) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, organizationError);
+                });
+            
+            //Find pathology by _id and obtain fk_organization to check duplicates:
+            } else if(req.body.name && req.body._id){
+                //Find pathology fk_organization by _id:
+                await pathologies.Model.findById(req.body._id, { fk_organization: 1 })
+                .exec()
+                .then(async (pathologyData) => {
+                    //Check pathologyData data:
+                    if(pathologyData){
+                        //Find organization by fk_organization:
+                        await organizations.Model.findById(pathologyData.fk_organization, { _id: 1 })
+                        .exec()
+                        .then(async (organizationData) => {
+                            //Check organizationData data:
+                            if(organizationData){
+                                //Set duplicated check params:
+                                const duplicatedCheckParams = {
+                                    fk_organization: pathologyData.fk_organization,
+                                    name: req.body.name.toUpperCase()
+                                };
+
+                                //Search for duplicates:
+                                result = await isDuplicated(req, res, pathologies, duplicatedCheckParams);
+                            }
+                        })
+                        .catch((organizationError) => {
+                            //Send error:
+                            mainServices.sendError(res, currentLang.db.query_error, organizationError);
+                        });
+                    } //Without else, it passes but will be stopped by validator.
+                })
+                .catch((pathologyError) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, pathologyError);
+                });
+
+            //Find pathology by _id and obtain pathology name to check duplicates:
+            } else if(req.body.fk_organization && req.body._id){
+                //Find pathology name by _id:
+                await pathologies.Model.findById(req.body._id, { name: 1 })
+                .exec()
+                .then(async (pathologyData) => {
+                    //Check pathologyData data:
+                    if(pathologyData){
+                        //Find organization by fk_organization:
+                        await organizations.Model.findById(req.body.fk_organization, { _id: 1 })
+                        .exec()
+                        .then(async (organizationData) => {
+                            //Check organizationData data:
+                            if(organizationData){
+                                //Set duplicated check params:
+                                const duplicatedCheckParams = {
+                                    fk_organization: req.body.fk_organization,
+                                    name: pathologyData.name.toUpperCase()
+                                };
+
+                                //Search for duplicates:
+                                result = await isDuplicated(req, res, pathologies, duplicatedCheckParams);
+                            }
+                        })
+                        .catch((organizationError) => {
+                            //Send error:
+                            mainServices.sendError(res, currentLang.db.query_error, organizationError);
+                        });
+                    } //Without else, it passes but will be stopped by validator.
+                })
+                .catch((pathologyError) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, pathologyError);
+                });
+            }
+
+            break;
+    }
+
+    //Return result:
+    return result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // ADJUST DATA TYPES:
 //--------------------------------------------------------------------------------------------------------------------//
 function adjustDataTypes(filter, schemaName, asPrefix = ''){
@@ -1991,6 +2130,15 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
     
+                return filter;
+            });
+            break;
+
+        case 'pathologies':            
+            filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
             break;
@@ -3172,7 +3320,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         const referencePerformingAppointment = await getDomainReference('appointments', referencePerforming.fk_appointment, { 'imaging' : 1 });
 
                         //Check Domain Reference:
-                        if(referencedAppointment !== false){
+                        if(referencePerforming !== false){
                             //Current cases to eval:
                             if(domainType == 'organizations' && referencePerformingAppointment.imaging.organization != domain){
                                 operationResult = false; /* Operation rejected */
@@ -4381,6 +4529,7 @@ module.exports = {
     checkUrgency,
     checkPerson,
     checkSignature,
+    checkPathology,
     adjustDataTypes,
     ckeckElement,
     insertLog,

@@ -139,9 +139,6 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //Find references:
-    this.findReferences();
-
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
     this.fk_performing = this.objRoute.snapshot.params['_id'];  // In reports form "action _id = fk_performing"
@@ -155,7 +152,10 @@ export class FormComponent implements OnInit {
     switch(this.form_action){
       case 'insert':
         //Find and set performing data:
-        this.setPerformingData(this.fk_performing);
+        this.setPerformingData(this.fk_performing, (performingRes) => {
+          //Find references (pathologies):
+          this.findPathologies(performingRes.data[0].appointment.imaging.organization._id);
+        });
         break;
 
       case 'update':
@@ -198,6 +198,9 @@ export class FormComponent implements OnInit {
 
             //Find and set performing data:
             await this.setPerformingData(this.fk_performing, (performingRes) => {
+              //Find references (pathologies):
+              this.findPathologies(performingRes.data[0].appointment.imaging.organization._id);
+
               //Prevent undefined error on CKEditor fields:
               if(this.reportData.clinical_info == undefined ){ this.reportData.clinical_info = ''; }
               if(this.reportData.procedure_description == undefined ){ this.reportData.procedure_description = ''; }
@@ -344,7 +347,7 @@ export class FormComponent implements OnInit {
             this.router.onSameUrlNavigation = 'reload';
 
             //Redirecto to this form (Set Tab 1 | Report form tab):
-            this.router.navigate(['/reports/form/' + this.form_action + '/' + this.fk_performing + '/1']);
+            this.router.navigate(['/reports/form/update/' + this.fk_performing + '/1']);
             break;
           
           case 'save-sign':
@@ -498,7 +501,7 @@ export class FormComponent implements OnInit {
     this.filterPathologies({ srcElement : { value: '' } });
   }
   
-  findReferences(){
+  findPathologies(fk_organization: string){
     //Initialize params:
     let params: any;
 
@@ -506,13 +509,17 @@ export class FormComponent implements OnInit {
     switch(this.objRoute.snapshot.params['action']){
       case 'insert':
         params = {
+          'filter[fk_organization]': fk_organization,
           'filter[status]': true,
           'proj[name]': 1
         };
         break;
 
       case 'update':
-        params = { 'proj[name]': 1 };
+        params = {
+          'filter[fk_organization]': fk_organization,
+          'proj[name]': 1
+        };
         break;
     }
 

@@ -4,7 +4,7 @@
 <h2>Menú principal</h2>
 
 <mat-list>
-  <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiónes: [1: Gestión de turnos, 2: Gestión de citas, 3: Calendario de citas) -->
+  <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos, 2: Gestión de citas, 3: Calendario de citas) -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1, 2, 3]))">
     <h3>Coordinación</h3>
 

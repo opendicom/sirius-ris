@@ -68,6 +68,7 @@ export class ListDraftsComponent implements OnInit {
         flow_state    : false,
         status        : false,
         modality      : 'modality._id', //FK name in schema
+        reporting     : false,
         pager         : true,
         clear_filters : true
       }
@@ -87,6 +88,7 @@ export class ListDraftsComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
+    this.sharedProp.reporting     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

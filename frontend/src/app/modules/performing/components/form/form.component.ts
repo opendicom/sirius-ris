@@ -74,8 +74,8 @@ export class FormComponent implements OnInit {
   public current_modality_id          : string = '';
   public current_procedure_id         : string = '';
 
-  //Initializate performing local current flow state:
-  public current_flow_state           : string = 'P01';
+  //Initializate performing local values:
+  public current_flow_state : string = 'P01';
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -85,6 +85,7 @@ export class FormComponent implements OnInit {
   private keysWithValues  : Array<string> = [];
   public form_action      : any;
   public tabIndex         : number = 0;
+  public origin           : string = 'performing';  //Set default destination.
 
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
@@ -181,6 +182,11 @@ export class FormComponent implements OnInit {
     //Set tabIndex with parameters by routing (if exist):
     if(this.objRoute.snapshot.params['tabIndex'] !== null && this.objRoute.snapshot.params['tabIndex'] !== undefined && !isNaN(this.objRoute.snapshot.params['tabIndex'])){
       this.tabIndex = this.objRoute.snapshot.params['tabIndex'];
+    }
+
+    //Set origin with parameters by routing (if exist):
+    if(this.objRoute.snapshot.params['origin'] !== null && this.objRoute.snapshot.params['origin'] !== undefined && this.objRoute.snapshot.params['origin'] !== ''){
+      this.origin = this.objRoute.snapshot.params['origin'];
     }
 
     //Switch by form action:
@@ -371,7 +377,7 @@ export class FormComponent implements OnInit {
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resPerforming.message);
-            this.router.navigate(['/' + this.sharedProp.element + '/list']);
+            this.router.navigate(['/' + this.origin + '/list']);
           }
         });
 
@@ -382,7 +388,7 @@ export class FormComponent implements OnInit {
         this.sharedFunctions.sendMessage('Error al intentar editar el elemento: La acción indicada sobre el formulario es incorrecta [insert | update].');
 
         //Redirect to the list:
-        this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+        this.router.navigate(['/' + this.origin + '/list']);
         break;
     }
   }
@@ -502,28 +508,27 @@ export class FormComponent implements OnInit {
         performingSaveData.checkin_time = this.checkin_time;
       }
 
+      //Delete temp values:
+      if(performingSaveData.hasOwnProperty('injection')){
+        delete performingSaveData.injection.administred_activity_mCi;
+        delete performingSaveData.injection.syringe_activity_full_mCi;
+        delete performingSaveData.injection.syringe_activity_empty_mCi;
+      }
+
       //Save performing data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, performingSaveData, this.keysWithValues, (resPerforming) => {
-        //Handle messages and destinations by form action:
+        //Handle messages by form action:
         let message = '';
-        let destination = '';
 
         switch(this.form_action){
           case 'insert':
             message = 'insertar';
-            destination = 'check-in';
             break;
 
           case 'update':
             message = 'editar';
-            destination = 'performing';
             break;
         }
-
-        //Delete temp values:
-        if(resPerforming.injection.administred_activity_mCi){ delete resPerforming.injection.administred_activity_mCi; }
-        if(resPerforming.injection.syringe_activity_full_mCi){ delete resPerforming.injection.syringe_activity_full_mCi; }
-        if(resPerforming.injection.syringe_activity_empty_mCi){ delete resPerforming.injection.syringe_activity_empty_mCi; }
 
         //Check operation status:
         if(resPerforming.success === true){
@@ -531,16 +536,17 @@ export class FormComponent implements OnInit {
           this.tabDetails.onSubmit((resAppointments) => {
             //Send patient to MWL:
             if(this.form_action == 'insert'){
-              //this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
+              this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
             }
             
             //Response the form according to the result:
-            this.sharedFunctions.formResponder(resAppointments, destination, this.router);
+            this.sharedFunctions.formResponder(resAppointments, this.origin, this.router);
 
           });
         } else {
           //Return to the list with request error message:
           this.sharedFunctions.sendMessage('Error al intentar ' + message + ' el elemento: ' + resPerforming.message);
+          this.router.navigate(['/' + this.origin + '/list']);
         }
       });
     }
@@ -548,7 +554,7 @@ export class FormComponent implements OnInit {
 
   onCancel(){
     //Redirect to the list:
-    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+    this.sharedFunctions.gotoList(this.origin, this.router);
   }
 
   async setCurrentAppointmentData(res: any, callback = () => {}) {
@@ -841,21 +847,30 @@ export class FormComponent implements OnInit {
           case 'enable':
             //Enable PET validators:
             this.form.get('injection.pet_ct.syringe_activity_full')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_activity_empty')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.administred_activity')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_full_time')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_empty_time')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.administred_activity')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
 
             //Enable PET inputs:
             this.form.get('injection.pet_ct.batch')?.enable();
             this.form.get('injection.pet_ct.syringe_activity_full')?.enable();
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.enable();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.enable();
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.enable();
             this.form.get('injection.pet_ct.administred_activity')?.enable();
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.enable();
             this.form.get('injection.pet_ct.syringe_full_time')?.enable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.enable();
             break;
@@ -863,21 +878,30 @@ export class FormComponent implements OnInit {
           case 'remove':
             //Remove PET validators:
             this.form.get('injection.pet_ct.syringe_activity_full')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.clearValidators();
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.clearValidators();
             this.form.get('injection.pet_ct.administred_activity')?.clearValidators();
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_full_time')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_empty_time')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.administred_activity')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
 
             //Disable PET inputs:
             this.form.get('injection.pet_ct.batch')?.disable();
             this.form.get('injection.pet_ct.syringe_activity_full')?.disable();
+            this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.disable();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.disable();
+            this.form.get('injection.pet_ct.syringe_activity_empty_mCi')?.disable();
             this.form.get('injection.pet_ct.administred_activity')?.disable();
+            this.form.get('injection.pet_ct.administred_activity_mCi')?.disable();
             this.form.get('injection.pet_ct.syringe_full_time')?.disable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.disable();
             break;
@@ -1003,7 +1027,7 @@ export class FormComponent implements OnInit {
       } else {
         //Return to the list with request error message:
         this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resAppointments.message);
-        this.router.navigate(['/' + destination + '/list']);
+        this.router.navigate(['/' + this.origin + '/list']);
       }
     });
   }
@@ -1046,7 +1070,7 @@ export class FormComponent implements OnInit {
   }
 
   convertActivity(event: any, destinationFieldName: string, destinationUnit: string){
-    //Get activity (origin):
+    //Get activity (input):
     let activity = event.srcElement.value;
 
     //Switch by unit:

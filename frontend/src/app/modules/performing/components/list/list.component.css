@@ -32,3 +32,9 @@ mat-chip.line-break {
     margin: 0px !important;
     top: -8px !important;
 }
+
+.reporting-indicator {
+    margin-top: 9px;
+    font-size: 9px;
+    cursor: pointer;
+}

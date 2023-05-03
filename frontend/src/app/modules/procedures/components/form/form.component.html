@@ -88,7 +88,7 @@
         <input matInput type="text" formControlName="code" placeholder="Ingrese la codificación">
       </mat-form-field>
 
-      <h4>Preparación:</h4>
+      <h4>Preparación <span class="label-info">min: 10, max: 1000</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="editorConfig" data=""></ckeditor>
 
     </div> <!-- end fxLayout wrapper -->
