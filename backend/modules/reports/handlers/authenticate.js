@@ -73,12 +73,27 @@ module.exports = async (req, res, currentSchema) => {
                                                 //Update medical signatures in report:
                                                 await currentSchema.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
                                                 .then(async (updatedData) => {
-                                                    //Send successfully response:
-                                                    res.status(200).send({
-                                                        success: true, 
-                                                        data: updatedData,
-                                                        message: 'Informe autenticado existosamente.'
-                                                    });                                             
+                                                    //Set log element:
+                                                    const element = {
+                                                        type    : currentSchema.Model.modelName,
+                                                        _id     : updatedData._id
+                                                    };
+
+                                                    //Save registry in Log DB:
+                                                    const logResult = await moduleServices.insertLog(req, res, 6, element);
+
+                                                    //Check log registry result:
+                                                    if(logResult){
+                                                        //Send successfully response:
+                                                        res.status(200).send({
+                                                            success: true, 
+                                                            data: updatedData,
+                                                            message: 'Informe autenticado existosamente.'
+                                                        });
+                                                    } else {
+                                                        //Send log error response:
+                                                        res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
+                                                    }                                            
                                                 })
                                                 .catch((err) => {
                                                     //Send ERROR Message:

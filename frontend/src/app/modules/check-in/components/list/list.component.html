@@ -31,10 +31,13 @@
                     </button>
       
                     <!-- insert more performing as same fk_appointment -->
-                    <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
-                      <mat-icon>add_location_alt</mat-icon>
-                    </button>
-                    
+                    <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
+                    <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
+                      <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
+                        <mat-icon>add_location_alt</mat-icon>
+                      </button>
+                    </span>
+
                     <br/>
 
                     <!-- performing flow_state -->
@@ -61,18 +64,24 @@
 
               <ng-template #elseBlockMatch>
                 <!-- insert first performing | Duplicated button on diferent cases -->
-                <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
-                  <mat-icon>location_on</mat-icon>
-                </button>
+                <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
+                <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
+                  <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                    <mat-icon>location_on</mat-icon>
+                  </button>
+                </span>
               </ng-template>
               
             </ng-template>
 
             <ng-template #elseBlockPerforming>
               <!-- insert first performing | Duplicated button on diferent cases -->
-              <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
-                <mat-icon>location_on</mat-icon>
-              </button>
+              <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
+                <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                  <mat-icon>location_on</mat-icon>
+                </button>
+              </span>
             </ng-template>
             
           </span>
@@ -204,7 +213,7 @@
         </span>
 
         <!-- recomended_dose -->
-        <span *ngIf="sharedProp.current_modality_code_value && sharedProp.current_modality_code_value == 'PT'">
+        <span *ngIf="sharedProp.current_modality_code_value && sharedProp.current_modality_code_value == 'PT' && element.private_health">
           <div class="clear"></div><hr class="dashed" />
           
           <span class="badge-warn badge-dose MBq" matTooltip="Dósis recomendada">
@@ -214,6 +223,11 @@
           <span class="badge-warn badge-dose mCi" matTooltip="Dósis recomendada">
             <span>{{ sharedFunctions.MBqTomCi(sharedFunctions.calculateDose(element.private_health.weight, element.procedure.coefficient)) }} mCi</span>
           </span>
+        </span>
+
+        <!-- contrast -->
+        <span *ngIf="sharedProp.current_modality_code_value && sharedProp.current_modality_code_value != 'PT' && element.contrast && element.contrast.use_contrast == true">
+          <span class="badge-warn badge-dose" matTooltip="Tipo de contraste: {{ element.contrast.description }}">Con contraste</span>
         </span>
 
         <div class="clear"></div><hr class="dashed" />

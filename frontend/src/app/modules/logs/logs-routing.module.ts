@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ListComponent } from '@modules/logs/components/list/list.component';
+import { ListByUserComponent } from '@modules/logs/components/list-by-user/list-by-user.component';
+import { ListByElementComponent } from '@modules/logs/components/list-by-element/list-by-element.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'list', component: ListComponent },
-      { path: 'list/:_id', component: ListComponent },
-      { path: '**', redirectTo: 'list' },
+      { path: 'user', component: ListByUserComponent },
+      { path: 'user/:_id', component: ListByUserComponent },
+      { path: 'element/:_id', component: ListByElementComponent },
+      { path: '**', redirectTo: 'user' },
     ]
   }
 ];

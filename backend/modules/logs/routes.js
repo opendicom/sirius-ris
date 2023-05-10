@@ -13,8 +13,8 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
 
-//Import Module Services:
-const moduleServices = require('../modules.services');
+//Import Handlers:
+const findHandler   = require('./handlers/find');
 
 //Import schemas:
 const logs = require('./schemas');
@@ -23,62 +23,32 @@ const logs = require('./schemas');
 const router = express.Router();
 
 //Routes:
-//FIND - FIND BY ID:
+//FIND:
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'find';
-
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'find':
-                moduleServices.find(req, res, logs);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, logs);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, logs);
     }
 );
 
-//FIND ONE - FIND BY ID:
+//FIND ONE:
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
-        //Initialize operation type:
-        let operation_type = 'findOne';
+        //Force limit to one result:
+        req.query.skip = 0;                                 //No skip
+        req.query.limit = 1;                                //One document
+        if(req.query.pager) { delete req.query.pager };     //No pager
 
-        //Set operation type:
-        if(req.query.filter){
-            if(req.query.filter._id){
-                operation_type = 'findById';
-            }
-        }
-
-        //Switch operation type:
-        switch(operation_type){
-            case 'findOne':
-                moduleServices.findOne(req, res, logs);
-                break;
-            case 'findById':
-                moduleServices.findById(req, res, logs);
-                break;
-        }
+        //Send to handler:
+        findHandler(req, res, logs);
     }
 );
-
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

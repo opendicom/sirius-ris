@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { KeyValue } from '@angular/common';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -33,6 +34,9 @@ export class FormComponent implements OnInit {
   public userRoles        : any = user_roles;
   public userConcessions  : any = user_concessions;
   public genderTypes      : any = gender_types;
+
+  //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
+  unsorted = () => { return 0 }
 
   //Set references objects:
   public availableOrganizations : any;

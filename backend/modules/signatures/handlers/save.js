@@ -101,7 +101,7 @@ module.exports = async (req, res, currentSchema, operation) => {
                                                             //Check saved data:
                                                             if(savedData){
                                                                 //Add sign to report:
-                                                                await moduleServices.addSignatureToReport(sha2_result.report_data, savedData._id);
+                                                                await moduleServices.addSignatureToReport(sha2_result.report_data, savedData._id, req, res);
                                                             }
                                                         });
                                                     } else {

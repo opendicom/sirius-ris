@@ -22,9 +22,11 @@
 </button>
 
 <mat-menu #userMenu="matMenu" xPosition="before">
-  <button mat-menu-item>
+  <!-- 1: Superusuario, 2: Administrador, Concesiones: [10: Acceso a logs del usuario] -->
+  <button mat-menu-item *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [10]))" routerLink="/logs/user">
     <mat-icon>format_list_bulleted</mat-icon><span>Logs del usuario</span>
   </button>
+  
   <button mat-menu-item routerLink="/signin">
     <mat-icon>logout</mat-icon><span>Cerrar sesión</span>
   </button>

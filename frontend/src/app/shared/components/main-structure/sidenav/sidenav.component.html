@@ -8,7 +8,8 @@
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1, 2, 3]))">
     <h3>Coordinación</h3>
 
-    <!-- 1: Gestión de turnos -->
+    <!-- Gestión de turnos -->
+    <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1]))">
       <mat-list-item routerLink="/slots/list">
         <mat-icon>date_range</mat-icon><span>Turnos</span>
@@ -17,7 +18,8 @@
       <mat-divider></mat-divider>
     </div>
 
-    <!-- 2: Gestión de citas -->
+    <!-- Gestión de citas -->
+    <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [2: Gestión de citas) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [2]))">
       <mat-list-item routerLink="/appointments/list">
         <mat-icon>event_available</mat-icon><span>Citas</span>
@@ -26,7 +28,8 @@
       <mat-divider></mat-divider>
     </div>
 
-    <!-- 3: Calendario de citas -->
+    <!-- Calendario de citas -->
+    <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [3: Calendario de citas) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [3]))">
       <mat-list-item routerLink="/calendar/slots_appointments">
         <mat-icon>calendar_month</mat-icon><span>Calendario</span>
@@ -34,7 +37,7 @@
     </div>
   </div>
 
-  <!-- Superusuario, Administrador, Técnico, Enfermero, Recepcionista, Concesiones: [4: Gestión de recepciones] -->
+  <!-- 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones] -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
     <h3>Recepción</h3>
 
@@ -43,7 +46,7 @@
     </mat-list-item>
   </div>
 
-  <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [5: Gestión de estudios] -->
+  <!-- 1: Superusuario, 2: Administrador, 3: Supervisor, 4: Médico, Concesiones: [5: Gestión de estudios] -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
     <h3>Realización</h3>
 

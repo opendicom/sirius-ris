@@ -7,12 +7,14 @@ import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from '@modules/logs/components/list/list.component';
+import { ListByUserComponent } from '@modules/logs/components/list-by-user/list-by-user.component';
+import { ListByElementComponent } from '@modules/logs/components/list-by-element/list-by-element.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent
+    ListByUserComponent,
+    ListByElementComponent
   ],
   imports: [
     CommonModule,

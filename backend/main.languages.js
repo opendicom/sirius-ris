@@ -35,6 +35,7 @@ module.exports = function(language){
             'validate_error'            : 'Validation error.',
             'insert_success'            : 'Insert operation successful.',
             'insert_error'              : 'An error occurred while inserting the element.',
+            'insert_error_log'          : 'Error trying to insert element log entry.',
             'insert_duplicate'          : 'The element you are trying to insert already exists in the database with the _id: ',
             'id_no_results'             : 'The specified ID does not exist.',
             'id_referenced_empty'       : 'The ID of the referenced element cannot be empty.',
@@ -133,6 +134,7 @@ module.exports = function(language){
             lang.db.validate_error              = 'Error de validación.';
             lang.db.insert_success              = 'Guardado exitoso.';
             lang.db.insert_error                = 'Error al intentar insertar el elemento.';
+            lang.db.insert_error_log            = 'Error al intentar insertar entrada de log del elemento.';
             lang.db.insert_duplicate            = 'El elemento que esta intentando insertar ya existe en la base de datos bajo el _id: ';
             lang.db.id_no_results               = 'No existe ningún elemento con el ID especificado';
             lang.db.id_referenced_empty         = 'El ID del elemento referenciado no puede ser vacío.';

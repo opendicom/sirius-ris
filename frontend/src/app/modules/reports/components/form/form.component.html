@@ -245,6 +245,43 @@
             <div class="clear"></div>
           </div>
 
+          <h3 class="form-title text-center underline-fail-alt">Adquisición:</h3>
+          <br/>
+          <!-- contrast -->
+          <span *ngIf="performingData.appointment && performingData.appointment.contrast">
+            <ul>
+              <span *ngIf="performingData.appointment.contrast.use_contrast == true; then thenBlockContrast else elseBlockContrast"></span>
+              <ng-template #thenBlockContrast>
+                <li><strong>Estudio realizado:</strong> <span class="label-info">Con contraste</span></li>
+                <li *ngIf="performingData.modality.code_value != 'PT'" ><strong>Tipo de contraste:</strong> {{ performingData.appointment.contrast.description }}</li>
+              </ng-template>
+              <ng-template #elseBlockContrast>
+                <li><strong>Estudio realizado:</strong> Sin contraste</li>
+              </ng-template>
+            </ul>
+          </span>
+          
+          <br/><hr class="dashed"/><br/>
+
+          <h4>Observaciones:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- acquisition -> observations -->
+            <div class="current-info">
+              <div *ngIf="performingData.appointment && performingData.appointment.acquisition && performingData.appointment.acquisition.observations !== undefined && performingData.appointment.acquisition.observations.length > 0; then thenBlockAcquisitionObservations else elseBlockAcquisitionObservations"></div>
+          
+              <ng-template #thenBlockAcquisitionObservations>
+                <span innerHTML="{{ performingData.appointment.acquisition.observations }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockAcquisitionObservations>
+                <span>NO se registraron observaciones durante la adquisicón de imágenes.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+          </div>
+          
+
           <br/>
 
         </div> <!-- end fxLayout wrapper -->
@@ -335,6 +372,19 @@
                 {{ performingData.appointment.private_health.covid19.details }}
               </li>
             </ul>
+          </span>
+
+          <!-- PET-CT -->
+          <span *ngIf="performingData && performingData.modality && performingData.modality.code_value == 'PT' && performingData.injection && performingData.injection.pet_ct" >
+            <h3 class="form-title text-center underline-fail-alt">PET-CT:</h3>
+            <br/>
+
+            <div class="dose">
+              <h4>ACTIVIDAD ADMINISTRADA:</h4>
+              <span class="badge-warn badge-dose MBq">{{ performingData.injection.pet_ct.administred_activity }} MBq</span>
+              <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(performingData.injection.pet_ct.administred_activity) }} mCi</span>
+              <div class="clear"></div><br/>
+            </div>
           </span>
           
           <br/>

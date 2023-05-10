@@ -121,8 +121,8 @@ export class ListComponent implements OnInit {
       'procedure.code': 1,
       'procedure.coefficient': 1,
       'private_health.height': 1,
-      'private_health.weight': 1
-
+      'private_health.weight': 1,
+      'contrast'             : 1
     };
     this.sharedProp.sort          = { 'start': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.check_in_default_size };

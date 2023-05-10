@@ -295,7 +295,7 @@ mark {
 }
 
 .column-alt {
-  background-color: #2e304b !important;
+  background-color: #2e304b94 !important;
   padding-left: 5px !important;
   padding-right: 5px !important;
 }

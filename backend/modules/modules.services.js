@@ -226,16 +226,37 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
             //Save data into DB:
             await objData.save(objData)
             .then(async (data) => {
-                //Check if you want successful http response (false to batch inserts):
-                if(successResponse){
-                    //Send successfully response:
-                    res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+                //Set log element:
+                const element = {
+                    type    : currentSchema.Model.modelName,
+                    _id     : data._id
+                };
 
-                    //Set header sent property to check if header have already been sent:
-                    res.headerSent = true;
+                //Check specific RIS case - Report insert (Amend):
+                if(currentSchema.Model.modelName == 'reports' && req.body.amend !== undefined && req.body.amend !== null && mainServices.stringToBoolean(req.body.amend) === true){
+                    //Add details in element log entry:
+                    element['details'] = 'amend';
+                }
 
-                    //Excecute callback with result:
-                    await callback(data);
+                //Save registry in Log DB:
+                const logResult = await insertLog(req, res, 2, element);
+
+                //Check log registry result:
+                if(logResult){
+                    //Check if you want successful http response (false to batch inserts):
+                    if(successResponse){
+                        //Send successfully response:
+                        res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
+
+                        //Set header sent property to check if header have already been sent:
+                        res.headerSent = true;
+
+                        //Excecute callback with result:
+                        await callback(data);
+                    }
+                } else {
+                    //Send log error response:
+                    res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
                 }
             })
             .catch((err) => {
@@ -329,13 +350,28 @@ async function update(req, res, currentSchema, referencedElements = false, callb
                     //Set empty blocked format:
                     if(Object.keys(req.validatedResult.blocked).length === 0) { req.validatedResult.blocked = false; }
 
-                    //Send successfully response:
-                    res.status(200).send({
-                        success: true,
-                        data: data,
-                        blocked_attributes: req.validatedResult.blocked,
-                        blocked_unset: req.validatedResult.blocked_unset
-                    });
+                    //Set log element:
+                    const element = {
+                        type    : currentSchema.Model.modelName,
+                        _id     : data._id
+                    };
+
+                    //Save registry in Log DB:
+                    const logResult = await insertLog(req, res, 3, element);
+
+                    //Check log registry result:
+                    if(logResult){
+                        //Send successfully response:
+                        res.status(200).send({
+                            success: true,
+                            data: data,
+                            blocked_attributes: req.validatedResult.blocked,
+                            blocked_unset: req.validatedResult.blocked_unset
+                        });
+                    } else {
+                        //Send log error response:
+                        res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
+                    }
 
                     //Excecute callback with result:
                     await callback(data);
@@ -378,15 +414,30 @@ async function _delete(req, res, currentSchema, successResponse = true){
         //Delete element:
         await currentSchema.Model.findOneAndDelete({ _id: req.body._id })
         .exec()
-        .then((data) => {
+        .then(async (data) => {
             if(data) {
                 //Send DEBUG Message:
                 mainServices.sendConsoleMessage('DEBUG', '\ndelete [deleted document]: ' + JSON.stringify({ _id: req.body._id }));
 
                 //Check if you want successful http response (false to batch delete):
                 if(successResponse){
-                    //Send successfully response:
-                    res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+                    //Set log element:
+                    const element = {
+                        type    : currentSchema.Model.modelName,
+                        _id     : data._id
+                    };
+
+                    //Save registry in Log DB:
+                    const logResult = await insertLog(req, res, 4, element);
+
+                    //Check log registry result:
+                    if(logResult){
+                        //Send successfully response:
+                        res.status(200).send({ success: true, message: currentLang.db.delete_success, data: data });
+                    } else {
+                        //Send log error response:
+                        res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
+                    }
 
                     //Set header sent property to check if header have already been sent:
                     res.headerSent = true;
@@ -429,6 +480,15 @@ async function batchDelete(req, res, currentSchema){
 
             //Check if header have already been sent (Posibly validation errors):
             if(res.headerSent == false){
+                //Set log element:
+                const element = {
+                    type    : currentSchema.Model.modelName,
+                    _id     : req.body._id
+                };
+
+                //Save registry in Log DB (Without ckeck to prevent break the process):
+                await insertLog(req, res, 4, element);
+                
                 //Send to module service:
                 await _delete(req, res, currentSchema, false);
             }
@@ -729,7 +789,7 @@ async function setRegex(regex, condition){
                     currentValue = condition.$or[or_index][keyName];
 
                     //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -746,7 +806,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$or[or_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -760,7 +820,7 @@ async function setRegex(regex, condition){
                             currentValue = and_current.$and[second_and_index][keyName];
                             
                             //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -772,7 +832,7 @@ async function setRegex(regex, condition){
                         currentValue = condition.$and[and_index][keyName];
 
                         //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }
@@ -788,7 +848,7 @@ async function setRegex(regex, condition){
                 currentValue = condition[current];
                 
                 //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date'  && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'date' && keyName !== 'datetime'  && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
                     condition[current] = { $regex: `${currentValue}`, $options: 'i' };
                 }
             }
@@ -1815,6 +1875,27 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
     //Correct data types:
     switch(schemaName){
+        case 'logs':            
+            filter = adjustCondition(filter, (filter) => {
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + 'event'] != undefined){ filter[asPrefix + 'event'] = parseInt(filter['event'], 10); }
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'datetime'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'datetime'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'datetime'][explicitOperator] = new Date(filter[asPrefix + 'datetime'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'datetime'] = new Date(filter[asPrefix + 'datetime']);
+                        }
+                    });
+                }
+                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
+                if(filter[asPrefix + 'element._id'] != undefined){ filter[asPrefix + 'element._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'element._id']); };
+                return filter;
+            });
+            break;
+
         case 'users':
             filter = adjustCondition(filter, (filter) => {
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
@@ -2364,21 +2445,64 @@ async function adjustCondition(filter, callback){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET FK ORGANIZATION:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setFKOrganization(decodedJWT, user_permission){
+    // Initializate fk_organization:
+    let fk_organization = '';
+
+    // Check if there is JWT to set fk_organization:
+    if(decodedJWT !== undefined){
+        const completeDomain = await getCompleteDomain(decodedJWT.session.domain, decodedJWT.session.type + 's');
+        fk_organization = completeDomain.organization;
+    
+    // If there is no JWT get fk_organization from user permission:
+    // This case is for users with only one permission (one step login).
+    // Otherwise it does not reach this step (Does not record signin attempt log).
+    } else {
+        const completeDomain = await getCompleteDomain(user_permission.domain, user_permission.type + 's');
+        fk_organization = completeDomain.organization;
+    }
+
+    // Return fk_organization:
+    return fk_organization;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // INSERT LOG:
 //--------------------------------------------------------------------------------------------------------------------//
-async function insertLog(event, datetime, fk_user, req, res){
+async function insertLog(req, res, event, element = undefined, fk_user = undefined, user_permission = undefined){
     //Import schemas:
     const logs = require('./logs/schemas');
+
+    //Check fk_user:
+    if(fk_user == undefined){
+        //Get user _id from decoded JWT:
+        fk_user = req.decoded.sub;
+    }
+
+    //Set fk_organization:
+    const fk_organization = await setFKOrganization(req.decoded, user_permission);
+
+    //Set datetime:
+    const datetime = Date.now();
 
     //Initializate result:
     let result = false;
 
     //Create log object:
     const logObj = {
+        fk_organization: mongoose.Types.ObjectId(fk_organization),
         event: event,
         datetime: datetime,
         fk_user: mongoose.Types.ObjectId(fk_user),
         ip_client: mainServices.getIPClient(req)
+    }
+
+    //Check if log entry have an element:
+    if(element !== undefined && element !== null && element !== ''){
+        logObj['element'] = element;
     }
 
     //Create Mongoose object to insert validated data:
@@ -3032,6 +3156,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         }
                         break;
 
+                    case 'logs':
                     case 'signatures':
                     case 'pathologies':
                         //Check whether it has operator or not:
@@ -3219,7 +3344,6 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             //------------------------------------------------------------------------------------------------------------//
             // INSERT:
             case 'insert':
-                
                 //Set restrictions according to schema [INSERT ONLY]:
                 switch(schema){
                     case 'organizations':
@@ -3456,12 +3580,10 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                                     } else {
                                         operationResult = false; /* Operation rejected */
                                     }
-
-                                    
                                 }
 
                                 //Check that the authenticated role can insert the role of the request:
-                                    //Add Superuser [Allowed: Superuser]:
+                                //Add Superuser [Allowed: Superuser]:
                                 if( (req.body.permissions[current].role == 1 && role != 1) ||
 
                                     //Add Administrator, ... ,Recepcionist [Allowed: Superuser, Administrator]:
@@ -4349,7 +4471,7 @@ async function setPerformingFS(_id, flow_state){
 //--------------------------------------------------------------------------------------------------------------------//
 // ADD SIGN TO REPORT:
 //--------------------------------------------------------------------------------------------------------------------//
-async function addSignatureToReport(reportData, signature_id){
+async function addSignatureToReport(reportData, signature_id, req, res){
     //Import reports Schema:
     const reports = require('./reports/schemas');
 
@@ -4365,6 +4487,15 @@ async function addSignatureToReport(reportData, signature_id){
     //Update medical signatures in report:
     await reports.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
     .then(async (data) => {
+        //Set log element:
+        const element = {
+            type    : 'reports',
+            _id     : data._id
+        };
+
+        //Save registry in Log DB:
+        await insertLog(req, res, 5, element);
+
         //Send DEBUG Message:
         mainServices.sendConsoleMessage('DEBUG', '\ninsert [sign report]: ' + JSON.stringify({ report_id: reportData._id, user_id: signature_id }));
     })

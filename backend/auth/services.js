@@ -37,10 +37,10 @@ async function createSession(user_id, user_permission, req, res, response_data =
     await sessionData.save(sessionData)
     .then(async (savedSession) => {
         //Save registry in Log DB:
-        const logRegistry = await moduleServices.insertLog(1, creation_date, user_id, req, res);
+        const logResult = await moduleServices.insertLog(req, res, 1, undefined, user_id, user_permission);
 
         //Check log registry result:
-        if(logRegistry){
+        if(logResult){
             //Create JWT Session:
             const time_exp = '1d';
 

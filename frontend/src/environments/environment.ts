@@ -30,6 +30,16 @@ export const app_setting = {
   default_doc_type        : '1'
 };
 
+// Event logs:
+export const events_log = {
+  1 : 'Inicio de sesión',
+  2 : 'Creación',
+  3 : 'Edición',
+  4 : 'Eliminación',
+  5 : 'Firma',          //Only for report element.
+  6 : 'Autenticación'   //Only for report element.
+};
+
 // Document types:
 export const document_types = {
   1: 'ID Nacional (DNI, CI, CURP, RUT)',
@@ -67,13 +77,15 @@ export const user_concessions = {
   7   : 'Firmar informes',
   8   : 'Autenticar informes',
   9   : 'Enmendar informes',    //This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
-  //10  : 'Búsquedas avanzadas',
-  //11  : 'Listados de facturación',
-  //12  : 'Estadísticas generales',
-  //13  : 'Estadísticas médicas',
-  //14  : 'Estadísticas del personal',
-  //15  : 'Eliminación física de archivos',
-  //16  : 'Supervisar citas en curso',
+  10  : 'Acceso a logs del usuario',
+  11  : 'Acceso a logs de elementos',
+  //12  : 'Búsquedas avanzadas',
+  //13  : 'Listados de facturación',
+  //14  : 'Estadísticas generales',
+  //15  : 'Estadísticas médicas',
+  //16  : 'Estadísticas del personal',
+  //17  : 'Eliminación física de archivos',
+  //18  : 'Supervisar citas en curso',
 };
 
 // User Types:
@@ -128,6 +140,30 @@ export const cancellation_reasons = {
   10  : "Cursando infección",
   11  : "Fallecimiento",
   12  : "Otro"
+};
+
+// Logs element types Lang:
+export const elementTypesLang = {
+  'ES' : {
+    'appointments'          : 'cita',
+    'appointments_drafts'   : 'cita en curso',
+    'branches'              : 'sucursal',
+    'equipments'            : 'equipo',
+    'files'                 : 'archivo',
+    'modalities'            : 'modalidad',
+    'mwl'                   : 'MWL',
+    'organizations'         : 'organización',
+    'pathologies'           : 'patología',
+    'people'                : 'persona',
+    'performing'            : 'estudio',
+    'procedure_categories'  : 'categoría de procedimiento',
+    'procedures'            : 'procedimiento',
+    'reports'               : 'informe',
+    'services'              : 'servicio',
+    'signatures'            : 'firma',
+    'slots'                 : 'turno',
+    'users'                 : 'usuario'
+  }
 };
 
 // Private health Lang:

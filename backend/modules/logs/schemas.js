@@ -7,19 +7,20 @@ const { body }      = require('express-validator');
 
 //Define Privileges Sub-Schema:
 const subSchemaElement = new mongoose.Schema({
-    type:           { type: String, required: true },
-    element:        { type: mongoose.ObjectId, required: true },
-    flow_state:     { type: String, required: true }
+    type:               { type: String, required: true },
+    _id:                { type: mongoose.ObjectId, required: true },
+    details:            { type: String }
 },
 { _id : false });
 
 //Define Schema:
 const Schema = new mongoose.Schema({
-    event:      { type: Number, required: true },
-    datetime:   { type: Date, required: true },
-    fk_user:    { type: mongoose.ObjectId, required: true }, //Author
-    element:    { type: subSchemaElement },
-    ip_client:  { type: String, required: true }
+    fk_organization:    { type: mongoose.ObjectId, required: true },
+    event:              { type: Number, required: true },
+    datetime:           { type: Date, required: true },
+    fk_user:            { type: mongoose.ObjectId, required: true }, //Author
+    element:            { type: subSchemaElement },
+    ip_client:          { type: String, required: true }
 },
 { timestamps: false },
 { versionKey: false });
@@ -41,6 +42,11 @@ const AllowedUnsetValues = [];
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('fk_organization')
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_organization NO es un ID MongoDB válido.'),
+        
     body('event')
         .trim()
         .isInt()
@@ -60,15 +66,16 @@ const Validator = [
         .isLength({ min: 3, max: 30 })
         .withMessage('El parametro element.type es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
-    body('element.element')
+    body('element._id')
         .trim()
         .isMongoId()
-        .withMessage('El parametro element NO es un ID MongoDB válido.'),
+        .withMessage('El parametro element._id NO es un ID MongoDB válido.'),
 
-    body('element.flow_state')
+    body('element.details')
+        .optional()
         .trim()
-        .isLength({ min: 3, max: 3 })
-        .withMessage('El parametro element.flow_state es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
+        .isLength({ min: 3, max: 30 })
+        .withMessage('El parametro element.details es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('ip_client')
         .trim()
