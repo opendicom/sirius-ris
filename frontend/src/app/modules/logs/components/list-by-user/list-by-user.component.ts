@@ -52,9 +52,10 @@ export class ListByUserComponent implements OnInit {
         urgency       : false,
         flow_state    : false,
         modality      : false,
-        reporting     : false,
+        fk_user       : 'user._id',
+        log_event     : true,
         pager         : true,
-        clear_filters : true
+        clear_filters : false   //If you clear the search you will be able to see other users' logs.
       }
     });
 
@@ -72,7 +73,8 @@ export class ListByUserComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
-    this.sharedProp.reporting     = '';
+    this.sharedProp.fk_user       = this.sharedProp.userLogged.user_id; //Set fk_user in shared properties filter (Logged user JWT).
+    this.sharedProp.log_event     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -92,9 +94,6 @@ export class ListByUserComponent implements OnInit {
   ngOnInit(): void {
     //Extract sent data (Parameters by routing):
     const id = this.objRoute.snapshot.params['_id'];
-
-    //Set fk_user in shared properties filter (Logged user JWT):
-    this.sharedProp.params['filter[user._id]'] = this.sharedProp.userLogged.user_id;
 
     //If have an _id and this is valid ObjectId, change params to findById:
     if(id !== undefined && regexObjectId.test(id)){

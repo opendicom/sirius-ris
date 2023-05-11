@@ -92,9 +92,36 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-flat-button color="primary" matTooltip="Mostrar solo los estudios asignados al usuario" class="button_filters" (click)="setReportingUser();" *ngIf="sharedProp.action.filters.reporting">
-        <mat-icon>move_to_inbox</mat-icon>&nbsp; VER SOLO ESTUDIOS ASIGNADOS
-      </button>
+      <!-- fk_user -->
+      <span *ngIf="sharedProp.action.filters.fk_user">
+        <span [ngSwitch]="sharedProp.action.filters.fk_user">
+          <!-- fk_user (aggregation user._id) -->
+          <span *ngSwitchCase="'user._id'">
+            <!-- 1: Superusuario, 2: Administrador (Non display only) -->
+            <mat-form-field appearance="outline" [class.non-display]="sharedProp.userLogged.permissions[0].role != 1 && sharedProp.userLogged.permissions[0].role != 2">
+              <mat-label>ID Usuario</mat-label>
+              <input matInput type="search" placeholder="_id de usuario" [(ngModel)]="sharedProp.fk_user" (keyup.enter)="onSearch();">
+              <mat-icon matSuffix>user</mat-icon>
+            </mat-form-field>
+          </span>
+
+          <!-- reporting users (performing) -->
+          <span *ngSwitchCase="'appointment.reporting.fk_reporting._id'">
+            <button mat-flat-button color="primary" matTooltip="Mostrar solo los estudios asignados al usuario" class="button_filters" (click)="setReportingUser();">
+              <mat-icon>move_to_inbox</mat-icon>&nbsp; VER SOLO ESTUDIOS ASIGNADOS
+            </button>
+          </span>
+        </span>
+      </span>
+
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.log_event">
+        <mat-label>Evento</mat-label>
+        <mat-select [(ngModel)]="sharedProp.log_event" (selectionChange)="onSearch();">
+          <div *ngFor="let currentEvent of eventsLog | keyvalue">
+            <mat-option value="{{ currentEvent.key}}">{{ currentEvent.value }}</mat-option>
+          </div>
+        </mat-select>
+      </mat-form-field>
 
       <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
         <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA

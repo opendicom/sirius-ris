@@ -75,7 +75,8 @@ export class ListComponent implements OnInit {
         status        : false,
         flow_state    : false,
         modality      : 'modality._id', //FK name in schema
-        reporting     : false,
+        fk_user       : false,
+        log_event     : false,
         pager         : false,
         clear_filters : false
       }
@@ -95,7 +96,8 @@ export class ListComponent implements OnInit {
       end   : '',
     };
     this.sharedProp.modality      = '';
-    this.sharedProp.reporting     = '';
+    this.sharedProp.fk_user       = '';
+    this.sharedProp.log_event     = '';
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';

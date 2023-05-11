@@ -10,6 +10,7 @@ import {                                                                        
   app_setting,
   appointments_flow_states,
   performing_flow_states,
+  events_log
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -20,6 +21,7 @@ import {                                                                        
 })
 export class ActionComponent implements OnInit {
   public page_sizes           : any = app_setting.default_page_sizes;
+  public eventsLog            : any = events_log;
   public number_of_pages      : any = [1];
   public flow_states          : any = {
     appointments  : appointments_flow_states,
@@ -72,7 +74,8 @@ export class ActionComponent implements OnInit {
         end   : ''
       };
       this.sharedProp.modality = '';
-      this.sharedProp.reporting = '';
+      this.sharedProp.fk_user = '';
+      this.sharedProp.log_event = '';
 
       //Initialize duplicated surnames controller:
       this.sharedProp.duplicatedSurnamesController = {
@@ -198,7 +201,7 @@ export class ActionComponent implements OnInit {
   //--------------------------------------------------------------------------------------------------------------------//
   setReportingUser(){
     //Set reporting user:
-    this.sharedProp.reporting = this.sharedProp.userLogged.user_id;
+    this.sharedProp.fk_user = this.sharedProp.userLogged.user_id;
 
     //Find:
     this.onSearch();

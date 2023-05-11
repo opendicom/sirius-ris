@@ -57,11 +57,11 @@ export class ListComponent implements OnInit {
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Initializate reporting action button (disabled):
-    let reporting = false;
+    let reporting : boolean | string = false;
 
     //Enable reporting button if the user is Superuser, Supervisor, Médico:
     if(this.sharedProp.userLogged.permissions[0].role == 1 || this.sharedProp.userLogged.permissions[0].role == 3 || this.sharedProp.userLogged.permissions[0].role == 4){
-      reporting = true;
+      reporting = 'appointment.reporting.fk_reporting._id';
     }
 
     //Set action properties:
@@ -80,7 +80,8 @@ export class ListComponent implements OnInit {
         status        : true,
         flow_state    : true,
         modality      : 'modality._id',   //FK name in schema
-        reporting     : reporting,
+        fk_user       : reporting,
+        log_event     : false,
         pager         : true,
         clear_filters : true
       }
@@ -100,7 +101,8 @@ export class ListComponent implements OnInit {
       end   : ''
     };
     this.sharedProp.modality      = '';
-    this.sharedProp.reporting     = '';
+    this.sharedProp.fk_user     = '';
+    this.sharedProp.log_event     = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];
@@ -156,7 +158,7 @@ export class ListComponent implements OnInit {
 
     //Default the studies assigned to the user to the list (Médico):
     if(this.sharedProp.userLogged.permissions[0].role == 4){
-      this.sharedProp.reporting = this.sharedProp.userLogged.user_id;
+      this.sharedProp.fk_user = this.sharedProp.userLogged.user_id;
     }
 
     //Refresh request params:

@@ -34,7 +34,8 @@ export class SharedPropertiesService {
   public modality       : any;
   public selected_items : string[];
   public checked_items  : boolean[];
-  public reporting      : string;
+  public fk_user        : string;
+  public log_event      : string;
 
   //Duplicated surnames controller:
   public duplicatedSurnamesController: any = {
@@ -81,7 +82,8 @@ export class SharedPropertiesService {
       end   : ''
     };
     this.modality   = '';
-    this.reporting  = '';
+    this.fk_user    = '';
+    this.log_event  = '';
 
     //Initialize selected items:
     this.selected_items = [];
@@ -139,27 +141,27 @@ export class SharedPropertiesService {
       }
     }
 
-    //Check status - Filter (With AND Condition)::
+    //Check status - Filter (With AND Condition):
     if(this.status === 'true' || this.status === 'false'){
       string_filter += '"filter[and][status]": "' + this.status + '", ';
     }
 
-    //Check urgency - Filter (With AND Condition)::
+    //Check urgency - Filter (With AND Condition):
     if(this.urgency === 'true' || this.urgency === 'false'){
       string_filter += '"filter[and][urgency]": "' + this.urgency + '", ';
     }
 
-    //Check flow state - Filter (With AND Condition)::
+    //Check flow state - Filter (With AND Condition):
     if(this.flow_state !== ''){
       string_filter += '"filter[and][flow_state]": "' + this.flow_state + '", ';
     }
 
-    //Check Modality - Filter (With AND Condition)::
+    //Check Modality - Filter (With AND Condition):
     if(this.action.filters_form === true && this.modality !== ''){
       string_filter += '"filter[and][' + this.action.filters.modality + ']": "' + this.modality + '", ';
     }
 
-    //Check Date - Filter (With AND Condition)::
+    //Check Date - Filter (With AND Condition):
     if(this.action.filters_form === true && this.date !== ''){
       string_filter += this.setDateTimeStringFilter(this.date, this.date, this.action.filters.date);
     }
@@ -169,9 +171,14 @@ export class SharedPropertiesService {
       string_filter += this.setDateTimeStringFilter(this.date_range.start, this.date_range.end, this.action.filters.date_range);
     }
 
-    //Check reporting user - Filter (With AND Condition)::
-    if(this.reporting !== ''){
-      string_filter += '"filter[and][appointment.reporting.fk_reporting._id]": "' + this.reporting + '", ';
+    //Check fk_user - Filter (With AND Condition):
+    if(this.fk_user !== ''){
+      string_filter += '"filter[and][' + this.action.filters.fk_user + ']": "' + this.fk_user + '", ';
+    }
+
+    //Check log_event - Filter (With AND Condition):
+    if(this.log_event !== ''){
+      string_filter += '"filter[and][event]": "' + this.log_event + '", ';
     }
 
     //Projection:
