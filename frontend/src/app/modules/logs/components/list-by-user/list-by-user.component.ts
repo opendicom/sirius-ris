@@ -68,13 +68,14 @@ export class ListByUserComponent implements OnInit {
     this.sharedProp.status        = '';
     this.sharedProp.flow_state    = '';
     this.sharedProp.date          = '';
-    this.sharedProp.date_range = {
+    this.sharedProp.date_range    = {
       start : '',
       end   : ''
     };
     this.sharedProp.modality      = '';
     this.sharedProp.fk_user       = this.sharedProp.userLogged.user_id; //Set fk_user in shared properties filter (Logged user JWT).
     this.sharedProp.log_event     = '';
+    this.sharedProp.log_element   = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

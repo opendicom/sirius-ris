@@ -10,7 +10,8 @@ const routes: Routes = [
     children: [
       { path: 'user', component: ListByUserComponent },
       { path: 'user/:_id', component: ListByUserComponent },
-      { path: 'element/:_id', component: ListByElementComponent },
+      { path: 'element/:element_type/:element_id', component: ListByElementComponent },
+      { path: 'element/:element_type/:element_id/:_id', component: ListByElementComponent },
       { path: '**', redirectTo: 'user' },
     ]
   }

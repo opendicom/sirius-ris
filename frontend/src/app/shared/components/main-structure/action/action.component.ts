@@ -76,6 +76,7 @@ export class ActionComponent implements OnInit {
       this.sharedProp.modality = '';
       this.sharedProp.fk_user = '';
       this.sharedProp.log_event = '';
+      this.sharedProp.log_element = '';
 
       //Initialize duplicated surnames controller:
       this.sharedProp.duplicatedSurnamesController = {

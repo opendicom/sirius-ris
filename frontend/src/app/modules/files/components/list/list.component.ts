@@ -17,7 +17,7 @@ import { app_setting, regexObjectId } from '@env/environment';                  
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['select_element', 'organization', 'branch', 'name', 'download'];
+  public displayedColumns: string[] = ['select_element', 'element_action', 'organization', 'branch', 'name', 'download'];
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -67,13 +67,14 @@ export class ListComponent implements OnInit {
     this.sharedProp.status        = '';
     this.sharedProp.flow_state    = '';
     this.sharedProp.date          = '';
-    this.sharedProp.date_range = {
+    this.sharedProp.date_range    = {
       start : '',
       end   : ''
     };
     this.sharedProp.modality      = '';
     this.sharedProp.fk_user       = '';
     this.sharedProp.log_event     = '';
+    this.sharedProp.log_element   = '';
 
     //Initialize selected items:
     this.sharedProp.selected_items = [];

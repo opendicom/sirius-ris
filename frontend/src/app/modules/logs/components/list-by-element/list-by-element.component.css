@@ -1,0 +1,53 @@
+.events-col {
+    padding-left: 15px;
+}
+
+.event {
+    cursor: pointer;
+    padding: 2px 5px 2px 5px;
+    background-color: #4e4e79;
+    border-radius: 3px;
+}
+
+.amend {
+    background-color: #f44336b3;
+}
+
+.ip_client {
+    background-color: #607d8b34;
+}
+
+.e2 {
+    background-color: #607d8b;
+}
+
+.e3 {
+    background-color: #d53a9cc8;
+}
+
+.e4 {
+    background-color: #f44336;
+}
+
+.e5 {
+    background-color: #743ad5;
+}
+
+.e6 {
+    background-color: #05ff9f8e;
+}
+
+.sign-auth {
+    color: #1e1e2f;
+    background-color: #b0bec5aa;
+}
+
+/* Stripped table: */
+.mat-row:nth-child(even){
+  background-color: #27293d;
+}
+
+.mat-row:nth-child(odd){
+  background-color: #2b2d42;
+}
+

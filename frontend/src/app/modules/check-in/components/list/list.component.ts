@@ -91,13 +91,14 @@ export class ListComponent implements OnInit {
     this.sharedProp.flow_state    = 'A01';
     this.sharedProp.status        = 'true';
     this.sharedProp.date          = new Date();
-    this.sharedProp.date_range = {
+    this.sharedProp.date_range    = {
       start : '',
       end   : '',
     };
     this.sharedProp.modality      = '';
     this.sharedProp.fk_user       = '';
     this.sharedProp.log_event     = '';
+    this.sharedProp.log_element   = '';
 
     //Set initial request params:
     this.sharedProp.regex         = 'true';

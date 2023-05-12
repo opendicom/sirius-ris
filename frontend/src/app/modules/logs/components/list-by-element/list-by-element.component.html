@@ -1,1 +1,93 @@
-<p>list-by-element works!</p>
+<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+    <!-- log_id -->
+    <ng-container matColumnDef="log_id">
+      <th mat-header-cell *matHeaderCellDef class="text-center divider"> Log ID </th>
+      <td mat-cell *matCellDef="let element" class="text-center divider">
+        <small *ngIf="element._id">{{ element._id }}</small>
+      </td>
+    </ng-container>
+
+    <!-- datetime -->
+    <ng-container matColumnDef="datetime">
+      <th mat-header-cell *matHeaderCellDef class="column-alt text-center divider"> Fecha y hora</th>
+      <td mat-cell *matCellDef="let element" class="column-alt text-center divider">
+        <span *ngIf="element.datetime">{{ element.datetime | date : "dd/MM/yyyy HH:mm:ss" : "UTC" }}</span>
+      </td>
+    </ng-container>
+
+    <!-- event -->
+    <ng-container matColumnDef="event">
+      <th mat-header-cell *matHeaderCellDef class="events-col"> Evento </th>
+      <td mat-cell *matCellDef="let element" class="events-col">
+        <span *ngIf="element.event">
+          <span class="event e{{ element.event }}">{{ eventsLog[element.event] }}</span>
+          <span *ngIf="element.element">
+             de <strong matTooltip="{{ element.element._id }}">{{ elementTypesLang['ES'][element.element.type] }}</strong>
+             <span *ngIf="element.element.details">
+              <hr class="dashed" />
+              <div [ngSwitch]="element.element.details">
+                <span *ngSwitchCase="'amend'"><span class="event amend">Enmienda</span></span>
+                <span *ngSwitchDefault><small>Detalles: {{ element.element.details }}</small></span>
+              </div>
+             </span>
+          </span>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- fk_user -->
+    <ng-container matColumnDef="fk_user">
+      <th mat-header-cell *matHeaderCellDef>Usuario</th>
+      <td mat-cell *matCellDef="let element">
+        <small *ngIf="element.user">
+          {{ element.user.person.name_01 }}
+          <span *ngIf="element.user.person.name_02">{{ ' ' + element.user.person.name_02 }}</span>
+      
+          {{ ' ' + element.user.person.surname_01 }}
+          <span *ngIf="element.user.person.surname_02">{{ ' ' + element.user.person.surname_02 }}</span>
+        </small>
+      </td>
+    </ng-container>
+
+    <!-- organization -->
+    <ng-container matColumnDef="organization">
+      <th mat-header-cell *matHeaderCellDef> Organización </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
+        <ng-template #thenBlockTableOrganization>
+          <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
+        </ng-template>
+        <ng-template #elseBlockTableOrganization>(Sin dato)</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- ip_client -->
+    <ng-container matColumnDef="ip_client">
+      <th mat-header-cell *matHeaderCellDef> IP Cliente </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-chip-list>
+          <mat-chip class="ip_client"><small *ngIf="element.ip_client" innerHTML="{{ element.ip_client | highlighter : sharedProp.filter }}"></small></mat-chip>
+        </mat-chip-list>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-template>
+
+<!-- Await response or not response -->
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    Aguarde, aún no hay resultados.
+  </div>
+</ng-template>
+
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
+</div>

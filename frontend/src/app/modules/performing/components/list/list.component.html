@@ -29,6 +29,13 @@
           </button>
         </span>
 
+        <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
+        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
+          <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+            <mat-icon>format_list_bulleted</mat-icon>
+          </button>
+        </span>
+
         <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
           <mat-icon>cloud_download</mat-icon>
         </button>

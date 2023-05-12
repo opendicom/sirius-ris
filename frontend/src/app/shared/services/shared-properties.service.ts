@@ -36,6 +36,7 @@ export class SharedPropertiesService {
   public checked_items  : boolean[];
   public fk_user        : string;
   public log_event      : string;
+  public log_element    : string | any[];
 
   //Duplicated surnames controller:
   public duplicatedSurnamesController: any = {
@@ -71,19 +72,20 @@ export class SharedPropertiesService {
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
     //Initialize filter (empty):
-    this.filter     = '';
-    this.status     = '';
-    this.urgency    = '';
-    this.flow_state = '';
-    this.regex      = '';
-    this.date       = '';
-    this.date_range = {
+    this.filter       = '';
+    this.status       = '';
+    this.urgency      = '';
+    this.flow_state   = '';
+    this.regex        = '';
+    this.date         = '';
+    this.date_range   = {
       start : '',
       end   : ''
     };
-    this.modality   = '';
-    this.fk_user    = '';
-    this.log_event  = '';
+    this.modality     = '';
+    this.fk_user      = '';
+    this.log_event    = '';
+    this.log_element  = '';
 
     //Initialize selected items:
     this.selected_items = [];
@@ -179,6 +181,17 @@ export class SharedPropertiesService {
     //Check log_event - Filter (With AND Condition):
     if(this.log_event !== ''){
       string_filter += '"filter[and][event]": "' + this.log_event + '", ';
+    }
+
+    //Check log_element - Filter (With AND Condition):
+    if(this.log_element !== ''){
+      if(typeof this.log_element == 'string'){
+        string_filter += '"filter[and][element._id]": "' + this.log_element + '", ';
+      } else {
+        //Create string from array of ObjectIds preserving quotes:
+        const stringQuotesArray = '["' + this.log_element.join('","') + '"]';
+        string_filter += '"filter[in][element._id]": ' + stringQuotesArray + ', ';
+      }
     }
 
     //Projection:
