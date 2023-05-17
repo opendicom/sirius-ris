@@ -33,7 +33,7 @@
                     <!-- insert more performing as same fk_appointment -->
                     <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                     <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                      <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in"> <!-- (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })"> -->
+                      <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                         <mat-icon>add_location_alt</mat-icon>
                       </button>
                     </span>
@@ -52,8 +52,9 @@
                     </ng-template >
                     
                     <ng-template  #elseBlockMWL>
-                      <!-- adjust soft alt (one performing per appointment case) ;D -->
-                      <button mat-icon-button class="small_button" style="width: 0px !important; opacity: 0px !important;"></button>
+                      <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviar a MWL" (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })">
+                        <mat-icon>upload</mat-icon>
+                      </button>
                     </ng-template >
 
                     <hr class="soft-alt"/>

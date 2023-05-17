@@ -4,17 +4,17 @@
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Import external modules:
-const path      = require('path');
-const fs        = require('fs');
-const yaml      = require('js-yaml');
-const mongoose  = require('mongoose');
-const argon2    = require('argon2');
-const moment    = require('moment');
-const multer    = require('multer');
+const path          = require('path');
+const fs            = require('fs');
+const yaml          = require('js-yaml');
+const mongoose      = require('mongoose');
+const argon2        = require('argon2');
+const moment        = require('moment');
+const multer        = require('multer');
 
 //Import app modules:
-const mainSettings = getFileSettings();                                     // File settings (YAML)
-const currentLang = require('./main.languages')(mainSettings.language);     // Language Module
+const mainSettings  = getFileSettings();                                    // File settings (YAML)
+const currentLang   = require('./main.languages')(mainSettings.language);   // Language Module
 
 //--------------------------------------------------------------------------------------------------------------------//
 // GET FILE SETTINGS:

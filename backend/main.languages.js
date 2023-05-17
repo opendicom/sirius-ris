@@ -82,6 +82,12 @@ module.exports = function(language){
             'report_auth_success'           : 'Report authenticated successfully.',
             'report_without_signatures'     : 'The report you want to authenticate is not signed.',
             'report_signed'                 : 'The report you are trying to sign is already signed by the indicated user.',
+            'mail_send_success'             : 'Mail sent successfully.',
+            'mail_send_error'               : 'Error trying to send mail.',
+            'mail_wrong_address'            : 'The email address indicated is incorrect.',
+            'mail_empty_subject'            : 'The subject parameter cannot be empty.',
+            'mail_empty_message'            : 'The message cannot be empty.',
+            'mail_wrong_file'               : 'The specified filename or base64 is wrong.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -181,6 +187,12 @@ module.exports = function(language){
             lang.ris.report_auth_success            = 'Informe autenticado existosamente.';
             lang.ris.report_without_signatures      = 'El informe que desea autenitcar no se encuentra firmado.';
             lang.ris.report_signed                  = 'El informe que se está intentando firmar ya se encuentra firmado por el usuario indicado.';
+            lang.ris.mail_send_success              = 'Correo enviado exitosamente.';
+            lang.ris.mail_send_error                = 'Error al intentar enviar el correo.';
+            lang.ris.mail_wrong_address             = 'La dirección de correo indicada es incorrecta.';
+            lang.ris.mail_empty_subject             = 'El parametro subject no puede ser vacío.';
+            lang.ris.mail_empty_message             = 'El mensaje no puede ser vacío.';
+            lang.ris.mail_wrong_file                = 'El nombre del archivo o el base64 especificado es erroneo.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

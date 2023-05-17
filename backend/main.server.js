@@ -14,7 +14,6 @@ module.exports = function() {
     const fs            = require('fs');
 
     //Import router modules:
-    const authRoutes                    = require('./auth/routes');
     const logsRoutes                    = require('./modules/logs/routes');
     const sessionsRoutes                = require('./modules/sessions/routes');
     const modalitiesRoutes              = require('./modules/modalities/routes');
@@ -30,11 +29,15 @@ module.exports = function() {
     const filesRoutes                   = require('./modules/files/routes');
     const appointmentsRoutes            = require('./modules/appointments/routes');
     const appointments_draftsRoutes     = require('./modules/appointments_drafts/routes');
-    const mwlRoutes                     = require('./modules/mwl/routes');
     const pathologiesRoutes             = require('./modules/pathologies/routes');
     const performingRoutes              = require('./modules/performing/routes');
     const reportsRoutes                 = require('./modules/reports/routes');
     const signaturesRoutes              = require('./modules/signatures/routes');
+
+    //Import other routes:
+    const authRoutes                    = require('./auth/routes');
+    const mwlRoutes                     = require('./mwl/routes');
+    const mailRoutes                    = require('./mail/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -82,8 +85,10 @@ module.exports = function() {
     }
 
     //Configure express Middleware (ex bodyParser):
-    app.use(express.json());                            //Parsing application/json
-    app.use(express.urlencoded({ extended: true }));    //Parsing application/x-www-form-urlencoded
+    //Limits were set to allow base64 files on the body (Prevent payload too large).
+    app.use(express.json({ limit: '50mb', extended: true }));          //Parsing application/json
+    app.use(express.urlencoded({ limit: '50mb', extended: true }));    //Parsing application/x-www-form-urlencoded
+    app.use(express.text({ limit: '200mb' }));
 
     //Set Auth path (JWT):
     app.post('/auth', (req, res) => {
@@ -127,7 +132,6 @@ module.exports = function() {
     });
 
     //Set modules routes:
-    app.use('/signin',                  authRoutes);
     app.use('/logs',                    logsRoutes);
     app.use('/sessions',                sessionsRoutes);
     app.use('/modalities',              modalitiesRoutes);
@@ -143,11 +147,15 @@ module.exports = function() {
     app.use('/files',                   filesRoutes);
     app.use('/appointments',            appointmentsRoutes);
     app.use('/appointments_drafts',     appointments_draftsRoutes);
-    app.use('/mwl',                     mwlRoutes);
     app.use('/pathologies',             pathologiesRoutes);
     app.use('/performing',              performingRoutes);
     app.use('/reports',                 reportsRoutes);
     app.use('/signatures',              signaturesRoutes);
+
+    //Set other routes:
+    app.use('/signin',                  authRoutes);
+    app.use('/mwl',                     mwlRoutes);
+    app.use('/mail',                    mailRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });
@@ -220,6 +228,7 @@ module.exports = function() {
                 status: cnxMongoDBStatus,
                 message: cnXMongoDBMessage
             },
+            mail_server: mainSettings.mailserver,
             pacs: mainSettings.pacs
         });
     });

@@ -21,7 +21,8 @@ module.exports = async (req, res, currentSchema) => {
     //Encode file to base64:
     const fileBase64 = await fs.readFile('uploads/' + req.filename, { encoding: 'base64' }, (error) => {
         if(error){
-            console.log(error);
+            //Send ERROR Message:
+            sendConsoleMessage('ERROR', error);
             throw('Error: ' + error);
         }
     });

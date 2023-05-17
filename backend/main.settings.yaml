@@ -22,6 +22,17 @@ webserver:
   https_enabled   : false
   https_port      : 3001
 
+# Mail server settings:
+# Allowed mail types: 'gmail', 'other'.
+mailserver:
+  type            : 'gmail'
+  host            : 'localhost'
+  port            : 1025
+  secure          : true
+  from            : 'opendicom Sirius RIS'
+  user            : 'opendicomsirius@gmail.com'
+  pass            : 'zuuczgrmpesuqlgh'
+
 # SSL settings (Only if https_enabled is true):
 ssl_certificates:
   key  : './certificates/cert.key'

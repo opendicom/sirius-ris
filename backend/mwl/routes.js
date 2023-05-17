@@ -6,12 +6,12 @@
 const express = require('express');
 
 //Import app modules:
-const mainServices  = require('../../main.services');                           // Main services
+const mainServices  = require('../main.services');                              // Main services
 const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
-const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+const currentLang   = require('../main.languages')(mainSettings.language);      // Language Module
 
 //Import middlewares:
-const mainMiddlewares = require('../../main.middlewares');
+const mainMiddlewares = require('../main.middlewares');
 
 //Import Handlers:
 const tcpClientHandler = require('./handlers/tcp-client');

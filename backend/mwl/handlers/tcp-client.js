@@ -8,12 +8,12 @@ const mongoose  = require('mongoose');
 const cryptojs  = require("crypto-js");
 
 //Import app modules:
-const mainServices  = require('../../../main.services');                            // Main services
+const mainServices  = require('../../main.services');                               // Main services
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
-const currentLang   = require('../../../main.languages')(mainSettings.language);    // Language Module
+const currentLang   = require('../../main.languages')(mainSettings.language);       // Language Module
 
 //Import schemas:
-const appointments = require('../../appointments/schemas');
+const appointments = require('../../modules/appointments/schemas');
 
 module.exports = async (req, res) => {
     //Import appointment aggregate:

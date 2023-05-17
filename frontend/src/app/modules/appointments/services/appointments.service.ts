@@ -364,7 +364,7 @@ export class AppointmentsService {
 
         //Create appointment PDF with pain password:
         if(this.sharedProp.current_friendly_pass !== ''){
-          this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass);
+          this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass, true);
         }
 
         //Response the form according to the result:

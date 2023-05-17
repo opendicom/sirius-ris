@@ -25,7 +25,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
         performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
-        signatures              : ['find', 'findOne', 'insert', 'delete']
+        signatures              : ['find', 'findOne', 'insert', 'delete'],
+        mail                    : ['send']
     },
 
     // Administrador:
@@ -49,7 +50,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne', 'insert', 'update'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
-        signatures              : ['find', 'findOne']
+        signatures              : ['find', 'findOne'],
+        mail                    : []
     },
 
     // Supervisor:
@@ -73,7 +75,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'authenticate', 'setPathologies'],
-        signatures              : ['find', 'findOne', 'insert']
+        signatures              : ['find', 'findOne', 'insert'],
+        mail                    : []
     },
 
     // Médico:
@@ -97,7 +100,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
-        signatures              : ['find', 'findOne']
+        signatures              : ['find', 'findOne'],
+        mail                    : []
     },
 
     // Técnico:
@@ -121,7 +125,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'update'],
         reports                 : [],
-        signatures              : []
+        signatures              : [],
+        mail                    : []
     },
 
     // Enfermero:
@@ -145,7 +150,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'update'],
         reports                 : [],
-        signatures              : []
+        signatures              : [],
+        mail                    : []
     },
 
     // Coordinador:
@@ -169,7 +175,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : [],
         reports                 : [],
-        signatures              : []
+        signatures              : [],
+        mail                    : []
     },
 
     // Recepcionista:
@@ -193,7 +200,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : [],
-        signatures              : []
+        signatures              : [],
+        mail                    : []
     },
 
     // Paciente:
@@ -216,7 +224,8 @@ const rolePermissions = {
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne'],
-        signatures              : ['find', 'findOne']
+        signatures              : ['find', 'findOne'],
+        mail                    : []
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -240,7 +249,8 @@ const rolePermissions = {
         pathologies             : [],
         performing              : [],
         reports                 : [],
-        signatures              : []
+        signatures              : [],
+        mail                    : []
     }
 }
 
