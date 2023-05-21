@@ -16,7 +16,8 @@ const subSchemaFindings = new mongoose.Schema({
 //Define Authenticated Sub-Schema:
 const subSchemaAuthenticated = new mongoose.Schema({
     datetime:               { type: Date },                 //Not required in the main request, set on authenticate handler.
-    fk_user:                { type: mongoose.ObjectId }     //Not required in the main request, set on authenticate handler.
+    fk_user:                { type: mongoose.ObjectId },    //Not required in the main request, set on authenticate handler.
+    base64_report:          { type: String }                //Not required in the main request, set on authenticate handler.
 },
 { _id : false });
 

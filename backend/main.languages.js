@@ -82,6 +82,8 @@ module.exports = function(language){
             'report_auth_success'           : 'Report authenticated successfully.',
             'report_without_signatures'     : 'The report you want to authenticate is not signed.',
             'report_signed'                 : 'The report you are trying to sign is already signed by the indicated user.',
+            'report_create_error'           : 'An error occurred during the creation of the PDF report.',
+            'report_authenticated'          : 'Report successfully authenticated.',
             'mail_send_success'             : 'Mail sent successfully.',
             'mail_send_error'               : 'Error trying to send mail.',
             'mail_wrong_address'            : 'The email address indicated is incorrect.',
@@ -187,6 +189,8 @@ module.exports = function(language){
             lang.ris.report_auth_success            = 'Informe autenticado existosamente.';
             lang.ris.report_without_signatures      = 'El informe que desea autenitcar no se encuentra firmado.';
             lang.ris.report_signed                  = 'El informe que se está intentando firmar ya se encuentra firmado por el usuario indicado.';
+            lang.ris.report_create_error            = 'Ha ocurrido un error durante la creación del informe PDF.';
+            lang.ris.report_authenticated           = 'Informe autenticado existosamente.';
             lang.ris.mail_send_success              = 'Correo enviado exitosamente.';
             lang.ris.mail_send_error                = 'Error al intentar enviar el correo.';
             lang.ris.mail_wrong_address             = 'La dirección de correo indicada es incorrecta.';

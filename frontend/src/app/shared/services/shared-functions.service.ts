@@ -1140,7 +1140,7 @@ export class SharedFunctionsService {
     let password = keywords[this.getRandomNumber(0, keywords.length)];
 
 
-    //Get a random number between 100 and 200:
+    //Get a random number between 100 and 998:
     let random_number = this.getRandomNumber(100, 998);
 
     //Check that the random number is not 666 - Superstitions (-_-'):

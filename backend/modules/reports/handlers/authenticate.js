@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // REPORTS AUTHENTICATE HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
+//Import external modules:
+const moment        = require('moment');
+
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
@@ -8,6 +11,9 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 
 //Import Module Services:
 const moduleServices = require('../../modules.services');
+
+//Import Reports Services:
+const reportServices = require('../services');
 
 //Import schemas:
 const users     = require('../../users/schemas');
@@ -21,6 +27,7 @@ module.exports = async (req, res, currentSchema) => {
         concession: req.decoded.session.concession
     };
 
+    /*
     //Check that the user has entered their password:
     if(req.body.password !== undefined && req.body.password !== null && req.body.password !== ''){
         //Find authenticated user information:
@@ -64,42 +71,73 @@ module.exports = async (req, res, currentSchema) => {
 
                                             //Check result:
                                             if(result.success){
-                                                //Update report (add authenticate object):
-                                                const updateData = { $set: { 'authenticated': {
-                                                    datetime: new Date(),
-                                                    fk_user: userAuth._id
-                                                } }};
+                                                */
 
-                                                //Update medical signatures in report:
-                                                await currentSchema.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
-                                                .then(async (updatedData) => {
-                                                    //Set log element:
-                                                    const element = {
-                                                        type    : currentSchema.Model.modelName,
-                                                        _id     : updatedData._id
-                                                    };
+                                                //Create report PDF on Base64:
+                                                const base64Result = await reportServices.createBase64Report(req, res);
+                                                
+                                                //Check base64 result:
+                                                if(base64Result !== false){
+                                                    //Update report (add authenticate object):
+                                                    const updateData = { $set: {
+                                                        'authenticated': {
+                                                            datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSS', { trim: false }) + 'Z',
+                                                            fk_user: userAuth._id,
+                                                            base64_report: base64Result
+                                                        }
+                                                    }};
 
-                                                    //Save registry in Log DB:
-                                                    const logResult = await moduleServices.insertLog(req, res, 6, element);
+                                                    // -------------------------------------------------//
+                                                    // REMOVE THIS AFTER RESOLVE:
+                                                    // -------------------------------------------------//
+                                                    //Send successfully response:
+                                                    res.status(200).send({
+                                                        success: true, 
+                                                        data: updateData,
+                                                        message: currentLang.ris.report_authenticated
+                                                    });
 
-                                                    //Check log registry result:
-                                                    if(logResult){
-                                                        //Send successfully response:
-                                                        res.status(200).send({
-                                                            success: true, 
-                                                            data: updatedData,
-                                                            message: 'Informe autenticado existosamente.'
-                                                        });
                                                     } else {
-                                                        //Send log error response:
-                                                        res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
-                                                    }                                            
-                                                })
-                                                .catch((err) => {
-                                                    //Send ERROR Message:
-                                                    mainServices.sendConsoleMessage('ERROR', '\nupdate [authenticate report]: Failed, ' + JSON.stringify({ report_id: reportData._id }), err);
-                                                });
+                                                        //Send error message:
+                                                        res.status(500).send({ success: false, message: currentLang.ris.report_create_error });
+                                                    }
+                                                    // -------------------------------------------------//
 
+                                                    /*
+
+                                                    //Update medical signatures in report:
+                                                    await currentSchema.Model.findOneAndUpdate({ _id: reportData._id }, updateData, { new: true })
+                                                    .then(async (updatedData) => {
+                                                        //Set log element:
+                                                        const element = {
+                                                            type    : currentSchema.Model.modelName,
+                                                            _id     : updatedData._id
+                                                        };
+
+                                                        //Save registry in Log DB:
+                                                        const logResult = await moduleServices.insertLog(req, res, 6, element);
+
+                                                        //Check log registry result:
+                                                        if(logResult){
+                                                            //Send successfully response:
+                                                            res.status(200).send({
+                                                                success: true, 
+                                                                data: updatedData,
+                                                                message: currentLang.ris.report_authenticated
+                                                            });
+                                                        } else {
+                                                            //Send log error response:
+                                                            res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
+                                                        }                                            
+                                                    })
+                                                    .catch((err) => {
+                                                        //Send ERROR Message:
+                                                        mainServices.sendConsoleMessage('ERROR', '\nupdate [authenticate report]: Failed, ' + JSON.stringify({ report_id: reportData._id }), err);
+                                                    });
+                                                } else {
+                                                    //Send error message:
+                                                    res.status(500).send({ success: false, message: currentLang.ris.report_create_error });
+                                                }
                                             } else {
                                                 //Send error message:
                                                 res.status(422).send({ success: false, message: result.message });
@@ -151,6 +189,6 @@ module.exports = async (req, res, currentSchema) => {
         //Bad request:
         res.status(400).send({ success: false, message: currentLang.http.bad_request });
     }
-    
+    */
 }
 //--------------------------------------------------------------------------------------------------------------------//
