@@ -2447,20 +2447,40 @@ async function adjustCondition(filter, callback){
 //--------------------------------------------------------------------------------------------------------------------//
 // SET FK ORGANIZATION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function setFKOrganization(decodedJWT, user_permission){
+async function setFKOrganization(req, res, user_permission){
     // Initializate fk_organization:
     let fk_organization = '';
 
     // Check if there is JWT to set fk_organization:
-    if(decodedJWT !== undefined){
-        const completeDomain = await getCompleteDomain(decodedJWT.session.domain, decodedJWT.session.type + 's');
-        fk_organization = completeDomain.organization;
+    if(req.decoded !== undefined){
+        //One step authentication:
+        if(req.decoded.session !== undefined && req.decoded.session !== null){
+            //Get domain type from JWT:
+            const domainType = await domainIs(req.decoded.session.domain, res);
+
+            //Get complete domain:
+            const completeDomain = await getCompleteDomain(req.decoded.session.domain, domainType);
+            fk_organization = completeDomain.organization;
+
+        //Two step authentication for multiple role user (exist 1 minute JWT but not session):
+        } else {
+            //Get domain type from user_permissions:
+            const domainType = await domainIs(user_permission.domain, res);
+
+            //Get complete domain:
+            const completeDomain = await getCompleteDomain(user_permission.domain, domainType);
+            fk_organization = completeDomain.organization;
+        }
     
     // If there is no JWT get fk_organization from user permission:
     // This case is for users with only one permission (one step login).
     // Otherwise it does not reach this step (Does not record signin attempt log).
     } else {
-        const completeDomain = await getCompleteDomain(user_permission.domain, user_permission.type + 's');
+        //Get domain type from user_permissions:
+        const domainType = await domainIs(user_permission.domain, res);
+
+        //Get complete domain:
+        const completeDomain = await getCompleteDomain(user_permission.domain, domainType);
         fk_organization = completeDomain.organization;
     }
 
@@ -2483,7 +2503,7 @@ async function insertLog(req, res, event, element = undefined, fk_user = undefin
     }
 
     //Set fk_organization:
-    const fk_organization = await setFKOrganization(req.decoded, user_permission);
+    const fk_organization = await setFKOrganization(req, res, user_permission);
 
     //Set datetime:
     const datetime = Date.now();

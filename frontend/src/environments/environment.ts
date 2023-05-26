@@ -36,8 +36,9 @@ export const events_log = {
   2 : 'Creación',
   3 : 'Edición',
   4 : 'Eliminación',
-  5 : 'Firma',          //Only for report element.
-  6 : 'Autenticación'   //Only for report element.
+  5 : 'Firma',            // Only for report element.
+  6 : 'Autenticación',    // Only for report element.
+  7 : 'Envío de correo'   // For appointments and reports.
 };
 
 // Document types:
@@ -79,13 +80,14 @@ export const user_concessions = {
   9   : 'Enmendar informes',    //This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
   10  : 'Acceso a logs del usuario',
   11  : 'Acceso a logs de elementos',
-  //12  : 'Búsquedas avanzadas',
-  //13  : 'Listados de facturación',
-  //14  : 'Estadísticas generales',
-  //15  : 'Estadísticas médicas',
-  //16  : 'Estadísticas del personal',
-  //17  : 'Eliminación física de archivos',
-  //18  : 'Supervisar citas en curso',
+  12  : 'Reenvío de correos',
+  //13  : 'Búsquedas avanzadas',
+  //14  : 'Listados de facturación',
+  //15  : 'Estadísticas generales',
+  //16  : 'Estadísticas médicas',
+  //17  : 'Estadísticas del personal',
+  //18  : 'Eliminación física de archivos',
+  //19  : 'Supervisar citas en curso',
 };
 
 // User Types:

@@ -9,10 +9,13 @@ const mainServices  = require('../main.services');                          // M
 const mainSettings  = mainServices.getFileSettings();                       // File settings (YAML)
 const currentLang   = require('../main.languages')(mainSettings.language);  // Language Module
 
+//Import module services:
+const moduleServices = require('../modules/modules.services');
+
 //--------------------------------------------------------------------------------------------------------------------//
 // SEND EMAIL:
 //--------------------------------------------------------------------------------------------------------------------//
-async function sendEmail(req, res, to, subject, body, attachments = undefined, sendResponse = true){
+async function sendEmail(req, res, log_element, to, subject, body, attachments = undefined, sendResponse = true){
     // Format from value:
     from = '"' + mainSettings.mailserver.from + '" <' + mainSettings.mailserver.user + '>';
 
@@ -52,7 +55,7 @@ async function sendEmail(req, res, to, subject, body, attachments = undefined, s
     }
 
     // Send mail with defined transport object:
-    await transporter.sendMail(mailOptions,(error, info) => {
+    await transporter.sendMail(mailOptions, async (error, info) => {
         //Check errors:
         if(error) {
             //Return error message (HTML Response):
@@ -61,7 +64,13 @@ async function sendEmail(req, res, to, subject, body, attachments = undefined, s
             // Send console error:
             mainServices.sendConsoleMessage('ERROR', currentLang.ris.mail_send_error, error);
         } else {
-            if(sendResponse){
+            //Add details in element log entry (mail address to):
+            log_element['details'] = to;
+
+            //Save registry in Log DB:
+            const logResult = await moduleServices.insertLog(req, res, 7, log_element);
+
+            if(sendResponse && logResult){
                 //Send successfully response:
                 res.status(200).send({ success: true, message: currentLang.ris.mail_send_success, attachments: attachments });
             }

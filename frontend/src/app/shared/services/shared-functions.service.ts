@@ -21,6 +21,7 @@ import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-re
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
+import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -426,6 +427,11 @@ export class SharedFunctionsService {
         //PERFORMING DOWNLOAD CONTENTS DIALOG:
         case 'performing_downloads':
           this.basicDialog(PerformingDownloadsComponent, operationHandler, (result) => { callback(result) });
+          break;
+
+        //MAIL DELIVERY:
+        case 'mail_delivery':
+          this.basicDialog(MailDeliveryComponent, operationHandler, (result) => { callback(result) });
           break;
       }
     }

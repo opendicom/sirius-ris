@@ -36,7 +36,7 @@ module.exports = async (req, res, currentSchema) => {
     //Check that the user has entered their password:
     if(req.body.password !== undefined && req.body.password !== null && req.body.password !== ''){
         //Find authenticated user information:
-        await users.Model.findById(userAuth._id, { 'password' : 1, status: 1 })
+        await users.Model.findById(userAuth._id, { 'password' : 1, status: 1, fk_person: 1 })
         .exec()
         .then(async (userData) => {
             //Check if user exist:
@@ -67,8 +67,8 @@ module.exports = async (req, res, currentSchema) => {
 
                                             //Create handler object (sign_report):
                                             const handlerObj = {
-                                                fk_performing: reportData.fk_performing,
-                                                error_message: currentLang.ris.report_auth_error
+                                                fk_performing   : reportData.fk_performing,
+                                                error_message   : currentLang.ris.report_auth_error
                                             };
 
                                             //Check and update performing flow_state to 'P09 - Terminado (con informe)':
@@ -76,16 +76,18 @@ module.exports = async (req, res, currentSchema) => {
 
                                             //Check result:
                                             if(result.success){
+                                                //Set authenticated datetime:
+                                                const auth_datetime = moment().format('YYYY-MM-DDTHH:mm:ss.SSS', { trim: false }) + 'Z';
 
                                                 //Create report PDF on Base64:
-                                                const reportResult = await reportServices.createBase64Report(req, res);
+                                                const reportResult = await reportServices.createBase64Report(req, res, userData.fk_person, auth_datetime);
                                                 
                                                 //Check base64 result:
                                                 if(reportResult.base64 !== false){
                                                     //Update report (add authenticate object):
                                                     const updateData = { $set: {
                                                         'authenticated': {
-                                                            datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSS', { trim: false }) + 'Z',
+                                                            datetime: auth_datetime,
                                                             fk_user: userAuth._id,
                                                             base64_report: reportResult.base64
                                                         }
@@ -121,9 +123,16 @@ module.exports = async (req, res, currentSchema) => {
                                                             encoding: 'base64'
                                                         }];
 
+                                                        //Set log_element:
+                                                        const log_element = {
+                                                            _id     : reportData._id,
+                                                            type    : 'reports'
+                                                        }
+
                                                         //Send authenticated report by email:
                                                         await mailServices.sendEmail(
                                                             req, res,
+                                                            log_element,
                                                             reportResult.report_complete_data.patient.email,
                                                             reportResult.report_complete_data.appointment.imaging.organization.name + ' - Informe médico (Sirius RIS)',
                                                             body_message,

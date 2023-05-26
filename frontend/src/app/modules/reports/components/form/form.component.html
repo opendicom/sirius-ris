@@ -436,6 +436,10 @@
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper text-right" [class.signatures-warn]="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined"> <!-- start fxLayout wrapper -->
+          <!--Report Draft PDF Preview-->
+          <button *ngIf="reportData.performing && (reportData.performing.flow_state === 'P07' || reportData.performing.flow_state === 'P08')" mat-mini-fab class="small_button pdf_preview" type="button" (click)="pdfService.createPDF('report_draft', fk_performing)" matTooltip="Vista previa del informe PDF"><mat-icon>plagiarism</mat-icon></button>
+
+          <!--Save button-->
           <button mat-mini-fab class="small_button" type="button" (click)="onSubmit('save')" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button>
 
           <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes] -->

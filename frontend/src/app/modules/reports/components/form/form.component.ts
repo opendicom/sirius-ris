@@ -161,20 +161,24 @@ export class FormComponent implements OnInit {
       case 'update':
         //Set params:
         const params = {
-          'filter[fk_performing]'       : this.fk_performing,
+          'filter[fk_performing]'         : this.fk_performing,
 
           //Project only report content, not performing content (multiple reports | amendments):
-          'proj[clinical_info]'         : 1,
-          'proj[procedure_description]' : 1,
-          'proj[findings]'              : 1,
-          'proj[summary]'               : 1,
-          'proj[medical_signatures]'    : 1,
-          'proj[authenticated]'         : 1,
-          'proj[pathologies]'           : 1,
-          'proj[createdAt]'             : 1,
+          'proj[clinical_info]'           : 1,
+          'proj[procedure_description]'   : 1,
+          'proj[findings]'                : 1,
+          'proj[summary]'                 : 1,
+          'proj[medical_signatures]'      : 1,
+          'proj[authenticated.datetime]'  : 1,
+          'proj[authenticated.user]'      : 1,
+          'proj[pathologies]'             : 1,
+          'proj[createdAt]'               : 1,
+
+          //Project performing flow_state (Required to preview PDF report):
+          'proj[performing.flow_state]'   : 1,
 
           //Make sure the first report is the most recent:
-          'sort[createdAt]'             : -1
+          'sort[createdAt]'               : -1
         };
 
         //Find reports by fk_performing:

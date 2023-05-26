@@ -30,7 +30,7 @@ export class PdfService {
     private apiClient   : ApiClientService,
   ) { }
 
-  createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined, send_mail: boolean = false){
+  createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined, send_mail: boolean = false, open_document: boolean = true, email_destination: string | undefined = undefined){
     //Initialize document & pdfDocument:
     let docDefinition : any;
     let pdfDocument : any;
@@ -174,13 +174,15 @@ export class PdfService {
                 pdfDocument = pdfMake.createPdf(docDefinition);
 
                 //Open PDF Document in browser:
-                pdfDocument.download(
-                  timestamp + '_CITA_' +
-                  res.data[0].patient.person.documents[0].document + '_' +
-                  res.data[0].patient.person.name_01 + '_' +
-                  res.data[0].patient.person.surname_01 +
-                  '.pdf'
-                );
+                if(open_document){
+                  pdfDocument.download(
+                    timestamp + '_CITA_' +
+                    res.data[0].patient.person.documents[0].document + '_' +
+                    res.data[0].patient.person.name_01 + '_' +
+                    res.data[0].patient.person.surname_01 +
+                    '.pdf'
+                  );
+                }
               }
 
               //Return response:
@@ -215,27 +217,28 @@ export class PdfService {
                   '<br/><br/>' + 
                 '</p>';
 
+                //Set mail destination:
+                if(email_destination == undefined || email_destination == null || email_destination == ''){
+                  email_destination = res.data[0].patient.email;
+                }
+                
                 //Get the PDF Document as base64 data:
                 pdfDocument.getBase64((base64Document: any) => {
                   //Set mail options:
                   const mailOptions = {
-                    to        : res.data[0].patient.email,
+                    to        : email_destination,
                     subject   : res.data[0].imaging.organization.name + ' - Comprobante de cita (Sirius RIS)',
                     message   : body_message,
                     filename  : 'Comprobante_de_cita.pdf',
-                    base64    : base64Document
+                    base64    : base64Document,
+
+                    //Log info (Not deductible from backend):
+                    element_id    : res.data[0]._id,
+                    element_type  : 'appointments'
                   };
 
                   //Send email:
-                  this.apiClient.sendRequest('POST', 'mail/send', mailOptions).subscribe({
-                    error: mailRes => {
-                      //Check mail operation status:
-                      if(mailRes.success === false){
-                        this.sharedFunctions.sendMessage(mailRes.message);
-                      }
-                    }
-                  });
-                  
+                  this.sendMail(mailOptions, open_document);
                 });
               }
             },
@@ -257,8 +260,112 @@ export class PdfService {
 
         break;
 
-        // PDF REPORT DRAFT:
+        // PDF REPORT (AUTHENTICATED BASE64 PDF REPORT):
         case 'report':
+          //Set params:
+          const base64ReportParams = {
+            'filter[fk_performing]' : _id,
+            'proj[patient]'         : 1,
+            'proj[authenticated]'   : 1,
+            'proj[appointment.imaging.organization]' : 1,
+            'proj[performing.date]' : 1,
+
+            //Make sure the first report is the most recent:
+            'sort[createdAt]'       : -1
+          };
+          
+          //Find base64 report by _id:
+          //Use Api Client to prevent reload current list response [sharedFunctions.find -> this.response = res].
+          this.apiClient.sendRequest('GET', 'reports/findOne', base64ReportParams).subscribe({
+            next: async res => {
+              //Check result:
+              if(res.success){
+                if(Object.keys(res.data).length > 0){
+                  //Open PDF Document in browser:
+                  if(open_document){
+                    //Set link source (base64):
+                    const linkSource ='data:application/octet-stream;base64,' + res.data[0].authenticated.base64_report;
+
+                    //Create link to enable browser download dialog:
+                    const downloadLink = document.createElement('a');
+
+                    //Set downloadLink href:
+                    downloadLink.href = linkSource;
+
+                    //Get timestamp:
+                    const timestamp = this.sharedFunctions.getTimeStamp();
+
+                    //Set name of the file to download:
+                    downloadLink.download = timestamp + '_INFORME_' + 
+                    res.data[0].patient.person.documents[0].document + '_' +
+                    res.data[0].patient.person.name_01 + '_' + 
+                    res.data[0].patient.person.surname_01 + 
+                    '.pdf';
+
+                    //Trigger click (download):
+                    downloadLink.click();
+                  }
+
+                  //Check if mail is required:
+                  if(send_mail){
+                    //Get complete name:
+                    const patient_complete_name = this.getCompleteName(res.data[0].patient.person);
+
+                    //Datetime:
+                    const datetime = await this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].performing.date), new Date(res.data[0].performing.date));
+
+                    //Build mail body (message):
+                    const body_message =
+                    '<img src="' + this.logoDataURI + '" width="300" /><br/><br/>' + 
+                    '<p>' + 
+                        '<strong>Estimado/a ' + patient_complete_name.names + ' ' + patient_complete_name.surnames + ',</strong><br/>' +
+                        '<br/>Le enviamos <strong>adjunto</strong> a este correo electrónico el <strong>informé médico</strong> del estudio realizado sobre la fecha <strong>' + datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + '</strong>.<br/>' + 
+                        '<br/>' + 
+                        '<small><i>Este es un correo automático, por favor no responda a esta dirección.</i></small>' + 
+                        '<br/><br/>' + 
+                    '</p>';
+
+                    //Set mail destination:
+                    if(email_destination == undefined || email_destination == null || email_destination == ''){
+                      email_destination = res.data[0].patient.email;
+                    }
+
+                    //Set mail options:
+                    const mailOptions = {
+                      to            : email_destination,
+                      subject       : res.data[0].appointment.imaging.organization.name + ' - Comprobante de cita (Sirius RIS)',
+                      message       : body_message,
+                      filename      : 'Informe_medico.pdf',
+                      base64        : res.data[0].authenticated.base64_report,
+
+                      //Log info (Not deductible from backend):
+                      element_id    : res.data[0]._id,
+                      element_type  : 'reports'
+                    };
+
+                    //Send email:
+                    this.sendMail(mailOptions, open_document);
+                  }
+
+                } else {
+                  //Send message (no records found):
+                  this.sharedFunctions.sendMessage(res.message);
+                }
+              } else {
+                //Send message (success false):
+                this.sharedFunctions.sendMessage(res.message);
+              }
+            },
+            error: res => {
+              //Send error:
+              this.sharedFunctions.sendMessage(res.error.message);
+            }
+          });
+
+          break;
+
+        // PDF REPORT DRAFT:
+        case 'report_draft':
           //Set params:
           const reportParams = {
             'filter[fk_performing]'       : _id,
@@ -268,8 +375,6 @@ export class PdfService {
             'proj[procedure_description]'   : 1,
             'proj[findings]'                : 1,
             'proj[summary]'                 : 1,
-            'proj[medical_signatures.user]' : 1,
-            'proj[authenticated]'           : 1,
             'proj[createdAt]'               : 1,
 
             //Project performing content:
@@ -301,26 +406,11 @@ export class PdfService {
                 const datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].performing.date), new Date(res.data[0].performing.date));
                 const performing_datetime = datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + ' ' + datetime.startHours + ':' + datetime.startMinutes + ' hs';
 
-                //Get auth user complete name:
-                let auth_complete_name: any = this.getCompleteName(res.data[0].authenticated.user.person);
-                auth_complete_name = auth_complete_name.names + ' ' + auth_complete_name.surnames;
-
                 //Authenticate message:
-                const authMessage = 'Autenticado digitalmente por ' + auth_complete_name + ' en fecha del ' + res.data[0].authenticated.datetime + ' actuando para la institución ' + res.data[0].appointment.imaging.organization.name + ' con OID ' + res.data[0].appointment.imaging.organization.OID;
-
-                //Medical signatures (await foreach):
-                let signatures_users = '';
-                await Promise.all(Object.keys(res.data[0].medical_signatures).map((key) => {
-                  //Get signatures user complete name:
-                  let signature_complete_name: any = this.getCompleteName(res.data[0].medical_signatures[key].user.person);
-                  signature_complete_name = signature_complete_name.names + ' ' + signature_complete_name.surnames;
-
-                  //Concat signature users:
-                  signatures_users += signature_complete_name + ', ';
-                }));
+                const authMessage = 'Autenticado digitalmente por NOMBRE COMPLETO AUTENTICADOR en fecha del FECHA Y HORA actuando para la institución ' + res.data[0].appointment.imaging.organization.name + ' con OID ' + res.data[0].appointment.imaging.organization.OID;
 
                 //Signatures message:
-                const signMessage = 'Firmado por médico/s: ' + signatures_users.substring(0, signatures_users.length - 2) + ' | ' + res.data[0].appointment.imaging.organization.short_name;
+                const signMessage = 'Firmado por médico/s: NOMBRE COMPLETO MÉDICOS FIRMANTES | ' + res.data[0].appointment.imaging.organization.short_name;
 
                 //Convert HTML to PDF Make syntax:
                 let htmlClinicalInfo = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>');
@@ -518,5 +608,20 @@ export class PdfService {
 
     //Return complete name:
     return { names : names, surnames: surnames };
+  }
+
+  private sendMail(mailOptions: any, open_document: boolean){
+    //Send email:
+    this.apiClient.sendRequest('POST', 'mail/send', mailOptions).subscribe({
+      next: (mailRes: any) => {
+        //Check mail operation status:
+        if(open_document == false){
+          this.sharedFunctions.sendMessage(mailRes.message);
+        }
+      },
+      error: mailRes => {
+        this.sharedFunctions.sendMessage(mailRes.message);
+      }
+    });
   }
 }

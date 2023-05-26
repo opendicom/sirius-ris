@@ -90,6 +90,7 @@ module.exports = function(language){
             'mail_empty_subject'            : 'The subject parameter cannot be empty.',
             'mail_empty_message'            : 'The message cannot be empty.',
             'mail_wrong_file'               : 'The specified filename or base64 is wrong.',
+            'missing_information_log'       : 'Missing information for log record.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -197,6 +198,7 @@ module.exports = function(language){
             lang.ris.mail_empty_subject             = 'El parametro subject no puede ser vacío.';
             lang.ris.mail_empty_message             = 'El mensaje no puede ser vacío.';
             lang.ris.mail_wrong_file                = 'El nombre del archivo o el base64 especificado es erroneo.';
+            lang.ris.missing_information_log        = 'Falta información para registro de log.'
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

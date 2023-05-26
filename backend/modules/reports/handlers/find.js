@@ -17,7 +17,8 @@ module.exports = async (req, res, currentSchema) => {
     let { filter, regex } = req.query;
 
     //Add aggregate to request:
-    req.query['aggregate'] = reports_aggregate;
+    if(!req.query.hasOwnProperty('aggregate')){ delete req.query.aggregate };
+    req.query['aggregate'] = [ ... reports_aggregate ];
 
     //Correct data types for match operation:
     if(filter != undefined){

@@ -9,9 +9,10 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 //Import Mail Services:
 const mailServices = require('../services');
 
-//Set Email and Base64 Regex to validate:
+//Set Email, Base64 and ObjectId Regex to validate:
 const regexEmail = /.+\@.+\..+/;
 const regexBase64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/;
+const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 module.exports = async (req, res) => {
     //Initializate attachments:
@@ -39,9 +40,26 @@ module.exports = async (req, res) => {
                         attachments = currentLang.ris.mail_wrong_file;
                     }
                 }
-            
-                //Send email:
-                await mailServices.sendEmail(req, res, req.body.to, req.body.subject, req.body.message, attachments);
+
+                if(req.body.element_id !== undefined && req.body.element_id !== null && req.body.element_id !== '' && req.body.element_type !== undefined && req.body.element_type !== null && req.body.element_type !== ''){
+                    //Check log element _id:
+                    if(regexObjectId.test(req.body.element_id)){
+                        //Set log_element:
+                        const log_element = {
+                            _id     : req.body.element_id,
+                            type    : req.body.element_type
+                        }
+
+                        //Send email:
+                        await mailServices.sendEmail(req, res, log_element, req.body.to, req.body.subject, req.body.message, attachments);
+                    } else {
+                        //Return the result (HTML Response):
+                        res.status(422).send({ success: false, message: currentLang.db.not_valid_objectid });    
+                    }
+                } else {
+                    //Return the result (HTML Response):
+                    res.status(422).send({ success: false, message: currentLang.ris.missing_information_log });
+                }
             } else {
                 //Return the result (HTML Response):
                 res.status(422).send({ success: false, message: currentLang.ris.mail_empty_message });

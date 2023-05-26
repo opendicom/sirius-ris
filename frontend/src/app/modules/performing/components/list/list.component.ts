@@ -32,6 +32,7 @@ export class ListComponent implements OnInit {
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
+    'report_indicator',
     'element_action',
     'flow_state',
     'date',
@@ -233,5 +234,10 @@ export class ListComponent implements OnInit {
   performingDownloads(current_performing: any){
     //Open dialog to display downloadable files:
     this.sharedFunctions.openDialog('performing_downloads', current_performing);
+  }
+
+  mailDelivery(current_performing: any){
+    //Open dialog to display downloadable files:
+    this.sharedFunctions.openDialog('mail_delivery', current_performing);
   }
 }

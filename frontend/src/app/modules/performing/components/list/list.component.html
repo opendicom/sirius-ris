@@ -2,12 +2,10 @@
 
 <ng-template #thenBlockTable>
   <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
-
-    <!-- element action -->
-    <ng-container matColumnDef="element_action">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <!-- report_indicator -->
+    <ng-container matColumnDef="report_indicator">
+      <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        
         <!-- reporting indicator -->
         <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
         <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
@@ -21,6 +19,13 @@
             </ng-template>
           </span>
         </span>
+      </td>
+    </ng-container>
+
+    <!-- element action -->
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+      <td mat-cell *matCellDef="let element">
 
         <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
         <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
@@ -36,9 +41,18 @@
           </button>
         </span>
 
+        <br/>
+
         <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
           <mat-icon>cloud_download</mat-icon>
         </button>
+
+        <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
+        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
+          <button mat-icon-button color="accent" class="smaller-icons" aria-label="Reenvío de correos" matTooltip="Reenvío de correos" (click)="mailDelivery(element)">
+            <mat-icon>forward_to_inbox</mat-icon>
+          </button>
+        </span>
       </td>
     </ng-container>
 

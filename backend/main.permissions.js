@@ -51,7 +51,7 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
-        mail                    : []
+        mail                    : ['send']
     },
 
     // Supervisor:
@@ -176,7 +176,7 @@ const rolePermissions = {
         performing              : [],
         reports                 : [],
         signatures              : [],
-        mail                    : []
+        mail                    : ['send']
     },
 
     // Recepcionista:
@@ -267,7 +267,8 @@ const concessionPermissions = {
         users                   : ['find', 'findOne', 'findByService', 'insert', 'update'],
         slots                   : ['find', 'findOne'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
-        appointments_drafts     : ['find', 'findOne', 'insert', 'delete']
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+        mail                    : ['send']
     },
 
     // 3 : Calendario de citas:
@@ -340,15 +341,20 @@ const concessionPermissions = {
     // 11 : Acceso a logs de elementos (Frontend concession):
     11: {
         logs                    : ['find', 'findOne']
-    }
+    },
 
-    // 12 : Búsquedas avanzadas:
-    // 13 : Listados de facturación:
-    // 14 : Estadísticas generales:
-    // 15 : Estadísticas médicas:
-    // 16 : Estadísticas del personal:
-    // 17 : Eliminación física de archivos:
-    // 18 : Supervisar citas en curso:
+    // 12 : Reenvío de correos:
+    12: {
+        mail                    : ['send']
+    },
+
+    // 13 : Búsquedas avanzadas:
+    // 14 : Listados de facturación:
+    // 15 : Estadísticas generales:
+    // 16 : Estadísticas médicas:
+    // 17 : Estadísticas del personal:
+    // 18 : Eliminación física de archivos:
+    // 19 : Supervisar citas en curso:
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
