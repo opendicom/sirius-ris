@@ -26,7 +26,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert', 'delete'],
-        mail                    : ['send']
+        mail                    : ['send'],
+        exporter                : ['reports']
     },
 
     // Administrador:
@@ -51,7 +52,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
-        mail                    : ['send']
+        mail                    : ['send'],
+        exporter                : []
     },
 
     // Supervisor:
@@ -76,7 +78,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert'],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Médico:
@@ -101,7 +104,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Técnico:
@@ -126,7 +130,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'update'],
         reports                 : [],
         signatures              : [],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Enfermero:
@@ -151,7 +156,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'update'],
         reports                 : [],
         signatures              : [],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Coordinador:
@@ -176,7 +182,8 @@ const rolePermissions = {
         performing              : [],
         reports                 : [],
         signatures              : [],
-        mail                    : ['send']
+        mail                    : ['send'],
+        exporter                : []
     },
 
     // Recepcionista:
@@ -201,7 +208,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : [],
         signatures              : [],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Paciente:
@@ -225,7 +233,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne'],
         reports                 : ['find', 'findOne'],
         signatures              : ['find', 'findOne'],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -250,7 +259,8 @@ const rolePermissions = {
         performing              : [],
         reports                 : [],
         signatures              : [],
-        mail                    : []
+        mail                    : [],
+        exporter                : []
     }
 }
 
@@ -355,6 +365,11 @@ const concessionPermissions = {
     // 17 : Estadísticas del personal:
     // 18 : Eliminación física de archivos:
     // 19 : Supervisar citas en curso:
+
+    // 20 : Acceso al módulo de exportación (Backend access only):
+    20: {
+        exporter                : ['reports']
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
