@@ -38,6 +38,7 @@ module.exports = async (req, res) => {
         'patient.person.gender'         : 1,
         'patient.person.birth_date'     : 1,
         'authenticated.base64_report'   : 1,
+        'appointment.study_iuid'        : 1,
         'authenticated.datetime'        : 1
     };
 

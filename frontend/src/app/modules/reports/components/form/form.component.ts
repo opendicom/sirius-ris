@@ -142,6 +142,12 @@ export class FormComponent implements OnInit {
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
     this.fk_performing = this.objRoute.snapshot.params['_id'];  // In reports form "action _id = fk_performing"
+
+    //Enable source editing CKEditor for Superuser:
+    if(this.sharedProp.userLogged.permissions[0].role == 1){
+      //Add sourceEditing to the toolbar:
+      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+    }
     
     //Set tabIndex with parameters by routing (if exist):
     if(this.objRoute.snapshot.params['tabIndex'] !== null && this.objRoute.snapshot.params['tabIndex'] !== undefined && !isNaN(this.objRoute.snapshot.params['tabIndex'])){

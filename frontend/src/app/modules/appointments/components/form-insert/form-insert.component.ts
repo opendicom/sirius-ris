@@ -207,6 +207,12 @@ export class FormInsertComponent implements OnInit {
 
     //Find referring and reporting information:
     this.appointmentsService.findReportingUsers(this.sharedProp.current_imaging.service._id, this.form);
+
+    //Enable source editing CKEditor for Superuser:
+    if(this.sharedProp.userLogged.permissions[0].role == 1){
+      //Add sourceEditing to the toolbar:
+      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+    }
   }
 
   onSubmit(){

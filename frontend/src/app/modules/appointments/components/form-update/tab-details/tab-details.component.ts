@@ -89,6 +89,12 @@ export class TabDetailsComponent implements OnInit {
   ngOnInit(): void {
     //Set Reactive Form (First time):
     this.initializateForm();
+
+    //Enable source editing CKEditor for Superuser:
+    if(this.sharedProp.userLogged.permissions[0].role == 1){
+      //Add sourceEditing to the toolbar:
+      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+    }
   }
 
   //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder)::

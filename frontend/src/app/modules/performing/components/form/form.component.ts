@@ -189,6 +189,12 @@ export class FormComponent implements OnInit {
       this.origin = this.objRoute.snapshot.params['origin'];
     }
 
+    //Enable source editing CKEditor for Superuser:
+    if(this.sharedProp.userLogged.permissions[0].role == 1){
+      //Add sourceEditing to the toolbar:
+      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+    }
+    
     //Switch by form action:
     switch(this.form_action){
       case 'insert':

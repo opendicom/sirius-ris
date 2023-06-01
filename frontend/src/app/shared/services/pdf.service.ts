@@ -78,6 +78,7 @@ export class PdfService {
                   appointment_preparation = res.data[0].procedure.preparation;
                 }
                 let htmlPreparation = htmlToPdfmake(appointment_preparation);
+                this.removeMargin(htmlPreparation);
 
                 //Define document structure:
                 docDefinition = {
@@ -130,7 +131,7 @@ export class PdfService {
                         widths: ['*'],
                         body: [
                           [{ text: 'PREPARACIÓN PREVIA', style: 'header_table' }],
-                          [{ text: htmlPreparation, style: 'paragraph' } ]
+                          [ htmlPreparation ]
                         ]
                       }
                     }
@@ -161,9 +162,9 @@ export class PdfService {
                     label_table: {
                       fillColor: '#E9E9EB'
                     },
-                    paragraph: {
+                    'html-p': {
                       fontSize: 10
-                    },
+                    }
                   }
                 };
 
@@ -413,26 +414,30 @@ export class PdfService {
                 const signMessage = 'Firmado por médico/s: NOMBRE COMPLETO MÉDICOS FIRMANTES | ' + res.data[0].appointment.imaging.organization.short_name;
 
                 //Convert HTML to PDF Make syntax:
-                let htmlClinicalInfo = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>');
+                let htmlClinicalInfo: any = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>');
                 if(res.data[0].clinical_info !== undefined && res.data[0].clinical_info !== null && res.data[0].clinical_info !== ''){
                   htmlClinicalInfo = htmlToPdfmake(res.data[0].clinical_info);
                 }
+                await this.removeMargin(htmlClinicalInfo);
 
-                let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>');
+                let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee procedimiento.</strong><p>');
                 if(res.data[0].procedure_description !== undefined && res.data[0].procedure_description !== null && res.data[0].procedure_description !== ''){
                   htmlProcedureDescription = htmlToPdfmake(res.data[0].procedure_description);
                 }
+                await this.removeMargin(htmlProcedureDescription);
 
                 
                 let htmlFindings = htmlToPdfmake('<p>El informe <strong>NO posee hallazgos.</strong><p>');
                 if(res.data[0].findings[0].procedure_findings !== undefined && res.data[0].findings[0].procedure_findings !== null && res.data[0].findings[0].procedure_findings !== ''){
                   htmlFindings = htmlToPdfmake(res.data[0].findings[0].procedure_findings);
                 }
+                await this.removeMargin(htmlFindings);
 
                 let htmlSummary = htmlToPdfmake('<p>El informe <strong>NO posee en suma.</strong><p>');
                 if(res.data[0].summary !== undefined && res.data[0].summary !== null && res.data[0].summary !== ''){
                   htmlSummary = htmlToPdfmake(res.data[0].summary);
                 }
+                await this.removeMargin(htmlSummary);
 
                 //Findings title:
                 const findingsTitle = res.data[0].findings[0].title + ':';
@@ -470,10 +475,7 @@ export class PdfService {
                       style: 'subheader',
                       margin: [0, 10, 0, 0]
                     },
-                    {
-                      text: htmlClinicalInfo,
-                      style: 'paragraph'
-                    },
+                    htmlClinicalInfo,
                     
                     '\n',
                     
@@ -482,10 +484,7 @@ export class PdfService {
                       text: 'Procedimiento:',
                       style: 'subheader'
                     },
-                    {
-                      text: htmlProcedureDescription,
-                      style: 'paragraph'
-                    },
+                    htmlProcedureDescription,
                     
                     '\n',
                     
@@ -494,10 +493,7 @@ export class PdfService {
                       text: findingsTitle,
                       style: 'subheader'
                     },
-                    {
-                      text: htmlFindings,
-                      style: 'paragraph'
-                    },
+                    htmlFindings,
                     
                     '\n',
                     
@@ -506,10 +502,7 @@ export class PdfService {
                       text: 'En suma:',
                       style: 'subheader'
                     },
-                    {
-                      text: htmlSummary,
-                      style: 'paragraph'
-                    },
+                    htmlSummary,
                         
                     '\n\n',
                         
@@ -537,6 +530,9 @@ export class PdfService {
                   
                   //STYLES:
                   styles: {
+                    defaultStyle: {
+                      fontSize: 10
+                    },
                     header: {
                         margin: [0, 0, 0, 10],
                         fontSize: 14,
@@ -548,7 +544,7 @@ export class PdfService {
                         bold: true,
                         decoration: 'underline'
                     },
-                    paragraph: {
+                    'html-p': {
                       fontSize: 10
                     },
                     sign_auth: {
@@ -623,5 +619,13 @@ export class PdfService {
         this.sharedFunctions.sendMessage(mailRes.message);
       }
     });
+  }
+
+  //Fix pdfMake does not generate line breaks between paragraphs in 'text' object field.
+  //Remove excesive margin between paragraphs (htmlToPdfMake).
+  private async removeMargin(htmlToPdfmake_result: any){
+    await Promise.all(Object.keys(htmlToPdfmake_result).map(key => {
+      delete htmlToPdfmake_result[key].margin;
+    }));
   }
 }

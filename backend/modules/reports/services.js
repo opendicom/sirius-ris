@@ -232,21 +232,25 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
     if(report_data.clinical_info !== undefined && report_data.clinical_info !== null && report_data.clinical_info !== ''){
         htmlClinicalInfo = htmlToPdfmake(report_data.clinical_info, { window : window });
     }
+    await removeMargin(htmlClinicalInfo);
 
-    let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>', { window : window });
+    let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee dato procedimiento.</strong><p>', { window : window });
     if(report_data.procedure_description !== undefined && report_data.procedure_description !== null && report_data.procedure_description !== ''){
         htmlProcedureDescription = htmlToPdfmake(report_data.procedure_description, { window : window });
     }
+    await removeMargin(htmlProcedureDescription);
             
     let htmlFindings = htmlToPdfmake('<p>El informe <strong>NO posee hallazgos.</strong><p>', { window : window });
     if(report_data.findings[0].procedure_findings !== undefined && report_data.findings[0].procedure_findings !== null && report_data.findings[0].procedure_findings !== ''){
         htmlFindings = htmlToPdfmake(report_data.findings[0].procedure_findings, { window : window });
     }
+    await removeMargin(htmlFindings);
 
     let htmlSummary = htmlToPdfmake('<p>El informe <strong>NO posee en suma.</strong><p>', { window : window });
     if(report_data.summary !== undefined && report_data.summary !== null && report_data.summary !== ''){
         htmlSummary = htmlToPdfmake(report_data.summary, { window : window });
     }
+    await removeMargin(htmlSummary);
 
     //Findings title:
     const findingsTitle = report_data.findings[0].title + ':';
@@ -284,10 +288,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                 style: 'subheader',
                 margin: [0, 10, 0, 0]
             },
-            {
-                text: htmlClinicalInfo,
-                style: 'paragraph'
-            },
+            htmlClinicalInfo,
                     
             '\n',
                     
@@ -296,10 +297,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                 text: 'Procedimiento:',
                 style: 'subheader'
             },
-            {
-                text: htmlProcedureDescription,
-                style: 'paragraph'
-            },
+            htmlProcedureDescription,
                     
             '\n',
                     
@@ -308,10 +306,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                 text: findingsTitle,
                 style: 'subheader'
             },
-            {
-                text: htmlFindings,
-                style: 'paragraph'
-            },
+            htmlFindings,
                     
             '\n',
                     
@@ -320,10 +315,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                 text: 'En suma:',
                 style: 'subheader'
             },
-            {
-                text: htmlSummary,
-                style: 'paragraph'
-            },
+            htmlSummary,
                         
             '\n\n',
                         
@@ -362,7 +354,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                 bold: true,
                 decoration: 'underline'
             },
-            paragraph: {
+            'html-p': {
                 fontSize: 10
             },
             sign_auth: {
@@ -377,6 +369,19 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
 
     //Return document definition:
     return docDefinition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// REMOVE MARGIN:
+//--------------------------------------------------------------------------------------------------------------------//
+// Fix pdfMake does not generate line breaks between paragraphs in 'text' object field.
+// Remove excesive margin between paragraphs (htmlToPdfMake).
+//--------------------------------------------------------------------------------------------------------------------//
+async function removeMargin(htmlToPdfmake_result){
+    await Promise.all(Object.keys(htmlToPdfmake_result).map(key => {
+        delete htmlToPdfmake_result[key].margin;
+    }));
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
