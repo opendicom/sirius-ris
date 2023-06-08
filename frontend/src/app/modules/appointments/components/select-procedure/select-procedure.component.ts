@@ -204,11 +204,12 @@ export class SelectProcedureComponent implements OnInit {
           if(this.availableProcedures[key]._id == this.form.value.fk_procedure){
             //Set current procedure in shared properties:
             this.sharedProp.current_procedure = {
-              '_id'               : this.availableProcedures[key]._id,
-              'name'              : this.availableProcedures[key].name,
-              'equipments'        : this.availableProcedures[key].equipments,
-              'informed_consent'  : this.availableProcedures[key].informed_consent,
-              'preparation'       : this.availableProcedures[key].preparation
+              '_id'                 : this.availableProcedures[key]._id,
+              'name'                : this.availableProcedures[key].name,
+              'equipments'          : this.availableProcedures[key].equipments,
+              'informed_consent'    : this.availableProcedures[key].informed_consent,
+              'preparation'         : this.availableProcedures[key].preparation,
+              'procedure_template'  : this.availableProcedures[key].procedure_template
             }
           }
         }));

@@ -85,16 +85,6 @@ export class SelectSlotComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //--------------------------------------------------------------------------------------------------------------------//
-    // TEST:
-    //--------------------------------------------------------------------------------------------------------------------//
-    //this.sharedProp.current_patient = { "_id": "636c00db4866ea0013fd779d", "status": true, "password": "$argon2i$v=19$m=4096,t=3,p=1$RSCK1jKbL5VTDeeDuLYB7g$CbiqPEtGihjisoFaJAAI2rwaNtPEPriIJDumkmjT7Pk", "email": "jaimeroos@gmail.com", "permissions": [ { "concession": [], "role": 9, "organization": "6220b2610feaeeabbd5b0d84" } ], "fk_person": "636c00db4866ea0013fd7799", "settings": [], "createdAt": "2022-11-09T19:34:51.183Z", "updatedAt": "2022-11-09T19:40:42.674Z", "__v": 0, "person": { "_id": "636c00db4866ea0013fd7799", "phone_numbers": [ "097173921" ], "name_01": "JAIME", "surname_01": "ROOS", "gender": 1, "birth_date": "1953-11-12T00:00:00.000Z", "documents": [ { "doc_country_code": "858", "doc_type": 1, "document": "42648765" } ], "createdAt": "2022-11-09T19:34:51.052Z", "updatedAt": "2022-11-09T19:40:42.633Z", "__v": 0 } };
-    //this.sharedProp.current_friendly_pass = "jaguar325";
-    //this.sharedProp.current_imaging = { "organization": { "_id": "6220b2610feaeeabbd5b0d84", "short_name": "CUDIM" }, "branch": { "_id": "6267e4200723c74097757338", "short_name": "Clínica Ricaldoni" }, "service": { "_id": "6267e4350723c7409775733c", "name": "Tomografía" } };
-    //this.sharedProp.current_modality = "6241db9b6806ed898a00128b";
-    //this.sharedProp.current_procedure = { "_id": "634ea253a814a00014bf4b5e", "name": "Tomografía de cráneo", "equipments": [ { "fk_equipment": "62692da265d8d3c8fb4cdcaa", "duration": 30, "details": { "_id": "62692da265d8d3c8fb4cdcaa", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE 690", "serial_number": "SNGE6902010", "AET": "690", "status": true, "updatedAt": "2022-06-16T19:21:33.535Z" } }, { "fk_equipment": "6269303dcc1a061a4b3252dd", "duration": 30, "details": { "_id": "6269303dcc1a061a4b3252dd", "fk_modalities": [ "6241db9b6806ed898a00128b", "6267e558bb4e2e4f54931fa7" ], "fk_branch": "6267e4200723c74097757338", "name": "GE STE", "serial_number": "SNGESTE2010", "AET": "STE", "status": true } } ], "informed_consent": false, "preparation": "<p>24 hs de ayuno.</p>" };
-    //--------------------------------------------------------------------------------------------------------------------//
-
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
     this.minDate = dateRangeLimit.minDate;

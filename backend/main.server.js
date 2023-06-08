@@ -221,18 +221,24 @@ module.exports = function() {
             sirius_backend.HTTPS.ssl_certificates = mainSettings.ssl_certificates;
         }
 
-        //Send HTTP/HTTPS Response:
-        res.status(200).send({
-            message: startMessage,
-            log_level: mainSettings.log_level,
-            sirius_backend,
-            sirius_db: {
-                status: cnxMongoDBStatus,
-                message: cnXMongoDBMessage
-            },
-            mail_server: mainSettings.mailserver,
-            pacs: mainSettings.pacs
-        });
+        //Check if complete information is requested (Prevent disclosure of infrastructure information):
+        if(mainServices.stringToBoolean(req.query.opendicom) === true){
+            //Send HTTP/HTTPS Response (Complete information):
+            res.status(200).send({
+                message: startMessage,
+                log_level: mainSettings.log_level,
+                sirius_backend,
+                sirius_db: {
+                    status: cnxMongoDBStatus,
+                    message: cnXMongoDBMessage
+                },
+                mail_server: mainSettings.mailserver,
+                pacs: mainSettings.pacs
+            });
+        } else {
+            //Send HTTP/HTTPS Response (Lazy information):
+            res.status(200).send({ message: startMessage });
+        }
     });
 
     //Export WebServer:

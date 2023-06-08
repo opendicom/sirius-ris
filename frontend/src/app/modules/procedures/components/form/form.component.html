@@ -2,6 +2,12 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>Nombre:</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+      </mat-form-field>
+
       <h4>Sucursal:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Sucursal</mat-label>
@@ -76,20 +82,21 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Nombre:</h4>
-      <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
-      </mat-form-field>
-
       <h4>Codificación:</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>Codificación</mat-label>
         <input matInput type="text" formControlName="code" placeholder="Ingrese la codificación">
       </mat-form-field>
 
-      <h4>Preparación <span class="label-info">min: 10, max: 1000</span>:</h4>
+      <br/><hr class="dashed"/><br/>
+
+      <h4>Preparación <span class="label-info">min: 10, max: 1500</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="editorConfig" data=""></ckeditor>
+
+      <br/><hr class="dashed"/><br/>
+
+      <h4>Plantilla de procedimiento <span class="label-info">min: 10, max: 1500</span>:</h4>
+      <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="editorConfig" data=""></ckeditor>
 
     </div> <!-- end fxLayout wrapper -->
 

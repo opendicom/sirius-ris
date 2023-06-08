@@ -19,6 +19,7 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 export class FormComponent implements OnInit {
   //Create CKEditor component and configure them:
   public preparationEditor = customBuildEditor;
+  public procedureTemplateEditor = customBuildEditor;
   public editorConfig = CKEditorConfig;
 
   //Set references objects:
@@ -78,15 +79,16 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      domain            : [ '', [Validators.required] ],
-      name              : [ '', [Validators.required] ],
-      code              : [ '' ],
-      equipments        : new FormControl({ value: '', disabled: true }, Validators.required),
-      fk_modality       : new FormControl({ value: '', disabled: true }, Validators.required),
-      informed_consent  : [ 'false' ],
-      status            : [ 'true' ],
-      preparation       : [ '' ],
-      coefficient       : [ '', [Validators.required] ]
+      domain              : [ '', [Validators.required] ],
+      name                : [ '', [Validators.required] ],
+      code                : [ '' ],
+      equipments          : new FormControl({ value: '', disabled: true }, Validators.required),
+      fk_modality         : new FormControl({ value: '', disabled: true }, Validators.required),
+      informed_consent    : [ 'false' ],
+      status              : [ 'true' ],
+      preparation         : [ '' ],
+      procedure_template  : [ '' ],
+      coefficient         : [ '', [Validators.required] ]
     });
   }
 
@@ -122,18 +124,20 @@ export class FormComponent implements OnInit {
 
             //Prevent undefined error on CKEditor fields:
             if(res.data[0].preparation == undefined ){ res.data[0].preparation = ''; }
+            if(res.data[0].procedure_template == undefined ){ res.data[0].procedure_template = ''; }
 
             //Send data to the form:
             this.setReactiveForm({
-              domain            : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
-              fk_modality       : res.data[0].fk_modality,
-              name              : res.data[0].name,
-              code              : res.data[0].code,
-              equipments        : new FormControl({ value: [] }, Validators.required),
-              status            : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
-              informed_consent  : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
-              preparation       : res.data[0].preparation,
-              coefficient       : res.data[0].coefficient
+              domain              : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
+              fk_modality         : res.data[0].fk_modality,
+              name                : res.data[0].name,
+              code                : res.data[0].code,
+              equipments          : new FormControl({ value: [] }, Validators.required),
+              status              : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
+              informed_consent    : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
+              preparation         : res.data[0].preparation,
+              procedure_template  : res.data[0].procedure_template,
+              coefficient         : res.data[0].coefficient
             });
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":

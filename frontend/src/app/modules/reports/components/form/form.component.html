@@ -463,7 +463,7 @@
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <h3 class="underline-ok">Dato clínico:</h3>
+          <h3 class="underline-ok">Dato clínico: <span class="label-template" matTooltip="Cargar dato clínico" (click)="insertClinicalInfo()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="clinicalInfoValidator == false">
             <span class="label-editor">min: 10, max: 10000</span>
             <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
@@ -471,7 +471,7 @@
 
           <br/><hr class="soft-alt" /><br/>
 
-          <h3 class="underline-ok">Procedimiento:</h3>
+          <h3 class="underline-ok">Procedimiento: <span class="label-template" matTooltip="Cargar plantilla de procedimiento" (click)="insertProcedureTemplate()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="procedureDescriptionValidator == false">
             <span class="label-editor">min: 10, max: 10000</span>
             <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>

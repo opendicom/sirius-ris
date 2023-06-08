@@ -27,6 +27,7 @@ const Schema = new mongoose.Schema({
     code:               { type: String },
     equipments:         { type: [subSchemaAllowedEquipments], required: true },
     preparation:        { type: String },
+    procedure_template: { type: String },
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
     coefficient:        { type: Number }
@@ -45,7 +46,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['code', 'preparation'];
+const AllowedUnsetValues = ['code', 'preparation', 'procedure_template'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -95,8 +96,14 @@ const Validator = [
     body('preparation')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .isLength({ min: 10, max: 1500 })
+        .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
+
+    body('procedure_template')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 1500 })
+        .withMessage('El parametro procedure_template ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
 
     body('informed_consent')
         .trim()

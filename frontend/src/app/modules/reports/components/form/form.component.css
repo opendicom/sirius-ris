@@ -121,3 +121,17 @@ li {
   background-color: #05ff9f8e !important;
   color: #fff;
 }
+
+.label-template {
+  cursor: pointer;
+  font-size: 13px;
+  opacity: 0.75;
+  background-color: #d53a9d;
+  border-radius: 5px;
+  padding-top: 14px;
+  padding-bottom: 1px;
+  padding-left: 7px;
+  padding-right: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
+}

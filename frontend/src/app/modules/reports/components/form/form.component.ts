@@ -206,6 +206,10 @@ export class FormComponent implements OnInit {
             //Set report _id:
             this._id = this.reportData._id;
 
+            //Set needed information to set procedure_description with template:
+            //this.procedure_template = this.reportData.procedure.procedure_template;
+            //this.injection = this.reportData.performing.injection;
+
             //Find and set performing data:
             await this.setPerformingData(this.fk_performing, (performingRes) => {
               //Find references (pathologies):
@@ -441,7 +445,7 @@ export class FormComponent implements OnInit {
           this.performingData = performingRes.data[0];
           this.performingFormattedDate = await this.sharedFunctions.datetimeFulCalendarFormater(new Date(this.performingData.date), new Date(this.performingData.date));
 
-          //Set current imaging (Necesario para file manager):
+          //Set current imaging (Required for file manager):
           this.sharedProp.current_imaging = this.performingData.appointment.imaging;
 
           //Add files into file manager controller:
@@ -549,5 +553,50 @@ export class FormComponent implements OnInit {
       //Add into selected pathologies:
       this.selectedPathologies.push(currentPathology);
     }));
+  }
+
+  insertClinicalInfo(){
+    //Initializate clinical template:
+    let clinical_template = '';
+
+    //Set patient age and genre:
+    const patient_age = this.sharedFunctions.calculateAge(this.performingData.patient.person.birth_date, this.performingData.date);
+    clinical_template += '<p>Edad: ' + patient_age + ', Sexo: ' + this.gender_types[this.performingData.patient.person.gender] + '</p>';
+
+    //Set anamnesis if exist:
+    if(this.performingData.appointment.anamnesis !== '' && this.performingData.appointment.anamnesis !== '' && this.performingData.appointment.anamnesis !== ''){
+      clinical_template += this.performingData.appointment.anamnesis;
+    }
+
+    //Set indications if exist:
+    if(this.performingData.appointment.indications !== '' && this.performingData.appointment.indications !== '' && this.performingData.appointment.indications !== ''){
+      clinical_template += this.performingData.appointment.indications;
+    }
+
+    //Insert template on field:
+    this.form.controls['clinical_info'].setValue(clinical_template);
+
+    //Send message:
+    this.sharedFunctions.sendMessage('Dato clínico cargado', { duration: 2000 });
+  }
+
+  insertProcedureTemplate(){
+    //Initializate template:
+    let procedure_template = this.performingData.procedure.procedure_template;
+
+    //Check if the study has injection:
+    if(this.performingData.injection !== undefined && this.performingData.injection !== null){
+      //Check if it is a PET-CT study:
+      if(this.performingData.injection.hasOwnProperty('pet_ct')){
+        procedure_template = procedure_template.replace('[dosis_mbq]', this.performingData.injection.pet_ct.administred_activity);
+        procedure_template = procedure_template.replace('[dosis_mci]', this.sharedFunctions.MBqTomCi(this.performingData.injection.pet_ct.administred_activity));
+      }
+    }
+
+    //Insert template on field:
+    this.form.controls['procedure_description'].setValue(procedure_template);
+
+    //Send message:
+    this.sharedFunctions.sendMessage('Plantilla de procedimiento cargada', { duration: 2000 });
   }
 }
