@@ -8,6 +8,7 @@ import { app_setting, keywords } from '@env/environment';                     //
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
+import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -1395,6 +1396,102 @@ export class SharedFunctionsService {
 
     //Return result:
     return result.toFixed(2);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // TABLE TO XLSX:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async tableToXLSX(fileName: string, tableChild: any, excludedColumns: string[]){
+    //Get timestamp:
+    const timestamp = this.getTimeStamp();
+
+    //Get element table:
+    const element_table = tableChild.nativeElement.getElementsByTagName("TABLE")[0];
+    
+    //Create workbook:
+    const workbook = utils.table_to_book(element_table);
+
+    //Initializate remove leter index:
+    let removeLettersIndex: string[] = [];
+
+    //Delete exluded columns:
+    await Promise.all(Object.keys(workbook.Sheets['Sheet1']).map(async key => {
+      //Check only necessary keys:
+      if(typeof key == 'string' && key !== undefined && key !== null && key !== ''){
+        //Extract numberic and letter parts of the key:
+        const columnNumber = key.replace(/^\D+/g, '');
+        const columnLetter = key.replace(/[^A-Za-z]/g, '');
+
+        //Exclude rows, cols, ref and fullref objects:
+        if(columnLetter !== 'rows' && columnLetter !== 'cols' && columnLetter !== 'ref' && columnLetter !== 'fullref'){
+          //Check header column (First element in sheet index):
+          if(columnNumber == '1'){
+            if(excludedColumns.includes(workbook.Sheets['Sheet1'][key].v)){
+              //Add column letter in remove leter index:
+              removeLettersIndex.push(columnLetter);
+            }
+          }
+
+          //Check that the letter column is found to delete:
+          if(removeLettersIndex.includes(columnLetter)){
+            delete workbook.Sheets['Sheet1'][key];
+          }
+        }
+      }
+    }));
+
+    //Initialize alphabet array:
+    const alphabetArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    //Obtain max number of rows from fullref property:
+    let maxRows = workbook.Sheets['Sheet1']['!fullref'];      // !fullref format: A1:H4
+    maxRows = maxRows.split(':');                             // Split by ':' in array.
+    maxRows = parseInt(maxRows[1].replace(/^\D+/g, ''), 10);  // Extract numberic part of the maxRows
+
+    //Remove empty columns (reorder index):
+    if(excludedColumns.length > 0){
+      await Promise.all(Object.keys(workbook.Sheets['Sheet1']).map(async key => {
+        //Extract letter part of the key:
+        const columnLetter = key.replace(/[^A-Za-z]/g, '');
+
+        //Exclude rows, cols, ref and fullref objects:
+        if(columnLetter !== 'rows' && columnLetter !== 'cols' && columnLetter !== 'ref' && columnLetter !== 'fullref'){
+
+          //Await foreach of alphabet array:
+          await Promise.all(Object.keys(alphabetArray).map(async (keyAlphabet: any) => {
+            const compareValue = columnLetter.localeCompare(alphabetArray[keyAlphabet]);
+            
+            //Prevent undefined values for delete duplicates:
+            if(workbook.Sheets['Sheet1'][key] !== undefined){
+
+            //Check alphabetical compare order:
+            if(compareValue == 1){
+              //Move all elements with this key to previous index:
+              const forLoop = async () => {
+                for (let index = 1; index <= maxRows; index++){
+                  //Move current element (previous index):
+                  workbook.Sheets['Sheet1'][alphabetArray[keyAlphabet] + index] = workbook.Sheets['Sheet1'][columnLetter + index];
+
+                  //Delete duplicated object in the workbook sheet:
+                  delete workbook.Sheets['Sheet1'][columnLetter + index];
+                }
+
+                //Delete used letter from alphabet array:
+                delete alphabetArray[keyAlphabet];
+              }
+
+              //Await forLoop:
+              await forLoop();
+            }
+            }
+          }));
+        }
+      }));
+    }
+
+    //Download .XLSX file:
+    writeFileXLSX(workbook, timestamp + '_listado_' + fileName + '.xlsx');
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

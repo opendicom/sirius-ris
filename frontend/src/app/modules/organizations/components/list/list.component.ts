@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -17,6 +17,11 @@ import { app_setting, ISO_3166, regexObjectId } from '@env/environment';        
 export class ListComponent implements OnInit {
   public settings         : any = app_setting;
   public country_codes    : any = ISO_3166;
+
+  //Table to XLSX (SheetJS CE):
+  private excludedColumns = ['Acciones', 'País'];
+  @ViewChild('main_list') table!: ElementRef;
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX('organizaciones', this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['element_action', 'short_name', 'name', 'OID', 'country_code', 'structure_id', 'suffix', 'status'];

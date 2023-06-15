@@ -114,6 +114,7 @@
         </span>
       </span>
 
+      <!-- event log -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.log_event">
         <mat-label>Evento</mat-label>
         <mat-select [(ngModel)]="sharedProp.log_event" (selectionChange)="onSearch();">
@@ -123,10 +124,12 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- reset seach -->
       <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
         <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
       </button>
 
+      <!-- clear list selection -->
       <button mat-flat-button color="accent" class="button_filters" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0">
         <mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})
       </button>
