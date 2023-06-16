@@ -1402,21 +1402,24 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // TABLE TO XLSX:
   //--------------------------------------------------------------------------------------------------------------------//
-  async tableToXLSX(fileName: string, tableChild: any, excludedColumns: string[]){
+  async tableToXLSX(fileName: string, tableChild: any, excludedColumns: string[] = []){
     //Get timestamp:
     const timestamp = this.getTimeStamp();
+
+    //Set sheet name:
+    const sheetName = fileName.toLocaleUpperCase();
 
     //Get element table:
     const element_table = tableChild.nativeElement.getElementsByTagName("TABLE")[0];
     
     //Create workbook:
-    const workbook = utils.table_to_book(element_table);
+    const workbook = utils.table_to_book(element_table, { sheet: sheetName });
 
     //Initializate remove leter index:
     let removeLettersIndex: string[] = [];
 
     //Delete exluded columns:
-    await Promise.all(Object.keys(workbook.Sheets['Sheet1']).map(async key => {
+    await Promise.all(Object.keys(workbook.Sheets[sheetName]).map(async key => {
       //Check only necessary keys:
       if(typeof key == 'string' && key !== undefined && key !== null && key !== ''){
         //Extract numberic and letter parts of the key:
@@ -1427,7 +1430,7 @@ export class SharedFunctionsService {
         if(columnLetter !== 'rows' && columnLetter !== 'cols' && columnLetter !== 'ref' && columnLetter !== 'fullref'){
           //Check header column (First element in sheet index):
           if(columnNumber == '1'){
-            if(excludedColumns.includes(workbook.Sheets['Sheet1'][key].v)){
+            if(excludedColumns.includes(workbook.Sheets[sheetName][key].v)){
               //Add column letter in remove leter index:
               removeLettersIndex.push(columnLetter);
             }
@@ -1435,7 +1438,7 @@ export class SharedFunctionsService {
 
           //Check that the letter column is found to delete:
           if(removeLettersIndex.includes(columnLetter)){
-            delete workbook.Sheets['Sheet1'][key];
+            delete workbook.Sheets[sheetName][key];
           }
         }
       }
@@ -1445,13 +1448,13 @@ export class SharedFunctionsService {
     const alphabetArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
     //Obtain max number of rows from fullref property:
-    let maxRows = workbook.Sheets['Sheet1']['!fullref'];      // !fullref format: A1:H4
+    let maxRows = workbook.Sheets[sheetName]['!fullref'];      // !fullref format: A1:H4
     maxRows = maxRows.split(':');                             // Split by ':' in array.
     maxRows = parseInt(maxRows[1].replace(/^\D+/g, ''), 10);  // Extract numberic part of the maxRows
 
     //Remove empty columns (reorder index):
     if(excludedColumns.length > 0){
-      await Promise.all(Object.keys(workbook.Sheets['Sheet1']).map(async key => {
+      await Promise.all(Object.keys(workbook.Sheets[sheetName]).map(async key => {
         //Extract letter part of the key:
         const columnLetter = key.replace(/[^A-Za-z]/g, '');
 
@@ -1463,7 +1466,7 @@ export class SharedFunctionsService {
             const compareValue = columnLetter.localeCompare(alphabetArray[keyAlphabet]);
             
             //Prevent undefined values for delete duplicates:
-            if(workbook.Sheets['Sheet1'][key] !== undefined){
+            if(workbook.Sheets[sheetName][key] !== undefined){
 
             //Check alphabetical compare order:
             if(compareValue == 1){
@@ -1471,10 +1474,10 @@ export class SharedFunctionsService {
               const forLoop = async () => {
                 for (let index = 1; index <= maxRows; index++){
                   //Move current element (previous index):
-                  workbook.Sheets['Sheet1'][alphabetArray[keyAlphabet] + index] = workbook.Sheets['Sheet1'][columnLetter + index];
+                  workbook.Sheets[sheetName][alphabetArray[keyAlphabet] + index] = workbook.Sheets[sheetName][columnLetter + index];
 
                   //Delete duplicated object in the workbook sheet:
-                  delete workbook.Sheets['Sheet1'][columnLetter + index];
+                  delete workbook.Sheets[sheetName][columnLetter + index];
                 }
 
                 //Delete used letter from alphabet array:

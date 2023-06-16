@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -29,6 +29,11 @@ export class ListComponent implements OnInit {
   public gender_types           : any = gender_types;
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
+
+  //Table to XLSX (SheetJS CE):
+  private excludedColumns = ['Acciones'];
+  @ViewChild('main_list') table!: ElementRef;
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX('estudios', this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [

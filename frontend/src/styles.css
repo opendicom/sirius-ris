@@ -226,15 +226,21 @@ mark {
   font-size: 23px !important;
 }
 
+.export-icon {
+  color: #05ffa1 !important;
+}
+
 .export-xslx {
-  background-color: #05ff9f87 !important;
+  border-radius: 0px 0px 5px 5px !important;
+  background-color: #30324ad9 !important;
   color: #fff !important;
   font-size: 12px !important;
   padding: 0px 10px 0px 7px !important;
   box-shadow: none !important;
-  margin-right: 5px !important;
-  margin-bottom: 3px !important;
-  margin-top: 5px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 

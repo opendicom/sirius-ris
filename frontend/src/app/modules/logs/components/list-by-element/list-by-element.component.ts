@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -24,6 +24,10 @@ export class ListByElementComponent implements OnInit {
   //Set component properties:
   public eventsLog: any = events_log;
   public elementTypesLang : any = elementTypesLang;
+
+  //Table to XLSX (SheetJS CE):
+  @ViewChild('main_list') table!: ElementRef;
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX('logs', this.table) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['log_id', 'datetime', 'event', 'fk_user', 'organization', 'ip_client'];

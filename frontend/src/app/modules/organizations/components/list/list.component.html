@@ -83,7 +83,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  <div class="text-right"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon>get_app</mat-icon> EXPORTAR LISTADO</button></div>
 </ng-template>
 
 <!-- Await response or not response -->
@@ -97,3 +96,6 @@
 <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
   {{ sharedFunctions.response.message }}
 </div>
+
+<!-- Export to XSLX -->
+<div class="text-right"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>

@@ -1,188 +1,190 @@
 <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
 
 <ng-template #thenBlockTable>
-  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+  <div #main_list>
+    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
 
-    <!-- element action -->
-    <ng-container matColumnDef="element_action">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" (click)="resumeAppointmentDraft(element._id)" aria-label="Continuar" matTooltip="Continuar cita en curso">
-          <mat-icon>published_with_changes</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" (click)="deleteAppointmentsDrafts(element)" aria-label="Descartar" matTooltip="Descartar cita en curso">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <!-- element action -->
+      <ng-container matColumnDef="element_action">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" (click)="resumeAppointmentDraft(element._id)" aria-label="Continuar" matTooltip="Continuar cita en curso">
+            <mat-icon>published_with_changes</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="deleteAppointmentsDrafts(element)" aria-label="Descartar" matTooltip="Descartar cita en curso">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <!-- organization -->
-    <ng-container matColumnDef="organization">
-      <th mat-header-cell *matHeaderCellDef> Organización </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.imaging">
-          <span *ngIf="element.imaging.organization; then thenBlockImagingOrganization else elseBlockImagingOnization"></span>
-          <ng-template #thenBlockImagingOrganization>
-            <span innerHTML="{{ element.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
-          </ng-template>
-          <ng-template #elseBlockImagingOnization>(Sin dato)</ng-template>
-        </span>
-      </td>
-    </ng-container>
+      <!-- organization -->
+      <ng-container matColumnDef="organization">
+        <th mat-header-cell *matHeaderCellDef> Organización </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.imaging">
+            <span *ngIf="element.imaging.organization; then thenBlockImagingOrganization else elseBlockImagingOnization"></span>
+            <ng-template #thenBlockImagingOrganization>
+              <span innerHTML="{{ element.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
+            </ng-template>
+            <ng-template #elseBlockImagingOnization>(Sin dato)</ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-    <!-- branch -->
-    <ng-container matColumnDef="branch">
-      <th mat-header-cell *matHeaderCellDef> Sucursal </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.imaging">
-          <span *ngIf="element.imaging.branch; then thenBlockImagingBranch else elseBlockImagingBranch"></span>
-          <ng-template #thenBlockImagingBranch>
-            <span innerHTML="{{ element.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
-          </ng-template>
-          <ng-template #elseBlockImagingBranch>(Sin dato)</ng-template>
-        </span>
-      </td>
-    </ng-container>
+      <!-- branch -->
+      <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.imaging">
+            <span *ngIf="element.imaging.branch; then thenBlockImagingBranch else elseBlockImagingBranch"></span>
+            <ng-template #thenBlockImagingBranch>
+              <span innerHTML="{{ element.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
+            </ng-template>
+            <ng-template #elseBlockImagingBranch>(Sin dato)</ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-    <!-- service -->
-    <ng-container matColumnDef="service">
-      <th mat-header-cell *matHeaderCellDef> Servicio </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.imaging">
-          <span *ngIf="element.imaging.service; then thenBlockImagingService else elseBlockImagingService"></span>
-          <ng-template #thenBlockImagingService>
-            <span innerHTML="{{ element.imaging.service.name | highlighter : sharedProp.filter }}"></span>
-          </ng-template>
-          <ng-template #elseBlockImagingService>(Sin dato)</ng-template>
-        </span>
-      </td>
-    </ng-container>
+      <!-- service -->
+      <ng-container matColumnDef="service">
+        <th mat-header-cell *matHeaderCellDef> Servicio </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.imaging">
+            <span *ngIf="element.imaging.service; then thenBlockImagingService else elseBlockImagingService"></span>
+            <ng-template #thenBlockImagingService>
+              <span innerHTML="{{ element.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+            </ng-template>
+            <ng-template #elseBlockImagingService>(Sin dato)</ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-    <!-- date -->
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
-      </td>
-    </ng-container>
+      <!-- date -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
+        </td>
+      </ng-container>
 
-    <!-- schedule -->
-    <ng-container matColumnDef="schedule">
-      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
-        <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
-      </td>
-    </ng-container>
+      <!-- schedule -->
+      <ng-container matColumnDef="schedule">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
+          <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
+        </td>
+      </ng-container>
 
-    <!-- documents -->
-    <ng-container matColumnDef="documents">
-      <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
-      <td class="documents" mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span *ngFor="let current of element.patient.person.documents" >
-              <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-              <span matTooltip="{{ document_types[current.doc_type] }}">
-                <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+      <!-- documents -->
+      <ng-container matColumnDef="documents">
+        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <td class="documents" mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span *ngFor="let current of element.patient.person.documents" >
+                <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                </span>
+                <br/>
               </span>
-              <br/>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!-- names -->
-    <ng-container matColumnDef="names">
-      <th mat-header-cell *matHeaderCellDef> Nombres </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+      <!-- names -->
+      <ng-container matColumnDef="names">
+        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
 
-            <span *ngIf="element.patient.person.name_02">
-              <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.patient.person.name_02">
+                <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!-- surnames -->
-    <ng-container matColumnDef="surnames">
-      <th mat-header-cell *matHeaderCellDef> Apellidos </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+      <!-- surnames -->
+      <ng-container matColumnDef="surnames">
+        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
 
-            <span *ngIf="element.patient.person.surname_02">
-              <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.patient.person.surname_02">
+                <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!-- patient_age -->
-    <ng-container matColumnDef="patient_age">
-      <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.start) }}</span>
-          </span>
-        </span>
-      </td>
-    </ng-container>
-
-    <!-- details -->
-    <ng-container matColumnDef="details">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
-      <td mat-cell *matCellDef="let element">
-        <!-- procedure -->
-        <span *ngIf="element.procedure">
-          <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
-            <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
-          </span>
-        </span>
-
-        <div class="clear"></div><hr class="dashed" />
-
-        <!-- equipment -->
-        <span *ngIf="element.slot">
-          <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
-          <ng-template #thenBlockTableEquipment>
-            <span class="badge-accent" matTooltip="{{ 'AET: ' + element.slot.equipment.AET }}">
-              <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
+      <!-- patient_age -->
+      <ng-container matColumnDef="patient_age">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.start) }}</span>
             </span>
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- details -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- procedure -->
+          <span *ngIf="element.procedure">
+            <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
+              <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </span>
+
+          <div class="clear"></div><hr class="dashed" />
+
+          <!-- equipment -->
+          <span *ngIf="element.slot">
+            <span *ngIf="element.slot.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+            <ng-template #thenBlockTableEquipment>
+              <span class="badge-accent" matTooltip="{{ 'AET: ' + element.slot.equipment.AET }}">
+                <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
+              </span>
+            </ng-template>
+            <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+          </span>
+
+          <!-- modality -->
+          <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+          <ng-template #thenBlockTableModality>
+            <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
           </ng-template>
-          <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
-        </span>
+          <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+        </td>
+      </ng-container>
 
-        <!-- modality -->
-        <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
-        <ng-template #thenBlockTableModality>
-          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
-        </ng-template>
-        <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
-      </td>
-    </ng-container>
+      <!-- urgency -->
+      <ng-container matColumnDef="urgency">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+        </td>
+      </ng-container>
 
-    <!-- urgency -->
-    <ng-container matColumnDef="urgency">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
-      <td mat-cell *matCellDef="let element" class="text-center">
-        <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-        <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 </ng-template>
 
 <!-- Await response or not response -->
@@ -196,3 +198,6 @@
 <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
   {{ sharedFunctions.response.message }}
 </div>
+
+<!-- Export to XSLX -->
+<div class="text-right"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>

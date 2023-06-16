@@ -135,3 +135,9 @@ li {
   margin-left: 2px;
   margin-right: 2px;
 }
+
+.no-dicom {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}

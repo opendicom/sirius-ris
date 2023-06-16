@@ -1,316 +1,318 @@
 <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
 
 <ng-template #thenBlockTable>
-  <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
-    <!-- report_indicator -->
-    <ng-container matColumnDef="report_indicator">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <!-- reporting indicator -->
-        <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-          <span *ngIf="element.appointment">
-            <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
-            <ng-template #thenBlockReporting>
-              <mat-icon class="reporting-indicator" matTooltip="Este estudio se encuentra asignado al usuario" color="primary">circle</mat-icon>
-            </ng-template>
-            <ng-template #elseBlockReporting>
-              <mat-icon class="reporting-indicator" matTooltip="Este estudio NO se encuentra asignado al usuario, pero es visible debido a su acceso (dominio)" color="accent">circle</mat-icon>
-            </ng-template>
-          </span>
-        </span>
-      </td>
-    </ng-container>
-
-    <!-- element action -->
-    <ng-container matColumnDef="element_action">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
-      <td mat-cell *matCellDef="let element">
-
-        <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
-        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
-          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}/performing">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </span>
-
-        <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
-        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-          <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
-            <mat-icon>format_list_bulleted</mat-icon>
-          </button>
-        </span>
-
-        <br/>
-
-        <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
-          <mat-icon>cloud_download</mat-icon>
-        </button>
-
-        <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
-        <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
-          <button mat-icon-button color="accent" class="smaller-icons" aria-label="Reenvío de correos" matTooltip="Reenvío de correos" (click)="mailDelivery(element)">
-            <mat-icon>forward_to_inbox</mat-icon>
-          </button>
-        </span>
-      </td>
-    </ng-container>
-
-    <!-- flow_state -->
-    <ng-container matColumnDef="flow_state">
-      <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de estudio</th>
-      <td mat-cell *matCellDef="let element" class="text-center">
-        
-        <span [ngSwitch]="element.flow_state">
-          <!-- insert_report -->
-          <span *ngSwitchCase="'P06'">
-            <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-              <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Crear informe" aria-label="Crear informe" routerLink="/reports/form/insert/{{ element._id }}">
-                <mat-icon>playlist_add</mat-icon>
-              </button>
-              <br/>
+  <div #main_list>
+    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+      <!-- report_indicator -->
+      <ng-container matColumnDef="report_indicator">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <!-- reporting indicator -->
+          <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+            <span *ngIf="element.appointment">
+              <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
+              <ng-template #thenBlockReporting>
+                <mat-icon class="reporting-indicator" matTooltip="Este estudio se encuentra asignado al usuario" color="primary">circle</mat-icon>
+              </ng-template>
+              <ng-template #elseBlockReporting>
+                <mat-icon class="reporting-indicator" matTooltip="Este estudio NO se encuentra asignado al usuario, pero es visible debido a su acceso (dominio)" color="accent">circle</mat-icon>
+              </ng-template>
             </span>
           </span>
+        </td>
+      </ng-container>
 
-          <!-- update_report and sign_report -->
-          <span *ngSwitchCase="'P07'">
-            <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-              <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
-                <mat-icon>edit_note</mat-icon>
-              </button>
-            </span>
+      <!-- element action -->
+      <ng-container matColumnDef="element_action">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+        <td mat-cell *matCellDef="let element">
 
-            <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
-              <mat-icon>manage_search</mat-icon>
+          <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
+            <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}/performing">
+              <mat-icon>edit</mat-icon>
             </button>
-            <br/>
           </span>
 
-          <!-- sign_report and authenticate_report -->
-          <span *ngSwitchCase="'P08'">
-            <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-              <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
-                <mat-icon>edit_note</mat-icon>
-              </button>
-            </span>
-
-            <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
-              <mat-icon>manage_search</mat-icon>
+          <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
+            <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+              <mat-icon>format_list_bulleted</mat-icon>
             </button>
-            <br/>
           </span>
 
-          <!--view_report and amend-->
-          <span *ngSwitchCase="'P09'">
-            <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Ver informe" color="accent">
-              <mat-icon>playlist_add_check</mat-icon>
+          <br/>
+
+          <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+
+          <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
+            <button mat-icon-button color="accent" class="smaller-icons" aria-label="Reenvío de correos" matTooltip="Reenvío de correos" (click)="mailDelivery(element)">
+              <mat-icon>forward_to_inbox</mat-icon>
             </button>
-            <br/>
           </span>
-        </span>
+        </td>
+      </ng-container>
 
-        <!-- flow_state -->
-        <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performing_flow_states[element.flow_state] }}</span>
-      </td>
-    </ng-container>
-
-    <!-- date -->
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
-      </td>
-    </ng-container>
-
-    <!-- checkin_time -->
-    <ng-container matColumnDef="checkin_time">
-      <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Hora<br/>recepción </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
-      </td>
-    </ng-container>
-
-    <!-- documents -->
-    <ng-container matColumnDef="documents">
-      <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
-      <td class="documents" mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span *ngFor="let current of element.patient.person.documents" >
-              <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-              <span matTooltip="{{ document_types[current.doc_type] }}">
-                <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+      <!-- flow_state -->
+      <ng-container matColumnDef="flow_state">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de estudio</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          
+          <span [ngSwitch]="element.flow_state">
+            <!-- insert_report -->
+            <span *ngSwitchCase="'P06'">
+              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Crear informe" aria-label="Crear informe" routerLink="/reports/form/insert/{{ element._id }}">
+                  <mat-icon>playlist_add</mat-icon>
+                </button>
+                <br/>
               </span>
+            </span>
+
+            <!-- update_report and sign_report -->
+            <span *ngSwitchCase="'P07'">
+              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
+                  <mat-icon>edit_note</mat-icon>
+                </button>
+              </span>
+
+              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
+                <mat-icon>manage_search</mat-icon>
+              </button>
+              <br/>
+            </span>
+
+            <!-- sign_report and authenticate_report -->
+            <span *ngSwitchCase="'P08'">
+              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
+                  <mat-icon>edit_note</mat-icon>
+                </button>
+              </span>
+
+              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
+                <mat-icon>manage_search</mat-icon>
+              </button>
+              <br/>
+            </span>
+
+            <!--view_report and amend-->
+            <span *ngSwitchCase="'P09'">
+              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                <mat-icon>playlist_add_check</mat-icon>
+              </button>
               <br/>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
 
-    <!-- names -->
-    <ng-container matColumnDef="names">
-      <th mat-header-cell *matHeaderCellDef> Nombres </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+          <!-- flow_state -->
+          <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performing_flow_states[element.flow_state] }}</span>
+        </td>
+      </ng-container>
 
-            <span *ngIf="element.patient.person.name_02">
-              <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+      <!-- date -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+        </td>
+      </ng-container>
+
+      <!-- checkin_time -->
+      <ng-container matColumnDef="checkin_time">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Hora<br/>recepción </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
+        </td>
+      </ng-container>
+
+      <!-- documents -->
+      <ng-container matColumnDef="documents">
+        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <td class="documents" mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span *ngFor="let current of element.patient.person.documents" >
+                <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                </span>
+                <br/>
+              </span>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!-- surnames -->
-    <ng-container matColumnDef="surnames">
-      <th mat-header-cell *matHeaderCellDef> Apellidos </th>
-      <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+      <!-- names -->
+      <ng-container matColumnDef="names">
+        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
 
-            <span *ngIf="element.patient.person.surname_02">
-              <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.patient.person.name_02">
+                <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
             </span>
           </span>
-        </span>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <!-- patient_age -->
-    <ng-container matColumnDef="patient_age">
-      <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
-      <td mat-cell *matCellDef="let element" class="column-alt text-center">
-        <span *ngIf="element.patient">
-          <span *ngIf="element.patient.person">
-            <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
-          </span>
-        </span>
-      </td>
-    </ng-container>
+      <!-- surnames -->
+      <ng-container matColumnDef="surnames">
+        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
 
-    <!-- details -->
-    <ng-container matColumnDef="details">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
-      <td mat-cell *matCellDef="let element">
-        <!-- procedure -->
-        <span *ngIf="element.procedure">
-          <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
-            <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
-          </span>
-        </span>
-
-        <div class="clear"></div><hr class="dashed" />
-
-        <!-- equipment -->        
-        <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
-            <ng-template #thenBlockTableEquipment>
-            <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
-            <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
+              <span *ngIf="element.patient.person.surname_02">
+                <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
             </span>
-        </ng-template>
-        <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-        <!-- modality -->
-        <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
-        <ng-template #thenBlockTableModality>
-          <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
-        </ng-template>
-        <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
-      </td>
-    </ng-container>
+      <!-- patient_age -->
+      <ng-container matColumnDef="patient_age">
+        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <span *ngIf="element.patient">
+            <span *ngIf="element.patient.person">
+              <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
+            </span>
+          </span>
+        </td>
+      </ng-container>
 
-    <!-- outpatient_inpatient -->
-    <ng-container matColumnDef="outpatient_inpatient">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Hospitalización </th>
-      <td mat-cell *matCellDef="let element" class="text-center">
-        <span *ngIf="element.appointment">
-            <div *ngIf="element.appointment.outpatient; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock><mat-icon color="accent" matTooltip="Ambulatorio">house</mat-icon></ng-template>
-            <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Internado">hotel</mat-icon></ng-template>
-        </span>
-      </td>
-    </ng-container>
+      <!-- details -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- procedure -->
+          <span *ngIf="element.procedure">
+            <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
+              <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
+            </span>
+          </span>
 
-    <!-- urgency -->
-    <ng-container matColumnDef="urgency">
-      <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
-      <td mat-cell *matCellDef="let element" class="text-center">
-        <span *ngIf="element.appointment">
-            <div *ngIf="element.appointment.urgency; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-            <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
-        </span>
-      </td>
-    </ng-container>
+          <div class="clear"></div><hr class="dashed" />
 
-    <!-- status -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef class="divider-alt"> Estado </th>
-      <td mat-cell *matCellDef="let element" class="divider-alt">
-        <div *ngIf="element.status; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
-        <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
-      </td>
-    </ng-container>
-
-    <!-- domain -->
-    <ng-container matColumnDef="domain">
-      <th mat-header-cell *matHeaderCellDef class="text-center">Dominio</th>
-      <td mat-cell *matCellDef="let element">
-        <div *ngIf="element.appointment" class="domain-container">
-          <!--referring-->
-          <small><strong>Solicitante: </strong></small>
-          <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
-          <ng-template #thenBlockReferring>
-            <small>
-              <span *ngIf="element.appointment.referring.organization" innerHTML="{{ element.appointment.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.referring.branch" innerHTML=" ► {{ element.appointment.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
-            </small>
+          <!-- equipment -->        
+          <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+              <ng-template #thenBlockTableEquipment>
+              <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
+              <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
+              </span>
           </ng-template>
-          <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
 
-          <hr class="dashed" />
-
-          <!--imaging-->
-          <small><strong>Realizador: </strong></small>
-          <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
-          <ng-template #thenBlockImaging>
-            <small>
-              <span *ngIf="element.appointment.imaging.organization" innerHTML="{{ element.appointment.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.imaging.branch" innerHTML=" ► {{ element.appointment.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
-            </small>
+          <!-- modality -->
+          <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+          <ng-template #thenBlockTableModality>
+            <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
           </ng-template>
-          <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+        </td>
+      </ng-container>
 
-          <hr class="dashed" />
+      <!-- outpatient_inpatient -->
+      <ng-container matColumnDef="outpatient_inpatient">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Hospitalización </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span *ngIf="element.appointment">
+              <div *ngIf="element.appointment.outpatient; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock><mat-icon color="accent" matTooltip="Ambulatorio">house</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Internado">hotel</mat-icon></ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-          <!--reporting-->
-          <small><strong>Informador: </strong></small>
-          <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
-          <ng-template #thenBlockReporting>
-            <small>
-              <span *ngIf="element.appointment.reporting.organization" innerHTML="{{ element.appointment.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.reporting.branch" innerHTML=" ► {{ element.appointment.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
-              <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
-            </small>
-          </ng-template>
-          <ng-template #elseBlockReporting>(Sin dato)</ng-template>
-        </div>
-      </td>
-    </ng-container>
+      <!-- urgency -->
+      <ng-container matColumnDef="urgency">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <span *ngIf="element.appointment">
+              <div *ngIf="element.appointment.urgency; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          </span>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <!-- status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="divider-alt"> Estado </th>
+        <td mat-cell *matCellDef="let element" class="divider-alt">
+          <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+        </td>
+      </ng-container>
+
+      <!-- domain -->
+      <ng-container matColumnDef="domain">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Dominio</th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.appointment" class="domain-container">
+            <!--referring-->
+            <small><strong>Solicitante: </strong></small>
+            <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
+            <ng-template #thenBlockReferring>
+              <small>
+                <span *ngIf="element.appointment.referring.organization" innerHTML="{{ element.appointment.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.referring.branch" innerHTML=" ► {{ element.appointment.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
+              </small>
+            </ng-template>
+            <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+
+            <hr class="dashed" />
+
+            <!--imaging-->
+            <small><strong>Realizador: </strong></small>
+            <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
+            <ng-template #thenBlockImaging>
+              <small>
+                <span *ngIf="element.appointment.imaging.organization" innerHTML="{{ element.appointment.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.imaging.branch" innerHTML=" ► {{ element.appointment.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+              </small>
+            </ng-template>
+            <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+
+            <hr class="dashed" />
+
+            <!--reporting-->
+            <small><strong>Informador: </strong></small>
+            <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
+            <ng-template #thenBlockReporting>
+              <small>
+                <span *ngIf="element.appointment.reporting.organization" innerHTML="{{ element.appointment.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.reporting.branch" innerHTML=" ► {{ element.appointment.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
+              </small>
+            </ng-template>
+            <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 </ng-template>
 
 <!-- Await response or not response -->
@@ -324,3 +326,6 @@
 <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
   {{ sharedFunctions.response.message }}
 </div>
+
+<!-- Export to XSLX -->
+<div class="text-right"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
