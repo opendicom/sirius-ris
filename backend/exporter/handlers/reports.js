@@ -127,7 +127,7 @@ module.exports = async (req, res) => {
         await reportsFindHandler(req, res, reports);
     } else {
         //Send JWT Domain type error:
-        res.status(500).send({ success: false, message: currentLang.jwt.check_invalid_token, error: 'Domain type error.' });
+        res.status(401).send({ success: false, message: currentLang.jwt.check_invalid_token, error: 'Domain type error.' });
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
