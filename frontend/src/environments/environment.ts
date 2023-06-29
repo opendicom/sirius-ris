@@ -27,7 +27,8 @@ export const app_setting = {
   default_state_isoCode   : 'MO',
   default_state_name      : 'Montevideo',
   default_city_name       : 'Montevideo',
-  default_doc_type        : '1'
+  default_doc_type        : '1',
+  default_utc             : 'UTC-3' // To Fix Mongoose Timestamps in Pipes.
 };
 
 // Event logs:

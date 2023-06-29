@@ -8,6 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
 import { ReportsService } from '@modules/reports/services/reports.service';                     // Reports Services
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                            // Reactive form handling tools
+import { app_setting } from '@env/environment';                                                 // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -16,6 +17,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
   styleUrls: ['./report-review.component.css']
 })
 export class ReportReviewComponent implements OnInit {
+  public settings: any = app_setting;
+  
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 

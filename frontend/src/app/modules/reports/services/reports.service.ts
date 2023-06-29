@@ -39,7 +39,7 @@ export class ReportsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // AUTHENTICATE:
   //--------------------------------------------------------------------------------------------------------------------//
-  authenticate(fk_report: string, password: string, callback = () => {}){
+  async authenticate(fk_report: string, password: string, callback = () => {}){
     //Set operation data:
     const operationData = {
       operation: 'authenticate',

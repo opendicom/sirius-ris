@@ -2506,7 +2506,7 @@ async function insertLog(req, res, event, element = undefined, fk_user = undefin
     const fk_organization = await setFKOrganization(req, res, user_permission);
 
     //Set datetime:
-    const datetime = Date.now();
+    const datetime = moment().format('YYYY-MM-DDTHH:mm:ss.SSS', { trim: false }) + 'Z';
 
     //Initializate result:
     let result = false;

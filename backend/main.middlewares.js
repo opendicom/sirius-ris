@@ -108,7 +108,7 @@ const allowedValidate = (allowedSchemaKeys, AllowedUnsetValues = []) => {
 //--------------------------------------------------------------------------------------------------------------------//
 const isPassword = (Schema, fieldName = 'password') => {
     //PRE SAVE INSERT:
-    Schema.pre('save', function(next){
+    Schema.pre('save', (next) => {
         //Check if the password field exists according to the name indicated:
         if(!this[fieldName]) return next(); //If password is not updated:
         
@@ -128,7 +128,7 @@ const isPassword = (Schema, fieldName = 'password') => {
     });
     
     //PRE SAVE UPDATE:
-    Schema.pre('findOneAndUpdate', async function(next){
+    Schema.pre('findOneAndUpdate', async (next) => {
         //Check if the password field exists according to the name indicated:
         if(!this._update.$set[fieldName]) return next(); //If password is not updated:
 
