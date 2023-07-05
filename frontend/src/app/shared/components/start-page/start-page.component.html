@@ -1,44 +1,52 @@
-<br/><br/>
+<div *ngIf="sharedProp.userLogged.permissions[0].role == 9; then thenBlockPatient else elseBlockPatient"></div>
 
-<div class="welcome_header">
-  <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
+<!-- Patient default init -->
+<ng-template #thenBlockPatient>
+  <app-patients></app-patients>
+</ng-template>
+
+<!-- All users default init -->
+<ng-template #elseBlockPatient>
   <br/><br/>
-  <h1>Bienvenidos a Sirius RIS</h1>
-</div>
 
-<br/>
+  <div class="welcome_header">
+    <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
+    <br/><br/>
+    <h1>Bienvenidos a Sirius RIS</h1>
+  </div>
 
-<div class="welcome_card">
-  <h2 class="underline-fail-alt">● Acerca de</h2>
-  <strong>Sirius RIS</strong> es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.<br/>
   <br/>
-  <mat-chip-list>
-    <mat-chip>Angular</mat-chip>
-    <mat-chip>RxJS</mat-chip>
-    <mat-chip>NodeJS</mat-chip>
-    <mat-chip>MongoDB</mat-chip>
-    <mat-chip>Docker</mat-chip>
-  </mat-chip-list>
 
-  <br/><hr class="dashed" /><br/>
+  <div class="welcome_card">
+    <h2 class="underline-fail-alt">Acerca de</h2>
+    <strong>Sirius RIS</strong> es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.<br/>
+    <br/>
+    <mat-chip-list>
+      <mat-chip>Angular</mat-chip>
+      <mat-chip>RxJS</mat-chip>
+      <mat-chip>NodeJS</mat-chip>
+      <mat-chip>MongoDB</mat-chip>
+      <mat-chip>Docker</mat-chip>
+    </mat-chip-list>
 
-  <h2 class="underline-ok-alt">● Ayuda</h2>
-  <ul>
-    <li>Manual de usuario</li>
-    <li>Repositorio GitHub</li>
-    <li>Servicio de <strong>soporte oficial</strong></li>
-    <li>Danos tu opinión sobre <strong>Sirius RIS</strong></li>
-  </ul>
-</div>
+    <br/><hr class="dashed" /><br/>
 
-<div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> Simple, eficiente y rápido</div>
-<div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> Robusto, seguro y auditable</div>
-<div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>Interfaz opaca</strong> para respetar ambientes radiológicos</div>
-<div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> <strong>ISO-3166</strong> y un sistema de identificación inequivoca de personas</div>
-<div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon>Sistema de <strong>privilegios escalables</strong> para usuarios</div>
+    <h2 class="underline-ok-alt">Ayuda</h2>
+    <ul>
+      <li>Manual de usuario</li>
+      <li>Repositorio GitHub</li>
+      <li>Servicio de <strong>soporte oficial</strong></li>
+      <li>Danos tu opinión sobre <strong>Sirius RIS</strong></li>
+    </ul>
+  </div>
 
-<div class="clear"></div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> Simple, eficiente y rápido</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> Robusto, seguro y auditable</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>Interfaz opaca</strong> para respetar ambientes radiológicos</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> <strong>ISO-3166</strong> y un sistema de identificación inequivoca de personas</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon>Sistema de <strong>privilegios escalables</strong> para usuarios</div>
 
-<img class="earth_planet" src="../../../../assets/img/earth_planet_purple.png" alt="Vitruvian man">
+  <div class="clear"></div>
 
-
+  <img class="earth_planet" src="../../../../assets/img/earth_planet_purple.png" alt="Earth planet">
+</ng-template>

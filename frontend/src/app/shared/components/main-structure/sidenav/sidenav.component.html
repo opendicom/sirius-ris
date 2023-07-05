@@ -91,5 +91,14 @@
     </mat-list-item>
   </div>
 
+  <!-- 9: Paciente -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 9">
+    <h3>Paciente</h3>
+
+    <mat-list-item routerLink="/start">
+      <mat-icon>fact_check</mat-icon><span>Resultado de estudios</span>
+    </mat-list-item>
+  </div>
+
 </mat-list>
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->

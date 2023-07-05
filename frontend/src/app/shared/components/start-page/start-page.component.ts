@@ -13,8 +13,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./start-page.component.css']
 })
 export class StartPageComponent implements OnInit {
-
-
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,

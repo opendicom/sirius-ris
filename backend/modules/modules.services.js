@@ -2950,6 +2950,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(!filter){ req.query.filter = {}; }
                         req.query.filter['$and'] = [];
 
+                        //Set patient condition:
+                        if(role === 9){ req.query.filter['patient._id'] = user_id; }
+
                         //Switch by domain type: 
                         if(domainType == 'organizations'){
                             //Set composite domain:
@@ -3009,6 +3012,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             //Create filter and first explicit $AND operator (if not exist):
                             if(!filter){ req.query.filter = {}; }
                             req.query.filter['$and'] = [];
+
+                            //Set patient condition:
+                            if(role === 9){ req.query.filter['patient._id'] = user_id; }
     
                             //Switch by domain type: 
                             if(domainType == 'organizations'){
@@ -3062,6 +3068,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(!filter){ req.query.filter = {}; }
                         req.query.filter['$and'] = [];
 
+                        //Set patient condition:
+                        if(role === 9){ req.query.filter['patient._id'] = user_id; }
+
                         //Switch by domain type: 
                         if(domainType == 'organizations'){
                             //Set composite domain:
@@ -3071,7 +3080,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
                             appointment_reporting['appointment.reporting.organization._id'] = mongoose.Types.ObjectId(domain);
                             appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
-                            
+
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
                             let domain_condition   = { '$and'  : [ or_condition ] };
@@ -3124,6 +3133,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         //Create filter and first explicit $AND operator (if not exist):
                         if(!filter){ req.query.filter = {}; }
                         req.query.filter['$and'] = [];
+
+                        //Set patient condition:
+                        if(role === 9){ req.query.filter['patient._id'] = user_id; }
 
                         //Switch by domain type: 
                         if(domainType == 'organizations'){

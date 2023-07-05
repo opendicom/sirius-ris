@@ -129,8 +129,17 @@ const isPassword = (Schema, fieldName = 'password') => {
     
     //PRE SAVE UPDATE:
     Schema.pre('findOneAndUpdate', async (next) => {
-        //Check if the password field exists according to the name indicated:
-        if(!this._update.$set[fieldName]) return next(); //If password is not updated:
+        //Check if the password field exists according to the name indicated and not empty:
+        if(this._update !== undefined && this._update.$set !== undefined){
+            if(!this._update.$set[fieldName] || this._update.$set[fieldName] === ''){
+                //If password is not updated:
+                return next();
+            }
+        } else {
+            //If password is not updated:
+            return next();
+        }
+        
 
         //Hash the password:
         mainServices.hashPass(this._update.$set[fieldName])

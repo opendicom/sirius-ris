@@ -173,10 +173,10 @@
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title">
                   Fecha de creación: 
-                  <span class="label-accent">{{ current_report.createdAt }}</span><br/>
+                  <span class="label-accent">{{ current_report.createdAt | date:'dd/MM/yyyy HH:mm':settings.default_utc }}</span><br/>
 
                   Autenticado por: 
-                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime }}">
+                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
                     {{ current_report.authenticated.user.person.name_01 }}
                     <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
 
@@ -186,7 +186,7 @@
 
                   Firmado por:
                   <span *ngFor="let current_signature of current_report.medical_signatures">
-                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt }}">
+                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':settings.default_utc }}">
                       {{ current_signature.user.person.name_01 }}
                       <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 

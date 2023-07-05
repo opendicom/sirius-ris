@@ -15,6 +15,9 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
+//Default patients init:
+import { PatientsComponent } from '@shared/components/patients/patients.component';
+
 //Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
@@ -49,6 +52,9 @@ import * as IC from '@shared/directives/input-control.directive';
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
+
+    //Default patients init:
+    PatientsComponent,
 
     // Dialogs components:
     DeleteItemsComponent,
@@ -94,6 +100,9 @@ import * as IC from '@shared/directives/input-control.directive';
     SettingsComponent,
     NotFoundComponent,
     SharedMaterialModule,
+
+    //Default patients init:
+    PatientsComponent,
 
     // Dialogs components:
     DeleteItemsComponent,
