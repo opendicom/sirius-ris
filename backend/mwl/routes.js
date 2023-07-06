@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // MWL ROUTES:
-// In this file the routes of the module are declared.
+// In this file the routes of the MWL are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express = require('express');

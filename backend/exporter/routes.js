@@ -1,5 +1,6 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // EXPORTER ROUTES:
+// In this file the routes of the exporter are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express = require('express');
@@ -23,7 +24,7 @@ const router = express.Router();
 router.get(
     '/reports',
     mainMiddlewares.checkJWT,
-    mainMiddlewares.roleAccessBasedControl,
+    mainMiddlewares.roleAccessBasedControl,     //Without exporter addDomain case (Force filters in handler with JWT data).
     async (req, res) => {
         reportsHandler(req, res);
     }

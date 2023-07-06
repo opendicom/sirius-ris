@@ -27,7 +27,8 @@ const rolePermissions = {
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert', 'delete'],
         mail                    : ['send'],
-        exporter                : ['reports']
+        exporter                : ['reports'],
+        wezen                   : ['studies']
     },
 
     // Administrador:
@@ -53,7 +54,8 @@ const rolePermissions = {
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
         mail                    : ['send'],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Supervisor:
@@ -79,7 +81,8 @@ const rolePermissions = {
         reports                 : ['find', 'findOne', 'insert', 'update', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert'],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Médico:
@@ -105,7 +108,8 @@ const rolePermissions = {
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Técnico:
@@ -131,7 +135,8 @@ const rolePermissions = {
         reports                 : [],
         signatures              : [],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Enfermero:
@@ -157,7 +162,8 @@ const rolePermissions = {
         reports                 : [],
         signatures              : [],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Coordinador:
@@ -183,7 +189,8 @@ const rolePermissions = {
         reports                 : [],
         signatures              : [],
         mail                    : ['send'],
-        exporter                : []
+        exporter                : [],
+        wezen                   : []
     },
 
     // Recepcionista:
@@ -209,7 +216,8 @@ const rolePermissions = {
         reports                 : [],
         signatures              : [],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : []
     },
 
     // Paciente:
@@ -234,7 +242,8 @@ const rolePermissions = {
         reports                 : ['find', 'findOne'],
         signatures              : ['find', 'findOne'],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : ['studies']
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -260,7 +269,8 @@ const rolePermissions = {
         reports                 : [],
         signatures              : [],
         mail                    : [],
-        exporter                : []
+        exporter                : [],
+        wezen                   : []
     }
 }
 
@@ -369,6 +379,11 @@ const concessionPermissions = {
     // 20 : Acceso al módulo de exportación (Backend access only):
     20: {
         exporter                : ['reports']
+    },
+
+    // 21 : Acceso al servicio de imágenes del PACS.
+    21: {
+        wezen                   : ['studies']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

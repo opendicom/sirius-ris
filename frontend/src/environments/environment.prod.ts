@@ -89,7 +89,8 @@ export const user_concessions = {
   //17  : 'Estadísticas del personal',
   //18  : 'Eliminación física de archivos',
   //19  : 'Supervisar citas en curso',
-  20  : 'Acceso al módulo de exportación' //Backend access only
+  20  : 'Acceso al módulo de exportación',          //Backend access only
+  21  : 'Acceso al servicio de imágenes del PACS' 
 };
 
 // User Types:

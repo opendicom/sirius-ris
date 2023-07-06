@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
-  #host: 'localhost'
-  host: 'opendicom_sirius_db'
+  host: 'localhost'
+  #host: 'opendicom_sirius_db'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'
@@ -13,6 +13,12 @@ pacs:
   host        : 'opendicom_pacs'
   port_dicom  : 11112
   port_mllp   : 2575
+
+# Set Wezen service data:
+wezen:
+  #host        : 'localhost'
+  host        : 'opendicom_wezen'
+  port        : 8000
 
 # Web server settings:
 webserver:

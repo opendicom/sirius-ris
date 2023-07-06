@@ -39,6 +39,7 @@ module.exports = function() {
     const mwlRoutes                     = require('./mwl/routes');
     const mailRoutes                    = require('./mail/routes');
     const exporterRoutes                = require('./exporter/routes');
+    const wezenRoutes                   = require('./wezen/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -158,6 +159,7 @@ module.exports = function() {
     app.use('/mwl',                     mwlRoutes);
     app.use('/mail',                    mailRoutes);
     app.use('/exporter',                exporterRoutes);
+    app.use('/wezen',                   wezenRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });
