@@ -2648,7 +2648,8 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             //------------------------------------------------------------------------------------------------------------//
             case 'find':
             case 'findOne':
-            case 'findByService':  // Only the users module uses this case.
+            case 'findByService':       // Only the users module uses this case.
+            case 'studyTokenHandler':   // Wezen paths.
                 //If filter has no operator, add domain condition with no operator:
                 let haveOperator = false;
                 
@@ -3056,6 +3057,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
     
                             break;
 
+                    case 'wezen':   // studyTokenHandler from wezen url is the same as perfoming finds domain filters:
                     case 'performing':
                         //Initializate composite domain objects:
                         let appointment_imaging = {};

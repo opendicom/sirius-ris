@@ -40,6 +40,7 @@ module.exports = function() {
     const mailRoutes                    = require('./mail/routes');
     const exporterRoutes                = require('./exporter/routes');
     const wezenRoutes                   = require('./wezen/routes');
+    const proxyRoutes                   = require('./proxy/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -160,6 +161,7 @@ module.exports = function() {
     app.use('/mail',                    mailRoutes);
     app.use('/exporter',                exporterRoutes);
     app.use('/wezen',                   wezenRoutes);
+    app.use('/proxy',                   proxyRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });

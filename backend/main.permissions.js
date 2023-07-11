@@ -28,7 +28,8 @@ const rolePermissions = {
         signatures              : ['find', 'findOne', 'insert', 'delete'],
         mail                    : ['send'],
         exporter                : ['reports'],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Administrador:
@@ -55,7 +56,8 @@ const rolePermissions = {
         signatures              : ['find', 'findOne'],
         mail                    : ['send'],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Supervisor:
@@ -82,7 +84,8 @@ const rolePermissions = {
         signatures              : ['find', 'findOne', 'insert'],
         mail                    : [],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Médico:
@@ -109,7 +112,8 @@ const rolePermissions = {
         signatures              : ['find', 'findOne'],
         mail                    : [],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Técnico:
@@ -136,7 +140,8 @@ const rolePermissions = {
         signatures              : [],
         mail                    : [],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Enfermero:
@@ -163,7 +168,8 @@ const rolePermissions = {
         signatures              : [],
         mail                    : [],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Coordinador:
@@ -190,7 +196,8 @@ const rolePermissions = {
         signatures              : [],
         mail                    : ['send'],
         exporter                : [],
-        wezen                   : []
+        wezen                   : [],
+        proxy                   : []
     },
 
     // Recepcionista:
@@ -217,7 +224,8 @@ const rolePermissions = {
         signatures              : [],
         mail                    : [],
         exporter                : [],
-        wezen                   : []
+        wezen                   : [],
+        proxy                   : []
     },
 
     // Paciente:
@@ -243,7 +251,8 @@ const rolePermissions = {
         signatures              : ['find', 'findOne'],
         mail                    : [],
         exporter                : [],
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -270,7 +279,8 @@ const rolePermissions = {
         signatures              : [],
         mail                    : [],
         exporter                : [],
-        wezen                   : []
+        wezen                   : [],
+        proxy                   : []
     }
 }
 
@@ -383,7 +393,8 @@ const concessionPermissions = {
 
     // 21 : Acceso al servicio de imágenes del PACS.
     21: {
-        wezen                   : ['studies']
+        wezen                   : ['studyToken'],
+        proxy                   : ['wado']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

@@ -373,7 +373,7 @@ function setStorage(){
 //--------------------------------------------------------------------------------------------------------------------//
 // HTTP CLIENT REUQEST:
 //--------------------------------------------------------------------------------------------------------------------//
-async function httpClientRequest(host, port = 80, method, path = '', post_data = undefined, callback = () => {}){
+async function httpClientRequest(host, port = 80, method = 'GET', path = '', post_data = undefined, callback = () => {}){
     //Initializate request headers:
     let headers = {
         'Accept': 'application/json',

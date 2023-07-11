@@ -143,8 +143,8 @@ module.exports = async (req, res) => {
                                 //Create payload:
                                 const payload = {
                                     sub: peopleData.user._id.toString(),   //Identify the subject of the token.
-                                    iat: (Date.now() / 1000),                   //Token creation date.
-                                    //exp: (Declared in expiresIn)              //Token expiration date.
+                                    iat: (Date.now() / 1000),              //Token creation date.
+                                    //exp: (Declared in expiresIn)         //Token expiration date.
                                 }
 
                                 //Create JWT (Temp):

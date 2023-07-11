@@ -1,10 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// WEZEN ROUTES:
-// In this file the routes of the wezen service are declared.
+// PROXY ROUTES:
+// In this file the routes of the Sirius Proxy service are declared.
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express   = require('express');
-const mongoose  = require('mongoose');
 
 //Import app modules:
 const mainServices  = require('../main.services');                           // Main services
@@ -15,19 +14,19 @@ const currentLang   = require('../main.languages')(mainSettings.language);   // 
 const mainMiddlewares = require('../main.middlewares');
 
 //Import Handlers:
-const studyTokenHandler  = require('./handlers/studyToken');
+const wadoHandler  = require('./handlers/wado');
 
 //Create Router.
 const router = express.Router();
 
 //Routes:
-//STUDY TOKEN:
+//WADO:
 router.get(
-    '/studyToken',
-    mainMiddlewares.checkJWT,
-    mainMiddlewares.roleAccessBasedControl,
+    '/wado',
+    //NO checkJWT -> Check Wezen JWT
+    //NO RABC     -> Previous check in wezen handlers and check Wezen JWT.
     async (req, res) => {
-        studyTokenHandler(req, res);
+        wadoHandler(req, res);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//
