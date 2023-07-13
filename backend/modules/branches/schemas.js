@@ -14,7 +14,8 @@ const Schema = new mongoose.Schema({
     country_code:           { type: String, required: true },
     structure_id:           { type: String },
     suffix:                 { type: String },
-    status:                 { type: Boolean, required: true, default: false }
+    status:                 { type: Boolean, required: true, default: false },
+    base64_logo:    { type: String } //This parameter is created in backend server (not validate).
 },
 { timestamps: true },
 { versionKey: false });
@@ -33,7 +34,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID', 'structure_id', 'suffix'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -83,7 +84,10 @@ const Validator = [
         .trim()
         .isBoolean()
         .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
-        .toBoolean()
+        .toBoolean(),
+
+    body('base64_logo')
+        .optional(),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

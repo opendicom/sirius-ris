@@ -360,10 +360,12 @@ module.exports = async (req, res, currentSchema) => {
             'appointment.imaging.organization.createdAt': 0,
             'appointment.imaging.organization.updatedAt': 0,
             'appointment.imaging.organization.__v': 0,
+            'appointment.imaging.organization.base64_logo': 0,
     
             'appointment.imaging.branch.createdAt': 0,
             'appointment.imaging.branch.updatedAt': 0,
             'appointment.imaging.branch.__v': 0,
+            'appointment.imaging.branch.base64_logo': 0,
     
             'appointment.imaging.service.createdAt': 0,
             'appointment.imaging.service.updatedAt': 0,
@@ -373,10 +375,12 @@ module.exports = async (req, res, currentSchema) => {
             'appointment.referring.organization.createdAt': 0,
             'appointment.referring.organization.updatedAt': 0,
             'appointment.referring.organization.__v': 0,
+            'appointment.referring.organization.base64_logo': 0,
     
             'appointment.referring.branch.createdAt': 0,
             'appointment.referring.branch.updatedAt': 0,
             'appointment.referring.branch.__v': 0,
+            'appointment.referring.branch.base64_logo': 0,
     
             'appointment.referring.service.createdAt': 0,
             'appointment.referring.service.updatedAt': 0,
@@ -394,10 +398,12 @@ module.exports = async (req, res, currentSchema) => {
             'appointment.reporting.organization.createdAt': 0,
             'appointment.reporting.organization.updatedAt': 0,
             'appointment.reporting.organization.__v': 0,
+            'appointment.reporting.organization.base64_logo': 0,
     
             'appointment.reporting.branch.createdAt': 0,
             'appointment.reporting.branch.updatedAt': 0,
             'appointment.reporting.branch.__v': 0,
+            'appointment.reporting.branch.base64_logo': 0,
     
             'appointment.reporting.service.createdAt': 0,
             'appointment.reporting.service.updatedAt': 0,

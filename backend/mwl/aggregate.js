@@ -220,6 +220,10 @@ module.exports = [
         'reporting.fk_reporting.password': 0,
         'fk_procedure': 0,
 
+        //Base64 Logos:
+        'imaging.organization.base64_logo': 0,
+        'imaging.branch.base64_logo': 0,
+
         //Added projection:
         'attached_files.base64': 0, 'consents.informed_consent.base64': 0, 'consents.clinical_trial.base64': 0
     }}

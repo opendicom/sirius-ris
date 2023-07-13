@@ -6,7 +6,8 @@ const mongoose              = require('mongoose');                          // M
 const moment                = require('moment');                            // Moment
 const ObjectId              = require('mongoose').Types.ObjectId;           // To check ObjectId Type
 const { validationResult }  = require('express-validator');                 // Express-validator Middleware
-const SHA256                = require("crypto-js/sha256");
+const SHA256                = require("crypto-js/sha256");                  // CryptoJS
+const fs                    = require('fs').promises;                       // File System (Promises)
 
 //Import app modules:
 const mainServices  = require('../main.services');                          // Main services
@@ -4678,6 +4679,51 @@ async function setSHA2Report(report_id){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET BASE64 FILE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setBase64File(req, operation, type = undefined){
+    if(req.file !== undefined) {
+        //Encode logo file to base64:
+        const fileBase64 = await fs.readFile('uploads/' + req.filename, { encoding: 'base64' }, (error) => {
+            if(error){
+                //Send ERROR Message:
+                sendConsoleMessage('ERROR', error);
+                throw('Error: ' + error);
+            }
+        });
+
+        //Check field type:
+        if(type == 'base64_logo'){
+            //Set base64 in request for insert method:
+            switch(operation){
+                case 'insert':
+                    req.body.base64_logo = fileBase64;
+                    break;
+                case 'update':
+                    if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                    req.validatedResult.set['base64_logo'] = fileBase64;
+                    break;
+            }
+        } else {
+            req.body.base64 = fileBase64;
+        }
+
+        //Remove temp file from uploads:
+        await fs.unlink('uploads/' + req.filename, (error) => {
+            if(error){
+                //Send ERROR Message:
+                sendConsoleMessage('ERROR', error);
+                throw('Error: ' + error);
+            } else {
+                //Send DEBUG Message:
+                mainServices.sendConsoleMessage('DEBUG', currentLang.db.delete_temp_file_uploads);
+            }
+        });
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -4715,6 +4761,7 @@ module.exports = {
     addSignatureToReport,
     removeAllSignaturesFromReport,
     checkSHA2Report,
-    setSHA2Report
+    setSHA2Report,
+    setBase64File
 };
 //--------------------------------------------------------------------------------------------------------------------//

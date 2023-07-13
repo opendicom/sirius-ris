@@ -57,11 +57,13 @@ module.exports = async (req, res, currentSchema) => {
             'organization.createdAt': 0,
             'organization.updatedAt': 0,
             'organization.__v': 0,
+            'organization.base64_logo': 0,
 
             //Branch:
             'branch.createdAt': 0,
             'branch.updatedAt': 0,
             'branch.__v': 0,
+            'branch.base64_logo': 0,
 
             //Modalities:
             'modalities.createdAt': 0,

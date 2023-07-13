@@ -4,6 +4,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express = require('express');
+const multer  = require('multer');
 
 //Import app modules:
 const mainServices  = require('../../main.services');                           // Main services
@@ -26,6 +27,9 @@ const branches = require('./schemas');
 //Get keys from current schema:
 const allSchemaKeys     = mainServices.getSchemaKeys(branches);            //All.
 const allowedSchemaKeys = mainServices.getSchemaKeys(branches, true);      //No parameters that cannot be modified.
+
+//Set storage parameters:
+const upload = multer({ storage: mainServices.setStorage() });
 
 //Create Router.
 const router = express.Router();
@@ -62,6 +66,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    upload.single('uploaded_logo'),
     mainMiddlewares.roleAccessBasedControl,
     branches.Validator,
     (req, res) => {
@@ -74,6 +79,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
+    upload.single('uploaded_logo'),
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, branches.AllowedUnsetValues),
     branches.Validator,

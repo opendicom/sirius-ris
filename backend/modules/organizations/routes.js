@@ -4,6 +4,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express = require('express');
+const multer  = require('multer');
 
 //Import app modules:
 const mainServices  = require('../../main.services');                           // Main services
@@ -12,6 +13,9 @@ const currentLang   = require('../../main.languages')(mainSettings.language);   
 
 //Import middlewares:
 const mainMiddlewares = require('../../main.middlewares');
+
+//Import Handlers:
+const saveHandler   = require('./handlers/save');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -22,6 +26,9 @@ const organizations = require('./schemas');
 //Get keys from current schema:
 const allSchemaKeys     = mainServices.getSchemaKeys(organizations);            //All.
 const allowedSchemaKeys = mainServices.getSchemaKeys(organizations, true);      //No parameters that cannot be modified.
+
+//Set storage parameters:
+const upload = multer({ storage: mainServices.setStorage() });
 
 //Create Router.
 const router = express.Router();
@@ -42,6 +49,10 @@ router.get(
                 operation_type = 'findById';
             }
         }
+
+        //Remove base64 and timestamps from default projection:
+        //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
 
         //Switch operation type:
         switch(operation_type){
@@ -71,6 +82,10 @@ router.get(
             }
         }
 
+        //Remove base64 and timestamps from default projection:
+        //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
+
         //Switch operation type:
         switch(operation_type){
             case 'findOne':
@@ -87,19 +102,27 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    upload.single('uploaded_logo'),
     mainMiddlewares.roleAccessBasedControl,
     organizations.Validator,
-    (req, res) => { moduleServices.insert(req, res, organizations); }
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, organizations, 'insert');
+    }
 );
 
 //UPDATE:
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
+    upload.single('uploaded_logo'),
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, organizations.AllowedUnsetValues),
     organizations.Validator,
-    (req, res) => { moduleServices.update(req, res, organizations); }
+    (req, res) => {
+        //Send to handler:
+        saveHandler(req, res, organizations, 'update');
+    }
 );
 
 //DELETE:
