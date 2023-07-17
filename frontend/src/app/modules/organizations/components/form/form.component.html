@@ -53,6 +53,20 @@
         <mat-label>Sufijo</mat-label>
         <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
       </mat-form-field>
+
+      <hr class="dashed" /><br/>
+
+      <div *ngIf="selectedFile === null; then thenBlockLogo else elseBlockLogo"></div>
+
+      <ng-template #thenBlockLogo>
+        <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none" />
+        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()"><mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
+      </ng-template>
+
+      <ng-template #elseBlockLogo>
+        {{ selectedFile.name }}
+      </ng-template>
+
     </div> <!-- end fxLayout wrapper -->
 
   </div>

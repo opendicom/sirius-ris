@@ -564,12 +564,12 @@ export class FormComponent implements OnInit {
     clinical_template += '<p>Edad: ' + patient_age + ', Sexo: ' + this.gender_types[this.performingData.patient.person.gender] + '</p>';
 
     //Set anamnesis if exist:
-    if(this.performingData.appointment.anamnesis !== '' && this.performingData.appointment.anamnesis !== '' && this.performingData.appointment.anamnesis !== ''){
+    if(this.performingData.appointment.anamnesis !== undefined && this.performingData.appointment.anamnesis !== null && this.performingData.appointment.anamnesis !== ''){
       clinical_template += this.performingData.appointment.anamnesis;
     }
 
     //Set indications if exist:
-    if(this.performingData.appointment.indications !== '' && this.performingData.appointment.indications !== '' && this.performingData.appointment.indications !== ''){
+    if(this.performingData.appointment.indications !== undefined && this.performingData.appointment.indications !== null && this.performingData.appointment.indications !== ''){
       clinical_template += this.performingData.appointment.indications;
     }
 

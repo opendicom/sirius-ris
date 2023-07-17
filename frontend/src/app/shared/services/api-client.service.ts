@@ -102,6 +102,7 @@ export class ApiClientService {
 
   //--------------------------------------------------------------------------------------------------------------------//
   // BYTE TO MEGA BYTES:
+  // Duplicated method to prevent circular dependency - [Duplicated method: shared-functions.service].
   //--------------------------------------------------------------------------------------------------------------------//
   bytesToMegaBytes(bytes: any): any {
     return bytes / (1024*1024);

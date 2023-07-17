@@ -19,6 +19,9 @@ export class FormComponent implements OnInit {
   public settings         : any = app_setting;
   public country_codes    : any = ISO_3166;
 
+  //Initialize Selected File Control Variable:
+  public selectedFile: any = null;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -37,11 +40,11 @@ export class FormComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    public formBuilder: FormBuilder,
-    private router: Router,
-    private objRoute: ActivatedRoute,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    public  formBuilder     : FormBuilder,
+    private router          : Router,
+    private objRoute        : ActivatedRoute,
+    public  sharedProp      : SharedPropertiesService,
+    private sharedFunctions : SharedFunctionsService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -114,17 +117,39 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onSubmit(){
+  onFileSelected(event: any){
+    //Set selected file:
+    this.selectedFile = <File>event.target.files[0];
+  }
+  
+  async onSubmit(){
     //Validate fields:
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
 
-      //Save data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
-        //Response the form according to the result:
-        this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
-      });
+      //Check if there is logo file selected (Multipart form):
+      if(this.selectedFile !== null){
+        //Set File Handler:
+        const fileHandler = {
+          fileRequestKeyName: 'uploaded_logo',
+          selectedFile: this.selectedFile
+        };
+
+        //Save data with Multipart form:
+        this.sharedFunctions.saveMultipart(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, fileHandler, (res) => {
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+        });
+        
+      //Normal save (without logo):
+      } else {
+        //Save data:
+        this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+        });
+      }
     }
   }
 
@@ -132,5 +157,4 @@ export class FormComponent implements OnInit {
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
-
 }

@@ -800,6 +800,83 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // SAVE MULTIPART - (INSERT & UPDATE):
+  //--------------------------------------------------------------------------------------------------------------------//
+  async saveMultipart(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], fileHandler: any, callback = (res: any) => {}, saveResponse: boolean = true) {
+    //Validate data - Delete empty fields:
+    this.cleanEmptyFields(operation, data, exceptions);
+    
+    //Add _id only for update case:
+    if(operation == 'update' && _id != ''){
+      data._id = _id;
+    }
+
+    //Check if element is not empty:
+    if(element != ''){
+
+      //Check if operation is not empty:
+      if(operation != ''){
+        //Create multipart form:
+        const multipartForm = new FormData();
+
+        //Set upload file in multipart form:
+        multipartForm.append(fileHandler.fileRequestKeyName, fileHandler.selectedFile, fileHandler.selectedFile.name);
+
+        //Set multipart form values:
+        await Promise.all(Object.keys(data).map((key) => {
+          multipartForm.append(key, data[key]);
+        }));
+
+        //Check max file size:
+        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= app_setting.file_max_size){
+          //Save data:
+          //Create observable obsSave:
+          const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, multipartForm);
+
+          //Observe content (Subscribe):
+          obsSave.subscribe({
+            next: res => {
+              //Check if you want to save the response in sharedFunctions.response:
+              if(saveResponse){
+                this.response = res;
+              }
+
+              //Excecute optional callback with response:
+              callback(res);
+            },
+            error: res => {
+              //Send snakbar message:
+              if(res.error.message){
+                //Check validate errors:
+                if(res.error.validate_errors){
+                  this.sendMessage(res.error.message + ' ' + res.error.validate_errors);
+                } else {
+                  //Send other errors:
+                  this.sendMessage(res.error.message);
+                }
+              } else {
+                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              }
+            }
+          });
+        } else{
+          //Remove multipart form values:
+          await Promise.all(Object.keys(data).map((key) => {
+            multipartForm.delete(key);
+          }));
+  
+          //Send cancelation message:
+          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + app_setting.file_max_size + ' MB).');
+        }
+      }
+    } else {
+      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // SEND TO MWL:
   //--------------------------------------------------------------------------------------------------------------------//
   sendToMWL(fk_appointment: string, refresh_list: boolean = false, list_params: any = {}){
@@ -1495,6 +1572,16 @@ export class SharedFunctionsService {
 
     //Download .XLSX file:
     writeFileXLSX(workbook, timestamp + '_listado_' + fileName + '.xlsx');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // BYTES TO MEGABYTES:
+  // Duplicated method to prevent circular dependency - [Duplicated method: api-client.service].
+  //--------------------------------------------------------------------------------------------------------------------//
+  bytesToMegaBytes(bytes: any): any {
+    return bytes / (1024*1024);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }
