@@ -20,7 +20,8 @@ export class FormComponent implements OnInit {
   public country_codes    : any = ISO_3166;
 
   //Initialize Selected File Control Variable:
-  public selectedFile: any = null;
+  public selectedFile           : any = null;
+  public selectedLogoController : boolean = false;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -44,7 +45,7 @@ export class FormComponent implements OnInit {
     private router          : Router,
     private objRoute        : ActivatedRoute,
     public  sharedProp      : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService
+    private sharedFunctions : SharedFunctionsService,
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -87,7 +88,17 @@ export class FormComponent implements OnInit {
       //Check if element is not empty:
       if(this._id != ''){
         //Request params:
-        const params = { 'filter[_id]': this._id };
+        const params = {
+          'filter[_id]': this._id,
+          'proj[short_name]': 1,
+          'proj[name]': 1,
+          'proj[OID]': 1,
+          'proj[country_code]': 1,
+          'proj[structure_id]': 1,
+          'proj[suffix]': 1,
+          'proj[status]': 1,
+          'proj[base64_logo]': 1  // base64logo is not in the default projection.
+        };
 
         //Find element to update:
         this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
@@ -103,6 +114,12 @@ export class FormComponent implements OnInit {
               suffix        : res.data[0].suffix,
               status        : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
+
+            //Set base64_logo:
+            if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
+              //Set selected Logo Controller:
+              this.selectedLogoController = true;
+            }
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -120,6 +137,7 @@ export class FormComponent implements OnInit {
   onFileSelected(event: any){
     //Set selected file:
     this.selectedFile = <File>event.target.files[0];
+    this.selectedLogoController = true;
   }
   
   async onSubmit(){
@@ -156,5 +174,18 @@ export class FormComponent implements OnInit {
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+  }
+
+  onDeleteLogo(){
+    this.sharedFunctions.deleteLogo(this.sharedProp.element, this._id, (res) => {
+      //Check result:
+      if(res.success == true){
+        this.sharedFunctions.sendMessage('Logo eliminado exitosamente', { duration : 2000 });
+
+        //Reset logo file controllers:
+        this.selectedFile = null;
+        this.selectedLogoController = false;
+      }
+    });
   }
 }

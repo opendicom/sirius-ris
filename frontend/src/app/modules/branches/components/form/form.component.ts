@@ -19,6 +19,10 @@ export class FormComponent implements OnInit {
   public settings         : any = app_setting;
   public country_codes    : any = ISO_3166;
 
+  //Initialize Selected File Control Variable:
+  public selectedFile           : any = null;
+  public selectedLogoController : boolean = false;
+
   //Set references objects:
   public availableOrganizations: any;
 
@@ -91,7 +95,18 @@ export class FormComponent implements OnInit {
       //Check if element is not empty:
       if(this._id != ''){
         //Request params:
-        const params = { 'filter[_id]': this._id };
+        const params = {
+          'filter[_id]': this._id,
+          'proj[fk_organization]': 1,
+          'proj[short_name]': 1,
+          'proj[name]': 1,
+          'proj[OID]': 1,
+          'proj[country_code]': 1,
+          'proj[structure_id]': 1,
+          'proj[suffix]': 1,
+          'proj[status]': 1,
+          'proj[base64_logo]': 1
+        };
 
         //Find element to update:
         this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
@@ -110,6 +125,13 @@ export class FormComponent implements OnInit {
               status          : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
+            console.log(res.data[0]);
+            //Set base64_logo:
+            if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
+              //Set selected Logo Controller:
+              this.selectedLogoController = true;
+            }
+
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
 
@@ -123,17 +145,40 @@ export class FormComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: any){
+    //Set selected file:
+    this.selectedFile = <File>event.target.files[0];
+    this.selectedLogoController = true;
+  }
+
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
 
-      //Save data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
-        //Response the form according to the result:
-        this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
-      });
+      //Check if there is logo file selected (Multipart form):
+      if(this.selectedFile !== null){
+        //Set File Handler:
+        const fileHandler = {
+          fileRequestKeyName: 'uploaded_logo',
+          selectedFile: this.selectedFile
+        };
+
+        //Save data with Multipart form:
+        this.sharedFunctions.saveMultipart(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, fileHandler, (res) => {
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+        });
+        
+      //Normal save (without logo):
+      } else {
+        //Save data:
+        this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+          //Response the form according to the result:
+          this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+        });
+      }
     }
   }
 
@@ -160,6 +205,19 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+    });
+  }
+
+  onDeleteLogo(){
+    this.sharedFunctions.deleteLogo(this.sharedProp.element, this._id, (res) => {
+      //Check result:
+      if(res.success == true){
+        this.sharedFunctions.sendMessage('Logo eliminado exitosamente', { duration : 2000 });
+
+        //Reset logo file controllers:
+        this.selectedFile = null;
+        this.selectedLogoController = false;
+      }
     });
   }
 }

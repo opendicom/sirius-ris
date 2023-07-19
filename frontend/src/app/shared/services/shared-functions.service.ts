@@ -1584,4 +1584,37 @@ export class SharedFunctionsService {
     return bytes / (1024*1024);
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE LOGO:
+  // Delete logo is only an update with unset base64_logo field.
+  //--------------------------------------------------------------------------------------------------------------------//
+  deleteLogo(schemaName: string, _id: string, callback = (res: any) => {}){
+    //Create observable obsUpdate:
+    const obsUpdate = this.apiClient.sendRequest('POST', schemaName + '/update', { _id: _id, unset: { base64_logo: '' }});
+
+    //Observe content (Subscribe):
+    obsUpdate.subscribe({
+      next: res => {
+        //Excecute optional callback with response:
+        callback(res);
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          //Check validate errors:
+          if(res.error.validate_errors){
+            this.sendMessage(res.error.message + ' ' + res.error.validate_errors);
+          } else {
+            //Send other errors:
+            this.sendMessage(res.error.message);
+          }
+        } else {
+          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

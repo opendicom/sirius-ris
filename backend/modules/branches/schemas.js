@@ -15,7 +15,7 @@ const Schema = new mongoose.Schema({
     structure_id:           { type: String },
     suffix:                 { type: String },
     status:                 { type: Boolean, required: true, default: false },
-    base64_logo:    { type: String } //This parameter is created in backend server (not validate).
+    base64_logo:            { type: String } //This parameter is created in backend server (not validate).
 },
 { timestamps: true },
 { versionKey: false });
