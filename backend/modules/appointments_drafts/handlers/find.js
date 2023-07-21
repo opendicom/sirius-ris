@@ -10,6 +10,16 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema) => {
+    //Remove base64 for default projection:
+    if(!req.query.proj){ req.query['proj'] = {
+        'imaging.organization.base64_logo': 0,
+        'imaging.branch.base64_logo': 0,
+        'referring.organization.base64_logo': 0,
+        'referring.branch.base64_logo': 0,
+        'reporting.organization.base64_logo': 0,
+        'reporting.branch.base64_logo': 0,
+    }; }
+    
     //Get query params:
     let { filter, regex } = req.query;
 
@@ -134,12 +144,10 @@ module.exports = async (req, res, currentSchema) => {
             'imaging.organization.createdAt': 0,
             'imaging.organization.updatedAt': 0,
             'imaging.organization.__v': 0,
-            'imaging.organization.base64_logo': 0,
 
             'imaging.branch.createdAt': 0,
             'imaging.branch.updatedAt': 0,
             'imaging.branch.__v': 0,
-            'imaging.branch.base64_logo': 0,
 
             'imaging.service.createdAt': 0,
             'imaging.service.updatedAt': 0,
@@ -149,12 +157,10 @@ module.exports = async (req, res, currentSchema) => {
             'referring.organization.createdAt': 0,
             'referring.organization.updatedAt': 0,
             'referring.organization.__v': 0,
-            'referring.organization.base64_logo': 0,
 
             'referring.branch.createdAt': 0,
             'referring.branch.updatedAt': 0,
             'referring.branch.__v': 0,
-            'referring.branch.base64_logo': 0,
 
             'referring.service.createdAt': 0,
             'referring.service.updatedAt': 0,
@@ -172,12 +178,10 @@ module.exports = async (req, res, currentSchema) => {
             'reporting.organization.createdAt': 0,
             'reporting.organization.updatedAt': 0,
             'reporting.organization.__v': 0,
-            'reporting.organization.base64_logo': 0,
 
             'reporting.branch.createdAt': 0,
             'reporting.branch.updatedAt': 0,
             'reporting.branch.__v': 0,
-            'reporting.branch.base64_logo': 0,
 
             'reporting.service.createdAt': 0,
             'reporting.service.updatedAt': 0,

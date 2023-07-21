@@ -985,7 +985,13 @@ export class FormComponent implements OnInit {
       'filter[_id]': this.sharedProp.current_appointment,
       'proj[attached_files.base64]': 0,
       'proj[consents.informed_consent.base64]': 0,
-      'proj[consents.clinical_trial.base64]': 0
+      'proj[consents.clinical_trial.base64]': 0,
+      'proj[imaging.organization.base64_logo]': 0,
+      'proj[imaging.branch.base64_logo]': 0,
+      'proj[referring.organization.base64_logo]': 0,
+      'proj[referring.branch.base64_logo]': 0,
+      'proj[reporting.organization.base64_logo]': 0,
+      'proj[reporting.branch.base64_logo]': 0
     };
 
     this.sharedFunctions.find('appointments', appointments_params, async (resAppointments) => {

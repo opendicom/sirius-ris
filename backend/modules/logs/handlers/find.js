@@ -10,6 +10,11 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema) => {
+    //Remove base64 for default projection:
+    if(!req.query.proj){ req.query['proj'] = {
+        'organization.base64_logo': 0
+    }; }
+    
     //Get query params:
     let { filter, regex } = req.query;
 
@@ -56,7 +61,6 @@ module.exports = async (req, res, currentSchema) => {
             'organization.createdAt': 0,
             'organization.updatedAt': 0,
             'organization.__v': 0,
-            'organization.base64_logo': 0,
 
             //User:
             'fk_user': 0,
