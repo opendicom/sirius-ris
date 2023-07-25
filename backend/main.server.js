@@ -93,12 +93,6 @@ module.exports = function() {
     app.use(express.urlencoded({ limit: '50mb', extended: true }));    //Parsing application/x-www-form-urlencoded
     app.use(express.text({ limit: '200mb' }));
 
-    //Set Auth path (JWT):
-    app.post('/auth', (req, res) => {
-        //DEBUG:
-        res.status(200).send({ success: true, message: 'AUTH TEST OK' });
-    });
-
     //Set MongoDB URI:
     const mongodbURI = 'mongodb://' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
 
