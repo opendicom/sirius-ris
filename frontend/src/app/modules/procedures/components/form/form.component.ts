@@ -82,6 +82,7 @@ export class FormComponent implements OnInit {
       domain              : [ '', [Validators.required] ],
       name                : [ '', [Validators.required] ],
       code                : [ '' ],
+      snomed              : [ '' ],
       equipments          : new FormControl({ value: '', disabled: true }, Validators.required),
       fk_modality         : new FormControl({ value: '', disabled: true }, Validators.required),
       informed_consent    : [ 'false' ],
@@ -132,6 +133,7 @@ export class FormComponent implements OnInit {
               fk_modality         : res.data[0].fk_modality,
               name                : res.data[0].name,
               code                : res.data[0].code,
+              snomed              : res.data[0].snomed,
               equipments          : new FormControl({ value: [] }, Validators.required),
               status              : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
               informed_consent    : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string

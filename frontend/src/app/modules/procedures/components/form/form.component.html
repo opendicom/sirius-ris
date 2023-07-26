@@ -64,6 +64,8 @@
         </mat-form-field>
       </div>
 
+      <br/><br/><hr class="dashed"/><br/>
+
       <h4>Estado:</h4>
       <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
         <mat-radio-button value="true">Activo</mat-radio-button>
@@ -82,13 +84,25 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Codificación:</h4>
-      <mat-form-field appearance="fill" class="large">
-        <mat-label>Codificación</mat-label>
-        <input matInput type="text" formControlName="code" placeholder="Ingrese la codificación">
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>SNOMED:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Código SNOMED</mat-label>
+            <input matInput type="text" formControlName="snomed" placeholder="Ingrese código SNOMED">
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
 
-      <br/><hr class="dashed"/><br/>
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>Codificación alternativa:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Codificación</mat-label>
+            <input matInput type="text" formControlName="code" placeholder="Ingrese la codificación">
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
+      <hr class="dashed"/><br/>
 
       <h4>Preparación <span class="label-info">min: 10, max: 1500</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="editorConfig" data=""></ckeditor>

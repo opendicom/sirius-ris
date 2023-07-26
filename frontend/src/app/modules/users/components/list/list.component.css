@@ -22,3 +22,12 @@
 .other {
   color: #05ffa1;
 }
+
+mat-chip {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.roles {
+  padding-left: 10px !important;
+}

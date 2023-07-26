@@ -1,3 +1,8 @@
 mat-chip {
   opacity: 0.75;
+  font-size: 12px;
+}
+
+.snomed {
+  background-color: #d53a9d !important;
 }

@@ -6,7 +6,14 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';                   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';                     // Shared Functions
-import { app_setting, ISO_3166, document_types, gender_types, regexObjectId } from '@env/environment';  // Enviroments
+import {                                                                                                // Enviroments
+  app_setting, 
+  ISO_3166, 
+  user_roles, 
+  document_types, 
+  gender_types, 
+  regexObjectId
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -16,9 +23,10 @@ import { app_setting, ISO_3166, document_types, gender_types, regexObjectId } fr
 })
 export class ListComponent implements OnInit {
   //Set component properties:
-  public country_codes: any = ISO_3166;
-  public document_types: any = document_types;
-  public gender_types: any = gender_types;
+  public country_codes  : any = ISO_3166;
+  public document_types : any = document_types;
+  public gender_types   : any = gender_types;
+  public user_roles     : any = user_roles;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
@@ -34,6 +42,7 @@ export class ListComponent implements OnInit {
     'birth_date',
     'email',
     'phone_numbers',
+    'role',
     'gender',
     'type',
     'status'
@@ -110,7 +119,8 @@ export class ListComponent implements OnInit {
       'person': 1,
       'username': 1,
       'email': 1,
-      'status': 1
+      'status': 1,
+      'permissions': 1
     };
     this.sharedProp.sort          = { username: 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };

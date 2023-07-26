@@ -25,6 +25,7 @@ const Schema = new mongoose.Schema({
     fk_modality:        { type: mongoose.ObjectId, required: true },
     name:               { type: String, required: true },
     code:               { type: String },
+    snomed:             { type: String },
     equipments:         { type: [subSchemaAllowedEquipments], required: true },
     preparation:        { type: String },
     procedure_template: { type: String },
@@ -46,7 +47,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['code', 'preparation', 'procedure_template'];
+const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -73,11 +74,17 @@ const Validator = [
         .isLength({ min: 3, max: 64 })
         .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
 
-    body('name')
+    body('code')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
         .withMessage('El código ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+
+    body('snomed')
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 40 })
+        .withMessage('El código snomed ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
 
     body('equipments')
         .isArray()
