@@ -385,6 +385,7 @@ const concessionPermissions = {
     // 17 : Estadísticas del personal:
     // 18 : Eliminación física de archivos:
     // 19 : Supervisar citas en curso:
+    // XX : Listado de procedimientos (Readonly -> appointment_requests):
 
     // 20 : Acceso al módulo de exportación (Backend access only):
     20: {

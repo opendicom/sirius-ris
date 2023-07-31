@@ -1,7 +1,7 @@
 {
   "name": "sirius-ris",
   "version": "1.0.0",
-  "description": "Sirius RIS is a Radiology Information System",
+  "description": "Sirius RIS is an open source Radiology Information System",
   "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
   "license": "MPL-2.0",
   "main": "index.js",
@@ -11,17 +11,15 @@
     "start": "node index.js"
   },
   "keywords": [
-    "API",
-    "REST",
-    "RESTful",
-    "Asynchronous",
-    "Async",
-    "Backend",
     "RIS",
     "Sirius",
+    "Sirius RIS",
+    "Sirius-RIS",
     "Radiology",
-    "NodeJS",
-    "MongoDB"
+    "PACS",
+    "DICOM",
+    "HL7",
+    "CDA"
   ],
   "dependencies": {
     "argon2": "^0.28.5",
