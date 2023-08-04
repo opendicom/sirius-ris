@@ -108,8 +108,18 @@ export const gender_types = {
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Coordinada',
-  'A02': 'Cancelada'
+  'A01': 'Coordinada',                //Correspond with AR05 -> appointment_requests_flow_states.
+  'A02': 'Cancelada-suspendida'
+};
+
+// Appointment requests flow states:
+export const appointment_requests_flow_states = {
+  'AR01': 'Administración', 
+  'AR02': 'Retenida en administración',
+  'AR03': 'Área médica',
+  'AR04': 'Retenida en área médica',
+  'AR05': 'Coordinada',               //Correspond with A01 -> appointments_flow_states.
+  'AR06': 'Cancelada'
 };
 
 // Performing flow states:

@@ -29,6 +29,7 @@ module.exports = function() {
     const filesRoutes                   = require('./modules/files/routes');
     const appointmentsRoutes            = require('./modules/appointments/routes');
     const appointments_draftsRoutes     = require('./modules/appointments_drafts/routes');
+    const appointment_requestsRoutes    = require('./modules/appointment_requests/routes');
     const pathologiesRoutes             = require('./modules/pathologies/routes');
     const performingRoutes              = require('./modules/performing/routes');
     const reportsRoutes                 = require('./modules/reports/routes');
@@ -40,7 +41,6 @@ module.exports = function() {
     const mailRoutes                    = require('./mail/routes');
     const exporterRoutes                = require('./exporter/routes');
     const wezenRoutes                   = require('./wezen/routes');
-    const proxyRoutes                   = require('./proxy/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -144,6 +144,7 @@ module.exports = function() {
     app.use('/files',                   filesRoutes);
     app.use('/appointments',            appointmentsRoutes);
     app.use('/appointments_drafts',     appointments_draftsRoutes);
+    app.use('/appointment_requests',    appointment_requestsRoutes);
     app.use('/pathologies',             pathologiesRoutes);
     app.use('/performing',              performingRoutes);
     app.use('/reports',                 reportsRoutes);
@@ -155,7 +156,6 @@ module.exports = function() {
     app.use('/mail',                    mailRoutes);
     app.use('/exporter',                exporterRoutes);
     app.use('/wezen',                   wezenRoutes);
-    app.use('/proxy',                   proxyRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });

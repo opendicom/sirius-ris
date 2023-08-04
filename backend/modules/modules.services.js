@@ -1090,6 +1090,11 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('performing');
             break;
 
+        case 'appointment_requests':
+            affectedCollections.push('appointments');
+            affectedCollections.push('appointments_drafts');
+            break;
+
         case 'files':
             affectedCollections.push('appointments');
             break;
@@ -2216,6 +2221,40 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
             });
             break;
 
+        case 'appointment_requests':
+            filter = adjustCondition(filter, (filter) => {
+                //Imaging - Post aggregate lookup:
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                
+                //Referring - Post aggregate lookup:
+                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
+                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
+        
+                //Study:
+                if(filter[asPrefix + 'study.fk_procedure'] != undefined){ filter[asPrefix + 'study.fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_procedure']); };
+                if(filter[asPrefix + 'study.fk_modality'] != undefined){ filter[asPrefix + 'study.fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_modality']); };
+
+                //Patient:
+                if(filter[asPrefix + 'patient.doc_type'] != undefined){ filter[asPrefix + 'patient.documents.doc_type'] = parseInt(filter[asPrefix + 'patient.documents.doc_type'], 10); }
+                if(filter[asPrefix + 'patient.gender'] != undefined){ filter[asPrefix + 'patient.gender'] = parseInt(filter[asPrefix + 'patient.gender'], 10); }
+                if(filter[asPrefix + 'patient.phone_numbers'] != undefined){ filter[asPrefix + 'patient.phone_numbers'] = filter[asPrefix + 'patient.phone_numbers'][0] = parseInt(filter[asPrefix + 'patient.phone_numbers'], 10); }
+
+                //Patient - Set allowed explicit operators:
+                if(filter[asPrefix + 'patient.birth_date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'patient.birth_date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'patient.birth_date'][explicitOperator] = new Date(filter[asPrefix + 'patient.birth_date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'patient.birth_date'] = new Date(filter[asPrefix + 'patient.birth_date']);
+                        }
+                    });
+                }
+
+                return filter;
+            });
+            break;
+
         case 'pathologies':            
             filter = adjustCondition(filter, (filter) => {
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
@@ -2650,7 +2689,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             case 'find':
             case 'findOne':
             case 'findByService':       // Only the users module uses this case.
-            case 'studyTokenHandler':   // Wezen paths.
+            case 'studyToken':          // Wezen paths.
                 //If filter has no operator, add domain condition with no operator:
                 let haveOperator = false;
                 
@@ -2941,6 +2980,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         break;
 
                     case 'appointments':
+                    case 'appointment_requests':
                         //Initializate composite domain objects:
                         let imaging = {};
                         let referring = {};
@@ -3007,58 +3047,58 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
                         break;
 
-                        case 'appointments_drafts':
-                            //Initializate composite domain objects:
-                            let imaging_drafts = {};
+                    case 'appointments_drafts':
+                        //Initializate composite domain objects:
+                        let imaging_drafts = {};
     
-                            //Create filter and first explicit $AND operator (if not exist):
-                            if(!filter){ req.query.filter = {}; }
-                            req.query.filter['$and'] = [];
+                        //Create filter and first explicit $AND operator (if not exist):
+                        if(!filter){ req.query.filter = {}; }
+                        req.query.filter['$and'] = [];
 
-                            //Set patient condition:
-                            if(role === 9){ req.query.filter['patient._id'] = user_id; }
+                        //Set patient condition:
+                        if(role === 9){ req.query.filter['patient._id'] = user_id; }
     
-                            //Switch by domain type: 
-                            if(domainType == 'organizations'){
-                                //Set composite domain:
-                                //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                                imaging_drafts['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
+                        //Switch by domain type: 
+                        if(domainType == 'organizations'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging_drafts['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
                                 
-                                //Create explicit operators (Third operator level):
-                                let or_condition    = { '$or'   : [ imaging_drafts ] };
-                                let domain_condition   = { '$and'  : [ or_condition ] };
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging_drafts ] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
     
-                                //Add domain condition into explicit $AND operator:
-                                req.query.filter.$and.push(domain_condition);
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
     
-                            } else if(domainType == 'branches'){
-                                //Set composite domain:
-                                //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                                imaging_drafts['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
+                        } else if(domainType == 'branches'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging_drafts['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
                                 
-                                //Create explicit operators (Third operator level):
-                                let or_condition    = { '$or'   : [ imaging_drafts ] };
-                                let domain_condition   = { '$and'  : [ or_condition ] };
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging_drafts ] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
     
-                                //Add domain condition into explicit $AND operator:
-                                req.query.filter.$and.push(domain_condition);
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
     
-                            } else if(domainType == 'services'){
-                                //Set composite domain:
-                                //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                                imaging_drafts['imaging.service._id'] = mongoose.Types.ObjectId(domain);
+                        } else if(domainType == 'services'){
+                            //Set composite domain:
+                            //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
+                            imaging_drafts['imaging.service._id'] = mongoose.Types.ObjectId(domain);
                                 
-                                //Create explicit operators (Third operator level):
-                                let or_condition    = { '$or'   : [ imaging_drafts ] };
-                                let domain_condition   = { '$and'  : [ or_condition ] };
+                            //Create explicit operators (Third operator level):
+                            let or_condition    = { '$or'   : [ imaging_drafts ] };
+                            let domain_condition   = { '$and'  : [ or_condition ] };
     
-                                //Add domain condition into explicit $AND operator:
-                                req.query.filter.$and.push(domain_condition);
-                            }
+                            //Add domain condition into explicit $AND operator:
+                            req.query.filter.$and.push(domain_condition);
+                        }
     
-                            break;
+                        break;
 
-                    case 'wezen':   // studyTokenHandler from wezen url is the same as perfoming finds domain filters:
+                    case 'wezen':   // studyToken from wezen url is the same as perfoming finds domain filters:
                     case 'performing':
                         //Initializate composite domain objects:
                         let appointment_imaging = {};

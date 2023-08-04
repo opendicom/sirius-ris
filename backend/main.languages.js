@@ -91,6 +91,8 @@ module.exports = function(language){
             'mail_empty_message'            : 'The message cannot be empty.',
             'mail_wrong_file'               : 'The specified filename or base64 is wrong.',
             'missing_information_log'       : 'Missing information for log record.',
+            'procedure_not_found'           : 'Procedure not found with the specified _id.',
+            'modalitiy_not_found'           : 'Modalitiy not found with the specified code value.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -199,6 +201,8 @@ module.exports = function(language){
             lang.ris.mail_empty_message             = 'El mensaje no puede ser vacío.';
             lang.ris.mail_wrong_file                = 'El nombre del archivo o el base64 especificado es erroneo.';
             lang.ris.missing_information_log        = 'Falta información para registro de log.'
+            lang.ris.procedure_not_found            = 'No se encontró un procedimiento con el _id especificado.';
+            lang.ris.modalitiy_not_found            = 'No se encontró una modalidad con el code value especificado.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

@@ -272,40 +272,39 @@ module.exports = async (req, res) => {
         await performing.Model.aggregate(aggregate)
         .exec()
         .then((performingData) => {
-            //Set token time expiration (5 minutes):
-            const first_time_exp = '5m';
+            //Check if have results:
+            if(performingData){ 
+                //Set token time expiration (5 minutes):
+                const first_time_exp = '5m';
 
-            //Create payload:
-            const payload = {
-                sub: userAuth._id.toString(),          //Identify the subject of the token.
-                iat: (Date.now() / 1000),              //Token creation date.
-                //exp: (Declared in expiresIn)         //Token expiration date.
-            }
-
-            //Create JWT for Wezen > Wado (Sirius Proxy):
-            jwt.sign(payload, mainSettings.AUTH_JWT_SECRET, { expiresIn: first_time_exp }, async (err, token) => {
-                if(err){
-                    res.status(500).send({ success: false, message: 'wezen - ' + currentLang.jwt.sign_error, error: err });
-
-                    //Send error:
-                    mainServices.sendError(res, 'wezen - ' + currentLang.jwt.sign_error, err);
-
-                    return;
+                //Create payload:
+                const payload = {
+                    sub: userAuth._id.toString(),          //Identify the subject of the token.
+                    iat: (Date.now() / 1000),              //Token creation date.
+                    //exp: (Declared in expiresIn)         //Token expiration date.
                 }
 
+                //Create JWT for Wezen > Wado (Sirius Proxy):
+                jwt.sign(payload, mainSettings.AUTH_JWT_SECRET, { expiresIn: first_time_exp }, async (err, token) => {
+                    if(err){
+                        res.status(500).send({ success: false, message: 'wezen - studyToken | ' + currentLang.jwt.sign_error, error: err });
 
-                //Send request to wezen service:
-                /*
-                mainServices.httpClientRequest(mainSettings.wezen.host, mainSettings.wezen.port, 'GET', '/studyToken?token=blabla', undefined, (wezenData) => {
-                    //Check response data:
-                    console.log('\n[ TEST ]:');
-                    console.log(wezenData);
+                        //Send error:
+                        mainServices.sendError(res, 'wezen - studyToken | ' + currentLang.jwt.sign_error, err);
+
+                        return;
+                    }
+
+                    //Set Wezen path:
+                    const wezenPath = 'http://' + mainSettings.wezen.host + ':' + mainSettings.wezen.port + '/studyToken?session=' + token + '?study_iuid=' + performingData.appointment.study_iuid;
+
+                    //Send successfully response:
+                    res.status(200).send({ success : true, path: wezenPath });
                 });
-                */
-
-                //Test:
-                res.status(200).send({ token : token, performing: performingData });
-            });
+            } else {
+                //No data (empty result):
+                res.status(200).send({ success: false, message: 'wezen: ' + currentLang.db.query_no_data });
+            }
         })
         .catch((err) => {
             //Send error:
