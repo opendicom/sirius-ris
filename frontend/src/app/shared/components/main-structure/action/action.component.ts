@@ -9,6 +9,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import {                                                                                // Enviroment
   app_setting,
   appointments_flow_states,
+  appointment_requests_flow_states,
   performing_flow_states,
   events_log
 } from '@env/environment';
@@ -24,8 +25,9 @@ export class ActionComponent implements OnInit {
   public eventsLog            : any = events_log;
   public number_of_pages      : any = [1];
   public flow_states          : any = {
-    appointments  : appointments_flow_states,
-    performing    : performing_flow_states
+    appointments          : appointments_flow_states,
+    appointment_requests  : appointment_requests_flow_states,
+    performing            : performing_flow_states,
   };
 
   //Set DB action properties:

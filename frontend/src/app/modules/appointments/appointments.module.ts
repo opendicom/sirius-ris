@@ -16,6 +16,7 @@ import { FormUpdateComponent } from '@modules/appointments/components/form-updat
 import { TabDetailsComponent } from '@modules/appointments/components/form-update/tab-details/tab-details.component';
 import { TabSlotComponent } from '@modules/appointments/components/form-update/tab-slot/tab-slot.component';
 import { ListDraftsComponent } from '@modules/appointments/components/list-drafts/list-drafts.component';
+import { ListRequestsComponent } from '@modules/appointments/components/list-requests/list-requests.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -45,7 +46,8 @@ FullCalendarModule.registerPlugins([
     FormUpdateComponent,
     TabDetailsComponent,
     TabSlotComponent,
-    ListDraftsComponent
+    ListDraftsComponent,
+    ListRequestsComponent
   ],
   imports: [
     CommonModule,

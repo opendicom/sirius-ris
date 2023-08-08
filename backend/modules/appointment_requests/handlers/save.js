@@ -123,6 +123,13 @@ module.exports = async (req, res, currentSchema, operation) => {
         req.body.patient.document = req.body.patient.document.replace(/\D/g, '');
     }
 
+    //Set urgency:
+    if(req.body.hasOwnProperty('urgency')){
+        req.body['urgency'] = mainServices.stringToBoolean(req.body.urgency);
+    } else {
+        req.body['urgency'] = false;
+    }
+
     //Set Flow state:
     req.body['flow_state'] = 'AR01';
 

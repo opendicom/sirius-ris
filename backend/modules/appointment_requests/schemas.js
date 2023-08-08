@@ -61,6 +61,7 @@ const Schema = new mongoose.Schema({
     imaging:        { type: subSchemaImaging, required: true },
     referring:      { type: subSchemaReferring, required: true },
     flow_state:     { type: String },   // Not required, setted in the save handler.
+    urgency:        { type: Boolean, required: true },
     annotations:    { type: String },
     patient:        { type: subSchemaPatient, required: true },
     study:          { type: subSchemaStudy, required: true },
@@ -88,6 +89,13 @@ const AllowedUnsetValues = ['annotations'];
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('urgency')
+        .optional()
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
+
     //----------------------------------------------------------------------------------------------------------------//
     // IMAGING:
     //----------------------------------------------------------------------------------------------------------------//

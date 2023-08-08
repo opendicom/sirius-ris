@@ -82,6 +82,7 @@ export const user_concessions = {
   10  : 'Acceso a logs del usuario',
   11  : 'Acceso a logs de elementos',
   12  : 'Reenvío de correos',
+  13  : 'Gestión de solicitudes',
   //13  : 'Búsquedas avanzadas',
   //14  : 'Listados de facturación',
   //15  : 'Estadísticas generales',
@@ -162,6 +163,7 @@ export const elementTypesLang = {
   'ES' : {
     'appointments'          : 'cita',
     'appointments_drafts'   : 'cita en curso',
+    'appointment_requests'  : 'solicitud',
     'branches'              : 'sucursal',
     'equipments'            : 'equipo',
     'files'                 : 'archivo',

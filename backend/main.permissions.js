@@ -389,6 +389,11 @@ const concessionPermissions = {
         mail                    : ['send']
     },
 
+    // 13 : Gestión de solicitudes:
+    13: {
+        appointment_requests    : ['find', 'findOne', 'update']
+    },
+
     // 13 : Búsquedas avanzadas:
     // 14 : Listados de facturación:
     // 15 : Estadísticas generales:

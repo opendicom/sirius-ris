@@ -70,7 +70,7 @@
 
       <ng-template #thenBlockLogo>
         <button mat-flat-button type="button" class="logo-button">
-          <mat-icon>image</mat-icon> LOGO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedFile === null" matTooltip="Eliminar logo de la organización" class="delete-logo" (click)="onDeleteLogo()">close</mat-icon>
+          <mat-icon>image</mat-icon> LOGO DE LA SUCURSAL <mat-icon *ngIf="form_action == 'update' && selectedFile === null" matTooltip="Eliminar logo de la organización" class="delete-logo" (click)="onDeleteLogo()">close</mat-icon>
         </button>
         
       </ng-template>
@@ -78,7 +78,7 @@
       <ng-template #elseBlockLogo>
         <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
+        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA SUCURSAL</button>
       </ng-template>
     </div> <!-- end fxLayout wrapper -->
 

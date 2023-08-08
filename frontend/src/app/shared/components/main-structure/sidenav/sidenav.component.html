@@ -8,6 +8,16 @@
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1, 2, 3]))">
     <h3>Coordinación</h3>
 
+    <!-- Gestión de solicitudes -->
+    <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [13: Gestión de solicitudes) -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [13]))">
+      <mat-list-item routerLink="/appointments/list_requests">
+        <mat-icon>move_to_inbox</mat-icon><span>Solicitudes</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+    </div>
+
     <!-- Gestión de turnos -->
     <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1]))">

@@ -99,7 +99,8 @@ module.exports = async (req, res, currentSchema) => {
         //------------------------------------------------------------------------------------------------------------//
         { $project: {
             //Self:
-            'createdAt': 0,
+            // In appointment_requests createdAt are required by default.
+            //'createdAt': 0,
             'updatedAt': 0,
             '__v': 0,
 
