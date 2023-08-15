@@ -197,6 +197,7 @@ function sendError(res, message, error){
 
 //--------------------------------------------------------------------------------------------------------------------//
 // STRING TO BOOLEAN:
+// Duplicated methods - [Duplicated method: Frontend - Shared Functions Service].
 //--------------------------------------------------------------------------------------------------------------------//
 function stringToBoolean(string){
     if(string === 'true'){

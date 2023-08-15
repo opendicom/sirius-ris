@@ -23,6 +23,7 @@ import { ReportReviewComponent } from '@shared/components/dialogs/report-review/
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
+import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -433,6 +434,11 @@ export class SharedFunctionsService {
         //MAIL DELIVERY:
         case 'mail_delivery':
           this.basicDialog(MailDeliveryComponent, operationHandler, (result) => { callback(result) });
+          break;
+
+        //APPOINTMENT REQUESTS DETAILS:
+        case 'appointment_requests_details':
+          this.basicDialog(AppointmentRequestDetailsComponent, operationHandler, (result) => { callback(result) });
           break;
       }
     }
@@ -1615,6 +1621,22 @@ export class SharedFunctionsService {
         }
       }
     });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // STRING TO BOOLEAN:
+  // Duplicated methods - [Duplicated method: Backend - Main Services].
+  //--------------------------------------------------------------------------------------------------------------------//
+  stringToBoolean(string: string): boolean | undefined{
+    if(string === 'true'){
+        return true;
+    } else if(string === 'false') {
+        return false;
+    } else {
+        return undefined;
+    }
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

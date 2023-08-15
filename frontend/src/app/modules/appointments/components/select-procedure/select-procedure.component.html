@@ -114,13 +114,34 @@
             </div>
 
             <!-- friendly password -->
-            <div class="friendly-pass-wrap" *ngIf="this.sharedProp.current_friendly_pass !== ''">
+            <div class="friendly-pass-wrap" *ngIf="sharedProp.current_friendly_pass !== ''">
               <div class="user-info">Contraseña aleatoria designada: </div>
               <div class="user-info">
-                <span class="friendly-pass">{{ this.sharedProp.current_friendly_pass }}</span>
+                <span class="friendly-pass">{{ sharedProp.current_friendly_pass }}</span>
               </div>
               <div class="clear"></div><hr class="dashed" />
               <small><strong>Nota: </strong>Una vez finalizado el ingreso de la cita la contraseña designada NO será accesible.</small>
+            </div>
+
+            <!-- appointment_request -->
+            <div class="appointment_request" *ngIf="appointment_request !== undefined && sharedFunctions.stringToBoolean(appointment_request) && sharedProp.current_appointment_request !== undefined">
+              <h4 class="study">Estudio indicado en la solicitud:</h4>
+
+              <!-- procedure -->
+              <span *ngIf="sharedProp.current_appointment_request.procedure">
+                <span class="badge-alt" matTooltip="{{ sharedProp.current_appointment_request.procedure.code }}">
+                  <span>{{ sharedProp.current_appointment_request.procedure.name }}</span>
+                </span>
+              </span>
+
+              <!-- modality -->
+              <span *ngIf="sharedProp.current_appointment_request.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+              <ng-template #thenBlockTableModality>
+                <span class="badge" matTooltip="{{ sharedProp.current_appointment_request.modality.code_meaning }}">{{ sharedProp.current_appointment_request.modality.code_value }}</span>
+              </ng-template>
+              <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+
+              <div class="clear"></div>
             </div>
 
           </span>

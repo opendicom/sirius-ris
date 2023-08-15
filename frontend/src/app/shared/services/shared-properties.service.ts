@@ -62,6 +62,7 @@ export class SharedPropertiesService {
   public current_study_iuid         : string = '';
   public current_friendly_pass      : string = '';
   public current_appointment        : string = '';
+  public current_appointment_request: any;
 
   //Current operation object PET-CT for cases:
   public current_modality_code_value  : string = '';

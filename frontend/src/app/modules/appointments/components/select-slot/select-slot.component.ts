@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router } from '@angular/router';                                                   // Router
+import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
@@ -48,6 +48,9 @@ export class SelectSlotComponent implements OnInit {
   public selectedEnd          : Date | undefined;
   public selectedSlot         : any  | undefined;
 
+  //Set appointment_request flag:
+  public appointment_request    : any;
+
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
@@ -67,10 +70,11 @@ export class SelectSlotComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    private router: Router,
-    public formBuilder: FormBuilder,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private router          : Router,
+    private objRoute        : ActivatedRoute,
+    public formBuilder      : FormBuilder,
+    public sharedProp       : SharedPropertiesService,
+    private sharedFunctions : SharedFunctionsService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -85,6 +89,9 @@ export class SelectSlotComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    this.appointment_request = this.objRoute.snapshot.params['appointment_request'];
+
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
     this.minDate = dateRangeLimit.minDate;
@@ -165,6 +172,12 @@ export class SelectSlotComponent implements OnInit {
 
     //Find slots:
     this.findSlots(false, true);
+
+    //If in appointment_request the urgency is required click urgency input:
+    if(this.sharedProp.current_appointment_request.urgency === true){
+      this.setReactiveForm({ urgency : ['true'] });
+      this.onCheckUrgency({ value : 'true' }, true);
+    }
   }
 
   onCancel(){
@@ -460,7 +473,7 @@ export class SelectSlotComponent implements OnInit {
     }
   }
 
-  onCheckUrgency(event: any){
+  onCheckUrgency(event: any, first_search: boolean = false){
     //Clear selected elements:
     this.clearSelectedElements();
 
@@ -476,7 +489,7 @@ export class SelectSlotComponent implements OnInit {
       this.calendarOptions.headerToolbar = headerToolbar;
 
       //Find slots (urgency true):
-      this.findSlots(true);
+      this.findSlots(true, first_search); //First search added to appointment request urgency cases.
 
     } else {
       //Get value (The interface calendarOptions for data type headertoolbar does not find property 'end'):

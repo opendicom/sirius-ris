@@ -27,8 +27,11 @@ const routes: Routes = [
 
       //Appointments form secuence:
       { path: 'set_patient', component: SetPatientComponent },
+      { path: 'set_patient/:appointment_request', component: SetPatientComponent },
       { path: 'select_procedure', component: SelectProcedureComponent },
+      { path: 'select_procedure/:appointment_request', component: SelectProcedureComponent },
       { path: 'select_slot', component: SelectSlotComponent },
+      { path: 'select_slot/:appointment_request', component: SelectSlotComponent },
       { path: 'form/insert', component: FormInsertComponent },
       { path: 'form/update/:_id', component: FormUpdateComponent },
 

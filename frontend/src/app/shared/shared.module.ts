@@ -31,6 +31,7 @@ import { ReportReviewComponent } from '@shared/components/dialogs/report-review/
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
+import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -69,6 +70,7 @@ import * as IC from '@shared/directives/input-control.directive';
     PasswordRequestComponent,
     PerformingDownloadsComponent,
     MailDeliveryComponent,
+    AppointmentRequestDetailsComponent,
 
     // Shared pipes:
     HighlighterPipe,
@@ -117,6 +119,7 @@ import * as IC from '@shared/directives/input-control.directive';
     PasswordRequestComponent,
     PerformingDownloadsComponent,
     MailDeliveryComponent,
+    AppointmentRequestDetailsComponent,
     
     // Shared pipes:
     HighlighterPipe,

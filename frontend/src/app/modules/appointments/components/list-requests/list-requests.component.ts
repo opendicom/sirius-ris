@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
+import { ActivatedRoute, Router } from '@angular/router';                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import {                                                                                // Enviroments
@@ -59,6 +59,7 @@ export class ListRequestsComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
+    private router          : Router,
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService
@@ -162,5 +163,13 @@ export class ListRequestsComponent implements OnInit {
 
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+  }
+
+  addAppointment(current: any){
+    //Set current appointment request (Shared object):
+    this.sharedProp.current_appointment_request = current;
+
+    //Redirect to set patient form:
+    this.router.navigate(['/appointments/set_patient/true']);
   }
 }

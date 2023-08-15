@@ -82,6 +82,7 @@ export const user_concessions = {
   10  : 'Acceso a logs del usuario',
   11  : 'Acceso a logs de elementos',
   12  : 'Reenvío de correos',
+  13  : 'Gestión de solicitudes',
   //13  : 'Búsquedas avanzadas',
   //14  : 'Listados de facturación',
   //15  : 'Estadísticas generales',
@@ -108,8 +109,19 @@ export const gender_types = {
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Coordinada',
-  'A02': 'Cancelada'
+  'A01': 'Coordinada',                //Correspond with AR05 -> appointment_requests_flow_states.
+  'A02': 'Cancelada-suspendida'
+};
+
+// Appointment requests flow states:
+export const appointment_requests_flow_states = {
+  'AR01': 'Administración', 
+  'AR02': 'Retenida en administración',
+  'AR03': 'Área médica',
+  'AR04': 'Retenida en área médica',
+  'AR05': 'Cita en curso',            //Correspond with appointment_draft creation.
+  'AR06': 'Coordinada',               //Correspond with A01 -> appointments_flow_states.
+  'AR07': 'Cancelada'
 };
 
 // Performing flow states:
@@ -152,6 +164,7 @@ export const elementTypesLang = {
   'ES' : {
     'appointments'          : 'cita',
     'appointments_drafts'   : 'cita en curso',
+    'appointment_requests'  : 'solicitud',
     'branches'              : 'sucursal',
     'equipments'            : 'equipo',
     'files'                 : 'archivo',

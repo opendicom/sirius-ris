@@ -119,8 +119,9 @@ export const appointment_requests_flow_states = {
   'AR02': 'Retenida en administración',
   'AR03': 'Área médica',
   'AR04': 'Retenida en área médica',
-  'AR05': 'Coordinada',               //Correspond with A01 -> appointments_flow_states.
-  'AR06': 'Cancelada'
+  'AR05': 'Cita en curso',            //Correspond with appointment_draft creation.
+  'AR06': 'Coordinada',               //Correspond with A01 -> appointments_flow_states.
+  'AR07': 'Cancelada'
 };
 
 // Performing flow states:

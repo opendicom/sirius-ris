@@ -17,12 +17,21 @@
       <ng-container matColumnDef="element_action">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let element">
+          
+          <button mat-icon-button color="accent" aria-label="Crear cita a partir de la solicitud" matTooltip="Crear cita a partir de la solicitud" (click)="addAppointment(element)">
+            <mat-icon>control_point</mat-icon>
+          </button>
+
           <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
             <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
               <mat-icon>format_list_bulleted</mat-icon>
             </button>
           </span>
+
+          <button mat-icon-button color="accent" aria-label="Detalles de la solicitud" matTooltip="Detalles de la solicitud" (click)="sharedFunctions.openDialog('appointment_requests_details', element);">
+            <mat-icon>info</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -47,7 +56,7 @@
         <th mat-header-cell *matHeaderCellDef class="documents"> Documento </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
-            <span *ngIf="element.patient.doc_country_code" matTooltip="{{ country_codes[element.patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[element.patient.doc_country_code].alpha_2 | lowercase }}">&nbsp;</span>
+            <span *ngIf="element.patient.doc_country_code"><span matTooltip="{{ country_codes[element.patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[element.patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
             <span matTooltip="{{ document_types[element.patient.doc_type] }}">
               <span innerHTML="{{ element.patient.document | highlighter : sharedProp.filter }}"></span>
             </span>

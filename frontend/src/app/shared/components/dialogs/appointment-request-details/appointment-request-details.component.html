@@ -1,0 +1,190 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>move_to_inbox</mat-icon>&nbsp; Solicitud de estudio</h1>
+<div mat-dialog-content>
+  
+  <h3 class="details-title">Detalles de la solicitud:</h3>
+  
+  <!-- referring -->
+  <div *ngIf="data.referring" class="current-info divider-alt">
+    <span *ngIf="data.referring.branch; then thenBlockReferring else elseBlockReferring"></span>
+    <ng-template #thenBlockReferring>
+        <small>Institución solicitante:</small><br/>
+        <span class="current-firts">{{ data.referring.organization.short_name + ' ► ' + data.referring.branch.short_name }}</span>
+    </ng-template>
+
+    <ng-template #elseBlockReferring>
+        <small>Institución solicitante:</small><br/>
+        <span class="current-firts">{{ data.referring.organization.short_name }}</span>
+    </ng-template>
+  </div>
+
+  <!-- imaging -->
+  <div *ngIf="data.imaging" class="current-info divider-alt">
+    <span *ngIf="data.imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
+    <ng-template #thenBlockImaging>
+        <small>Institución realizadora:</small><br/>
+        <span class="current-firts">{{ data.imaging.organization.short_name + ' ► ' + data.imaging.branch.short_name }}</span>
+    </ng-template>
+
+    <ng-template #elseBlockImaging>
+        <small>Institución realizadora:</small><br/>
+        <span class="current-firts">{{ data.imaging.organization.short_name }}</span>
+    </ng-template>
+  </div>
+
+  <!-- date -->
+  <div class="current-info divider-alt">
+    <small>Fecha de solicitud:</small><br/>
+    <span class="current-firts">{{ data.createdAt | date:'dd/MM/yyyy':settings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
+  </div>
+
+  <!-- procedure -->
+  <div *ngIf="data.procedure" class="current-info text-center divider-alt">
+    <small>Procedimiento solicitado:</small><br/>
+    <span class="badge-alt">
+      <span>{{ data.procedure.name }}</span>
+    </span>
+  </div>
+
+  <!-- modality -->
+  <div class="current-info text-center divider-alt">
+    <small>Modalidad:</small><br/>
+    <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
+      <span>{{ data.modality.code_value }}</span>
+    </span>
+  </div>
+
+  <!-- urgency -->
+  <div class="current-info text-center">
+    <small>Urgencia:</small><br/>
+    <div *ngIf="data.urgency; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+    <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+  </div>
+
+  <div class="clear"></div>
+  <hr class="dashed" />
+
+  <!-- document -->
+  <div *ngIf="data.patient" class="current-info divider-alt">
+    <small>Documento:</small><br/>
+    <span *ngIf="data.patient.doc_country_code"><span matTooltip="{{ country_codes[data.patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[data.patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
+    <span matTooltip="{{ document_types[data.patient.doc_type] }}">
+        <span>{{ data.patient.document }}</span>
+    </span>
+  </div>
+
+  <!-- names -->
+  <div class="current-info divider-alt">
+    <small>Nombre completo:</small><br/>
+    <span class="current-firts">
+      <span>{{ data.patient.name_01 }}</span>
+
+      <span *ngIf="data.patient.name_02">
+        <span> {{ data.patient.name_02 }}</span>
+      </span>
+
+      <span> {{ data.patient.surname_01 }}</span>
+
+      <span *ngIf="data.patient.surname_02">
+        <span> {{ data.patient.surname_02 }}</span>
+      </span>
+    </span>
+  </div>
+
+  <!-- patient_age -->
+  <div class="current-info divider-alt">
+    <small>Edad:</small><br/>
+    <span class="current-firts" matTooltip="Edad al momento de realizar la solicitud del estudio">
+        {{ sharedFunctions.calculateAge(data.patient.birth_date, data.createdAt) }}
+    </span>
+  </div>
+
+  <!-- gender -->
+  <div class="current-info divider-alt">
+    <small>Género:</small><br/>
+    <span *ngIf="data.patient">
+        <div [ngSwitch]="data.patient.gender" matTooltip="{{ gender_types[data.patient.gender] }}">
+          <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+          <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+          <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+        </div>
+    </span>
+  </div>
+
+  <!-- phone_numbers-->
+  <div class="current-info">
+    <small>Teléfonos:</small><br/>
+    <span *ngIf="data.patient">
+        <span *ngFor="let current of data.patient.phone_numbers" >
+          <span class="badge-accent">
+            <span>{{ current + ' ' }}</span>
+          </span>
+        </span>
+    </span>
+  </div>
+
+  <div class="clear"></div>
+  <hr class="dashed" /><br/>
+
+  <div class="details-wrap">
+    <!-- anamnesis -->
+    <span *ngIf="data.anamnesis">
+        <h3><strong>Anamnesis:</strong></h3>
+        <span innerHTML="{{ data.anamnesis }}"></span>
+    </span>
+
+    <!-- indications -->
+    <span *ngIf="data.indications">
+        <br/><br/><hr class="soft-alt" /><br/>
+
+        <h3><strong>Indicaciones:</strong></h3>
+        <span innerHTML="{{ data.indications }}"></span>
+    </span>
+  </div>
+
+  <span *ngIf="data.anotations">
+    <div class="clear"></div><br/>
+
+    <div class="anotations-wrap">
+        <!-- anotations -->
+        <h3><strong>Anotaciones:</strong></h3>
+        <span innerHTML="{{ data.anotations }}"></span>
+    </div>
+  </span>
+
+  <span *ngIf="data.extra && (data.extra.physician_name || data.extra.physician_prof_id || data.extra.physician_contact)">
+    <div class="clear"></div><br/>
+    <hr class="dashed" /><br/>
+
+    <div class="current-info text-center divider-alt physician">
+      <span>Médico solicitante:</span>
+    </div>
+
+    <!-- physician_name -->
+    <div *ngIf="data.extra.physician_name" class="current-info text-center divider-alt">
+      <small>Nombre completo:</small><br/>
+      {{ data.extra.physician_name }}
+    </div>
+
+    <!-- physician_prof_id -->
+    <div *ngIf="data.extra.physician_prof_id" class="current-info text-center divider-alt">
+      <small>Nro de caja:</small><br/>
+      {{ data.extra.physician_prof_id }}
+    </div>
+
+    <!-- physician_contact -->
+    <div *ngIf="data.extra.physician_contact" class="current-info text-center divider-alt">
+      <small>Contacto:</small><br/>
+      <span class="badge-accent">{{ data.extra.physician_contact }}</span>
+    </div>
+  </span>
+
+  <div class="clear"></div>
+  <br/><hr class="soft-alt" />
+
+</div>
+
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+</div>

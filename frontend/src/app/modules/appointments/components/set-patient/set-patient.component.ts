@@ -57,6 +57,9 @@ export class SetPatientComponent implements OnInit {
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = true;
 
+  //Set appointment_request flag:
+  public appointment_request    : any;
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -133,6 +136,12 @@ export class SetPatientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    this.appointment_request = this.objRoute.snapshot.params['appointment_request'];
+
+    //Check appointment_request:
+    this.checkAppointmentRequest();
+
     //Find references:
     this.findReferences();
 
@@ -176,7 +185,7 @@ export class SetPatientComponent implements OnInit {
     }
   }
 
-  onSetDocument(preventClear: boolean = false){
+  onSetDocument(preventClear: boolean = false, callback = (res: any) => {}){
     //Validate document (Check registered_doc_type):
     this.validateDocument();
 
@@ -342,6 +351,9 @@ export class SetPatientComponent implements OnInit {
             this.personOperation = 'insert';
             this.userOperation = 'insert';
           }
+
+          //Execute callback:
+          callback(res);
         }
       });
     } else {
@@ -622,8 +634,14 @@ export class SetPatientComponent implements OnInit {
             //Set current_patient object in sharedProperties service:
             this.sharedProp.current_patient = res.data[0];
 
-            //Redirect to select procedure form:
-            this.router.navigate(['/appointments/select_procedure']);
+            //Check appointment request:
+            if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+              //Redirect to select procedure form (Preserve activate route field):
+              this.router.navigate(['/appointments/select_procedure/true']);
+            } else {
+              //Redirect to select procedure form:
+              this.router.navigate(['/appointments/select_procedure']);
+            }
           }
         });
 
@@ -633,6 +651,46 @@ export class SetPatientComponent implements OnInit {
 
       //Send message:
       this.sharedFunctions.sendMessage('Las contraseñas ingresadas no coinciden entre si.');
+    }
+  }
+
+  checkAppointmentRequest(){
+    if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+      //Set patient data with appointment request data:
+      if(this.sharedProp.current_appointment_request.hasOwnProperty('patient')){
+        this.form.get('person.document')?.setValue(this.sharedProp.current_appointment_request.patient.document);
+        this.form.get('person.doc_type')?.setValue(this.sharedProp.current_appointment_request.patient.doc_type.toString());
+
+        if(this.sharedProp.current_appointment_request.patient.hasOwnProperty('doc_country_code')){
+          this.form.get('person.doc_country_code')?.setValue(this.sharedProp.current_appointment_request.patient.doc_country_code);
+        }
+
+        //On set document to validate document and find person and user:
+        this.onSetDocument(false, (res) => {
+          //Check response:
+          //If user exist in DB preserve local data:
+          if(Object.keys(res).length > 0){
+            //Send snakbar message:
+            this.sharedFunctions.sendMessage('Datos cargados desde la base de datos local por coincidencia de documento.', { duration : 2000 });
+
+          //If user doesn't exist, set appointment request patient data:
+          } else {
+            this.form.get('person.name_01')?.setValue(this.sharedProp.current_appointment_request.patient.name_01);
+            this.form.get('person.name_02')?.setValue(this.sharedProp.current_appointment_request.patient.name_02);
+            this.form.get('person.surname_01')?.setValue(this.sharedProp.current_appointment_request.patient.surname_01);
+            this.form.get('person.surname_02')?.setValue(this.sharedProp.current_appointment_request.patient.surname_02);
+            this.form.get('person.gender')?.setValue(this.sharedProp.current_appointment_request.patient.gender.toString());
+            this.form.get('person.phone_numbers[0]')?.setValue(this.sharedProp.current_appointment_request.patient.phone_numbers[0]);
+            
+            if(this.sharedProp.current_appointment_request.patient.phone_numbers[1]){
+              this.form.get('person.phone_numbers[1]')?.setValue(this.sharedProp.current_appointment_request.patient.phone_numbers[1]);
+            }
+            
+            this.form.get('person.birth_date')?.setValue(new Date(this.sharedProp.current_appointment_request.patient.birth_date.split('T')[0].replace(/-/g, '/')));
+            //Patient email -> the email is not specified from origin.
+          }
+        });
+      }
     }
   }
 

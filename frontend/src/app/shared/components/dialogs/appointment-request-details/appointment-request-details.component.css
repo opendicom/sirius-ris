@@ -1,0 +1,45 @@
+.male {
+  color: #05a3ff;
+}
+  
+.female {
+  color: #d53a9d;
+}
+  
+.other {
+  color: #05ffa1;
+}
+  
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+  
+.current-firts {
+  font-size: 18px;
+}
+  
+.details-title {
+  margin-bottom: 5px !important;
+}
+
+.details-wrap {
+  background-color: #3d3f51;
+  color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.anotations-wrap {
+  background-color: #3d3f5182;
+  color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.physician {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 18px;
+}

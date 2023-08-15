@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router } from '@angular/router';                                                   // Router
+import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
@@ -29,6 +29,9 @@ export class SelectProcedureComponent implements OnInit {
   public fkProceduresIN         : string[] = [];
   public availableProcedures    : any;
 
+  //Set appointment_request flag:
+  public appointment_request    : any;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -39,10 +42,11 @@ export class SelectProcedureComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    private router: Router,
-    public formBuilder: FormBuilder,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private router          : Router,
+    private objRoute        : ActivatedRoute,
+    public formBuilder      : FormBuilder,
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions  : SharedFunctionsService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -64,6 +68,9 @@ export class SelectProcedureComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    this.appointment_request = this.objRoute.snapshot.params['appointment_request'];
+
     //Find references:
     this.findReferences();
   }
@@ -207,8 +214,14 @@ export class SelectProcedureComponent implements OnInit {
           }
         }));
 
-        //Redirect to select procedure form:
-        this.router.navigate(['/appointments/select_slot']);
+        //Check appointment request:
+        if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+          //Redirect to select slot form (Preserve activate route field):
+          this.router.navigate(['/appointments/select_slot/true']);
+        } else {
+          //Redirect to select slot form:
+          this.router.navigate(['/appointments/select_slot']);
+        }
       } else {
         //Send message:
         this.sharedFunctions.sendMessage('Advertencia: El procedimiento indicado NO posee un _id válido (ObjectId).');
