@@ -2072,6 +2072,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'appointments':
             filter = adjustCondition(filter, (filter) => {
+                //Appointment request:
+                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
+
                 //Imaging - Post aggregate lookup:
                 if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
                 if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
@@ -2182,6 +2185,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'appointments_drafts':
             filter = adjustCondition(filter, (filter) => {
+                //Appointment request:
+                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
+                
                 //Imaging - Post aggregate lookup:
                 if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
                 if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };

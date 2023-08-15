@@ -15,6 +15,7 @@ const subSchemaImaging = new mongoose.Schema({
 
 //Define Schema:
 const Schema = new mongoose.Schema({
+    fk_appointment_request: { type: mongoose.ObjectId },
     imaging:                { type: subSchemaImaging, required: true },
     fk_patient:             { type: mongoose.ObjectId, required: true },
     fk_coordinator:         { type: mongoose.ObjectId, required: true },
@@ -39,13 +40,19 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['extra_procedures'];
+const AllowedUnsetValues = ['fk_appointment_request', 'extra_procedures'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('fk_appointment_request')
+        .optional()
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_appointment_request NO es un ID MongoDB válido.'),
+
     //----------------------------------------------------------------------------------------------------------------//
     // IMAGING:
     //----------------------------------------------------------------------------------------------------------------//

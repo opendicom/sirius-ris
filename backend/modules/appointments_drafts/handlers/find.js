@@ -25,6 +25,15 @@ module.exports = async (req, res, currentSchema) => {
 
     //Add aggregate to request:
     req.query['aggregate'] = [
+        //Appointment request (Lookup & Unwind):
+        { $lookup: {
+            from: 'appointment_requests',
+            localField: 'fk_appointment_request',
+            foreignField: '_id',
+            as: 'appointment_request',
+        }},
+        { $unwind: { path: "$appointment_request", preserveNullAndEmptyArrays: true } },
+
         //------------------------------------------------------------------------------------------------------------//
         // IMAGING:
         //------------------------------------------------------------------------------------------------------------//
@@ -139,6 +148,12 @@ module.exports = async (req, res, currentSchema) => {
             'createdAt': 0,
             'updatedAt': 0,
             '__v': 0,
+
+            // Appointment request:
+            // In appointment_request createdAt are required by default.
+            //'appointment_request.createdAt': 0,
+            'appointment_request.updatedAt': 0,
+            'appointment_request.__v': 0,
 
             //Imaging:
             'imaging.organization.createdAt': 0,
@@ -264,6 +279,9 @@ module.exports = async (req, res, currentSchema) => {
         // Adjust data types for match aggregation (Schema):
         //------------------------------------------------------------------------------------------------------------//
         filter = await moduleServices.adjustDataTypes(filter, 'appointments');
+
+        //Appointment request:
+        filter = await moduleServices.adjustDataTypes(filter, 'appointment_requests', 'appointment_request');
 
         //Imaging:
         filter = await moduleServices.adjustDataTypes(filter, 'organizations', 'imaging.organization');

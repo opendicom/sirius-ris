@@ -124,6 +124,7 @@ const subSchemaInpatient = new mongoose.Schema({
 
 //Define Schema:
 const Schema = new mongoose.Schema({
+    fk_appointment_request: { type: mongoose.ObjectId },
     imaging:                { type: subSchemaImaging, required: true },
     referring:              { type: subSchemaReferring, required: true },
     reporting:              { type: subSchemaReporting, required: true },
@@ -165,13 +166,19 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['extra_procedures', 'media', 'consents', 'attached_files', 'inpatient', 'cancellation_reasons'];
+const AllowedUnsetValues = ['fk_appointment_request', 'extra_procedures', 'media', 'consents', 'attached_files', 'inpatient', 'cancellation_reasons'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
 // VALIDATION RULES (EXPRESS-VALIDATOR):
 //--------------------------------------------------------------------------------------------------------------------//
 const Validator = [
+    body('fk_appointment_request')
+        .optional()
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro fk_appointment_request NO es un ID MongoDB válido.'),
+
     //----------------------------------------------------------------------------------------------------------------//
     // IMAGING:
     //----------------------------------------------------------------------------------------------------------------//
