@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router } from '@angular/router';                                                   // Router
+import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
@@ -11,6 +11,7 @@ import { AppointmentsService } from '@modules/appointments/services/appointments
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import {                                                                                    // Enviroments
   app_setting,
+  regexObjectId,
   ISO_3166,
   document_types,
   gender_types,
@@ -46,6 +47,9 @@ export class FormInsertComponent implements OnInit {
   public anamnesisValidator = true;
   public indicationsValidator = true;
 
+  //Set appointment_request flag:
+  public appointment_request    : any;
+
   //Min and max dates:
   public minDate: Date;
   public maxDate: Date;
@@ -61,6 +65,7 @@ export class FormInsertComponent implements OnInit {
   //Inject services, components and router to the constructor:
   constructor(
     private router              : Router,
+    public objRoute             : ActivatedRoute,
     public formBuilder          : FormBuilder,
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
@@ -199,6 +204,9 @@ export class FormInsertComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Extract sent data (Parameters by routing):
+    this.appointment_request = this.objRoute.snapshot.params['appointment_request'];
+
     //Find references:
     this.appointmentsService.findReferences({ 'filter[status]': true });
 
@@ -232,6 +240,15 @@ export class FormInsertComponent implements OnInit {
 
     //Validate fields:
     if(this.form.valid){
+      //Check appointment request and add FK in SaveData:
+      if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+        //Check fk_appointment_request is an ObjectId:
+        if(regexObjectId.test(this.sharedProp.current_appointment_request._id)){
+          this.form.value['fk_appointment_request'] = this.sharedProp.current_appointment_request._id;
+        }
+      }
+
+      //Save data:
       this.appointmentsService.saveAppointment('insert', this.form, this.fileManager);
     }
   }

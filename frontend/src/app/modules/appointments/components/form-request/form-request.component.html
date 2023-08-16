@@ -1,0 +1,228 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" fxLayoutAlign="start start">
+  
+      <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+        <div *ngIf="sharedFunctions.response && sharedFunctions.response.data; then thenBlockDetails else elseBlockDetails"></div>
+
+        <ng-template #thenBlockDetails>
+            <h3 class="form-title text-center underline-fail-alt">Detalles de la solicitud:</h3>
+            <br/>
+    
+            <!-- referring -->
+            <div *ngIf="sharedFunctions.response.data[0].referring" class="current-info divider-alt">
+                <span *ngIf="sharedFunctions.response.data[0].referring.branch; then thenBlockReferring else elseBlockReferring"></span>
+                <ng-template #thenBlockReferring>
+                    <small>Institución solicitante:</small><br/>
+                    <span >{{ sharedFunctions.response.data[0].referring.organization.short_name + ' ► ' + sharedFunctions.response.data[0].referring.branch.short_name }}</span>
+                </ng-template>
+
+                <ng-template #elseBlockReferring>
+                    <small>Institución solicitante:</small><br/>
+                    <span >{{ sharedFunctions.response.data[0].referring.organization.short_name }}</span>
+                </ng-template>
+            </div>
+
+            <!-- imaging -->
+            <div *ngIf="sharedFunctions.response.data[0].imaging" class="current-info divider-alt">
+                <span *ngIf="sharedFunctions.response.data[0].imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
+                <ng-template #thenBlockImaging>
+                    <small>Institución realizadora:</small><br/>
+                    <span >{{ sharedFunctions.response.data[0].imaging.organization.short_name + ' ► ' + sharedFunctions.response.data[0].imaging.branch.short_name }}</span>
+                </ng-template>
+
+                <ng-template #elseBlockImaging>
+                    <small>Institución realizadora:</small><br/>
+                    <span >{{ sharedFunctions.response.data[0].imaging.organization.short_name }}</span>
+                </ng-template>
+            </div>
+
+            <!-- date -->
+            <div class="current-info">
+                <small>Fecha de solicitud:</small><br/>
+                <span >{{ sharedFunctions.response.data[0].createdAt | date:'dd/MM/yyyy':settings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
+            </div>
+
+            <div class="clear"></div>
+            <hr class="dashed" />
+
+            <!-- procedure -->
+            <div *ngIf="sharedFunctions.response.data[0].procedure" class="current-info text-center divider-alt">
+                <small>Procedimiento solicitado:</small><br/>
+                <span class="badge-alt">
+                <span>{{ sharedFunctions.response.data[0].procedure.name }}</span>
+                </span>
+            </div>
+
+            <!-- modality -->
+            <div *ngIf="sharedFunctions.response.data[0].modality" class="current-info text-center divider-alt">
+                <small>Modalidad:</small><br/>
+                <span class="badge" matTooltip="{{ sharedFunctions.response.data[0].modality.code_meaning }}">
+                <span>{{ sharedFunctions.response.data[0].modality.code_value }}</span>
+                </span>
+            </div>
+
+            <!-- urgency -->
+            <div class="current-info text-center">
+                <small>Urgencia:</small><br/>
+                <div *ngIf="sharedFunctions.response.data[0].urgency; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+            </div>
+
+            <div class="clear"></div>
+            <hr class="dashed" />
+
+            <!-- document -->
+            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
+                <small>Documento:</small><br/>
+                <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
+                <span matTooltip="{{ document_types[sharedFunctions.response.data[0].patient.doc_type] }}">
+                    <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
+                </span>
+            </div>
+
+            <!-- names -->
+            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
+                <small>Nombre completo:</small><br/>
+                <span >
+                <span>{{ sharedFunctions.response.data[0].patient.name_01 }}</span>
+
+                <span *ngIf="sharedFunctions.response.data[0].patient.name_02">
+                    <span> {{ sharedFunctions.response.data[0].patient.name_02 }}</span>
+                </span>
+
+                <span> {{ sharedFunctions.response.data[0].patient.surname_01 }}</span>
+
+                <span *ngIf="sharedFunctions.response.data[0].patient.surname_02">
+                    <span> {{ sharedFunctions.response.data[0].patient.surname_02 }}</span>
+                </span>
+                </span>
+            </div>
+
+            <!-- patient_age -->
+            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
+                <small>Edad:</small><br/>
+                <span  matTooltip="Edad al momento de realizar la solicitud del estudio">
+                    {{ sharedFunctions.calculateAge(sharedFunctions.response.data[0].patient.birth_date, sharedFunctions.response.data[0].createdAt) }}
+                </span>
+            </div>
+
+            <!-- gender -->
+            <div class="current-info divider-alt">
+                <small>Género:</small><br/>
+                <span *ngIf="sharedFunctions.response.data[0].patient">
+                    <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ gender_types[sharedFunctions.response.data[0].patient.gender] }}">
+                    <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                    <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                    <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                    </div>
+                </span>
+            </div>
+
+            <!-- phone_numbers-->
+            <div class="current-info">
+                <small>Teléfonos:</small><br/>
+                <span *ngIf="sharedFunctions.response.data[0].patient">
+                    <span *ngFor="let current of sharedFunctions.response.data[0].patient.phone_numbers" >
+                    <span class="badge-accent">
+                        <span>{{ current + ' ' }}</span>
+                    </span>
+                    </span>
+                </span>
+            </div>
+
+            <div class="clear"></div>
+            <hr class="dashed" /><br/>
+
+            <div class="details-wrap">
+                <!-- anamnesis -->
+                <span *ngIf="sharedFunctions.response.data[0].anamnesis">
+                    <h3><strong>Anamnesis:</strong></h3>
+                    <span innerHTML="{{ sharedFunctions.response.data[0].anamnesis }}"></span>
+                </span>
+
+                <!-- indications -->
+                <span *ngIf="sharedFunctions.response.data[0].indications">
+                    <br/><br/><hr class="soft-alt" /><br/>
+
+                    <h3><strong>Indicaciones:</strong></h3>
+                    <span innerHTML="{{ sharedFunctions.response.data[0].indications }}"></span>
+                </span>
+            </div>
+
+            <span *ngIf="sharedFunctions.response.data[0].extra && (sharedFunctions.response.data[0].extra.physician_name || sharedFunctions.response.data[0].extra.physician_prof_id || sharedFunctions.response.data[0].extra.physician_contact)">
+                <div class="clear"></div><br/>
+                <hr class="dashed" /><br/>
+
+                <div class="current-info text-center divider-alt physician">
+                <span>Médico solicitante:</span>
+                </div>
+
+                <!-- physician_name -->
+                <div *ngIf="sharedFunctions.response.data[0].extra.physician_name" class="current-info text-center divider-alt">
+                <small>Nombre completo:</small><br/>
+                {{ sharedFunctions.response.data[0].extra.physician_name }}
+                </div>
+
+                <!-- physician_prof_id -->
+                <div *ngIf="sharedFunctions.response.data[0].extra.physician_prof_id" class="current-info text-center divider-alt">
+                <small>Nro de caja:</small><br/>
+                {{ sharedFunctions.response.data[0].extra.physician_prof_id }}
+                </div>
+
+                <!-- physician_contact -->
+                <div *ngIf="sharedFunctions.response.data[0].extra.physician_contact" class="current-info text-center divider-alt">
+                <small>Contacto:</small><br/>
+                <span class="badge-accent">{{ sharedFunctions.response.data[0].extra.physician_contact }}</span>
+                </div>
+            </span>
+
+            <div class="clear"></div>
+        </ng-template>
+
+        <ng-template #elseBlockDetails>
+            Aguarde, aún no se cargaron los detalles de la solicitud.
+        </ng-template>
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <h3 class="form-title text-center underline-fail-alt">Estado y anotaciones:</h3>
+        <br/>
+
+        <!-- flow_state -->
+        <span *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].flow_state">
+            <h3>Flujo de trabajo:</h3>
+            <mat-form-field appearance="fill" class="full">
+                <mat-label>Flujo de trabajo</mat-label>
+                <mat-select formControlName="flow_state">
+                    <div *ngFor="let currentFS of availableFS | keyvalue">
+                        <div *ngIf="currentFS.key == 'AR05' || currentFS.key == 'AR06'; then thenBlockFS else elseBlockFS"></div>
+                        <ng-template #thenBlockFS>
+                            <mat-option *ngIf="currentFS.key == sharedFunctions.response.data[0].flow_state" value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                        </ng-template>
+                        <ng-template #elseBlockFS>
+                            <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                        </ng-template>
+                    </div>
+                </mat-select>
+            </mat-form-field>
+
+            <br/><br/>
+        </span>
+
+        <h4>Anotaciones <span class="label-info">min: 10, max: 2000</span>:</h4>
+        <ckeditor formControlName="annotations" #annotations [editor]="annotationsEditor" [config]="editorConfig" data=""></ckeditor>
+  
+        <br/><br/>
+      </div> <!-- end fxLayout wrapper -->
+  
+    </div>
+  
+    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+      <div> <!-- start fxLayout wrapper -->
+        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  </form>
+  

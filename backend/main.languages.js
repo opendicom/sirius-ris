@@ -93,6 +93,7 @@ module.exports = function(language){
             'missing_information_log'       : 'Missing information for log record.',
             'procedure_not_found'           : 'Procedure not found with the specified _id.',
             'modalitiy_not_found'           : 'Modalitiy not found with the specified code value.',
+            'flow_state_error'              : 'Error updating request flow state.',
             'validate' : {
                 'delete_code_required'      : 'To remove an item you must specify the valid delete code.',
                 'same_dates'                : 'The start date and the end date must be the same.',
@@ -203,6 +204,7 @@ module.exports = function(language){
             lang.ris.missing_information_log        = 'Falta información para registro de log.'
             lang.ris.procedure_not_found            = 'No se encontró un procedimiento con el _id especificado.';
             lang.ris.modalitiy_not_found            = 'No se encontró una modalidad con el code value especificado.';
+            lang.ris.flow_state_error               = 'Error al actualizar estado de flujo de la solicitud.';
 
             //RIS - Validate:
             lang.ris.validate.delete_code_required      = 'Para eliminar un elemento debe especificar el código de eliminación válido.';

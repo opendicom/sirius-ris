@@ -397,7 +397,7 @@ async function update(req, res, currentSchema, referencedElements = false, callb
 // DELETE:
 // Delete an item from the database based on an ID (This method is reserved for developers).
 //--------------------------------------------------------------------------------------------------------------------//
-async function _delete(req, res, currentSchema, successResponse = true){
+async function _delete(req, res, currentSchema, successResponse = true, callback = (data) => {}){
     //Validate ID request:
     if(!mainServices.validateRequestID(req.body._id, res)) return;
 
@@ -439,6 +439,9 @@ async function _delete(req, res, currentSchema, successResponse = true){
                         //Send log error response:
                         res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
                     }
+
+                    //Execute callback:
+                    callback(data);
 
                     //Set header sent property to check if header have already been sent:
                     res.headerSent = true;
@@ -4773,6 +4776,29 @@ async function setBase64File(req, operation, type = undefined){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET FLOW STATE:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setFlowState(_id, flow_sate, schemaName){
+    //Import current Schema:
+    const currentSchema = require('./' + schemaName + '/schemas');
+
+    //Initializate operation_result:
+    let operation_result = undefined;
+
+    //Save data into DB:
+    await currentSchema.Model.findOneAndUpdate({ _id: _id }, { flow_state: flow_sate }, { new: true })
+    .then(async (data) => {
+        operation_result = 'success';
+    })
+    .catch((err) => {
+        operation_result = err;
+    });
+
+    return operation_result;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -4811,6 +4837,7 @@ module.exports = {
     removeAllSignaturesFromReport,
     checkSHA2Report,
     setSHA2Report,
-    setBase64File
+    setBase64File,
+    setFlowState
 };
 //--------------------------------------------------------------------------------------------------------------------//

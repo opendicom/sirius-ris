@@ -634,6 +634,20 @@ export class SelectSlotComponent implements OnInit {
       urgency         : this.sharedProp.current_urgency,
     };
 
+    //Initializate form destiny (default):
+    let form_destiny = '/appointments/form/insert';
+
+    //Check appointment request and add FK in SaveData:
+    if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+      //Check fk_appointment_request is an ObjectId:
+      if(regexObjectId.test(this.sharedProp.current_appointment_request._id)){
+        appointmentsDraftsSaveData['fk_appointment_request'] = this.sharedProp.current_appointment_request._id;
+
+        //Set form destiny with activated route field (appointment request):
+        form_destiny = '/appointments/form/insert/true';
+      }
+    }
+
     //Add friendly password if it exists:
     if(this.sharedProp.current_friendly_pass !== ''){
       appointmentsDraftsSaveData['friendly_pass'] = this.sharedProp.current_friendly_pass;
@@ -647,7 +661,7 @@ export class SelectSlotComponent implements OnInit {
       }
 
       //Response the form according to the result and redirect to appointments form in success case:
-      this.sharedFunctions.formResponder(res, '/appointments/form/insert', this.router, false, '¡Guardado de cita en proceso exitoso!');
+      this.sharedFunctions.formResponder(res, form_destiny, this.router, false, '¡Guardado de cita en proceso exitoso!');
     });
   }
 

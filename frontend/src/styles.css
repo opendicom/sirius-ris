@@ -257,6 +257,19 @@ mark {
   background-color: #ff6e69d3;
 }
 
+/* Appointment request: */
+.AR05 {
+  background-color: #d53a9cc9;
+}
+
+.AR06 {
+  background-color: #05ff9f87;
+}
+
+.AR07 {
+  background-color: #ff6e69d3;
+}
+
 /* Performing: */
 .P01, .P02, .P03, .P04, .P05, .P06 {
   background-color: #607d8b87;

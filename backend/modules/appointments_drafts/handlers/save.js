@@ -42,7 +42,20 @@ module.exports = async (req, res, currentSchema, operation) => {
             //Excecute main query:
             switch(operation){
                 case 'insert':
-                    await moduleServices.insert(req, res, currentSchema, referencedElements);
+                    //Initializate update_flow_state_result:
+                    let update_flow_state_result = undefined;
+
+                    //Check appointment request (Change appointment request flow state):
+                    if(req.body.fk_appointment_request){ update_flow_state_result = await moduleServices.setFlowState(req.body.fk_appointment_request, 'AR05', 'appointment_requests'); }
+                    
+                    //Check update_flow_state_result:
+                    if(update_flow_state_result == undefined || update_flow_state_result == 'success'){
+                        await moduleServices.insert(req, res, currentSchema, referencedElements);    
+                    } else {
+                        //Return the result (HTML Response):
+                        res.status(422).send({ success: false, message: currentLang.ris.flow_state_error, error: update_flow_state_result });
+                    }
+                    
                     break;
                 case 'update':
                     await moduleServices.update(req, res, currentSchema, referencedElements);

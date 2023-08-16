@@ -9,6 +9,7 @@ import { FormInsertComponent } from '@modules/appointments/components/form-inser
 import { FormUpdateComponent } from '@modules/appointments/components/form-update/form-update.component';
 import { ListDraftsComponent } from '@modules/appointments/components/list-drafts/list-drafts.component';
 import { ListRequestsComponent } from '@modules/appointments/components/list-requests/list-requests.component';
+import { FormRequestComponent } from '@modules/appointments/components/form-request/form-request.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,11 @@ const routes: Routes = [
       { path: 'select_slot', component: SelectSlotComponent },
       { path: 'select_slot/:appointment_request', component: SelectSlotComponent },
       { path: 'form/insert', component: FormInsertComponent },
+      { path: 'form/insert/:appointment_request', component: FormInsertComponent },
       { path: 'form/update/:_id', component: FormUpdateComponent },
+
+      //Appointment requests form:
+      { path: 'form/request/:_id', component: FormRequestComponent },
 
       //Default path:
       { path: '**', redirectTo: 'list' },

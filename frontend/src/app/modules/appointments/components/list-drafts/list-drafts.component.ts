@@ -114,6 +114,7 @@ export class ListDraftsComponent implements OnInit {
       'slot.equipment.name'
     ];
     this.sharedProp.projection    = {
+      'appointment_request': 1,
       'imaging.organization.short_name': 1,
       'imaging.branch.short_name': 1,
       'imaging.service.name': 1,
@@ -195,6 +196,7 @@ export class ListDraftsComponent implements OnInit {
         'proj[end]': 1,
         'proj[urgency]': 1,
         'proj[friendly_pass]': 1,
+        'proj[fk_appointment_request]': 1,
 
         //Projection - Patient:
         'proj[patient._id]': 1,
@@ -287,8 +289,20 @@ export class ListDraftsComponent implements OnInit {
           //Current appointment draft:
           this.sharedProp.current_appointment_draft = res.data[0]._id;
 
-          //Redirect to appointments  form-insert:
-          this.router.navigate(['/appointments/form/insert']);
+          //Initializate form destiny (default):
+          let form_destiny = '/appointments/form/insert';
+
+          //Current appointment request:
+          if(res.data[0].fk_appointment_request !== null && res.data[0].fk_appointment_request !== undefined && regexObjectId.test(res.data[0].fk_appointment_request)){
+            this.sharedProp.current_appointment_request = {}; //Clear appointment request (prevent cached appointment request)
+            this.sharedProp.current_appointment_request['_id'] = res.data[0].fk_appointment_request;
+
+            //Set form destiny with activated route field (appointment request):
+            form_destiny = '/appointments/form/insert/true';
+          }
+
+          //Redirect to appointments form-insert:
+          this.router.navigate([form_destiny]);
 
         } else {
           //Send error message:

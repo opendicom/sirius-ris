@@ -135,6 +135,7 @@ export class ListComponent implements OnInit {
       'slot.equipment.name'
     ];
     this.sharedProp.projection    = {
+      'appointment_request': 1,
       'imaging': 1,
       'referring': 1,
       'reporting': 1,

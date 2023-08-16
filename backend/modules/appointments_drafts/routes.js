@@ -30,6 +30,9 @@ const allowedSchemaKeys = mainServices.getSchemaKeys(appointments_drafts, true);
 //Create Router.
 const router = express.Router();
 
+//Set ObjectId Regex to validate:
+const regexObjectId = /^[0-9a-fA-F]{24}$/;
+
 //Routes:
 //FIND:
 router.get(
@@ -102,9 +105,15 @@ router.post(
     mainMiddlewares.roleAccessBasedControl,
     //Disabled checkDeleteCode (all users should be able to cancel appointments in progress):
     //mainMiddlewares.checkDeleteCode,      
-    (req, res) => { 
+    (req, res) => {
         //Send to module service:
-        moduleServices._delete(req, res, appointments_drafts);
+        moduleServices._delete(req, res, appointments_drafts, true, async (data) => {
+            //Check appointment_draft to confirm if you have an appointment_request:
+            if(data.fk_appointment_request !== undefined && data.fk_appointment_request !== null && regexObjectId.test(data.fk_appointment_request)){
+                //Return the appointment_request to its original first flow state:
+                await moduleServices.setFlowState(data.fk_appointment_request, 'AR01', 'appointment_requests');
+            }
+        });
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

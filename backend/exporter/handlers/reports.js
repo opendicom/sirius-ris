@@ -29,17 +29,18 @@ module.exports = async (req, res) => {
     
     //Force project - Overwrite:
     req.query['proj'] = {
-        'performing.date'               : 1,
-        'patient.person.documents'      : 1,
-        'patient.person.name_01'        : 1,
-        'patient.person.name_02'        : 1,
-        'patient.person.surname_01'     : 1,
-        'patient.person.surname_02'     : 1,
-        'patient.person.gender'         : 1,
-        'patient.person.birth_date'     : 1,
-        'authenticated.base64_report'   : 1,
-        'appointment.study_iuid'        : 1,
-        'authenticated.datetime'        : 1
+        'performing.date'                   : 1,
+        'patient.person.documents'          : 1,
+        'patient.person.name_01'            : 1,
+        'patient.person.name_02'            : 1,
+        'patient.person.surname_01'         : 1,
+        'patient.person.surname_02'         : 1,
+        'patient.person.gender'             : 1,
+        'patient.person.birth_date'         : 1,
+        'authenticated.base64_report'       : 1,
+        'appointment.study_iuid'            : 1,
+        'authenticated.datetime'            : 1,
+        'appointment.appointment_request'   : 1,
     };
 
     //Force filters - Overwrite:

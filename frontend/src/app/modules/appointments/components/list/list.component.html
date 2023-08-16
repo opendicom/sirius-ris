@@ -19,9 +19,17 @@
             </button>
           </span>
 
+          <br/>
+
           <button mat-icon-button color="accent" aria-label="PDF de cita" matTooltip="PDF de cita" (click)="pdfService.createPDF('appointment', element._id)">
             <mat-icon>picture_as_pdf</mat-icon>
           </button>
+
+          <span *ngIf="element.appointment_request">
+            <button mat-icon-button color="accent" aria-label="Solicitud de estudio" matTooltip="Solicitud de estudio" routerLink="/appointments/list_requests/{{ element.appointment_request._id }}">
+              <mat-icon>move_to_inbox</mat-icon>
+            </button>
+          </span>
         </td>
       </ng-container>
 
