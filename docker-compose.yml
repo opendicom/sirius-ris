@@ -3,52 +3,39 @@ services:
   opendicom_sirius_db:
     container_name: opendicom_sirius_db
     image: mongo:latest
+    env_file: ./docker-compose.env
     volumes:
       - ./database/data:/data/db
       - ./database/config:/data/configdb
     ports:
       - 27017:27017
-    environment:
-      TZ: 'America/Argentina/Buenos_Aires'
     restart: unless-stopped
     networks:
       - opendicom_net
 
   opendicom_sirius_backend:
     container_name: opendicom_sirius_backend
-    image: node:latest
-    volumes:
-      - ./backend:/home/node/app
+    image: sirius-backend:1.0.0-beta.1
+    env_file: ./docker-compose.env
     ports:
       - 3000:3000
-    environment:
-      TZ: 'America/Argentina/Buenos_Aires'
-      NODE_ENV: production
-    user: node
-    working_dir: /home/node/app
-    command: "npm start"
     depends_on:
       - opendicom_sirius_db
     restart: unless-stopped
     networks:
       - opendicom_net
 
-#  opendicom_sirius_frontend:
-#    container_name: opendicom_sirius_frontend
-#    image: nginx:alpine
-#    volumes:
-#      - ./nginx/conf.d:/etc/nginx/conf.d/
-#      - ./frontend/dist/sirius-ris:/usr/share/nginx/html:ro
-#      - ./nginx/ssl:/etc/ssl/
-#    ports:
-#     - 4000:80
-#    environment:
-#      TZ: 'America/Argentina/Buenos_Aires'
-#    depends_on:
-#      - opendicom_sirius_backend
-#    restart: unless-stopped
-#    networks:
-#      - opendicom_net
+  opendicom_sirius_frontend:
+    container_name: opendicom_sirius_frontend
+    image: sirius-frontend:1.0.0-beta.1
+    env_file: ./docker-compose.env
+    ports:
+      - 4000:80
+    depends_on:
+      - opendicom_sirius_backend
+    restart: unless-stopped
+    networks:
+      - opendicom_net
 
 networks:
   opendicom_net:

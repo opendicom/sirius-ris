@@ -1,0 +1,74 @@
+# MongoDB server settings:
+db:
+  #host: 'localhost'
+  host: 'opendicom_sirius_db'
+  port: 27017
+  user: 'sirius_user'
+  pass: 'sirius_pass'
+  name: 'sirius_db'
+
+# Set external PACS data:
+pacs:
+  #host        : 'localhost'
+  host        : 'opendicom_pacs'
+  port_dicom  : 11112
+  port_mllp   : 2575
+
+# Set Wezen service data:
+wezen:
+  #host        : 'localhost'
+  host        : 'opendicom_wezen'
+  port        : 8000
+
+# Web server settings:
+webserver:
+  host            : 'localhost'
+  http_enabled    : true
+  http_port       : 3000
+  https_enabled   : false
+  https_port      : 3001
+
+# Mail server settings:
+# Allowed mail types: 'gmail', 'other'.
+mailserver:
+  type            : 'gmail'
+  host            : 'localhost'
+  port            : 1025
+  secure          : true
+  from            : 'opendicom Sirius RIS'
+  user            : 'opendicomsirius@gmail.com'
+  pass            : 'zuuczgrmpesuqlgh'
+
+# SSL settings (Only if https_enabled is true):
+ssl_certificates:
+  key  : './certificates/cert.key'
+  cert : './certificates/cert.crt'
+  ca   : false
+
+# Set CORS and CORS whitelist:
+cors_enabled    : false
+cors_whitelist  : ['http://example.com:8080','https://another-example.com:443']
+
+# Set log level:
+# DEBUG > INFO > WARN > ERROR
+log_level: 'DEBUG'
+
+# Delete authorization code:
+delete_code: 'delete_code'
+
+# RABC exclusion code:
+rabc_exclude_code: 'exclude_code'
+
+# Set your secret token:
+# For your safety change this value please.
+AUTH_JWT_SECRET: 'top_secret'
+
+# Maximum number of requests that a source IP can make in AUTH_SOURCE_PENALTY_TIME_LIMIT time 
+# before being blocked for AUTH_SOURCE_PENALTY_TIME_BLOCKED time
+AUTH_PENALTY_RATE_LIMIT: 5
+
+# Seconds 
+AUTH_PENALTY_TIME_WINDOW: 10
+
+# Set the language of the responses:
+language: 'ES'

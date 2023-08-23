@@ -9,6 +9,8 @@ jspm_packages/
 database/data/
 database/config/
 backend/target/
+backend/build/
+backend/dist/
 
 # FRONTEND:
 frontend/dist/

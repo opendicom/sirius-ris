@@ -1,13 +1,13 @@
 {
   "name": "sirius-ris",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "Sirius RIS is an open source Radiology Information System",
   "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
+  "maintainer": "opendicom <info@opendicom.com>",
   "license": "MPL-2.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "npm install -g npm@7.17.0",
     "start": "node index.js"
   },
   "keywords": [

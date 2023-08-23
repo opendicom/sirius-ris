@@ -65,7 +65,7 @@ export const user_roles = {
   7:  'Coordinador',
   8:  'Recepcionista',
   9:  'Paciente',
-  10: 'Funcional'  //Empty role for concessions (Generic user)
+  10: 'Funcional'  // Empty role for concessions (Generic user)
 };
 
 // User Concessions:
@@ -78,7 +78,7 @@ export const user_concessions = {
   6   : 'Gestión de informes',
   7   : 'Firmar informes',
   8   : 'Autenticar informes',
-  9   : 'Enmendar informes',    //This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
+  9   : 'Enmendar informes',    // This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
   10  : 'Acceso a logs del usuario',
   11  : 'Acceso a logs de elementos',
   12  : 'Reenvío de correos',
@@ -90,7 +90,7 @@ export const user_concessions = {
   //17  : 'Estadísticas del personal',
   //18  : 'Eliminación física de archivos',
   //19  : 'Supervisar citas en curso',
-  20  : 'Acceso al módulo de exportación',          //Backend access only
+  20  : 'Acceso al módulo de exportación',          // Backend access only
   21  : 'Acceso al servicio de imágenes del PACS' 
 };
 
@@ -109,7 +109,7 @@ export const gender_types = {
 
 // Appointments flow states:
 export const appointments_flow_states = {
-  'A01': 'Coordinada',                //Correspond with AR05 -> appointment_requests_flow_states.
+  'A01': 'Coordinada',                // Correspond with AR05 -> appointment_requests_flow_states.
   'A02': 'Cancelada-suspendida'
 };
 
@@ -119,8 +119,12 @@ export const appointment_requests_flow_states = {
   'AR02': 'Retenida en administración',
   'AR03': 'Área médica',
   'AR04': 'Retenida en área médica',
-  'AR05': 'Cita en curso',            //Correspond with appointment_draft creation.
-  'AR06': 'Coordinada',               //Correspond with A01 -> appointments_flow_states.
+
+  // Flow states controlled from backend:
+  // appointment_drafts and appointments save handlers.
+  'AR05': 'Cita en curso creada',      // Correspond with appointment_draft creation.
+  'AR06': 'Cita creada',               // Correspond with A01 -> appointments_flow_states.
+
   'AR07': 'Cancelada'
 };
 
