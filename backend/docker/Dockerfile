@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18.13.0
 
 LABEL version="1.0.0-beta.1"
 LABEL maintainer="opendicom <info@opendicom.com>"

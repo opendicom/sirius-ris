@@ -39,7 +39,7 @@ const preSchema = new mongoose.Schema({
     fk_person:          { type: mongoose.ObjectId },    // Human user
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
-    email:              { type: String, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
+    email:              { type: String, unique: true, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
     settings:           { type: [subSchemaSettings] },
