@@ -106,7 +106,11 @@ module.exports = async (req, res) => {
 
             // Accession number [OBR-18] (00080050):
             // 16 chars max.
-            const AN = moment().format('YYYYMMDDHHmmssSS', { trim: false }); //Trim false to keep leading zeros.
+            // Use four digits for Fractional Seconds to prevent repetitions.
+            const AN = data[0].accession_number;
+
+            // Set accession date (Last shipment date to MWL):
+            const accession_date = moment().format('YYYYMMDDHHmmssSS', { trim: false }); //Trim false to keep leading zeros.
 
             // Requested Procedure ID [OBR-19] (00401001):
             // req_proc_id: cannot be null | 16 chars max:
@@ -184,16 +188,16 @@ ZDS|${ UI }`;
                 //Close connection (End communication):
                 client.end();
 
-                //Add accession_number to appointment (update appointment):
-                await appointments.Model.findOneAndUpdate({ _id: req.body.fk_appointment }, { 'accession_number': AN }, { new: true })
+                //Add accession_date to appointment (update appointment):
+                await appointments.Model.findOneAndUpdate({ _id: req.body.fk_appointment }, { 'accession_date': accession_date }, { new: true })
                 .then(async (data) => {
                     //Check if have results:
                     if(data) {
                         //Send DEBUG Message:
-                        mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [accession_number]: ' + AN);
+                        mainServices.sendConsoleMessage('DEBUG', '\nMWL HL7 sended [accession_date]: ' + accession_date);
 
                         //Send successfully response:
-                        res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_number: AN, hl7: HL7_message });
+                        res.status(200).send({ success: true, message: currentLang.ris.mwl_success, accession_date: accession_date, hl7: HL7_message });
                     } else {
                         //Dont match (empty result):
                         res.status(200).send({ success: false,  message: currentLang.ris.mwl_error, error: currentLang.db.id_no_results });

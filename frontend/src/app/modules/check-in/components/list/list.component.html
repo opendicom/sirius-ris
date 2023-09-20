@@ -45,9 +45,9 @@
                       <small class="badge badge-mini {{ currentNested.flow_state }}" matTooltip="{{ cancellation_reasons[currentNested.cancellation_reasons] }}" *ngIf="currentNested.flow_state">{{ performing_flow_states[currentNested.flow_state] }}</small>
 
                       <!-- MWL -->
-                      <span *ngIf="element.accession_number; then thenBlockMWL else elseBlockMWL;"></span>
+                      <span *ngIf="element.accession_date; then thenBlockMWL else elseBlockMWL;"></span>
                       <ng-template  #thenBlockMWL>
-                        <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviado a MWL: {{ element.accession_number | accno_date }}" (click)="mwlResend(element._id, element.accession_number)">
+                        <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviado a MWL: {{ element.accession_date | accno_date }}" (click)="mwlResend(element._id, element.accession_date)">
                           <mat-icon>done_all</mat-icon>
                         </button>
                       </ng-template >

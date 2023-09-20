@@ -220,7 +220,7 @@ module.exports = function() {
         }
 
         //Check if complete information is requested (Prevent disclosure of infrastructure information):
-        if(mainServices.stringToBoolean(req.query.opendicom) === true){
+        if(mainServices.stringToBoolean(req.query.full_status) === true){
             //Send HTTP/HTTPS Response (Complete information):
             res.status(200).send({
                 message: startMessage,

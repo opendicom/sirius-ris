@@ -107,13 +107,13 @@ const allowedValidate = (allowedSchemaKeys, AllowedUnsetValues = []) => {
 //--------------------------------------------------------------------------------------------------------------------//
 const isPassword = (Schema, fieldName = 'password') => {
     //PRE SAVE INSERT:
-    Schema.pre('save', (next) => {
+    Schema.pre('save', async function (next) {
         //Check if the password field exists according to the name indicated:
         if(!this[fieldName]) return next(); //If password is not updated:
         
         //Hash the password:
         const data = this;
-        mainServices.hashPass(data[fieldName])
+        await mainServices.hashPass(data[fieldName])
             .then((hash) => {
                  //Save hashed password:
                  data[fieldName] = hash;
@@ -127,7 +127,7 @@ const isPassword = (Schema, fieldName = 'password') => {
     });
     
     //PRE SAVE UPDATE:
-    Schema.pre('findOneAndUpdate', async (next) => {
+    Schema.pre('findOneAndUpdate', async function (next) {
         //Check if the password field exists according to the name indicated and not empty:
         if(this._update !== undefined && this._update.$set !== undefined){
             if(!this._update.$set[fieldName] || this._update.$set[fieldName] === ''){
@@ -141,7 +141,7 @@ const isPassword = (Schema, fieldName = 'password') => {
         
 
         //Hash the password:
-        mainServices.hashPass(this._update.$set[fieldName])
+        await mainServices.hashPass(this._update.$set[fieldName])
             .then((hash) => {
                 //Create set object to preserve fieldName as key:
                 let set = {};

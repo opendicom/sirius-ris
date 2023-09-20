@@ -138,8 +138,9 @@ const Schema = new mongoose.Schema({
     extra_procedures:       { type: [mongoose.ObjectId] },
     urgency:                { type: Boolean, required: true },
     study_iuid:             { type: String, match: /^([0-9].([0-9]){2}.([0-9]){3}.[0-9].([0-9]){8}.([0-9]){5}.([0-9]){14})/gm },
-    accession_number:       { type: String },
-    anamnesis:              { type: String },
+    accession_number:       { type: String, unique: true },     // Moment of creation of the study_iuid.
+    accession_date:         { type: String },                   // Last shipment date to MWL.
+    anamnesis:              { type: String },   
     indications:            { type: String },
     report_before:          { type: Date, required: true },
     media:                  { type: subSchemaMedia },
@@ -300,6 +301,9 @@ const Validator = [
         .withMessage('El parametro study_iuid generado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
 
     body('accession_number')
+        .optional(),
+
+    body('accession_date')
         .optional(),
 
     body('anamnesis')

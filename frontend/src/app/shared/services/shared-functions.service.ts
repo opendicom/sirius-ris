@@ -896,7 +896,7 @@ export class SharedFunctionsService {
         //Check operation status:
         if(res.success === true){
           //Format date:
-          const formatted_date = this.accessionDateFormat(res.accession_number);
+          const formatted_date = this.accessionDateFormat(res.accession_date);
 
           //Send message:
           this.sendMessage('Enviado exitosamente a MWL ' + formatted_date.day + '/' + formatted_date.month + '/' + formatted_date.year + ' ' + formatted_date.hour + ':' + formatted_date.minute + ':' + formatted_date.second, { duration: 2000 });
@@ -933,15 +933,15 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // ACCESSION NUMBER DATE FORMAT:
   //--------------------------------------------------------------------------------------------------------------------//
-  accessionDateFormat(accession_number: string): any{
+  accessionDateFormat(accession_date: string): any{
     return {
-      year        : accession_number.slice(0, 4),
-      month       : accession_number.slice(4, 6),
-      day         : accession_number.slice(6, 8),
-      hour        : accession_number.slice(8, 10),
-      minute      : accession_number.slice(10, 12),
-      second      : accession_number.slice(12, 14),
-      milisecond  : accession_number.slice(14, 16)
+      year        : accession_date.slice(0, 4),
+      month       : accession_date.slice(4, 6),
+      day         : accession_date.slice(6, 8),
+      hour        : accession_date.slice(8, 10),
+      minute      : accession_date.slice(10, 12),
+      second      : accession_date.slice(12, 14),
+      milisecond  : accession_date.slice(14, 16)
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

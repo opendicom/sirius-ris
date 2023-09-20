@@ -61,7 +61,7 @@ const Schema = new mongoose.Schema({
     imaging:        { type: subSchemaImaging, required: true },
     referring:      { type: subSchemaReferring, required: true },
     flow_state:     { type: String },   // Not required, setted in the save handler.
-    urgency:        { type: Boolean, required: true },
+    urgency:        { type: Boolean, default: false },
     annotations:    { type: String },
     patient:        { type: subSchemaPatient, required: true },
     study:          { type: subSchemaStudy, required: true },

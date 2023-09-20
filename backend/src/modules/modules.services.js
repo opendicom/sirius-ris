@@ -4171,13 +4171,19 @@ async function setStudyIUID(req, res) {
                 mainServices.sendError(res, currentLang.db.query_error, err);
             });
 
+            // Set Accession number [OBR-18] (00080050):
+            // 16 chars max.
+            // Use four digits for Fractional Seconds to prevent repetitions.
+            const accession_number = await moment().format('YYMMDDHHmmssSSSS', { trim: false }); //Trim false to keep leading zeros.
+
             //Create Study IUID:
-            const study_iuid = '2.16.' + country_code + '.2.' + structure_id + '.72769.' + timestamp + suffix;
+            const study_iuid = '2.16.' + country_code + '.2.' + structure_id + '.72769.' + timestamp + '.' + accession_number + suffix;
 
             //Check study IUID with regex:
             if(regexStudyIUD.test(study_iuid)){
-                //Set study_iuid in the request:
+                //Set study_iuid and accession number in the request:
                 req.body['study_iuid'] = study_iuid;
+                req.body['accession_number'] = accession_number;
 
                 //Set operation status:
                 operation_status = true;

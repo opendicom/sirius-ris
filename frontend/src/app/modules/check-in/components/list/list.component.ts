@@ -117,7 +117,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.projection    = {
       'start': 1,
       'end': 1,
-      'accession_number': 1,
+      'accession_date': 1,
       'flow_state': 1,
       'outpatient': 1,
       'inpatient': 1,
@@ -201,10 +201,10 @@ export class ListComponent implements OnInit {
     }, findOne);
   }
 
-  mwlResend(fk_appointment: string, accession_number: string){
+  mwlResend(fk_appointment: string, accession_date: string){
     //Create operation handler:
     const operationHandler = {
-      accession_number  : accession_number
+      accession_date  : accession_date
     };
 
     //Open dialog to decide what operation to perform:

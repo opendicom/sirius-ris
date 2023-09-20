@@ -391,7 +391,7 @@ const concessionPermissions = {
 
     // 13 : Gestión de solicitudes:
     13: {
-        appointment_requests    : ['find', 'findOne', 'update']
+        appointment_requests    : ['find', 'findOne', 'insert', 'update']
     },
 
     // 13 : Búsquedas avanzadas:
