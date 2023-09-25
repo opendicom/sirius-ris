@@ -100,7 +100,7 @@ module.exports = function() {
     let cnxMongoDBStatus = false;
     let cnXMongoDBMessage = '';
 
-    mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
+    mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true }, (err) => {
         if(err){
             //Set status conexion:
             cnxMongoDBStatus = false;

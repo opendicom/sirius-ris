@@ -30,7 +30,8 @@ const subSchemaPatient = new mongoose.Schema({
     surname_02:         { type: String },
     birth_date:         { type: Date, required: true },
     gender:             { type: Number, required: true },
-    phone_numbers:      { type: [String] }
+    phone_numbers:      { type: [String] },
+    email:              { type: String, match: /.+\@.+\..+/ },  // Required only in sirius web module.
 },
 { _id : false });
 
@@ -186,6 +187,14 @@ const Validator = [
         .trim()
         .isLength({ min: 3, max: 20 })
         .withMessage('El número de teléfono ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 20 [caracteres]).'),
+
+    body('patient.email')
+        .optional()
+        .trim()
+        .isEmail()
+        .withMessage('El valor ingresado NO es una dirección de correo válida.')
+        .normalizeEmail({ gmail_remove_dots: false })
+        .toLowerCase(),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//

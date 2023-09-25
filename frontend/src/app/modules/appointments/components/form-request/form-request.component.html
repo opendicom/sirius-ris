@@ -13,12 +13,12 @@
                 <span *ngIf="sharedFunctions.response.data[0].referring.branch; then thenBlockReferring else elseBlockReferring"></span>
                 <ng-template #thenBlockReferring>
                     <small>Institución solicitante:</small><br/>
-                    <span >{{ sharedFunctions.response.data[0].referring.organization.short_name + ' ► ' + sharedFunctions.response.data[0].referring.branch.short_name }}</span>
+                    <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name + ' ► ' + sharedFunctions.response.data[0].referring.branch.short_name }}</span>
                 </ng-template>
 
                 <ng-template #elseBlockReferring>
                     <small>Institución solicitante:</small><br/>
-                    <span >{{ sharedFunctions.response.data[0].referring.organization.short_name }}</span>
+                    <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name }}</span>
                 </ng-template>
             </div>
 
@@ -27,12 +27,12 @@
                 <span *ngIf="sharedFunctions.response.data[0].imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
                 <ng-template #thenBlockImaging>
                     <small>Institución realizadora:</small><br/>
-                    <span >{{ sharedFunctions.response.data[0].imaging.organization.short_name + ' ► ' + sharedFunctions.response.data[0].imaging.branch.short_name }}</span>
+                    <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name + ' ► ' + sharedFunctions.response.data[0].imaging.branch.short_name }}</span>
                 </ng-template>
 
                 <ng-template #elseBlockImaging>
                     <small>Institución realizadora:</small><br/>
-                    <span >{{ sharedFunctions.response.data[0].imaging.organization.short_name }}</span>
+                    <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name }}</span>
                 </ng-template>
             </div>
 
@@ -41,9 +41,6 @@
                 <small>Fecha de solicitud:</small><br/>
                 <span >{{ sharedFunctions.response.data[0].createdAt | date:'dd/MM/yyyy':settings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
             </div>
-
-            <div class="clear"></div>
-            <hr class="dashed" />
 
             <!-- procedure -->
             <div *ngIf="sharedFunctions.response.data[0].procedure" class="current-info text-center divider-alt">
@@ -72,67 +69,72 @@
             <div class="clear"></div>
             <hr class="dashed" />
 
-            <!-- document -->
-            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
-                <small>Documento:</small><br/>
-                <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
-                <span matTooltip="{{ document_types[sharedFunctions.response.data[0].patient.doc_type] }}">
-                    <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
-                </span>
-            </div>
+            <!-- PATIENT -->
+            <div *ngIf="sharedFunctions.response.data[0].patient">
+                <!-- document -->
+                <div class="current-info divider-alt">
+                    <small>Documento:</small><br/>
+                    <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
+                    <span matTooltip="{{ document_types[sharedFunctions.response.data[0].patient.doc_type] }}">
+                        <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
+                    </span>
+                </div>
 
-            <!-- names -->
-            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
-                <small>Nombre completo:</small><br/>
-                <span >
-                <span>{{ sharedFunctions.response.data[0].patient.name_01 }}</span>
+                <!-- names -->
+                <div class="current-info divider-alt">
+                    <small>Nombre completo:</small><br/>
+                    <span >
+                    <span>{{ sharedFunctions.response.data[0].patient.name_01 }}</span>
 
-                <span *ngIf="sharedFunctions.response.data[0].patient.name_02">
-                    <span> {{ sharedFunctions.response.data[0].patient.name_02 }}</span>
-                </span>
+                    <span *ngIf="sharedFunctions.response.data[0].patient.name_02">
+                        <span> {{ sharedFunctions.response.data[0].patient.name_02 }}</span>
+                    </span>
 
-                <span> {{ sharedFunctions.response.data[0].patient.surname_01 }}</span>
+                    <span> {{ sharedFunctions.response.data[0].patient.surname_01 }}</span>
 
-                <span *ngIf="sharedFunctions.response.data[0].patient.surname_02">
-                    <span> {{ sharedFunctions.response.data[0].patient.surname_02 }}</span>
-                </span>
-                </span>
-            </div>
+                    <span *ngIf="sharedFunctions.response.data[0].patient.surname_02">
+                        <span> {{ sharedFunctions.response.data[0].patient.surname_02 }}</span>
+                    </span>
+                    </span>
+                </div>
 
-            <!-- patient_age -->
-            <div *ngIf="sharedFunctions.response.data[0].patient" class="current-info divider-alt">
-                <small>Edad:</small><br/>
-                <span  matTooltip="Edad al momento de realizar la solicitud del estudio">
-                    {{ sharedFunctions.calculateAge(sharedFunctions.response.data[0].patient.birth_date, sharedFunctions.response.data[0].createdAt) }}
-                </span>
-            </div>
+                <!-- patient_age -->
+                <div class="current-info divider-alt">
+                    <small>Edad:</small><br/>
+                    <span  matTooltip="Edad al momento de realizar la solicitud del estudio">
+                        {{ sharedFunctions.calculateAge(sharedFunctions.response.data[0].patient.birth_date, sharedFunctions.response.data[0].createdAt) }}
+                    </span>
+                </div>
 
-            <!-- gender -->
-            <div class="current-info divider-alt">
-                <small>Género:</small><br/>
-                <span *ngIf="sharedFunctions.response.data[0].patient">
+                <!-- gender -->
+                <div class="current-info divider-alt">
+                    <small>Género:</small><br/>
                     <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ gender_types[sharedFunctions.response.data[0].patient.gender] }}">
-                    <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
-                    <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
-                    <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                        <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                        <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                        <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
                     </div>
-                </span>
-            </div>
+                </div>
 
-            <!-- phone_numbers-->
-            <div class="current-info">
-                <small>Teléfonos:</small><br/>
-                <span *ngIf="sharedFunctions.response.data[0].patient">
+                <!-- email-->
+                <div *ngIf="sharedFunctions.response.data[0].patient.email" class="current-info divider-alt">
+                    <small>Correo:</small><br/>
+                    <span><small>{{ sharedFunctions.response.data[0].patient.email }}</small></span>
+                </div>
+
+                <!-- phone_numbers-->
+                <div class="current-info">
+                    <small>Teléfonos:</small><br/>
                     <span *ngFor="let current of sharedFunctions.response.data[0].patient.phone_numbers" >
-                    <span class="badge-accent">
-                        <span>{{ current + ' ' }}</span>
+                        <span class="badge-accent">
+                            <span>{{ current + ' ' }}</span>
+                        </span>
                     </span>
-                    </span>
-                </span>
-            </div>
+                </div>
 
-            <div class="clear"></div>
-            <hr class="dashed" /><br/>
+                <div class="clear"></div>
+                <hr class="dashed" /><br/>
+            </div>
 
             <div class="details-wrap">
                 <!-- anamnesis -->

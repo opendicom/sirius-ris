@@ -4,8 +4,6 @@ FROM node:18 as builder
 # Install angular cli and devkit builder (Global dev dependencies):
 RUN npm install -g @angular/cli@13.1.2
 RUN npm install -g @angular-devkit/build-angular@13.1.2
-#RUN npm install -g @angular/cli@13.1.4
-#RUN npm install -g @angular-devkit/build-angular@13.3.11
 
 # Set workdir:
 WORKDIR /app
@@ -33,6 +31,3 @@ LABEL description="Sirius RIS is an open source Radiology Information System"
 COPY --from=builder /app/nginx/templates /etc/nginx/templates
 COPY --from=builder /app/nginx/ssl /etc/ssl/
 COPY --from=builder /app/dist/sirius-ris /usr/share/nginx/html
-
-#ENTRYPOINT ['./entrypoint.sh']
-#CMD

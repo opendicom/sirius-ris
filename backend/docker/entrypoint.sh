@@ -1,11 +1,89 @@
 #!/bin/sh
 set -e
 
-export SIRIUS_BACKEND_HOST=${SIRIUS_BACKEND_HOST:-opendicom_sirius_backend}
-export SIRIUS_BACKEND_PORT=${SIRIUS_BACKEND_PORT:-3000}
+# ------------------------------------------------------------------------------------- #
+# Set default values if they are not established in docker-compose.env:
+# ------------------------------------------------------------------------------------- #
+# TIMEZONE:
+export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
-#find "/template" -follow -type f -name "*.template" -print -exit | while read -r template; do
-#    envsubst < "$template" > /app/main.settings.yaml
-#done
+# JWT SECRET:
+export AUTH_JWT_SECRET=${AUTH_JWT_SECRET:-'top_secret'}
 
-exec "$@"
+# SSL CERTIFICATES (Only if SIRIUS_BACKEND_HTTPS_ENABLED is true):
+export SSL_KEY=${SSL_KEY:-'./certificates/cert.key'}
+export SSL_CERT=${SSL_CERT:-'./certificates/cert.crt'}
+export SSL_CA=${SSL_CA:-'false'}
+
+# CORS:
+export CORS_ENABLED=${CORS_ENABLED:-'false'}
+export CORS_WHITELIST_01=${CORS_WHITELIST_01:-'http://cors_ws_client_01.com:8080'}
+export CORS_WHITELIST_02=${CORS_WHITELIST_02:-'http://cors_ws_client_02.com:8080'}
+export CORS_WHITELIST_03=${CORS_WHITELIST_03:-'http://cors_ws_client_03.com:8080'}
+export CORS_WHITELIST_04=${CORS_WHITELIST_04:-'http://cors_ws_client_04.com:8080'}
+export CORS_WHITELIST_05=${CORS_WHITELIST_05:-'http://cors_ws_client_05.com:8080'}
+export CORS_WHITELIST_06=${CORS_WHITELIST_06:-'http://cors_ws_client_06.com:8080'}
+export CORS_WHITELIST_07=${CORS_WHITELIST_07:-'http://cors_ws_client_07.com:8080'}
+export CORS_WHITELIST_08=${CORS_WHITELIST_08:-'http://cors_ws_client_08.com:8080'}
+export CORS_WHITELIST_09=${CORS_WHITELIST_09:-'http://cors_ws_client_09.com:8080'}
+export CORS_WHITELIST_10=${CORS_WHITELIST_10:-'http://cors_ws_client_10.com:8080'}
+
+# PACS:
+export PACS_HOST=${PACS_HOST:-'opendicom_pacs'}
+export PACS_PORT_MLLP=${PACS_PORT_MLLP:-'2575'}
+
+# WEZEN:
+export WEZEN_HOST=${WEZEN_HOST:-'opendicom_wezen'}
+export WEZEN_PORT=${WEZEN_PORT:-'8000'}
+
+# SIRIUS BACKEND DB:
+export SIRIUS_BACKEND_DB_HOST=${SIRIUS_BACKEND_DB_HOST:-'opendicom_sirius_db'}
+export SIRIUS_BACKEND_DB_PORT=${SIRIUS_BACKEND_DB_PORT:-'27017'}
+export SIRIUS_BACKEND_DB_USER=${SIRIUS_BACKEND_DB_USER:-'sirius_user'}
+export SIRIUS_BACKEND_DB_PASS=${SIRIUS_BACKEND_DB_PASS:-'sirius_pass'}
+export SIRIUS_BACKEND_DB_NAME=${SIRIUS_BACKEND_DB_NAME:-'sirius_db'}
+
+# SIRIUS BACKEND REST SERVER:
+export SIRIUS_BACKEND_HOST=${SIRIUS_BACKEND_HOST:-'localhost'}
+export SIRIUS_BACKEND_HTTP_ENABLED=${SIRIUS_BACKEND_HTTP_ENABLED:-'true'}
+export SIRIUS_BACKEND_HTTP_PORT=${SIRIUS_BACKEND_HTTP_PORT:-'3000'}
+export SIRIUS_BACKEND_HTTPS_ENABLED=${SIRIUS_BACKEND_HTTPS_ENABLED:-'false'}
+export SIRIUS_BACKEND_HTTPS_PORT=${SIRIUS_BACKEND_HTTPS_PORT:-'3001'}
+
+# SIRIUS BACKEND MAIL SERVER:
+# Allowed mail types: 'gmail', 'other'.
+export SIRIUS_BACKEND_MAIL_TYPE=${SIRIUS_BACKEND_MAIL_TYPE:-'gmail'}
+export SIRIUS_BACKEND_MAIL_HOST=${SIRIUS_BACKEND_MAIL_HOST:-'localhost'}
+export SIRIUS_BACKEND_MAIL_PORT=${SIRIUS_BACKEND_MAIL_PORT:-'1025'}
+export SIRIUS_BACKEND_MAIL_SECURE=${SIRIUS_BACKEND_MAIL_SECURE:-'true'}
+export SIRIUS_BACKEND_MAIL_FROM=${SIRIUS_BACKEND_MAIL_FROM:-'opendicom Sirius RIS'}
+export SIRIUS_BACKEND_MAIL_USER=${SIRIUS_BACKEND_MAIL_USER:-'opendicomsirius@gmail.com'}
+export SIRIUS_BACKEND_MAIL_PASS=${SIRIUS_BACKEND_MAIL_PASS:-'zuuczgrmpesuqlgh'}
+
+# SIRIUS BACKEND LOG LEVEL:
+# DEBUG > INFO > WARN > ERROR
+export SIRIUS_BACKEND_LOG_LEVEL=${SIRIUS_BACKEND_LOG_LEVEL:-'DEBUG'}
+
+# SIRIUS BACKEND DELETE AUTHORIZATION CODE:
+export SIRIUS_BACKEND_DELETE_CODE=${SIRIUS_BACKEND_DELETE_CODE:-'delete_code'}
+
+# SIRIUS BACKEND RABC EXCLUDE CODE:
+export SIRIUS_BACKEND_RABC_EXCLUDE_CODE=${SIRIUS_BACKEND_RABC_EXCLUDE_CODE:-'exclude_code'}
+
+# SIRIUS BACKEND AUTH PENALTY RATE LIMIT:
+# Maximum number of requests that a source IP can make in AUTH_SOURCE_PENALTY_TIME_LIMIT time 
+# before being blocked for AUTH_SOURCE_PENALTY_TIME_BLOCKED time
+export SIRIUS_BACKEND_AUTH_PENALTY_RATE_LIMIT=${SIRIUS_BACKEND_AUTH_PENALTY_RATE_LIMIT:-'5'}
+export SIRIUS_BACKEND_AUTH_PENALTY_TIME_WINDOW=${SIRIUS_BACKEND_AUTH_PENALTY_TIME_WINDOW:-'10'}
+
+# SIRIUS BACKEND LANGUAJE:
+export SIRIUS_BACKEND_LANGUAJE=${SIRIUS_BACKEND_LANGUAJE:-'ES'}
+# ------------------------------------------------------------------------------------- #
+
+# Create main settings file based on template with environment variables:
+find "./" -follow -type f -name "default.conf.template" -print | while read -r template; do
+   envsubst < "$template" > main.settings.yaml
+done
+
+# Execute app:
+npm start

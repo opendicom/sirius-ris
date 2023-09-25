@@ -111,6 +111,12 @@
     </span>
   </div>
 
+  <!-- email-->
+  <div *ngIf="data.patient.email" class="current-info divider-alt">
+    <small>Correo:</small><br/>
+    <span><small>{{ data.patient.email }}</small></span>
+  </div>
+
   <!-- phone_numbers-->
   <div class="current-info">
     <small>Teléfonos:</small><br/>

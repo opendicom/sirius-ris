@@ -485,7 +485,6 @@ export class SetPatientComponent implements OnInit {
       this.form.get('person.doc_country_code')?.setValue(this.settings.default_country);
       this.form.get('person.doc_type')?.setValue(this.settings.default_doc_type.toString());
     }
-    this.form.get('person.email')?.setValue('');
     this.form.get('person.name_01')?.setValue('');
     this.form.get('person.name_02')?.setValue('');
     this.form.get('person.surname_01')?.setValue('');
@@ -687,7 +686,11 @@ export class SetPatientComponent implements OnInit {
             }
             
             this.form.get('person.birth_date')?.setValue(new Date(this.sharedProp.current_appointment_request.patient.birth_date.split('T')[0].replace(/-/g, '/')));
-            //Patient email -> the email is not specified from origin.
+            
+            //Patient email -> Specified only in Sirius Web Module:
+            this.form.get('user.email')?.setValue(this.sharedProp.current_appointment_request.patient.email);
+            //Check email in DB:
+            this.onSetEmail();
           }
         });
       }

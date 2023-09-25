@@ -9,6 +9,9 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 //Import Module Services:
 const moduleServices = require('../../modules.services');
 
+//Import Mail Services:
+const mailServices  = require('../../../mail/services');
+
 //Import Schemas:
 const proccedures = require('../../procedures/schemas');
 const modalities = require('../../modalities/schemas');
@@ -150,7 +153,55 @@ module.exports = async (req, res, currentSchema, operation) => {
             //Check study object:
             if(studyChecked){
                 //Excecute main query:
-                await moduleServices.insert(req, res, currentSchema, referencedElements);
+                await moduleServices.insert(req, res, currentSchema, referencedElements, true, async (data) => {
+                    //Check if patient email was defined:
+                    if(data.patient.email !== undefined && data.patient.email !== null && data.patient.email !== ''){
+                        //Set log_element:
+                        const log_element = {
+                            _id     : data._id,
+                            type    : 'appointment_requests'
+                        }
+
+                        //Names:
+                        let patient_names = data.patient.name_01;
+                        if(data.patient.name_02 !== '' && data.patient.name_02 !== undefined && data.patient.name_02 !== null){
+                            patient_names += ' ' + data.patient.name_02;
+                        }
+
+                        //Surnames:
+                        let patient_surnames = data.patient.surname_01;
+                        if(data.patient.surname_02 !== '' && data.patient.surname_02 !== undefined && data.patient.surname_02 !== null){
+                            patient_surnames += ' ' + data.patient.surname_02;
+                        }
+
+                        //Set patient complete name:
+                        const patient_complete_name = patient_names + ' ' + patient_surnames;
+
+                        //Build mail body (message):
+                        const body_message = '<p>' + 
+                            '<strong>Estimado/a ' + patient_complete_name + ',</strong><br/>' +
+                            '<br/>Su <strong>solicitud de estudio</strong> ha sido recibida de forma exitosa.<br/>' + 
+                            '<ul>' + 
+                                '<li>ID de solicitud: <strong>' + data._id + '</strong></li>' + 
+                                '<li>ID de solicitante: <strong>' + data.referring.organization + '</strong></li>' + 
+                            '</ul>' +
+                            '<br/>' + 
+                            '<small><i>Este es un correo automático, por favor no responda a esta dirección.</i></small>' + 
+                            '<br/><br/>' + 
+                        '</p>';
+
+                        //Send proof of appointment request:
+                        await mailServices.sendEmail(
+                            req, res,
+                            log_element,
+                            data.patient.email,
+                            'Comprobante de solicitud de estudio (Sirius RIS)',
+                            body_message,
+                            undefined,
+                            false
+                        );
+                    }
+                });
             }    
         
             break;

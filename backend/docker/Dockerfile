@@ -5,10 +5,16 @@ LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
 
+# Set node in production:
 ENV NODE_ENV=production
 
+# Install gettext-base (envsubst):
+RUN apt-get update && apt-get -y install gettext-base
+
+# Set port:
 EXPOSE 3000
 
+# Set wordir:
 WORKDIR /app
 
 # Copy source code:
@@ -16,9 +22,17 @@ WORKDIR /app
 # Example: docker build -t sirius-backend:1.0.0-beta.1 -f docker/Dockerfile .
 COPY ../src .
 
-RUN npm install --production
+# Install dependencies (only production dependencies):
+RUN npm install --omit=dev
 
-#ENTRYPOINT ['./entrypoint.sh']
+# Copy entrypoint:
+COPY ./docker/entrypoint.sh .
 
-USER node
-CMD npm start
+# Give entrypoint.sh execute permissions:
+RUN chmod 755 ./entrypoint.sh
+
+# Copy default configuration template:
+COPY ./docker/default.conf.template .
+
+# Exec entrypoint:
+ENTRYPOINT ["./entrypoint.sh"]

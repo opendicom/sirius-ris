@@ -600,7 +600,6 @@ export class FormComponent implements OnInit {
       this.form.get('person.doc_country_code')?.setValue(this.settings.default_country);
       this.form.get('person.doc_type')?.setValue(this.settings.default_doc_type.toString());
     }
-    this.form.get('person.email')?.setValue('');
     this.form.get('person.name_01')?.setValue('');
     this.form.get('person.name_02')?.setValue('');
     this.form.get('person.surname_01')?.setValue('');
