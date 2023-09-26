@@ -59,12 +59,12 @@ rabc_exclude_code: '${SIRIUS_BACKEND_RABC_EXCLUDE_CODE}'
 # For your safety change this value please.
 AUTH_JWT_SECRET: '${AUTH_JWT_SECRET}'
 
-# Maximum number of requests that a source IP can make in AUTH_SOURCE_PENALTY_TIME_LIMIT time 
-# before being blocked for AUTH_SOURCE_PENALTY_TIME_BLOCKED time
-AUTH_PENALTY_RATE_LIMIT: ${SIRIUS_BACKEND_AUTH_PENALTY_RATE_LIMIT}
-
-# Seconds 
-AUTH_PENALTY_TIME_WINDOW: ${SIRIUS_BACKEND_AUTH_PENALTY_TIME_WINDOW}
+# Access Control Middleware:
+# Maximum number (AC_NUMBER_OF_ATTEMPTS) of requests that a client IP can make in AC_TIME_WINDOW time.
+# If a client IP exceeds this condition it will be penalized for AC_PENALTY_TIME time.
+AC_NUMBER_OF_ATTEMPTS: ${SIRIUS_BACKEND_AC_NUMBER_OF_ATTEMPTS}
+AC_TIME_WINDOW: ${SIRIUS_BACKEND_AC_TIME_WINDOW}    # Seconds 
+AC_PENALTY_TIME: ${SIRIUS_BACKEND_AC_PENALTY_TIME}   # Seconds 
 
 # Set the language of the responses:
 language: '${SIRIUS_BACKEND_LANGUAJE}'

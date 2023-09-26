@@ -62,12 +62,12 @@ rabc_exclude_code: 'exclude_code'
 # For your safety change this value please.
 AUTH_JWT_SECRET: 'top_secret'
 
-# Maximum number of requests that a source IP can make in AUTH_SOURCE_PENALTY_TIME_LIMIT time 
-# before being blocked for AUTH_SOURCE_PENALTY_TIME_BLOCKED time
-AUTH_PENALTY_RATE_LIMIT: 5
-
-# Seconds 
-AUTH_PENALTY_TIME_WINDOW: 10
+# Access Control Middleware:
+# Maximum number (AC_NUMBER_OF_ATTEMPTS) of requests that a client IP can make in AC_TIME_WINDOW time.
+# If a client IP exceeds this condition it will be penalized for AC_PENALTY_TIME time.
+AC_NUMBER_OF_ATTEMPTS: 5
+AC_TIME_WINDOW: 10    # Seconds 
+AC_PENALTY_TIME: 15   # Seconds 
 
 # Set the language of the responses:
 language: 'ES'
