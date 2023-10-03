@@ -7,7 +7,6 @@ jspm_packages/
 
 # BACKEND:
 database/data/
-database/config/
 backend/target/
 backend/build/
 backend/dist/

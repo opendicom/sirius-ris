@@ -1,3 +1,9 @@
+# ------------------------------------------------------------------------------------- #
+# SIRIUS BACKEND BUILD:
+# ------------------------------------------------------------------------------------- #
+# Outside Docker Build Context: Build this image from parent directory 'backend'.
+# Example: docker build -t sirius-backend:1.0.0-beta.1 -f docker/Dockerfile .
+# ------------------------------------------------------------------------------------- #
 FROM node:18.13.0
 
 LABEL version="1.0.0-beta.1"
@@ -18,8 +24,6 @@ EXPOSE 3000
 WORKDIR /app
 
 # Copy source code:
-# Outside Docker Build Context: Build this image from parent directory 'backend'.
-# Example: docker build -t sirius-backend:1.0.0-beta.1 -f docker/Dockerfile .
 COPY ../src .
 
 # Install dependencies (only production dependencies):
@@ -31,8 +35,9 @@ COPY ./docker/entrypoint.sh .
 # Give entrypoint.sh execute permissions:
 RUN chmod 755 ./entrypoint.sh
 
-# Copy default configuration template:
-COPY ./docker/default.conf.template .
+# Copy main settings template:
+COPY ./docker/main.settings.template .
 
 # Exec entrypoint:
 ENTRYPOINT ["./entrypoint.sh"]
+# ------------------------------------------------------------------------------------- #

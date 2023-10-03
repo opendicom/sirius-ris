@@ -43,7 +43,7 @@ ssl_certificates:
 
 # Set CORS and CORS whitelist:
 cors_enabled    : ${CORS_ENABLED}
-cors_whitelist  : ['${CORS_WHITELIST_01}', '${CORS_WHITELIST_02}', '${CORS_WHITELIST_03}', '${CORS_WHITELIST_04}', '${CORS_WHITELIST_05}', '${CORS_WHITELIST_06}', '${CORS_WHITELIST_07}', '${CORS_WHITELIST_08}', '${CORS_WHITELIST_09}', '${CORS_WHITELIST_10}']
+cors_whitelist  : ${CORS_WHITELIST}
 
 # Set log level:
 # DEBUG > INFO > WARN > ERROR

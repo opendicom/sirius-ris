@@ -5,8 +5,9 @@ services:
     image: mongo:latest
     env_file: ./docker-compose.env
     volumes:
+      - ./database/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
+      - ./database/dumps:/dumps
       - ./database/data:/data/db
-      - ./database/config:/data/configdb
     ports:
       - 27017:27017
     restart: unless-stopped

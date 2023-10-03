@@ -17,16 +17,7 @@ export SSL_CA=${SSL_CA:-'false'}
 
 # CORS:
 export CORS_ENABLED=${CORS_ENABLED:-'false'}
-export CORS_WHITELIST_01=${CORS_WHITELIST_01:-'http://cors_ws_client_01.com:8080'}
-export CORS_WHITELIST_02=${CORS_WHITELIST_02:-'http://cors_ws_client_02.com:8080'}
-export CORS_WHITELIST_03=${CORS_WHITELIST_03:-'http://cors_ws_client_03.com:8080'}
-export CORS_WHITELIST_04=${CORS_WHITELIST_04:-'http://cors_ws_client_04.com:8080'}
-export CORS_WHITELIST_05=${CORS_WHITELIST_05:-'http://cors_ws_client_05.com:8080'}
-export CORS_WHITELIST_06=${CORS_WHITELIST_06:-'http://cors_ws_client_06.com:8080'}
-export CORS_WHITELIST_07=${CORS_WHITELIST_07:-'http://cors_ws_client_07.com:8080'}
-export CORS_WHITELIST_08=${CORS_WHITELIST_08:-'http://cors_ws_client_08.com:8080'}
-export CORS_WHITELIST_09=${CORS_WHITELIST_09:-'http://cors_ws_client_09.com:8080'}
-export CORS_WHITELIST_10=${CORS_WHITELIST_10:-'http://cors_ws_client_10.com:8080'}
+export CORS_WHITELIST=${CORS_WHITELIST:-'["http://cors_ws_client_01.com:8080","https://cors_ws_client_02.com:443"]'}
 
 # PACS:
 export PACS_HOST=${PACS_HOST:-'opendicom_pacs'}
@@ -82,7 +73,7 @@ export SIRIUS_BACKEND_LANGUAJE=${SIRIUS_BACKEND_LANGUAJE:-'ES'}
 # ------------------------------------------------------------------------------------- #
 
 # Create main settings file based on template with environment variables:
-find "./" -follow -type f -name "default.conf.template" -print | while read -r template; do
+find "./" -follow -type f -name "main.settings.template" -print | while read -r template; do
    envsubst < "$template" > main.settings.yaml
 done
 
