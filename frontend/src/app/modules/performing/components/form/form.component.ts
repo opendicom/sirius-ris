@@ -7,8 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
-  app_setting, 
   ISO_3166, 
   document_types, 
   gender_types, 
@@ -32,7 +32,7 @@ export class FormComponent implements OnInit {
   @ViewChild(TabDetailsComponent) tabDetails!:TabDetailsComponent;
 
   //Set component properties:
-  public settings             : any = app_setting;
+  public settings             : any = mainSettings.appSettings;
   public country_codes        : any = ISO_3166;
   public document_types       : any = document_types;
   public gender_types         : any = gender_types;

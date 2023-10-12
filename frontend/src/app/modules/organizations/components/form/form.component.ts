@@ -7,7 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { app_setting, ISO_3166 } from '@env/environment';                               // Enviroment
+import { mainSettings } from '@assets/main.settings';                                   // Main settings
+import { ISO_3166 } from '@env/environment';                                            // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -16,7 +17,7 @@ import { app_setting, ISO_3166 } from '@env/environment';                       
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  public settings         : any = app_setting;
+  public settings         : any = mainSettings.appSettings;
   public country_codes    : any = ISO_3166;
 
   //Initialize Selected File Control Variable:

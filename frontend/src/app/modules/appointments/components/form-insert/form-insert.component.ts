@@ -9,8 +9,8 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
-  app_setting,
   regexObjectId,
   ISO_3166,
   document_types,
@@ -29,7 +29,7 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormInsertComponent implements OnInit {
   //Set component properties:
-  public settings           : any = app_setting;
+  public settings           : any = mainSettings.appSettings;
   public country_codes      : any = ISO_3166;
   public document_types     : any = document_types;
   public gender_types       : any = gender_types;

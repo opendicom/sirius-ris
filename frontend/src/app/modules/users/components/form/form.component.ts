@@ -11,8 +11,8 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
+import { mainSettings } from '@assets/main.settings';                                         // Main settings
 import {                                                                                      // Enviroment
-  app_setting,
   document_types,
   ISO_3166,
   user_roles,
@@ -28,7 +28,7 @@ import {                                                                        
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  public settings         : any = app_setting;
+  public settings         : any = mainSettings.appSettings;
   public country_codes    : any = ISO_3166;
   public document_types   : any = document_types;
   public userRoles        : any = user_roles;

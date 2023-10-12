@@ -9,28 +9,6 @@ export const environment = {
 // Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
-// Set app default settings:
-export const app_setting = {
-  backend_url             : 'http://localhost:2000/',
-  rabc_exclude_code       : 'exclude_code',
-  secret_number           : 1618,    // Used on simple crypt
-  file_max_size           : 10,      // Maximum size in MB allowed to upload files
-
-  //Pager defaults:
-  default_page_sizes      : [10, 25, 50, 100],
-  check_in_default_size   : 1000,
-
-  //Localization:
-  default_country         : '858',
-  default_country_isoCode : 'UY',
-  default_country_name    : 'Uruguay',
-  default_state_isoCode   : 'MO',
-  default_state_name      : 'Montevideo',
-  default_city_name       : 'Montevideo',
-  default_doc_type        : '1',
-  default_utc             : 'UTC-3' // To Fix Mongoose Timestamps in Pipes.
-};
-
 // Event logs:
 export const events_log = {
   1 : 'Inicio de sesión',

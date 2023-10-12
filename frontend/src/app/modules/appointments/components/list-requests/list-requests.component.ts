@@ -6,8 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import {                                                                                // Enviroments
-  app_setting,
   regexObjectId,
   appointment_requests_flow_states,
   cancellation_reasons,
@@ -24,7 +24,7 @@ import {                                                                        
 })
 export class ListRequestsComponent implements OnInit {
   //Set component properties:
-  public settings                       : any = app_setting;
+  public settings                       : any = mainSettings.appSettings;
   public country_codes                  : any = ISO_3166;
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;
@@ -146,7 +146,7 @@ export class ListRequestsComponent implements OnInit {
       */
     };
     this.sharedProp.sort          = { 'createdAt': 1, 'organization.short_name': 1, 'branch.short_name': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

@@ -9,8 +9,8 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
-  app_setting,
   inpatient_types,
   appointments_flow_states,
   cancellation_reasons,
@@ -27,7 +27,7 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class TabDetailsComponent implements OnInit {
   //Set component properties:
-  public settings             : any = app_setting;
+  public settings             : any = mainSettings.appSettings;
   public inpatient_types      : any = inpatient_types;
   public appointmentsFS       : any = appointments_flow_states;
   public cancellation_reasons : any = cancellation_reasons;

@@ -6,19 +6,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';                                                   // Router
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import { PdfService } from '@shared/services/pdf.service';                                      // PDF Service
+import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
-import {                                                                                    // Enviroments
-  app_setting,
-} from '@env/environment';
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentsService {
-  public settings         : any = app_setting;
+  public settings         : any = mainSettings.appSettings;
 
   //Get Country State City information (Default settings):
   public allCountries   : any = Country.getAllCountries();

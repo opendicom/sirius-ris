@@ -4,14 +4,14 @@ import { Component, OnInit } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { ReportsService } from '@modules/reports/services/reports.service';                 // Reports Services
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
-  app_setting, 
   ISO_3166, 
   document_types, 
   gender_types, 
@@ -28,7 +28,7 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormComponent implements OnInit {
   //Set component properties:
-  public settings                       : any = app_setting;
+  public settings                       : any = mainSettings.appSettings;
   public country_codes                  : any = ISO_3166;
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;

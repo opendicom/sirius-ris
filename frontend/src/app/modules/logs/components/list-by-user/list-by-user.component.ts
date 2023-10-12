@@ -6,8 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import {                                                                                // Enviroments
-  app_setting, 
   regexObjectId, 
   events_log, 
   elementTypesLang
@@ -90,7 +90,7 @@ export class ListByUserComponent implements OnInit {
     this.sharedProp.filterFields  = ['element.details', 'ip_client', 'organization.short_name'];
     this.sharedProp.projection    = {};
     this.sharedProp.sort          = { datetime: -1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

@@ -4,7 +4,7 @@ import { Component, Injectable } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
-import { app_setting, keywords } from '@env/environment';                     // Environment
+import { mainSettings } from '@assets/main.settings';                         // Main settings
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
@@ -45,7 +45,7 @@ export class SharedFunctionsService {
   // SIMPLE CRYPT:
   //--------------------------------------------------------------------------------------------------------------------//
   simpleCrypt (message: string): string {
-    const secret_number = app_setting.secret_number;
+    const secret_number = mainSettings.appSettings.secret_number;
     let encoded = '';
     for (let i=0; i < message.length; i++) {
       let a = message.charCodeAt(i);
@@ -834,7 +834,7 @@ export class SharedFunctionsService {
         }));
 
         //Check max file size:
-        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= app_setting.file_max_size){
+        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= mainSettings.appSettings.file_max_size){
           //Save data:
           //Create observable obsSave:
           const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, multipartForm);
@@ -872,7 +872,7 @@ export class SharedFunctionsService {
           }));
   
           //Send cancelation message:
-          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + app_setting.file_max_size + ' MB).');
+          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + mainSettings.appSettings.file_max_size + ' MB).');
         }
       }
     } else {
@@ -1227,7 +1227,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   getFriendlyPass(): string {
     //Initialize password:
-    let password = keywords[this.getRandomNumber(0, keywords.length)];
+    let password = mainSettings.passKeywords[this.getRandomNumber(0, mainSettings.passKeywords.length)];
 
 
     //Get a random number between 100 and 998:

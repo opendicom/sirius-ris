@@ -9,7 +9,8 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
-import { app_setting, FullCalendarOptions } from '@env/environment';                        // Enviroments
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
+import { FullCalendarOptions } from '@env/environment';                                     // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -73,7 +74,7 @@ export class SlotsAppointmentsComponent implements OnInit {
     });
 
     //Set pager default values to prevent undefined pager error:
-    this.sharedProp.pager = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+    this.sharedProp.pager = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
 
     //Set Reactive Form (First time):
     this.setReactiveForm({

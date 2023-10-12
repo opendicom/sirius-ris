@@ -6,8 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
+import { mainSettings } from '@assets/main.settings';                                           // Main settings
 import {                                                                                        // Enviroments
-  app_setting,
   regexObjectId,
   performing_flow_states,
   ISO_3166,
@@ -161,7 +161,7 @@ export class ListComponent implements OnInit {
       'modality': 1
     };
     this.sharedProp.sort          = { 'date': -1, 'urgency': 1, 'status': -1, 'appointment.imaging.organization._id': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: app_setting.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
 
     //Default the studies assigned to the user to the list (Médico):
     if(this.sharedProp.userLogged.permissions[0].role == 4){

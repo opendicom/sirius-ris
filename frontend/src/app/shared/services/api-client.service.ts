@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { HttpClient, HttpEventType } from '@angular/common/http';   // HTTPClient and HttpEventType
 import { Observable } from 'rxjs';                                  // Reactive Extensions (RxJS)
-import { app_setting } from '@env/environment';                     // Environment
+import { mainSettings } from '@assets/main.settings';               // Main settings
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -13,7 +13,7 @@ import { app_setting } from '@env/environment';                     // Environme
 })
 export class ApiClientService {
   //Set backend URL:
-  private backend_url = app_setting.backend_url;
+  private backend_url = mainSettings.appSettings.backend_url;
 
   //Inject services to the constructor:
   constructor(private http: HttpClient) { }
@@ -67,7 +67,7 @@ export class ApiClientService {
     //Return Observable:
     return new Observable<any>((observer) => {
       //Check max file size:
-      if(this.bytesToMegaBytes(selectedFile.size) <= app_setting.file_max_size){
+      if(this.bytesToMegaBytes(selectedFile.size) <= mainSettings.appSettings.file_max_size){
         //Send POST request (multipart form):
         this.http.post(this.backend_url + path, multipartForm, {
           //Set headers:
@@ -92,7 +92,7 @@ export class ApiClientService {
         multipartForm.delete('uploaded_file');
 
         //Send cancelation message:
-        observer.next({ operation_status: 'cancelled', message: 'El archivo que seleccióno excede el límite de tamaño máximo permitido (' + app_setting.file_max_size + ' MB).' });
+        observer.next({ operation_status: 'cancelled', message: 'El archivo que seleccióno excede el límite de tamaño máximo permitido (' + mainSettings.appSettings.file_max_size + ' MB).' });
       }
 
     });
