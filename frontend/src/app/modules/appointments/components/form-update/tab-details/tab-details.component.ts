@@ -14,8 +14,7 @@ import {                                                                        
   inpatient_types,
   appointments_flow_states,
   cancellation_reasons,
-  privateHealthLang,
-  CKEditorConfig
+  privateHealthLang
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -41,7 +40,7 @@ export class TabDetailsComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
+  public editorConfig = mainSettings.CKEditorConfig;
 
   //Min and max dates:
   public minDate: Date = new Date();

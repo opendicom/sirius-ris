@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { CKEditorConfig } from '@env/environment';                                      // Enviroments
+import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -20,7 +20,7 @@ export class FormComponent implements OnInit {
   //Create CKEditor component and configure them:
   public preparationEditor = customBuildEditor;
   public procedureTemplateEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
+  public editorConfig = mainSettings.CKEditorConfig;
 
   //Set references objects:
   public availableOrganizations : any;

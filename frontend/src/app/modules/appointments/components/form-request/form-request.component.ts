@@ -12,8 +12,7 @@ import {                                                                        
   ISO_3166, 
   document_types, 
   gender_types, 
-  appointment_requests_flow_states,
-  CKEditorConfig
+  appointment_requests_flow_states
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -33,7 +32,7 @@ export class FormRequestComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public annotationsEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
+  public editorConfig = mainSettings.CKEditorConfig;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;

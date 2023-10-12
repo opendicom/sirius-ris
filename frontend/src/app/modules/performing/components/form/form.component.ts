@@ -13,8 +13,7 @@ import {                                                                        
   document_types, 
   gender_types, 
   performing_flow_states,
-  cancellation_reasons,
-  CKEditorConfig
+  cancellation_reasons
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 
@@ -43,7 +42,7 @@ export class FormComponent implements OnInit {
   public procedureEditor                = customBuildEditor;
   public acquisitionObservationsEditor  = customBuildEditor;
   public injectionObservationsEditor    = customBuildEditor;
-  public editorConfig                   = CKEditorConfig;
+  public editorConfig                   = mainSettings.CKEditorConfig;
 
   //Initializate validation tab errors:
   public detailsTabErrors       : boolean = false;

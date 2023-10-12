@@ -16,8 +16,7 @@ import {                                                                        
   document_types,
   gender_types,
   inpatient_types,
-  privateHealthLang,
-  CKEditorConfig
+  privateHealthLang
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -41,7 +40,7 @@ export class FormInsertComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
+  public editorConfig = mainSettings.CKEditorConfig;
 
   //Create CKEditor validator:
   public anamnesisValidator = true;

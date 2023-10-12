@@ -15,8 +15,7 @@ import {                                                                        
   ISO_3166, 
   document_types, 
   gender_types, 
-  privateHealthLang,
-  CKEditorConfig
+  privateHealthLang
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -45,7 +44,7 @@ export class FormComponent implements OnInit {
   public procedureDescriptionEditor     = customBuildEditor;
   public procedure_findingsEditor       = customBuildEditor;
   public summaryEditor                  = customBuildEditor;
-  public editorConfig                   = CKEditorConfig;
+  public editorConfig                   = mainSettings.CKEditorConfig;
 
   //Create CKEditor validators:
   public clinicalInfoValidator          : boolean = true;

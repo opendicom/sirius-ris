@@ -213,74 +213,6 @@ export const privateHealthLang = {
   }
 };
 
-// Default CKEditor configuration:
-export const CKEditorConfig = {
-  toolbar: {
-    items: [
-      //Heading:
-      'heading',
-      '|',
-
-      //Alignment:
-      'alignment',
-      '|',
-
-      //Basic styles
-      'bold', 'italic', 'underline', 'strikethrough',
-      '|',
-      'subscript', 'superscript',
-      '|',
-
-      //Lists:
-      'numberedList', 'bulletedList',
-      '|',
-
-      //Extra tools:
-      'findAndReplace',
-      'removeFormat'
-    ],
-
-    //Allow multiline in toolbar with '-':
-    shouldNotGroupWhenFull: true
-  },
-
-  language: { ui: 'es', content: 'es' }
-};
-
-// Default FullCalendar configuration:
-export const FullCalendarSupportedViews = ['resourceTimeGridDay', 'resourceTimeGridWeek'];
-
-export const FullCalendarOptions: any = {
-  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-  timeZone: 'local',
-  allDaySlot: false,
-  initialView: FullCalendarSupportedViews[1],
-  slotLabelFormat: {
-    hour: '2-digit',
-    minute: '2-digit',
-    meridiem: false
-  },
-  eventTimeFormat: {
-    hour: '2-digit',
-    minute: '2-digit',
-    meridiem: false
-  },
-  height: '650px',
-  slotMinTime: '08:00:00',
-  slotMaxTime: '18:00:00',
-  slotDuration: '00:10:00',
-  eventBorderColor: '#8244ee',
-  eventColor: '#6130b6',
-  eventTextColor: '#fff',
-  headerToolbar: {
-    start: 'datepicker today prev,next view_day,view_week',
-    center: 'title',
-    end: ''
-  },
-  resources: [],
-  events: []
-};
-
 // Inpatient types:
 export const inpatient_types = {
   1 :'Cuidados intensivos',
@@ -294,30 +226,6 @@ export const anonymous_doc = {
   document_types: 100,      // Reserved in document_types for this case.
   description: 'Anónimo'
 };
-
-// Lista de palabras:
-export const keywords = [
-  'eucalipto',
-  'pino',
-  'roble',
-  'cedro',
-  'romero',
-  'ficus',
-  'cactus',
-  'tacuara',
-  'manzano',
-  'higuera',
-  'tero',
-  'carpincho',
-  'mulita',
-  'yacare',
-  'cardenal',
-  'golondrina',
-  'benteveo',
-  'chaja',
-  'jaguar',
-  'dorado'
-];
 
 // Country codes (ISO-3166):
 export const ISO_3166 = {

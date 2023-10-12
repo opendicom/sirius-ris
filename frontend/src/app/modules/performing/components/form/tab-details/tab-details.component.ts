@@ -12,8 +12,7 @@ import { FileManagerService } from '@shared/services/file-manager.service';     
 import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
   inpatient_types,
-  privateHealthLang,
-  CKEditorConfig
+  privateHealthLang
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -34,7 +33,7 @@ export class TabDetailsComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
-  public editorConfig = CKEditorConfig;
+  public editorConfig = mainSettings.CKEditorConfig;
 
   //Min and max dates:
   public minDate: Date = new Date();

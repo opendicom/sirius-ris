@@ -31,6 +31,7 @@ const subSchemaInjection = new mongoose.Schema({
     administered_volume:    { type: Number, required: true },
     administration_time:    { type: String, required: true },
     injection_user:         { type: mongoose.ObjectId, required: true },
+    //laboratory_user:        { type: mongoose.ObjectId, required: true },
     pet_ct:                 { type: subSchemaPETCT }
 },
 { _id : false });

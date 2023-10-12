@@ -10,12 +10,12 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
+import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
   regexObjectId,
   ISO_3166,
   document_types,
-  gender_types,
-  FullCalendarOptions
+  gender_types
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -55,7 +55,7 @@ export class SelectSlotComponent implements OnInit {
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   //Set FullCalendar Default options:
-  public calendarOptions: CalendarOptions = FullCalendarOptions;
+  public calendarOptions: CalendarOptions = mainSettings.FullCalendarOptions;
 
   //Initializate Calendar Resources:
   public calendarResources: any = [];
@@ -371,9 +371,9 @@ export class SelectSlotComponent implements OnInit {
               await Promise.all(Object.keys(res.data).map((key) => {
 
                 //Set event colors by default configuration (Enviroment):
-                let backgroundColor = FullCalendarOptions.eventColor;
-                let borderColor = FullCalendarOptions.eventBorderColor;
-                let textColor = FullCalendarOptions.eventTextColor;
+                let backgroundColor = mainSettings.FullCalendarOptions.eventColor;
+                let borderColor = mainSettings.FullCalendarOptions.eventBorderColor;
+                let textColor = mainSettings.FullCalendarOptions.eventTextColor;
 
                 //Set event colors by default configuration (Urgency or not):
                 if(res.data[key].urgency){

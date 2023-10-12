@@ -8,7 +8,7 @@ set -e
 export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
 # IP SERVER:
-export IP_SERVER=${IP_SERVER:-'127.0.0.1'}
+export IP_SERVER=${IP_SERVER:-'localhost'}
 
 # SIRIUS BACKEND REST SERVER:
 export SIRIUS_BACKEND_HTTP_PORT=${SIRIUS_BACKEND_HTTP_PORT:-'2000'}
@@ -35,8 +35,8 @@ export SIRIUS_FRONTEND_DEFAULT_DOC_TYPE=${SIRIUS_FRONTEND_DEFAULT_DOC_TYPE:-'1'}
 export SIRIUS_FRONTEND_DEFAULT_UTC=${SIRIUS_FRONTEND_DEFAULT_UTC:-'UTC-3'}
 
 # Default FullCalendar configuration:
-# 0: resourceTimeGridDay , 1: resourceTimeGridWeek
-export SIRIUS_FRONTEND_FC_INITIALVIEW=${SIRIUS_FRONTEND_FC_INITIALVIEW:-'1'}
+# SIRIUS_FRONTEND_FC_INITIALVIEW: resourceTimeGridDay | resourceTimeGridWeek
+export SIRIUS_FRONTEND_FC_INITIALVIEW=${SIRIUS_FRONTEND_FC_INITIALVIEW:-'resourceTimeGridWeek'}
 export SIRIUS_FRONTEND_FC_SLOTMINTIME=${SIRIUS_FRONTEND_FC_SLOTMINTIME:-'08:00:00'}
 export SIRIUS_FRONTEND_FC_SLOTMAXTIME=${SIRIUS_FRONTEND_FC_SLOTMAXTIME:-'18:00:00'}
 export SIRIUS_FRONTEND_FC_SLOTDURATION=${SIRIUS_FRONTEND_FC_SLOTDURATION:-'00:10:00'}
@@ -45,9 +45,9 @@ export SIRIUS_FRONTEND_FC_SLOTDURATION=${SIRIUS_FRONTEND_FC_SLOTDURATION:-'00:10
 export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"]'}
 # ------------------------------------------------------------------------------------- #
 
-# Create environment file based on template with environment variables:
-find "./docker/" -follow -type f -name "environment.template" -print | while read -r template; do
-   envsubst < "$template" > /app/src/environments/environment.prod.ts
+# Create main.settings file based on template with environment variables:
+find "/docker/" -follow -type f -name "main.settings.template" -print | while read -r template; do
+   envsubst < "$template" > /usr/share/nginx/html/assets/main.settings.ts
 done
 
 exec "$@"
