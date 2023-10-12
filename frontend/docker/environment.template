@@ -11,8 +11,8 @@ export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 // Set app default settings:
 export const app_setting = {
-  backend_url             : 'http://${SIRIUS_BACKEND_HOST}:${SIRIUS_BACKEND_HTTP_PORT}/',
-  rabc_exclude_code       : '${SIRIUS_FRONTEND_RABC_EXCLUDE_CODE}',
+  backend_url             : 'http://${IP_SERVER}:${SIRIUS_BACKEND_HTTP_PORT}/',
+  rabc_exclude_code       : '${SIRIUS_BACKEND_RABC_EXCLUDE_CODE}',
   secret_number           : ${SIRIUS_FRONTEND_SECRET_NUMBER},    // Used on simple crypt
   file_max_size           : 10,      // Maximum size in MB allowed to upload files
 

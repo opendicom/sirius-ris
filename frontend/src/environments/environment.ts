@@ -11,7 +11,7 @@ export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 // Set app default settings:
 export const app_setting = {
-  backend_url             : 'http://localhost:3000/',
+  backend_url             : 'http://localhost:2000/',
   rabc_exclude_code       : 'exclude_code',
   secret_number           : 1618,    // Used on simple crypt
   file_max_size           : 10,      // Maximum size in MB allowed to upload files

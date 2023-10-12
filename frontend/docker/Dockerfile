@@ -2,7 +2,7 @@
 # SIRIUS FRONTEND BUILD:
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
-# Example: docker build -t sirius-frontend:1.0.0-beta.1 -f docker/Dockerfile .
+# Example: docker build -t opendicom/sirius-frontend:1.0.0-beta.2 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 # Set builder image:
 FROM node:18 as builder
@@ -35,7 +35,7 @@ RUN ng build
 # Docker Multi stage build (Final image):
 FROM nginx:alpine
 
-LABEL version="1.0.0-beta.1"
+LABEL version="1.0.0-beta.2"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
@@ -44,4 +44,7 @@ LABEL description="Sirius RIS is an open source Radiology Information System"
 COPY --from=builder /app/nginx/templates /etc/nginx/templates
 COPY --from=builder /app/nginx/ssl /etc/ssl/
 COPY --from=builder /app/dist/sirius-ris /usr/share/nginx/html
+
+# Copy generated enviroments file (To see running configuration of the bundles):
+COPY --from=builder /app/src/environments /environments
 # ------------------------------------------------------------------------------------- #

@@ -5,9 +5,9 @@ services:
     image: mongo:latest
     env_file: ./docker-compose.env
     volumes:
-      - ./database/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
-      - ./database/dumps:/dumps
-      - ./database/data:/data/db
+      - ./service_sirius_db/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
+      - ./service_sirius_db/dumps:/dumps
+      - ./service_sirius_db/data:/data/db
     ports:
       - 27017:27017
     restart: unless-stopped
@@ -16,10 +16,10 @@ services:
 
   opendicom_sirius_backend:
     container_name: opendicom_sirius_backend
-    image: sirius-backend:1.0.0-beta.1
+    image: opendicom/sirius-backend:1.0.0-beta.2
     env_file: ./docker-compose.env
     ports:
-      - 3000:3000
+      - 2000:2000
     depends_on:
       - opendicom_sirius_db
     restart: unless-stopped
@@ -28,7 +28,7 @@ services:
 
   opendicom_sirius_frontend:
     container_name: opendicom_sirius_frontend
-    image: sirius-frontend:1.0.0-beta.1
+    image: opendicom/sirius-frontend:1.0.0-beta.2
     env_file: ./docker-compose.env
     ports:
       - 4000:80

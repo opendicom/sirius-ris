@@ -6,7 +6,7 @@ node_modules/
 jspm_packages/
 
 # BACKEND:
-database/data/
+service_sirius_db/data/
 backend/target/
 backend/build/
 backend/dist/
