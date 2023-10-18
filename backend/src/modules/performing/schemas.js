@@ -23,6 +23,7 @@ const subSchemaPETCT = new mongoose.Schema({
     administred_activity:   { type: Number, required: true },
     syringe_full_time:      { type: String, required: true },
     syringe_empty_time:     { type: String, required: true },
+    laboratory_user:        { type: mongoose.ObjectId, required: true },
 },
 { _id : false });
 
@@ -31,7 +32,6 @@ const subSchemaInjection = new mongoose.Schema({
     administered_volume:    { type: Number, required: true },
     administration_time:    { type: String, required: true },
     injection_user:         { type: mongoose.ObjectId, required: true },
-    //laboratory_user:        { type: mongoose.ObjectId, required: true },
     pet_ct:                 { type: subSchemaPETCT }
 },
 { _id : false });
@@ -213,10 +213,17 @@ const Validator = [
     // PET-CT:
     body('injection.pet_ct').optional(),
 
-    body('injection.batch')
+    body('injection.pet_ct.laboratory_user')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
+        .trim()
+        .isMongoId()
+        .withMessage('El parametro injection.pet_ct.laboratory_user NO es un ID MongoDB válido.'),
+
+    body('injection.pet_ct.batch')
+        .if(body('injection.pet_ct').exists())   // Check if parent exists.
         .optional()
         .trim()
-        .isLength({ min: 10, max: 30 })
+        .isLength({ min: 3, max: 30 })
         .withMessage('El parametro injection.pet_ct.batch ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
 
     body('injection.pet_ct.syringe_activity_full')

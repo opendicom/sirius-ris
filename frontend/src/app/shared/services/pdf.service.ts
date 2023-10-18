@@ -9,7 +9,10 @@ import { map } from 'rxjs/operators';                                           
 import { regexObjectId } from '@env/environment';                                       // Enviroments
 
 //PDF Make:
+// Note: Use ts-ignore comment to suppress PDFMake declarations errors.
+// @ts-ignore
 import * as pdfMake from "pdfmake/build/pdfmake";
+// @ts-ignore
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 

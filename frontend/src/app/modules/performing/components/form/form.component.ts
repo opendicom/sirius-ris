@@ -55,7 +55,7 @@ export class FormComponent implements OnInit {
 
   //Initialize Service Users:
   public technicianServiceUsers : any[] = [];
-  public injectionServiceUsers  : any[] = [];
+  public injectionServiceUsers  : any[] = []; // In this case injections user includes lab users (who prepares the injection).
 
   //Boolean class binding objects:
   public booleanAnesthesia      : Boolean = false;
@@ -152,6 +152,7 @@ export class FormComponent implements OnInit {
           'administred_activity_mCi'  : [ '' ],
           'syringe_full_time'         : [ '' ],
           'syringe_empty_time'        : [ '' ],
+          'laboratory_user'           : [ '' ]
         })
       }),
 
@@ -284,6 +285,7 @@ export class FormComponent implements OnInit {
                   'administred_activity_mCi'  : [ '' ],
                   'syringe_full_time'         : [ '' ],
                   'syringe_empty_time'        : [ '' ],
+                  'laboratory_user'           : [ '' ]
                 })
               }),
 
@@ -328,6 +330,7 @@ export class FormComponent implements OnInit {
                 this.form.get('injection.pet_ct.administred_activity')?.setValue(resPerforming.data[0].injection.pet_ct.administred_activity);
                 this.form.get('injection.pet_ct.syringe_full_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_full_time);
                 this.form.get('injection.pet_ct.syringe_empty_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_empty_time);
+                this.form.get('injection.pet_ct.laboratory_user')?.setValue(resPerforming.data[0].injection.pet_ct.laboratory_user._id);
 
                 //Convert MBq to mCi and set mCi into fields values:
                 this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(this.sharedFunctions.MBqTomCi(resPerforming.data[0].injection.pet_ct.administred_activity));
@@ -859,6 +862,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_full_time')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_empty_time')?.setValidators([Validators.required]);
+            this.form.get('injection.pet_ct.laboratory_user')?.setValidators([Validators.required]);
             this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
@@ -867,6 +871,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.laboratory_user')?.updateValueAndValidity();
 
             //Enable PET inputs:
             this.form.get('injection.pet_ct.batch')?.enable();
@@ -878,6 +883,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.enable();
             this.form.get('injection.pet_ct.syringe_full_time')?.enable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.enable();
+            this.form.get('injection.pet_ct.laboratory_user')?.enable();
             break;
 
           case 'remove':
@@ -890,6 +896,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_full_time')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_empty_time')?.clearValidators();
+            this.form.get('injection.pet_ct.laboratory_user')?.clearValidators();
             this.form.get('injection.pet_ct.syringe_activity_full')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_full_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_activity_empty')?.updateValueAndValidity();
@@ -898,6 +905,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_full_time')?.updateValueAndValidity();
             this.form.get('injection.pet_ct.syringe_empty_time')?.updateValueAndValidity();
+            this.form.get('injection.pet_ct.laboratory_user')?.updateValueAndValidity();
 
             //Disable PET inputs:
             this.form.get('injection.pet_ct.batch')?.disable();
@@ -909,6 +917,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.administred_activity_mCi')?.disable();
             this.form.get('injection.pet_ct.syringe_full_time')?.disable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.disable();
+            this.form.get('injection.pet_ct.laboratory_user')?.disable();
             break;
         }
         break;

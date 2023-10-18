@@ -94,6 +94,11 @@ module.exports = async (req, res, currentSchema, operation) => {
         //Nested references:
         if(req.body.injection){
             if(req.body.injection.injection_user){ referencedElements.push([ req.body.injection.injection_user, 'users' ]); }    
+
+            //PET-CT | Laboratory user:
+            if(req.body.injection.pet_ct){
+                if(req.body.injection.pet_ct.laboratory_user){ referencedElements.push([ req.body.injection.pet_ct.laboratory_user, 'users' ]); }    
+            }
         }
 
         if(req.body.acquisition){

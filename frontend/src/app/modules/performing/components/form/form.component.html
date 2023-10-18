@@ -228,17 +228,17 @@
                     <mat-label>Responsable de inyección</mat-label>
                     <mat-select formControlName="injection_user" placeholder="Seleccione el responsable de inyección">
                       <span *ngIf="this.injectionServiceUsers">
-                        <div *ngFor="let currentConsoleTechnician of this.injectionServiceUsers">
-                          <mat-option value="{{ currentConsoleTechnician._id }}">
+                        <div *ngFor="let currentInjectionUser of this.injectionServiceUsers">
+                          <mat-option value="{{ currentInjectionUser._id }}">
                             <!--names-->
-                            {{ currentConsoleTechnician.person.name_01 }}
-                            <span *ngIf="currentConsoleTechnician.person.name_02">
-                              {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                            {{ currentInjectionUser.person.name_01 }}
+                            <span *ngIf="currentInjectionUser.person.name_02">
+                              {{ ' ' + currentInjectionUser.person.name_02 }}
                             </span>
                             <!--surnames-->
-                            {{ ' ' + currentConsoleTechnician.person.surname_01 }}
-                            <span *ngIf="currentConsoleTechnician.person.surname_02">
-                              {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                            {{ ' ' + currentInjectionUser.person.surname_01 }}
+                            <span *ngIf="currentInjectionUser.person.surname_02">
+                              {{ ' ' + currentInjectionUser.person.surname_02 }}
                             </span>
                           </mat-option>
                         </div>
@@ -355,6 +355,31 @@
                       </div> <!-- end fxLayout wrapper -->
                     </div>
 
+                    <hr class="dashed" /><br/>
+                    
+                    <h4>Responsable de laboratorio:</h4>
+                    <mat-form-field appearance="fill" class="large">
+                      <mat-label>Responsable de laboratorio</mat-label>
+                      <mat-select formControlName="laboratory_user" placeholder="Seleccione el responsable de laboratorio">
+                        <span *ngIf="this.injectionServiceUsers">
+                          <div *ngFor="let currentLaboratoryUser of this.injectionServiceUsers">
+                            <mat-option value="{{ currentLaboratoryUser._id }}">
+                              <!--names-->
+                              {{ currentLaboratoryUser.person.name_01 }}
+                              <span *ngIf="currentLaboratoryUser.person.name_02">
+                                {{ ' ' + currentLaboratoryUser.person.name_02 }}
+                              </span>
+                              <!--surnames-->
+                              {{ ' ' + currentLaboratoryUser.person.surname_01 }}
+                              <span *ngIf="currentLaboratoryUser.person.surname_02">
+                                {{ ' ' + currentLaboratoryUser.person.surname_02 }}
+                              </span>
+                            </mat-option>
+                          </div>
+                        </span>
+                      </mat-select>
+                    </mat-form-field>
+                    
                   </div>
                 </div>
               </div> <!-- end fxLayout wrapper -->

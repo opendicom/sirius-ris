@@ -221,7 +221,7 @@ module.exports = async (req, res, currentSchema) => {
         }},
         { $unwind: { path: "$injection.injection_user", preserveNullAndEmptyArrays: true } },
 
-        //Injection technician (User) -> People (Lookup & Unwind):
+        //Injection user (User) -> People (Lookup & Unwind):
         { $lookup: {
             from: 'people',
             localField: 'injection.injection_user.fk_person',
@@ -229,6 +229,24 @@ module.exports = async (req, res, currentSchema) => {
             as: 'injection.injection_user.person',
         }},
         { $unwind: { path: "$injection.injection_user.person", preserveNullAndEmptyArrays: true } },
+
+        //PET-CT Laboratory user (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'injection.pet_ct.laboratory_user',
+            foreignField: '_id',
+            as: 'injection.pet_ct.laboratory_user',
+        }},
+        { $unwind: { path: "$injection.pet_ct.laboratory_user", preserveNullAndEmptyArrays: true } },
+
+        //PET-CT Laboratory user (User) -> People (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'injection.pet_ct.laboratory_user.fk_person',
+            foreignField: '_id',
+            as: 'injection.pet_ct.laboratory_user.person',
+        }},
+        { $unwind: { path: "$injection.pet_ct.laboratory_user.person", preserveNullAndEmptyArrays: true } },
 
         //Acquisition console technician Users (Lookup & Unwind):
         { $lookup: {
@@ -358,6 +376,18 @@ module.exports = async (req, res, currentSchema) => {
             'injection.injection_user.person.updatedAt': 0,
             'injection.injection_user.person.__v': 0,
 
+            //PET-CT Laboratory user:
+            'injection.pet_ct.laboratory_user.fk_person': 0,
+            'injection.pet_ct.laboratory_user.password': 0,
+            'injection.pet_ct.laboratory_user.permissions': 0,
+            'injection.pet_ct.laboratory_user.settings': 0,
+            'injection.pet_ct.laboratory_user.createdAt': 0,
+            'injection.pet_ct.laboratory_user.updatedAt': 0,
+            'injection.pet_ct.laboratory_user.__v': 0,
+            'injection.pet_ct.laboratory_user.person.createdAt': 0,
+            'injection.pet_ct.laboratory_user.person.updatedAt': 0,
+            'injection.pet_ct.laboratory_user.person.__v': 0,
+
             //Acquisition:
             'acquisition.console_technician.fk_person': 0,
             'acquisition.console_technician.password': 0,
@@ -385,6 +415,8 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'patient.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'injection.injection_user');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'injection.injection_user.person');
+        filter = await moduleServices.adjustDataTypes(filter, 'users', 'injection.pet_ct.laboratory_user');
+        filter = await moduleServices.adjustDataTypes(filter, 'people', 'injection.pet_ct.laboratory_user.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'acquisition.console_technician');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'acquisition.console_technician.person');
 

@@ -252,7 +252,7 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
         }},
         { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
 
-        //Performing Injection technician Users (Lookup & Unwind):
+        //Performing Injection Users (Lookup & Unwind):
         { $lookup: {
             from: 'users',
             localField: 'performing.injection.injection_user',
@@ -261,7 +261,7 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
         }},
         { $unwind: { path: "$performing.injection.injection_user", preserveNullAndEmptyArrays: true } },
 
-        //Performing Injection technician (User) -> People (Lookup & Unwind):
+        //Performing Injection (User) -> People (Lookup & Unwind):
         { $lookup: {
             from: 'people',
             localField: 'performing.injection.injection_user.fk_person',
@@ -269,6 +269,24 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             as: 'performing.injection.injection_user.person',
         }},
         { $unwind: { path: "$performing.injection.injection_user.person", preserveNullAndEmptyArrays: true } },
+
+        //Performing PET-CT Laboratory user (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'performing.injection.pet_ct.laboratory_user',
+            foreignField: '_id',
+            as: 'performing.injection.pet_ct.laboratory_user',
+        }},
+        { $unwind: { path: "$performing.injection.pet_ct.laboratory_user", preserveNullAndEmptyArrays: true } },
+
+        //Performing PET-CT Laboratory user (User) -> People (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'performing.injection.pet_ct.laboratory_user.fk_person',
+            foreignField: '_id',
+            as: 'performing.injection.pet_ct.laboratory_user.person',
+        }},
+        { $unwind: { path: "$performing.injection.pet_ct.laboratory_user.person", preserveNullAndEmptyArrays: true } },
 
         //Performing Acquisition console technician Users (Lookup & Unwind):
         { $lookup: {
@@ -487,6 +505,18 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'performing.injection.injection_user.person.createdAt': 0,
             'performing.injection.injection_user.person.updatedAt': 0,
             'performing.injection.injection_user.person.__v': 0,
+
+            //PET-CT Laboratory user:
+            'performing.injection.pet_ct.laboratory_user.fk_person': 0,
+            'performing.injection.pet_ct.laboratory_user.password': 0,
+            'performing.injection.pet_ct.laboratory_user.permissions': 0,
+            'performing.injection.pet_ct.laboratory_user.settings': 0,
+            'performing.injection.pet_ct.laboratory_user.createdAt': 0,
+            'performing.injection.pet_ct.laboratory_user.updatedAt': 0,
+            'performing.injection.pet_ct.laboratory_user.__v': 0,
+            'performing.injection.pet_ct.laboratory_user.person.createdAt': 0,
+            'performing.injection.pet_ct.laboratory_user.person.updatedAt': 0,
+            'performing.injection.pet_ct.laboratory_user.person.__v': 0,
 
             //Acquisition:
             'performing.acquisition.console_technician.fk_person': 0,
@@ -1075,6 +1105,24 @@ async function setLogos(fk_performing){
         }},
         { $unwind: { path: "$injection.injection_user.person", preserveNullAndEmptyArrays: true } },
 
+        //PET-CT Laboratory user (Lookup & Unwind):
+        { $lookup: {
+            from: 'users',
+            localField: 'injection.pet_ct.laboratory_user',
+            foreignField: '_id',
+            as: 'injection.pet_ct.laboratory_user',
+        }},
+        { $unwind: { path: "$injection.pet_ct.laboratory_user", preserveNullAndEmptyArrays: true } },
+
+        //PET-CT Laboratory user (User) -> People (Lookup & Unwind):
+        { $lookup: {
+            from: 'people',
+            localField: 'injection.pet_ct.laboratory_user.fk_person',
+            foreignField: '_id',
+            as: 'injection.pet_ct.laboratory_user.person',
+        }},
+        { $unwind: { path: "$injection.pet_ct.laboratory_user.person", preserveNullAndEmptyArrays: true } },
+
         //Acquisition console technician Users (Lookup & Unwind):
         { $lookup: {
             from: 'users',
@@ -1202,6 +1250,18 @@ async function setLogos(fk_performing){
             'injection.injection_user.person.createdAt': 0,
             'injection.injection_user.person.updatedAt': 0,
             'injection.injection_user.person.__v': 0,
+
+            //PET-CT Laboratory user:
+            'injection.pet_ct.laboratory_user.fk_person': 0,
+            'injection.pet_ct.laboratory_user.password': 0,
+            'injection.pet_ct.laboratory_user.permissions': 0,
+            'injection.pet_ct.laboratory_user.settings': 0,
+            'injection.pet_ct.laboratory_user.createdAt': 0,
+            'injection.pet_ct.laboratory_user.updatedAt': 0,
+            'injection.pet_ct.laboratory_user.__v': 0,
+            'injection.pet_ct.laboratory_user.person.createdAt': 0,
+            'injection.pet_ct.laboratory_user.person.updatedAt': 0,
+            'injection.pet_ct.laboratory_user.person.__v': 0,
 
             //Acquisition:
             'acquisition.console_technician.fk_person': 0,

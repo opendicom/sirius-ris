@@ -225,7 +225,7 @@ module.exports = async (req, res) => {
             }},
             { $unwind: { path: "$injection.injection_user", preserveNullAndEmptyArrays: true } },
 
-            //Injection technician (User) -> People (Lookup & Unwind):
+            //Injection user (User) -> People (Lookup & Unwind):
             { $lookup: {
                 from: 'people',
                 localField: 'injection.injection_user.fk_person',
@@ -233,6 +233,24 @@ module.exports = async (req, res) => {
                 as: 'injection.injection_user.person',
             }},
             { $unwind: { path: "$injection.injection_user.person", preserveNullAndEmptyArrays: true } },
+
+            //PET-CT | Laboratory user (Lookup & Unwind):
+            { $lookup: {
+                from: 'users',
+                localField: 'injection.pet_ct.laboratory_user',
+                foreignField: '_id',
+                as: 'injection.pet_ct.laboratory_user',
+            }},
+            { $unwind: { path: "$injection.pet_ct.laboratory_user", preserveNullAndEmptyArrays: true } },
+
+            //PET-CT | Laboratory user (User) -> People (Lookup & Unwind):
+            { $lookup: {
+                from: 'people',
+                localField: 'injection.pet_ct.laboratory_user.fk_person',
+                foreignField: '_id',
+                as: 'injection.pet_ct.laboratory_user.person',
+            }},
+            { $unwind: { path: "$injection.pet_ct.laboratory_user.person", preserveNullAndEmptyArrays: true } },
 
             //Acquisition console technician Users (Lookup & Unwind):
             { $lookup: {
