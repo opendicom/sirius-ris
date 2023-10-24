@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
+import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
 import { mainSettings } from '@assets/main.settings';                                   // Main settings
@@ -24,22 +25,35 @@ export class SigninComponent implements OnInit {
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
+  //Initializate full status information controller:
+  public GET_full_status: any = false;
+
   //Inject services to the constructor:
   constructor(
     private userAuth: UsersAuthService,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    private objRoute: ActivatedRoute
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
   }
 
   ngOnInit(): void {
-    //Logout if is entered in this component:
-    this.userAuth.userLogout();
+    //Extract sent data (GET parameters):
+    this.GET_full_status = this.sharedFunctions.stringToBoolean(this.objRoute.snapshot.queryParams['full_status']);
 
-    //Refresh isLoged value not display the toolbar and sidebar:
-    this.sharedProp.checkIsLogged();
+    //Check full status info:
+    if(this.GET_full_status){
+      //Remove token manually (Prevent redirect to /signin without GET params):
+      this.userAuth.removeToken();
+    } else {
+      //Logout if is entered in this component:
+      this.userAuth.userLogout();
+
+      //Refresh isLoged value not display the toolbar and sidebar:
+      this.sharedProp.checkIsLogged();
+    }
   }
 
   onSubmit(form_data: NgForm): void {

@@ -40,4 +40,38 @@
       </mat-select>
     </mat-form-field>
   </div>
+
+  <div *ngIf="GET_full_status && settings != undefined"><!--Full status information-->
+    <br/><hr class="dashed" />
+    <strong>AJUSTES PRINCIPALES</strong>
+    <hr class="dashed" />
+    <div fxLayout="row" fxLayoutAlign="start start">
+      <div class="input-wrapper text-left divider-alt"> <!-- start fxLayout wrapper -->
+        <small>
+          Backend URL: {{ settings.backend_url }}<br/>
+          File max size: {{ settings.file_max_size }}<br/>
+          Default page sizes: {{ settings.default_page_sizes }}<br/>
+          Check-in default size: {{ settings.check_in_default_size }}<br/>
+        </small>
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper text-left divider-alt"> <!-- start fxLayout wrapper -->
+        <small>
+          Default country: {{ settings.default_country }}<br/>
+          Default country isoCode: {{ settings.default_country_isoCode }}
+          Default country name: {{ settings.default_country_name }}<br/>
+          Default state isoCode: {{ settings.default_state_isoCode }}<br/>
+        </small>
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper text-left"> <!-- start fxLayout wrapper -->
+        <small>
+          Default state name: {{ settings.default_state_name }}<br/>
+          Default city name: {{ settings.default_city_name }}<br/>
+          Default document type: {{ settings.default_doc_type }}<br/>
+          Default UTC: {{ settings.default_utc }}
+        </small>
+      </div> <!-- end fxLayout wrapper -->
+    </div>
+  </div>
 </form>
