@@ -9,19 +9,16 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
-import { mainSettings } from '@assets/main.settings';                                       // Main settings
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentsService {
-  public settings         : any = mainSettings.appSettings;
-
   //Get Country State City information (Default settings):
   public allCountries   : any = Country.getAllCountries();
-  public currentStates  : any = State.getStatesOfCountry(this.settings.default_country_isoCode);
-  public currentCities  : any = City.getCitiesOfState(this.settings.default_country_isoCode, this.settings.default_state_isoCode);
+  public currentStates  : any = State.getStatesOfCountry(this.sharedProp.mainSettings.appSettings.default_country_isoCode);
+  public currentCities  : any = City.getCitiesOfState(this.sharedProp.mainSettings.appSettings.default_country_isoCode, this.sharedProp.mainSettings.appSettings.default_state_isoCode);
 
   //Set references objects:
   public availableOrganizations : any;
@@ -140,7 +137,7 @@ export class AppointmentsService {
   findReferringOrganizations(){
     //Set params:
     const params = {
-      'rabc_exclude_code' : this.settings.rabc_exclude_code,
+      'rabc_exclude_code' : this.sharedProp.mainSettings.appSettings.rabc_exclude_code,
       'filter[status]'    : true
     };
 

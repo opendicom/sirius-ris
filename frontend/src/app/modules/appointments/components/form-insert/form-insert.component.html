@@ -1,7 +1,7 @@
 <span *ngIf="this.sharedProp.current_patient && this.sharedProp.current_imaging && this.sharedProp.current_modality && this.sharedProp.current_procedure && this.sharedProp.current_slot && this.sharedProp.current_equipment && this.sharedProp.current_datetime; then thenBlockCurrentObj else elseBlockCurrentObj"></span>
 
 <ng-template #thenBlockCurrentObj>
-  <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="sharedProp.mainSettings != undefined && sharedProp.mainSettings.appSettings != undefined">
     <h2 class="form-title text-center underline-fail-alt">Resumen:</h2>
     <div fxLayout="row" fxLayoutAlign="start start">
 
@@ -275,14 +275,14 @@
 
         <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
         <div [class.unselected]="anamnesisValidator == false">
-          <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+          <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
         </div>
 
         <br/><hr class="dashed" /><br/>
 
         <h4>Indicaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
         <div [class.unselected]="indicationsValidator == false">
-          <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+          <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
         </div>
 
         <br/><hr class="dashed" /><br/>
@@ -624,7 +624,7 @@
 
         <br/><hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
         <br/>
 
         <span *ngIf="getKeys(fileManager.controller.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
@@ -671,7 +671,7 @@
 
         <hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
         <br/>
 
         <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>

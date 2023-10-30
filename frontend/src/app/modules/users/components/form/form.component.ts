@@ -11,7 +11,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
-import { mainSettings } from '@assets/main.settings';                                         // Main settings
 import {                                                                                      // Enviroment
   document_types,
   ISO_3166,
@@ -28,7 +27,6 @@ import {                                                                        
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  public settings         : any = mainSettings.appSettings;
   public country_codes    : any = ISO_3166;
   public document_types   : any = document_types;
   public userRoles        : any = user_roles;
@@ -120,8 +118,8 @@ export class FormComponent implements OnInit {
     this.setReactiveForm({
       //Person fields:
       person: this.formBuilder.group({
-        'doc_country_code'  : [ this.settings.default_country, [Validators.required]],
-        'doc_type'          : [ this.settings.default_doc_type, [Validators.required]],
+        'doc_country_code'  : [ this.sharedProp.mainSettings.appSettings.default_country, [Validators.required]],
+        'doc_type'          : [ this.sharedProp.mainSettings.appSettings.default_doc_type, [Validators.required]],
         'document'          : [ '', [Validators.required]],
         'name_01'           : [ '', [Validators.required]],
         'name_02'           : [ '', []],
@@ -597,8 +595,8 @@ export class FormComponent implements OnInit {
     //Person fields:
     if(preventClear == false){
       this.form.get('person.document')?.setValue('');
-      this.form.get('person.doc_country_code')?.setValue(this.settings.default_country);
-      this.form.get('person.doc_type')?.setValue(this.settings.default_doc_type.toString());
+      this.form.get('person.doc_country_code')?.setValue(this.sharedProp.mainSettings.appSettings.default_country);
+      this.form.get('person.doc_type')?.setValue(this.sharedProp.mainSettings.appSettings.default_doc_type.toString());
     }
     this.form.get('person.name_01')?.setValue('');
     this.form.get('person.name_02')?.setValue('');

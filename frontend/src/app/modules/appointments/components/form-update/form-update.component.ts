@@ -6,7 +6,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import { ISO_3166, document_types, gender_types } from '@env/environment';                  // Enviroments
 
 // Child components:
@@ -25,7 +24,6 @@ export class FormUpdateComponent implements OnInit {
   @ViewChild(TabSlotComponent) tabSlot!:TabSlotComponent;
 
   //Set component properties:
-  public settings             : any = mainSettings.appSettings;
   public country_codes        : any = ISO_3166;
   public document_types       : any = document_types;
   public gender_types         : any = gender_types;

@@ -11,6 +11,9 @@ import { regexObjectId } from '@env/environment';                             //
   providedIn: 'root'
 })
 export class SharedPropertiesService {
+  // mainSettings property is duplicated in the most important services to avoid 
+  // circular dependencies and the content is set in the app.component constructor.
+  public mainSettings   : any = {};
   public isLogged       : boolean = false;
   public userLogged     : any;
   public action         : any;

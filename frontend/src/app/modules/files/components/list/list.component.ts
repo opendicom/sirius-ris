@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { FileManagerService } from '@shared/services/file-manager.service';             // File manager service
-import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import { regexObjectId } from '@env/environment';                                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -96,7 +95,7 @@ export class ListComponent implements OnInit {
       'branch.short_name': 1
     };
     this.sharedProp.sort          = { 'organization.short_name': 1, 'branch.short_name': 1, name: 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

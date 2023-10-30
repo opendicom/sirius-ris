@@ -6,7 +6,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';                                       // MatDialog Data
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
-import { mainSettings } from '@assets/main.settings';                                             // Main settings
 import { ISO_3166, document_types, gender_types } from '@env/environment';                        // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -17,7 +16,6 @@ import { ISO_3166, document_types, gender_types } from '@env/environment';      
 })
 export class AppointmentRequestDetailsComponent implements OnInit {
   //Set component properties:
-  public settings               : any = mainSettings.appSettings;
   public country_codes          : any = ISO_3166;
   public document_types         : any = document_types;
   public gender_types           : any = gender_types;

@@ -1,9 +1,16 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
+
+//---------------------------------------------------------------------------------------------------------------------------//
+// Import AppInitializer:
+// It runs before the application is fully loaded, making it a convenient place to load configuration.
+//---------------------------------------------------------------------------------------------------------------------------//
+import { AppInitializer } from '@app/app-initializer';
+//---------------------------------------------------------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------------------------------------------------------//
 // Import LOCALE_ID to set locale code & language:
@@ -97,6 +104,8 @@ import { ReportsModule } from '@modules/reports/reports.module';
     ReportsModule
   ],
   providers: [
+    AppInitializer,
+    { provide: APP_INITIALIZER, useFactory: (appInitializer: AppInitializer) => appInitializer.initializeApp(), multi: true, deps: [AppInitializer] },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     { provide: LOCALE_ID, useValue: 'es-AR' },
   ],

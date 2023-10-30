@@ -10,7 +10,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { ReportsService } from '@modules/reports/services/reports.service';                 // Reports Services
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
-import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
   ISO_3166, 
   document_types, 
@@ -27,7 +26,6 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormComponent implements OnInit {
   //Set component properties:
-  public settings                       : any = mainSettings.appSettings;
   public country_codes                  : any = ISO_3166;
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;
@@ -44,7 +42,6 @@ export class FormComponent implements OnInit {
   public procedureDescriptionEditor     = customBuildEditor;
   public procedure_findingsEditor       = customBuildEditor;
   public summaryEditor                  = customBuildEditor;
-  public editorConfig                   = mainSettings.CKEditorConfig;
 
   //Create CKEditor validators:
   public clinicalInfoValidator          : boolean = true;
@@ -145,7 +142,7 @@ export class FormComponent implements OnInit {
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:
-      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+      if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
     }
     
     //Set tabIndex with parameters by routing (if exist):

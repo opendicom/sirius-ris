@@ -1,4 +1,4 @@
-<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmitMaster()">
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmitMaster()" *ngIf="sharedProp.mainSettings != undefined">
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
         <h3 class="details-title">Detalles de la realización:</h3>
@@ -218,7 +218,7 @@
                 </div>
 
                 <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
-                <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="editorConfig" data=""></ckeditor>
+                <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
                 
                 <br/><hr class="dashed" /><br/>
 
@@ -454,7 +454,7 @@
                   
                   <h4>Procedimiento realizado <span class="label-info">min: 10, max: 1000</span>:</h4>
                   <div [class.unselected]="anesthesiaValidator == false">
-                    <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="editorConfig" data=""></ckeditor>
+                    <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
                   </div>
                 </div> <!-- end fxLayout wrapper -->
               </div>
@@ -499,7 +499,7 @@
                   </mat-form-field>
 
                   <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
-                  <ckeditor formControlName="observations" #acquisitionObservations [editor]="acquisitionObservationsEditor" [config]="editorConfig" data=""></ckeditor>
+                  <ckeditor formControlName="observations" #acquisitionObservations [editor]="acquisitionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
                   <br/><hr class="dashed"/><br/>
 

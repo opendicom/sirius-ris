@@ -69,12 +69,12 @@
       <br/><hr class="dashed" /><br/>
 
       <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
-      <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+      <ckeditor *ngIf="sharedProp.mainSettings" formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed" /><br/>
 
       <h4>Indicaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
-      <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+      <ckeditor *ngIf="sharedProp.mainSettings" formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed" /><br/>
 
@@ -448,7 +448,7 @@
 
       <br/><hr class="dashed" />
 
-      <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+      <h3 *ngIf="sharedProp.mainSettings != undefined" class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
       <br/>
 
       <span *ngIf="getKeys(fileManager.controller.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
@@ -495,7 +495,7 @@
 
       <hr class="dashed" />
 
-      <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+      <h3 *ngIf="sharedProp.mainSettings.appSettings != undefined" class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
       <br/>
 
       <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>

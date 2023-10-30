@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { HttpClient, HttpEventType } from '@angular/common/http';   // HTTPClient and HttpEventType
-import { Observable } from 'rxjs';                                  // Reactive Extensions (RxJS)
-import { mainSettings } from '@assets/main.settings';               // Main settings
+import { HttpClient, HttpEventType } from '@angular/common/http';               // HTTPClient and HttpEventType
+import { Observable } from 'rxjs';                                              // Reactive Extensions (RxJS)
+import { FileSettingsService } from '@shared/services/file-settings.service';   // File Settings Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -13,10 +13,17 @@ import { mainSettings } from '@assets/main.settings';               // Main sett
 })
 export class ApiClientService {
   //Set backend URL:
-  private backend_url = mainSettings.appSettings.backend_url;
+  private backend_url   : string = '';
+  private file_max_size : number | undefined;
 
   //Inject services to the constructor:
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private fileSettingsService: FileSettingsService) {
+    //Load file settings properties manually (Cannot use public mainSettings properties to avoid circular dependencies):
+    this.fileSettingsService.loadFileSettings().subscribe((settings: any) => {
+      this.backend_url = settings.appSettings.backend_url;
+      this.file_max_size = settings.appSettings.file_max_size;
+    });
+  }
 
   //--------------------------------------------------------------------------------------------------------------------//
   // SEND REQUEST:
@@ -67,7 +74,7 @@ export class ApiClientService {
     //Return Observable:
     return new Observable<any>((observer) => {
       //Check max file size:
-      if(this.bytesToMegaBytes(selectedFile.size) <= mainSettings.appSettings.file_max_size){
+      if(this.file_max_size !== undefined && this.bytesToMegaBytes(selectedFile.size) <= this.file_max_size){
         //Send POST request (multipart form):
         this.http.post(this.backend_url + path, multipartForm, {
           //Set headers:
@@ -92,7 +99,7 @@ export class ApiClientService {
         multipartForm.delete('uploaded_file');
 
         //Send cancelation message:
-        observer.next({ operation_status: 'cancelled', message: 'El archivo que seleccióno excede el límite de tamaño máximo permitido (' + mainSettings.appSettings.file_max_size + ' MB).' });
+        observer.next({ operation_status: 'cancelled', message: 'El archivo que seleccióno excede el límite de tamaño máximo permitido (' + this.file_max_size + ' MB).' });
       }
 
     });

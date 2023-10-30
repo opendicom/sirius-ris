@@ -10,7 +10,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
-import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import { regexObjectId } from '@env/environment';                                           // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -48,7 +47,7 @@ export class TabSlotComponent implements OnInit {
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   //Set FullCalendar Default options:
-  public calendarOptions: CalendarOptions = mainSettings.FullCalendarOptions;
+  public calendarOptions: CalendarOptions = this.sharedProp.mainSettings.FullCalendarOptions;
 
   //Initializate Calendar Resources:
   public calendarResources: any = [];
@@ -351,9 +350,9 @@ export class TabSlotComponent implements OnInit {
               await Promise.all(Object.keys(res.data).map((key) => {
 
                 //Set event colors by default configuration (Enviroment):
-                let backgroundColor = mainSettings.FullCalendarOptions.eventColor;
-                let borderColor = mainSettings.FullCalendarOptions.eventBorderColor;
-                let textColor = mainSettings.FullCalendarOptions.eventTextColor;
+                let backgroundColor = this.sharedProp.mainSettings.FullCalendarOptions.eventColor;
+                let borderColor = this.sharedProp.mainSettings.FullCalendarOptions.eventBorderColor;
+                let textColor = this.sharedProp.mainSettings.FullCalendarOptions.eventTextColor;
 
                 //Set event colors by default configuration (Urgency or not):
                 if(res.data[key].urgency){

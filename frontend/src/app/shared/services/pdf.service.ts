@@ -39,7 +39,7 @@ export class PdfService {
   //Inject services to the constructor:
   constructor(
     public sharedFunctions  : SharedFunctionsService,
-    private apiClient   : ApiClientService,
+    private apiClient       : ApiClientService,
   ) { }
 
   createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined, send_mail: boolean = false, open_document: boolean = true, email_destination: string | undefined = undefined){

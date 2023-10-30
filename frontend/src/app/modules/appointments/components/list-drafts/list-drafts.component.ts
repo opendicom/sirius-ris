@@ -6,7 +6,6 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';                                       // Router and Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
-import { mainSettings } from '@assets/main.settings';                                           // Main settings
 import {                                                                                        // Enviroments
   regexObjectId,
   ISO_3166,
@@ -142,7 +141,7 @@ export class ListDraftsComponent implements OnInit {
       'coordinator.person.surname_02': 1
     };
     this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

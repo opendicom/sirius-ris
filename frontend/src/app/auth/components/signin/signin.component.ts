@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
-import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import { document_types, ISO_3166 } from '@env/environment';                            // Enviroment
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
@@ -18,7 +17,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
-  public settings: any = mainSettings.appSettings;
   public country_codes: any = ISO_3166;
   public document_types: any = document_types;
 

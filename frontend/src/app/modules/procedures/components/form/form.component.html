@@ -1,4 +1,4 @@
-<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="sharedProp.mainSettings != undefined">
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
@@ -105,12 +105,12 @@
       <hr class="dashed"/><br/>
 
       <h4>Preparación <span class="label-info">min: 10, max: 1500</span>:</h4>
-      <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="editorConfig" data=""></ckeditor>
+      <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed"/><br/>
 
       <h4>Plantilla de procedimiento <span class="label-info">min: 10, max: 1500</span>:</h4>
-      <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="editorConfig" data=""></ckeditor>
+      <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
     </div> <!-- end fxLayout wrapper -->
 

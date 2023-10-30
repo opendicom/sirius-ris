@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { map } from 'rxjs/operators';                                                   // Reactive Extensions (RxJS)
-import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import {                                                                                // Enviroments
   regexObjectId, 
   events_log, 
@@ -92,7 +91,7 @@ export class ListByElementComponent implements OnInit {
     this.sharedProp.filterFields  = ['element.details', 'ip_client', 'organization.short_name'];
     this.sharedProp.projection    = {};
     this.sharedProp.sort          = { datetime: -1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

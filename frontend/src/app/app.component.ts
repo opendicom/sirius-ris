@@ -4,7 +4,8 @@ import { Component } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { FileSettingsService } from '@app/shared/services/file-settings.service';       // File Settings Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,6 +19,15 @@ export class AppComponent {
   //Inject services to the constructor (Create first actionProp):
   constructor(
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
-  ) { }
+    public sharedFunctions  : SharedFunctionsService,
+    public fileSettings     : FileSettingsService
+  ) {
+    //Load file settings from JSON main.settings file:
+    this.fileSettings.loadFileSettings().subscribe((fileData) => {
+      //Set file configuration on duplicate properties (More important services to prevent Circular Dependencies):
+      this.sharedFunctions.mainSettings = fileData;
+      this.sharedProp.mainSettings = fileData;
+      this.fileSettings.mainSettings = fileData;
+    });
+  }
 }

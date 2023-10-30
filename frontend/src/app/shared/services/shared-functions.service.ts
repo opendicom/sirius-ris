@@ -1,10 +1,9 @@
-import { Component, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
-import { mainSettings } from '@assets/main.settings';                         // Main settings
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
@@ -30,6 +29,9 @@ import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/a
   providedIn: 'root'
 })
 export class SharedFunctionsService {
+  // mainSettings property is duplicated in the most important services to avoid 
+  // circular dependencies and the content is set in the app.component constructor.
+  public mainSettings       : any = {};
   public response           : any = {};
   public nested_response    : any = {};
   public delete_code        : string = '';
@@ -43,9 +45,10 @@ export class SharedFunctionsService {
 
   //--------------------------------------------------------------------------------------------------------------------//
   // SIMPLE CRYPT:
+  // Duplicated method to prevent circular dependency - [Duplicated method: http-interceptor.service].
   //--------------------------------------------------------------------------------------------------------------------//
   simpleCrypt (message: string): string {
-    const secret_number = mainSettings.appSettings.secret_number;
+    const secret_number = this.mainSettings.appSettings.secret_number;
     let encoded = '';
     for (let i=0; i < message.length; i++) {
       let a = message.charCodeAt(i);
@@ -102,6 +105,7 @@ export class SharedFunctionsService {
 
   //--------------------------------------------------------------------------------------------------------------------//
   // READ TOKEN:
+  // Duplicated method to prevent circular dependency - [Duplicated method: http-interceptor.service].
   //--------------------------------------------------------------------------------------------------------------------//
   readToken(tmp: Boolean = false): string {
     let siriusAuth: any;
@@ -834,7 +838,7 @@ export class SharedFunctionsService {
         }));
 
         //Check max file size:
-        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= mainSettings.appSettings.file_max_size){
+        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= this.mainSettings.appSettings.file_max_size){
           //Save data:
           //Create observable obsSave:
           const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, multipartForm);
@@ -872,7 +876,7 @@ export class SharedFunctionsService {
           }));
   
           //Send cancelation message:
-          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + mainSettings.appSettings.file_max_size + ' MB).');
+          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + this.mainSettings.appSettings.file_max_size + ' MB).');
         }
       }
     } else {
@@ -1227,7 +1231,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   getFriendlyPass(): string {
     //Initialize password:
-    let password = mainSettings.passKeywords[this.getRandomNumber(0, mainSettings.passKeywords.length)];
+    let password = this.mainSettings.passKeywords[this.getRandomNumber(0, this.mainSettings.passKeywords.length)];
 
 
     //Get a random number between 100 and 998:

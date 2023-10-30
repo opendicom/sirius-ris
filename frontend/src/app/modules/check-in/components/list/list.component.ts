@@ -5,7 +5,6 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
-import { mainSettings } from '@assets/main.settings';                                             // Main settings
 import {                                                                                          // Enviroments
   ISO_3166,
   document_types,
@@ -133,7 +132,7 @@ export class ListComponent implements OnInit {
       'contrast'             : 1
     };
     this.sharedProp.sort          = { 'start': 1 };
-    this.sharedProp.pager         = { page_number: 1, page_limit: mainSettings.appSettings.check_in_default_size };
+    this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.check_in_default_size };
 
     //Refresh request params:
     sharedProp.paramsRefresh();

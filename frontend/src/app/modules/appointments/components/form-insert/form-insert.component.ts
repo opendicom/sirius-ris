@@ -9,7 +9,6 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
-import { mainSettings } from '@assets/main.settings';                                       // Main settings
 import {                                                                                    // Enviroments
   regexObjectId,
   ISO_3166,
@@ -28,7 +27,6 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormInsertComponent implements OnInit {
   //Set component properties:
-  public settings           : any = mainSettings.appSettings;
   public country_codes      : any = ISO_3166;
   public document_types     : any = document_types;
   public gender_types       : any = gender_types;
@@ -40,7 +38,6 @@ export class FormInsertComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
-  public editorConfig = mainSettings.CKEditorConfig;
 
   //Create CKEditor validator:
   public anamnesisValidator = true;
@@ -136,9 +133,9 @@ export class FormInsertComponent implements OnInit {
 
       //Current address fields:
       current_address: this.formBuilder.group({
-        country                 : [ this.settings.default_country_name, [Validators.required] ],
-        state                   : [ this.settings.default_state_name, [Validators.required] ],
-        city                    : [ this.settings.default_city_name, [Validators.required] ],
+        country                 : [ this.sharedProp.mainSettings.appSettings.default_country_name, [Validators.required] ],
+        state                   : [ this.sharedProp.mainSettings.appSettings.default_state_name, [Validators.required] ],
+        city                    : [ this.sharedProp.mainSettings.appSettings.default_city_name, [Validators.required] ],
         neighborhood            : [ '', [Validators.required] ],
         address                 : [ '', [Validators.required] ],
       }),
@@ -218,7 +215,7 @@ export class FormInsertComponent implements OnInit {
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:
-      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+      if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
     }
   }
 

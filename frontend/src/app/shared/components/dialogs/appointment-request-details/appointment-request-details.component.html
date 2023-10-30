@@ -34,7 +34,7 @@
   <!-- date -->
   <div class="current-info divider-alt">
     <small>Fecha de solicitud:</small><br/>
-    <span class="current-firts">{{ data.createdAt | date:'dd/MM/yyyy':settings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
+    <span *ngIf="sharedProp.mainSettings.appSettings != undefined" class="current-firts">{{ data.createdAt | date:'dd/MM/yyyy':sharedProp.mainSettings.appSettings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
   </div>
 
   <!-- procedure -->

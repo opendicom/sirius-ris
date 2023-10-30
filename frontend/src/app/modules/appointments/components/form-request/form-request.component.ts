@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { mainSettings } from '@assets/main.settings';                                   // Main settings
 import {                                                                                // Enviroments
   ISO_3166, 
   document_types, 
@@ -24,7 +23,6 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormRequestComponent implements OnInit {
   //Set component properties:
-  public settings               : any = mainSettings.appSettings;
   public country_codes          : any = ISO_3166;
   public document_types         : any = document_types;
   public gender_types           : any = gender_types;
@@ -32,7 +30,6 @@ export class FormRequestComponent implements OnInit {
 
   //Create CKEditor component and configure them:
   public annotationsEditor = customBuildEditor;
-  public editorConfig = mainSettings.CKEditorConfig;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -117,7 +114,7 @@ export class FormRequestComponent implements OnInit {
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:
-      if(!this.editorConfig.toolbar.items.includes('sourceEditing')){ this.editorConfig.toolbar.items.push('sourceEditing'); }
+      if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
     }
   }
 

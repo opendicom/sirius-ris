@@ -1,0 +1,80 @@
+{
+    "appSettings": {
+        "backend_url": "http://localhost:2000/",
+        "rabc_exclude_code": "exclude_code",
+        "secret_number": 1618,
+        "file_max_size": 10,
+        "default_page_sizes": [10, 25, 50, 100],
+        "check_in_default_size": 1000,
+        "default_country": "858",
+        "default_country_isoCode": "UY",
+        "default_country_name": "Uruguay",
+        "default_state_isoCode": "MO",
+        "default_state_name": "Montevideo",
+        "default_city_name": "Montevideo",
+        "default_doc_type": "1",
+        "default_utc": "UTC-3"
+    },
+
+    "passKeywords": ["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"],
+    
+    "FullCalendarOptions": {
+        "schedulerLicenseKey": "GPL-My-Project-Is-Open-Source",
+        "timeZone": "local",
+        "allDaySlot": false,
+        "initialView": "resourceTimeGridWeek",
+        "slotLabelFormat": {
+            "hour": "2-digit",
+            "minute": "2-digit",
+            "meridiem": false
+        },
+        "eventTimeFormat": {
+            "hour": "2-digit",
+            "minute": "2-digit",
+            "meridiem": false
+        },
+        "height": "650px",
+        "slotMinTime": "08:00:00",
+        "slotMaxTime": "18:00:00",
+        "slotDuration": "00:10:00",
+        "eventBorderColor": "#8244ee",
+        "eventColor": "#6130b6",
+        "eventTextColor": "#fff",
+        "headerToolbar": {
+            "start": "datepicker today prev,next view_day,view_week",
+            "center": "title",
+            "end": ""
+        },
+        "resources": [],
+        "events": []
+    },
+
+    "CKEditorConfig": {
+        "toolbar": {
+            "items": [
+                "heading",
+                "|",
+                "alignment",
+                "|",
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "|",
+                "subscript",
+                "superscript",
+                "|",
+                "numberedList",
+                "bulletedList",
+                "|",
+                "findAndReplace",
+                "removeFormat"
+            ],
+            "shouldNotGroupWhenFull": true
+        },
+        "language": {
+            "ui": "es",
+            "content": "es"
+        }
+    }
+}

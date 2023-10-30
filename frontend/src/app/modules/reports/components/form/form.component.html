@@ -1,4 +1,4 @@
-<form class="form-element" [formGroup]="form">
+<form class="form-element" [formGroup]="form" *ngIf="sharedProp.mainSettings != undefined && sharedProp.mainSettings.appSettings != undefined">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
       <h3 class="details-title">Detalles de la realización:</h3>
@@ -175,7 +175,7 @@
         <span *ngIf="reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
         <ng-template #thenBlockSignatures>
           <span *ngFor="let current_signature of reportData.medical_signatures">
-            <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':settings.default_utc }}">
+            <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
               {{ current_signature.user.person.name_01 }}
               <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 
@@ -466,7 +466,7 @@
           <h3 class="underline-ok">Dato clínico: <span class="label-template" matTooltip="Cargar dato clínico" (click)="insertClinicalInfo()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="clinicalInfoValidator == false">
             <span class="label-editor">min: 10, max: 10000</span>
-            <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="editorConfig" data=""></ckeditor>
+            <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           </div>
 
           <br/><hr class="soft-alt" /><br/>
@@ -474,7 +474,7 @@
           <h3 class="underline-ok">Procedimiento: <span class="label-template" matTooltip="Cargar plantilla de procedimiento" (click)="insertProcedureTemplate()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="procedureDescriptionValidator == false">
             <span class="label-editor">min: 10, max: 10000</span>
-            <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="editorConfig" data=""></ckeditor>
+            <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           </div>
 
           <br/><hr class="soft-alt" /><br/>
@@ -485,13 +485,13 @@
           </mat-form-field>
 
           <span class="label-editor">min: 10, max: 10000</span>
-          <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="editorConfig" data=""></ckeditor>
+          <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
           <br/><hr class="soft-alt" /><br/>
 
           <h3 class="underline-ok">En suma:</h3>
           <span class="label-editor">min: 10, max: 10000</span>
-          <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="editorConfig" data=""></ckeditor>
+          <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           
           <br/>
         </div> <!-- end fxLayout wrapper -->
@@ -527,7 +527,7 @@
       </ng-template>
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper">
-          <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ settings.file_max_size }} MB</span>:</h3>
+          <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
           <br/>
               
           <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
@@ -581,7 +581,7 @@
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title">
                   Fecha de creación: 
-                  <span class="label-accent">{{ current_report.createdAt | date:'dd/MM/yyyy HH:mm':settings.default_utc }}</span><br/>
+                  <span class="label-accent">{{ current_report.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}</span><br/>
 
                   Autenticado por: 
                   <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
@@ -594,7 +594,7 @@
 
                   Firmado por:
                   <span *ngFor="let current_signature of current_report.medical_signatures">
-                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':settings.default_utc }}">
+                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
                       {{ current_signature.user.person.name_01 }}
                       <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 
