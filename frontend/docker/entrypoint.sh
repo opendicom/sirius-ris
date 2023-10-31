@@ -46,8 +46,8 @@ export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalip
 # ------------------------------------------------------------------------------------- #
 
 # Create main.settings file based on template with environment variables:
-find "/docker/" -follow -type f -name "main.settings.template" -print | while read -r template; do
-   envsubst < "$template" > /usr/share/nginx/html/assets/main.settings.ts
+find "/docker/" -follow -type f -name "main-settings.template" -print | while read -r template; do
+   envsubst < "$template" > /usr/share/nginx/html/assets/main-settings.json
 done
 
 exec "$@"
