@@ -1,7 +1,7 @@
 # MongoDB server settings:
 db:
-  #host: 'localhost'
-  host: 'opendicom_sirius_db'
+  host: 'localhost'
+  #host: 'opendicom_sirius_db'
   port: 27017
   user: 'sirius_user'
   pass: 'sirius_pass'
@@ -23,9 +23,9 @@ wezen:
 webserver:
   host            : 'localhost'
   http_enabled    : true
-  http_port       : 3000
+  http_port       : 2000
   https_enabled   : false
-  https_port      : 3001
+  https_port      : 2001
 
 # Mail server settings:
 # Allowed mail types: 'gmail', 'other'.

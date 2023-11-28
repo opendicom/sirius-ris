@@ -16,6 +16,7 @@ const mainMiddlewares = require('../../main.middlewares');
 //Import Handlers:
 const findHandler   = require('./handlers/find');
 const saveHandler   = require('./handlers/save');
+const fastHandler   = require('./handlers/fast.insert');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -67,6 +68,18 @@ router.post(
     (req, res) => {
         //Send to handler:
         saveHandler(req, res, performing, 'insert');
+    }
+);
+
+//FAST INSERT:
+router.post(
+    '/fast-insert',
+    //mainMiddlewares.checkJWT,
+    //mainMiddlewares.roleAccessBasedControl,
+    //performing.Validator,
+    (req, res) => {
+        //Send to handler:
+        fastHandler(req, res);
     }
 );
 
