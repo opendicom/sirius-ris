@@ -14,7 +14,7 @@ It corresponds to the implementation of a mechanism to prevent 2 security aspect
 
 
 
-The **Access Control** can be configured from the **environment variables** detailed in the [deployment section](../01_deployment.md).
+The **Access Control** can be configured from the **environment variables** detailed in the [deployment section](./01_deployment.md).
 
 ```bash
 # Maximum number (AC_NUMBER_OF_ATTEMPTS) of requests that a client IP can make in AC_TIME_WINDOW time.
