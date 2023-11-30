@@ -20,7 +20,7 @@ The **Sirius RIS** stack is made up of three simple elements:
 
 
 
-## Integración con Wezen
+## Communication with Wezen
 
 The numbers in the diagram represents the steps in the communication sequence.
 
@@ -152,8 +152,6 @@ Throughout the entire **Sirius RIS** application, reference is made on many occa
 
 
 ### Concesiones para usuarios
-
-
 
 | Indice | Concesión                                      |
 | ------ | ---------------------------------------------- |
