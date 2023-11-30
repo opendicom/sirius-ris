@@ -1106,4 +1106,13 @@ export class FormComponent implements OnInit {
     //Set field value:
     this.form.get('injection.pet_ct.' + destinationFieldName)?.setValue(activity);
   }
+
+  setAdministredActivity(activityMBq: any){
+    //Set activity to mCI (convert):
+    const activitymCI = this.sharedFunctions.MBqTomCi(activityMBq);
+
+    //Set fiel values:
+    this.form.get('injection.pet_ct.administred_activity')?.setValue(activityMBq);
+    this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(activitymCI);
+  }
 }

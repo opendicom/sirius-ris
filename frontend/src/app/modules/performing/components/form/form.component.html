@@ -273,6 +273,7 @@
                         <span class="badge-warn badge-dose MBq">{{ sharedProp.recomended_dose }} MBq</span>
                         <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(sharedProp.recomended_dose) }} mCi</span>
                         <div class="clear"></div>
+                        <small><button mat-flat-button color="accent" (click)="setAdministredActivity(sharedProp.recomended_dose)" class="small_button" type="button">ASIGNAR DOSIS RECOMENDADA</button></small>
                         <br/>
                         <small>Dósis recomendada <strong>=</strong> Peso <strong>*</strong> Coeficiente de procedimiento</small>
                       </div> <!-- end fxLayout wrapper -->

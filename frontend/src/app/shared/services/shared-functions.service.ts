@@ -48,7 +48,15 @@ export class SharedFunctionsService {
   // Duplicated method to prevent circular dependency - [Duplicated method: http-interceptor.service].
   //--------------------------------------------------------------------------------------------------------------------//
   simpleCrypt (message: string): string {
-    const secret_number = this.mainSettings.appSettings.secret_number;
+    //Initialize secret number with default value until file content is loaded:
+    let secret_number = 1618;
+
+    //Set secret number with file settings:
+    if(this.mainSettings !== undefined && this.mainSettings.appSettings !== undefined){
+      secret_number = this.mainSettings.appSettings.secret_number;
+    }
+
+    //Encode:
     let encoded = '';
     for (let i=0; i < message.length; i++) {
       let a = message.charCodeAt(i);
@@ -56,6 +64,27 @@ export class SharedFunctionsService {
       encoded = encoded+String.fromCharCode(b);
     }
     return encoded;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DECODE LOCAL FILE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  decodeFile(fileName: string): any{
+    let objFile: any;
+
+    //Get encoded local file content:
+    objFile = localStorage.getItem(fileName);
+
+    //Decode content:
+    objFile = this.simpleCrypt(objFile);
+
+    //Parse to JS object:
+    objFile = JSON.parse(objFile);
+
+    //Return decoded and parsed object:
+    return objFile;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -108,7 +137,6 @@ export class SharedFunctionsService {
   // Duplicated method to prevent circular dependency - [Duplicated method: http-interceptor.service].
   //--------------------------------------------------------------------------------------------------------------------//
   readToken(tmp: Boolean = false): string {
-    let siriusAuth: any;
     let fileName: String;
 
     //Set file name:
@@ -118,17 +146,8 @@ export class SharedFunctionsService {
       fileName = 'sirius_auth';
     }
 
-    //Get encoded local file content:
-    siriusAuth = localStorage.getItem(fileName.toString());
-
-    //Decode content:
-    siriusAuth = this.simpleCrypt(siriusAuth);
-
-    //Parse to JS object:
-    siriusAuth = JSON.parse(siriusAuth);
-
     //Get token:
-    return siriusAuth.token;
+    return this.decodeFile(fileName.toString()).token;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -147,14 +166,8 @@ export class SharedFunctionsService {
       fileName = 'sirius_auth';
     }
 
-    //Get encoded local file content:
-    siriusAuth = localStorage.getItem(fileName.toString());
-
-    //Decode content:
-    siriusAuth = this.simpleCrypt(siriusAuth);
-
-    //Parse to JS object:
-    siriusAuth = JSON.parse(siriusAuth);
+    //Decode file:
+    siriusAuth = this.decodeFile(fileName.toString());
 
     //Delete object's token property:
     delete siriusAuth.token;

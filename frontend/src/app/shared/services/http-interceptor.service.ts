@@ -54,14 +54,8 @@ export class HttpInterceptorService implements HttpInterceptor {
       fileName = 'sirius_auth';
     }
 
-    //Get encoded local file content:
-    siriusAuth = localStorage.getItem(fileName.toString());
-
-    //Decode content:
-    siriusAuth = this.simpleCrypt(siriusAuth);
-
-    //Parse to JS object:
-    siriusAuth = JSON.parse(siriusAuth);
+    //Decode file:
+    siriusAuth = this.decodeFile(fileName.toString());
 
     //Get token:
     return siriusAuth.token;
@@ -89,6 +83,28 @@ export class HttpInterceptorService implements HttpInterceptor {
       encoded = encoded+String.fromCharCode(b);
     }
     return encoded;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DECODE LOCAL FILE:
+  // [Duplicated method: shared-functions.service].
+  //--------------------------------------------------------------------------------------------------------------------//
+  decodeFile(fileName: string): any{
+    let objFile: any;
+
+    //Get encoded local file content:
+    objFile = localStorage.getItem(fileName);
+
+    //Decode content:
+    objFile = this.simpleCrypt(objFile);
+
+    //Parse to JS object:
+    objFile = JSON.parse(objFile);
+
+    //Return decoded and parsed object:
+    return objFile;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }
