@@ -247,6 +247,8 @@
                   </mat-form-field>
                 </div>
 
+                <br/>
+
               </div> <!-- end fxLayout wrapper -->
       
               <div class="input-wrapper text-center" [class.non-display]="sharedProp.current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
@@ -273,28 +275,8 @@
                         <span class="badge-warn badge-dose MBq">{{ sharedProp.recomended_dose }} MBq</span>
                         <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(sharedProp.recomended_dose) }} mCi</span>
                         <div class="clear"></div>
-                        <small><button mat-flat-button color="accent" (click)="setAdministredActivity(sharedProp.recomended_dose)" class="small_button" type="button">ASIGNAR DOSIS RECOMENDADA</button></small>
                         <br/>
                         <small>Dósis recomendada <strong>=</strong> Peso <strong>*</strong> Coeficiente de procedimiento</small>
-                      </div> <!-- end fxLayout wrapper -->
-                    </div>
-                    <hr class="dashed" /><br/>
-
-                    <div fxLayout="row" fxLayoutAlign="start start">
-                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                        <h4>Actividad administrada <span class="label-info MBq">MBq</span>:</h4>
-                        <mat-form-field appearance="fill" class="full">
-                          <mat-label>Actividad administrada MBq</mat-label>
-                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity_mCi', 'mCi')" type="text" matInput formControlName="administred_activity" min="1" max="900">
-                        </mat-form-field>
-                      </div> <!-- end fxLayout wrapper -->
-
-                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                        <h4>Actividad administrada <span class="label-info mCi">mCi</span>:</h4>
-                        <mat-form-field appearance="fill" class="full">
-                          <mat-label>Actividad administrada mCi</mat-label>
-                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity', 'MBq')" type="text" matInput formControlName="administred_activity_mCi" min="1" max="900">
-                        </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>
 
@@ -352,6 +334,31 @@
                         <mat-form-field appearance="fill" class="full">
                           <mat-label>Actividad jeringa vacía mCi</mat-label>
                           <input icNumbersWD (keyup)="convertActivity($event, 'syringe_activity_empty', 'MBq')" type="text" matInput formControlName="syringe_activity_empty_mCi" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+                    </div>
+
+                    <hr class="dashed" /><br/>
+
+                    <small><button mat-flat-button color="accent" (click)="setAdministredActivity()" class="small_button" type="button">
+                      <mat-icon class="tab-icon">vaccines</mat-icon> CALCULAR DOSIS ADMINISTRADA &nbsp;
+                    </button></small>
+
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info MBq">MBq</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada MBq</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity_mCi', 'mCi')" type="text" matInput formControlName="administred_activity" min="1" max="900">
+                        </mat-form-field>
+                      </div> <!-- end fxLayout wrapper -->
+
+                      <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+                        <h4>Actividad administrada <span class="label-info mCi">mCi</span>:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                          <mat-label>Actividad administrada mCi</mat-label>
+                          <input icNumbersWD (keyup)="convertActivity($event, 'administred_activity', 'MBq')" type="text" matInput formControlName="administred_activity_mCi" min="1" max="900">
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
                     </div>

@@ -1107,12 +1107,26 @@ export class FormComponent implements OnInit {
     this.form.get('injection.pet_ct.' + destinationFieldName)?.setValue(activity);
   }
 
-  setAdministredActivity(activityMBq: any){
-    //Set activity to mCI (convert):
-    const activitymCI = this.sharedFunctions.MBqTomCi(activityMBq);
+  setAdministredActivity(){
+    //Get activity values:
+    const syringeActivityFullMBq = this.form.get('injection.pet_ct.syringe_activity_full')?.value;
+    const syringeActivityEmptyMBq = this.form.get('injection.pet_ct.syringe_activity_empty')?.value;
+    
+    //Check activity values:
+    if(syringeActivityFullMBq !== undefined && syringeActivityFullMBq !== null && syringeActivityFullMBq !== '' && syringeActivityFullMBq !== 'NaN' && syringeActivityEmptyMBq !== undefined && syringeActivityEmptyMBq !== null && syringeActivityEmptyMBq !== '' && syringeActivityEmptyMBq !== 'NaN'){
+      //Calculate Administred activity in MBq:
+      const administredAtivityMBq = parseFloat(syringeActivityFullMBq) - parseFloat(syringeActivityEmptyMBq);
 
-    //Set fiel values:
-    this.form.get('injection.pet_ct.administred_activity')?.setValue(activityMBq);
-    this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(activitymCI);
+      //Set Administred activity to mCI (convert):
+      const administredActivitymCI = this.sharedFunctions.MBqTomCi(administredAtivityMBq);
+
+      //Set fiel values:
+      this.form.get('injection.pet_ct.administred_activity')?.setValue(administredAtivityMBq.toFixed(2));
+      this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(administredActivitymCI);
+    } else {
+      //Send warning message:
+      this.sharedFunctions.sendMessage('Advertencia: Para calcular la dosis administrada se requiere llenar correctamente los valores "Actividad jeringa llena" y "Actividad jeringa vacía"')
+    }
+    
   }
 }
