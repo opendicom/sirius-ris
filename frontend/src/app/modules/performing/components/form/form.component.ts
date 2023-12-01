@@ -1027,7 +1027,7 @@ export class FormComponent implements OnInit {
         }
 
         //Find service users (Técnicos):
-        this.setServiceUsers(resAppointments.data[0].imaging.service._id, 5);
+        await this.setServiceUsers(resAppointments.data[0].imaging.service._id, 5);
 
         //Find service users (Enfermeros):
         this.setServiceUsers(resAppointments.data[0].imaging.service._id, 6);
@@ -1049,8 +1049,8 @@ export class FormComponent implements OnInit {
     });
   }
 
-  setServiceUsers(fk_service: string, user_role: number){
-    this.sharedFunctions.findServiceUsers(fk_service, user_role, (resServiceUsers) => {
+  async setServiceUsers(fk_service: string, user_role: number){
+    this.sharedFunctions.findServiceUsers(fk_service, user_role, async(resServiceUsers) => {
       //Check data:
       if(resServiceUsers.data.length > 0){
         //Set service users by user roles:
@@ -1058,7 +1058,7 @@ export class FormComponent implements OnInit {
           //Técnicos:
           case 5:
             //Set technician users:
-            this.technicianServiceUsers = resServiceUsers.data;
+            this.technicianServiceUsers = await resServiceUsers.data;
 
             //Set injection users:
             this.injectionServiceUsers  = this.injectionServiceUsers.concat(resServiceUsers.data);
