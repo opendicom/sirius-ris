@@ -40,7 +40,7 @@ services:
 
   opendicom_sirius_backend:
     container_name: opendicom_sirius_backend
-    image: opendicom/sirius-backend:1.0.0-beta.1
+    image: opendicom/sirius-backend:latest
     env_file: ./docker-compose.env
     ports:
       - 2000:2000
@@ -52,7 +52,7 @@ services:
 
   opendicom_sirius_frontend:
     container_name: opendicom_sirius_frontend
-    image: opendicom/sirius-frontend:1.0.0-beta.1
+    image: opendicom/sirius-frontend:latest
     env_file: ./docker-compose.env
     ports:
       - 4000:80
