@@ -29,9 +29,12 @@ const Schema = new mongoose.Schema({
     equipments:         { type: [subSchemaAllowedEquipments], required: true },
     preparation:        { type: String },
     procedure_template: { type: String },
+    report_template:    { type: String },
+    has_interview:      { type: Boolean, required: true },
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
     coefficient:        { type: Number }
+
 },
 { timestamps: true },
 { versionKey: false });
@@ -47,7 +50,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template'];
+const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template', 'report_template'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -112,10 +115,22 @@ const Validator = [
         .isLength({ min: 10, max: 1500 })
         .withMessage('El parametro procedure_template ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
 
+    body('report_template')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 3000 })
+        .withMessage('El parametro report_template ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
+
     body('informed_consent')
         .trim()
         .isBoolean()
         .withMessage('El parametro informed_consent ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
+
+    body('has_interview')
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro has_interview ingresado no es de tipo booleano (verdadero o falso).')
         .toBoolean(),
 
     body('status')

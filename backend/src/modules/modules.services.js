@@ -1071,7 +1071,6 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('procedures');
             affectedCollections.push('slots');
             affectedCollections.push('performing');
-            //affectedCollections.push('procedure_templates');
             break;
 
         case 'slots':
@@ -1086,7 +1085,6 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('performing');
             affectedCollections.push('reports');
-            //affectedCollections.push('procedure_templates');
             break;
 
         case 'appointments':
@@ -2040,6 +2038,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
                 if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
                 if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
+                if(filter[asPrefix + 'has_interview'] != undefined){ filter[asPrefix + 'has_interview'] = mainServices.stringToBoolean(filter[asPrefix + 'has_interview']); };
                 if(filter[asPrefix + 'informed_consent'] != undefined){ filter[asPrefix + 'informed_consent'] = mainServices.stringToBoolean(filter[asPrefix + 'informed_consent']); };
                 if(filter[asPrefix + 'coefficient'] != undefined){ filter[asPrefix + 'coefficient'] = parseFloat(filter[asPrefix + 'coefficient']); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
