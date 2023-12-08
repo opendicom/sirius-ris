@@ -553,6 +553,7 @@
     <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
         <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
+        <button mat-flat-button type="button" color="accent" [disabled]="nextStepButtonDisabled" (click)="onNextStep()" >GUARDAR Y AVANZAR</button>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

@@ -9,6 +9,15 @@ h1 {
   font-size: 33px;
 }
 
+a {
+  color: #d53a9d;
+  text-decoration: none;
+}
+
+.link-alt {
+  color: #ffffff;
+}
+
 .welcome_logo {
   max-width: 150px !important;
   max-height: 100% !important;

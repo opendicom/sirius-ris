@@ -12,6 +12,9 @@ const mainServices  = require('../../main.services');                           
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
 const currentLang   = require('../../main.languages')(mainSettings.language);       // Language Module
 
+//Import Module Services:
+const moduleServices = require('../../modules/modules.services');
+
 //Import schemas:
 const appointments = require('../../modules/appointments/schemas');
 
@@ -41,12 +44,11 @@ module.exports = async (req, res) => {
             //--------------------------------------------------------------------------------------------------------//
             // Patient identifier [PID-3] (00100020):
             // First document:
-            const ID = data[0].patient.person.documents[0].doc_country_code  + '.' + 
-                       data[0].patient.person.documents[0].doc_type  + '.' + 
-                       data[0].patient.person.documents[0].document;
+            const ID = data[0].patient.person.documents[0].document;
 
-            // ID issuer [PID-3.5] (00100021) <optional>:
-            const II = '';
+            // ID issuer [PID-3.5] (00100021):
+            // Document type according to the organization in charge of the digital medical history repository of the region.
+            const II = moduleServices.setIDIssuer(data[0].reporting.organization.country_code, data[0].patient.person.documents[0].doc_country_code, data[0].patient.person.documents[0].doc_type);
 
             // Patient name [PID-5] (00100010):
             // Name format: surname_01>surname_02^name_01 name_02
@@ -123,7 +125,7 @@ module.exports = async (req, res) => {
             // AET equipment.
             const AE = data[0].slot.equipment.AET;
 
-            // Scheduled Station Name (0040,0010) <optional> (unknown):
+            // Scheduled Station Name (0040,0010) <optional>:
             // The first component of this field is a string that identifies the particular piece of equipment. 
             const SSN = data[0].slot.equipment.name;
             
@@ -142,17 +144,15 @@ module.exports = async (req, res) => {
             // UI studyUID [ZDS-1] (0020000D):
             const UI = data[0].study_iuid;
             //--------------------------------------------------------------------------------------------------------//
-            
 
-// SEGMENT:
-// IPC|||||||${ SSN }^^^
 
 //--------------------------------------------------------------------------------------------------------------------//
 // CREATE HL7 MESSAGE:
 // Create message without indentation to avoid sending text tabs.
 //--------------------------------------------------------------------------------------------------------------------//
 const HL7_message = `MSH|^~\\&|||||||ORM^O01|||2.3.1
-PID|||${ ID }^^^^${ II }||${ PN }||${ PB }|${ PS }
+IPC|||||||${ SSN }^^^
+PID|||${ ID }^^^${ II }||${ PN }||${ PB }|${ PS }
 ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
 OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
 ZDS|${ UI }`;

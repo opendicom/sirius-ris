@@ -73,6 +73,9 @@ export class FormComponent implements OnInit {
   //Initializate performing local values:
   public current_flow_state : string = 'P01';
 
+  //Disabled elements:
+  public nextStepButtonDisabled : boolean = false;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -199,14 +202,17 @@ export class FormComponent implements OnInit {
         //In the case 'insert' the _id is fk_appointment.
         this.sharedProp.current_appointment = this.objRoute.snapshot.params['_id'];
 
-        //Set available flow states:
+        //Set available flow states (First time to prevent undefined errors in setFlowState):
         this.setAvailableFlowStates('P01');
 
         //Set flow state (first time | enable validators):
         this.setFlowState('P01');
 
         //Find referenced appointment:
-        this.findReferencedAppointment('check-in');
+        this.findReferencedAppointment('check-in', (resAppointments) => {
+          //Set available flow states:
+          this.setAvailableFlowStates('P01', resAppointments.data[0].procedure.has_interview);
+        });
 
         break;
 
@@ -250,7 +256,7 @@ export class FormComponent implements OnInit {
             });
 
             //Set available flow states:
-            this.setAvailableFlowStates(resPerforming.data[0].flow_state);
+            this.setAvailableFlowStates(resPerforming.data[0].flow_state, resPerforming.data[0].procedure.has_interview);
 
             //Prevent undefined error on CKEditor fields:
             if(resPerforming.data[0].observations == undefined ){ resPerforming.data[0].observations = ''; }
@@ -951,7 +957,7 @@ export class FormComponent implements OnInit {
     }
   }
 
-  async setAvailableFlowStates(currentFS: string){
+  async setAvailableFlowStates(currentFS: string, has_interview: any = undefined){
     //Initialize found flag:
     let foundFlag = false;
 
@@ -961,15 +967,21 @@ export class FormComponent implements OnInit {
       if(currentFS === key || foundFlag){
         //Do not allow P07, P08 and P09 flow_states on insert case (flow_states controlled from backend):
         if(this.form_action == 'insert' && (key == 'P07' || key == 'P08' || key == 'P09')){
-          //Don add currentFS into availableFS.
+          //Don't add currentFS into availableFS.
         } else {
           if((currentFS !== 'P07' && key == 'P07') || (currentFS !== 'P08' && key == 'P08') || (currentFS !== 'P09' && key == 'P09')){
-            //Don add currentFS into availableFS.
+            //Don't add currentFS into availableFS.
           } else {
             //Add current flow state into available flow states:
             this.availableFS[key] = this.performingFS[key];
           }
         }
+
+        //Check if the procedure has an interview or not
+        if(has_interview !== undefined && has_interview === false){
+          //Remove interview from availableFS:
+          delete this.availableFS['P02'];
+        } 
 
         //Set found flag as true:
         foundFlag= true;
@@ -1128,5 +1140,22 @@ export class FormComponent implements OnInit {
       this.sharedFunctions.sendMessage('Advertencia: Para calcular la dosis administrada se requiere llenar correctamente los valores "Actividad jeringa llena" y "Actividad jeringa vacía"')
     }
     
+  }
+
+  onNextStep(){
+    var keys = Object.keys(this.availableFS);
+    var current_position = keys.indexOf(this.current_flow_state);
+
+    //Set next flow state (Validation rules):
+    this.setFlowState(keys[current_position+1]);
+
+    //Change value in form field:
+    this.form.controls['flow_state'].setValue(keys[current_position+1]);
+
+    //Disable button to prevent constantly advancing flow state:
+    this.nextStepButtonDisabled = true;
+
+    //Submit form:
+    this.onSubmitMaster();
   }
 }

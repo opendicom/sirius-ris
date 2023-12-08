@@ -14,7 +14,7 @@
 
 * Opaque interface to preserve radiological environments.
 
-* [**ISO-3166**](https://www.iso.org/iso-3166-country-codes.html) and a system for unambiguous identification of people.
+* Unambiguous identification of people [ [**ISO-3166**](https://www.iso.org/iso-3166-country-codes.html) | **[UNAOID/ICAO v1.0](https://www.unaoid.gub.uy/descargas/especificaciones-identifican-personas.pdf)** ].
 
 * System of **scalable privileges** for users.
 
@@ -50,8 +50,6 @@
 3. [Security](./documentation/03_security.md)
 4. [Sirius Backend `API REST`](./documentation/04_sirius_backend_api_rest.md)
 5. [Sirius Web Module](https://github.com/cpifano/sirius-web)
-6. Flow states
-7. User roles
 
 
 

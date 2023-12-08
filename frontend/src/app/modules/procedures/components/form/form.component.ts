@@ -17,8 +17,9 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormComponent implements OnInit {
   //Create CKEditor component and configure them:
-  public preparationEditor = customBuildEditor;
-  public procedureTemplateEditor = customBuildEditor;
+  public preparationEditor        = customBuildEditor;
+  public procedureTemplateEditor  = customBuildEditor;
+  public reportTemplateEditor     = customBuildEditor;
 
   //Set references objects:
   public availableOrganizations : any;
@@ -83,10 +84,12 @@ export class FormComponent implements OnInit {
       snomed              : [ '' ],
       equipments          : new FormControl({ value: '', disabled: true }, Validators.required),
       fk_modality         : new FormControl({ value: '', disabled: true }, Validators.required),
+      has_interview       : [ 'false' ],
       informed_consent    : [ 'false' ],
       status              : [ 'true' ],
       preparation         : [ '' ],
       procedure_template  : [ '' ],
+      report_template     : [ '' ],
       coefficient         : [ '', [Validators.required] ]
     });
   }
@@ -124,6 +127,7 @@ export class FormComponent implements OnInit {
             //Prevent undefined error on CKEditor fields:
             if(res.data[0].preparation == undefined ){ res.data[0].preparation = ''; }
             if(res.data[0].procedure_template == undefined ){ res.data[0].procedure_template = ''; }
+            if(res.data[0].report_template == undefined ){ res.data[0].report_template = ''; }
 
             //Send data to the form:
             this.setReactiveForm({
@@ -134,9 +138,11 @@ export class FormComponent implements OnInit {
               snomed              : res.data[0].snomed,
               equipments          : new FormControl({ value: [] }, Validators.required),
               status              : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
+              has_interview       : [ `${res.data[0].has_interview}`, [Validators.required]], //Use back tip notation to convert string
               informed_consent    : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
               preparation         : res.data[0].preparation,
               procedure_template  : res.data[0].procedure_template,
+              report_template     : res.data[0].report_template,
               coefficient         : res.data[0].coefficient
             });
 
@@ -308,6 +314,7 @@ export class FormComponent implements OnInit {
 
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+      if(typeof this.form.value.has_interview != "boolean"){ this.form.value.has_interview = this.form.value.has_interview.toLowerCase() == 'true' ? true : false; }
       if(typeof this.form.value.informed_consent != "boolean"){ this.form.value.informed_consent = this.form.value.informed_consent.toLowerCase() == 'true' ? true : false; }
 
       //Data normalization - Equipments array of objects:

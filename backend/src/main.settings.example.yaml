@@ -9,14 +9,14 @@ db:
 
 # Set external PACS data:
 pacs:
-  #host        : 'localhost'
-  host        : 'opendicom_pacs'
+  host        : 'localhost'
+  #host        : 'opendicom_pacs'
   port_mllp   : 2575
 
 # Set Wezen service data:
 wezen:
-  #host        : 'localhost'
-  host        : 'opendicom_wezen'
+  host        : 'localhost'
+  #host        : 'opendicom_wezen'
   port        : 8000
 
 # Web server settings:

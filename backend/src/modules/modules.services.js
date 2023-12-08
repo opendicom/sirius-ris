@@ -4222,6 +4222,46 @@ async function setStudyIUID(req, res) {
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET ID ISSUER:
+// Adaptation of the UNAOID for the ICAO standard.
+//--------------------------------------------------------------------------------------------------------------------//
+function setIDIssuer(organization_country_code, doc_country_code, doc_type){
+    //Set baseIssuerID by region:
+    const baseIssuerID = {
+        //Uruguay:
+        '858' : {
+            // Set medical history organization ID (HCEN):
+            'medical_organization' : '10000675',
+
+            // CEDULA DE IDENTIDAD (ICAO - ID):
+            '1' : '68909',
+
+            // Pasaporte:
+            '2' : '68912',
+
+            // CREDENCIAL CIVICA (ICAO - CC):
+            '3' : '68944',
+
+            // LIBRETA DE CONDUCIR NACIONAL:
+            '4' : '69011',
+
+            // Permiso de residencia | OTRO DOCUMENTO DE IDENTIFICACION PERSONAL:
+            '5' : '69024',
+
+            // Visa | OTRO DOCUMENTO DE IDENTIFICACION PERSONAL:
+            '6' : '69024',
+
+            // Documento transitorio | OTRO DOCUMENTO DE IDENTIFICACION PERSONAL:
+            '7' : '69024'
+        }
+    };
+
+    //Return Issuer:
+    return '2.16.' + doc_country_code + '.2.' + baseIssuerID[organization_country_code]['medical_organization'] + '.' + baseIssuerID[organization_country_code][doc_type];
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // GET COMPLETE DOMAIN:
 //--------------------------------------------------------------------------------------------------------------------//
 async function getCompleteDomain(domain, type){
@@ -4853,6 +4893,7 @@ module.exports = {
     checkObjectId,
     validatePermissions,
     setStudyIUID,
+    setIDIssuer,
     getCompleteDomain,
     isPET,
     setPerformingDate,

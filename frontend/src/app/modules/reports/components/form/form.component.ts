@@ -595,4 +595,15 @@ export class FormComponent implements OnInit {
     //Send message:
     this.sharedFunctions.sendMessage('Plantilla de procedimiento cargada', { duration: 2000 });
   }
+
+  insertReportTemplate(){
+    //Initializate template:
+    let report_template = this.performingData.procedure.report_template;
+
+    //Insert template on field:
+    this.form.controls['procedure_findings'].setValue(report_template);
+
+    //Send message:
+    this.sharedFunctions.sendMessage('Plantilla de informe cargada', { duration: 2000 });
+  }
 }

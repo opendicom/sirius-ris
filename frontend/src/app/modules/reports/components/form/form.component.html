@@ -482,6 +482,7 @@
           <mat-form-field appearance="outline" class="full">
             <mat-label>Título de hallazgos</mat-label>
             <input matInput type="text" formControlName="findings_title" placeholder="Ingrese el título de hallazgos">
+            <mat-icon matPrefix matTooltip="Cargar plantilla de informe" (click)="insertReportTemplate()">auto_fix_high</mat-icon>
           </mat-form-field>
 
           <span class="label-editor">min: 10, max: 10000</span>

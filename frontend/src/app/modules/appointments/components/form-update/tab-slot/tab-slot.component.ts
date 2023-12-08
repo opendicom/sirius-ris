@@ -78,9 +78,13 @@ export class TabSlotComponent implements OnInit {
   //Override ngOnInit execution to control initial execution manually (Except the first initialization of formBuilder):
   manualOnInit() {
     //Set min and max dates (Datepicker):
+    const todayRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date(this.sharedProp.current_datetime.start)); //Current date
 
-    this.minDate = dateRangeLimit.minDate;
+    //Today minDate:
+    // Allows you to advance an appointment until the current date.
+    // If current is used, it can only be re-coordinated from the date of the appointment onwards.
+    this.minDate = todayRangeLimit.minDate;
     this.maxDate = dateRangeLimit.maxDate;
 
     //Set selected elements (First time):

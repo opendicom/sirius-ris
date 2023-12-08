@@ -16,7 +16,7 @@ import { regexObjectId } from '@env/environment';                               
 })
 export class ListComponent implements OnInit {
   //Set visible columns of the list:
-  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'code', 'informed_consent', 'status'];
+  public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'modality', 'equipments', 'code', 'has_interview', 'informed_consent', 'status'];
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
@@ -92,6 +92,7 @@ export class ListComponent implements OnInit {
       'equipments.duration': 1,
       'equipments.details.name': 1,
       'equipments.details.AET': 1,
+      'has_interview': 1,
       'informed_consent': 1,
       'status': 1
     };

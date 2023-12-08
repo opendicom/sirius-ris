@@ -80,10 +80,16 @@
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
 
-      <br/><br/><br/>
-    </div> <!-- end fxLayout wrapper -->
+      <br/><br/><hr class="dashed"/><br/>
 
-    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>¿El procedimiento requiere de la realización de una entrevista?</h4>
+      <mat-radio-group aria-label="Requiere entrevista" color="primary" formControlName="has_interview">
+        <mat-radio-button value="true">Si</mat-radio-button>
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/><hr class="dashed"/><br/>
+
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
           <h4>SNOMED:</h4>
@@ -102,8 +108,10 @@
         </div> <!-- end fxLayout wrapper -->
       </div>
 
-      <hr class="dashed"/><br/>
+      <br/>
+    </div> <!-- end fxLayout wrapper -->
 
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
       <h4>Preparación <span class="label-info">min: 10, max: 1500</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
@@ -111,6 +119,11 @@
 
       <h4>Plantilla de procedimiento <span class="label-info">min: 10, max: 1500</span>:</h4>
       <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
+      <br/><hr class="dashed"/><br/>
+
+      <h4>Plantilla de informe <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <ckeditor formControlName="report_template" #report_template [editor]="reportTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
     </div> <!-- end fxLayout wrapper -->
 

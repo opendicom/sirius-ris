@@ -61,15 +61,15 @@ export const user_concessions = {
   11  : 'Acceso a logs de elementos',
   12  : 'Reenvío de correos',
   13  : 'Gestión de solicitudes',
-  //13  : 'Búsquedas avanzadas',
-  //14  : 'Listados de facturación',
-  //15  : 'Estadísticas generales',
-  //16  : 'Estadísticas médicas',
-  //17  : 'Estadísticas del personal',
-  //18  : 'Eliminación física de archivos',
-  //19  : 'Supervisar citas en curso',
+  //14  : 'Búsquedas avanzadas',
+  //15  : 'Listados de facturación',
+  //16  : 'Estadísticas generales',
+  //17  : 'Estadísticas médicas',
+  //18  : 'Estadísticas del personal',
+  //19  : 'Eliminación física de archivos',
   20  : 'Acceso al módulo de exportación',          // Backend access only
   21  : 'Acceso al servicio de imágenes del PACS' 
+  //22  : 'Supervisar citas en curso',
 };
 
 // User Types:
@@ -130,7 +130,7 @@ export const cancellation_reasons = {
   1   : "Falla en equipo",
   2   : "Falta consentimiento",
   3   : "Indicacion incorrecta",
-  4   : "No se presento",
+  4   : "No se presentó",
   5   : "Sin preparacion o preparación incorrecta",
 	6   : "Claustrofóbia",
   7   : "Embarazo",
