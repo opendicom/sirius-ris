@@ -2,7 +2,8 @@
 # SIRIUS FRONTEND BUILD:
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
-# Example: docker build -t opendicom/sirius-frontend:1.0.0-beta.2 -f docker/Dockerfile .
+# Example:
+# docker build -t opendicom/sirius-frontend:1.0.0-beta.2 opendicom/sirius-frontend:latest -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 # Set builder image:
 FROM node:18 as builder

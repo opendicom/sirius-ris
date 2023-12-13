@@ -2,7 +2,8 @@
 # SIRIUS BACKEND BUILD:
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'backend'.
-# Example: docker build -t opendicom/sirius-backend:1.0.0-beta.2 -f docker/Dockerfile .
+# Example:
+# docker build -t opendicom/sirius-backend:1.0.0-beta.2 opendicom/sirius-backend:latest -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 FROM node:18.13.0
 

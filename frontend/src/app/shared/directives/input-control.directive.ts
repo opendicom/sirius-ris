@@ -131,12 +131,12 @@ function inputControl(event: any, validationType: string, allowSpaces: boolean =
 
   //Initializate allowed chars:
   let allowedChars = [];
-  
+
   //Define allowed characters:
   switch (validationType) {
     case 'numbers':
-      //Ascii codes for [0-9]:
-      allowedChars = arrayRange(48, 57);
+      //Ascii codes for [0-9] and [Numpad0-Numpad9]:
+      allowedChars = arrayRange(48, 57).concat( arrayRange(96, 105) );
       break;
     case 'letters':
       //Ascii codes for [A-Z], [a-z]:
