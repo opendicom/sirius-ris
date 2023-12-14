@@ -67,26 +67,30 @@ Additionally **Sirius RIS** has a **RABC** that regulates what information must 
 
 
 
-* domain
+* Domain
 
-* role
+* Role
 
-* scalable permissions
+* Scalable permissions
 
   
 
 ### Domain
 
-...
+A user's domain can be defined at three levels:
+
+* Organizations
+* Branches
+* Services
 
 
 
 ### Role
 
-...
+A user's role will determine the type of actions they can perform by default in the application.
 
 
 
 ### Scalable permissions
 
-The Scalable permissions or Concessions...
+Scalable permissions (`concessions`) allow a user's access to be expanded gradually, regardless of their role.

@@ -50,6 +50,7 @@
 3. [Security](./documentation/03_security.md)
 4. [Sirius Backend `API REST`](./documentation/04_sirius_backend_api_rest.md)
 5. [Sirius Web Module](https://github.com/cpifano/sirius-web)
+6. [Development guide](./documentation/06_development.md)
 
 
 

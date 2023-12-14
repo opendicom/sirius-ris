@@ -2,6 +2,8 @@
 
 This document will detail the main aspects of the **Sirius RIS** architecture.
 
+---
+
 
 
 ## Services
@@ -17,6 +19,10 @@ The **Sirius RIS** stack is made up of three simple elements:
 ![sirius_services](./resources/img/sirius_services.png)
 
 
+
+
+
+---
 
 
 
@@ -300,3 +306,5 @@ The following references were defined to be able to establish the **flow control
 | 1    | Cuidados intensivos |
 | 2    | Emergencia          |
 | 3    | Internación         |
+
+
