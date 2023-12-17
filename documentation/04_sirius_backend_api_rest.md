@@ -20,7 +20,7 @@ In the event that the human or machine user has a single role, authentication to
 
 ---
 
-## `POST` <small>IP:PORT</small>/signin  <machine-user>
+## `POST` <small>IP:PORT</small>/signin  <small>`machine-user`</small>
 
 ​	`admit: x-www-form-urlencoded`
 
@@ -35,7 +35,7 @@ In case of a satisfactory response, the **JWT** of the session (1d) will be obta
 
 ---
 
-## `POST` <small>IP:PORT</small>/signin  <human-user>
+## `POST` <small>IP:PORT</small>/signin  <small>`human-user`</small>
 
 ​	`admit: x-www-form-urlencoded`
 
@@ -54,7 +54,7 @@ In case of a satisfactory response, a **JWT** will be obtained.
 
 ---
 
-## `POST` <small>IP:PORT</small>/signin/authorize  <human-user>
+## `POST` <small>IP:PORT</small>/signin/authorize  <small>`human-user`</small>
 
 ​	`admit: x-www-form-urlencoded` + `Bearer Token`
 
@@ -75,7 +75,7 @@ In case of a satisfactory response, the **JWT** of the session (1d) will be obta
 
 
 
-## `GET` <small>IP:PORT</small>/<module>/find
+## `GET` <small>IP:PORT</small>/<small>`module`</small>/find
 
 ​	`admit: URL Query Parameters` + `Bearer Token`
 
@@ -108,7 +108,7 @@ In case of a satisfactory response, the **JWT** of the session (1d) will be obta
 
 ---
 
-## `GET` <small>IP:PORT</small>/<module>/findOne
+## `GET` <small>IP:PORT</small>/<small>`module`</small>/findOne
 
 ​	`admit: URL Query Parameters` + `Bearer Token`
 
@@ -155,7 +155,7 @@ The [`elemMatch`](https://www.mongodb.com/docs/manual/reference/operator/query/e
 
 ---
 
-## `POST` <small>IP:PORT</small>/<module>/insert
+## `POST` <small>IP:PORT</small>/<small>`module`</small>/insert
 
 ​	`admit: x-www-form-urlencoded` or  `admit: multipart/form-data` (in cases where files are uploaded)  + `Bearer Token`
 
@@ -165,7 +165,7 @@ The [`elemMatch`](https://www.mongodb.com/docs/manual/reference/operator/query/e
 
 ---
 
-## `POST` <small>IP:PORT</small>/<module>/update
+## `POST` <small>IP:PORT</small>/<small>`module`</small>/update
 
 ​	`admit: x-www-form-urlencoded` or  `admit: multipart/form-data` (in cases where files are uploaded) + `Bearer Token`
 
@@ -186,12 +186,12 @@ The [`elemMatch`](https://www.mongodb.com/docs/manual/reference/operator/query/e
 
 ---
 
-## `POST` <small>IP:PORT</small>/<module>/delete
+## `POST` <small>IP:PORT</small>/<small>`module`</small>/delete
 
 ​	`admit: x-www-form-urlencoded` + `Bearer Token`
 
 * **id** = *ObjectId*. `REQUIRED`
-* **delete_code** = *string* `REQUIRED` | Defined in main settings (*see docker enviroment varialbes*).
+* **delete_code** = *string* `REQUIRED` | Defined in main settings (*see docker environment variables*).
 
 
 
@@ -262,13 +262,13 @@ Some **Sirius RIS** modules have **additional requests** that allow specific ope
 
 ---
 
-## `POST` <small>IP:PORT</small>/<specific-modules>/delete
+## `POST` <small>IP:PORT</small>/<small>`specific-modules`</small>/delete
 
 ​	`admit: x-www-form-urlencoded` + `Bearer Token`
 
 * **_id** [`index`] = *ObjectId*. `REQUIRED`
 
-* **delete_code** = *string* `REQUIRED` | Defined in main settings (*see docker enviroment varialbes*).
+* **delete_code** = *string* `REQUIRED` | Defined in main settings (*see docker environments variables*).
 
   
 
