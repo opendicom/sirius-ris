@@ -34,8 +34,8 @@
 
 **Sirius RIS** works together with two other services with which it interacts for the management of **MWL** and **DICOM** images:
 
-* wezen
-* dockerpacs
+* [wezen](https://github.com/opendicom/wezen)
+* [dockerpacs](https://github.com/opendicom/dockerpacs)
 
 
 
@@ -49,7 +49,7 @@
 2. [Architecture](./documentation/02_architecture.md)
 3. [Security](./documentation/03_security.md)
 4. [Sirius Backend `API REST`](./documentation/04_sirius_backend_api_rest.md)
-5. [Sirius Web Module](https://github.com/cpifano/sirius-web)
+5. [Sirius Web Module](https://github.com/opendicom/sirius-web)
 6. [Development guide](./documentation/06_development.md)
 
 
