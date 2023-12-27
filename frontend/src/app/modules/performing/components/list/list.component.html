@@ -83,7 +83,7 @@
                 </button>
               </span>
 
-              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
+              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Revisar informe" color="accent">
                 <mat-icon>manage_search</mat-icon>
               </button>
               <br/>
@@ -98,7 +98,7 @@
                 </button>
               </span>
 
-              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Revisar informe" color="accent">
+              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Revisar informe" color="accent">
                 <mat-icon>manage_search</mat-icon>
               </button>
               <br/>
@@ -106,7 +106,7 @@
 
             <!--view_report and amend-->
             <span *ngSwitchCase="'P09'">
-              <button mat-mini-fab class="small_button" type="button" (click)="reportReview(element._id)" matTooltip="Ver informe" color="accent">
+              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
                 <mat-icon>playlist_add_check</mat-icon>
               </button>
               <br/>

@@ -14,7 +14,9 @@ import {                                                                        
   ISO_3166, 
   document_types, 
   gender_types, 
-  privateHealthLang
+  privateHealthLang,
+  cancellation_reasons,
+  performing_flow_states
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -30,6 +32,8 @@ export class FormComponent implements OnInit {
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;
   public privateHealthLang              : any = privateHealthLang;
+  public performing_flow_states         : any = performing_flow_states;
+  public cancellation_reasons           : any = cancellation_reasons;
 
   //Set references objects:
   public availableFS                    : any = {};
@@ -69,6 +73,20 @@ export class FormComponent implements OnInit {
   //Initializate all are false objects:
   public privatehealthAllAreFalse   : boolean = true;
   public implantsAllAreFalse        : boolean = true;
+
+  //Initialize previous:
+  public previous : any = undefined;
+
+  //Set visible columns of the previous list:
+  public displayedColumns: string[] = [
+    'current',
+    'flow_state',
+    'date',
+    'checkin_time',
+    'patient_age',
+    'details',
+    'domain'
+  ];
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -460,6 +478,11 @@ export class FormComponent implements OnInit {
             this.form.controls['findings_title'].setValue('Hallázgos de ' + this.performingData.procedure.name);
           }
 
+          //Find previous:
+          this.findPrevious(this.performingData.patient._id, (objPrevious => {
+            this.previous = objPrevious;
+          }));
+
           //Excecute optional callback with response:
           callback(performingRes);
         } else {
@@ -605,5 +628,16 @@ export class FormComponent implements OnInit {
 
     //Send message:
     this.sharedFunctions.sendMessage('Plantilla de informe cargada', { duration: 2000 });
+  }
+
+  findPrevious(fk_patient: any, callback = (res: any) => {}){
+    //Find prevoius performing:
+    this.sharedFunctions.find('performing', { 'filter[patient._id]': fk_patient }, async (performingRes) => {
+      //Check operation status:
+      if(performingRes.success === true){
+        //Execute callback:
+        callback(performingRes.data);
+      }
+    });
   }
 }

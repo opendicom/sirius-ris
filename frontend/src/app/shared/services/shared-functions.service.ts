@@ -1656,4 +1656,60 @@ export class SharedFunctionsService {
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // REPORT REVIEW:
+  //--------------------------------------------------------------------------------------------------------------------//
+  reportReview(fk_performing: string){
+    //Initializate amendmentsData:
+    let amendmentsData : any = false;
+
+    //Set params:
+    const params = {
+      'filter[fk_performing]'       : fk_performing,
+
+      //Project only report content, not performing content (multiple reports | amendments):
+      'proj[clinical_info]'         : 1,
+      'proj[procedure_description]' : 1,
+      'proj[findings]'              : 1,
+      'proj[summary]'               : 1,
+      'proj[medical_signatures]'    : 1,
+      'proj[authenticated]'         : 1,
+      'proj[pathologies]'           : 1,
+      'proj[createdAt]'             : 1,
+
+      //Make sure the first report is the most recent:
+      'sort[createdAt]'             : -1
+    };
+
+    //Find reports by fk_performing:
+    this.find('reports', params, async (reportsRes) => {
+      //Check operation status:
+      if(reportsRes.success === true){
+        //Check amend cases:
+        if(this.getKeys(reportsRes.data, false, true).length > 1){
+          //Set history report data object (Clone objects with spread operator):
+          amendmentsData = [... reportsRes.data];
+
+          //Delete current report from the history (first element):
+          amendmentsData.shift();
+        }
+
+        //Create operation handler:
+        const operationHandler = {
+          last_report     : reportsRes.data[0], //Set report data with the last report (amend cases)
+          amendments_data : amendmentsData
+        };
+
+        //Open dialog to decide what operation to perform:
+        this.openDialog('report_review', operationHandler);
+
+      } else {
+        //Return to the list with request error message:
+        this.sendMessage('Error al intentar insertar revisar el informe: ' + reportsRes.message);
+      }
+    }, false, false, false);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
