@@ -479,7 +479,7 @@ export class FormComponent implements OnInit {
           }
 
           //Find previous:
-          this.findPrevious(this.performingData.patient._id, (objPrevious => {
+          this.sharedFunctions.findPrevious(this.performingData.patient._id, (objPrevious => {
             this.previous = objPrevious;
           }));
 
@@ -628,16 +628,5 @@ export class FormComponent implements OnInit {
 
     //Send message:
     this.sharedFunctions.sendMessage('Plantilla de informe cargada', { duration: 2000 });
-  }
-
-  findPrevious(fk_patient: any, callback = (res: any) => {}){
-    //Find prevoius performing:
-    this.sharedFunctions.find('performing', { 'filter[patient._id]': fk_patient }, async (performingRes) => {
-      //Check operation status:
-      if(performingRes.success === true){
-        //Execute callback:
-        callback(performingRes.data);
-      }
-    });
   }
 }

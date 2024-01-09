@@ -6,7 +6,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import { ISO_3166, document_types, gender_types } from '@env/environment';                  // Enviroments
+import {                                                                                    // Enviroments
+  ISO_3166, 
+  document_types, 
+  gender_types,
+  cancellation_reasons,
+  performing_flow_states
+} from '@env/environment';
 
 // Child components:
 import { TabDetailsComponent } from '@modules/appointments/components/form-update/tab-details/tab-details.component';
@@ -24,9 +30,24 @@ export class FormUpdateComponent implements OnInit {
   @ViewChild(TabSlotComponent) tabSlot!:TabSlotComponent;
 
   //Set component properties:
-  public country_codes        : any = ISO_3166;
-  public document_types       : any = document_types;
-  public gender_types         : any = gender_types;
+  public country_codes          : any = ISO_3166;
+  public document_types         : any = document_types;
+  public gender_types           : any = gender_types;
+  public performing_flow_states : any = performing_flow_states;
+  public cancellation_reasons   : any = cancellation_reasons;
+
+  //Initialize previous:
+  public previous : any = undefined;
+
+  //Set visible columns of the previous list:
+  public displayedColumns: string[] = [
+    'flow_state',
+    'date',
+    'checkin_time',
+    'patient_age',
+    'details',
+    'domain'
+  ];
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -91,6 +112,11 @@ export class FormUpdateComponent implements OnInit {
               this.tabDetails.manualOnInit(res);
               this.tabSlot.manualOnInit();
             });
+
+            //Find previous:
+            this.sharedFunctions.findPrevious(res.data[0].patient._id, (objPrevious => {
+              this.previous = objPrevious;
+            }));
           });
         } else {
           //Return to the list with request error message:

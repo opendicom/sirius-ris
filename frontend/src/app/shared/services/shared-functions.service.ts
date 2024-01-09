@@ -1712,4 +1712,20 @@ export class SharedFunctionsService {
     }, false, false, false);
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND PREVIOUS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findPrevious(fk_patient: any, callback = (res: any) => {}){
+    //Find prevoius performing:
+    this.find('performing', { 'filter[patient._id]': fk_patient }, async (performingRes) => {
+      //Check operation status:
+      if(performingRes.success === true){
+        //Execute callback:
+        callback(performingRes.data);
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

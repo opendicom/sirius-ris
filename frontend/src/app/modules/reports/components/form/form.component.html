@@ -636,9 +636,7 @@
               <td mat-cell *matCellDef="let element">
                 <!-- procedure -->
                 <span *ngIf="element.procedure">
-                  <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
-                    <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
-                  </span>
+                  <span class="badge-alt" matTooltip="{{ element.procedure.code }}">{{ element.procedure.name }}</span>
                 </span>
 
                 <div class="clear"></div><hr class="dashed" />
@@ -647,7 +645,7 @@
                 <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
                     <ng-template #thenBlockTableEquipment>
                     <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
-                    <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
+                    <span>{{ element.equipment.name }}</span>
                     </span>
                 </ng-template>
                 <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
@@ -671,9 +669,9 @@
                   <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
                   <ng-template #thenBlockReferring>
                     <small>
-                      <span *ngIf="element.appointment.referring.organization" innerHTML="{{ element.appointment.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.referring.branch" innerHTML=" ► {{ element.appointment.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
+                      <span *ngIf="element.appointment.referring.organization">{{ element.appointment.referring.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.referring.branch"> ► {{ element.appointment.referring.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.referring.service"> ► {{ element.appointment.referring.service.name }}</span>
                     </small>
                   </ng-template>
                   <ng-template #elseBlockReferring>(Sin dato)</ng-template>
@@ -685,9 +683,9 @@
                   <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
                   <ng-template #thenBlockImaging>
                     <small>
-                      <span *ngIf="element.appointment.imaging.organization" innerHTML="{{ element.appointment.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.imaging.branch" innerHTML=" ► {{ element.appointment.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+                      <span *ngIf="element.appointment.imaging.organization">{{ element.appointment.imaging.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.imaging.branch"> ► {{ element.appointment.imaging.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.imaging.service"> ► {{ element.appointment.imaging.service.name }}</span>
                     </small>
                   </ng-template>
                   <ng-template #elseBlockImaging>(Sin dato)</ng-template>
@@ -699,9 +697,9 @@
                   <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
                   <ng-template #thenBlockReporting>
                     <small>
-                      <span *ngIf="element.appointment.reporting.organization" innerHTML="{{ element.appointment.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.reporting.branch" innerHTML=" ► {{ element.appointment.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                      <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
+                      <span *ngIf="element.appointment.reporting.organization">{{ element.appointment.reporting.organization.short_name }}</span>
+                      <span *ngIf="element.appointment.reporting.branch"> ► {{ element.appointment.reporting.branch.short_name }}</span>
+                      <span *ngIf="element.appointment.reporting.service"> ► {{ element.appointment.reporting.service.name }}</span>
                     </small>
                   </ng-template>
                   <ng-template #elseBlockReporting>(Sin dato)</ng-template>
@@ -718,14 +716,9 @@
       <!-- Await previous or not previous -->
       <ng-template #elseBlockTable>
         <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-          Aguarde, aún no hay estudios previos.
+          No se encontraron estudios previos.
         </div>
       </ng-template>
-          
-      <!-- No Data -->
-      <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
-        {{ sharedFunctions.response.message }}
-      </div>
     </mat-tab>
     <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
 

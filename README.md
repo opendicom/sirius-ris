@@ -43,7 +43,7 @@
 
 
 
-## Documentation
+## Getting Started
 
 1. [Deployment](./documentation/01_deployment.md)
 2. [Architecture](./documentation/02_architecture.md)

@@ -62,3 +62,29 @@
   background-color: #424242;
   color: #fff;
 }
+
+.domain-container {
+  background-color: rgba(255, 255, 255, 0.035);
+  margin: 0px -17px 0px 8px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.badge-mini {
+  float: none !important;
+}
+
+.small_button{
+  margin-left: 6px !important;
+  margin-bottom: 7px !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 5px !important;
+  padding: 0% !important;
+}
+
+.small_button mat-icon {
+  position: relative !important;
+  margin: 0px !important;
+  top: -8px !important;
+}

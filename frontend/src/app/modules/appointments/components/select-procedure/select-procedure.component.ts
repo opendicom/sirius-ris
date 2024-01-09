@@ -7,7 +7,14 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import { regexObjectId, ISO_3166, document_types, gender_types } from '@env/environment';   // Enviroments
+import {                                                                                    // Enviroments
+  regexObjectId,
+  ISO_3166,
+  document_types,
+  gender_types,
+  cancellation_reasons,
+  performing_flow_states
+} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -17,9 +24,11 @@ import { regexObjectId, ISO_3166, document_types, gender_types } from '@env/envi
 })
 export class SelectProcedureComponent implements OnInit {
   //Set component properties:
-  public country_codes  : any = ISO_3166;
-  public document_types : any = document_types;
-  public gender_types   : any = gender_types;
+  public country_codes          : any = ISO_3166;
+  public document_types         : any = document_types;
+  public gender_types           : any = gender_types;
+  public performing_flow_states : any = performing_flow_states;
+  public cancellation_reasons   : any = cancellation_reasons;
 
   //Set references objects:
   public availableOrganizations : any;
@@ -39,6 +48,22 @@ export class SelectProcedureComponent implements OnInit {
   private setReactiveForm(fields: any): void{
     this.form = this.formBuilder.group(fields);
   }
+
+  //Define form_action variables (Activated Route):
+  public tabIndex         : number = 0;
+
+  //Initialize previous:
+  public previous : any = undefined;
+
+  //Set visible columns of the previous list:
+  public displayedColumns: string[] = [
+    'flow_state',
+    'date',
+    'checkin_time',
+    'patient_age',
+    'details',
+    'domain'
+  ];
 
   //Inject services, components and router to the constructor:
   constructor(
@@ -73,6 +98,11 @@ export class SelectProcedureComponent implements OnInit {
 
     //Find references:
     this.findReferences();
+
+    //Find previous:
+    this.sharedFunctions.findPrevious(this.sharedProp.current_patient._id, (objPrevious => {
+      this.previous = objPrevious;
+    }));
   }
 
   onCancel(){

@@ -85,6 +85,20 @@ export class FormComponent implements OnInit {
   public form_action      : any;
   public tabIndex         : number = 0;
   public origin           : string = 'performing';  //Set default destination.
+  
+  //Initialize previous:
+  public previous : any = undefined;
+
+  //Set visible columns of the previous list:
+  public displayedColumns: string[] = [
+    'current',
+    'flow_state',
+    'date',
+    'checkin_time',
+    'patient_age',
+    'details',
+    'domain'
+  ];
 
   //Set Reactive form:
   private setReactiveForm(fields: any): void{
@@ -1049,6 +1063,11 @@ export class FormComponent implements OnInit {
           //Excecute manual onInit childrens components:
           this.tabDetails.manualOnInit(resAppointments);
         });
+
+        //Find previous:
+        this.sharedFunctions.findPrevious(resAppointments.data[0].patient._id, (objPrevious => {
+          this.previous = objPrevious;
+        }));
 
         //Execute callback:
         callback(resAppointments);
