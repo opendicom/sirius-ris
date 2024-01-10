@@ -212,6 +212,19 @@ export class FormInsertComponent implements OnInit {
     //Find referring and reporting information:
     this.appointmentsService.findReportingUsers(this.sharedProp.current_imaging.service._id, this.form);
 
+    //Check appointment request (Set anamnesis and indications):
+    if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
+      //Check anamnesis:
+      if(this.sharedProp.current_appointment_request.anamnesis !== undefined && this.sharedProp.current_appointment_request.anamnesis !== null && this.sharedProp.current_appointment_request.anamnesis !== ''){
+        this.form.controls['anamnesis'].setValue(this.sharedProp.current_appointment_request.anamnesis);
+      }
+      
+      //Check indications:
+      if(this.sharedProp.current_appointment_request.indications !== undefined && this.sharedProp.current_appointment_request.indications !== null && this.sharedProp.current_appointment_request.indications !== ''){
+        this.form.controls['indications'].setValue(this.sharedProp.current_appointment_request.indications);
+      }
+    }
+
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:

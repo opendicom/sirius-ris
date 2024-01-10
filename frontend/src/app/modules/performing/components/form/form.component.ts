@@ -496,8 +496,15 @@ export class FormComponent implements OnInit {
           }
         }));
       }
+
+      //Check empty batch in pet-ct cases (Prevent validation errors):
+      if(performingSaveData.hasOwnProperty('injection') && performingSaveData.injection.hasOwnProperty('pet_ct')){
+        if(performingSaveData.injection.pet_ct.batch == undefined || performingSaveData.injection.pet_ct.batch == null || performingSaveData.injection.pet_ct.batch == ''){
+          delete performingSaveData.injection.pet_ct.batch;
+        }
+      }
      
-      //Check acquisition values:
+      //Check acquisition values (Prevent validation errors):
       //Update case allow empty observations field (unset value case).
       if(performingSaveData.hasOwnProperty('acquisition') && this.form_action == 'insert'){
         await Promise.all(Object.keys(performingSaveData.acquisition).map(key => {

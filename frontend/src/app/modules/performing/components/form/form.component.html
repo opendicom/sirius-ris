@@ -340,10 +340,11 @@
 
                     <hr class="dashed" /><br/>
 
-                    <small><button mat-flat-button color="accent" (click)="setAdministredActivity()" class="small_button" type="button">
-                      <mat-icon class="tab-icon">vaccines</mat-icon> CALCULAR DOSIS ADMINISTRADA &nbsp;
-                    </button></small>
-
+                    <small>
+                      <button mat-flat-button color="accent" (click)="setAdministredActivity()" class="small_button" type="button">
+                        <mat-icon class="tab-icon">vaccines</mat-icon> CALCULAR DOSIS ADMINISTRADA &nbsp;
+                      </button>
+                    </small>
 
                     <div fxLayout="row" fxLayoutAlign="start start">
                       <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
@@ -572,7 +573,7 @@
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--See report-->
                   <span *ngIf="element.flow_state == 'P09'">
-                    <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                    <button mat-mini-fab class="small_button_alt" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
                       <mat-icon>playlist_add_check</mat-icon>
                     </button>
                     <br/>

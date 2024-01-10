@@ -89,7 +89,7 @@
   float: none !important;
 }
 
-.small_button{
+.small_button_alt{
   margin-left: 6px !important;
   margin-bottom: 7px !important;
   width: 25px !important;
@@ -98,7 +98,7 @@
   padding: 0% !important;
 }
 
-.small_button mat-icon {
+.small_button_alt mat-icon {
   position: relative !important;
   margin: 0px !important;
   top: -8px !important;
