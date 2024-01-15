@@ -94,7 +94,8 @@ module.exports = function() {
     app.use(express.text({ limit: '200mb' }));
 
     //Set MongoDB URI:
-    const mongodbURI = 'mongodb://' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
+    const mongodbURI = 'mongodb://' + mainSettings.db.user + ':' + mainSettings.db.pass + '@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name + '?authSource=admin';
+    const publicURI = 'mongodb://' + mainSettings.db.user + ':***@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
 
     //Establish connection with MongoDB:
     let cnxMongoDBStatus = false;
@@ -106,7 +107,7 @@ module.exports = function() {
             cnxMongoDBStatus = false;
 
             //Set MongoDB Message:
-            cnXMongoDBMessage = currentLang.server.db_cnx_error + mongodbURI;
+            cnXMongoDBMessage = currentLang.server.db_cnx_error + publicURI;
 
             //Send messages to console:
             console.error('| ' + cnXMongoDBMessage);
@@ -117,7 +118,7 @@ module.exports = function() {
             cnxMongoDBStatus = true;
 
             //Set MongoDB Message:
-            cnXMongoDBMessage = currentLang.server.db_cnx_success + mongodbURI;
+            cnXMongoDBMessage = currentLang.server.db_cnx_success + publicURI;
 
             //Send messages to console:
             console.log('| ' + cnXMongoDBMessage);

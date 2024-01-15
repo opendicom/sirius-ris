@@ -2,9 +2,9 @@
 db:
   host: '${SIRIUS_BACKEND_DB_HOST}'
   port: ${SIRIUS_BACKEND_DB_PORT}
-  user: '${SIRIUS_BACKEND_DB_USER}'
-  pass: '${SIRIUS_BACKEND_DB_PASS}'
-  name: '${SIRIUS_BACKEND_DB_NAME}'
+  user: '${MONGO_INITDB_ROOT_USERNAME}'
+  pass: '${MONGO_INITDB_ROOT_PASSWORD}'
+  name: '${MONGO_INITDB_DATABASE}'
 
 # Set external PACS data:
 pacs:

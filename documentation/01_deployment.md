@@ -17,43 +17,11 @@ Within this repository, there is an [**entrypoint.dump**](../service_sirius_db/d
 
 
 
-## Basic deploy
-
-```yaml
-version: "3.5"
-services:
-  opendicom_sirius_db:
-    image: mongo:latest
-    volumes:
-      - ./service_sirius_db/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
-      - ./service_sirius_db/dumps:/dumps
-      - ./service_sirius_db/data:/data/db
-
-  opendicom_sirius_backend:
-    image: opendicom/sirius-backend:latest
-    ports:
-      - 2000:2000
-    depends_on:
-      - opendicom_sirius_db
-
-  opendicom_sirius_frontend:
-    image: opendicom/sirius-frontend:latest
-    ports:
-      - 4000:80
-    depends_on:
-      - opendicom_sirius_backend
-      
-```
-
-
-
 ---
 
 
 
-## Custom deploy `Recomended`
-
-### Compose file
+## Docker compose file
 
 ##### `Default content of docker-compose.yml file:`
 
@@ -151,14 +119,20 @@ WEZEN_PORT=8000
 
 
 # ------------------------------------------------------------------------------------- #
+# SIRIUS DATABASE:
+# ------------------------------------------------------------------------------------- #
+MONGO_INITDB_ROOT_USERNAME='sirius_user'
+MONGO_INITDB_ROOT_PASSWORD='sirius_pass'
+MONGO_INITDB_DATABASE='sirius_db'
+# ------------------------------------------------------------------------------------- #
+
+
+# ------------------------------------------------------------------------------------- #
 # SIRIUS BACKEND:
 # ------------------------------------------------------------------------------------- #
 # SIRIUS BACKEND DB:
 SIRIUS_BACKEND_DB_HOST='opendicom_sirius_db'
 SIRIUS_BACKEND_DB_PORT=27017
-SIRIUS_BACKEND_DB_USER='sirius_user'
-SIRIUS_BACKEND_DB_PASS='sirius_pass'
-SIRIUS_BACKEND_DB_NAME='sirius_db'
 
 # SIRIUS BACKEND REST SERVER:
 SIRIUS_BACKEND_HOST='localhost'
