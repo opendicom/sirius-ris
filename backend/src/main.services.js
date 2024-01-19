@@ -344,6 +344,10 @@ function setDicomNamePersonFormat(name_01, name_02, surname_01, surname_02){
 // SET STORAGE:
 //--------------------------------------------------------------------------------------------------------------------//
 function setStorage(){
+    //Initializate filenames array:
+    let filenames = [];
+
+    //Return filenames:
     return multer.diskStorage({
         destination: (req, file, callback) => {
             //Set destination path:
@@ -360,12 +364,26 @@ function setStorage(){
             
             //Get file extension:
             const file_extension = file.originalname.split('.').pop();
-    
-            //Set file name in the request:
-            req.filename = moment().format('YYYYMMDD_HHmmss', { trim: false }) + '_' + file_hash + '.' + file_extension;
-    
+
+            //Set current file name:
+            const current_file_name = moment().format('YYYYMMDD_HHmmss', { trim: false }) + '_' + file_hash + '.' + file_extension;
+            
+            //Check filenames and reset:
+            if(req.filenames === undefined){
+                filenames = []; //Reset
+            }
+
+            //Add current file name in filenames array (multiple or single upload):
+            filenames.push({
+                fieldname: file.fieldname,      //origin fieldname in the req.body
+                filename: current_file_name     //filename in storage (uploads)
+            });
+
+            //Clone filenames in the request:
+            req.filenames = filenames;
+
             //Execute callback:
-            callback(null, req.filename);
+            callback(null, current_file_name);
         }
     });
 }
@@ -439,6 +457,21 @@ async function httpClientRequest(host, port = 80, method = 'GET', path = '', pos
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SIMPLE CRYPT:
+//--------------------------------------------------------------------------------------------------------------------//
+async function simpleCrypt(message) {
+    let secret_number = 1618;
+    let encoded = '';
+    for (let i=0; i < message.length; i++) {
+      let a = message.charCodeAt(i);
+      let b = a ^ secret_number;
+      encoded = encoded+String.fromCharCode(b);
+    }
+    return encoded;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -459,6 +492,7 @@ module.exports = {
     datetimeFulCalendarFormater,
     setDicomNamePersonFormat,
     setStorage,
-    httpClientRequest
+    httpClientRequest,
+    simpleCrypt
 };
 //--------------------------------------------------------------------------------------------------------------------//

@@ -15,7 +15,7 @@ module.exports = async (req, res, currentSchema, operation) => {
     if(req.body.fk_organization){ referencedElements.push([ req.body.fk_organization, 'organizations' ]); }
 
     //Set base64 upload file in the request:
-    await moduleServices.setBase64File(req, operation, 'base64_logo');
+    await moduleServices.setBase64Files(req, operation);
 
     //Excecute main query:
     switch(operation){

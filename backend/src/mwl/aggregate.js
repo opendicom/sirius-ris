@@ -224,6 +224,10 @@ module.exports = [
         'imaging.organization.base64_logo': 0,
         'imaging.branch.base64_logo': 0,
 
+        //Organization cert:
+        'imaging.organization.base64_cert': 0,
+        'imaging.organization.password_cert': 0,
+
         //Added projection:
         'attached_files.base64': 0, 'consents.informed_consent.base64': 0, 'consents.clinical_trial.base64': 0
     }}

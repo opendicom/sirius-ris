@@ -410,6 +410,8 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.imaging.organization.updatedAt': 0,
             'appointment.imaging.organization.__v': 0,
             //'appointment.imaging.organization.base64_logo': 0, //Needed to set header logos
+            'appointment.imaging.organization.base64_cert': 0,
+            'appointment.imaging.organization.password_cert': 0,
 
             'appointment.imaging.branch.createdAt': 0,
             'appointment.imaging.branch.updatedAt': 0,
@@ -425,6 +427,8 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.referring.organization.updatedAt': 0,
             'appointment.referring.organization.__v': 0,
             'appointment.referring.organization.base64_logo': 0,
+            'appointment.referring.organization.base64_cert': 0,
+            'appointment.referring.organization.password_cert': 0,
 
             'appointment.referring.branch.createdAt': 0,
             'appointment.referring.branch.updatedAt': 0,
@@ -448,6 +452,8 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.reporting.organization.updatedAt': 0,
             'appointment.reporting.organization.__v': 0,
             'appointment.reporting.organization.base64_logo': 0,
+            'appointment.reporting.organization.base64_cert': 0,
+            'appointment.reporting.organization.password_cert': 0,
 
             'appointment.reporting.branch.createdAt': 0,
             'appointment.reporting.branch.updatedAt': 0,
@@ -602,7 +608,7 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
 
             //Check that the read in base64 encoding has finished (async read):
             if(await streamController(readStream) === 'complete'){
-                //Remove temp file from uploads:
+                //Remove temp file from tmp:
                 fs.unlink('./tmp/' + filename, (error) => {
                     if(error){
                         //Set operation result:

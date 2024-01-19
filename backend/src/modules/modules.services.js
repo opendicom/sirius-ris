@@ -4797,44 +4797,70 @@ async function setSHA2Report(report_id){
 //--------------------------------------------------------------------------------------------------------------------//
 // SET BASE64 FILE:
 //--------------------------------------------------------------------------------------------------------------------//
-async function setBase64File(req, operation, type = undefined){
-    if(req.file !== undefined) {
-        //Encode logo file to base64:
-        const fileBase64 = await fs.readFile('uploads/' + req.filename, { encoding: 'base64' }, (error) => {
-            if(error){
-                //Send ERROR Message:
-                sendConsoleMessage('ERROR', error);
-                throw('Error: ' + error);
-            }
-        });
+async function setBase64Files(req, operation){
+    //Check filenames:
+    if(req.filenames !== undefined){
+        //Encode files to base64 (await foreach):
+        await Promise.all(Object.keys(req.filenames).map(async (key) => {
+            //Encode current file to base64:
+            const fileBase64 = await fs.readFile('uploads/' + req.filenames[key].filename, { encoding: 'base64' }, (error) => {
+                if(error){
+                    //Send ERROR Message:
+                    sendConsoleMessage('ERROR', error);
+                    throw('Error: ' + error);
+                }
+            });
 
-        //Check field type:
-        if(type == 'base64_logo'){
-            //Set base64 in request for insert method:
-            switch(operation){
-                case 'insert':
-                    req.body.base64_logo = fileBase64;
+            //Set the base64 files in the request (req.body fields):
+            switch(req.filenames[key].fieldname){
+                //Files from file module (insert only):
+                case 'uploaded_file':
+                    req.body.base64 = fileBase64;
                     break;
-                case 'update':
-                    if(req.validatedResult.set === false){ req.validatedResult.set = {} };
-                    req.validatedResult.set['base64_logo'] = fileBase64;
+
+                //Organization or branch logos:
+                case 'uploaded_logo':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            req.body.base64_logo = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['base64_logo'] = fileBase64;
+                            break;
+                    }
+                    break;
+
+                //Organization certificate:
+                case 'uploaded_cert':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            req.body.base64_cert = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['base64_cert'] = fileBase64;
+                            break;
+                    }
                     break;
             }
-        } else {
-            req.body.base64 = fileBase64;
-        }
+        }));
 
         //Remove temp file from uploads:
-        await fs.unlink('uploads/' + req.filename, (error) => {
-            if(error){
-                //Send ERROR Message:
-                sendConsoleMessage('ERROR', error);
-                throw('Error: ' + error);
-            } else {
-                //Send DEBUG Message:
-                mainServices.sendConsoleMessage('DEBUG', currentLang.db.delete_temp_file_uploads);
-            }
-        });
+        await Promise.all(Object.keys(req.filenames).map(async (key) => {
+            await fs.unlink('uploads/' + req.filenames[key].filename, (error) => {
+                if(error){
+                    //Send ERROR Message:
+                    sendConsoleMessage('ERROR', error);
+                    throw('Error: ' + error);
+                } else {
+                    //Send DEBUG Message:
+                    mainServices.sendConsoleMessage('DEBUG', currentLang.db.delete_temp_file_uploads);
+                }
+            });
+        }));
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
@@ -4902,7 +4928,7 @@ module.exports = {
     removeAllSignaturesFromReport,
     checkSHA2Report,
     setSHA2Report,
-    setBase64File,
+    setBase64Files,
     setFlowState
 };
 //--------------------------------------------------------------------------------------------------------------------//

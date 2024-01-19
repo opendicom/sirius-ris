@@ -66,7 +66,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    upload.single('uploaded_logo'),
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     branches.Validator,
     (req, res) => {
@@ -79,7 +79,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
-    upload.single('uploaded_logo'),
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, branches.AllowedUnsetValues),
     branches.Validator,

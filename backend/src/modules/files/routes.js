@@ -66,7 +66,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    upload.single('uploaded_file'),
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     files.Validator,
     async (req, res) => {

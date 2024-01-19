@@ -52,7 +52,7 @@ router.get(
 
         //Remove base64 and timestamps from default projection:
         //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
-        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
 
         //Switch operation type:
         switch(operation_type){
@@ -84,7 +84,7 @@ router.get(
 
         //Remove base64 and timestamps from default projection:
         //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
-        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
 
         //Switch operation type:
         switch(operation_type){
@@ -102,7 +102,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
-    upload.single('uploaded_logo'),
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     organizations.Validator,
     (req, res) => {
@@ -115,7 +115,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
-    upload.single('uploaded_logo'),
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, organizations.AllowedUnsetValues),
     organizations.Validator,

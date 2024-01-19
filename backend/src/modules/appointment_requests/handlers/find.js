@@ -13,8 +13,12 @@ module.exports = async (req, res, currentSchema) => {
     //Remove base64 for default projection:
     if(!req.query.proj){ req.query['proj'] = {
         'imaging.organization.base64_logo': 0,
+        'imaging.organization.base64_cert': 0,
+        'imaging.organization.password_cert': 0,
         'imaging.branch.base64_logo': 0,
         'referring.organization.base64_logo': 0,
+        'referring.organization.base64_cert': 0,
+        'referring.organization.password_cert': 0,
         'referring.branch.base64_logo': 0,
     }; }
 

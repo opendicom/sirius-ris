@@ -1,32 +1,66 @@
 # ------------------------------------------------------------------------------------- #
-# SIRIUS FRONTEND BUILD:
+# HOW TO BUILD:
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
 # Example:
-# docker build -t opendicom/sirius-frontend:1.0.0-beta.2 opendicom/sirius-frontend:latest -f docker/Dockerfile .
+# docker build -t opendicom/sirius-frontend:1.0.0-beta.3 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
-# Set builder image:
-FROM node:18 as builder
 
-# Install gettext-base (envsubst):
-RUN apt-get update && apt-get -y install gettext-base
 
-# Install angular cli and devkit builder (Global dev dependencies):
-RUN npm install -g @angular/cli@13.1.2
-RUN npm install -g @angular-devkit/build-angular@13.1.2
+# ------------------------------------------------------------------------------------- #
+# OHIF STAGE:
+# ------------------------------------------------------------------------------------- #
+# Set ohif-builder image:
+FROM node:16.15.0-slim as ohif-builder
+
+# Install build-essential, python3 and git:
+RUN apt-get update && apt-get install -y build-essential python3 git
+
+# Clone opendicom ohif release:
+RUN git clone --branch release https://github.com/opendicom/ohif-viewer.git
 
 # Set workdir:
-WORKDIR /app
+WORKDIR /ohif-viewer
+
+# Install all dependencies:
+RUN yarn config set workspaces-experimental true
+RUN yarn install
+
+# Build OHIF:
+RUN PUBLIC_URL=/dcm-viewer/ APP_CONFIG=config/wezen.js yarn build
+# ------------------------------------------------------------------------------------- #
+
+
+# ------------------------------------------------------------------------------------- #
+# SIRIUS FRONTEND STAGE:
+# ------------------------------------------------------------------------------------- #
+# Set frontend-builder image:
+#FROM node:18 as frontend-builder
+
+# Install gettext-base (envsubst):
+#RUN apt-get update && apt-get -y install gettext-base
+
+# Install angular cli and devkit frontend-builder (Global dev dependencies):
+#RUN npm install -g @angular/cli@13.1.2
+#RUN npm install -g @angular-devkit/build-angular@13.1.2
+
+# Set workdir:
+#WORKDIR /app
 
 # Copy src:
-COPY ../ .
+#COPY ../ .
 
 # Install all dependencies (prod and dev):
-RUN npm install
+#RUN npm install --force
 
-# Build:
-RUN ng build
+# Build Sirius Frontend:
+#RUN ng build
+# ------------------------------------------------------------------------------------- #
 
+
+# ------------------------------------------------------------------------------------- #
+# FINAL STAGE:
+# ------------------------------------------------------------------------------------- #
 # Docker Multi stage build (Final image):
 FROM nginx:alpine
 
@@ -35,18 +69,26 @@ LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
 
+# Copy OHIF bundles:
+RUN mkdir /usr/share/nginx/dcm-viewer
+COPY --from=ohif-builder /ohif-viewer/platform/app/dist /usr/share/nginx/dcm-viewer
+
+USER root
+RUN chown nginx:nginx -r /usr/share/nginx/dcm-viewer/*
+USER nginx
+
 # Copy bundles project from the 'builder' image to nginx image:
-COPY --from=builder /app/dist/sirius-ris /usr/share/nginx/html
+#COPY --from=frontend-builder /app/dist/sirius-ris /usr/share/nginx/html
 
 # Copy nginx configuration:
 COPY ./docker/nginx /etc/nginx/conf.d
 
 # Copy docker directory to set main settings with enviroment vars:
-COPY ./docker /docker
+#COPY ./docker /docker
 
 # Give entrypoint.sh execute permissions:
-RUN chmod 755 /docker/entrypoint.sh
+#RUN chmod 755 /docker/entrypoint.sh
 
 # Exec entrypoint:
-ENTRYPOINT ["/docker/entrypoint.sh", "nginx", "-g", "daemon off;"]
+#ENTRYPOINT ["/docker/entrypoint.sh", "nginx", "-g", "daemon off;"]
 # ------------------------------------------------------------------------------------- #

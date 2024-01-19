@@ -96,7 +96,8 @@ export class FormComponent implements OnInit {
           'proj[structure_id]': 1,
           'proj[suffix]': 1,
           'proj[status]': 1,
-          'proj[base64_logo]': 1  // base64logo is not in the default projection.
+          'proj[base64_logo]': 1, // base64logo is not in the default projection.
+          'proj[base64_cert]': 1  // base64cert is not in the default projection.
         };
 
         //Find element to update:

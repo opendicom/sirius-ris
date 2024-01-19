@@ -40,7 +40,9 @@ module.exports = async (req, res, currentSchema) => {
             'organization.createdAt': 0,
             'organization.updatedAt': 0,
             'organization.__v': 0,
-            'organization.base64_logo': 0
+            'organization.base64_logo': 0,
+            'organization.base64_cert': 0,
+            'organization.password_cert': 0
         }}
         //------------------------------------------------------------------------------------------------------------//
     ];    

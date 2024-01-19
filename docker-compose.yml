@@ -14,29 +14,29 @@ services:
     networks:
       - opendicom_net
 
-  opendicom_sirius_backend:
-    container_name: opendicom_sirius_backend
-    image: opendicom/sirius-backend:1.0.0-beta.3
-    env_file: ./docker-compose.env
-    ports:
-      - 2000:2000
-    depends_on:
-      - opendicom_sirius_db
-    restart: unless-stopped
-    networks:
-      - opendicom_net
+#  opendicom_sirius_backend:
+#    container_name: opendicom_sirius_backend
+#    image: opendicom/sirius-backend:1.0.0-beta.3
+#    env_file: ./docker-compose.env
+#    ports:
+#      - 2000:2000
+#    depends_on:
+#      - opendicom_sirius_db
+#    restart: unless-stopped
+#    networks:
+#      - opendicom_net
 
-  opendicom_sirius_frontend:
-    container_name: opendicom_sirius_frontend
-    image: opendicom/sirius-frontend:1.0.0-beta.2
-    env_file: ./docker-compose.env
-    ports:
-      - 4000:80
-    depends_on:
-      - opendicom_sirius_backend
-    restart: unless-stopped
-    networks:
-      - opendicom_net
+#  opendicom_sirius_frontend:
+#    container_name: opendicom_sirius_frontend
+#    image: opendicom/sirius-frontend:1.0.0-beta.2
+#    env_file: ./docker-compose.env
+#    ports:
+#      - 4000:80
+#    depends_on:
+#      - opendicom_sirius_backend
+#    restart: unless-stopped
+#    networks:
+#      - opendicom_net
 
 networks:
   opendicom_net:

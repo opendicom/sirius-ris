@@ -90,10 +90,16 @@ export class FormUpdateComponent implements OnInit {
         'proj[consents.informed_consent.base64]': 0,
         'proj[consents.clinical_trial.base64]': 0,
         'proj[imaging.organization.base64_logo]': 0,
+        'proj[imaging.organization.base64_cert]': 0,
+        'proj[imaging.organization.cert_password]': 0,
         'proj[imaging.branch.base64_logo]': 0,
         'proj[referring.organization.base64_logo]': 0,
+        'proj[referring.organization.base64_cert]': 0,
+        'proj[referring.organization.cert_password]': 0,
         'proj[referring.branch.base64_logo]': 0,
         'proj[reporting.organization.base64_logo]': 0,
+        'proj[reporting.organization.base64_cert]': 0,
+        'proj[reporting.organization.cert_password]': 0,
         'proj[reporting.branch.base64_logo]': 0
       };
 

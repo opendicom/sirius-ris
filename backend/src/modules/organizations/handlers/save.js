@@ -10,8 +10,13 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema, operation) => {
-    //Set base64 upload file in the request:
-    await moduleServices.setBase64File(req, operation, 'base64_logo');
+    //Set base64 upload files in the request:
+    await moduleServices.setBase64Files(req, operation);
+    
+    //Check if body has the password_cert field:
+    if(req.body.password_cert !== undefined && req.body.password_cert !== null && req.body.password_cert !== ''){
+        req.body.password_cert = await mainServices.simpleCrypt(req.body.password_cert);
+    }
     
     //Execute main query:
     switch(operation){

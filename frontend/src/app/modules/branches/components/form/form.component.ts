@@ -124,7 +124,6 @@ export class FormComponent implements OnInit {
               status          : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
 
-            console.log(res.data[0]);
             //Set base64_logo:
             if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
               //Set selected Logo Controller:

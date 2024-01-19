@@ -16,7 +16,7 @@ module.exports = async (req, res, currentSchema) => {
     if(req.body.domain.branch){ referencedElements.push([ req.body.domain.branch, 'branches' ]); }
 
     //Set base64 upload file in the request:
-    await moduleServices.setBase64File(req, 'insert');
+    await moduleServices.setBase64Files(req, 'insert');
     
     //Save in database:
     await moduleServices.insert(req, res, currentSchema, referencedElements);

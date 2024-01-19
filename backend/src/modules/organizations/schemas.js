@@ -14,7 +14,9 @@ const Schema = new mongoose.Schema({
     structure_id:   { type: String },
     suffix:         { type: String },
     status:         { type: Boolean, required: true, default: false },
-    base64_logo:    { type: String } //This parameter is created in backend server (not validate).
+    base64_logo:    { type: String }, //This parameter is created in backend server (not validate).
+    base64_cert:    { type: String }, //This parameter is created in backend server (not validate).
+    password_cert:  { type: String }  //This parameter is not validated since it has different characteristics.
 },
 { timestamps: true },
 { versionKey: false });
@@ -82,6 +84,13 @@ const Validator = [
 
     body('base64_logo')
         .optional(),
+
+    body('base64_cert')
+        .optional(),
+
+    body('password_cert')
+        .optional()
+        .trim(),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 
