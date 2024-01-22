@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // ORGANIZATIONS SAVE HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
+//Import external modules:
+const cryptoJS = require('crypto-js');
+
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
@@ -15,9 +18,10 @@ module.exports = async (req, res, currentSchema, operation) => {
     
     //Check if body has the password_cert field:
     if(req.body.password_cert !== undefined && req.body.password_cert !== null && req.body.password_cert !== ''){
-        req.body.password_cert = await mainServices.simpleCrypt(req.body.password_cert);
+        //Encrypt certificate key with JWT secret:
+        req.body.password_cert = cryptoJS.AES.encrypt(req.body.password_cert, mainSettings.AUTH_JWT_SECRET).toString();
     }
-    
+
     //Execute main query:
     switch(operation){
         case 'insert':
