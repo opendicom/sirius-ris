@@ -15,11 +15,15 @@ const fonts = {
 const concat        = require('concat-stream');
 const moment        = require('moment');
 const mongoose      = require('mongoose');
+const cryptoJS      = require('crypto-js');
 
 //PDFMake Server side:
 const fs            = require('fs');
 const PdfPrinter    = require('pdfmake');
 const printer       = new PdfPrinter(fonts);
+
+//Import signer service module:
+const signerService = require('./signer.service');
 
 //HTML to PDFMake:
 var jsdom = require("jsdom");
@@ -409,14 +413,14 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.imaging.organization.createdAt': 0,
             'appointment.imaging.organization.updatedAt': 0,
             'appointment.imaging.organization.__v': 0,
-            //'appointment.imaging.organization.base64_logo': 0, //Needed to set header logos
-            'appointment.imaging.organization.base64_cert': 0,
-            'appointment.imaging.organization.password_cert': 0,
+            //'appointment.imaging.organization.base64_logo': 0,    //Needed to set header logos
+            //'appointment.imaging.organization.base64_cert': 0,
+            //'appointment.imaging.organization.password_cert': 0,  //Needed to sign report
 
             'appointment.imaging.branch.createdAt': 0,
             'appointment.imaging.branch.updatedAt': 0,
             'appointment.imaging.branch.__v': 0,
-            //'appointment.imaging.branch.base64_logo': 0,       //Needed to set header logos
+            //'appointment.imaging.branch.base64_logo': 0,          //Needed to set header logos
 
             'appointment.imaging.service.createdAt': 0,
             'appointment.imaging.service.updatedAt': 0,
@@ -570,8 +574,11 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
     //Get a random number between 100 and 998:
     let random_number = getRandomNumber(100, 998);
 
+    //Get datetime:
+    const datetime = moment().format('YYYYMMDD_HHmmssSSS', { trim: false });
+
     //Set report PDF filename (temp):
-    const filename =  moment().format('YYYYMMDD_HHmmssSSS', { trim: false }) + '_' + random_number + '_report.pdf';
+    const filename =  datetime + '_' + random_number + '_report.pdf';
 
     //Find report by _id (Aggregate):
     await reports.Model.aggregate(reports_aggregate)
@@ -595,30 +602,82 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
 
         //Check that the write has finished (async write):
         if(await streamController(writeStream) === 'complete'){
-            //Sign PDF report with organization certificates:
-            // |---------------| //
-            // | Continue here | //
-            // |---------------| //
+            //Check imaging organization certificate:
+            if(
+                report_complete_data.appointment.imaging.organization.base64_cert !== undefined && report_complete_data.appointment.imaging.organization.base64_cert !== null && report_complete_data.appointment.imaging.organization.base64_cert !== '' &&
+                report_complete_data.appointment.imaging.organization.password_cert !== undefined && report_complete_data.appointment.imaging.organization.password_cert !== null && report_complete_data.appointment.imaging.organization.password_cert !== ''
+            ){
+                //Set report PDF signed filename (temp):
+                const signed_filename = datetime + '_' + random_number + '_signed_report.pdf';
 
-            //Read created file on tmp directory (read write stream):
-            const readStream = fs.createReadStream('./tmp/' + filename, { encoding: 'base64' });
-            readStream.pipe(concat((base64) => {
-                result = base64;
-            }));
+                //Decrypt certificate password with JWT Secret:
+                let password_cert = cryptoJS.AES.decrypt(report_complete_data.appointment.imaging.organization.password_cert, mainSettings.AUTH_JWT_SECRET);
+                password_cert = password_cert.toString(cryptoJS.enc.Utf8);
+             
+                //Read the PDF we're going to sign:
+                const pdfBuffer = fs.readFileSync('./tmp/' + filename);
 
-            //Check that the read in base64 encoding has finished (async read):
-            if(await streamController(readStream) === 'complete'){
-                //Remove temp file from tmp:
-                fs.unlink('./tmp/' + filename, (error) => {
-                    if(error){
-                        //Set operation result:
-                        result = false;
+                //Decode base64 certificate:
+                const p12Buffer = Buffer.from(report_complete_data.appointment.imaging.organization.base64_cert, 'base64');
 
-                        //Send ERROR Message:
-                        mainServices.sendConsoleMessage('ERROR', delete_error);
-                        throw('Error: ' + error);
-                    }
-                });
+                //Sign PDF report with organization certificates:
+                await signerService.signPDF(pdfBuffer, p12Buffer, password_cert, signed_filename);
+
+                //Read created file on tmp directory (read write stream):
+                const readStream = fs.createReadStream('./tmp/' + signed_filename, { encoding: 'base64' });
+                readStream.pipe(concat((base64) => {
+                    result = base64;
+                }));
+
+                //Check that the read in base64 encoding has finished (async read):
+                if(await streamController(readStream) === 'complete'){
+                    //Remove signed report temp file from tmp:
+                    fs.unlink('./tmp/' + signed_filename, (error) => {
+                        if(error){
+                            //Set operation result:
+                            result = false;
+
+                            //Send ERROR Message:
+                            mainServices.sendConsoleMessage('ERROR', delete_error);
+                            throw('Error: ' + error);
+                        } else {
+                            //Remove report temp file from tmp (Without certificate):
+                            fs.unlink('./tmp/' + filename, (error) => {
+                                if(error){
+                                    //Set operation result:
+                                    result = false;
+
+                                    //Send ERROR Message:
+                                    mainServices.sendConsoleMessage('ERROR', delete_error);
+                                    throw('Error: ' + error);
+                                }
+                            });
+                        }
+                    });
+                }
+
+            //Without imaging organization certificate:
+            } else {
+                //Read created file on tmp directory (read write stream):
+                const readStream = fs.createReadStream('./tmp/' + filename, { encoding: 'base64' });
+                readStream.pipe(concat((base64) => {
+                    result = base64;
+                }));
+
+                //Check that the read in base64 encoding has finished (async read):
+                if(await streamController(readStream) === 'complete'){
+                    //Remove temp file from tmp:
+                    fs.unlink('./tmp/' + filename, (error) => {
+                        if(error){
+                            //Set operation result:
+                            result = false;
+
+                            //Send ERROR Message:
+                            mainServices.sendConsoleMessage('ERROR', delete_error);
+                            throw('Error: ' + error);
+                        }
+                    });
+                }
             }
         }
     })

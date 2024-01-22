@@ -15,19 +15,27 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema, operation) => {
     //Set base64 upload files in the request:
     await moduleServices.setBase64Files(req, operation);
-    
-    //Check if body has the password_cert field:
-    if(req.body.password_cert !== undefined && req.body.password_cert !== null && req.body.password_cert !== ''){
-        //Encrypt certificate key with JWT secret:
-        req.body.password_cert = cryptoJS.AES.encrypt(req.body.password_cert, mainSettings.AUTH_JWT_SECRET).toString();
-    }
 
     //Execute main query:
     switch(operation){
         case 'insert':
+            //Check if body has the password_cert field:
+            if(req.body.password_cert !== undefined && req.body.password_cert !== null && req.body.password_cert !== ''){
+                //Encrypt certificate key with JWT secret:
+                req.body.password_cert = cryptoJS.AES.encrypt(req.body.password_cert, mainSettings.AUTH_JWT_SECRET).toString();
+            }
+
+            //Save data:
             await moduleServices.insert(req, res, currentSchema);
             break;
         case 'update':
+            //Check if the requests has the password_cert field:
+            if(req.validatedResult.set.password_cert !== undefined && req.validatedResult.set.password_cert !== null && req.validatedResult.set.password_cert !== ''){
+                //Encrypt certificate key with JWT secret:
+                req.validatedResult.set.password_cert = cryptoJS.AES.encrypt(req.validatedResult.set.password_cert, mainSettings.AUTH_JWT_SECRET).toString();
+            }
+            
+            //Save data:
             await moduleServices.update(req, res, currentSchema);
             break;
         default:
