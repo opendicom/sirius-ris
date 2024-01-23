@@ -2,7 +2,6 @@
     "appSettings": {
         "backend_url": "http://localhost:2000/",
         "rabc_exclude_code": "exclude_code",
-        "secret_number": 1618,
         "file_max_size": 10,
         "default_page_sizes": [10, 25, 50, 100],
         "check_in_default_size": 1000,

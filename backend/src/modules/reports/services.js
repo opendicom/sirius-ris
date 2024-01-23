@@ -33,7 +33,7 @@ const htmlToPdfmake = require("html-to-pdfmake");
 
 //Import app modules:
 const mainServices  = require('../../main.services');
-const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
+const mainSettings  = mainServices.getFileSettings();                            // File settings (YAML)
 const currentLang   = require('../../main.languages')(mainSettings.language);    // Language Module
 
 //Import schemas:

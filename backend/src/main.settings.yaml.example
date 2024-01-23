@@ -66,5 +66,9 @@ AC_NUMBER_OF_ATTEMPTS: 5
 AC_TIME_WINDOW: 10    # Seconds 
 AC_PENALTY_TIME: 15   # Seconds 
 
+# Signature length:
+# Used in signature PDF service.
+signature_length: 4628
+
 # Set the language of the responses:
 language: 'ES'

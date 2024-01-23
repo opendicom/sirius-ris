@@ -2,7 +2,6 @@
     "appSettings": {
         "backend_url": "http://${IP_SERVER}:${SIRIUS_BACKEND_HTTP_PORT}/",
         "rabc_exclude_code": "${SIRIUS_BACKEND_RABC_EXCLUDE_CODE}",
-        "secret_number": ${SIRIUS_FRONTEND_SECRET_NUMBER},
         "file_max_size": 10,
         "default_page_sizes": ${SIRIUS_FRONTEND_DEFAULT_PAGE_SIZES},
         "check_in_default_size": ${SIRIUS_FRONTEND_CHECK_IN_DEFAULT_SIZE},

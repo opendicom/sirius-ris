@@ -48,19 +48,11 @@ export class SharedFunctionsService {
   // Duplicated method to prevent circular dependency - [Duplicated method: http-interceptor.service].
   //--------------------------------------------------------------------------------------------------------------------//
   simpleCrypt (message: string): string {
-    //Initialize secret number with default value until file content is loaded:
-    let secret_number = 1618;
-
-    //Set secret number with file settings:
-    if(this.mainSettings !== undefined && this.mainSettings.appSettings !== undefined){
-      secret_number = this.mainSettings.appSettings.secret_number;
-    }
-
     //Encode:
     let encoded = '';
     for (let i=0; i < message.length; i++) {
       let a = message.charCodeAt(i);
-      let b = a ^ secret_number;
+      let b = a ^ 1618;
       encoded = encoded+String.fromCharCode(b);
     }
     return encoded;

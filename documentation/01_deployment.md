@@ -176,9 +176,6 @@ SIRIUS_BACKEND_LANGUAJE='ES'
 # ------------------------------------------------------------------------------------- #
 # SIRIUS FRONTEND:
 # ------------------------------------------------------------------------------------- #
-# Secret number - Used on simple crypt:
-SIRIUS_FRONTEND_SECRET_NUMBER=1234
-
 # Pager defaults:
 SIRIUS_FRONTEND_DEFAULT_PAGE_SIZES='[10, 25, 50, 100]'
 SIRIUS_FRONTEND_CHECK_IN_DEFAULT_SIZE=1000

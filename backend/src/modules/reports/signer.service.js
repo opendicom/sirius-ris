@@ -1,3 +1,6 @@
+//--------------------------------------------------------------------------------------------------------------------//
+// SIGNER SERVICE:
+//--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
 const fs = require('fs');
 const signer = require('node-signpdf');
@@ -11,9 +14,16 @@ const {
   CharCodes
 } = require('pdf-lib');
 
+//Import app modules:
+const mainServices  = require('../../main.services');
+const mainSettings  = mainServices.getFileSettings();                            // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);    // Language Module
+
 // This length can be derived from the following `node-signpdf` error message:
 // ./node_modules/node-signpdf/dist/signpdf.js:155:19
-const SIGNATURE_LENGTH = 4628;
+const SIGNATURE_LENGTH = mainSettings.signature_length;
+//--------------------------------------------------------------------------------------------------------------------//
+
 
 //--------------------------------------------------------------------------------------------------------------------//
 // SIGN PDF:
