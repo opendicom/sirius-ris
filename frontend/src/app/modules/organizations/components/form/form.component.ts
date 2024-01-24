@@ -18,9 +18,11 @@ import { ISO_3166 } from '@env/environment';                                    
 export class FormComponent implements OnInit {
   public country_codes    : any = ISO_3166;
 
-  //Initialize Selected File Control Variable:
-  public selectedFile           : any = null;
+  //Initialize Selected Files Controllers:
+  public selectedLogoFile       : any = null;
   public selectedLogoController : boolean = false;
+  public selectedCertFile       : any = null;
+  public selectedCertController : boolean = false;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
@@ -121,6 +123,12 @@ export class FormComponent implements OnInit {
               this.selectedLogoController = true;
             }
 
+            //Set base64_cert:
+            if(res.data[0].base64_cert !== null && res.data[0].base64_cert !== undefined && res.data[0].base64_cert !== ''){
+              //Set selected Logo Controller:
+              this.selectedCertController = true;
+            }
+
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
 
@@ -134,10 +142,19 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any){
+  onFileSelected(event: any, type: string){
     //Set selected file:
-    this.selectedFile = <File>event.target.files[0];
-    this.selectedLogoController = true;
+    switch(type){
+      case 'logo':
+        this.selectedLogoFile = <File>event.target.files[0];
+        this.selectedLogoController = true;
+        break;
+      case 'cert':
+        this.selectedCertFile = <File>event.target.files[0];
+        this.selectedCertController = true;
+        break;
+    }
+
   }
   
   async onSubmit(){
@@ -147,12 +164,27 @@ export class FormComponent implements OnInit {
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
 
       //Check if there is logo file selected (Multipart form):
-      if(this.selectedFile !== null){
-        //Set File Handler:
-        const fileHandler = {
-          fileRequestKeyName: 'uploaded_logo',
-          selectedFile: this.selectedFile
-        };
+      if(this.selectedLogoFile !== null || this.selectedCertFile !== null){
+        //Initializate File Handler:
+        let fileHandler = [];
+
+        //Check Logo File:
+        if(this.selectedLogoFile !== null){
+          //Set uploaded_logo in File Handler:
+          fileHandler.push({
+            fileRequestKeyName: 'uploaded_logo',
+            selectedFile: this.selectedLogoFile
+          });
+        }
+
+        //Check Cert File:
+        if(this.selectedCertFile !== null){
+          //Set uploaded_cert in File Handler:
+          fileHandler.push({
+            fileRequestKeyName: 'uploaded_cert',
+            selectedFile: this.selectedCertFile
+          });
+        }
 
         //Save data with Multipart form:
         this.sharedFunctions.saveMultipart(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, fileHandler, (res) => {
@@ -176,15 +208,23 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
   }
 
-  onDeleteLogo(){
-    this.sharedFunctions.deleteLogo(this.sharedProp.element, this._id, (res) => {
+  onDeleteFileRef(fieldName: string){
+    this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {
       //Check result:
       if(res.success == true){
-        this.sharedFunctions.sendMessage('Logo eliminado exitosamente', { duration : 2000 });
+        this.sharedFunctions.sendMessage('Archivo eliminado exitosamente', { duration : 2000 });
 
         //Reset logo file controllers:
-        this.selectedFile = null;
-        this.selectedLogoController = false;
+        switch(fieldName){
+          case 'base64_logo':  
+            this.selectedLogoFile = null;
+            this.selectedLogoController = false;
+            break;
+          case 'base64_cert':
+            this.selectedCertFile = null;
+            this.selectedCertController = false;
+            break;
+        }
       }
     });
   }

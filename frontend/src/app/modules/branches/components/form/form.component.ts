@@ -158,10 +158,10 @@ export class FormComponent implements OnInit {
       //Check if there is logo file selected (Multipart form):
       if(this.selectedFile !== null){
         //Set File Handler:
-        const fileHandler = {
+        const fileHandler = [{
           fileRequestKeyName: 'uploaded_logo',
           selectedFile: this.selectedFile
-        };
+        }];
 
         //Save data with Multipart form:
         this.sharedFunctions.saveMultipart(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, fileHandler, (res) => {
@@ -206,11 +206,11 @@ export class FormComponent implements OnInit {
     });
   }
 
-  onDeleteLogo(){
-    this.sharedFunctions.deleteLogo(this.sharedProp.element, this._id, (res) => {
+  onDeleteFileRef(fieldName: string){
+    this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {
       //Check result:
       if(res.success == true){
-        this.sharedFunctions.sendMessage('Logo eliminado exitosamente', { duration : 2000 });
+        this.sharedFunctions.sendMessage('Archivo eliminado exitosamente', { duration : 2000 });
 
         //Reset logo file controllers:
         this.selectedFile = null;

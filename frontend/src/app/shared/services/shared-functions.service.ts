@@ -820,6 +820,9 @@ export class SharedFunctionsService {
   async saveMultipart(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], fileHandler: any, callback = (res: any) => {}, saveResponse: boolean = true) {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
+
+    //Initializate File Max Size Controller:
+    let fileMaxSizeError = false;
     
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){
@@ -835,7 +838,12 @@ export class SharedFunctionsService {
         const multipartForm = new FormData();
 
         //Set upload file in multipart form:
-        multipartForm.append(fileHandler.fileRequestKeyName, fileHandler.selectedFile, fileHandler.selectedFile.name);
+        await Promise.all(Object.keys(fileHandler).map((key) => {
+          multipartForm.append(fileHandler[key].fileRequestKeyName, fileHandler[key].selectedFile, fileHandler[key].selectedFile.name);
+
+          //Check max file size (current):
+          if(this.bytesToMegaBytes(fileHandler[key].selectedFile.size) >= this.mainSettings.appSettings.file_max_size){ fileMaxSizeError = true; }
+        }));
 
         //Set multipart form values:
         await Promise.all(Object.keys(data).map((key) => {
@@ -843,7 +851,7 @@ export class SharedFunctionsService {
         }));
 
         //Check max file size:
-        if(this.bytesToMegaBytes(fileHandler.selectedFile.size) <= this.mainSettings.appSettings.file_max_size){
+        if(fileMaxSizeError === false){
           //Save data:
           //Create observable obsSave:
           const obsSave = this.apiClient.sendRequest('POST', element + '/' + operation, multipartForm);
@@ -1602,12 +1610,16 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // DELETE LOGO:
-  // Delete logo is only an update with unset base64_logo field.
+  // DELETE FILE REF:
+  // Delete file ref is only an update with unset file reference field.
   //--------------------------------------------------------------------------------------------------------------------//
-  deleteLogo(schemaName: string, _id: string, callback = (res: any) => {}){
+  deleteFileRef(schemaName: string, _id: string, fieldName: string, callback = (res: any) => {}){
+    //Create unset field value:
+    let unset_field: any = {};
+    unset_field[fieldName] = '';
+
     //Create observable obsUpdate:
-    const obsUpdate = this.apiClient.sendRequest('POST', schemaName + '/update', { _id: _id, unset: { base64_logo: '' }});
+    const obsUpdate = this.apiClient.sendRequest('POST', schemaName + '/update', { _id: _id, unset: unset_field });
 
     //Observe content (Subscribe):
     obsUpdate.subscribe({
