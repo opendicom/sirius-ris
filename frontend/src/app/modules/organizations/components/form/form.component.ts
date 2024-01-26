@@ -46,7 +46,7 @@ export class FormComponent implements OnInit {
     private router          : Router,
     private objRoute        : ActivatedRoute,
     public  sharedProp      : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService,
+    public sharedFunctions  : SharedFunctionsService,
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -73,7 +73,8 @@ export class FormComponent implements OnInit {
       country_code  : [ this.sharedProp.mainSettings.appSettings.default_country, [Validators.required]],
       structure_id  : [''],
       suffix        : [''],
-      status        : ['true']
+      status        : ['true'],
+      password_cert : ['']
     });
   }
 
@@ -98,8 +99,9 @@ export class FormComponent implements OnInit {
           'proj[structure_id]': 1,
           'proj[suffix]': 1,
           'proj[status]': 1,
-          'proj[base64_logo]': 1, // base64logo is not in the default projection.
-          'proj[base64_cert]': 1  // base64cert is not in the default projection.
+          'proj[base64_logo]': 1,   // base64logo is not in the default projection.
+          'proj[base64_cert]': 1,   // base64cert is not in the default projection.
+          'proj[password_cert]': 1  // base64cert is not in the default projection.
         };
 
         //Find element to update:
@@ -114,7 +116,8 @@ export class FormComponent implements OnInit {
               country_code  : res.data[0].country_code,
               structure_id  : res.data[0].structure_id,
               suffix        : res.data[0].suffix,
-              status        : [ `${res.data[0].status}` ] //Use back tip notation to convert string
+              status        : [ `${res.data[0].status}` ], //Use back tip notation to convert string,
+              password_cert : ''
             });
 
             //Set base64_logo:

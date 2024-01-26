@@ -30,24 +30,7 @@
 
       <br/><br/><hr class="dashed" /><br/>
 
-      <!-- Start logo file -->
-      <div *ngIf="selectedLogoController; then thenBlockLogo else elseBlockLogo"></div>
-
-      <ng-template #thenBlockLogo>
-        <button mat-flat-button type="button" class="file-button">
-          <mat-icon>image</mat-icon> LOGO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" matTooltip="Eliminar logo de la organización" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
-        </button>
-        
-      </ng-template>
-
-      <ng-template #elseBlockLogo>
-        <input type="file" (change)="onFileSelected($event, 'logo')" #fileInput style="display: none" />
-        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
-      </ng-template>
-      <!-- End logo file -->
-
-      <br/><br/>
+      <h3 class="form-title underline-fail-alt">Certificado <span class="label-info">.PK12</span>:</h3>
 
       <!-- Start cert file -->
       <div *ngIf="selectedCertController; then thenBlockCert else elseBlockCert"></div>
@@ -65,6 +48,14 @@
         <mat-icon>workspace_premium</mat-icon> SELECCIONAR CERTIFICADO DE LA ORGANIZACIÓN</button>
       </ng-template>
       <!-- End cert file -->
+
+      <br/><br/>
+
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>Clave del certificado</mat-label>
+        <input matInput type="password" formControlName="password_cert" placeholder="Ingrese clave del certificado.">
+        <mat-hint *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].password_cert" align="start">Ya existe una clave de certificado en la base de datos, indique una solo si desea cambiarla.</mat-hint>
+      </mat-form-field>
 
       <br/><br/>
 
@@ -92,6 +83,25 @@
         <mat-label>Sufijo</mat-label>
         <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
       </mat-form-field>
+
+      <br/><br/><hr class="dashed" /><br/>
+
+      <!-- Start logo file -->
+      <div *ngIf="selectedLogoController; then thenBlockLogo else elseBlockLogo"></div>
+
+      <ng-template #thenBlockLogo>
+        <button mat-flat-button type="button" class="file-button">
+          <mat-icon>image</mat-icon> LOGO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" matTooltip="Eliminar logo de la organización" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
+        </button>
+        
+      </ng-template>
+
+      <ng-template #elseBlockLogo>
+        <input type="file" (change)="onFileSelected($event, 'logo')" #fileInput style="display: none" />
+        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
+        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
+      </ng-template>
+      <!-- End logo file -->
 
     </div> <!-- end fxLayout wrapper -->
 

@@ -35,7 +35,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert', 'password_cert'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
