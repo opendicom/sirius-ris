@@ -63,6 +63,7 @@ import { CalendarModule } from '@modules/calendar/calendar.module';
 import { PathologiesModule } from '@modules/pathologies/pathologies.module';
 import { PerformingModule } from '@modules/performing/performing.module';
 import { ReportsModule } from '@modules/reports/reports.module';
+import { AdvancedSearchModule } from '@modules/advanced-search/advanced-search.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -101,7 +102,8 @@ import { ReportsModule } from '@modules/reports/reports.module';
     CalendarModule,
     PathologiesModule,
     PerformingModule,
-    ReportsModule
+    ReportsModule,
+    AdvancedSearchModule
   ],
   providers: [
     AppInitializer,
