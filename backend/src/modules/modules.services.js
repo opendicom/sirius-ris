@@ -960,6 +960,33 @@ async function setExplicitOperator(currentValue, callback){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// SET GROUP:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setGroup(req){
+    //Check group id criteria:
+    if(req.query.group !== null && req.query.group !== undefined && req.query.group !== ''){
+        if(req.query.group.id !== null && req.query.group.id !== undefined && req.query.group.id !== ''){
+            //Set default group order (last records first):
+            let group_order = { "$last": "$$ROOT" };
+
+            //Check group order in query:
+            if(req.query.group.order !== null && req.query.group.order !== undefined && req.query.group.order === 'first'){
+                group_order = { "$first": "$$ROOT" };
+            }
+
+            //Add group in the aggregate pipe:
+            req.query.aggregate.push({ $group: {
+                    _id : "$" + req.query.group.id,
+                    doc : group_order,
+                }},
+                { $replaceRoot: { newRoot: { $mergeObjects: ["$doc"] }}
+            });
+        }
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK ELEMENT:
 //--------------------------------------------------------------------------------------------------------------------//
 async function ckeckElement(_id, schemaName, res){
@@ -2714,7 +2741,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
         //Switch by method:
         switch(method){
             //------------------------------------------------------------------------------------------------------------//
-            // FIND, FIND BY ID, FIND ONE:
+            // FIND, FIND BY ID, FIND ONE, FINDBYSERVICE, STUDYTOKEN:
             //------------------------------------------------------------------------------------------------------------//
             case 'find':
             case 'findOne':
@@ -4914,6 +4941,7 @@ module.exports = {
     setRegex,
     setIn,
     setCondition,
+    setGroup,
     domainIs,
     addDomainCondition,
     checkObjectId,

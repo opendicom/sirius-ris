@@ -30,7 +30,13 @@ module.exports = async (req, res, currentSchema) => {
     let { filter, regex } = req.query;
 
     //Add aggregate to request:
-    req.query['aggregate'] = [
+    req.query['aggregate'] = [];
+
+    //Set group by:
+    await moduleServices.setGroup(req);
+
+    //Add schema pipe aggregation:
+    req.query.aggregate.push(
         //Performing (Lookup & Unwind):
         { $lookup: {
             from: 'performing',
@@ -531,7 +537,7 @@ module.exports = async (req, res, currentSchema) => {
             'medical_signatures.user.person.updatedAt': 0,
             'medical_signatures.user.person.__v': 0
         }}
-    ];
+    );
 
     //Correct data types for match operation:
     if(filter != undefined){

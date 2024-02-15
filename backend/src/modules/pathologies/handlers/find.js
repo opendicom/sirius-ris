@@ -14,7 +14,13 @@ module.exports = async (req, res, currentSchema) => {
     let { filter, regex } = req.query;
 
     //Add aggregate to request:
-    req.query['aggregate'] = [
+    req.query['aggregate'] = [];
+
+    //Set group by:
+    await moduleServices.setGroup(req);
+
+    //Add schema pipe aggregation:
+    req.query.aggregate.push(
         //Organizations lookup:
         { $lookup: {
             from: 'organizations',
@@ -45,7 +51,7 @@ module.exports = async (req, res, currentSchema) => {
             'organization.password_cert': 0
         }}
         //------------------------------------------------------------------------------------------------------------//
-    ];    
+    );
 
     //Correct data types for match operation:
     if(filter != undefined){

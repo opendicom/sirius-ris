@@ -95,6 +95,10 @@ In case of a satisfactory response, the **JWT** of the session (1d) will be obta
 
 * **regex** = *boolean* (Allows parameters set within **filter** to be submitted under a regular expression for similarity searches).
 
+* **group [id]** = string (`field_name` - Based on [MongoDB](https://www.mongodb.com/en/) group definitions).
+
+* **group [order]** = *string* (`first` or `last` - Based on [MongoDB](https://www.mongodb.com/en/) group definitions).
+
   
 
   > ***Notes:***

@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------//
-// USERS FIND HANDLER:
+// FIND BY SERVICE HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
@@ -28,7 +28,13 @@ module.exports = async (req, res, currentSchema) => {
                 const completeDomain = await moduleServices.getCompleteDomain(service, 'services');
 
                 //Add aggregate to request:
-                req.query['aggregate'] = [
+                req.query['aggregate'] = [];
+
+                //Set group by:
+                await moduleServices.setGroup(req);
+
+                //Add schema pipe aggregation:
+                req.query.aggregate.push(
                     //People lookup:
                     { $lookup: {
                         from: 'people',
@@ -57,7 +63,7 @@ module.exports = async (req, res, currentSchema) => {
                         'person.__v': 0,
                     }}
                     //------------------------------------------------------------------------------------------------//
-                ];    
+                ); 
 
                 //Correct data types for match operation:
                 if(filter != undefined){
