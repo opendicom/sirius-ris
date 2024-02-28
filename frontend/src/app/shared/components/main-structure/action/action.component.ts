@@ -27,6 +27,7 @@ export class ActionComponent implements OnInit {
     appointments          : appointments_flow_states,
     appointment_requests  : appointment_requests_flow_states,
     performing            : performing_flow_states,
+    reports               : performing_flow_states //Advanced search case.
   };
 
   //Set DB action properties:
@@ -84,6 +85,16 @@ export class ActionComponent implements OnInit {
         repeatedSurnames  : {},
         allSurnames       : [],
       }
+
+      //Check group:
+      if(this.sharedProp.group !== undefined && this.sharedProp.group !== null && this.sharedProp.group !== '' && this.sharedProp.group !== 'false' && this.sharedProp.group !== false){
+        //Do nothing -> Preserve group params.
+      } else {
+        this.sharedProp.group = false;
+      }
+
+      //Initialize advanced search params (Clone with spread operator):
+      this.sharedProp.advanced_search = { ... this.sharedProp.default_advanced_search };
     }
 
     //Initialize selected items:

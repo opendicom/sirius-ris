@@ -59,7 +59,8 @@ export class ListByUserComponent implements OnInit {
         log_event     : true,
         pager         : true,
         clear_filters : false   //If you clear the search you will be able to see other users' logs.
-      }
+      },
+      advanced_search : false
     });
 
     //Set element:
@@ -90,6 +91,7 @@ export class ListByUserComponent implements OnInit {
     this.sharedProp.projection    = {};
     this.sharedProp.sort          = { datetime: -1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.group         = false;
 
     //Refresh request params:
     sharedProp.paramsRefresh();

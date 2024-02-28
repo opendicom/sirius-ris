@@ -89,7 +89,8 @@ export class ListComponent implements OnInit {
         log_event     : false,
         pager         : true,
         clear_filters : true
-      }
+      },
+      advanced_search : false
     });
 
     //Set element:
@@ -161,6 +162,7 @@ export class ListComponent implements OnInit {
     };
     this.sharedProp.sort          = { 'date': -1, 'urgency': 1, 'status': -1, 'appointment.imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.group         = false;
 
     //Default the studies assigned to the user to the list (Médico):
     if(this.sharedProp.userLogged.permissions[0].role == 4){

@@ -125,7 +125,7 @@
       </mat-form-field>
 
       <!-- reset seach -->
-      <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
+      <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters && sharedProp.action.advanced_search === false">
         <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
       </button>
 
@@ -177,3 +177,90 @@
 
   </div>
 </div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<!-- ADVANCED SEARCH: -->
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->
+<div *ngIf="sharedProp.action.advanced_search" class="form-element advanced-search-panel">
+  <div fxLayout="row" fxLayoutAlign="start start">
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h2 class="form-title text-center underline-fail-alt">Buscar palabras clave:</h2>
+    
+      <h4>Anamnesis <span class="label-info">CITA</span>:</h4>
+      <mat-form-field appearance="outline" class="large">
+        <mat-label>Buscar palabra sobre anamnesis</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" placeholder="Buscar palabra sobre el contenido del anamnesis" (keyup.enter)="onSearch();">
+      </mat-form-field>
+    
+      <h3 class="form-title text-center underline-ok-alt">En el contenido del <span class="label-info">INFORME</span>:</h3>
+    
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+          <h4>Dato clínico:</h4>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Palabra en dato clínico</mat-label>
+            <input matInput type="text"  placeholder="Buscar palabra sobre el dato clínico" (keyup.enter)="onSearch();">
+          </mat-form-field>
+    
+          <br/>
+    
+          <h4>Hallazgos:</h4>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Palabra en hallazgos</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_findings" placeholder="Buscar palabra sobre los hallazgos" (keyup.enter)="onSearch();">
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+    
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>Procedimiento:</h4>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Palabra en procedimiento</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_description" placeholder="Buscar palabra sobre el procedimiento" (keyup.enter)="onSearch();">
+          </mat-form-field>
+    
+          <br/>
+  
+          <h4>En suma:</h4>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Palabra en el en suma</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.summary" placeholder="Buscar palabra sobre en suma" (keyup.enter)="onSearch();">
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+    
+    </div> <!-- end fxLayout wrapper -->
+    
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h2 class="form-title text-center underline-fail-alt">Médicos incolucrados:</h2>
+          
+      Firmado por<br/>
+      Autenticado por<br/>
+      Médico solicitante<br/>
+    
+      <h2 class="form-title text-center underline-fail-alt">Patologías:</h2>
+      Patologías
+    
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+    
+  <div class="clear"></div>
+  <hr class="soft-alt"/>
+    
+  <div class="text-center">
+    <br/>
+        
+    <!-- advanced search -->
+    <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
+      <mat-icon>search</mat-icon>&nbsp; BUSCAR
+    </button>
+    
+    <!-- reset seach -->
+    <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
+      <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+    </button>
+    
+    <div class="clear"></div>
+    <br/>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------------------------ -->

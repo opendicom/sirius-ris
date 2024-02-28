@@ -76,7 +76,8 @@ export class ListDraftsComponent implements OnInit {
         log_event     : false,
         pager         : true,
         clear_filters : true
-      }
+      },
+      advanced_search : false
     });
 
     //Set element:
@@ -142,6 +143,7 @@ export class ListDraftsComponent implements OnInit {
     };
     this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.group         = false;
 
     //Refresh request params:
     sharedProp.paramsRefresh();

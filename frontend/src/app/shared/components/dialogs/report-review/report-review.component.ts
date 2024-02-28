@@ -62,8 +62,8 @@ export class ReportReviewComponent implements OnInit {
             //Close dialog:
             this.current_dialog.closeAll();
 
-            //Reload last search (Performing list):
-            this.sharedFunctions.find('performing', this.sharedProp.params);
+            //Reload last search (Performing list or Advanced search (reports)):
+            this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
           });
           break;
 
@@ -72,8 +72,8 @@ export class ReportReviewComponent implements OnInit {
             //Close dialog:
             this.current_dialog.closeAll();
 
-            //Reload last search (Performing list):
-            this.sharedFunctions.find('performing', this.sharedProp.params);
+            //Reload last search (Performing list or Advanced search (reports)):
+            this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
           });
           
           break;
@@ -84,8 +84,8 @@ export class ReportReviewComponent implements OnInit {
               //Close dialog:
               this.current_dialog.closeAll();
   
-              //Reload last search (Performing list):
-              this.sharedFunctions.find('performing', this.sharedProp.params);
+              //Reload last search (Performing list or Advanced search (reports)):
+              this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
             });
           });
           break;
@@ -97,8 +97,8 @@ export class ReportReviewComponent implements OnInit {
         //Close dialog:
         this.current_dialog.closeAll();
 
-        //Reload last search (Performing list):
-        this.sharedFunctions.find('performing', this.sharedProp.params);
+        //Reload last search (Performing list or Advanced search (reports)):
+        this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
       });
     }
   }

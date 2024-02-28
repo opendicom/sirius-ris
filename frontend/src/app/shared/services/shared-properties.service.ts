@@ -26,7 +26,22 @@ export class SharedPropertiesService {
   public filterFields   : any;
   public projection     : any;
   public sort           : any;
+  public group          : any;
   public pager          : any;
+
+  //Advanced search params
+  public advanced_search: any;
+  public default_advanced_search: any = {
+    anamnesis             : '',
+    clinical_info         : '',
+    procedure_description : '',
+    procedure_findings    : '',
+    summary               : '',
+    pathologies           : [],
+    signing_user          : '',
+    authenticator_user    : '',
+    referring_physician   : ''
+  };
 
   //Action fields:
   public status         : string;
@@ -125,6 +140,7 @@ export class SharedPropertiesService {
     let string_filter : string = '';
     let string_proj   : string = '';
     let string_sort   : string = '';
+    let string_group  : string = '';
     let string_pager  : string = '';
 
     //Adjust params formats:
@@ -159,7 +175,12 @@ export class SharedPropertiesService {
 
     //Check flow state - Filter (With AND Condition):
     if(this.flow_state !== ''){
-      string_filter += '"filter[and][flow_state]": "' + this.flow_state + '", ';
+      //Check Advanced search looked up case:
+      if(this.element === 'reports'){
+        string_filter += '"filter[and][performing.flow_state]": "' + this.flow_state + '", ';
+      } else {
+        string_filter += '"filter[and][flow_state]": "' + this.flow_state + '", ';
+      }
     }
 
     //Check Modality - Filter (With AND Condition):
@@ -208,13 +229,53 @@ export class SharedPropertiesService {
       string_sort += '"sort[' + key + ']": "' + this.sort[key] + '", ';
     }
 
+    //Group:
+    if(this.group !== undefined && this.group !== null && this.group !== '' && this.group !== 'false' && this.group !== false){
+      //Check group id:
+      if(this.group.id !== undefined && this.group.id !== null && this.group.id !== ''){
+        string_group = '"group[id]": "' + this.group['id'] + '", ';
+
+        //Group order (optional):
+        if(this.group.order !== undefined && this.group.order !== null && this.group.order !== ''){
+          string_group += '"group[order]": "' + this.group.order + '", ';
+        }
+      }
+    }
+
+    //Advanced search:
+    if(this.action.advanced_search !== false){
+      //Anamnesis:
+      if(this.advanced_search.anamnesis !== undefined && this.advanced_search.anamnesis !== null && this.advanced_search.anamnesis !== ''){
+        string_filter += '"filter[and][appointment.anamnesis]": "' + this.advanced_search.anamnesis + '", ';
+      }
+
+      //Clinical info:
+      if(this.advanced_search.clinical_info !== undefined && this.advanced_search.clinical_info !== null && this.advanced_search.clinical_info !== ''){
+        string_filter += '"filter[and][clinical_info]": "' + this.advanced_search.clinical_info + '", ';
+      }
+
+      //Procedure description:
+      if(this.advanced_search.procedure_description !== undefined && this.advanced_search.procedure_description !== null && this.advanced_search.procedure_description !== ''){
+        string_filter += '"filter[and][procedure_description]": "' + this.advanced_search.procedure_description + '", ';
+      }
+
+      //Procedure findings:
+      if(this.advanced_search.procedure_findings !== undefined && this.advanced_search.procedure_findings !== null && this.advanced_search.procedure_findings !== ''){
+        string_filter += '"filter[and][findings.procedure_findings]": "' + this.advanced_search.procedure_findings + '", ';
+      }
+
+      //Summary:
+      if(this.advanced_search.summary !== undefined && this.advanced_search.summary !== null && this.advanced_search.summary !== ''){
+        string_filter += '"filter[and][summary]": "' + this.advanced_search.summary + '", ';
+      }
+    }
+
     //Pager:
     string_pager = '"pager[page_number]": "' + this.pager['page_number'] + '", ';
     string_pager += '"pager[page_limit]": "' + this.pager['page_limit'] + '"';
 
-
     //Concat string params:
-    const string_params = '{ ' + string_regex + string_filter + string_proj + string_sort + string_pager + ' }';
+    const string_params = '{ ' + string_regex + string_filter + string_proj + string_sort + string_group + string_pager + ' }';
 
     //Set params:
     this.params = JSON.parse(string_params);

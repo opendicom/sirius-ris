@@ -775,6 +775,15 @@ async function setAndOr(filter){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK EXCLUDE CONDITION:
+// Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch).
+//--------------------------------------------------------------------------------------------------------------------//
+function checkExcludeCondition(keyName, currentValue){
+    return currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'event' && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or' && keyName.includes('.date') === false;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // SET CONDITION REGEX:
 //--------------------------------------------------------------------------------------------------------------------//
 async function setRegex(regex, condition){
@@ -792,8 +801,8 @@ async function setRegex(regex, condition){
                     keyName = Object.keys(or_current)[0];
                     currentValue = condition.$or[or_index][keyName];
 
-                    //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                    if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false  && checkObjectId(currentValue) === false && keyName !== 'event' && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                    //Check Exclude Condition:
+                    if(checkExcludeCondition(keyName, currentValue)){
                         condition.$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                     }
                 }));
@@ -809,8 +818,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(or_current)[0];
                             currentValue = and_current.$or[or_index][keyName];
                             
-                            //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'event' && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                            //Check Exclude Condition:
+                            if(checkExcludeCondition(keyName, currentValue)){
                                 condition.$and[and_index].$or[or_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -823,8 +832,8 @@ async function setRegex(regex, condition){
                             keyName = Object.keys(second_and_current)[0];
                             currentValue = and_current.$and[second_and_index][keyName];
                             
-                            //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                            if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'event' && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                            //Check Exclude Condition:
+                            if(checkExcludeCondition(keyName, currentValue)){
                                 condition.$and[and_index].$and[second_and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                             }
                         }));
@@ -835,8 +844,8 @@ async function setRegex(regex, condition){
                         keyName = Object.keys(and_current)[0];
                         currentValue = condition.$and[and_index][keyName];
 
-                        //Exclude boolean, ObjectId and Date types [Date by KeyName] and explicit nested operators ($and, $or, $elemMatch):
-                        if(currentValue !== 'true' && currentValue !== true && currentValue !== 'false' && currentValue !== false && checkObjectId(currentValue) === false && keyName !== 'event' && keyName !== 'date' && keyName !== 'datetime' && keyName !== 'start' && keyName !== 'end' && currentValue['$elemMatch'] == undefined && keyName !== '$and' && keyName !== '$or'){
+                        //Check Exclude Condition:
+                        if(checkExcludeCondition(keyName, currentValue)){
                             condition.$and[and_index][keyName] = { $regex: `${currentValue}`, $options: 'i' };
                         }
                     }

@@ -54,7 +54,8 @@ export class ListComponent implements OnInit {
         log_event     : false,
         pager         : true,
         clear_filters : true
-      }
+      },
+      advanced_search : false
     });
 
     //Set element:
@@ -85,6 +86,7 @@ export class ListComponent implements OnInit {
     this.sharedProp.projection    = { name: 1, short_name: 1, 'OID': 1, country_code: 1, structure_id: 1, suffix: 1, status: 1 };
     this.sharedProp.sort          = { status: -1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
+    this.sharedProp.group         = false;
 
     //Refresh request params:
     sharedProp.paramsRefresh();

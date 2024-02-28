@@ -83,7 +83,8 @@ export class ListComponent implements OnInit {
         log_event     : false,
         pager         : false,
         clear_filters : false
-      }
+      },
+      advanced_search : false
     });
 
     //Set element:
@@ -133,6 +134,7 @@ export class ListComponent implements OnInit {
     };
     this.sharedProp.sort          = { 'start': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.check_in_default_size };
+    this.sharedProp.group         = false;
 
     //Refresh request params:
     sharedProp.paramsRefresh();

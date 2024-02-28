@@ -30,11 +30,11 @@ export class FormComponent implements OnInit {
 
   //Inject services, components and router to the constructor:
   constructor(
-    public formBuilder: FormBuilder,
-    private router: Router,
-    private objRoute: ActivatedRoute,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    public formBuilder        : FormBuilder,
+    private router            : Router,
+    private objRoute          : ActivatedRoute,
+    public sharedProp         : SharedPropertiesService,
+    private sharedFunctions   : SharedFunctionsService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
