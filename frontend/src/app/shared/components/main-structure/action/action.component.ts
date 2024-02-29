@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { Router } from '@angular/router';                                               // Router
-import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import {                                                                                // Enviroment
+import { Router } from '@angular/router';                                                   // Router
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
+import {                                                                                    // Enviroment
   appointments_flow_states,
   appointment_requests_flow_states,
   performing_flow_states,
@@ -38,9 +39,10 @@ export class ActionComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    private router: Router,
-    public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    private router              : Router,
+    public sharedProp           : SharedPropertiesService,
+    public sharedFunctions      : SharedFunctionsService,
+    public appointmentsService  : AppointmentsService
   ) {
     //Set action properties:
     sharedProp.actionSetter({

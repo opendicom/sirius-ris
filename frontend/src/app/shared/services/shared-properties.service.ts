@@ -82,11 +82,14 @@ export class SharedPropertiesService {
   public current_appointment        : string = '';
   public current_appointment_request: any;
 
-  //Current operation object PET-CT for cases:
+  //Current operation objects for PET-CT cases:
   public current_modality_code_value  : string = '';
   public current_weight               : string = '';
   public current_coefficient          : string = '';
   public recomended_dose              : string = '';
+
+  //Current operation ojects for Advanced search cases:
+  public current_active_users  : any;
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
@@ -268,6 +271,17 @@ export class SharedPropertiesService {
       if(this.advanced_search.summary !== undefined && this.advanced_search.summary !== null && this.advanced_search.summary !== ''){
         string_filter += '"filter[and][summary]": "' + this.advanced_search.summary + '", ';
       }
+
+      //Medical signatures:
+      if(this.advanced_search.signing_user !== undefined && this.advanced_search.signing_user !== null && this.advanced_search.signing_user !== ''){
+        string_filter += '"filter[and][medical_signatures.user._id]": "' + this.advanced_search.signing_user + '", ';
+      }
+
+      //Authenticator user:
+      if(this.advanced_search.authenticator_user !== undefined && this.advanced_search.authenticator_user !== null && this.advanced_search.authenticator_user !== ''){
+        string_filter += '"filter[and][authenticated.user._id]": "' + this.advanced_search.authenticator_user + '", ';
+      }
+      
     }
 
     //Pager:

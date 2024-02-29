@@ -168,6 +168,10 @@ SIRIUS_BACKEND_AC_NUMBER_OF_ATTEMPTS=5
 SIRIUS_BACKEND_AC_TIME_WINDOW=10    # Seconds 
 SIRIUS_BACKEND_AC_PENALTY_TIME=15   # Seconds 
 
+# SIRIUS BACKEND SIGNATURE LENGTH:
+# Used in signature PDF service.
+SIRIUS_BACKEND_SIGNATURE_LENGTH=4628
+
 # SIRIUS BACKEND LANGUAJE:
 SIRIUS_BACKEND_LANGUAJE='ES'
 # ------------------------------------------------------------------------------------- #

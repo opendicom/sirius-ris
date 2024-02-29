@@ -192,6 +192,8 @@
         <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" placeholder="Buscar palabra sobre el contenido del anamnesis" (keyup.enter)="onSearch();">
       </mat-form-field>
     
+      <br/><br/>
+
       <h3 class="form-title text-center underline-ok-alt">En el contenido del <span class="label-info">INFORME</span>:</h3>
     
       <div fxLayout="row" fxLayoutAlign="start start">
@@ -199,7 +201,7 @@
           <h4>Dato clínico:</h4>
           <mat-form-field appearance="outline" class="full">
             <mat-label>Palabra en dato clínico</mat-label>
-            <input matInput type="text"  placeholder="Buscar palabra sobre el dato clínico" (keyup.enter)="onSearch();">
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.clinical_info" placeholder="Buscar palabra sobre el dato clínico" (keyup.enter)="onSearch();">
           </mat-form-field>
     
           <br/>
@@ -232,10 +234,66 @@
     
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
       <h2 class="form-title text-center underline-fail-alt">Médicos incolucrados:</h2>
-          
-      Firmado por<br/>
-      Autenticado por<br/>
-      Médico solicitante<br/>
+
+      <h4>Médico solicitante <span class="label-info">SOLICITUD</span>:</h4>
+      <mat-form-field appearance="outline" class="large">
+        <mat-label>Nombre/s o Apellido/s del médico solicitante</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.referring_physician" placeholder="Nombre/s o Apellido/s del médico solicitante" (keyup.enter)="onSearch();">
+      </mat-form-field>
+
+      <br/><br/>
+
+      <h3 class="form-title text-center underline-ok-alt">Sobre la <span class="label-info">FIRMA</span> y <span class="label-info">AUTENTICACIÓN</span> del <span class="label-info">INFORME</span>:</h3>
+
+      <span *ngIf="this.sharedProp.current_active_users">
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+            <h4>Firmado por:</h4>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Usuario firmante</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" placeholder="Seleccione el usuario firmante" (selectionChange)="onSearch();">
+                <div *ngFor="let currentSignUser of this.sharedProp.current_active_users">
+                  <mat-option *ngIf="currentSignUser.person" value="{{ currentSignUser._id }}">
+                    <!--names-->
+                    {{ currentSignUser.person.name_01 }}
+                    <span *ngIf="currentSignUser.person.name_02">
+                      {{ ' ' + currentSignUser.person.name_02 }}
+                    </span>
+                    <!--surnames-->
+                    {{ ' ' + currentSignUser.person.surname_01 }}
+                    <span *ngIf="currentSignUser.person.surname_02">
+                      {{ ' ' + currentSignUser.person.surname_02 }}
+                    </span>
+                  </mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div> <!-- end fxLayout wrapper -->
+
+          <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+            <h4>Autenticado por:</h4>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Usuario autenticador</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" placeholder="Seleccione el usuario autenticador" (selectionChange)="onSearch();">
+                <div *ngFor="let currentAuthUser of this.sharedProp.current_active_users">
+                  <mat-option *ngIf="currentAuthUser.person" value="{{ currentAuthUser._id }}">
+                    <!--names-->
+                    {{ currentAuthUser.person.name_01 }}
+                    <span *ngIf="currentAuthUser.person.name_02">
+                      {{ ' ' + currentAuthUser.person.name_02 }}
+                    </span>
+                    <!--surnames-->
+                    {{ ' ' + currentAuthUser.person.surname_01 }}
+                    <span *ngIf="currentAuthUser.person.surname_02">
+                      {{ ' ' + currentAuthUser.person.surname_02 }}
+                    </span>
+                  </mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div> <!-- end fxLayout wrapper -->
+        </div>
+      </span>
     
       <h2 class="form-title text-center underline-fail-alt">Patologías:</h2>
       Patologías

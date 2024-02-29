@@ -155,8 +155,35 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Find active users:
+    this.findActiveUsers();
+
     //Clear previous responses:
     this.sharedFunctions.response = false;
   }
 
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND ACTIVE USERS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findActiveUsers(){
+    //Set params:
+    const params: any = {
+      'filter[status]': true,
+      'proj[person.name_01]': 1,
+      'proj[person.name_02]': 1,
+      'proj[person.surname_01]': 1,
+      'proj[person.surname_02]': 1,
+      'proj[permissions]': 1
+    };
+
+    //Find users:
+    this.sharedFunctions.find('users', params, (res) => {
+      //Check result:
+      if(res.success === true){
+        this.sharedProp.current_active_users = res.data;
+      }
+    }, false, false, false);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
