@@ -247,6 +247,21 @@ Some **Sirius RIS** modules have **additional requests** that allow specific ope
 
 ---
 
+## `GET` <small>IP:PORT</small>/users/findByRoleInReport
+
+`admit: URL Query Parameters` + `Bearer Token`
+
+* **role_in_report** = *string* (`signer` or `authenticator`) `REQUIRED`
+* All parameters and operators supported in the **find** request.
+
+
+
+*This request allows you to search for users who can fulfill the functionality of signing or authenticating reports (independent of their role in the application).*
+
+
+
+---
+
 ## `POST` <small>IP:PORT</small>/slots/batch/insert
 
 ​	`admit: x-www-form-urlencoded` + `Bearer Token`
