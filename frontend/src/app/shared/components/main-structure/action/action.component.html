@@ -245,14 +245,15 @@
 
       <h3 class="form-title text-center underline-ok-alt">Sobre la <span class="label-info">FIRMA</span> y <span class="label-info">AUTENTICACIÓN</span> del <span class="label-info">INFORME</span>:</h3>
 
-      <span *ngIf="this.sharedProp.current_active_users">
-        <div fxLayout="row" fxLayoutAlign="start start">
-          <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+      
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+          <span *ngIf="this.sharedProp.current_signer_users">
             <h4>Firmado por:</h4>
             <mat-form-field appearance="outline" class="full">
               <mat-label>Usuario firmante</mat-label>
               <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" placeholder="Seleccione el usuario firmante" (selectionChange)="onSearch();">
-                <div *ngFor="let currentSignUser of this.sharedProp.current_active_users">
+                <div *ngFor="let currentSignUser of this.sharedProp.current_signer_users">
                   <mat-option *ngIf="currentSignUser.person" value="{{ currentSignUser._id }}">
                     <!--names-->
                     {{ currentSignUser.person.name_01 }}
@@ -268,14 +269,16 @@
                 </div>
               </mat-select>
             </mat-form-field>
-          </div> <!-- end fxLayout wrapper -->
+          </span>
+        </div> <!-- end fxLayout wrapper -->
 
-          <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <span *ngIf="this.sharedProp.current_authenticator_users">
             <h4>Autenticado por:</h4>
             <mat-form-field appearance="outline" class="full">
               <mat-label>Usuario autenticador</mat-label>
               <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" placeholder="Seleccione el usuario autenticador" (selectionChange)="onSearch();">
-                <div *ngFor="let currentAuthUser of this.sharedProp.current_active_users">
+                <div *ngFor="let currentAuthUser of this.sharedProp.current_authenticator_users">
                   <mat-option *ngIf="currentAuthUser.person" value="{{ currentAuthUser._id }}">
                     <!--names-->
                     {{ currentAuthUser.person.name_01 }}
@@ -291,9 +294,10 @@
                 </div>
               </mat-select>
             </mat-form-field>
-          </div> <!-- end fxLayout wrapper -->
-        </div>
-      </span>
+          </span>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+      
     
       <h2 class="form-title text-center underline-fail-alt">Patologías:</h2>
       Patologías

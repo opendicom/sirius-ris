@@ -89,7 +89,8 @@ export class SharedPropertiesService {
   public recomended_dose              : string = '';
 
   //Current operation ojects for Advanced search cases:
-  public current_active_users  : any;
+  public current_signer_users  : any;
+  public current_authenticator_users  : any;
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {

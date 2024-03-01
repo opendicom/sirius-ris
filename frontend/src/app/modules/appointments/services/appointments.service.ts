@@ -184,7 +184,7 @@ export class AppointmentsService {
         //Send message:
         this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.');
       }
-    }, false, true);
+    }, false, 'findByService');
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

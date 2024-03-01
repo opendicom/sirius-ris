@@ -162,34 +162,40 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     //Find active users:
-    this.findActiveUsers();
+    this.findActiveUsers('signer');
+    this.findActiveUsers('authenticator');
 
     //Clear previous responses:
     this.sharedFunctions.response = false;
   }
 
+  findActiveUsers(roleInReport: string){
+    if(roleInReport !== undefined && roleInReport !== null && roleInReport !== ''){
+      //Set params:
+      const params: any = {
+        'role_in_report': roleInReport,
+        'filter[status]': true,
+        'proj[person.name_01]': 1,
+        'proj[person.name_02]': 1,
+        'proj[person.surname_01]': 1,
+        'proj[person.surname_02]': 1,
+        'proj[permissions]': 1
+      };
 
-  //--------------------------------------------------------------------------------------------------------------------//
-  // FIND ACTIVE USERS:
-  //--------------------------------------------------------------------------------------------------------------------//
-  findActiveUsers(){
-    //Set params:
-    const params: any = {
-      'filter[status]': true,
-      'proj[person.name_01]': 1,
-      'proj[person.name_02]': 1,
-      'proj[person.surname_01]': 1,
-      'proj[person.surname_02]': 1,
-      'proj[permissions]': 1
-    };
-
-    //Find users:
-    this.sharedFunctions.find('users', params, (res) => {
-      //Check result:
-      if(res.success === true){
-        this.sharedProp.current_active_users = res.data;
-      }
-    }, false, false, false);
+      //Find by role in report (last parameter specific AditionalRequest):
+      this.sharedFunctions.find('users', params, (res) => {
+        //Check result:
+        if(res.success === true){
+          switch(roleInReport){
+            case 'signer':
+              this.sharedProp.current_signer_users = res.data;
+              break;
+            case 'authenticator':
+              this.sharedProp.current_authenticator_users = res.data;
+              break;
+          }
+        }
+      }, false, 'findByRoleInReport', false);
+    }
   }
-  //--------------------------------------------------------------------------------------------------------------------//
 }

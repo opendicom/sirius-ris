@@ -474,15 +474,15 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false, findByService: boolean = false, saveResponse: boolean = true): void {
+  find(element: string, params: any, callback = (res: any) => {}, findOne: boolean = false, AditionalRequest: any = false, saveResponse: boolean = true): void {
     //Initialize operation type:
     let operation = 'find';
 
     //Check if findOne is true:
     if(findOne){ operation = 'findOne'; }
 
-    //Check if findByService is true (Only the users module uses this case):
-    if(findByService){ operation = 'findByService'; }
+    //Check if AditionalRequest is true (Only the users module uses this case [findByService or findByRoleInReport]):
+    if(AditionalRequest !== false && (AditionalRequest === 'findByService' || AditionalRequest === 'findByRoleInReport')){ operation = AditionalRequest; }
 
     //Check if element is not empty:
     if(element != ''){
@@ -1349,8 +1349,8 @@ export class SharedFunctionsService {
       'proj[settings]': 0
     };
 
-    //Find by service selected role users (last true parameter):
-    this.find('users', params, (res) => callback(res), false, true);
+    //Find by service selected role users (last parameter specific AditionalRequest):
+    this.find('users', params, (res) => callback(res), false, 'findByService');
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
