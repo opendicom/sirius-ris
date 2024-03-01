@@ -281,6 +281,11 @@ export class SharedPropertiesService {
       if(this.advanced_search.authenticator_user !== undefined && this.advanced_search.authenticator_user !== null && this.advanced_search.authenticator_user !== ''){
         string_filter += '"filter[and][authenticated.user._id]": "' + this.advanced_search.authenticator_user + '", ';
       }
+
+      //Referring physician name and surname:
+      if(this.advanced_search.referring_physician !== undefined && this.advanced_search.referring_physician !== null && this.advanced_search.referring_physician !== ''){
+        string_filter += '"filter[and][appointment_request.extra.physician_name]": "' + this.advanced_search.referring_physician + '", ';
+      }
       
     }
 

@@ -2750,11 +2750,12 @@ async function addDomainCondition(req, res, domainType, completeDomain){
         //Switch by method:
         switch(method){
             //------------------------------------------------------------------------------------------------------------//
-            // FIND, FIND BY ID, FIND ONE, FINDBYSERVICE, STUDYTOKEN:
+            // FIND, FIND BY ID, FIND ONE, FINDBYSERVICE, FINDBYROLEINREPORT, STUDYTOKEN:
             //------------------------------------------------------------------------------------------------------------//
             case 'find':
             case 'findOne':
             case 'findByService':       // Only the users module uses this case.
+            case 'findByRoleInReport':  // Only the users module uses this case.
             case 'studyToken':          // Wezen paths.
                 //If filter has no operator, add domain condition with no operator:
                 let haveOperator = false;

@@ -16,6 +16,7 @@ const mainMiddlewares = require('../../main.middlewares');
 //Import Handlers:
 const findHandler = require('./handlers/find');
 const findByServiceHandler = require('./handlers/findByService');
+const findByRoleInReportHandler = require('./handlers/findByRoleInReport');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -56,6 +57,17 @@ router.get(
 
         //Send to handler:
         findHandler(req, res, users);
+    }
+);
+
+//FIND BY ROLE IN REPORT:
+router.get(
+    '/findByRoleInReport',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    (req, res) => {
+        //Send to handler:
+        findByRoleInReportHandler(req, res, users);
     }
 );
 

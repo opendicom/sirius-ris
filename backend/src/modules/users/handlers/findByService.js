@@ -65,6 +65,39 @@ module.exports = async (req, res, currentSchema) => {
                     //------------------------------------------------------------------------------------------------//
                 ); 
 
+                //Set findByServiceCondition:
+                const findByServiceCondition = { '$or': [
+                    //Organization:
+                    {
+                        "permissions": {
+                            "$elemMatch": {
+                                "role": role,
+                                "organization": completeDomain.organization
+                            }
+                        }
+                    },
+
+                    //Branch:
+                    {
+                        "permissions": {
+                            "$elemMatch": {
+                                "role": role,
+                                "branch": completeDomain.branch
+                            }
+                        }
+                    },
+
+                    //Service:
+                    {
+                        "permissions": {
+                            "$elemMatch": {
+                                "role": role,
+                                "service": completeDomain.service
+                            }
+                        }
+                    }
+                ]};
+
                 //Correct data types for match operation:
                 if(filter != undefined){
                     //Adjust data types for match aggregation (Schema):
@@ -81,41 +114,14 @@ module.exports = async (req, res, currentSchema) => {
                     if(!condition.$and){ condition.$and = {}; }
 
                     //Add OR explicit operator in AND explicit operator (Last condition):
-                    condition.$and.push({ '$or': [
-                        //Organization:
-                        {
-                            "permissions": {
-                                "$elemMatch": {
-                                    "role": role,
-                                    "organization": completeDomain.organization
-                                }
-                            }
-                        },
-
-                        //Branch:
-                        {
-                            "permissions": {
-                                "$elemMatch": {
-                                    "role": role,
-                                    "branch": completeDomain.branch
-                                }
-                            }
-                        },
-
-                        //Service:
-                        {
-                            "permissions": {
-                                "$elemMatch": {
-                                    "role": role,
-                                    "service": completeDomain.service
-                                }
-                            }
-                        }
-                    ] });
+                    condition.$and.push(findByServiceCondition);
                     //------------------------------------------------------------------------------------------------//
 
                     //Add match operation to aggregations:
                     req.query.aggregate.push({ $match: condition });
+                } else {
+                    //Add match operation to aggregations (Only findByService condition | without filters):
+                    req.query.aggregate.push({ $match: findByServiceCondition });
                 }
 
                 //Excecute main query:

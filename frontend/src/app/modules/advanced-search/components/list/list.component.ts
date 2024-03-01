@@ -5,6 +5,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { PdfService } from '@shared/services/pdf.service';                                    // PDF Service
 import {                                                                                      // Enviroments
   performing_flow_states,
   ISO_3166,
@@ -48,7 +49,8 @@ export class ListComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public pdfService       : PdfService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -130,6 +132,10 @@ export class ListComponent implements OnInit {
       
       'appointment.attached_files._id': 1,    //Only _id and name for performing downloads dialog.
       'appointment.attached_files.name': 1,   //Only _id and name for performing downloads dialog.
+
+      'appointment._id': 1,
+      'appointment_request._id': 1,
+      'appointment_request.extra.physician_name': 1,
       
       'fk_performing': 1,
       'performing.flow_state': 1,

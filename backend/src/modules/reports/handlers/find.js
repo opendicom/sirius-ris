@@ -54,6 +54,16 @@ module.exports = async (req, res, currentSchema) => {
             as: 'appointment',
         }},
         { $unwind: { path: "$appointment", preserveNullAndEmptyArrays: true } },
+
+        //Performing -> Appointment -> Appointment request (Lookup & Unwind):
+        //Required for Advanced Search module.
+        { $lookup: {
+            from: 'appointment_requests',
+            localField: 'appointment.fk_appointment_request',
+            foreignField: '_id',
+            as: 'appointment_request',
+        }},
+        { $unwind: { path: "$appointment_request", preserveNullAndEmptyArrays: true } },
     
         //------------------------------------------------------------------------------------------------------------//
         // PERFORMING -> APPOINTMENT IMAGING:
