@@ -33,6 +33,7 @@ export class ActionComponent implements OnInit {
 
   //Set DB action properties:
   public modalities : any;
+  public availableOrganizations: any;
 
   //Initializate nestedIN:
   public nestedIN   : string[] = [];
@@ -57,12 +58,29 @@ export class ActionComponent implements OnInit {
   ngOnInit(): void {
     //Find DB action properties:
     this.findModalities();
+    this.findOrganizations();
+
+    //Get Logged User Information (Domain and domain type):
+    const domain = this.sharedProp.userLogged.permissions[0].domain;
+    const domainType = this.sharedProp.userLogged.permissions[0].type;
+
+    //Set current organization (To filter by pathologies):
+    this.sharedFunctions.getLoggedOrganization(domain, domainType, (result) => {
+      //Set organization in shared properties:
+      this.sharedProp.current_organization = result;
+
+      //First find Pathologies:
+      this.sharedFunctions.findPathologies(result, (resPathologies) => {
+        this.sharedProp.availablePathologies = [... resPathologies];
+        this.sharedProp.filteredPathologies = [... resPathologies];
+      });
+    });
   }
 
   //--------------------------------------------------------------------------------------------------------------------//
   // ON SEARCH:
   //--------------------------------------------------------------------------------------------------------------------//
-  onSearch(page: number = 1, clear: boolean = false): void{
+  async onSearch(page: number = 1, clear: boolean = false){
     //Check clear filters:
     if(clear){
       //Initialize action fields:
@@ -95,8 +113,21 @@ export class ActionComponent implements OnInit {
         this.sharedProp.group = false;
       }
 
-      //Initialize advanced search params (Clone with spread operator):
-      this.sharedProp.advanced_search = { ... this.sharedProp.default_advanced_search };
+      //Check location by URL (Only advanced search cases):
+      if(this.router.url.split('/')[1] == 'advanced-search'){
+        //Initialize advanced search params (Clone with spread operator):
+        this.sharedProp.advanced_search = { ... this.sharedProp.default_advanced_search };
+
+        //Reset pathologies params:
+        this.sharedProp.pathologies_input = '';
+        this.sharedProp.advanced_search.pathologies = [];
+
+        //Refresh Pathologies:
+        this.sharedFunctions.findPathologies(this.sharedProp.current_organization, (resPathologies) => {
+          this.sharedProp.availablePathologies = [... resPathologies];
+          this.sharedProp.filteredPathologies = [... resPathologies];
+        });
+      }
     }
 
     //Initialize selected items:
@@ -112,7 +143,7 @@ export class ActionComponent implements OnInit {
     }
 
     //Refresh request params:
-    this.sharedProp.paramsRefresh();
+    await this.sharedProp.paramsRefresh();
 
     //Find:
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, async (res) => {
@@ -220,6 +251,78 @@ export class ActionComponent implements OnInit {
 
     //Find:
     this.onSearch();
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND ORGANIZATIONS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findOrganizations(){
+    //Set params:
+    const params = { 'filter[status]': true };
+
+    //Find organizations:
+    this.sharedFunctions.find('organizations', params, (res) => {
+      this.availableOrganizations = res.data;
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ON CHANGE ORGANIZATION:
+  //--------------------------------------------------------------------------------------------------------------------//
+  onChangeOrganization(event: any){
+    this.sharedFunctions.findPathologies(event.value, (resPathologies) => {
+      this.sharedProp.availablePathologies = [... resPathologies];
+      this.sharedProp.filteredPathologies = [... resPathologies];
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // PATHOLOGIES MANAGEMENT:
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterPathologies(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter pathologies:
+    this.sharedProp.filteredPathologies = this.sharedProp.availablePathologies.filter(option => option.name.toUpperCase().includes(filterValue));
+  }
+
+  addPathology(currentPathology: any){
+    //Add current pathology into selected pathologies array (check duplicates):
+    if(this.sharedProp.advanced_search.pathologies.filter((element: any) => element._id === currentPathology._id).length <= 0){
+      this.sharedProp.advanced_search.pathologies.push(currentPathology);
+    }
+
+    //Remove currentPathology from availablePathologies:
+    this.sharedFunctions.removeItemFromArray(this.sharedProp.availablePathologies, currentPathology);
+
+    //Clear pathologies input:
+    this.sharedProp.pathologies_input = '';
+    
+    //Clear filter pathologies:
+    this.filterPathologies({ srcElement : { value: '' } });
+  }
+
+  removePathology(currentPathology: any){
+    //Remove current Pathology from selected pathologies:
+    this.sharedFunctions.removeItemFromArray(this.sharedProp.advanced_search.pathologies, currentPathology);
+
+    //Add removed pathology into availablePathologies and filteredPathologies (check duplicates):
+    if(this.sharedProp.availablePathologies.filter(element => element._id === currentPathology._id).length <= 0){
+      this.sharedProp.availablePathologies.push(currentPathology);
+    }
+    
+    //Clear pathologies input:
+    this.sharedProp.pathologies_input = '';
+
+    //Clear filter pathologies:
+    this.filterPathologies({ srcElement : { value: '' } });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

@@ -696,7 +696,7 @@ async function setAndOr(filter){
         if(Object.keys(filter).length > 0){
             //Copy filters without operators (Await foreach):
             await Promise.all(Object.keys(filter).map((key) => {
-                if(key !== 'and' && key !== '$and' && key !== 'or' && key !== '$or' && key !== 'in' && key !== '$in'){
+                if(key !== 'and' && key !== '$and' && key !== 'or' && key !== '$or' && key !== 'in' && key !== '$in' && key !== 'all' && key !== '$all'){
                     preservedFilters[key] = filter[key];
 
                     //Delete filter without operator from request:
@@ -855,6 +855,10 @@ async function setRegex(regex, condition){
             } else if(current == 'in'){
                 // Do nothing to exclude IN condition elements (No regex into IN operator).
 
+            //ALL:
+            } else if(current == 'all'){
+                // Do nothing to exclude ALL condition elements (No regex into ALL operator).
+
             //Filter without condition (current = name_value):
             } else {
                 keyName = Object.keys(condition)[index];
@@ -909,15 +913,69 @@ async function setIn(filter, condition){
                 global_in_condition = and_in_condition;
             }
 
-            //Remove original in from condition object:
+            //Remove original IN from condition object:
             delete condition.in;
 
-            //Check if oroginal condition have operators (AND | OR):
+            //Check if original condition have operators (AND | OR):
             if(Object.keys(condition).length != 0){
                 //Set final IN condition to concatenate the original condition:
                 condition = { $and: [ global_in_condition, condition ] };
             } else {
                 condition = global_in_condition;
+            }
+        }
+    }
+    
+    //Return condition:
+    return condition;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// SET ALL:
+//--------------------------------------------------------------------------------------------------------------------//
+async function setAll(filter, condition){
+    //Check filter:
+    if(filter){
+        //Check if the ALL operator exists:
+        if(filter.all){
+            //Create ALL condition:
+            let global_all_condition = {};
+
+            //Create AND condition to concat multiple IN conditions:
+            let and_all_condition = { $and: [] };
+
+            //Check if there is more than one property with the all operator:
+            if(Object.keys(filter.all).length == 1){
+                //Get key name:
+                const keyName = Object.keys(filter.all)[0];
+
+                //Set global all condition:
+                global_all_condition[keyName] = { $all: filter.all[keyName] };
+            } else {
+                //Build ALL condition with multiple keys (await foreach):
+                await Promise.all(Object.keys(filter.all).map(async (current, index) => {
+                    //Create local all_condition (clean on each iteration):
+                    let all_condition = {};
+                    all_condition[current] = { $all: filter.all[current] };
+                    
+                    //Add current ALL condition into AND array condition:
+                    and_all_condition.$and[index] = all_condition;
+                }));
+
+                //Set global IN condition (scope):
+                global_all_condition = and_all_condition;
+            }
+
+            //Remove original ALL from condition object:
+            delete condition.all;
+
+            //Check if original condition have operators (AND | OR):
+            if(Object.keys(condition).length != 0){
+                //Set final ALL condition to concatenate the original condition:
+                condition = { $and: [ global_all_condition, condition ] };
+            } else {
+                condition = global_all_condition;
             }
         }
     }
@@ -942,6 +1000,9 @@ async function setCondition(filter, regex){
 
     //Set in:
     condition = await setIn(filter, condition);
+
+    //Set all:
+    condition = await setAll(filter, condition);
 
     //Return condition:
     return condition;
@@ -2412,7 +2473,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_performing'] != undefined){ filter[asPrefix + 'fk_performing'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_performing']); };
                 if(filter[asPrefix + 'findings.fk_procedure'] != undefined){ filter[asPrefix + 'findings.fk_procedure'] = filter[asPrefix + 'findings.fk_procedure'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'findings.fk_procedure']); }
                 if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
-                if(filter[asPrefix + 'pathologies'] != undefined){ filter[asPrefix + 'pathologies'] = filter[asPrefix + 'pathologies'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'pathologies']); }
+                if(filter[asPrefix + 'fk_pathologies'] != undefined){ filter[asPrefix + 'fk_pathologies'] = filter[asPrefix + 'fk_pathologies'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_pathologies']); }
 
                 //Authenticated:
                 if(filter[asPrefix + 'authenticated.fk_user'] != undefined){ filter[asPrefix + 'authenticated.fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.fk_user']); };
@@ -2537,6 +2598,45 @@ async function adjustCondition(filter, callback){
                     
                     //Assign adjusted value on original object:
                     filter.in[keyName][current] = callback_return[keyName]
+                }));
+            }));
+        }
+    }
+
+    //Condition with ALL operator:
+    if(filter.all){
+        //Check if there is more than one property with the ALL operator:
+        if(Object.keys(filter.all).length == 1){
+            //Get key name:
+            const keyName = Object.keys(filter.all)[0];
+
+            //Loop through values inside the ALL array:
+            await Promise.all(Object.keys(filter.all[keyName]).map(async (current) => {
+                //Create tmp_filter (clean on each iteration):
+                let tmp_filter = {};
+                tmp_filter[keyName] = filter.all[keyName][current];
+
+                //Adjust Data Type (individual element [ALL Array]):
+                let callback_return = await callback(tmp_filter);
+                
+                //Assign adjusted value on original object:
+                filter.all[keyName][current] = callback_return[keyName]
+            }));
+        } else {
+            //Build ALL condition with multiple keys (await foreach):
+            await Promise.all(Object.keys(filter.all).map(async (keyName) => {
+
+                //Loop through values inside the ALL array:
+                await Promise.all(Object.keys(filter.all[keyName]).map(async (current) => {
+                    //Create tmp_filter (clean on each iteration):
+                    let tmp_filter = {};
+                    tmp_filter[keyName] = filter.all[keyName][current];
+
+                    //Adjust Data Type (individual element [ALL Array]):
+                    let callback_return = await callback(tmp_filter);
+                    
+                    //Assign adjusted value on original object:
+                    filter.all[keyName][current] = callback_return[keyName]
                 }));
             }));
         }
@@ -4950,6 +5050,7 @@ module.exports = {
     setAndOr,
     setRegex,
     setIn,
+    setAll,
     setCondition,
     setGroup,
     domainIs,

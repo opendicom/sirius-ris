@@ -61,7 +61,7 @@ export const user_concessions = {
   11  : 'Acceso a logs de elementos',
   12  : 'Reenvío de correos',
   13  : 'Gestión de solicitudes',
-  //14  : 'Búsquedas avanzadas',
+  14  : 'Búsquedas avanzadas',
   //15  : 'Listados de facturación',
   //16  : 'Estadísticas generales',
   //17  : 'Estadísticas médicas',

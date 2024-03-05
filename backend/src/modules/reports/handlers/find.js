@@ -558,6 +558,7 @@ module.exports = async (req, res, currentSchema) => {
         filter = await moduleServices.adjustDataTypes(filter, 'equipments', 'equipment');
         filter = await moduleServices.adjustDataTypes(filter, 'procedures', 'procedure');
         filter = await moduleServices.adjustDataTypes(filter, 'modalities', 'modality');
+        filter = await moduleServices.adjustDataTypes(filter, 'pathologies', 'pathologies');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'patient');
         filter = await moduleServices.adjustDataTypes(filter, 'people', 'patient.person');
         filter = await moduleServices.adjustDataTypes(filter, 'users', 'performing.injection.injection_user');

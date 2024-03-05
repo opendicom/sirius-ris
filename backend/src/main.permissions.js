@@ -394,13 +394,18 @@ const concessionPermissions = {
         appointment_requests    : ['find', 'findOne', 'insert', 'update']
     },
 
-    // 13 : Búsquedas avanzadas:
-    // 14 : Listados de facturación:
-    // 15 : Estadísticas generales:
-    // 16 : Estadísticas médicas:
-    // 17 : Estadísticas del personal:
-    // 18 : Eliminación física de archivos:
-    // 19 : Supervisar citas en curso:
+    // 14 : Búsquedas avanzadas:
+    14: {
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        reports                 : ['find', 'findOne']
+    },
+    
+    // 15 : Listados de facturación:
+    // 16 : Estadísticas generales:
+    // 17 : Estadísticas médicas:
+    // 18 : Estadísticas del personal:
+    // 19 : Eliminación física de archivos:
+    // XX : Supervisar citas en curso:
     // XX : Listado de procedimientos (Readonly -> appointment_requests):
 
     // 20 : Acceso al módulo de exportación (Backend access only):

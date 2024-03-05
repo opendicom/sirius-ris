@@ -89,8 +89,11 @@ export class SharedPropertiesService {
   public recomended_dose              : string = '';
 
   //Current operation ojects for Advanced search cases:
-  public current_signer_users  : any;
+  public current_signer_users         : any;
   public current_authenticator_users  : any;
+  public pathologies_input            : string = '';
+  public availablePathologies         : any[] = [];
+  public filteredPathologies          : any[] = [];
 
   //Inject services to the constructor:
   constructor(private userAuth: UsersAuthService) {
@@ -139,7 +142,7 @@ export class SharedPropertiesService {
   //--------------------------------------------------------------------------------------------------------------------//
   // PARAMS REFRESH:
   //--------------------------------------------------------------------------------------------------------------------//
-  paramsRefresh(): void {
+  async paramsRefresh() {
     let string_regex  : string = '';
     let string_filter : string = '';
     let string_proj   : string = '';
@@ -288,6 +291,17 @@ export class SharedPropertiesService {
         string_filter += '"filter[and][appointment_request.extra.physician_name]": "' + this.advanced_search.referring_physician + '", ';
       }
       
+      //Pathologies:
+      if(this.advanced_search.pathologies !== undefined && this.advanced_search.pathologies !== null && this.advanced_search.pathologies.length > 0){
+        if(this.advanced_search.pathologies.length == 1){
+          string_filter += '"filter[and][pathologies._id]": "' + this.advanced_search.pathologies[0]._id + '", ';
+        } else {
+          //Add all pathologies in ALL condition (await foreach):
+          await Promise.all(Object.keys(this.advanced_search.pathologies).map((key: any) =>{
+            string_filter += '"filter[all][pathologies._id][' + key + ']": "' + this.advanced_search.pathologies[key]._id + '", ';
+          }));
+        }
+      }
     }
 
     //Pager:

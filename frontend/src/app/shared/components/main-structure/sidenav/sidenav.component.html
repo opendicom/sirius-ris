@@ -65,31 +65,34 @@
     </mat-list-item>
   </div>
 
-  <!-- 1: Superusuario (En desarrollo) -->
-  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+  <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14]))" >
     <h3>Funciones avanzadas</h3>
-
-    <mat-list-item>
-      <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
-    </mat-list-item>
-
-    <mat-divider></mat-divider>
 
     <mat-list-item routerLink="/advanced-search/list">
       <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
     </mat-list-item>
 
-    <mat-divider></mat-divider>
+    <!-- 1: Superusuario (En desarrollo) -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+      <mat-divider></mat-divider>
 
-    <mat-list-item>
-      <mat-icon>query_stats</mat-icon><span>Estadística</span>
-    </mat-list-item>
+      <mat-list-item>
+        <mat-icon>query_stats</mat-icon><span>Estadística</span>
+      </mat-list-item>
 
-    <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
 
-    <mat-list-item>
-      <mat-icon>attach_money</mat-icon><span>Facturación</span>
-    </mat-list-item>
+      <mat-list-item>
+        <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item>
+        <mat-icon>attach_money</mat-icon><span>Facturación</span>
+      </mat-list-item>
+    </div>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador -->

@@ -155,6 +155,8 @@ export class ListComponent implements OnInit {
 
     //Reset advanced search params:
     this.sharedProp.advanced_search = { ... this.sharedProp.action.default_advanced_search };
+    this.sharedProp.pathologies_input = '';
+    this.sharedProp.advanced_search.pathologies = [];
 
     //Refresh request params:
     sharedProp.paramsRefresh();
@@ -164,6 +166,22 @@ export class ListComponent implements OnInit {
     //Find active users:
     this.findActiveUsers('signer');
     this.findActiveUsers('authenticator');
+
+    //Get Logged User Information (Domain and domain type):
+    const domain = this.sharedProp.userLogged.permissions[0].domain;
+    const domainType = this.sharedProp.userLogged.permissions[0].type;
+
+    //Refresh current organization (To filter by pathologies):
+    this.sharedFunctions.getLoggedOrganization(domain, domainType, (result) => {
+      //Refresh organization in shared properties:
+      this.sharedProp.current_organization = result;
+
+      //Refresh available pathologies:
+      this.sharedFunctions.findPathologies(result, (resPathologies) => {
+        this.sharedProp.availablePathologies = [... resPathologies];
+        this.sharedProp.filteredPathologies = [... resPathologies];
+      });
+    });
 
     //Clear previous responses:
     this.sharedFunctions.response = false;

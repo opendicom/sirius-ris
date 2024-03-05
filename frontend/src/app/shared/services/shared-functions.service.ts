@@ -1732,4 +1732,23 @@ export class SharedFunctionsService {
     });
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND PATHOLOGIES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findPathologies(fk_organization: string, callback = (res: any) => {}){
+    //Initialize params:
+    let params = {
+      'filter[fk_organization]': fk_organization,
+      'proj[name]': 1
+    };
+
+    //Find pathologies:
+    this.find('pathologies', params, (pathologiesRes) => {
+      //Execute callback:
+      callback(pathologiesRes.data);
+    }, false, false, false);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

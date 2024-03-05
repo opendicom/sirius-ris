@@ -230,6 +230,55 @@
         </div> <!-- end fxLayout wrapper -->
       </div>
     
+      <hr class="dashed"/><br/>
+      <h2 class="form-title text-center underline-fail-alt">Patologías del <span class="label-info">INFORME</span>:</h2>
+  
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> Patologías:</span></span>
+          <br/>
+          <mat-form-field class="full" appearance="outline">
+            <mat-label>Patologías</mat-label>
+            <input type="text" [(ngModel)]="sharedProp.pathologies_input" matInput (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
+            <mat-autocomplete #autoPathologies="matAutocomplete">
+              <mat-option (click)="addPathology(currentPathology)" *ngFor="let currentPathology of sharedProp.filteredPathologies" [value]="currentPathology.name">
+                {{ currentPathology.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          <span *ngIf="sharedProp.advanced_search.pathologies.length > 0; then thenBlockPathologies else elseBlockPathologies"></span>
+          <ng-template #thenBlockPathologies>
+            <small>
+              <mat-chip-list>
+                <mat-chip class="mat-pathology" *ngFor="let currentPathology of sharedProp.advanced_search.pathologies; let i = index">
+                  <small>{{ currentPathology.name }}</small> 
+                  <mat-icon matTooltip="Quitar patología" (click)="removePathology(currentPathology)">close</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </small>
+          </ng-template>
+          <ng-template #elseBlockPathologies>
+            <div class="text-center"><span class="label-accent">Sin filtrar por patologías</span></div>
+          </ng-template>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
+      <!-- Only superuser can set pathologies organization -->
+      <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
+        <hr class="dashed"/><br/>
+        <h4>Organización <span class="label-accent">Administradora de patologías</span>:</h4>
+        <mat-form-field appearance="outline" class="full">
+          <mat-label>Organización</mat-label>
+          <mat-select [(ngModel)]="sharedProp.current_organization" placeholder="Seleccione la organización" (selectionChange)="onChangeOrganization($event);">
+            <div *ngFor="let currentOrganization of availableOrganizations">
+              <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div> <!-- end fxLayout wrapper -->
     
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
@@ -298,10 +347,21 @@
         </div> <!-- end fxLayout wrapper -->
       </div>
       
-    
-      <h2 class="form-title text-center underline-fail-alt">Patologías:</h2>
-      Patologías
-    
+      <hr class="dashed"/><br/>
+      <h2 class="form-title text-center underline-fail">Expresiones regulares <span class="label-alt">RegEx</span>:</h2>
+
+      <div>
+        Metacaracteres básicos para la búsqueda con expresiones regulares:<br/>
+        . 	Cualquier carácter excepto salto de linea.<br/>
+        * 	Indica que el carácter precedente puede ocurrir 0 o más veces.<br/>
+        + 	Indica que el carácter precedente puede ocurrir 1 o más veces.<br/>
+        ? 	Indica que el carácter precedente puede ocurrir 0 o 1 vez.<br/>
+        <br/>
+        Ejemplo 1: <br/>
+        Ejemplo 2: <br/>
+        Ejemplo 3:
+      </div>
+
     </div> <!-- end fxLayout wrapper -->
   </div>
     
