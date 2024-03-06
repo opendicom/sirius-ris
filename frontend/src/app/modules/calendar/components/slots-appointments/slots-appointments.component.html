@@ -1,6 +1,6 @@
 
 <form class="form-element service-container" [formGroup]="form">
-  <mat-form-field appearance="fill" class="medium">
+  <mat-form-field appearance="outline" class="medium">
     <mat-label>Servicio</mat-label>
     <mat-select formControlName="domain" placeholder="Seleccione el servicio">
       <div *ngFor="let currentService of availableServices">

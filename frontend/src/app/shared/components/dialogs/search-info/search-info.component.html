@@ -1,0 +1,33 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>help</mat-icon>&nbsp; Ayuda para búsquedas</h1>
+<div mat-dialog-content>
+    <ul>
+        <li>Las búsquedas son <strong>insensibles a las mayúsculas y minúsculas</strong> para todos los campos tipo <strong>texto</strong>.</li><br/>
+        <li>Se admite el uso de <strong>expresiones regulares</strong> para todos los campos de búsqueda de tipo <strong>texto</strong>.</li>
+    </ul>
+
+    <br/><hr class="dashed" />
+    <div class="text-center"><strong>Metacaracteres básicos</strong> para la búsqueda con <strong>expresiones regulares</strong></div>
+    <hr class="dashed" /><br/>
+
+    <span class="label-info">.</span> Cualquier carácter excepto salto de linea.<br/>
+    <span class="label-light">A<strong>.</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark>N</mark>A</span>
+    <br/><br/>
+
+    <span class="label-info">*</span> Indica que el carácter precedente puede ocurrir 0 o más veces.<br/>
+    <span class="label-light">A<strong>.*</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark></mark>A | A<mark>N</mark>A | A<mark>NN</mark>A</span>
+    <br/><br/>
+
+    <span class="label-info">+</span> Indica que el carácter precedente puede ocurrir 1 o más veces.<br/>
+    <span class="label-light">A<strong>.+</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark>N</mark>A</span>
+    <br/><br/>
+    
+    <span class="label-info">?</span> Indica que el carácter precedente puede ocurrir 0 o 1 vez.<br/>
+    <span class="label-light">A<strong>.?</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark></mark>A | A<mark>N</mark>A</span>
+    <br/><br/>
+
+    <hr class="dashed" />
+</div>
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>OK</button>
+</div>

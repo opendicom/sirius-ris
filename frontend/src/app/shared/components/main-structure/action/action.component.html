@@ -133,6 +133,11 @@
       <button mat-flat-button color="accent" class="button_filters" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0">
         <mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})
       </button>
+
+      <!-- search info -->
+      <button mat-icon-button color="accent" class="button_filters" matTooltip="Ayuda para búsquedas" (click)="this.sharedFunctions.openDialog('search_info', true);">
+        <mat-icon>help</mat-icon>
+      </button>
     </div> <!-- end fxLayout wrapper -->
 
     <span class="mat-spacer"></span>
@@ -231,6 +236,7 @@
       </div>
     
       <hr class="dashed"/><br/>
+
       <h2 class="form-title text-center underline-fail-alt">Patologías del <span class="label-info">INFORME</span>:</h2>
   
       <div fxLayout="row" fxLayoutAlign="start start">
@@ -279,6 +285,8 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <br/>
     </div> <!-- end fxLayout wrapper -->
     
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
@@ -346,20 +354,11 @@
           </span>
         </div> <!-- end fxLayout wrapper -->
       </div>
-      
-      <hr class="dashed"/><br/>
-      <h2 class="form-title text-center underline-fail">Expresiones regulares <span class="label-alt">RegEx</span>:</h2>
 
-      <div>
-        Metacaracteres básicos para la búsqueda con expresiones regulares:<br/>
-        . 	Cualquier carácter excepto salto de linea.<br/>
-        * 	Indica que el carácter precedente puede ocurrir 0 o más veces.<br/>
-        + 	Indica que el carácter precedente puede ocurrir 1 o más veces.<br/>
-        ? 	Indica que el carácter precedente puede ocurrir 0 o 1 vez.<br/>
-        <br/>
-        Ejemplo 1: <br/>
-        Ejemplo 2: <br/>
-        Ejemplo 3:
+      <hr class="dashed"/>
+
+      <div class="text-center">
+        <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
       </div>
 
     </div> <!-- end fxLayout wrapper -->
@@ -377,7 +376,7 @@
     </button>
     
     <!-- reset seach -->
-    <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
+    <button mat-flat-button color="accent" class="button_filters clean_button" (click)="advancedSearchClear()" *ngIf="sharedProp.action.filters.clear_filters">
       <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
     </button>
     

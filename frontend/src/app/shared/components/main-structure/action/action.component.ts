@@ -80,7 +80,7 @@ export class ActionComponent implements OnInit {
   //--------------------------------------------------------------------------------------------------------------------//
   // ON SEARCH:
   //--------------------------------------------------------------------------------------------------------------------//
-  async onSearch(page: number = 1, clear: boolean = false){
+  async onSearch(page: number = 1, clear: boolean = false, saveResponse: boolean = true){
     //Check clear filters:
     if(clear){
       //Initialize action fields:
@@ -158,7 +158,7 @@ export class ActionComponent implements OnInit {
         //Find nested elements (Inverse reference | No aggregation cases):
         if(this.sharedProp.action.nested_element){ this.sharedFunctions.findNestedElements(res, this.sharedProp.action.nested_element); }
       }
-    });
+    },false, false, saveResponse);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -281,6 +281,14 @@ export class ActionComponent implements OnInit {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
+  //--------------------------------------------------------------------------------------------------------------------//
+  // Advanced Search Clear:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async advancedSearchClear(){
+    await this.onSearch(1, true, false);
+    this.sharedFunctions.response = false;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   //--------------------------------------------------------------------------------------------------------------------//
   // PATHOLOGIES MANAGEMENT:

@@ -132,11 +132,12 @@ By **default**, if no operator is defined, it is assumed that the concatenation 
 
 
 
-### Logical operators `AND` , `OR`, `IN` :
+### Logical operators `AND` , `OR`, `IN`, `ALL` :
 
 * **AND** > **filter** [`and`] [`field_name`]
 * **OR** >  **filter** [`or`] [`field_name`]
 * **IN** > **filter** [`in`] [`field_name`] [`in_array_position_number`]
+* **ALL** > **filter** [`all`] [`field_name`] [`all_array_position_number`]
 
 
 

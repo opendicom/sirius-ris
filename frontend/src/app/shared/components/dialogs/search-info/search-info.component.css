@@ -1,0 +1,12 @@
+.label-info, .label-light {
+    font-size: 15px;
+}
+
+.label-info {
+    font-weight: bold;
+}
+
+mat-icon {
+    position: relative;
+    bottom: -7px;
+}

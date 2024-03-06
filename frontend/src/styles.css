@@ -222,6 +222,20 @@ mark {
   margin-right: 2px;
 }
 
+.label-light {
+  font-size: 13px;
+  opacity: 0.75;
+  color: #1e1e2f;
+  background-color: #ffffffb6;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
 .label-tab {
   font-size: 23px !important;
 }

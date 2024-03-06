@@ -23,6 +23,7 @@ import { PasswordRequestComponent } from '@shared/components/dialogs/password-re
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
 import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
+import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -448,6 +449,11 @@ export class SharedFunctionsService {
         //APPOINTMENT REQUESTS DETAILS:
         case 'appointment_requests_details':
           this.basicDialog(AppointmentRequestDetailsComponent, operationHandler, (result) => { callback(result) });
+          break;
+
+        //SEARCH INFO:
+        case 'search_info':
+          this.basicDialog(SearchInfoComponent, operationHandler, (result) => { callback(result) });
           break;
       }
     }

@@ -25,3 +25,7 @@
   margin-left: -12.6%;
   font-size: 120px;
 }
+
+.service-container ::ng-deep .mat-form-field-outline {
+  background-color: #2d2d47;
+}
