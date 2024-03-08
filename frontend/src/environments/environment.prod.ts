@@ -62,11 +62,11 @@ export const user_concessions = {
   12  : 'Reenvío de correos',
   13  : 'Gestión de solicitudes',
   14  : 'Búsquedas avanzadas',
-  //15  : 'Listados de facturación',
-  //16  : 'Estadísticas generales',
-  //17  : 'Estadísticas médicas',
-  //18  : 'Estadísticas del personal',
-  //19  : 'Eliminación física de archivos',
+  //15  : Estadísticas sobre solicitudes,
+  //16  : Estadísticas sobre citas,
+  //17  : Estadísticas sobre estudios,
+  //18  : Estadísticas sobre informes
+  //19  : 'Listados de facturación',
   20  : 'Acceso al módulo de exportación',          // Backend access only
   21  : 'Acceso al servicio de imágenes del PACS' 
   //22  : 'Supervisar citas en curso',

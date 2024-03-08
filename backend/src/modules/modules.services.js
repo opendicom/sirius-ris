@@ -513,7 +513,7 @@ async function batchDelete(req, res, currentSchema){
 //--------------------------------------------------------------------------------------------------------------------//
 // FIND AGGREGATION:
 //--------------------------------------------------------------------------------------------------------------------//
-async function findAggregation(req, res, currentSchema){
+async function findAggregation(req, res, currentSchema, stats = false){
     //Get query params:
     let { aggregate, proj, sort, pager } = req.query;
 
@@ -557,31 +557,40 @@ async function findAggregation(req, res, currentSchema){
             await currentSchema.Model.aggregate(aggregate)
             .exec()
             .then((data) => {
-                //Check if have results:
-                if(data){
-                    //Validate and set paginator:
-                    let pager_data;
-                    if(pager){
-                        pager_data = {
-                            total_items: count,
-                            items_per_page: req.query.limit,
-                            viewed_items: data.length,
-                            number_of_pages: Math.ceil(count / req.query.limit),
-                            actual_page: pager.page_number
-                        };
-                    } else {
-                        pager_data = currentLang.http.pager_disabled;
-                    }
-
-                    //Send successfully response:
+                //Check if it is a stats query:
+                if(stats === true){
+                    //Send successfully stats response:
                     res.status(200).send({
                         success: true,
-                        data: data,
-                        pager: pager_data,
+                        data: data[0]
                     });
                 } else {
-                    //No data (empty result):
-                    res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
+                    //Check if have results:
+                    if(data){
+                        //Validate and set paginator:
+                        let pager_data;
+                        if(pager){
+                            pager_data = {
+                                total_items: count,
+                                items_per_page: req.query.limit,
+                                viewed_items: data.length,
+                                number_of_pages: Math.ceil(count / req.query.limit),
+                                actual_page: pager.page_number
+                            };
+                        } else {
+                            pager_data = currentLang.http.pager_disabled;
+                        }
+
+                        //Send successfully response:
+                        res.status(200).send({
+                            success: true,
+                            data: data,
+                            pager: pager_data,
+                        });
+                    } else {
+                        //No data (empty result):
+                        res.status(200).send({ success: true, data: [], message: currentLang.db.query_no_data });
+                    }   
                 }
             })
             .catch((err) => {
@@ -3580,6 +3589,17 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         break;
                 }
                 break;
+
+            //------------------------------------------------------------------------------------------------------------//
+            // STATS:
+            //------------------------------------------------------------------------------------------------------------//
+            case 'appointment_requests':
+            case 'appointments':
+                //Create RABC filter because filter is disabled in stats:
+                req.query.rabc_filter = { 'imaging.organization': mongoose.Types.ObjectId(completeDomain.organization) };
+                break;
+            //case 'performing':
+            //case 'reports':
 
             //------------------------------------------------------------------------------------------------------------//
             // INSERT & UPDATE:

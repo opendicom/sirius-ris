@@ -1,22 +1,31 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdvancedSearchRoutingModule } from '@modules/advanced-search/advanced-search-routing.module';
+import { StatsRoutingModule } from '@modules/stats/stats-routing.module';
 
 import { AppInitializer } from '@app/app-initializer';
 import { SharedModule } from '@shared/shared.module';
 import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from '@modules/advanced-search/components/list/list.component';
+import { MainComponent } from '@modules/stats/components/main/main.component';
+import { StatsAppointmentRequestsComponent } from '@modules/stats/components/stats-appointment-requests/stats-appointment-requests.component';
+import { StatsAppointmentsComponent } from '@modules/stats/components/stats-appointments/stats-appointments.component';
+import { StatsPerformingComponent } from '@modules/stats/components/stats-performing/stats-performing.component';
+import { StatsReportsComponent } from '@modules/stats/components/stats-reports/stats-reports.component';
+
 
 @NgModule({
   declarations: [
-    ListComponent
+    MainComponent,
+    StatsAppointmentRequestsComponent,
+    StatsAppointmentsComponent,
+    StatsPerformingComponent,
+    StatsReportsComponent
   ],
   imports: [
     CommonModule,
-    AdvancedSearchRoutingModule,
+    StatsRoutingModule,
     SharedModule,
     SharedMaterialModule,
     FormsModule,
@@ -29,4 +38,4 @@ import { ListComponent } from '@modules/advanced-search/components/list/list.com
     { provide: APP_INITIALIZER, useFactory: (appInitializer: AppInitializer) => appInitializer.initializeApp(), multi: true, deps: [AppInitializer] },
   ]
 })
-export class AdvancedSearchModule { }
+export class StatsModule { }

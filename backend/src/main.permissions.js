@@ -30,7 +30,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : ['reports'],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports']
     },
 
     // Administrador:
@@ -59,7 +59,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports']
     },
 
     // Supervisor:
@@ -88,7 +88,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : []
     },
 
     // Médico:
@@ -117,7 +117,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : []
     },
 
     // Técnico:
@@ -146,7 +146,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : []
     },
 
     // Enfermero:
@@ -175,7 +175,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : []
     },
 
     // Coordinador:
@@ -204,7 +204,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : [],
-        proxy                   : []
+        stats                   : []
     },
 
     // Recepcionista:
@@ -233,7 +233,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : [],
-        proxy                   : []
+        stats                   : []
     },
 
     // Paciente:
@@ -261,7 +261,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        stats                   : []
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -290,7 +290,7 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : [],
-        proxy                   : []
+        stats                   : []
     }
 }
 
@@ -400,13 +400,27 @@ const concessionPermissions = {
         reports                 : ['find', 'findOne']
     },
     
-    // 15 : Listados de facturación:
-    // 16 : Estadísticas generales:
-    // 17 : Estadísticas médicas:
-    // 18 : Estadísticas del personal:
-    // 19 : Eliminación física de archivos:
-    // XX : Supervisar citas en curso:
-    // XX : Listado de procedimientos (Readonly -> appointment_requests):
+    // 15 : Estadísticas sobre solicitudes:
+    15: {
+        stats                   : ['appointment_requests']
+    },
+
+    // 16 : Estadísticas sobre citas:
+    16: {
+        stats                   : ['appointments']
+    },
+
+    // 17 : Estadísticas sobre estudios:
+    17: {
+        stats                   : ['performing']
+    },
+
+    // 18 : Estadísticas sobre informes:
+    18: {
+        stats                   : ['reports']
+    },
+
+    // 19 : Listados de facturación:
 
     // 20 : Acceso al módulo de exportación (Backend access only):
     20: {
@@ -415,9 +429,10 @@ const concessionPermissions = {
 
     // 21 : Acceso al servicio de imágenes del PACS.
     21: {
-        wezen                   : ['studyToken'],
-        proxy                   : ['wado']
+        wezen                   : ['studyToken']
     }
+
+    // 22 : Supervisar citas en curso:
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

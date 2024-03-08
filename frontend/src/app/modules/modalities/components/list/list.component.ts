@@ -25,9 +25,9 @@ export class ListComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    private objRoute: ActivatedRoute,
-    public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    private objRoute        : ActivatedRoute,
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions  : SharedFunctionsService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();

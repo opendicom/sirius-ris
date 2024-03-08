@@ -1,0 +1,47 @@
+<div class="form-element">
+    <mat-tab-group>
+        <!-- APPOINTMENT REQUESTS TAB: ----------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">move_to_inbox</mat-icon> Solicitudes
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-appointment-requests></app-stats-appointment-requests>
+            </div>
+        </mat-tab>
+        <!-- APPOINTMENT REQUESTS TAB: ----------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- APPOINTMENT TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">event_available</mat-icon> Citas
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-appointments></app-stats-appointments>    
+            </div>
+        </mat-tab>
+        <!-- APPOINTMENT TAB: -------------------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- PERFORMING TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">assignment_ind</mat-icon> Estudios
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-performing></app-stats-performing>
+            </div>
+        </mat-tab>
+        <!-- PERFORMING TAB: --------------------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- REPORTS TAB: ------------------------------------------------------------------------------------------------------------------------------ -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">description</mat-icon> Informes
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-reports></app-stats-reports>
+            </div>
+        </mat-tab>
+        <!-- REPORTS TAB: ------------------------------------------------------------------------------------------------------------------------------ -->
+    </mat-tab-group>
+</div>

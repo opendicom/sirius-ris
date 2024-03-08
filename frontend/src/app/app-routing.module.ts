@@ -33,7 +33,10 @@ const routes: Routes = [
   { path: 'pathologies', loadChildren: () => import('@modules/pathologies/pathologies.module').then( m => m.PathologiesModule ), canActivate: [AuthGuard] },
   { path: 'performing', loadChildren: () => import('@modules/performing/performing.module').then( m => m.PerformingModule ), canActivate: [AuthGuard] },
   { path: 'reports', loadChildren: () => import('@modules/reports/reports.module').then( m => m.ReportsModule ), canActivate: [AuthGuard] },
+
+  //Advanced options:
   { path: 'advanced-search', loadChildren: () => import('@modules/advanced-search/advanced-search.module').then( m => m.AdvancedSearchModule ), canActivate: [AuthGuard] },
+  { path: 'stats', loadChildren: () => import('@modules/stats/stats.module').then( m => m.StatsModule ), canActivate: [AuthGuard] },
 
   { path: 'logs', loadChildren: () => import('@modules/logs/logs.module').then( m => m.LogsModule ), canActivate: [AuthGuard] },
   { path: 'users', loadChildren: () => import('@modules/users/users.module').then( m => m.UsersModule ), canActivate: [AuthGuard] },

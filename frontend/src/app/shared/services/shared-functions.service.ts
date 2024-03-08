@@ -487,8 +487,13 @@ export class SharedFunctionsService {
     //Check if findOne is true:
     if(findOne){ operation = 'findOne'; }
 
-    //Check if AditionalRequest is true (Only the users module uses this case [findByService or findByRoleInReport]):
-    if(AditionalRequest !== false && (AditionalRequest === 'findByService' || AditionalRequest === 'findByRoleInReport')){ operation = AditionalRequest; }
+    //Check if AditionalRequest is true:
+    //Only the users and stats modules uses this case [findByService or findByRoleInReport, Stat cases (appointments)]):
+    if(AditionalRequest !== false && (
+      AditionalRequest === 'findByService' || 
+      AditionalRequest === 'findByRoleInReport' || 
+      AditionalRequest === 'appointments'
+    )){ operation = AditionalRequest; }
 
     //Check if element is not empty:
     if(element != ''){

@@ -64,6 +64,7 @@ import { PathologiesModule } from '@modules/pathologies/pathologies.module';
 import { PerformingModule } from '@modules/performing/performing.module';
 import { ReportsModule } from '@modules/reports/reports.module';
 import { AdvancedSearchModule } from '@modules/advanced-search/advanced-search.module';
+import { StatsModule } from '@modules/stats/stats.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -103,7 +104,8 @@ import { AdvancedSearchModule } from '@modules/advanced-search/advanced-search.m
     PathologiesModule,
     PerformingModule,
     ReportsModule,
-    AdvancedSearchModule
+    AdvancedSearchModule,
+    StatsModule
   ],
   providers: [
     AppInitializer,
