@@ -14,6 +14,8 @@ import { StatsAppointmentsComponent } from '@modules/stats/components/stats-appo
 import { StatsPerformingComponent } from '@modules/stats/components/stats-performing/stats-performing.component';
 import { StatsReportsComponent } from '@modules/stats/components/stats-reports/stats-reports.component';
 
+// NgxCharts:
+import { NgxChartsModule }from '@swimlane/ngx-charts';                            
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { StatsReportsComponent } from '@modules/stats/components/stats-reports/s
     SharedModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxChartsModule
   ],
   providers: [
     // If you enter this module directly having an authentication file in the browser, it is necessary to 
