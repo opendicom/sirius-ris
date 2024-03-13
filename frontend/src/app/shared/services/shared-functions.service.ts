@@ -1611,6 +1611,28 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // JSON TO XLSX:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async jsonToXLSX(json: any, filename: string = 'jsonResult'){
+    //Create workbook:
+    const workbook = utils.book_new();
+
+    //Create worksheets with json object:
+    await Promise.all(Object.keys(json).map(async key => {
+      //Create worksheet:
+      const worksheet = utils.json_to_sheet(json[key]);
+
+      //Append current sheet to workbook:
+      utils.book_append_sheet(workbook, worksheet, key);
+    }));
+
+    //Download .XLSX file:
+    writeFileXLSX(workbook, filename + '.xlsx');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // BYTES TO MEGABYTES:
   // Duplicated method to prevent circular dependency - [Duplicated method: api-client.service].
   //--------------------------------------------------------------------------------------------------------------------//
@@ -1760,6 +1782,22 @@ export class SharedFunctionsService {
       //Execute callback:
       callback(pathologiesRes.data);
     }, false, false, false);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SORT OBJECT:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async sortObject(data: any, exclude_keys: any = []){
+    //Sort results by keys (await foreach):
+    await Promise.all(Object.keys(data).map(async key => {
+
+      //Check exclude keys and sort entries:
+      if(!exclude_keys.includes(key)){
+        data[key] = Object.fromEntries(Object.entries(data[key]).sort());
+      }
+    }));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

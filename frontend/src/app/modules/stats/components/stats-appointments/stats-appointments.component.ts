@@ -6,12 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import { utils, writeFileXLSX } from 'xlsx';                                                // SheetJS CE
+import { StatsService } from '@modules/stats/services/stats.service';                       // Stats Serice
 import { Color, ScaleType } from '@swimlane/ngx-charts';
-import {                                                                                    // Enviroments
-  appointments_flow_states,
-  gender_types
-} from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -20,10 +16,6 @@ import {                                                                        
   styleUrls: ['./stats-appointments.component.css']
 })
 export class StatsAppointmentsComponent implements OnInit {
-  //Set component properties:
-  public appointmentsFS : any = appointments_flow_states;
-  public gender_types   : any = gender_types;
-
   //Set references objects:
   public availableOrganizations: any;
 
@@ -49,7 +41,7 @@ export class StatsAppointmentsComponent implements OnInit {
     procedure   : []
   };
 
-  //Set Chart colors (colorScheme):
+  //Set Chart colors and color schemes:
   public gender_colors = [
     { name: "Macsulino", value: '#05a3ff87' },
     { name: "Femenino", value: '#d53a9d87' },
@@ -92,7 +84,8 @@ export class StatsAppointmentsComponent implements OnInit {
   constructor(
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public statsService     : StatsService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -133,98 +126,14 @@ export class StatsAppointmentsComponent implements OnInit {
         params['fk_organization'] = this.form.value.fk_organization;
       }
 
-      //Execute stats find:
-      this.sharedFunctions.find('stats', params, async (res) => {
-        //Check operation status:
-        if(res.success === true){
-          //Set data in local response:
-          this.appointmentsStatsResponse = res.data;
-          
-          //Order result:
-          await this.sortResult(this.appointmentsStatsResponse);
-
-          //Set Charts datasets:
-          await Promise.all(Object.keys(this.datasets).map(async key => {
-            this.datasets[key] = await this.getDataSet(key)
-          }));
-        } else {
-          //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar obtener información: ' + res.message);
-        }
-      }, false, 'appointments', false);
+      //Execute find stats:
+      this.statsService.findStats(this.datasets, 'appointments', params, (response, dataset) => {
+        this.appointmentsStatsResponse = response;
+        this.datasets = dataset;
+      });
     }
   }
-
-  async sortResult(data: any){
-    //Sort results by keys (await foreach):
-    await Promise.all(Object.keys(data).map(async key => {
-      //Exclude total items and sort:
-      if(key !== 'total_items'){
-        data[key] = Object.fromEntries(Object.entries(data[key]).sort());
-      }
-    }));
-  }
   
-  async getDataSet(chart_name: string){
-    //Initializate dataset:
-    let current_dataset: any = [];
-  
-    //Loop in response object (await foreach):
-    await Promise.all(Object.keys(this.appointmentsStatsResponse).map(async key => {
-      //Check chart name:
-      if(key == chart_name){
-        //Add current element in current dataset (await foreach):
-        await Promise.all(Object.keys(this.appointmentsStatsResponse[key]).map(async element_key => {
-          //Initialize key_name:
-          let key_name = element_key;
-
-          //Change key names:
-          switch(key){
-            case 'flow_state':
-              key_name = this.appointmentsFS[element_key];
-              break;
-
-            case 'urgency':
-              key_name = element_key == 'true' ? 'Urgente' : 'Común';
-              break;
-
-            case 'outpatient':
-              key_name = element_key == 'true' ? 'Ambulatorio' : 'Internado';
-              break;
-
-            case 'gender':
-              key_name = this.gender_types[element_key];
-              break;
-          }
-
-          //Add current element in dataset:
-          current_dataset.push({ name: key_name, value: this.appointmentsStatsResponse[key][element_key]});
-        }));
-      }
-    }));
-  
-    //Return current dataset:
-    return current_dataset;
-  }
-
-  async jsonToXLSX(){
-    //Create workbook:
-    const workbook = utils.book_new();
-
-    //Create worksheets with datasets:
-    await Promise.all(Object.keys(this.datasets).map(async key => {
-      //Create worksheet:
-      const worksheet = utils.json_to_sheet(this.datasets[key]);
-
-      //Append current sheet to workbook:
-      utils.book_append_sheet(workbook, worksheet, key);
-    }));
-
-    //Download .XLSX file:
-    //writeFile(workbook, "stats.xlsx");
-    writeFileXLSX(workbook, 'stats.xlsx');
-  }
-
   findReferences(){
     //Set params:
     const params = { 'filter[status]': true };
