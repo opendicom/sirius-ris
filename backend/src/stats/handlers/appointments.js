@@ -281,6 +281,35 @@ module.exports = async (req, res) => {
                 { "$replaceRoot": { "newRoot": { "$arrayToObject": "$procedure" } } }
               ],
 
+              //Cancellation reasons:
+              "cancellation_reasons":[
+                {
+                    "$group":{
+                        "_id":"$cancellation_reasons",
+                        "count":{
+                            "$sum":1
+                        }
+                    }
+                },
+                //Filter documents where _id is not null:
+                { "$match": { "_id": { "$ne": null } } },
+
+                {
+                    "$group":{
+                        "_id":null,
+                        "cancellation_reasons":{
+                            "$push":{
+                                "k":{
+                                    "$toString":"$_id" //Convert _id (Number) to string.
+                                },
+                                "v":"$count"
+                            }
+                        }
+                    }
+                },
+                { "$replaceRoot":{ "newRoot":{ "$arrayToObject":"$cancellation_reasons" } } }
+              ],
+
               //Total count:
               "total": [
                   {
@@ -312,6 +341,7 @@ module.exports = async (req, res) => {
                   { "gender": { "$first": "$gender" } },
                   { "equipment": { "$first": "$equipment" } },
                   { "procedure": { "$first": "$procedure" } },
+                  { "cancellation_reasons": { "$first": "$cancellation_reasons" } },
                   { "total_items": { "$first": "$total.count" } }
                 ]
               },

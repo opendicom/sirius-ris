@@ -3592,14 +3592,16 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
             //------------------------------------------------------------------------------------------------------------//
             // STATS:
+            // Create RABC filter because filter is disabled in stats:
             //------------------------------------------------------------------------------------------------------------//
             case 'appointment_requests':
             case 'appointments':
-                //Create RABC filter because filter is disabled in stats:
                 req.query.rabc_filter = { 'imaging.organization': mongoose.Types.ObjectId(completeDomain.organization) };
                 break;
-            //case 'performing':
-            //case 'reports':
+            case 'performing':
+            case 'reports':
+                req.query.rabc_filter = { 'appointment.imaging.organization._id': mongoose.Types.ObjectId(completeDomain.organization) };
+                break;
 
             //------------------------------------------------------------------------------------------------------------//
             // INSERT & UPDATE:

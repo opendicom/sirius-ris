@@ -15,7 +15,8 @@ const currentLang   = require('../main.languages')(mainSettings.language);   // 
 const mainMiddlewares = require('../main.middlewares');
 
 //Import Handlers:
-const appointmentsHandler  = require('./handlers/appointments');
+const appointmentsHandler   = require('./handlers/appointments');
+const performingHandler     = require('./handlers/performing');
 
 //Create Router.
 const router = express.Router();
@@ -28,6 +29,16 @@ router.get(
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         appointmentsHandler(req, res);
+    }
+);
+
+//PERFORMING:
+router.get(
+    '/performing',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.roleAccessBasedControl,
+    async (req, res) => {
+        performingHandler(req, res);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//
