@@ -1,15 +1,14 @@
 <form class="form-element" [formGroup]="form">
-    <!-- Only superuser can set stats organization -->
-    <span [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
-        <mat-form-field appearance="outline">
-          <mat-label>Organización</mat-label>
-          <mat-select formControlName="fk_organization" placeholder="Seleccione la organización"><!-- (selectionChange)="onChangeOrganization($event);"> -->
+    <mat-form-field appearance="outline">
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal" class="auto-width">
+          <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
-              <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
             </div>
-          </mat-select>
-        </mat-form-field>
-    </span>
+          </div>
+        </mat-select>
+    </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Seleccione rango de fechas</mat-label>
@@ -131,6 +130,24 @@
                 [customColors]="outpatient_colors">
             </ngx-charts-bar-vertical>
         </div>
+    </div>
+
+    <div class="clear"></div><br/>
+
+    <!-- cancellation_reasons -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Cancelaciones</h2>
+        <div #cancellationContainerRef class="chart-wrapper">
+            <ngx-charts-pie-chart
+                [view]="[cancellationContainerRef.offsetWidth, 400]"
+                [results]="datasets.cancellation_reasons"
+                [labels]="true">
+            </ngx-charts-pie-chart>
+        </div>
+    </div>
+
+    <div class="chart-responsive chart-col-50 text-center node-spacing" [style.height.px]="420">
+        <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
     </div>
 
     <div class="clear"></div>

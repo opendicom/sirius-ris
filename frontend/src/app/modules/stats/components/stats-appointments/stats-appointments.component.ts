@@ -18,6 +18,7 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 export class StatsAppointmentsComponent implements OnInit {
   //Set references objects:
   public availableOrganizations: any;
+  public availableBranches: any;
 
   //Initialize appointmentsLocalResponse:
   public appointmentsStatsResponse: any = {};
@@ -32,13 +33,14 @@ export class StatsAppointmentsComponent implements OnInit {
 
   //Initializate Charts datasets:
   public datasets: any = {
-    flow_state  : [],
-    urgency     : [],
-    outpatient  : [],
-    modality    : [],
-    gender      : [],
-    equipment   : [],
-    procedure   : []
+    flow_state            : [],
+    urgency               : [],
+    outpatient            : [],
+    modality              : [],
+    gender                : [],
+    equipment             : [],
+    procedure             : [],
+    cancellation_reasons  : []
   };
 
   //Set Chart colors and color schemes:
@@ -92,24 +94,15 @@ export class StatsAppointmentsComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      fk_organization   : [''],
-      range_start       : ['', [Validators.required]],
-      range_end         : ['', [Validators.required]]
+      fk_branch     : ['', [Validators.required]],
+      range_start   : ['', [Validators.required]],
+      range_end     : ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-    //Get Logged User Information (Domain and domain type):
-    const domain = this.sharedProp.userLogged.permissions[0].domain;
-    const domainType = this.sharedProp.userLogged.permissions[0].type;
-
     //Find references:
     this.findReferences();
-
-    //Set current organization (To filter stats):
-    this.sharedFunctions.getLoggedOrganization(domain, domainType, (result) => {
-      this.form.controls['fk_organization'].setValue(result);
-    });
   }
 
   onSearch(){
@@ -117,14 +110,10 @@ export class StatsAppointmentsComponent implements OnInit {
     if(this.form.valid){
       //Set params:
       let params: any = {
-        'start_date' : this.sharedFunctions.setDatetimeFormat(this.form.value.range_start).split('T')[0],
-        'end_date'   : this.sharedFunctions.setDatetimeFormat(this.form.value.range_end).split('T')[0],
+        'start_date'  : this.sharedFunctions.setDatetimeFormat(this.form.value.range_start).split('T')[0],
+        'end_date'    : this.sharedFunctions.setDatetimeFormat(this.form.value.range_end).split('T')[0],
+        'fk_branch'   : this.form.value.fk_branch
       };
-
-      //Only superuser can set stats organization (Other users set organization with RABC):
-      if(this.sharedProp.userLogged.permissions[0].role === 1){
-        params['fk_organization'] = this.form.value.fk_organization;
-      }
 
       //Execute find stats:
       this.statsService.findStats(this.datasets, 'appointments', params, (response, dataset) => {
@@ -141,6 +130,11 @@ export class StatsAppointmentsComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+    });
+
+    //Find branches:
+    this.sharedFunctions.find('branches', params, (res) => {
+      this.availableBranches = res.data;
     });
   }
 }

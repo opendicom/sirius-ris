@@ -30,7 +30,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : ['reports'],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations']
     },
 
     // Administrador:
@@ -59,7 +59,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations']
     },
 
     // Supervisor:
@@ -420,7 +420,10 @@ const concessionPermissions = {
         stats                   : ['reports']
     },
 
-    // 19 : Listados de facturación:
+    // 19 : Estadísticas sobre la organización:
+    19: {
+        stats                   : ['organizations']
+    },
 
     // 20 : Acceso al módulo de exportación (Backend access only):
     20: {
@@ -433,6 +436,7 @@ const concessionPermissions = {
     }
 
     // 22 : Supervisar citas en curso:
+    // 23 : Listados de facturación:
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

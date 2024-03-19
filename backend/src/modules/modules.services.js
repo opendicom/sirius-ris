@@ -3602,6 +3602,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             case 'reports':
                 req.query.rabc_filter = { 'appointment.imaging.organization._id': mongoose.Types.ObjectId(completeDomain.organization) };
                 break;
+            case 'organizations':
+                req.query.rabc_filter = { 'appointment.imaging.organization._id': mongoose.Types.ObjectId(completeDomain.organization) };
+                break;
 
             //------------------------------------------------------------------------------------------------------------//
             // INSERT & UPDATE:

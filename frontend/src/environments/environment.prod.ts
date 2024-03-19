@@ -65,11 +65,12 @@ export const user_concessions = {
   //15  : Estadísticas sobre solicitudes,
   //16  : Estadísticas sobre citas,
   //17  : Estadísticas sobre estudios,
-  //18  : Estadísticas sobre informes
-  //19  : 'Listados de facturación',
+  //18  : Estadísticas sobre informes,
+  //19  : Estadísticas sobre la organización,
   20  : 'Acceso al módulo de exportación',          // Backend access only
   21  : 'Acceso al servicio de imágenes del PACS' 
   //22  : 'Supervisar citas en curso',
+  //23  : 'Listados de facturación',
 };
 
 // User Types:

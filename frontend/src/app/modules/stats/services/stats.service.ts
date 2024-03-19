@@ -7,7 +7,8 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import {                                                                                    // Enviroments
   appointments_flow_states,
-  gender_types
+  gender_types,
+  cancellation_reasons
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -16,8 +17,9 @@ import {                                                                        
 })
 export class StatsService {
   //Set service properties:
-  public appointmentsFS : any = appointments_flow_states;
-  public gender_types   : any = gender_types;
+  public appointmentsFS       : any = appointments_flow_states;
+  public gender_types         : any = gender_types;
+  public cancellation_reasons : any = cancellation_reasons;
 
   //Inject services to the constructor:
   constructor(  
@@ -87,6 +89,10 @@ export class StatsService {
 
             case 'gender':
               key_name = this.gender_types[element_key];
+              break;
+            
+            case 'cancellation_reasons':
+              key_name = this.cancellation_reasons[element_key];
               break;
           }
 
