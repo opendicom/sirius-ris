@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { StatsService } from '@modules/stats/services/stats.service';                       // Stats Serice
-import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { Color, ScaleType } from '@swimlane/ngx-charts';                                    // NGX Color Scheme
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({

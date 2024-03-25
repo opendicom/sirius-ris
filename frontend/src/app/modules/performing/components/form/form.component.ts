@@ -547,6 +547,11 @@ export class FormComponent implements OnInit {
         delete performingSaveData.injection.syringe_activity_empty_mCi;
       }
 
+      //Prevent validation errors removing PET-CT Fields (Not PET-CT cases):
+      if(this.sharedProp.current_modality.code_value !== 'PT'){
+        delete performingSaveData.injection.pet_ct;
+      }
+
       //Save performing data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, performingSaveData, this.keysWithValues, (resPerforming) => {
         //Handle messages by form action:

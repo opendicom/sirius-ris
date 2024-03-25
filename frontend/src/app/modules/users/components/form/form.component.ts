@@ -69,6 +69,9 @@ export class FormComponent implements OnInit {
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = true;
 
+  //Form destiny:
+  public destiny: any;
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -157,6 +160,13 @@ export class FormComponent implements OnInit {
 
     //Extract sent data (Parameters by routing):
     this.form_action = this.objRoute.snapshot.params['action'];
+
+    //Check if alternative destination has been established
+    if(this.objRoute.snapshot.params['destiny'] !== undefined && this.objRoute.snapshot.params['destiny'] !== null && this.objRoute.snapshot.params['destiny'] !== ''){
+      this.destiny = this.objRoute.snapshot.params['destiny'];
+    } else {
+      this.destiny = this.sharedProp.element;
+    }
 
     //Get data from the DB (form_action):
     if(this.form_action == 'insert'){
@@ -281,7 +291,7 @@ export class FormComponent implements OnInit {
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
-            this.router.navigate(['/' + this.sharedProp.element + '/list']);
+            this.router.navigate(['/' + this.destiny + '/list']);
           }
         });
       }
@@ -747,7 +757,7 @@ export class FormComponent implements OnInit {
           obsSaveUser.subscribe({
             next: (res) => {
               //Response the form according to the result:
-              this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
+              this.sharedFunctions.formResponder(res, this.destiny, this.router);
             }
           });
         }
@@ -762,7 +772,7 @@ export class FormComponent implements OnInit {
 
   onCancel(){
     //Redirect to the list:
-    this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+    this.sharedFunctions.gotoList(this.destiny, this.router);
   }
 
   findReferences(){

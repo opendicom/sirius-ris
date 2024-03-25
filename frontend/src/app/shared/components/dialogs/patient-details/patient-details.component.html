@@ -1,0 +1,104 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>person</mat-icon>&nbsp; Detalles del paciente</h1>
+<div mat-dialog-content>
+
+  <div class="current-wrap">
+    <!-- documents -->
+    <div class="current-info">
+      <small>Documento/s:</small><br/>
+      <span *ngFor="let current of data.patient.person.documents" >
+        <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+        <span matTooltip="{{ document_types[current.doc_type] }}">
+          <span>{{ current.document }}</span>
+        </span>
+        <br/>
+      </span>
+    </div>
+            
+    <!-- names -->
+    <div class="current-info">
+      <small>Nombre completo:</small><br/>
+      <span class="current-firts">
+        <span>{{ data.patient.person.name_01 }}</span>
+
+        <span *ngIf="data.patient.person.name_02">
+          <span> {{ data.patient.person.name_02 }}</span>
+        </span>
+
+        <span> {{ data.patient.person.surname_01 }}</span>
+
+        <span *ngIf="data.patient.person.surname_02">
+          <span> {{ data.patient.person.surname_02 }}</span>
+        </span>
+      </span>
+    </div>
+            
+    <div class="clear"></div>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="current-wrap">
+    <!-- birth_date -->
+    <div class="current-info">
+      <small>Fecha de nacimiento:</small><br/>
+      <span class="current-firts">{{ data.patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+    </div>
+            
+    <!-- genre -->
+    <div class="current-info text-center">
+      <small>Género:</small><br/>
+      <span [ngSwitch]="data.patient.person.gender" matTooltip="{{ gender_types[data.patient.person.gender] }}">
+        <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+        <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+        <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+      </span>
+    </div>
+            
+    <!-- status -->
+    <div class="current-info text-center">
+      <small>Estado:</small><br/>
+      <span *ngIf="data.patient.status; then thenBlock else elseBlock"></span>
+      <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
+      <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+    </div>
+            
+    <div class="clear"></div>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="current-wrap">
+    <!-- email -->
+    <div class="current-info">
+      <small>Correo:</small><br/>
+      <span class="current-firts">{{ data.patient.email }}</span>
+    </div>
+
+    <div class="clear"></div>
+  </div>
+
+  <div class="current-wrap">
+    <!-- phone_numbers -->
+    <div class="current-info">
+      <small>Telefonos:</small><br/>
+      <span class="current-firts">
+        <span *ngFor="let current of data.patient.person.phone_numbers" >
+          <span class="badge-alt">{{ current }}</span>
+        </span>  
+      </span>
+    </div>
+
+    <div class="clear"></div>
+  </div>
+
+  <hr class="dashed" />
+</div>
+
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <!-- 1: Superusuario, 2: Administrador, Concesiones: [22: Edición de identificación de pacientes] -->
+  <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [22]))" >
+    <button mat-flat-button [mat-dialog-close]="true" color="primary" routerLink="/users/form/update/{{ data.patient._id }}/{{ data.destiny }}" ><mat-icon>edit</mat-icon> EDITAR</button>&nbsp;
+  </span>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="basic" cdkFocusInitial><mat-icon>close</mat-icon> CERRAR</button>
+</div>

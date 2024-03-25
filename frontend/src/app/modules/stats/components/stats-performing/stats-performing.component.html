@@ -1,1 +1,161 @@
-<p>En construcción...</p>
+<form class="form-element" [formGroup]="form">
+    <mat-form-field appearance="outline">
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal" class="auto-width">
+          <div *ngFor="let currentBranch of availableBranches">
+            <div *ngFor="let currentOrganization of availableOrganizations">
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+            </div>
+          </div>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+        <input matStartDate formControlName="range_start" readonly placeholder="Fecha inicio">
+        <input matEndDate formControlName="range_end" readonly placeholder="Fecha fin">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
+        <mat-icon>search</mat-icon>&nbsp; BUSCAR
+    </button>
+</form>
+
+<hr class="dashed"/>
+
+<div *ngIf="getKeys(performingLocalResponse).length > 0; then thenStatsResult else elseStatsResult"></div>
+
+<ng-template #thenStatsResult>
+    <!-- summary -->
+    <div class="summary">
+        Cantidad total de estudios: <strong>{{ performingLocalResponse.total_items }}</strong> &nbsp;|&nbsp; Anestesias realizadas: <strong>{{ performingLocalResponse.anesthesia }}</strong>
+    </div>
+
+    <!-- gender -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Género</h2>
+        <div #genderContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[genderContainerRef.offsetWidth, 400]"
+                [results]="datasets.gender"
+                [customColors]="gender_colors">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+    
+    <!-- urgency -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Coordinación</h2>
+        <div #urgencyContainerRef class="chart-wrapper">
+            <ngx-charts-bar-vertical 
+                [view]="[urgencyContainerRef.offsetWidth, 400]"
+                [results]="datasets.urgency"
+                [xAxis]="true"
+                [yAxis]="true"
+                [gradient]="true"
+                [customColors]="urgency_colors">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+    
+    <div class="clear"></div><br/>
+
+    <!-- flow_state -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Flujos de trabajo</h2>
+        <div #flow_stateContainerRef class="chart-wrapper">
+            <ngx-charts-bar-vertical 
+                [view]="[flow_stateContainerRef.offsetWidth, 400]"
+                [results]="datasets.flow_state"
+                [gradient]="true"
+                [xAxis]="true"
+                [yAxis]="true"
+                [customColors]="flow_states_colors">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+
+    <!-- modality -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Modalidades</h2>
+        <div #modalityContainerRef class="chart-wrapper">
+            <ngx-charts-pie-chart
+                [view]="[modalityContainerRef.offsetWidth, 400]"
+                [results]="datasets.modality"
+                [labels]="true">
+            </ngx-charts-pie-chart>
+        </div>
+    </div>
+
+    <div class="clear"></div><br/>
+
+    <!-- procedure -->
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Procedimientos</h2>
+        <div #procedureContainerRef class="chart-wrapper">
+            <ngx-charts-bar-vertical 
+                [view]="[procedureContainerRef.offsetWidth, 400]"
+                [scheme]="proceduresColorScheme"
+                [results]="datasets.procedure"
+                [gradient]="true"
+                [xAxis]="true"
+                [yAxis]="true">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+    
+    <div class="clear"></div><br/>
+
+    <!-- equipment -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Equipos</h2>
+        <div #equipmentContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[equipmentContainerRef.offsetWidth, 400]"
+                [scheme]="equipmentColorScheme"
+                [results]="datasets.equipment">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+
+    <!-- cancellation_reasons -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">Cancelaciones</h2>
+        <div #cancellationContainerRef class="chart-wrapper">
+            <ngx-charts-pie-chart
+                [view]="[cancellationContainerRef.offsetWidth, 400]"
+                [results]="datasets.cancellation_reasons"
+                [labels]="true">
+            </ngx-charts-pie-chart>
+        </div>
+    </div>
+
+    <!--
+    <div class="chart-responsive chart-col-50 text-center node-spacing" [style.height.px]="420">
+        <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+    </div>
+    -->
+
+    <div class="clear"></div>
+    <br/><hr class="dashed"/><br/>
+
+    <!-- Export to XSLX -->
+    <div class="text-right">
+        <button mat-flat-button class="button_filters" (click)="sharedFunctions.jsonToXLSX(datasets, 'stats_result');">
+            <mat-icon class="export-icon">get_app</mat-icon> EXPORTAR
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #elseStatsResult>
+    <div class="text-center">
+        <br/>
+        <mat-icon class="no-result-icon">query_stats</mat-icon><br/>
+        <span class="no-result-text">Sin resultados</span><br/>
+        <br/>
+    </div>
+</ng-template>

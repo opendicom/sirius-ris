@@ -198,7 +198,7 @@ const rolePermissions = {
         appointment_requests    : ['find', 'findOne', 'update'],
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
-        performing              : [],
+        performing              : ['find', 'findOne'],
         reports                 : [],
         signatures              : [],
         mail                    : ['send'],
@@ -309,6 +309,7 @@ const concessionPermissions = {
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
         appointment_requests    : ['find', 'findOne', 'update'],
+        performing              : ['find', 'findOne'],
         mail                    : ['send']
     },
 
@@ -433,10 +434,16 @@ const concessionPermissions = {
     // 21 : Acceso al servicio de imágenes del PACS.
     21: {
         wezen                   : ['studyToken']
+    },
+
+    // 22 : Edición de identificación de pacientes:
+    22: {
+        people                  : ['find', 'findOne', 'update'],
+        users                   : ['find', 'findOne', 'update'],
     }
 
-    // 22 : Supervisar citas en curso:
-    // 23 : Listados de facturación:
+    // 23 : Supervisar citas en curso:
+    // 24 : Listados de facturación:
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -68,9 +68,10 @@ export const user_concessions = {
   //18  : Estadísticas sobre informes,
   //19  : Estadísticas sobre la organización,
   20  : 'Acceso al módulo de exportación',          // Backend access only
-  21  : 'Acceso al servicio de imágenes del PACS' 
-  //22  : 'Supervisar citas en curso',
-  //23  : 'Listados de facturación',
+  21  : 'Acceso al servicio de imágenes del PACS',
+  22  : 'Edición de identificación de pacientes'
+  //23  : 'Supervisar citas en curso',
+  //24  : 'Listados de facturación',
 };
 
 // User Types:

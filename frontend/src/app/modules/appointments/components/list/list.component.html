@@ -63,7 +63,7 @@
         <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
-            <span *ngIf="element.patient.person">
+            <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : sharedProp.element })">
               <span *ngFor="let current of element.patient.person.documents" >
                 <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                 <span matTooltip="{{ document_types[current.doc_type] }}">

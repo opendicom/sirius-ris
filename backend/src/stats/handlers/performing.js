@@ -120,6 +120,28 @@ module.exports = async (req, res) => {
                     { $unwind: { path: "$appointment.imaging.service", preserveNullAndEmptyArrays: true } },
                     //------------------------------------------------------------------------------------------------------------//
 
+                    //------------------------------------------------------------------------------------------------------------//
+                    // APPOINTMENT PATIENT:
+                    //------------------------------------------------------------------------------------------------------------//
+                    //Patient (Lookup & Unwind):
+                    { $lookup: {
+                        from: 'users',
+                        localField: 'appointment.fk_patient',
+                        foreignField: '_id',
+                        as: 'patient',
+                    }},
+                    { $unwind: { path: "$patient", preserveNullAndEmptyArrays: true } },
+
+                    //Patient -> Person (Lookup & Unwind):
+                    { $lookup: {
+                        from: 'people',
+                        localField: 'patient.fk_person',
+                        foreignField: '_id',
+                        as: 'patient.person',
+                    }},
+                    { $unwind: { path: "$patient.person", preserveNullAndEmptyArrays: true } },
+                    //------------------------------------------------------------------------------------------------------------//
+
                     //Equipment (Lookup & Unwind):
                     { $lookup: {
                         from: 'equipments',
@@ -242,6 +264,23 @@ module.exports = async (req, res) => {
                                 }
                             },
                             { "$replaceRoot": { "newRoot": { "$arrayToObject": "$modality" } } }
+                        ],
+
+                        //Gender:
+                        "gender": [
+                            {
+                            "$group": {
+                                "_id": "$patient.person.gender",
+                                "count": { "$sum": 1 }
+                            }
+                            },
+                            {
+                            "$group": {
+                                "_id": null,
+                                "gender": { "$push": { "k": { "$toString": "$_id" }, "v": "$count" } }
+                            }
+                            },
+                            { "$replaceRoot": { "newRoot": { "$arrayToObject": "$gender" } } }
                         ],
 
                         //Injection user:
@@ -413,6 +452,7 @@ module.exports = async (req, res) => {
                                 { "equipment": { "$first": "$equipment" } },
                                 { "procedure": { "$first": "$procedure" } },
                                 { "modality": { "$first": "$modality" } },
+                                { "gender": { "$first": "$gender" } },
                                 { "injection_user": { "$first": "$injection_user" } },
                                 { "laboratory_user": { "$first": "$laboratory_user" } },
                                 { "console_technician": { "$first": "$console_technician" } },

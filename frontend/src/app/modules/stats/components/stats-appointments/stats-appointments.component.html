@@ -25,11 +25,16 @@
     </button>
 </form>
 
-<hr class="dashed"/><br/>
+<hr class="dashed"/>
 
 <div *ngIf="getKeys(appointmentsStatsResponse).length > 0; then thenStatsResult else elseStatsResult"></div>
 
 <ng-template #thenStatsResult>
+    <!-- summary -->
+    <div class="summary">
+        Cantidad total de citas: <strong>{{ appointmentsStatsResponse.total_items }}</strong>
+    </div>
+
     <!-- gender -->
     <div class="chart-responsive chart-col-50">
         <h2 class="text-center">Género</h2>

@@ -7,6 +7,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import {                                                                                    // Enviroments
   appointments_flow_states,
+  performing_flow_states,
   gender_types,
   cancellation_reasons
 } from '@env/environment';
@@ -18,6 +19,7 @@ import {                                                                        
 export class StatsService {
   //Set service properties:
   public appointmentsFS       : any = appointments_flow_states;
+  public performingFS         : any = performing_flow_states;
   public gender_types         : any = gender_types;
   public cancellation_reasons : any = cancellation_reasons;
 
@@ -39,11 +41,11 @@ export class StatsService {
         const statsResponse = res.data;
           
         //Order result:
-        await this.sharedFunctions.sortObject(statsResponse, ['total_items']);
+        await this.sharedFunctions.sortObject(statsResponse, ['total_items', 'anesthesia']);
 
         //Set Charts datasets:
         await Promise.all(Object.keys(statsDatasets).map(async (key: any) => {
-          statsDatasets[key] = await this.getDataSet(statsResponse, key);
+          statsDatasets[key] = await this.getDataSet(statsResponse, key, stats_element);
         }));
 
         //Execute callback:
@@ -60,7 +62,7 @@ export class StatsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // GET DATASET:
   //--------------------------------------------------------------------------------------------------------------------//
-  async getDataSet(statsRespone: any, chart_name: string){
+  async getDataSet(statsRespone: any, chart_name: string, stats_element: string){
     //Initializate dataset:
     let current_dataset: any = [];
   
@@ -76,7 +78,16 @@ export class StatsService {
           //Change key names:
           switch(key){
             case 'flow_state':
-              key_name = this.appointmentsFS[element_key];
+              //Check current stats element:
+              switch(stats_element){ 
+                case 'appointments':
+                  key_name = this.appointmentsFS[element_key];
+                  break;
+
+                case 'performing':
+                  key_name = this.performingFS[element_key];
+                  break;
+              }
               break;
 
             case 'urgency':

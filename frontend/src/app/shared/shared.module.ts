@@ -33,6 +33,7 @@ import { PerformingDownloadsComponent } from '@shared/components/dialogs/perform
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
 import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
+import { PatientDetailsComponent } from '@shared/components/dialogs/patient-details/patient-details.component';
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
@@ -73,6 +74,7 @@ import * as IC from '@shared/directives/input-control.directive';
     MailDeliveryComponent,
     AppointmentRequestDetailsComponent,
     SearchInfoComponent,
+    PatientDetailsComponent,
 
     // Shared pipes:
     HighlighterPipe,
@@ -123,7 +125,8 @@ import * as IC from '@shared/directives/input-control.directive';
     MailDeliveryComponent,
     AppointmentRequestDetailsComponent,
     SearchInfoComponent,
-    
+    PatientDetailsComponent,
+
     // Shared pipes:
     HighlighterPipe,
     AccnoDatePipe,

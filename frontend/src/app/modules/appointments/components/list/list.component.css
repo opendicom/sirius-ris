@@ -9,6 +9,11 @@
   padding-left: 10px;
 }
 
+.patient-details {
+  cursor: pointer;
+  color: rgb(240, 206, 122);
+}
+
 mat-chip.line-break {
   height: auto;
   line-height: 1.1em;

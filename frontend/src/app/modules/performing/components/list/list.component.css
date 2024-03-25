@@ -38,3 +38,8 @@ mat-chip.line-break {
     font-size: 9px;
     cursor: pointer;
 }
+
+.patient-details {
+  cursor: pointer;
+  color: rgb(240, 206, 122);
+}

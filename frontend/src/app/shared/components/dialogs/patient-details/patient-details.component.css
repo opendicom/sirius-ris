@@ -1,0 +1,33 @@
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.current-wrap {
+  background-color: #2e304b;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.current-first {
+  font-size: 16px;
+}
+
+.badge-alt {
+    margin-left: 0px !important;
+    margin-right: 4px !important;
+}

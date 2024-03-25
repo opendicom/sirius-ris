@@ -522,20 +522,20 @@ const Validator = [
     body('private_health.medication')
         .optional()
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro private_health.medication ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .isLength({ min: 3, max: 60 })
+        .withMessage('El parametro private_health.medication ingresado es demasiado corto o demasiado largo (min: 3, max: 60 [caracteres]).'),
 
     body('private_health.allergies')
         .optional()
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro private_health.allergies ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .isLength({ min: 3, max: 60 })
+        .withMessage('El parametro private_health.allergies ingresado es demasiado corto o demasiado largo (min: 3, max: 60 [caracteres]).'),
     
     body('private_health.other')
         .optional()
         .trim()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro private_health.other ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .isLength({ min: 3, max: 60 })
+        .withMessage('El parametro private_health.other ingresado es demasiado corto o demasiado largo (min: 3, max: 60 [caracteres]).'),
 
     body('private_health.implants.cochlear_implant')
         .trim()

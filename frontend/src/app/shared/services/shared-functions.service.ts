@@ -24,6 +24,7 @@ import { PerformingDownloadsComponent } from '@shared/components/dialogs/perform
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
 import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
+import { PatientDetailsComponent } from '@shared/components/dialogs/patient-details/patient-details.component';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -436,6 +437,11 @@ export class SharedFunctionsService {
 
           break;
 
+        //PATIENT DETAILS:
+        case 'patient_details':
+          this.basicDialog(PatientDetailsComponent, operationHandler, (result) => { callback(result) });
+          break;
+
         //PERFORMING DOWNLOAD CONTENTS DIALOG:
         case 'performing_downloads':
           this.basicDialog(PerformingDownloadsComponent, operationHandler, (result) => { callback(result) });
@@ -492,7 +498,8 @@ export class SharedFunctionsService {
     if(AditionalRequest !== false && (
       AditionalRequest === 'findByService' || 
       AditionalRequest === 'findByRoleInReport' || 
-      AditionalRequest === 'appointments'
+      AditionalRequest === 'appointments' ||        // Stats case
+      AditionalRequest === 'performing'             // Stats case
     )){ operation = AditionalRequest; }
 
     //Check if element is not empty:

@@ -106,3 +106,14 @@
   position: relative;
   top: 2.5px;
 }
+
+.permission-denied {
+  text-align: center;
+  padding: 25px;
+  font-size: 16px;
+}
+
+.permission-denied > mat-icon {
+  font-size: 60px;
+  opacity: 0.5;
+}

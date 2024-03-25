@@ -40,3 +40,8 @@
   background-color: #ff6e69d2 !important;
   color: #fff;
 }
+
+.patient-details {
+  cursor: pointer;
+  color: rgb(240, 206, 122);
+}
