@@ -503,6 +503,11 @@ export class FormComponent implements OnInit {
           delete performingSaveData.injection.pet_ct.batch;
         }
       }
+
+      //Prevent validation errors removing PET-CT Fields (Not PET-CT cases):
+      if(performingSaveData.hasOwnProperty('injection') && this.sharedProp.current_modality.code_value !== 'PT'){
+        delete performingSaveData.injection.pet_ct;
+      }
      
       //Check acquisition values (Prevent validation errors):
       //Update case allow empty observations field (unset value case).
@@ -545,11 +550,6 @@ export class FormComponent implements OnInit {
         delete performingSaveData.injection.administred_activity_mCi;
         delete performingSaveData.injection.syringe_activity_full_mCi;
         delete performingSaveData.injection.syringe_activity_empty_mCi;
-      }
-
-      //Prevent validation errors removing PET-CT Fields (Not PET-CT cases):
-      if(this.sharedProp.current_modality.code_value !== 'PT'){
-        delete performingSaveData.injection.pet_ct;
       }
 
       //Save performing data:

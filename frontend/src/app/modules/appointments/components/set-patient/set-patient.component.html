@@ -167,7 +167,7 @@
             <mat-form-field appearance="fill" class="large">
               <mat-label>E-mail</mat-label>
               <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="Ej: nombre@casilla.com" (change)="onSetEmail()">
-              <mat-icon matSuffix>mail</mat-icon>
+              <mat-icon matSuffix (click)="setDefaultEmail()" matTooltip="Establecer correo por defecto">mail</mat-icon>
             </mat-form-field>
 
             <hr class="dashed" /><br/>

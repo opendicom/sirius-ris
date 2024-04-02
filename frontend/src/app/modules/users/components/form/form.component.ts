@@ -775,6 +775,12 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.gotoList(this.destiny, this.router);
   }
 
+  setDefaultEmail(){
+    //Set default no email value:
+    const defaultEmail = this.form.value.person.doc_country_code + '.' + this.form.value.person.doc_type + '.' + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description + '.com';
+    this.form.get('user.email')?.setValue(defaultEmail);
+  }
+
   findReferences(){
     //Initialize params:
     let params: any;

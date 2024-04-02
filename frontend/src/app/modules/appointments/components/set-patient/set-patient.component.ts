@@ -695,6 +695,12 @@ export class SetPatientComponent implements OnInit {
     }
   }
 
+  setDefaultEmail(){
+    //Set default no email value:
+    const defaultEmail = this.form.value.person.doc_country_code + '.' + this.form.value.person.doc_type + '.' + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description + '.com';
+    this.form.get('user.email')?.setValue(defaultEmail);
+  }
+
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList('appointments', this.router);

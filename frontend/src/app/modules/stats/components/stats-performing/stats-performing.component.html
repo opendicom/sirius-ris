@@ -32,7 +32,10 @@
 <ng-template #thenStatsResult>
     <!-- summary -->
     <div class="summary">
-        Cantidad total de estudios: <strong>{{ performingLocalResponse.total_items }}</strong> &nbsp;|&nbsp; Anestesias realizadas: <strong>{{ performingLocalResponse.anesthesia }}</strong>
+        Cantidad total de estudios: <strong>{{ performingLocalResponse.total_items }}</strong> &nbsp;|&nbsp; 
+        <span *ngIf="performingLocalResponse.anesthesia; then thenAnesthesia else elseAnesthesia"></span>
+        <ng-template #thenAnesthesia>Anestesias realizadas: <strong>{{ performingLocalResponse.anesthesia }}</strong></ng-template>
+        <ng-template #elseAnesthesia>No se hallaron anestesias realizadas.</ng-template>
     </div>
 
     <!-- gender -->
