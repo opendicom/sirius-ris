@@ -23,6 +23,11 @@ export class StatsService {
   public gender_types         : any = gender_types;
   public cancellation_reasons : any = cancellation_reasons;
 
+  //Set references objects:
+  public availableOrganizations : any;
+  public availableBranches      : any;
+  public availableUsers         : any;
+
   //Inject services to the constructor:
   constructor(  
     public sharedProp       : SharedPropertiesService,
@@ -105,6 +110,30 @@ export class StatsService {
             case 'cancellation_reasons':
               key_name = this.cancellation_reasons[element_key];
               break;
+
+            case 'injection_user':
+            case 'laboratory_user':
+            case 'console_technician':
+              //Change _id to name in key (await foreach):
+              await Promise.all(Object.keys(this.availableUsers).map(async currentUserKey => {
+                if(this.availableUsers[currentUserKey]._id == key_name){
+                  //Set name/s:
+                  let names = this.availableUsers[currentUserKey].person.name_01;
+                  if(this.availableUsers[currentUserKey].person.name_02){
+                    names += ' ' + this.availableUsers[currentUserKey].person.name_01
+                  }
+
+                  //Set surname/s:
+                  let surnames = this.availableUsers[currentUserKey].person.surname_01;
+                  if(this.availableUsers[currentUserKey].person.surname_02){
+                    surnames += ' ' + this.availableUsers[currentUserKey].person.surname_01
+                  }
+
+                  //Set complete name:
+                  key_name = names + ' ' + surnames;
+                }
+              }));
+              break;
           }
 
           //Add current element in dataset:
@@ -115,6 +144,64 @@ export class StatsService {
   
     //Return current dataset:
     return current_dataset;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND REFERENCES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findReferences(){
+    //Set params:
+    const params = { 'filter[status]': true };
+
+    //Find organizations:
+    this.sharedFunctions.find('organizations', params, (res) => {
+      this.availableOrganizations = res.data;
+    });
+
+    //Find branches:
+    this.sharedFunctions.find('branches', params, (res) => {
+      this.availableBranches = res.data;
+    });
+
+    //Find stats users:
+    this.findStatUsers(res => { this.availableUsers = res.data; });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FIND STAT USERS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  findStatUsers(callback = (res: any) => {}){
+    //Set params:
+    const params = {
+      //Only people users:
+      'filter[person.name_01]': '',
+      'regex': true,
+
+      //Tecnicos & Enfermeros:
+      'filter[in][permissions.role]': [5, 6],
+
+      //Projection:
+      'proj[person.name_01]'    : 1,
+      'proj[person.name_02]'    : 1,
+      'proj[person.surname_01]' : 1,
+      'proj[person.surname_02]' : 1
+    };
+
+    //Find users:
+    this.sharedFunctions.find('users', params, (res) => {
+      //Check response:
+      if(res.success == true){
+        //Execute callback:
+        callback(res);
+      } else {
+        //Send message:
+        this.sharedFunctions.sendMessage('Error al intentar obtener los usuarios involucrados en la estadística.');
+      }
+    }, false, false, false);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

@@ -164,10 +164,22 @@
           <br/><hr class="dashed" /><br/>
 
           <h4>Concesiones particulares:</h4>
-          <div class="item-container" formArrayName="concessions">
-            <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue;">
-              <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
-            </ng-container>
+          <div fxLayout="row" fxLayoutAlign="start start" class="item-container" formArrayName="concessions">
+            <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+              <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue: unsorted; ; let i = index;">
+                <span *ngIf="i + 1 <= getMath.ceil(getKeys(userConcessions).length / 2)">
+                  <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
+                </span>
+              </ng-container>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+              <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue: unsorted; ; let i = index;">
+                <span *ngIf="i + 1 > getMath.ceil(getKeys(userConcessions).length / 2)">
+                  <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
+                </span>
+              </ng-container>
+            </div> <!-- end fxLayout wrapper -->
           </div>
 
           <br/><hr class="dashed" /><br/>

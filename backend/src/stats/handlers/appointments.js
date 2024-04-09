@@ -324,6 +324,40 @@ module.exports = async (req, res) => {
                   { "$replaceRoot":{ "newRoot":{ "$arrayToObject":"$cancellation_reasons" } } }
                 ],
 
+                //Country:
+                "country": [
+                  {
+                    "$group": {
+                      "_id": "$current_address.country",
+                      "count": { "$sum": 1 },
+                    }
+                  },
+                  {
+                    "$group": {
+                      "_id": null,
+                      "country": { "$push": { "k": "$_id", "v": "$count" } }
+                    }
+                  },
+                  { "$replaceRoot": { "newRoot": { "$arrayToObject": "$country" } } }
+                ],
+
+                //State:
+                "state": [
+                  {
+                      "$group": {
+                          "_id": { "country" : "$current_address.country", "state" : "$current_address.state" },
+                          "count": { "$sum": 1 },
+                      }
+                  },
+                  {
+                      "$group": {
+                          "_id": null,
+                          "state": { "$push": { "k": { "$concat": [ "$_id.country", " - " , "$_id.state" ]}, "v": "$count" } }
+                      }
+                  },
+                  { "$replaceRoot": { "newRoot": { "$arrayToObject": "$state" } } }
+              ],
+
                 //Total count:
                 "total": [
                     {
@@ -356,6 +390,8 @@ module.exports = async (req, res) => {
                     { "equipment": { "$first": "$equipment" } },
                     { "procedure": { "$first": "$procedure" } },
                     { "cancellation_reasons": { "$first": "$cancellation_reasons" } },
+                    { "country": { "$first": "$country" } },
+                    { "state": { "$first": "$state" } },
                     { "total_items": { "$first": "$total.count" } }
                   ]
                 },

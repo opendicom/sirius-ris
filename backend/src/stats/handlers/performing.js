@@ -399,6 +399,40 @@ module.exports = async (req, res) => {
                             { "$replaceRoot":{ "newRoot":{ "$arrayToObject":"$cancellation_reasons" } } }
                         ],
 
+                        //Country:
+                        "country": [
+                            {
+                                "$group": {
+                                    "_id": "$appointment.current_address.country",
+                                    "count": { "$sum": 1 },
+                                }
+                            },
+                            {
+                                "$group": {
+                                    "_id": null,
+                                    "country": { "$push": { "k": "$_id", "v": "$count" } }
+                                }
+                            },
+                            { "$replaceRoot": { "newRoot": { "$arrayToObject": "$country" } } }
+                        ],
+        
+                        //State:
+                        "state": [
+                            {
+                                "$group": {
+                                    "_id": { "country" : "$appointment.current_address.country", "state" : "$appointment.current_address.state" },
+                                    "count": { "$sum": 1 },
+                                }
+                            },
+                            {
+                                "$group": {
+                                    "_id": null,
+                                    "state": { "$push": { "k": { "$concat": [ "$_id.country", " - " , "$_id.state" ]}, "v": "$count" } }
+                                }
+                            },
+                            { "$replaceRoot": { "newRoot": { "$arrayToObject": "$state" } } }
+                        ],
+
                         //Anesthesia:
                         "anesthesia_count": [
                             {
@@ -457,6 +491,8 @@ module.exports = async (req, res) => {
                                 { "laboratory_user": { "$first": "$laboratory_user" } },
                                 { "console_technician": { "$first": "$console_technician" } },
                                 { "cancellation_reasons": { "$first": "$cancellation_reasons" } },
+                                { "country": { "$first": "$country" } },
+                                { "state": { "$first": "$state" } },
                                 { "anesthesia": { "$first": "$anesthesia" } },
                                 { "total_items": { "$first": "$total.count" } }
                             ]

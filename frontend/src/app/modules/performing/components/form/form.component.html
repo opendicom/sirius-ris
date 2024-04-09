@@ -709,7 +709,9 @@
     <div> <!-- start fxLayout wrapper -->
         <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
         <button mat-flat-button type="button" color="primary" (click)="onSubmitMaster()" >GUARDAR</button>
-        <button mat-flat-button type="button" color="accent" [disabled]="nextStepButtonDisabled" (click)="onNextStep()" >GUARDAR Y AVANZAR</button>
+        <span *ngIf="['P01', 'P02', 'P03', 'P04', 'P05'].includes(form.value.flow_state)">
+          <button mat-flat-button type="button" color="accent" [disabled]="nextStepButtonDisabled" (click)="onNextStep()" >GUARDAR Y AVANZAR</button>
+        </span>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

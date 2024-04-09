@@ -16,10 +16,6 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';                        
   styleUrls: ['./stats-appointments.component.css']
 })
 export class StatsAppointmentsComponent implements OnInit {
-  //Set references objects:
-  public availableOrganizations: any;
-  public availableBranches: any;
-
   //Initialize appointmentsLocalResponse:
   public appointmentsStatsResponse: any = {};
 
@@ -40,7 +36,9 @@ export class StatsAppointmentsComponent implements OnInit {
     gender                : [],
     equipment             : [],
     procedure             : [],
-    cancellation_reasons  : []
+    cancellation_reasons  : [],
+    country               : [],
+    state                 : []
   };
 
   //Set Chart colors and color schemes:
@@ -100,10 +98,7 @@ export class StatsAppointmentsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    //Find references:
-    this.findReferences();
-  }
+  ngOnInit(): void { }
 
   onSearch(){
     //Validate fields:
@@ -121,20 +116,5 @@ export class StatsAppointmentsComponent implements OnInit {
         this.datasets = dataset;
       });
     }
-  }
-  
-  findReferences(){
-    //Set params:
-    const params = { 'filter[status]': true };
-
-    //Find organizations:
-    this.sharedFunctions.find('organizations', params, (res) => {
-      this.availableOrganizations = res.data;
-    });
-
-    //Find branches:
-    this.sharedFunctions.find('branches', params, (res) => {
-      this.availableBranches = res.data;
-    });
   }
 }

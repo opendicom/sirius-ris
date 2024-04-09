@@ -20,6 +20,9 @@ export class FormMachineComponent implements OnInit {
   public userRoles        : any = user_roles;
   public userConcessions  : any = user_concessions;
 
+  //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
+  unsorted = () => { return 0 }
+
   //Set references objects:
   public availableOrganizations : any;
   public availableBranches      : any;
@@ -42,7 +45,8 @@ export class FormMachineComponent implements OnInit {
   public userOperation    : string = 'insert';
 
   //Re-define method in component to use in HTML view:
-  public getKeys: any;
+  public getKeys  : any;
+  public getMath  : any = Math;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;

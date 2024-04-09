@@ -2,8 +2,8 @@
     <mat-form-field appearance="outline">
         <mat-label>Sucursal</mat-label>
         <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal" class="auto-width">
-          <div *ngFor="let currentBranch of availableBranches">
-            <div *ngFor="let currentOrganization of availableOrganizations">
+          <div *ngFor="let currentBranch of statsService.availableBranches">
+            <div *ngFor="let currentOrganization of statsService.availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
             </div>
           </div>
@@ -89,6 +89,7 @@
             <ngx-charts-pie-chart
                 [view]="[modalityContainerRef.offsetWidth, 400]"
                 [results]="datasets.modality"
+                [scheme]="'vivid'"
                 [labels]="true">
             </ngx-charts-pie-chart>
         </div>
@@ -132,16 +133,81 @@
             <ngx-charts-pie-chart
                 [view]="[cancellationContainerRef.offsetWidth, 400]"
                 [results]="datasets.cancellation_reasons"
+                [scheme]="'nightLights'"
+                [doughnut]="true"
                 [labels]="true">
             </ngx-charts-pie-chart>
         </div>
     </div>
 
-    <!--
+    <div class="clear"></div><br/>
+
+    <!-- country -->
+    <div class="chart-responsive chart-col-50">
+        <h2 class="text-center">País de residencia</h2>
+        <div #countryContainerRef class="chart-wrapper">
+            <ngx-charts-pie-chart
+                [view]="[countryContainerRef.offsetWidth, 400]"
+                [results]="datasets.country"
+                [labels]="true">
+            </ngx-charts-pie-chart>
+        </div>
+    </div>
+
     <div class="chart-responsive chart-col-50 text-center node-spacing" [style.height.px]="420">
         <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
     </div>
-    -->
+
+    <div class="clear"></div><br/>
+
+    <!-- state -->
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Estado de residencia</h2>
+        <div #stateContainerRef class="chart-wrapper">
+            <ngx-charts-bar-vertical 
+                [view]="[stateContainerRef.offsetWidth, 400]"
+                [results]="datasets.state"
+                [gradient]="true"
+                [xAxis]="true"
+                [yAxis]="true">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+
+    <div class="clear"></div><br/>
+
+    <!-- injection_user -->
+    <div class="chart-responsive chart-col-30">
+        <h2 class="text-center">Responsables de inyección</h2>
+        <table class="simple-table">
+            <tr *ngFor="let current of datasets.injection_user;">
+                <td>{{ current.name }}</td>
+                <td>{{ current.value }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- laboratory_user -->
+    <div class="chart-responsive chart-col-30">
+        <h2 class="text-center">Responsables de laboratorio</h2>
+        <table class="simple-table">
+            <tr *ngFor="let current of datasets.laboratory_user;">
+                <td>{{ current.name }}</td>
+                <td>{{ current.value }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- console_technician -->
+    <div class="chart-responsive chart-col-30">
+        <h2 class="text-center">Técnicos en consola</h2>
+        <table class="simple-table">
+            <tr *ngFor="let current of datasets.console_technician;">
+                <td>{{ current.name }}</td>
+                <td>{{ current.value }}</td>
+            </tr>
+        </table>
+    </div>
 
     <div class="clear"></div>
     <br/><hr class="dashed"/><br/>

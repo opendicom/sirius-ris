@@ -65,21 +65,28 @@
     </mat-list-item>
   </div>
 
-  <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas] -->
-  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14]))" >
+  <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas, 15: Estadísticas sobre solicitudes, 16: Estadísticas sobre citas, 17, Estadísticas sobre estudios, 18: Estadísticas sobre informes, 19: Estadísticas sobre la organización] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14, 15, 16, 17, 18, 19]))" >
     <h3>Funciones avanzadas</h3>
 
-    <mat-list-item routerLink="/advanced-search/list">
-      <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
-    </mat-list-item>
+    <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14]))" >
+      <mat-list-item routerLink="/advanced-search/list">
+        <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
+      </mat-list-item>
+    </div>
 
-    <!-- 1: Superusuario (En desarrollo) -->
-    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+    <!-- 1: Superusuario, 2: Administrador, Concesiones: [15: Estadísticas sobre solicitudes, 16: Estadísticas sobre citas, 17, Estadísticas sobre estudios, 18: Estadísticas sobre informes, 19: Estadísticas sobre la organización] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [15, 16, 17, 18, 19]))" >
       <mat-divider></mat-divider>
 
       <mat-list-item routerLink="/stats/main">
         <mat-icon>query_stats</mat-icon><span>Estadística</span>
       </mat-list-item>
+    </div>
+    
+    <!-- 1: Superusuario (En desarrollo) -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
 
       <mat-divider></mat-divider>
 

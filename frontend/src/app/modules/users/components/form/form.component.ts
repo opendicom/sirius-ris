@@ -73,7 +73,8 @@ export class FormComponent implements OnInit {
   public destiny: any;
 
   //Re-define method in component to use in HTML view:
-  public getKeys: any;
+  public getKeys  : any;
+  public getMath  : any = Math;
 
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;

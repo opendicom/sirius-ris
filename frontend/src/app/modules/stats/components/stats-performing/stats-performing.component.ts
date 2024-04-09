@@ -16,10 +16,6 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';                        
   styleUrls: ['./stats-performing.component.css']
 })
 export class StatsPerformingComponent implements OnInit {
-  //Set references objects:
-  public availableOrganizations: any;
-  public availableBranches: any;
-
   //Initialize performingLocalResponse:
   public performingLocalResponse: any = {};
 
@@ -40,6 +36,8 @@ export class StatsPerformingComponent implements OnInit {
     equipment             : [],
     procedure             : [],
     cancellation_reasons  : [],
+    country               : [],
+    state                 : [],
     injection_user        : [],
     laboratory_user       : [],
     console_technician    : []
@@ -106,10 +104,7 @@ export class StatsPerformingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    //Find references:
-    this.findReferences();
-  }
+  ngOnInit(): void { }
 
   onSearch(){
     //Validate fields:
@@ -127,20 +122,5 @@ export class StatsPerformingComponent implements OnInit {
         this.datasets = dataset;
       });
     }
-  }
-
-  findReferences(){
-    //Set params:
-    const params = { 'filter[status]': true };
-
-    //Find organizations:
-    this.sharedFunctions.find('organizations', params, (res) => {
-      this.availableOrganizations = res.data;
-    });
-
-    //Find branches:
-    this.sharedFunctions.find('branches', params, (res) => {
-      this.availableBranches = res.data;
-    });
   }
 }
