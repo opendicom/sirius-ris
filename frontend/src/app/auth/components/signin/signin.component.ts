@@ -26,6 +26,9 @@ export class SigninComponent implements OnInit {
   //Initializate full status information controller:
   public GET_full_status: any = false;
 
+  //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
+  unsorted = () => { return 0 }
+
   //Inject services to the constructor:
   constructor(
     private userAuth: UsersAuthService,

@@ -34,7 +34,7 @@
     <mat-form-field appearance="fill" class="medium">
       <mat-label>Tipo de documento</mat-label>
       <mat-select name="doc_type" [(ngModel)]="sharedProp.mainSettings.appSettings.default_doc_type" required >
-        <div *ngFor="let currentDocType of document_types | keyvalue">
+        <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
           <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
         </div>
       </mat-select>

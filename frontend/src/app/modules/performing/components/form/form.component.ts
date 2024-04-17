@@ -508,6 +508,11 @@ export class FormComponent implements OnInit {
       if(performingSaveData.hasOwnProperty('injection') && this.sharedProp.current_modality.code_value !== 'PT'){
         delete performingSaveData.injection.pet_ct;
       }
+
+      //Prevent send empty objects:
+      if(performingSaveData.hasOwnProperty('injection') && performingSaveData.injection.administered_volume == undefined && performingSaveData.injection.administration_time == undefined && performingSaveData.injection.injection_user == undefined){
+        delete performingSaveData.injection;
+      }
      
       //Check acquisition values (Prevent validation errors):
       //Update case allow empty observations field (unset value case).

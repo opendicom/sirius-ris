@@ -17,7 +17,11 @@
       </ng-template>
 
       <div formGroupName="person">
-        <h2 class="form-title text-center underline-fail-alt">Datos de la persona:</h2>
+        <h2 class="form-title text-center underline-fail-alt">
+          Datos de la persona:
+          <mat-icon class="label-light label-tab anonymize-button" (click)="anonymizeUser()" matTooltip="Anonimizar usuario">person_off</mat-icon>
+        </h2>
+        
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
             <div class="documents">
@@ -36,7 +40,7 @@
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>Tipo de documento</mat-label>
                 <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
-                  <div *ngFor="let currentDocType of document_types | keyvalue">
+                  <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
                     <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
                   </div>
                 </mat-select>

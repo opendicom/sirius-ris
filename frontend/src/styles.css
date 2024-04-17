@@ -240,6 +240,10 @@ mark {
   font-size: 23px !important;
 }
 
+.rounded {
+  border-radius: 50%;
+}
+
 .export-icon {
   color: #05ffa1 !important;
 }

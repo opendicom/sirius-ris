@@ -117,3 +117,8 @@
   font-size: 60px;
   opacity: 0.5;
 }
+
+.anonymize-button {
+  float: right !important;
+  margin-right: 10px;
+}

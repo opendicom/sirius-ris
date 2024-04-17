@@ -40,3 +40,8 @@
   position: relative;
   top: 7px !important;
 }
+
+.anonymize-button {
+  float: right !important;
+  margin-right: 10px;
+}

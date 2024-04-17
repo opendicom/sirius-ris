@@ -28,6 +28,9 @@ export class SetPatientComponent implements OnInit {
   public document_types   : any = document_types;
   public genderTypes      : any = gender_types;
 
+  //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
+  unsorted = () => { return 0 }
+
   //Set references objects:
   public availableOrganizations: any;
 
@@ -695,10 +698,50 @@ export class SetPatientComponent implements OnInit {
     }
   }
 
-  setDefaultEmail(){
+  setDefaultEmail(use_prefix: boolean = true){
+    let prefix = '';
+
+    //Check and set prefix:
+    if(use_prefix){
+      prefix = this.form.value.person.doc_country_code + '.' + this.form.value.person.doc_type + '.';
+    }
+
     //Set default no email value:
-    const defaultEmail = this.form.value.person.doc_country_code + '.' + this.form.value.person.doc_type + '.' + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description + '.com';
+    const defaultEmail = prefix + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description + '.com';
     this.form.get('user.email')?.setValue(defaultEmail);
+  }
+
+  async anonymizeUser(){
+    //Set anonymized document:
+    const anonymizedDocument = {
+      doc_country_code  : this.sharedProp.mainSettings.appSettings.default_country,
+      doc_type          : '100',
+      document          : this.sharedFunctions.getObjectId()
+    };
+
+    //Set anonymized document in form fields:
+    this.form.get('person.doc_country_code')?.setValue(anonymizedDocument.doc_country_code);
+    this.form.get('person.doc_type')?.setValue(anonymizedDocument.doc_type);
+    this.form.get('person.document')?.setValue(anonymizedDocument.document);
+
+    //On set document to enable save button:
+    this.onSetDocument(true, () => {
+      //Set anonymized name and surname:
+      this.form.get('person.name_01')?.setValue('ANÓNIMO');
+      this.form.get('person.surname_01')?.setValue('ANÓNIMO');
+
+      //Set gender:
+      this.form.get('person.gender')?.setValue('3');
+
+      //Set birth date (Default: today):
+      this.form.get('person.birth_date')?.setValue(new Date());
+
+      //Set anonymized phone (Any value: Fibonacci secuence):
+      this.form.get('person.phone_numbers[0]')?.setValue('01123581321');
+
+      //Set default email with anonymized document:
+      this.setDefaultEmail(false);
+    });
   }
 
   onCancel(){

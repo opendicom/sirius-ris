@@ -29,7 +29,7 @@ export const document_types = {
   5: 'Permiso de residencia',
   6: 'Visa',
   7: 'Documento transitorio',
-  //100: Anonymous document (reserved but not listed).
+  100: 'Documento anónimo'
 };
 
 // User Roles:
