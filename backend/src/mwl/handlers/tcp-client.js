@@ -143,6 +143,19 @@ module.exports = async (req, res) => {
 
             // UI studyUID [ZDS-1] (0020000D):
             const UI = data[0].study_iuid;
+
+            // Requesting Service (00321033) [ORC-17] <referring organization>:
+            let RS = data[0].referring.organization.short_name;
+
+            //Check referring branch:
+            if(data[0].referring.branch.short_name !== undefined && data[0].referring.branch.short_name !== null && data[0].referring.branch.short_name !== ''){
+                RS+= '^' + data[0].referring.branch.short_name;
+            }
+
+            //Check referring service:
+            if(data[0].referring.service.name !== undefined && data[0].referring.service.name !== null && data[0].referring.service.name !== ''){
+                RS+= '^' + data[0].referring.service.name;
+            }
             //--------------------------------------------------------------------------------------------------------//
 
 
@@ -153,8 +166,8 @@ module.exports = async (req, res) => {
 const HL7_message = `MSH|^~\\&|||||||ORM^O01|||2.3.1
 IPC|||||||${ SSN }^^^
 PID|||${ ID }^^^${ II }||${ PN }||${ PB }|${ PS }
-ORC|NW||||||^^^${ DT }^^${ PR }||||||||||
-OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }|||||||||^${ PP }||||||||||${ RD }
+ORC|NW||||||^^^${ DT }^^${ PR }||||||||||${ RS }
+OBR||||^^^${ SD_CODE }^${ SD }^${ CSD }||||||||||||^${ RQ }||${ AN }|${ RP }|${ SS }|${ AE }|||${ MO }||||||||||${ PP }|||||||||${ RD }
 ZDS|${ UI }`;
 //--------------------------------------------------------------------------------------------------------------------//
 

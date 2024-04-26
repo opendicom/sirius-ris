@@ -296,6 +296,9 @@ export class SlotsAppointmentsComponent implements OnInit {
             if(res.data.length > 0){
               //Create registered equipments array (Duplicated control):
               let registeredEquipments: string[] = [];
+              
+              //Create slotsIN array:
+              let slotsIN: any[] = [];
 
               //Set currentEquipments - FullCalendar Resources (await foreach):
               await Promise.all(Object.keys(res.data).map(async (key) => {
@@ -323,9 +326,8 @@ export class SlotsAppointmentsComponent implements OnInit {
                 //Register equipment:
                 registeredEquipments.push(res.data[key].equipment._id);
 
-                //Register slots _id (IN Appointment and Appointments drafts condition):
-                this.appointmentsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
-                this.appointmentsDraftsParams['filter[in][slot._id][' + key + ']'] = res.data[key]._id;
+                //Add current _id slot into slotIN Array:
+                slotsIN.push(res.data[key]._id);
 
                 //Add background events in calendar (Slots):
                 this.calendarComponent.getApi().addEvent({
@@ -338,6 +340,10 @@ export class SlotsAppointmentsComponent implements OnInit {
                 });
 
               }));
+
+              //Register slots _id (IN Appointment and Appointments drafts condition):
+              this.appointmentsParams['filter[in][slot._id]'] = slotsIN;
+              this.appointmentsDraftsParams['filter[in][slot._id]'] = slotsIN;
             }
           }
 
@@ -400,6 +406,7 @@ export class SlotsAppointmentsComponent implements OnInit {
         }),
 
         //Search appointments drafts - FullCalendar In progress events (Return observable):
+        /*
         mergeMap(() => this.sharedFunctions.findRxJS('appointments_drafts', this.appointmentsDraftsParams)),
 
         //Check and set In progress Events:
@@ -455,6 +462,7 @@ export class SlotsAppointmentsComponent implements OnInit {
           //Return response:
           return res;
         }),
+        */
       );
 
       //Observe content (Subscribe):

@@ -121,7 +121,7 @@ export class FormInsertComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      referring_organization    : [ this.sharedProp.current_imaging.organization._id, [Validators.required] ],
+      referring_organization    : [ '', [Validators.required] ],
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
 

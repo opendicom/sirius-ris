@@ -66,7 +66,7 @@ router.post(
     appointments.Validator,
     async (req, res) => {
         //Set params for check duplicates:
-        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+        const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient, flow_state: 'A01' };
 
         //Search for duplicates:
         const duplicated = await moduleServices.isDuplicated(req, res, appointments, params);
@@ -109,7 +109,7 @@ router.post(
         //Check duplicated if this params exists:
         if(req.body.start != '' && req.body.end != '' && req.body.fk_patient != ''){
             //Set params for check duplicates:
-            const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient };
+            const params = { start: req.body.start, end: req.body.end, fk_patient: req.body.fk_patient, flow_state: 'A01' };
 
             //Search for duplicates:
             duplicated = await moduleServices.isDuplicated(req, res, appointments, params);

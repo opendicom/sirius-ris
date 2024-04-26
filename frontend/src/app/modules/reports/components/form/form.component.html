@@ -203,90 +203,7 @@
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
-        <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-          <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">Informe requerido antes de <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
-          <br/>
-
-          <h4>Anamnesis:</h4>
-          <div class="current-wrap details-wrap">
-            <!-- anamnesis -->
-            <div class="current-info">
-              <div *ngIf="performingData.appointment && performingData.appointment.anamnesis !== undefined && performingData.appointment.anamnesis.length > 0; then thenBlockAnamnesis else elseBlockAnamnesis"></div>
-          
-              <ng-template #thenBlockAnamnesis>
-                <span innerHTML="{{ performingData.appointment.anamnesis }}"></span>
-              </ng-template>
-          
-              <ng-template #elseBlockAnamnesis>
-                <span>El estudio NO posee anamnesis.</span>
-              </ng-template>
-            </div>
-          
-            <div class="clear"></div>
-          </div>
-
-          <br/>
-
-          <h4>Indicaciones:</h4>
-          <div class="current-wrap details-wrap">
-            <!-- indications -->
-            <div class="current-info">
-              <div *ngIf="performingData.appointment && performingData.appointment.indications !== undefined && performingData.appointment.indications.length > 0; then thenBlockIndications else elseBlockIndications"></div>
-          
-              <ng-template #thenBlockIndications>
-                <span innerHTML="{{ performingData.appointment.indications }}"></span>
-              </ng-template>
-          
-              <ng-template #elseBlockIndications>
-                <span>El estudio NO posee indicaciones.</span>
-              </ng-template>
-            </div>
-          
-            <div class="clear"></div>
-          </div>
-
-          <h3 class="form-title text-center underline-fail-alt">Adquisición:</h3>
-          <br/>
-          <!-- contrast -->
-          <span *ngIf="performingData.appointment && performingData.appointment.contrast">
-            <ul>
-              <span *ngIf="performingData.appointment.contrast.use_contrast == true; then thenBlockContrast else elseBlockContrast"></span>
-              <ng-template #thenBlockContrast>
-                <li><strong>Estudio realizado:</strong> <span class="label-info">Con contraste</span></li>
-                <li *ngIf="performingData.modality.code_value != 'PT'" ><strong>Tipo de contraste:</strong> {{ performingData.appointment.contrast.description }}</li>
-              </ng-template>
-              <ng-template #elseBlockContrast>
-                <li><strong>Estudio realizado:</strong> Sin contraste</li>
-              </ng-template>
-            </ul>
-          </span>
-          
-          <br/><hr class="dashed"/><br/>
-
-          <h4>Observaciones:</h4>
-          <div class="current-wrap details-wrap">
-            <!-- acquisition -> observations -->
-            <div class="current-info">
-              <div *ngIf="performingData.appointment && performingData.appointment.acquisition && performingData.appointment.acquisition.observations !== undefined && performingData.appointment.acquisition.observations.length > 0; then thenBlockAcquisitionObservations else elseBlockAcquisitionObservations"></div>
-          
-              <ng-template #thenBlockAcquisitionObservations>
-                <span innerHTML="{{ performingData.appointment.acquisition.observations }}"></span>
-              </ng-template>
-          
-              <ng-template #elseBlockAcquisitionObservations>
-                <span>NO se registraron observaciones durante la adquisicón de imágenes.</span>
-              </ng-template>
-            </div>
-          
-            <div class="clear"></div>
-          </div>
-          
-
-          <br/>
-
-        </div> <!-- end fxLayout wrapper -->
-          
-        <div *ngIf="performingData.appointment && performingData.appointment.private_health && performingData.patient" class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <div *ngIf="performingData.appointment && performingData.appointment.private_health && performingData.patient" class="input-wrapper divider"> <!-- start fxLayout wrapper -->
           <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
 
           <div fxLayout="row" fxLayoutAlign="start start">
@@ -388,6 +305,112 @@
           </span>
           
           <br/>
+
+          <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">Informe requerido antes de <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
+          <br/>
+
+          <h4>Anamnesis:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- anamnesis -->
+            <div class="current-info">
+              <div *ngIf="performingData.appointment && performingData.appointment.anamnesis !== undefined && performingData.appointment.anamnesis.length > 0; then thenBlockAnamnesis else elseBlockAnamnesis"></div>
+          
+              <ng-template #thenBlockAnamnesis>
+                <span innerHTML="{{ performingData.appointment.anamnesis }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockAnamnesis>
+                <span>El estudio NO posee anamnesis.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+          </div>
+
+          <br/><hr class="dashed"/><br/>
+
+          <h4>Indicaciones:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- indications -->
+            <div class="current-info">
+              <div *ngIf="performingData.appointment && performingData.appointment.indications !== undefined && performingData.appointment.indications.length > 0; then thenBlockIndications else elseBlockIndications"></div>
+          
+              <ng-template #thenBlockIndications>
+                <span innerHTML="{{ performingData.appointment.indications }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockIndications>
+                <span>El estudio NO posee indicaciones.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+            <br/><br/>
+          </div>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+          
+          <h3 class="form-title text-center underline-fail-alt">Preparación e inyección:</h3>
+          <br/>
+          <h4>Observaciones:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- observations -->
+            <div class="current-info">
+              <div *ngIf="performingData.observations !== undefined && performingData.observations.length > 0; then thenBlockObservations else elseBlockObservations"></div>
+          
+              <ng-template #thenBlockObservations>
+                <span innerHTML="{{ performingData.observations }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockObservations>
+                <span>NO se registraron observaciones durante la preparación e inyección del paciente.</span>
+              </ng-template>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+
+
+          <h3 class="form-title text-center underline-fail-alt">Adquisición:</h3>
+          <br/>
+          <!-- contrast -->
+          <span *ngIf="performingData.appointment && performingData.appointment.contrast">
+            <ul>
+              <span *ngIf="performingData.appointment.contrast.use_contrast == true; then thenBlockContrast else elseBlockContrast"></span>
+              <ng-template #thenBlockContrast>
+                <li><strong>Estudio realizado:</strong> <span class="label-info">Con contraste</span></li>
+                <li *ngIf="performingData.modality.code_value != 'PT'" ><strong>Tipo de contraste:</strong> {{ performingData.appointment.contrast.description }}</li>
+              </ng-template>
+              <ng-template #elseBlockContrast>
+                <li><strong>Estudio realizado:</strong> Sin contraste</li>
+              </ng-template>
+            </ul>
+          </span>
+          
+          <br/><hr class="dashed"/><br/>
+
+          <h4>Observaciones:</h4>
+          <div class="current-wrap details-wrap">
+            <!-- acquisition -> observations -->
+            <div class="current-info">
+              <div *ngIf="performingData.acquisition && performingData.acquisition.observations !== undefined && performingData.acquisition.observations.length > 0; then thenBlockAcquisitionObservations else elseBlockAcquisitionObservations"></div>
+          
+              <ng-template #thenBlockAcquisitionObservations>
+                <span innerHTML="{{ performingData.acquisition.observations }}"></span>
+              </ng-template>
+          
+              <ng-template #elseBlockAcquisitionObservations>
+                <span>NO se registraron observaciones durante la adquisicón de imágenes.</span>
+              </ng-template>
+            </div>
+          
+            <div class="clear"></div>
+          </div>
+          
+
+          <br/>
+
         </div> <!-- end fxLayout wrapper -->
 
         <div class="clear"></div>

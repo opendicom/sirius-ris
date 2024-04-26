@@ -76,34 +76,58 @@ The segments (lines) are separated by =x0D
 MSH|^~\\&|||||||ORM^O01|||2.3.1
 IPC|||||||SSN^^^
 PID|||ID^^^II||PN||PB|PS
-ORC|NW||||||^^^DT^^PR||||||||||
-OBR||||^^^SD_CODE^SD^CSD||||||||||||^RQ||AN|RP|SS|AE|||MO|||||||||^PP||||||||||RD
+ORC|NW||||||^^^DT^^PR||||||||||RS
+OBR||||^^^SD_CODE^SD^CSD||||||||||||^RQ||AN|RP|SS|AE|||MO||||||||||PP|||||||||RD
 ZDS|UI
 ```
 
 
 
 - **ID**: Patient identifier [PID-3] (0010,0020)
+
 - **II**: ID issuer [PID-3.5] (0010,0021) `UNAOID-ICAO v1.0`
+
 - **PN**: Patient name [PID-5] (0010,0010) `surname_01>surname_02^name_01 name_02`
+
 - **PB**: Patient birth date [PID-7] (0010,0030) `YYYYMMDD`
+
 - **PS**: Patient sex [PID-8] (0010,0040) `M | F | O`
+
 - **RF**: Referring physician (PV1-8, 0008,0090) `PV1||||||||^RF`  *optional segment*
+
 - **DT**: Date time [ORC-7.4] (0040,0002 | 0040,0003) `YYYYMMDDHHMM`
+
 - **PR**: Procedure Priority HL7 codes `S (Stat), A (ASAP), R (Routine), P (Pre-op), C (Callback), T (Timing)`
+
 - **SD**: SPS description / code [OBR-4.4] (0040,0007) [OBR-4.3+4+5] (0040,0008)
+
 - **SD_CODE**: Procedure Description ID, Steps (0008,0100) `Code Value`
+
 - **CSD**: Coding Scheme Designator (0008,0102) *optional*
+
 - **RQ**: Requesting Physician [OBR-16] (0032,1032) [Referring] `surname_01>surname_02^name_01 name_02`
+
 - **AN**: Accession number [OBR-18] (0008,0050) `unique number | 16 chars max`
+
 - **RP**: Requested Procedure ID [OBR-19] (0040,1001) `cannot be null | 16 chars max`
+
 - **SS**: Scheduled step ID [OBR-20] (0040,0009) *optional*
+
 - **AE**: Scheduled station AET [OBR-21] (0040,0001) `AET equipment` *optional*
+
 - **SSN**: Scheduled Station Name (0040,0010) *optional*
+
 - **MO**: Modality [OBR-24] (0008,0060) `code_value`
+
 - **PP**: Performing Physician [OBR-34] (0040,0006) [Reporting] `organization_short_name^branch_short_name^surname_01>surname_02^name_01 name_02`
+
 - **RD**: Requesting Procedure Description | RP desc/code [OBR-44^2] (0032,1060) [OBR-4.1^2^3] (0032,1064)
+
 - **UI**: studyUID [ZDS-1] (0020,000D)
+
+- **RS**: Requesting Service (0032,1033) [ORC-17] [Referring]
+
+  `organization_short_name^branch_short_name^service_name`
 
 
 

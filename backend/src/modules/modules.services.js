@@ -4414,7 +4414,10 @@ function setIDIssuer(organization_country_code, doc_country_code, doc_type){
             '6' : '69024',
 
             // Documento transitorio | OTRO DOCUMENTO DE IDENTIFICACION PERSONAL:
-            '7' : '69024'
+            '7' : '69024',
+
+            // Documento anónimo | SIN DOCUMENTO (ICAO - SD):
+            '100': '68945'
         }
     };
 
