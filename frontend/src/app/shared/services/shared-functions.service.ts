@@ -1521,6 +1521,9 @@ export class SharedFunctionsService {
   // TABLE TO XLSX:
   //--------------------------------------------------------------------------------------------------------------------//
   async tableToXLSX(fileName: string, tableChild: any, excludedColumns: string[] = []){
+
+    //console.log(tableChild.nativeElement.getElementsByTagName("TABLE")[0]);
+
     //Get timestamp:
     const timestamp = this.getTimeStamp();
 
@@ -1531,7 +1534,8 @@ export class SharedFunctionsService {
     const element_table = tableChild.nativeElement.getElementsByTagName("TABLE")[0];
     
     //Create workbook:
-    const workbook = utils.table_to_book(element_table, { sheet: sheetName });
+    // raw = If true, every cell will hold raw strings (Prevent Datetime format errors):
+    const workbook = utils.table_to_book(element_table, { sheet: sheetName, raw: true });
 
     //Initializate remove leter index:
     let removeLettersIndex: string[] = [];
