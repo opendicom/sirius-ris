@@ -203,18 +203,35 @@
                 <hr class="dashed" /><br/>
                   
                 <div formGroupName="injection" [class.non-display]="booleanContrast == false">
-                  <h4>Volumen administrado: <span class="label-info">mL</span></h4>
-                  <mat-form-field appearance="fill" class="medium">
-                    <mat-label>Volumen administrado</mat-label>
-                    <input matInput icNumbersWD type="text" formControlName="administered_volume" placeholder="Ingrese el volumen administrado">
-                  </mat-form-field>
+                  <div fxLayout="row" fxLayoutAlign="start start">
+                    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                      <h4>Tipo de contraste:</h4>
+                      <mat-form-field appearance="fill" class="full">
+                        <mat-label>Tipo de contraste</mat-label>
+                        <input matInput type="text" formControlName="sync_contrast_description" (keyup)="syncContrastDescription()" placeholder="Ingrese el volumen administrado">
+                      </mat-form-field>
 
-                  <h4>Hora de inyección <span class="label-info">Formato 24 hs</span>:</h4>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Hora de inyección</mat-label>
-                    <input type="time" matInput formControlName="administration_time" min="00:00" max="24:00">
-                    <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.administration_time');"><mat-icon>timer</mat-icon></button>
-                  </mat-form-field>
+                      <br/>
+
+                      <h4>Hora de inyección <span class="label-info">Formato 24 hs</span>:</h4>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Hora de inyección</mat-label>
+                        <input type="time" matInput formControlName="administration_time" min="00:00" max="24:00">
+                        <button matSuffix mat-icon-button type="button" matTooltip="Ahora" (click)="setTimeNow('injection.administration_time');"><mat-icon>timer</mat-icon></button>
+                      </mat-form-field>
+                    </div> <!-- end fxLayout wrapper -->
+
+                    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                      <h4>Volumen administrado: <span class="label-info">mL</span></h4>
+                      <mat-form-field appearance="fill" class="full">
+                        <mat-label>Volumen administrado</mat-label>
+                        <input matInput icNumbersWD type="text" formControlName="administered_volume" placeholder="Ingrese el volumen administrado">
+                      </mat-form-field>
+                    </div> <!-- end fxLayout wrapper -->
+                  </div>
+
+                  <div class="clear"></div>
+                  <hr class="dashed"/><br/>
                 </div>
 
                 <h4>Observaciones <span class="label-info">min: 10, max: 1000</span>:</h4>

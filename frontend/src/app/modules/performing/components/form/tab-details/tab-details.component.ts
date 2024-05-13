@@ -351,4 +351,7 @@ export class TabDetailsComponent implements OnInit {
     }
   }
 
+  setContrastDescription(value: string){
+    this.form.get('contrast.description')?.setValue(value);
+  }
 }

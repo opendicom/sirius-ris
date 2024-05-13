@@ -151,9 +151,10 @@ export class FormComponent implements OnInit {
 
       //Injection fields:
       injection: this.formBuilder.group({
-        'administered_volume'   : [ '' ],
-        'administration_time'   : [ '' ],
-        'injection_user'        : [ '' ],
+        'administered_volume'       : [ '' ],
+        'administration_time'       : [ '' ],
+        'injection_user'            : [ '' ],
+        'sync_contrast_description' : [ '' ], //Sync contrast description from tab details.
 
         //PET-CT fields:
         pet_ct: this.formBuilder.group({
@@ -287,9 +288,10 @@ export class FormComponent implements OnInit {
 
               //Injection fields (They need to exist in advance):
               injection: this.formBuilder.group({
-                'administered_volume'   : [ '' ],
-                'administration_time'   : [ '' ],
-                'injection_user'        : [ '' ],
+                'administered_volume'       : [ '' ],
+                'administration_time'       : [ '' ],
+                'injection_user'            : [ '' ],
+                'sync_contrast_description' : [ '' ],
 
                 //PET-CT fields:
                 pet_ct: this.formBuilder.group({
@@ -512,6 +514,11 @@ export class FormComponent implements OnInit {
       //Prevent send empty objects:
       if(performingSaveData.hasOwnProperty('injection') && performingSaveData.injection.administered_volume == undefined && performingSaveData.injection.administration_time == undefined && performingSaveData.injection.injection_user == undefined){
         delete performingSaveData.injection;
+      }
+
+      //Delete temp value sync_contrast_description if exist (Necesary to sync contrast description from tabDetails):
+      if(performingSaveData.hasOwnProperty('injection') && performingSaveData.injection.hasOwnProperty('sync_contrast_description')){
+        delete performingSaveData.injection.sync_contrast_description;
       }
      
       //Check acquisition values (Prevent validation errors):
@@ -854,14 +861,17 @@ export class FormComponent implements OnInit {
         switch(operation){
           case 'enable':
             //Enable injection validators:
+            this.form.get('injection.sync_contrast_description')?.setValidators([Validators.required]);
             this.form.get('injection.administered_volume')?.setValidators([Validators.required]);
             this.form.get('injection.administration_time')?.setValidators([Validators.required]);
             this.form.get('injection.injection_user')?.setValidators([Validators.required]);
+            this.form.get('injection.sync_contrast_description')?.updateValueAndValidity();
             this.form.get('injection.administered_volume')?.updateValueAndValidity();
             this.form.get('injection.administration_time')?.updateValueAndValidity();
             this.form.get('injection.injection_user')?.updateValueAndValidity();
 
             //Enable injection inputs:
+            this.form.get('injection.sync_contrast_description')?.enable();
             this.form.get('injection.administered_volume')?.enable();
             this.form.get('injection.administration_time')?.enable();
             this.form.get('injection.injection_user')?.enable();
@@ -869,14 +879,17 @@ export class FormComponent implements OnInit {
 
           case 'remove':
             //Remove injection validators:
+            this.form.get('injection.sync_contrast_description')?.clearValidators();
             this.form.get('injection.administered_volume')?.clearValidators();
             this.form.get('injection.administration_time')?.clearValidators();
             this.form.get('injection.injection_user')?.clearValidators();
+            this.form.get('injection.sync_contrast_description')?.updateValueAndValidity();
             this.form.get('injection.administered_volume')?.updateValueAndValidity();
             this.form.get('injection.administration_time')?.updateValueAndValidity();
             this.form.get('injection.injection_user')?.updateValueAndValidity();
 
             //Disable injection inputs:
+            this.form.get('injection.sync_contrast_description')?.disable();
             this.form.get('injection.administered_volume')?.disable();
             this.form.get('injection.administration_time')?.disable();
             this.form.get('injection.injection_user')?.disable();
@@ -1085,6 +1098,9 @@ export class FormComponent implements OnInit {
         this.setCurrentAppointmentData(resAppointments, () => {
           //Excecute manual onInit childrens components:
           this.tabDetails.manualOnInit(resAppointments);
+
+          //Initialize sync_contrast_description field with DB data:
+          this.form.get('injection.sync_contrast_description')?.setValue(resAppointments.data[0].contrast.description);
         });
 
         //Find previous:
@@ -1199,5 +1215,9 @@ export class FormComponent implements OnInit {
 
     //Submit form:
     this.onSubmitMaster();
+  }
+
+  syncContrastDescription(){
+    this.tabDetails.setContrastDescription(this.form.value.injection.sync_contrast_description);
   }
 }
