@@ -180,7 +180,10 @@ export class PdfService {
                     },
                     'html-p': {
                       fontSize: 10
-                    }
+                    },
+                    'html-ul': {
+                      fontSize: 10
+                    },
                   }
                 };
 
@@ -559,6 +562,9 @@ export class PdfService {
                         decoration: 'underline'
                     },
                     'html-p': {
+                      fontSize: 10
+                    },
+                    'html-ul': {
                       fontSize: 10
                     },
                     sign_auth: {

@@ -922,6 +922,9 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
             'html-p': {
                 fontSize: 10
             },
+            'html-ul': {
+                fontSize: 10
+            },
             sign_auth: {
                 fontSize: 8
             },
