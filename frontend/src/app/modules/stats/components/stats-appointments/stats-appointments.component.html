@@ -182,6 +182,34 @@
         </div>
     </div>
 
+    <div class="clear"></div><br/>
+
+    <!-- referring -->
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Solicitantes</h2>
+        <div #referringContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[referringContainerRef.offsetWidth, 400]"
+                [results]="datasets.referring">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+
+    <div class="clear"></div><br/>
+
+    <!-- reporting -->
+    <!--
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Informantes</h2>
+        <div #reportingContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[reportingContainerRef.offsetWidth, 400]"
+                [results]="datasets.reporting">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+    -->
+    
     <!--
     <div class="chart-responsive chart-col-50 text-center node-spacing" [style.height.px]="420">
         <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">

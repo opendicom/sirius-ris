@@ -176,6 +176,34 @@
 
     <div class="clear"></div><br/>
 
+    <!-- referring -->
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Solicitantes</h2>
+        <div #referringContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[referringContainerRef.offsetWidth, 400]"
+                [results]="datasets.referring">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+
+    <div class="clear"></div><br/>
+
+    <!-- reporting -->
+    <!--
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">Informantes</h2>
+        <div #reportingContainerRef class="chart-wrapper">
+            <ngx-charts-pie-grid
+                [view]="[reportingContainerRef.offsetWidth, 400]"
+                [results]="datasets.reporting">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+    -->
+
+    <div class="clear"></div><br/>
+
     <!-- injection_user -->
     <div class="chart-responsive chart-col-30">
         <h2 class="text-center">Responsables de inyección</h2>

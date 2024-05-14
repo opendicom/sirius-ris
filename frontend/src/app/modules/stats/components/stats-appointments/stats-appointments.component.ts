@@ -38,7 +38,9 @@ export class StatsAppointmentsComponent implements OnInit {
     procedure             : [],
     cancellation_reasons  : [],
     country               : [],
-    state                 : []
+    state                 : [],
+    referring             : [],
+    reporting             : []
   };
 
   //Set Chart colors and color schemes:

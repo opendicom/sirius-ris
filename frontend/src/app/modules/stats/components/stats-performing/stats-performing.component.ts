@@ -40,7 +40,9 @@ export class StatsPerformingComponent implements OnInit {
     state                 : [],
     injection_user        : [],
     laboratory_user       : [],
-    console_technician    : []
+    console_technician    : [],
+    referring             : [],
+    reporting             : []
   };
 
   //Set Chart colors and color schemes:
