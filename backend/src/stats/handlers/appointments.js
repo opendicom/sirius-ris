@@ -115,6 +115,74 @@ module.exports = async (req, res) => {
             { $unwind: { path: "$imaging.service", preserveNullAndEmptyArrays: true } },
             //------------------------------------------------------------------------------------------------------------//
 
+
+            //------------------------------------------------------------------------------------------------------------//
+            // REFERRING:
+            //------------------------------------------------------------------------------------------------------------//
+            //Organizations lookup:
+            { $lookup: {
+              from: 'organizations',
+              localField: 'referring.organization',
+              foreignField: '_id',
+              as: 'referring.organization',
+            }},
+
+            //Branches lookup:
+            { $lookup: {
+                from: 'branches',
+                localField: 'referring.branch',
+                foreignField: '_id',
+                as: 'referring.branch',
+            }},
+
+            //Services lookup:
+            { $lookup: {
+                from: 'services',
+                localField: 'referring.service',
+                foreignField: '_id',
+                as: 'referring.service',
+            }},
+
+            //Unwind:
+            { $unwind: { path: "$referring.organization", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$referring.branch", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$referring.service", preserveNullAndEmptyArrays: true } },
+            //------------------------------------------------------------------------------------------------------------//
+
+
+            //------------------------------------------------------------------------------------------------------------//
+            // REPORTING:
+            //------------------------------------------------------------------------------------------------------------//
+            //Organizations lookup:
+            { $lookup: {
+              from: 'organizations',
+              localField: 'reporting.organization',
+              foreignField: '_id',
+              as: 'reporting.organization',
+            }},
+
+            //Branches lookup:
+            { $lookup: {
+                from: 'branches',
+                localField: 'reporting.branch',
+                foreignField: '_id',
+                as: 'reporting.branch',
+            }},
+
+            //Services lookup:
+            { $lookup: {
+                from: 'services',
+                localField: 'reporting.service',
+                foreignField: '_id',
+                as: 'reporting.service',
+            }},
+
+            //Unwind:
+            { $unwind: { path: "$reporting.organization", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$reporting.branch", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$reporting.service", preserveNullAndEmptyArrays: true } },
+            //------------------------------------------------------------------------------------------------------------//
+
             //Imaging -> Service -> Modality (Lookup & Unwind):
             { $lookup: {
               from: 'modalities',
@@ -356,7 +424,41 @@ module.exports = async (req, res) => {
                       }
                   },
                   { "$replaceRoot": { "newRoot": { "$arrayToObject": "$state" } } }
-              ],
+                ],
+
+                //Referring:
+                "referring": [
+                  {
+                    "$group": {
+                      "_id": "$referring.organization.short_name",
+                      "count": { "$sum": 1 }
+                    }
+                  },
+                  {
+                    "$group": {
+                      "_id": null,
+                      "referring": { "$push": { "k": "$_id", "v": "$count" } }
+                    }
+                  },
+                  { "$replaceRoot": { "newRoot": { "$arrayToObject": "$referring" } } }
+                ],
+
+                //Reporting:
+                "reporting": [
+                  {
+                      "$group": {
+                          "_id": { "organization" : "$reporting.organization.short_name", "branch" : "$reporting.branch.short_name", "service" : "$reporting.service.name" },
+                          "count": { "$sum": 1 },
+                      }
+                  },
+                  {
+                      "$group": {
+                          "_id": null,
+                          "reporting": { "$push": { "k": { "$concat": [ "$_id.organization", " - " , "$_id.branch", " - " , "$_id.service" ]}, "v": "$count" } }
+                      }
+                  },
+                  { "$replaceRoot": { "newRoot": { "$arrayToObject": "$reporting" } } }
+                ],
 
                 //Total count:
                 "total": [
@@ -392,6 +494,8 @@ module.exports = async (req, res) => {
                     { "cancellation_reasons": { "$first": "$cancellation_reasons" } },
                     { "country": { "$first": "$country" } },
                     { "state": { "$first": "$state" } },
+                    { "referring": { "$first": "$referring" } },
+                    { "reporting": { "$first": "$reporting" } },
                     { "total_items": { "$first": "$total.count" } }
                   ]
                 },

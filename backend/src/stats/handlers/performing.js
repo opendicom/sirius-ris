@@ -120,6 +120,75 @@ module.exports = async (req, res) => {
                     { $unwind: { path: "$appointment.imaging.service", preserveNullAndEmptyArrays: true } },
                     //------------------------------------------------------------------------------------------------------------//
 
+
+                    //------------------------------------------------------------------------------------------------------------//
+                    // REFERRING:
+                    //------------------------------------------------------------------------------------------------------------//
+                    //Organizations lookup:
+                    { $lookup: {
+                        from: 'organizations',
+                        localField: 'appointment.referring.organization',
+                        foreignField: '_id',
+                        as: 'appointment.referring.organization',
+                    }},
+
+                    //Branches lookup:
+                    { $lookup: {
+                        from: 'branches',
+                        localField: 'appointment.referring.branch',
+                        foreignField: '_id',
+                        as: 'appointment.referring.branch',
+                    }},
+
+                    //Services lookup:
+                    { $lookup: {
+                        from: 'services',
+                        localField: 'appointment.referring.service',
+                        foreignField: '_id',
+                        as: 'appointment.referring.service',
+                    }},
+
+                    //Unwind:
+                    { $unwind: { path: "$appointment.referring.organization", preserveNullAndEmptyArrays: true } },
+                    { $unwind: { path: "$appointment.referring.branch", preserveNullAndEmptyArrays: true } },
+                    { $unwind: { path: "$appointment.referring.service", preserveNullAndEmptyArrays: true } },
+                    //------------------------------------------------------------------------------------------------------------//
+        
+        
+                    //------------------------------------------------------------------------------------------------------------//
+                    // REPORTING:
+                    //------------------------------------------------------------------------------------------------------------//
+                    //Organizations lookup:
+                    { $lookup: {
+                        from: 'organizations',
+                        localField: 'appointment.reporting.organization',
+                        foreignField: '_id',
+                        as: 'appointment.reporting.organization',
+                    }},
+
+                    //Branches lookup:
+                    { $lookup: {
+                        from: 'branches',
+                        localField: 'appointment.reporting.branch',
+                        foreignField: '_id',
+                        as: 'appointment.reporting.branch',
+                    }},
+
+                    //Services lookup:
+                    { $lookup: {
+                        from: 'services',
+                        localField: 'appointment.reporting.service',
+                        foreignField: '_id',
+                        as: 'appointment.reporting.service',
+                    }},
+
+                    //Unwind:
+                    { $unwind: { path: "$appointment.reporting.organization", preserveNullAndEmptyArrays: true } },
+                    { $unwind: { path: "$appointment.reporting.branch", preserveNullAndEmptyArrays: true } },
+                    { $unwind: { path: "$appointment.reporting.service", preserveNullAndEmptyArrays: true } },
+                    //------------------------------------------------------------------------------------------------------------//
+                    
+
                     //------------------------------------------------------------------------------------------------------------//
                     // APPOINTMENT PATIENT:
                     //------------------------------------------------------------------------------------------------------------//
@@ -433,6 +502,41 @@ module.exports = async (req, res) => {
                             { "$replaceRoot": { "newRoot": { "$arrayToObject": "$state" } } }
                         ],
 
+                        //Referring:
+                        "referring": [
+                            {
+                                "$group": {
+                                    "_id": "$appointment.referring.organization.short_name",
+                                    "count": { "$sum": 1 }
+                                }
+                            },
+                            {
+                                "$group": {
+                                    "_id": null,
+                                    "referring": { "$push": { "k": "$_id", "v": "$count" } }
+                                }
+                            },
+                            { "$replaceRoot": { "newRoot": { "$arrayToObject": "$referring" } } }
+                        ],
+        
+                        //Reporting:
+                        "reporting": [
+                            {
+                                "$group": {
+                                    "_id": { "organization" : "$appointment.reporting.organization.short_name", "branch" : "$appointment.reporting.branch.short_name", "service" : "$appointment.reporting.service.name" },
+                                    "count": { "$sum": 1 },
+                                }
+                            },
+                            {
+                                "$group": {
+                                    "_id": null,
+                                    "reporting": { "$push": { "k": { "$concat": [ "$_id.organization", " - " , "$_id.branch", " - " , "$_id.service" ]}, "v": "$count" } }
+                                }
+                            },
+                            { "$replaceRoot": { "newRoot": { "$arrayToObject": "$reporting" } } }
+                        ],
+  
+
                         //Anesthesia:
                         "anesthesia_count": [
                             {
@@ -493,6 +597,8 @@ module.exports = async (req, res) => {
                                 { "cancellation_reasons": { "$first": "$cancellation_reasons" } },
                                 { "country": { "$first": "$country" } },
                                 { "state": { "$first": "$state" } },
+                                { "referring": { "$first": "$referring" } },
+                                { "reporting": { "$first": "$reporting" } },
                                 { "anesthesia": { "$first": "$anesthesia" } },
                                 { "total_items": { "$first": "$total.count" } }
                             ]
