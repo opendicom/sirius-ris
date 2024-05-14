@@ -145,16 +145,39 @@ module.exports = async (req, res) => {
             const UI = data[0].study_iuid;
 
             // Requesting Service (00321033) [ORC-17] <referring organization>:
+            // organization_short_name^branch_short_name^service_name^referring_surname_01>referring_surname_02^refferring_name_01 refferring_name_02
             let RS = data[0].referring.organization.short_name;
 
             //Check referring branch:
-            if(data[0].referring.branch.short_name !== undefined && data[0].referring.branch.short_name !== null && data[0].referring.branch.short_name !== ''){
-                RS+= '^' + data[0].referring.branch.short_name;
+            if(data[0].referring.branch !== undefined && data[0].referring.branch !== null && data[0].referring.branch !== ''){
+                if(data[0].referring.branch.short_name !== undefined && data[0].referring.branch.short_name !== null && data[0].referring.branch.short_name !== ''){
+                    RS+= '^' + data[0].referring.branch.short_name;
+                }
             }
 
             //Check referring service:
-            if(data[0].referring.service.name !== undefined && data[0].referring.service.name !== null && data[0].referring.service.name !== ''){
-                RS+= '^' + data[0].referring.service.name;
+            if(data[0].referring.service !== undefined && data[0].referring.service !== null && data[0].referring.service !== ''){
+                if(data[0].referring.service.name !== undefined && data[0].referring.service.name !== null && data[0].referring.service.name !== ''){
+                    RS+= '^' + data[0].referring.service.name;
+                }
+            }
+
+            // Institution Name Attribute (00080080) <imaging>:
+            // organization_short_name^branch_short_name^service_name
+            let INA = data[0].imaging.organization.short_name;
+
+            //Check imaging branch:
+            if(data[0].imaging.branch !== undefined && data[0].imaging.branch !== null && data[0].imaging.branch !== ''){
+                if(data[0].imaging.branch.short_name !== undefined && data[0].imaging.branch.short_name !== null && data[0].imaging.branch.short_name !== ''){
+                    INA+= '^' + data[0].imaging.branch.short_name;
+                }
+            }
+
+            //Check imaging service:
+            if(data[0].imaging.service !== undefined && data[0].imaging.service !== null && data[0].imaging.service !== ''){
+                if(data[0].imaging.service.name !== undefined && data[0].imaging.service.name !== null && data[0].imaging.service.name !== ''){
+                    INA+= '^' + data[0].imaging.service.name;
+                }
             }
             //--------------------------------------------------------------------------------------------------------//
 
