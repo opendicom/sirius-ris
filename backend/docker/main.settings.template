@@ -16,6 +16,11 @@ wezen:
   host        : '${WEZEN_HOST}'
   port        : ${WEZEN_PORT}
 
+# Set OHIF service data:
+ohif:
+  host        : '${OHIF_HOST}'
+  port        : ${OHIF_PORT}
+
 # Web server settings:
 webserver:
   host            : '${SIRIUS_BACKEND_HOST}'

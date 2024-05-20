@@ -27,6 +27,10 @@ export PACS_PORT_MLLP=${PACS_PORT_MLLP:-'2575'}
 export WEZEN_HOST=${WEZEN_HOST:-'opendicom_wezen'}
 export WEZEN_PORT=${WEZEN_PORT:-'8000'}
 
+# OHIF:
+export OHIF_HOST=${OHIF_HOST:-'localhost'}
+export OHIF_PORT=${OHIF_PORT:-'3000'}
+
 # SIRIUS BACKEND DB:
 export SIRIUS_BACKEND_DB_HOST=${SIRIUS_BACKEND_DB_HOST:-'opendicom_sirius_db'}
 export SIRIUS_BACKEND_DB_PORT=${SIRIUS_BACKEND_DB_PORT:-'27017'}

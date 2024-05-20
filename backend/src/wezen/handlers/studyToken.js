@@ -300,6 +300,7 @@ module.exports = async (req, res) => {
                     sub: userAuth._id.toString(),          //Identify the subject of the token.
                     iat: (Date.now() / 1000),              //Token creation date.
                     //exp: (Declared in expiresIn)         //Token expiration date.
+                    aud: 'wezen'
                 }
 
                 //Create JWT for Wezen > Wado (Sirius Proxy):
@@ -313,11 +314,11 @@ module.exports = async (req, res) => {
                         return;
                     }
 
-                    //Set Wezen path:
-                    const wezenPath = 'http://' + mainSettings.wezen.host + ':' + mainSettings.wezen.port + '/studyToken?session=' + token + '?study_iuid=' + performingData.appointment.study_iuid;
-
+                    //Set viewer path:
+                    const wezenPath = 'http://' + mainSettings.ohif.host + ':' + mainSettings.ohif.port + '/dcm-viewer/viewer/dicomjson?url=http%3A%2F%2F' + mainSettings.wezen.host + '%3A' + mainSettings.wezen.port + '%2FstudyToken%3FaccessType%3Dohif%26token%3D' + token + '%26StudyInstanceUID%3D' + performingData[0].appointment.study_iuid;
+                    
                     //Send successfully response:
-                    res.status(200).send({ success : true, path: wezenPath });
+                    res.status(200).send({ success : true, path: wezenPath, token: token });
                 });
             } else {
                 //No data (empty result):

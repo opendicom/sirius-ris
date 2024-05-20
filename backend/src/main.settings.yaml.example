@@ -14,7 +14,12 @@ pacs:
 # Set Wezen service data:
 wezen:
   host        : 'localhost'
-  port        : 8000
+  port        : 5001
+
+# Set OHIF service data:
+ohif:
+  host        : 'localhost'
+  port        : 3000
 
 # Web server settings:
 webserver:
