@@ -39,7 +39,7 @@ The numbers in the diagram represents the steps in the communication sequence.
 
 
 > **URL with JWT (5m) Example:**
-> http://ohif/viewer/dicomjson?url=WEZEN_HOST:WEZEN_PORT?session=JWT_5m%26StudyInstanceUID=2.3.5.345...
+> http://FRONTEND_HOST:FRONTEND_PORT/dcm-viewer/viewer/dicomjson?url=http%3A%2F%2FWEZEN_HOST%3AWEZEN_PORT%2FstudyToken%3FaccessType%3Dohif%26token%3DJWT_5m%26StudyInstanceUID%3D2.3.5.345...
 
 
 

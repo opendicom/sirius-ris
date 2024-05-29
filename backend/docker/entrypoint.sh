@@ -19,17 +19,19 @@ export SSL_CA=${SSL_CA:-'false'}
 export CORS_ENABLED=${CORS_ENABLED:-'false'}
 export CORS_WHITELIST=${CORS_WHITELIST:-'["http://cors_ws_client_01.com:8080","https://cors_ws_client_02.com:443"]'}
 
+# IP SERVER:
+export IP_SERVER=${IP_SERVER:-'localhost'}
+
+# SIRIUS FRONTEND:
+export SIRIUS_FRONTEND_HTTP_PORT=${SIRIUS_FRONTEND_HTTP_PORT:-'4000'}
+
 # PACS:
 export PACS_HOST=${PACS_HOST:-'opendicom_pacs'}
 export PACS_PORT_MLLP=${PACS_PORT_MLLP:-'2575'}
 
 # WEZEN:
 export WEZEN_HOST=${WEZEN_HOST:-'opendicom_wezen'}
-export WEZEN_PORT=${WEZEN_PORT:-'8000'}
-
-# OHIF:
-export OHIF_HOST=${OHIF_HOST:-'localhost'}
-export OHIF_PORT=${OHIF_PORT:-'3000'}
+export WEZEN_PORT=${WEZEN_PORT:-'5001'}
 
 # SIRIUS BACKEND DB:
 export SIRIUS_BACKEND_DB_HOST=${SIRIUS_BACKEND_DB_HOST:-'opendicom_sirius_db'}

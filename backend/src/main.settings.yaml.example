@@ -1,3 +1,10 @@
+# IP server:
+ip_server: 'localhost'
+
+# Sirius Frontend:
+sirius_frontend:
+  port: 4000
+
 # MongoDB server settings:
 db:
   host: 'localhost'

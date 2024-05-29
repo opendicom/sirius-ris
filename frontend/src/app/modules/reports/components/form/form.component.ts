@@ -54,6 +54,10 @@ export class FormComponent implements OnInit {
   //Initializate validation tab errors:
   public reportTabErrors                : boolean = false;
 
+  //Initializate requestedDICOMController:
+  public requestedDICOMController       : boolean = false;
+  public ohifPath                       : string = '';
+
   //Initializate data objects:
   public performingData                 : any = {};
   public performingFormattedDate        : any = {};
@@ -628,5 +632,32 @@ export class FormComponent implements OnInit {
 
     //Send message:
     this.sharedFunctions.sendMessage('Plantilla de informe cargada', { duration: 2000 });
+  }
+
+  getStudyDICOM(){
+    //Check that the study has not been previously requested:
+    if(this.requestedDICOMController === false){
+      //Request DICOM image query path:
+      this.sharedFunctions.wezenStudyToken(this.fk_performing, (wezenStudyTokenRes) => {
+        if(wezenStudyTokenRes.success === true){
+          //Set requestedDICOMController and ohifPath:
+          this.requestedDICOMController = true;
+          this.ohifPath = wezenStudyTokenRes.path;
+        } else {
+          //Send Console Warn Message:
+          console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
+        }
+      });
+    }
+  }
+
+  onTabChange(event: any){
+    //Refresh tabIndex:
+    this.tabIndex = event.index;
+
+    //Get path for retrieve DICOM images:
+    if(event.index == 2){
+      this.getStudyDICOM();
+    }
   }
 }

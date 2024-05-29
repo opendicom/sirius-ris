@@ -114,7 +114,7 @@ PACS_PORT_MLLP=2575
 # WEZEN:
 # ------------------------------------------------------------------------------------- #
 WEZEN_HOST='opendicom_wezen'
-WEZEN_PORT=8000
+WEZEN_PORT=5001
 # ------------------------------------------------------------------------------------- #
 
 
@@ -180,6 +180,9 @@ SIRIUS_BACKEND_LANGUAJE='ES'
 # ------------------------------------------------------------------------------------- #
 # SIRIUS FRONTEND:
 # ------------------------------------------------------------------------------------- #
+# Http server:
+SIRIUS_FRONTEND_HTTP_PORT=4000
+
 # Pager defaults:
 SIRIUS_FRONTEND_DEFAULT_PAGE_SIZES='[10, 25, 50, 100]'
 SIRIUS_FRONTEND_CHECK_IN_DEFAULT_SIZE=1000

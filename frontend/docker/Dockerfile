@@ -8,29 +8,10 @@
 
 
 # ------------------------------------------------------------------------------------- #
-# OHIF STAGE:
+# OHIF STAGE (Extract bundles):
 # ------------------------------------------------------------------------------------- #
-# Set ohif-builder image:
-#FROM node:16.15.0-slim as ohif-builder
-
-# Install build-essential, python3 and git:
-#RUN apt-get update && apt-get install -y build-essential python3 git
-
-# Clone opendicom ohif release:
-#RUN git clone --branch release https://github.com/opendicom/ohif-viewer.git
-
-# Set workdir:
-#WORKDIR /ohif-viewer
-
-# Install all dependencies:
-#RUN yarn config set workspaces-experimental true
-#RUN yarn install
-
-# Build OHIF:
-#RUN PUBLIC_URL=/dcm-viewer/ yarn build
-
-#RUN rm -f /ohif-viewer/platform/app/dist/app-config.js
-#COPY ./docker/ohif/app-config.js /ohif-viewer/platform/app/dist/
+# Set ohif-bundles image:
+FROM opendicom/ohif-viewer:3.7 as ohif-bundles
 # ------------------------------------------------------------------------------------- #
 
 
@@ -73,14 +54,18 @@ LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
 
 # Copy OHIF bundles:
-#RUN mkdir /usr/share/nginx/dcm-viewer
-#COPY --from=ohif-builder /ohif-viewer/platform/app/dist /usr/share/nginx/html/dcm-viewer
+COPY --from=ohif-bundles /usr/share/nginx/html/dcm-viewer /usr/share/nginx/html/dcm-viewer
 
+# Change OHIF config file:
+RUN rm -f /usr/share/nginx/html/dcm-viewer/app-config.js
+COPY ./docker/ohif/app-config.js /usr/share/nginx/html/dcm-viewer/
+
+# Change OHIF bundles permissions:
 USER root
-#RUN chown -R nginx:nginx /usr/share/nginx/html/dcm-viewer/*
+RUN chown -R nginx:nginx /usr/share/nginx/html/dcm-viewer/*
 RUN rm /etc/nginx/conf.d/default.conf
 
-# # Copy bundles project from the 'builder' image to nginx image:
+# Copy Sirius Frontend bundles from the 'builder' image to nginx image:
 COPY --from=frontend-builder /app/dist/sirius-ris /usr/share/nginx/html
 
 # Copy nginx configuration:

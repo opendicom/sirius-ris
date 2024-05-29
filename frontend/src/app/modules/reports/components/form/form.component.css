@@ -171,3 +171,10 @@ li {
 .current_item {
   color: #d53a9d;
 }
+
+.iframe-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

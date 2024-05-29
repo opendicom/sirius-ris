@@ -194,7 +194,7 @@
 
   <hr class="dashed"/>
 
-  <mat-tab-group [selectedIndex]="tabIndex">
+  <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="onTabChange($event)">
 
     <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
@@ -530,16 +530,21 @@
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">visibility</mat-icon> Imágenes
       </ng-template>
+   
+      <div *ngIf="requestedDICOMController == false">
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
+            <br/>
+            <mat-icon class="no-dicom">visibility_off</mat-icon>
 
-      <div fxLayout="row" fxLayoutAlign="start start">
-        <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-          <br/>
-          <mat-icon class="no-dicom">visibility_off</mat-icon>
-
-          <br/><br/><hr class="dashed" /><br/>
-          <h3>No se encontraron imágenes asociadas al estudio</h3>
-        </div> <!-- end fxLayout wrapper -->
+            <br/><br/><hr class="dashed" /><br/>
+            <h3>No se encontraron imágenes asociadas al estudio</h3>
+          </div> <!-- end fxLayout wrapper -->
+        </div>
       </div>
+
+      <!-- DICOM Viewer at the end of the document (DOM): -->
+      <!-- Keep irfame container out of tabs to prevent it from being destroyed and recreated (Multiple DICOM Retrieve) -->
     </mat-tab>
     <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
@@ -856,5 +861,11 @@
     <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
 
   </mat-tab-group>
+
+  <!-- DICOM Viewer -->
+  <!-- Keep irfame container out of tabs to prevent it from being destroyed and recreated (Multiple DICOM Retrieve) -->
+  <div [class.non-display]="tabIndex !== 2" class="iframe-container">
+    <app-dcm-viewer src="{{ ohifPath }}"></app-dcm-viewer>
+  </div>
 </form>
   

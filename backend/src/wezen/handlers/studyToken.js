@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
     };
 
     //Check request fields:
-    if(req.query.fk_performing !== undefined && req.query.fk_performing !== null && req.query.fk_performing !== '' && regexObjectId.test(req.query.fk_performing)){
+    if(req.query.fk_performing !== undefined && req.query.fk_performing !== null && req.query.fk_performing !== '' && regexObjectId.test(req.query.fk_performing) && req.query.accessType !== undefined && req.query.accessType !== null && req.query.accessType !== ''){
         //Set performing aggregate (same as find performing handler but with match _id and custom project):
         const aggregate = [
             //Appointment (Lookup & Unwind):
@@ -289,9 +289,9 @@ module.exports = async (req, res) => {
         //Check performing:
         await performing.Model.aggregate(aggregate)
         .exec()
-        .then((performingData) => {
+        .then(async (performingData) => {
             //Check if have results:
-            if(performingData){ 
+            if(performingData){
                 //Set token time expiration (5 minutes):
                 const first_time_exp = '5m';
 
@@ -314,11 +314,43 @@ module.exports = async (req, res) => {
                         return;
                     }
 
-                    //Set viewer path:
-                    const wezenPath = 'http://' + mainSettings.ohif.host + ':' + mainSettings.ohif.port + '/dcm-viewer/viewer/dicomjson?url=http%3A%2F%2F' + mainSettings.wezen.host + '%3A' + mainSettings.wezen.port + '%2FstudyToken%3FaccessType%3Dohif%26token%3D' + token + '%26StudyInstanceUID%3D' + performingData[0].appointment.study_iuid;
+                    // Check that the Study IUID has at least one instance in the PACS (Study):
+                    // It is checked with the path studyToken, accessType=weasis and max=1.
+                    // accessType=weasis : because it is the cheapest manifest to generate.
+                    // max=1 : to stop at the first instance found.
+                    const checkPath = 'http://' + mainSettings.wezen.host + ':' + mainSettings.wezen.port + '/studyToken?accessType=weasis.xml&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid + '&max=1';
                     
-                    //Send successfully response:
-                    res.status(200).send({ success : true, path: wezenPath, token: token });
+                    //Send Check HTTP Request:
+                    await mainServices.httpClientGETRequest(checkPath, async (wezenResponse) => {
+                        //Parse XML String response to JSON:
+                        await mainServices.XMLStringToJSON(wezenResponse, (objResponse) => {
+
+                            //Check if exist Patient property in current response object (Has studies or not):
+                            if(objResponse.hasOwnProperty('manifest') && objResponse.manifest.hasOwnProperty('arcQuery') && objResponse.manifest.arcQuery[0].hasOwnProperty('Patient')){
+                                //Initializate wezen path:
+                                let wezenPath = '';
+                                
+                                //Check and set accessType:
+                                switch(req.query.accessType){
+                                    case 'ohif':
+                                        //Set viewer external path (ip_server):
+                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.sirius_frontend.port + '/dcm-viewer/viewer/dicomjson?url=http%3A%2F%2F' + mainSettings.ip_server + '%3A' + mainSettings.wezen.port + '%2FstudyToken%3FaccessType%3Dohif%26token%3D' + token + '%26StudyInstanceUID%3D' + performingData[0].appointment.study_iuid;
+                                        break;
+                                    
+                                    case 'dicom.zip':
+                                        //Set DICOM download external path (ip_server):
+                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=dicom.zip?token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid;
+                                        break;
+                                }
+                                
+                                //Send successfully response:
+                                res.status(200).send({ success : true, path: wezenPath });
+                            } else {
+                                //No data on PACS (empty result on PACS):
+                                res.status(200).send({ success: false, message: 'wezen | pacs: ' + currentLang.db.query_no_data });
+                            } 
+                        });
+                    });
                 });
             } else {
                 //No data (empty result):

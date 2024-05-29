@@ -12,6 +12,7 @@ const argon2        = require('argon2');
 const moment        = require('moment');
 const multer        = require('multer');
 const http          = require('http');
+const xml2js        = require('xml2js');
 
 //Import app modules:
 const mainSettings  = getFileSettings();                                    // File settings (YAML)
@@ -390,38 +391,16 @@ function setStorage(){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
-// HTTP CLIENT REUQEST:
+// HTTP CLIENT GET REQUEST:
 //--------------------------------------------------------------------------------------------------------------------//
-async function httpClientRequest(host, port = 80, method = 'GET', path = '', post_data = undefined, callback = () => {}){
-    //Initializate request headers:
-    let headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8'
-    };
-
-    //Set headers in case of sending post_data:
-    if(post_data !== undefined){
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(post_data)
-        };
-    }
-
-    //Set request options:
-    const options = {
-        method  : method,
-        host    : host,
-        path    : path,
-        port    : port,
-        headers : headers
-    };
-
+async function httpClientGETRequest(path = '', callback = () => {}){
     //Create HTTP request:
-    const request = http.request(options, (externalResponse) => {
+    const request = http.get(path, (externalResponse) => {
+
         //Check status code:
         if (externalResponse.statusCode !== 200) {
             //Send DEBUG console message:
-            sendConsoleMessage('DEBUG', 'Wezen return status code: ' + externalResponse.statusCode, { 'wezen-path' : 'studyToken', fk_performing: req.query.fk_performing, study_iuid: 'XYZ' });
+            sendConsoleMessage('DEBUG', 'Wezen return status code: ' + externalResponse.statusCode, externalResponse);
             externalResponse.resume();
             return;
         }
@@ -437,7 +416,7 @@ async function httpClientRequest(host, port = 80, method = 'GET', path = '', pos
         //On close response:
         externalResponse.on('close', () => {
             //Execute callback with complete data:
-            callback(JSON.parse(data));
+            callback(data);
         });
         
         //Handle external errors:
@@ -446,13 +425,27 @@ async function httpClientRequest(host, port = 80, method = 'GET', path = '', pos
             sendConsoleMessage('WARN', 'Wezen error message: ' + err.message);
         });
     });
+}
+//--------------------------------------------------------------------------------------------------------------------//
 
-    //Check if post_data is needed:
-    if(post_data !== undefined){
-        //Post the data:
-        request.write(post_data);
-        request.end();
-    }
+//--------------------------------------------------------------------------------------------------------------------//
+// XML STRING TO JSON:
+//--------------------------------------------------------------------------------------------------------------------//
+async function XMLStringToJSON(xml, callback = () => {}){
+    //Create parser:
+    const parser = new xml2js.Parser();
+    
+    //Parse XML a JSON:
+    parser.parseString(xml, (err, result) => {
+        //Handle errors:
+        if (err) {
+            //Send DEBUG console message:
+            sendConsoleMessage('DEBUG', 'Error parsing XML: ' + err);
+        } else {
+            //Execute callback with complete data:
+            callback(result);
+        }
+    });
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -477,6 +470,7 @@ module.exports = {
     datetimeFulCalendarFormater,
     setDicomNamePersonFormat,
     setStorage,
-    httpClientRequest
+    httpClientGETRequest,
+    XMLStringToJSON
 };
 //--------------------------------------------------------------------------------------------------------------------//

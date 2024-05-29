@@ -966,6 +966,32 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // WEZEN STUDY TOKEN:
+  //--------------------------------------------------------------------------------------------------------------------//
+  wezenStudyToken(fk_performing: string, callback = (res: any) => {}): void {
+    //Create observable obsFind:
+    const obsFind = this.apiClient.sendRequest('GET', 'wezen/studyToken', { fk_performing: fk_performing, accessType: 'ohif' });
+
+    //Observe content (Subscribe):
+    obsFind.subscribe({
+      next: res => {
+        //Excecute optional callback with response:
+        callback(res);
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          this.sendMessage(res.error.message);
+        } else {
+          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // ACCESSION NUMBER DATE FORMAT:
   //--------------------------------------------------------------------------------------------------------------------//
   accessionDateFormat(accession_date: string): any{
