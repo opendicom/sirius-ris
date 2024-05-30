@@ -21,7 +21,7 @@ pacs:
 # Set Wezen service data:
 wezen:
   host        : 'localhost'
-  port        : 5001
+  port        : 2001
 
 # Set OHIF service data:
 ohif:

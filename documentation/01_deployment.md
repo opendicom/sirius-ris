@@ -114,7 +114,7 @@ PACS_PORT_MLLP=2575
 # WEZEN:
 # ------------------------------------------------------------------------------------- #
 WEZEN_HOST='opendicom_wezen'
-WEZEN_PORT=5001
+WEZEN_PORT=2001
 # ------------------------------------------------------------------------------------- #
 
 
@@ -139,7 +139,7 @@ SIRIUS_BACKEND_HOST='localhost'
 SIRIUS_BACKEND_HTTP_ENABLED=true
 SIRIUS_BACKEND_HTTP_PORT=2000
 SIRIUS_BACKEND_HTTPS_ENABLED=false
-SIRIUS_BACKEND_HTTPS_PORT=2001
+SIRIUS_BACKEND_HTTPS_PORT=2003
 
 # SIRIUS BACKEND MAIL SERVER:
 # Allowed mail types: 'gmail', 'other'.
