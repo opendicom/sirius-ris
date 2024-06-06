@@ -45,3 +45,14 @@
   cursor: pointer;
   color: rgb(240, 206, 122);
 }
+
+.private_health {
+  display: inline-block;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  padding: 3px 6px 3px 6px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 11px;
+  background: #e91e6299;
+}

@@ -10,7 +10,8 @@ import {                                                                        
   document_types,
   gender_types,
   performing_flow_states,
-  cancellation_reasons
+  cancellation_reasons,
+  privateHealthLang
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -26,6 +27,7 @@ export class ListComponent implements OnInit {
   public gender_types           : any = gender_types;
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
+  public privateHealthLang      : any = privateHealthLang;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
@@ -48,6 +50,7 @@ export class ListComponent implements OnInit {
     'height',
     'weight',
     'details',
+    'private_health',
     'outpatient_inpatient',
     'urgency'
   ];
@@ -128,8 +131,7 @@ export class ListComponent implements OnInit {
       'procedure.name': 1,
       'procedure.code': 1,
       'procedure.coefficient': 1,
-      'private_health.height': 1,
-      'private_health.weight': 1,
+      'private_health': 1,
       'contrast'             : 1
     };
     this.sharedProp.sort          = { 'start': 1 };
@@ -221,5 +223,11 @@ export class ListComponent implements OnInit {
     return object.filter((currentNested: { [x: string]: string; }) => {
       return currentNested[fk_name] === _id
     })
+  }
+
+  //Re-define method in component to prefent error:
+  //ngFor key.toString() -> Object is of type 'unknown'.
+  toString(element: any){
+    return element.toString();
   }
 }
