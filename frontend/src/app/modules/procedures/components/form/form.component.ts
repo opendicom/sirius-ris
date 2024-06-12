@@ -35,6 +35,9 @@ export class FormComponent implements OnInit {
   //Initialize enable coefficient PET-CT input:
   public enableCoefPETInput : boolean = false;
 
+  //Intitalize enableReportingDelay input:
+  public enableReportingDelay : boolean = false;
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -78,19 +81,21 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      domain              : [ '', [Validators.required] ],
-      name                : [ '', [Validators.required] ],
-      code                : [ '' ],
-      snomed              : [ '' ],
-      equipments          : new FormControl({ value: '', disabled: true }, Validators.required),
-      fk_modality         : new FormControl({ value: '', disabled: true }, Validators.required),
-      has_interview       : [ 'false' ],
-      informed_consent    : [ 'false' ],
-      status              : [ 'true' ],
-      preparation         : [ '' ],
-      procedure_template  : [ '' ],
-      report_template     : [ '' ],
-      coefficient         : [ '', [Validators.required] ]
+      domain                      : [ '', [Validators.required] ],
+      name                        : [ '', [Validators.required] ],
+      code                        : [ '' ],
+      snomed                      : [ '' ],
+      equipments                  : new FormControl({ value: '', disabled: true }, Validators.required),
+      fk_modality                 : new FormControl({ value: '', disabled: true }, Validators.required),
+      has_interview               : [ 'false' ],
+      informed_consent            : [ 'false' ],
+      status                      : [ 'true' ],
+      preparation                 : [ '' ],
+      procedure_template          : [ '' ],
+      report_template             : [ '' ],
+      coefficient                 : [ '', [Validators.required] ],
+      reporting_delay_controller  : [ 'false' ],
+      reporting_delay             : [ '' ]
     });
   }
 
@@ -131,19 +136,21 @@ export class FormComponent implements OnInit {
 
             //Send data to the form:
             this.setReactiveForm({
-              domain              : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
-              fk_modality         : res.data[0].fk_modality,
-              name                : res.data[0].name,
-              code                : res.data[0].code,
-              snomed              : res.data[0].snomed,
-              equipments          : new FormControl({ value: [] }, Validators.required),
-              status              : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
-              has_interview       : [ `${res.data[0].has_interview}`, [Validators.required]], //Use back tip notation to convert string
-              informed_consent    : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
-              preparation         : res.data[0].preparation,
-              procedure_template  : res.data[0].procedure_template,
-              report_template     : res.data[0].report_template,
-              coefficient         : res.data[0].coefficient
+              domain                      : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
+              fk_modality                 : res.data[0].fk_modality,
+              name                        : res.data[0].name,
+              code                        : res.data[0].code,
+              snomed                      : res.data[0].snomed,
+              equipments                  : new FormControl({ value: [] }, Validators.required),
+              status                      : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
+              has_interview               : [ `${res.data[0].has_interview}`, [Validators.required]], //Use back tip notation to convert string
+              informed_consent            : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
+              preparation                 : res.data[0].preparation,
+              procedure_template          : res.data[0].procedure_template,
+              report_template             : res.data[0].report_template,
+              coefficient                 : res.data[0].coefficient,
+              reporting_delay_controller  : [ 'false' ],
+              reporting_delay             : [ '' ]
             });
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":
@@ -153,6 +160,13 @@ export class FormComponent implements OnInit {
             if(await this.isPET(res.data[0].fk_modality)){
               //Set enable coefficient PET-CT input:
               this.enableCoefPETInput = true;
+            }
+
+            //Check reporting delay:
+            if(res.data[0].reporting_delay !== undefined && res.data[0].reporting_delay !== null && res.data[0].reporting_delay !== ''){
+              this.enableReportingDelay = true;
+              this.form.controls['reporting_delay'].setValue(res.data[0].reporting_delay);
+              this.form.controls['reporting_delay_controller'].setValue('true');
             }
 
             //Get property keys with values:
@@ -305,29 +319,43 @@ export class FormComponent implements OnInit {
 
     //Validate fields:
     if(this.form.valid){
+      //Create save object to preserve data types in form.value (Clone objects with spread operator):
+      let procedureSaveData = { ...this.form.value };
+
       //Data normalization - Domain:
-      const domain = this.form.value.domain.split('.');
-      this.form.value.domain = {
+      const domain = procedureSaveData.domain.split('.');
+      procedureSaveData.domain = {
         organization  : domain[0],
         branch        : domain[1]
       }
 
       //Data normalization - Booleans types (mat-option cases):
-      if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
-      if(typeof this.form.value.has_interview != "boolean"){ this.form.value.has_interview = this.form.value.has_interview.toLowerCase() == 'true' ? true : false; }
-      if(typeof this.form.value.informed_consent != "boolean"){ this.form.value.informed_consent = this.form.value.informed_consent.toLowerCase() == 'true' ? true : false; }
+      if(typeof procedureSaveData.status != "boolean"){ procedureSaveData.status = procedureSaveData.status.toLowerCase() == 'true' ? true : false; }
+      if(typeof procedureSaveData.has_interview != "boolean"){ procedureSaveData.has_interview = procedureSaveData.has_interview.toLowerCase() == 'true' ? true : false; }
+      if(typeof procedureSaveData.informed_consent != "boolean"){ procedureSaveData.informed_consent = procedureSaveData.informed_consent.toLowerCase() == 'true' ? true : false; }
 
       //Data normalization - Equipments array of objects:
-      this.form.value.equipments = []; //Reset array of objects equipments (Ignore previous content - Form control only).
+      procedureSaveData.equipments = []; //Reset array of objects equipments (Ignore previous content - Form control only).
       await Promise.all(Object.keys(this.selectedDurations).map((current, index) => {
-        this.form.value.equipments[index] = {
+        procedureSaveData.equipments[index] = {
           fk_equipment: current,
           duration: this.selectedDurations[current].duration
         };
       }));
 
+      //Check reporting delay:
+      if(procedureSaveData.reporting_delay_controller == 'false'){
+        delete procedureSaveData.reporting_delay_controller;
+        //Considerate unset cases:
+        if(this.form_action == 'insert'){
+          delete procedureSaveData.reporting_delay;
+        }
+      } else {
+        delete procedureSaveData.reporting_delay_controller;
+      }
+
       //Save data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, procedureSaveData, this.keysWithValues, (res) => {
         //Response the form according to the result:
         this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
       });
@@ -399,5 +427,15 @@ export class FormComponent implements OnInit {
 
     //Send data to FormControl elements (Arrays - Mat-Select Multiple):
     this.form.controls['equipments'].setValue(equipmentsIds);
+  }
+
+  onChangeReportController(event: any){
+    if(event.value == 'true'){
+      this.enableReportingDelay = true;
+      this.form.controls['reporting_delay'].setValue('0');
+    } else {
+      this.enableReportingDelay = false;
+      this.form.controls['reporting_delay'].setValue('');
+    }
   }
 }

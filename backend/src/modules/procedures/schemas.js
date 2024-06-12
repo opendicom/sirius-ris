@@ -33,7 +33,8 @@ const Schema = new mongoose.Schema({
     has_interview:      { type: Boolean, required: true },
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
-    coefficient:        { type: Number }
+    coefficient:        { type: Number },
+    reporting_delay:    { type: Number }
 
 },
 { timestamps: true },
@@ -50,7 +51,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template', 'report_template'];
+const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template', 'report_template', 'coefficient', 'reporting_delay'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -143,7 +144,13 @@ const Validator = [
         .optional()
         .trim()
         .isDecimal()
-        .withMessage('El parametro coefficient es requerido y debe ser numérico (decimal).'),
+        .withMessage('El parametro coefficient debe ser numérico (decimal).'),
+
+    body('reporting_delay')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage('El parametro reporting_delay debe ser numérico.')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

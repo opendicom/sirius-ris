@@ -108,6 +108,29 @@
         </div> <!-- end fxLayout wrapper -->
       </div>
 
+      <br/><hr class="dashed"/><br/>
+
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>¿El procedimiento requiere informe?</h4>
+          <mat-radio-group aria-label="Requiere informe" color="primary" formControlName="reporting_delay_controller" (change)="onChangeReportController($event)">
+            <mat-radio-button value="true">Si</mat-radio-button>
+            <mat-radio-button value="false">No</mat-radio-button>
+          </mat-radio-group>
+
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <span [class.non-display]="enableReportingDelay === false">
+            <h4>Tiempo de espera máximo <span class="label-info">Días</span>:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Días de espera</mat-label>
+              <input icNumbers type="text" matInput formControlName="reporting_delay">
+            </mat-form-field>
+          </span>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
       <br/>
     </div> <!-- end fxLayout wrapper -->
 
