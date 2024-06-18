@@ -10,7 +10,10 @@
           <!-- reporting indicator -->
           <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-            <span *ngIf="element.appointment">
+            <span *ngIf="element.appointment && element.appointment.reporting && element.appointment.reporting.fk_reporting; then thenBlockUserAssigned else elseBlockUserNotAssigned"></span>
+
+            <!-- Report user assigned -->
+            <ng-template #thenBlockUserAssigned>
               <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
               <ng-template #thenBlockReporting>
                 <mat-icon class="reporting-indicator" matTooltip="Este estudio se encuentra asignado al usuario" color="primary">circle</mat-icon>
@@ -18,7 +21,13 @@
               <ng-template #elseBlockReporting>
                 <mat-icon class="reporting-indicator" matTooltip="Este estudio NO se encuentra asignado al usuario, pero es visible debido a su acceso (dominio)" color="accent">circle</mat-icon>
               </ng-template>
-            </span>
+            </ng-template>
+
+            <!-- No report cases -->
+            <ng-template #elseBlockUserNotAssigned>
+              <mat-icon class="reporting-indicator" matTooltip="Este estudio NO posee ningún usuario informador asignado, es posible que el mismo no requira informe. Aún así es visible debido a su acceso (dominio)" color="warn">circle</mat-icon>
+            </ng-template>
+
           </span>
         </td>
       </ng-container>
@@ -126,6 +135,68 @@
         </td>
       </ng-container>
 
+      <!-- report control -->
+      <ng-container matColumnDef="report_control">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Control informe </th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <!-- Check if current performing is cancelled or not -->
+          <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled else elseBlockCancelled"></span>
+          <ng-template #thenBlockNotCancelled>
+
+            <!-- Check if procedure requires or not report -->
+            <span *ngIf="element.date && element.procedure && element.procedure.reporting_delay !== undefined && element.procedure.reporting_delay !== null && element.procedure.reporting_delay !== ''; then thenBlocklReportControl else elseBlocklReportControl"></span>
+
+            <ng-template #thenBlocklReportControl>
+              <span class="badge">
+              <!-- Authenticate control -->
+              <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated else elseBlockNotAuthenticated"></span>
+              <ng-template #thenBlockAuthenticated>  
+                <small>
+                  <!-- Create authDaysPassed to prevent multiple function exectution: -->
+                  <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
+                    Autenticado: {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
+                    <span class="report-control-finished">{{ authDaysPassed }} día/s de espera</span>
+                  </ng-container>
+                </small>          
+              </ng-template>
+
+              <ng-template #elseBlockNotAuthenticated>
+                <small>
+                  <span *ngIf="element.appointment && element.appointment.report_before">
+                    Requerido antes de:<br/>{{ element.appointment.report_before | date : "dd/MM/yyyy" : "UTC" }}&nbsp;<br/>
+                    <!-- Create reportBeforeDays to prevent multiple function exectution: -->
+                    <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, element.appointment.report_before) as reportBeforeDays">    
+
+                      <!-- Define ng-template 'temp' that accepts a context with the daysPassed variable (prevent multiple function exectutio): -->
+                      <ng-template #temp let-daysPassed="daysPassed">
+                        <span [ngClass]="{
+                          'report-control-pristine': daysPassed < 1,
+                          'report-control-good': daysPassed < reportBeforeDays,
+                          'report-control-warn': daysPassed >= reportBeforeDays
+                        }">
+                          {{ daysPassed }} día/s de espera
+                        </span>
+                      </ng-template>
+
+                      <!-- Use ng-container with *ngTemplateOutlet to pass the result of getDaysPassed(date) to the ng-template context: -->
+                      <ng-container *ngTemplateOutlet="temp; context: { daysPassed: sharedFunctions.getDaysPassed(element.date) }"></ng-container>
+                    </ng-container>
+                  </span>
+                </small>
+              </ng-template>
+              </span>
+            </ng-template>
+
+            <ng-template #elseBlocklReportControl>
+              <mat-icon matTooltip="El procedimiento de este estudio NO requiere ser informado.">info</mat-icon>
+            </ng-template>
+          </ng-template>
+
+          <!--Cancelled (disable control)-->
+          <ng-template #elseBlockCancelled></ng-template>
+        </td>
+      </ng-container>
+      
       <!-- checkin_time -->
       <ng-container matColumnDef="checkin_time">
         <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Hora<br/>recepción </th>

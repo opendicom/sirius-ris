@@ -296,7 +296,9 @@ export class AppointmentsService {
     };
 
     //Data normalizarion - FK Reporting:
-    mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user !== ''){
+      mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+    }
 
     //Data normalization - Dates types:
     mergedValues.report_before = this.sharedFunctions.setDatetimeFormat(mergedValues.report_before);

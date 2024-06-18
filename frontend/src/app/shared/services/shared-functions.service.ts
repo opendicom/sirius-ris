@@ -38,6 +38,7 @@ export class SharedFunctionsService {
   public nested_response    : any = {};
   public delete_code        : string = '';
   public requested_password : string = '';
+  public authenticated_performing : any = {}; // For performing list (report control).
 
   constructor(
     private apiClient       : ApiClientService,
@@ -1781,7 +1782,7 @@ export class SharedFunctionsService {
 
       } else {
         //Return to the list with request error message:
-        this.sendMessage('Error al intentar insertar revisar el informe: ' + reportsRes.message);
+        this.sendMessage('Error al intentar revisar el informe: ' + reportsRes.message);
       }
     }, false, false, false);
   }
@@ -1824,6 +1825,71 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // GET AUTHENTICATED:
+  //--------------------------------------------------------------------------------------------------------------------//
+  async getAuthenticated(performingData: any, callback = (res: any) => {}){
+    //Initializate authenticated performing array:
+    let authenticatedPerforming: any = [];
+
+    //Reset authenticated_performing (sharedFunctions Property):
+    this.authenticated_performing = {};
+    
+    //Preserve performing _id to find authenticated reports (Await foreach):
+    await Promise.all(Object.keys(performingData).map((key) => {
+      if(performingData[key].flow_state === 'P09'){
+        authenticatedPerforming.push(performingData[key]._id);
+      }
+    }));
+
+    //Check authenticatedPerforming:
+    if(authenticatedPerforming.length > 0){
+      //Set params:
+      let params: any = {
+        //Project:
+        'proj[fk_performing]'           : 1,
+
+        //Project only authenticate content:
+        'proj[authenticated.datetime]'  : 1,
+        'proj[createdAt]'               : 1,
+
+        //Make sure the first report is the most recent:
+        'sort[createdAt]'               : -1
+      };
+
+      //Set fk_performing filter key:
+      if(authenticatedPerforming.length == 1){
+        params['filter[fk_performing]'] = authenticatedPerforming[0];
+      } else {
+        params['filter[in][fk_performing]'] = authenticatedPerforming;
+      }
+
+      //Find reports only one time for onSearch:
+      return this.find('reports', params, async (reportsRes) => {
+        //Check operation status:
+        if(reportsRes.success === true){
+          await Promise.all(Object.keys(reportsRes.data).map((key) => {
+            //Check if an authentication already exists:
+            //Preserve only the first occurrence (last sort) [amend cases].
+            if(!this.authenticated_performing.hasOwnProperty(reportsRes.data[key].fk_performing)){
+              //Set authenticated_performing:
+              this.authenticated_performing[reportsRes.data[key].fk_performing] = reportsRes.data[key].authenticated.datetime;
+            }
+          }));
+          
+
+          //Execute callback:
+          callback(reportsRes.data);
+        } else {
+          //Return to the list with request error message:
+          this.sendMessage('Error al intentar revisar la autenticación del informe: ' + reportsRes.message);
+        }
+      }, false, false, false);
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // SORT OBJECT:
   //--------------------------------------------------------------------------------------------------------------------//
   async sortObject(data: any, exclude_keys: any = []){
@@ -1846,6 +1912,46 @@ export class SharedFunctionsService {
     const timestamp = (new Date().getTime() / 1000 | 0).toString(16);
     const suffix = 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, () => (Math.random() * 16 | 0).toString(16)).toLowerCase()
     return `${timestamp}${suffix}`;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET DAYS PASSED:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getDaysPassed(date: string, second_date: any = undefined): number {
+    //Convert the input date to a Date object and prevent TZ errors using the same time (T00:00:00.000Z):
+    const startDate: Date = new Date(date.split('T')[0].slice(0) + 'T00:00:00.000Z');
+    
+    //Set second date:
+    if(second_date === undefined || second_date === null || second_date === ''){
+      //Get the current date:
+      second_date = new Date();
+    } else {
+      //Prevent TZ errors using the same time (T00:00:00.000Z):
+      second_date = second_date.split('T')[0].slice(0) + 'T00:00:00.000Z';
+      second_date = new Date(second_date);
+    }
+    
+    //Calculate the difference in milliseconds:
+    const millisecondsDiff: number = second_date.getTime() - startDate.getTime();
+    
+    //Convert the difference from milliseconds to days:
+    const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
+    const daysPassed: number = Math.floor(millisecondsDiff / millisecondsPerDay);
+    
+    return daysPassed;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // ADD DAYS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  addDays(date: string, days: number): string {
+    const resultDate = new Date(date);
+    resultDate.setDate(resultDate.getDate() + days);
+    return resultDate.toISOString();
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

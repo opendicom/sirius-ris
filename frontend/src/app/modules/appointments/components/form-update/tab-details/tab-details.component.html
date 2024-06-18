@@ -19,54 +19,57 @@
 
       <br/><hr class="dashed" />
 
-      <h3 class="form-title text-center underline-fail-alt">Informador:</h3>
-      <br/>
+      <!-- No report cases: Hide reporting_domain, report_before and reporting_user fields -->
+      <span [class.non-display]="reporting_delay_controller === false">
+        <h3 class="form-title text-center underline-fail-alt">Informador:</h3>
+        <br/>
 
-      <h4>Servicio informador:</h4>
-      <mat-form-field appearance="fill" class="large">
-        <mat-label>Servicio informador</mat-label>
-        <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
-          <div *ngFor="let currentService of appointmentsService.availableServices">
-            <div *ngFor="let currentBranch of appointmentsService.availableBranches">
-              <div *ngFor="let currentOrganization of appointmentsService.availableOrganizations">
-                <mat-option (click)="appointmentsService.findReportingUsers(currentService._id, form)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+        <h4>Servicio informador:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Servicio informador</mat-label>
+          <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
+            <div *ngFor="let currentService of appointmentsService.availableServices">
+              <div *ngFor="let currentBranch of appointmentsService.availableBranches">
+                <div *ngFor="let currentOrganization of appointmentsService.availableOrganizations">
+                  <mat-option (click)="appointmentsService.findReportingUsers(currentService._id, form)" *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentOrganization._id + '.' + currentBranch._id + '.' + currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
+                </div>
               </div>
             </div>
-          </div>
-        </mat-select>
-      </mat-form-field>
+          </mat-select>
+        </mat-form-field>
 
-      <h4>Médico informador:</h4>
-      <mat-form-field appearance="fill" class="large">
-        <mat-label>Médico informador</mat-label>
-        <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
-          <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
-            <mat-option value="{{ currentReporting._id }}">
-              <!--names-->
-              {{ currentReporting.person.name_01 }}
-              <span *ngIf="currentReporting.person.name_02">
-                {{ ' ' + currentReporting.person.name_02 }}
-              </span>
-              <!--surnames-->
-              {{ ' ' + currentReporting.person.surname_01 }}
-              <span *ngIf="currentReporting.person.surname_02">
-                {{ ' ' + currentReporting.person.surname_02 }}
-              </span>
-            </mat-option>
-          </div>
-        </mat-select>
-      </mat-form-field>
+        <h4>Médico informador:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>Médico informador</mat-label>
+          <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
+            <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
+              <mat-option value="{{ currentReporting._id }}">
+                <!--names-->
+                {{ currentReporting.person.name_01 }}
+                <span *ngIf="currentReporting.person.name_02">
+                  {{ ' ' + currentReporting.person.name_02 }}
+                </span>
+                <!--surnames-->
+                {{ ' ' + currentReporting.person.surname_01 }}
+                <span *ngIf="currentReporting.person.surname_02">
+                  {{ ' ' + currentReporting.person.surname_02 }}
+                </span>
+              </mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
 
-      <h4>Informe requerido antes de:</h4>
-      <mat-form-field appearance="fill" class="large" (click)="picker.open()">
-        <mat-label>Seleccione fecha</mat-label>
-        <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
-      </mat-form-field>
+        <h4>Informe requerido antes de:</h4>
+        <mat-form-field appearance="fill" class="large" (click)="picker.open()">
+          <mat-label>Seleccione fecha</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+        </mat-form-field>
 
-      <br/><hr class="dashed" /><br/>
+        <br/><hr class="dashed" /><br/>
+      </span>
 
       <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
       <ckeditor *ngIf="sharedProp.mainSettings" formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>

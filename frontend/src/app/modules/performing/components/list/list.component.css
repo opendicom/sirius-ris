@@ -43,3 +43,19 @@ mat-chip.line-break {
   cursor: pointer;
   color: rgb(240, 206, 122);
 }
+
+.report-control-pristine {
+    color: #05ffa1 !important;
+}
+
+.report-control-good {
+    color: rgb(240, 206, 122);
+}
+
+.report-control-warn {
+    color: #ff7c7c;
+}
+
+.report-control-finished {
+    color: #c4acea;
+}

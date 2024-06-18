@@ -225,6 +225,20 @@ export class FormInsertComponent implements OnInit {
       }
     }
 
+    //Check current procedure reporting_delay:
+    if(this.sharedProp.current_procedure.reporting_delay !== undefined && this.sharedProp.current_procedure.reporting_delay !== null && this.sharedProp.current_procedure.reporting_delay !== ''){
+      //Set default report_before = appointment_datetime_start + reporting_delay (days);
+      this.form.controls['report_before'].setValue(new Date(this.sharedFunctions.addDays(this.sharedProp.current_datetime.start, this.sharedProp.current_procedure.reporting_delay).slice(0, -8)));
+
+    } else {
+      //Set default report_before (No report cases):
+      this.form.controls['report_before'].setValue(new Date(this.sharedProp.current_datetime.start));
+
+      //Remove reporting_user validators:
+      this.form.controls['reporting_user'].clearValidators();
+      this.form.controls['reporting_user'].updateValueAndValidity();
+    }
+
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:

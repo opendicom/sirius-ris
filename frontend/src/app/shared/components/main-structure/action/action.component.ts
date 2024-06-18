@@ -155,6 +155,11 @@ export class ActionComponent implements OnInit {
           this.sharedProp.duplicatedSurnamesController = await this.sharedFunctions.duplicatedSurnames(res);
         }
 
+        //Check if it is the performing list to find the authenticated ones:
+        if(this.sharedProp.element === 'performing' && this.sharedProp.action.content_title === 'Listado de estudios'){
+          this.sharedFunctions.getAuthenticated(res.data);
+        }
+
         //Find nested elements (Inverse reference | No aggregation cases):
         if(this.sharedProp.action.nested_element){ this.sharedFunctions.findNestedElements(res, this.sharedProp.action.nested_element); }
       }

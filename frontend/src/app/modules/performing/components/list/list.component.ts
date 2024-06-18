@@ -40,6 +40,7 @@ export class ListComponent implements OnInit {
     'element_action',
     'flow_state',
     'date',
+    'report_control',
     'checkin_time',
     'documents',
     'names',
@@ -147,6 +148,7 @@ export class ListComponent implements OnInit {
       'appointment.outpatient': 1,
       'appointment.inpatient': 1,
       'appointment.urgency': 1,
+      'appointment.report_before': 1,
       'appointment.attached_files._id': 1,    //Only _id and name for performing downloads dialog.
       'appointment.attached_files.name': 1,   //Only _id and name for performing downloads dialog.
       'fk_appointment': 1,
@@ -158,6 +160,7 @@ export class ListComponent implements OnInit {
       'equipment.AET': 1,
       'procedure.name': 1,
       'procedure.code': 1,
+      'procedure.reporting_delay': 1,
       'modality': 1
     };
     this.sharedProp.sort          = { 'date': -1, 'urgency': 1, 'status': -1, 'appointment.imaging.organization._id': 1 };
@@ -183,7 +186,10 @@ export class ListComponent implements OnInit {
     }
 
     //First search (List):
-    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resPerforming => {
+      //Find the authenticated ones:
+      this.sharedFunctions.getAuthenticated(resPerforming.data);
+    });
   }
 
   performingDownloads(current_performing: any){

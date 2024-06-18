@@ -39,6 +39,9 @@ export class TabDetailsComponent implements OnInit {
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;
 
+  //Initializate reporting_delay_controller:
+  public reporting_delay_controller : Boolean = false;
+
   //Min and max dates:
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
@@ -161,7 +164,7 @@ export class TabDetailsComponent implements OnInit {
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
         reporting_domain          : [ selectedReporting, [Validators.required]],
-        reporting_user            : [ res.data[0].reporting.fk_reporting._id, [Validators.required]],
+        reporting_user            : [ '', [Validators.required]],
 
         anamnesis                 : res.data[0].anamnesis,
         indications               : res.data[0].indications,
@@ -240,6 +243,17 @@ export class TabDetailsComponent implements OnInit {
           contact                 : inpatient.contact
         })
       });
+
+      //Check current procedure reporting_delay:
+      if(res.data[0].procedure.reporting_delay !== undefined && res.data[0].procedure.reporting_delay !== null && res.data[0].procedure.reporting_delay !== ''){
+        this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting._id);
+        this.reporting_delay_controller = true;
+      } else {
+        //Remove reporting_user validators:
+        this.form.controls['reporting_user'].clearValidators();
+        this.form.controls['reporting_user'].updateValueAndValidity();
+        this.reporting_delay_controller = false;
+      }
 
       //Add files into file manager controller:
       if(res.data[0].attached_files.length > 0){
