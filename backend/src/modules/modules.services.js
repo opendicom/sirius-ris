@@ -2148,6 +2148,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'informed_consent'] != undefined){ filter[asPrefix + 'informed_consent'] = mainServices.stringToBoolean(filter[asPrefix + 'informed_consent']); };
                 if(filter[asPrefix + 'coefficient'] != undefined){ filter[asPrefix + 'coefficient'] = parseFloat(filter[asPrefix + 'coefficient']); }
                 if(filter[asPrefix + 'reporting_delay'] != undefined){ filter[asPrefix + 'reporting_delay'] = parseInt(filter[asPrefix + 'reporting_delay'], 10); }
+                if(filter[asPrefix + 'wait_time'] != undefined){ filter[asPrefix + 'wait_time'] = parseInt(filter[asPrefix + 'wait_time'], 10); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
 
                 return filter;

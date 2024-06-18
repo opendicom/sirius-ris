@@ -159,6 +159,7 @@ function inputControl(event: any, validationType: string, allowSpaces: boolean =
   //Allow Dots:
   if(allowDots){
     allowedChars.push(190);
+    allowedChars.push(110); //NumpadDecimal
   }
 
   //Allow backspace, tab, enter, arrow keys:

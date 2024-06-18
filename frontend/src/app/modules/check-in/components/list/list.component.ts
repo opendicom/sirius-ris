@@ -51,6 +51,7 @@ export class ListComponent implements OnInit {
     'weight',
     'details',
     'private_health',
+    'wait_time',
     'outpatient_inpatient',
     'urgency'
   ];
@@ -131,6 +132,7 @@ export class ListComponent implements OnInit {
       'procedure.name': 1,
       'procedure.code': 1,
       'procedure.coefficient': 1,
+      'procedure.wait_time': 1,
       'private_health': 1,
       'contrast'             : 1
     };

@@ -34,8 +34,8 @@ const Schema = new mongoose.Schema({
     informed_consent:   { type: Boolean, required: true },
     status:             { type: Boolean, required: true, default: false },
     coefficient:        { type: Number },
-    reporting_delay:    { type: Number }
-
+    reporting_delay:    { type: Number },
+    wait_time:          { type: Number }
 },
 { timestamps: true },
 { versionKey: false });
@@ -51,7 +51,16 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['code', 'snomed', 'preparation', 'procedure_template', 'report_template', 'coefficient', 'reporting_delay'];
+const AllowedUnsetValues = [
+    'code',
+    'snomed',
+    'preparation',
+    'procedure_template',
+    'report_template',
+    'coefficient',
+    'reporting_delay',
+    'wait_time'
+];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -150,7 +159,13 @@ const Validator = [
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro reporting_delay debe ser numérico.')
+        .withMessage('El parametro reporting_delay debe ser numérico (cant. días).'),
+
+    body('wait_time')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage('El parametro wait_time debe ser numérico (minutos).')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

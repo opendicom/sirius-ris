@@ -32,11 +32,14 @@ export class FormComponent implements OnInit {
   public selectedEquipments : any = {};
   public selectedDurations  : any = {};
 
-  //Initialize enable coefficient PET-CT input:
-  public enableCoefPETInput : boolean = false;
+  //Initialize enable PET-CT coefficient field:
+  public enableCoefPETInput   : boolean = false;
 
-  //Intitalize enableReportingDelay input:
-  public enableReportingDelay : boolean = false;
+  //Initializate enable field controllers:
+  public enableField : any = {
+    'reporting_delay': false,
+    'wait_time': false
+  };
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -95,7 +98,9 @@ export class FormComponent implements OnInit {
       report_template             : [ '' ],
       coefficient                 : [ '', [Validators.required] ],
       reporting_delay_controller  : [ 'false' ],
-      reporting_delay             : [ '' ]
+      reporting_delay             : [ '' ],
+      wait_time_controller        : [ 'false' ],
+      wait_time                   : [ '' ],
     });
   }
 
@@ -150,7 +155,9 @@ export class FormComponent implements OnInit {
               report_template             : res.data[0].report_template,
               coefficient                 : res.data[0].coefficient,
               reporting_delay_controller  : [ 'false' ],
-              reporting_delay             : [ '' ]
+              reporting_delay             : [ '' ],
+              wait_time_controller        : [ 'false' ],
+              wait_time                   : [ '' ]
             });
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":
@@ -164,9 +171,16 @@ export class FormComponent implements OnInit {
 
             //Check reporting delay:
             if(res.data[0].reporting_delay !== undefined && res.data[0].reporting_delay !== null && res.data[0].reporting_delay !== ''){
-              this.enableReportingDelay = true;
+              this.enableField.reporting_delay = true;
               this.form.controls['reporting_delay'].setValue(res.data[0].reporting_delay);
               this.form.controls['reporting_delay_controller'].setValue('true');
+            }
+
+            //Check wait_time:
+            if(res.data[0].wait_time !== undefined && res.data[0].wait_time !== null && res.data[0].wait_time !== ''){
+              this.enableField.wait_time = true;
+              this.form.controls['wait_time'].setValue(res.data[0].wait_time);
+              this.form.controls['wait_time_controller'].setValue('true');
             }
 
             //Get property keys with values:
@@ -354,6 +368,17 @@ export class FormComponent implements OnInit {
         delete procedureSaveData.reporting_delay_controller;
       }
 
+      //Check wait time:
+      if(procedureSaveData.wait_time_controller == 'false'){
+        delete procedureSaveData.wait_time_controller;
+        //Considerate unset cases:
+        if(this.form_action == 'insert'){
+          delete procedureSaveData.wait_time;
+        }
+      } else {
+        delete procedureSaveData.wait_time_controller;
+      }
+
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, procedureSaveData, this.keysWithValues, (res) => {
         //Response the form according to the result:
@@ -429,13 +454,13 @@ export class FormComponent implements OnInit {
     this.form.controls['equipments'].setValue(equipmentsIds);
   }
 
-  onChangeReportController(event: any){
+  onChangeEnableController(event: any, field_name: string, default_value: string){
     if(event.value == 'true'){
-      this.enableReportingDelay = true;
-      this.form.controls['reporting_delay'].setValue('0');
+      this.enableField[field_name] = true;
+      this.form.controls[field_name].setValue(default_value);
     } else {
-      this.enableReportingDelay = false;
-      this.form.controls['reporting_delay'].setValue('');
+      this.enableField[field_name] = false;
+      this.form.controls[field_name].setValue('');
     }
   }
 }
