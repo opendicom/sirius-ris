@@ -830,6 +830,12 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
 
     //Define document structure:
     const docDefinition = {
+        //PAGE MARGINS:
+        pageMargins: [40, 80, 40, 40],
+
+        //HEADER:
+        header: obj_logos.logoPDFContent,
+
         //FOOTER:
         footer: (currentPage, pageCount) => { return { table: { widths: [ "*"], body: [[ {
             text: 'Página: ' + currentPage.toString() + ' de ' + pageCount,
@@ -841,10 +847,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
         }; },
 
         //CONTENT:
-        content: [
-            // HEADER IMAGE:
-            obj_logos.logoPDFContent,
-                        
+        content: [                        
             // PERFORMING DATA:
             {
                 type: 'none',
@@ -1395,7 +1398,7 @@ async function setLogos(fk_performing){
                         image: 'organizationLogo',
                         width: 150,
                         alignment: 'center',
-                        margin: [0, -25, 0, 10],
+                        margin: [0, 20, 0, 0],
                         opacity: 0.8
                     },
                     ' ', //Spacing
@@ -1403,7 +1406,7 @@ async function setLogos(fk_performing){
                         image: 'branchLogo',
                         width: 150,
                         alignment: 'center',
-                        margin: [0, -25, 0, 10],
+                        margin: [0, 20, 0, 0],
                         opacity: 0.8
                     },
                     ],
@@ -1425,7 +1428,7 @@ async function setLogos(fk_performing){
                 image: 'organizationLogo',
                 width: 150,
                 alignment: 'center',
-                margin: [0, -25, 0, 10],
+                margin: [0, 20, 0, 0],
                 opacity: 0.8
             };
 
@@ -1442,7 +1445,7 @@ async function setLogos(fk_performing){
                 image: 'branchLogo',
                 width: 150,
                 alignment: 'center',
-                margin: [0, -25, 0, 10],
+                margin: [0, 20, 0, 0],
                 opacity: 0.8
             };
         }
