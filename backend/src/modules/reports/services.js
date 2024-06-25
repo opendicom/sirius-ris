@@ -830,6 +830,17 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
 
     //Define document structure:
     const docDefinition = {
+        //FOOTER:
+        footer: (currentPage, pageCount) => { return { table: { widths: [ "*"], body: [[ {
+            text: 'Página: ' + currentPage.toString() + ' de ' + pageCount,
+            alignment: 'right',
+            fontSize: 8,
+            margin: [0, 10, 20, 0]
+          } ]] },
+          layout: 'noBorders'
+        }; },
+
+        //CONTENT:
         content: [
             // HEADER IMAGE:
             obj_logos.logoPDFContent,
