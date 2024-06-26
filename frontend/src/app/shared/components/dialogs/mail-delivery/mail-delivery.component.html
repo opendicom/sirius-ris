@@ -12,16 +12,26 @@
         </mat-form-field>
         
         <br/>
+        
+        <div *ngIf="data.fk_appointment then thenBlockPerforming else elseBlockAppointment"></div>
 
-        <button mat-flat-button type="button" [disabled]="appointmentButtonDisabled" class="appointment-button" (click)="resendEmail('appointment', data.fk_appointment)">
-            <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE CITA</small>
-        </button>
+        <ng-template #thenBlockPerforming>
+            <button mat-flat-button type="button" [disabled]="appointmentButtonDisabled" class="appointment-button" (click)="resendEmail('appointment', data.fk_appointment)">
+                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE CITA</small>
+            </button>
 
-        &nbsp;
+            &nbsp;
 
-        <button mat-flat-button type="button" [disabled]="reportButtonDisabled" class="report-button" (click)="resendEmail('report', data._id)">
-            <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE INFORME</small>
-        </button>
+            <button mat-flat-button type="button" [disabled]="reportButtonDisabled" class="report-button" (click)="resendEmail('report', data._id)">
+                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE INFORME</small>
+            </button>
+        </ng-template>
+
+        <ng-template #elseBlockAppointment>
+            <button mat-flat-button type="button" [disabled]="appointmentButtonDisabled" class="appointment-button" (click)="resendEmail('appointment', data._id)">
+                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE CITA</small>
+            </button>
+        </ng-template>
     </form>
 
     <br/><hr class="dashed" /><br/>

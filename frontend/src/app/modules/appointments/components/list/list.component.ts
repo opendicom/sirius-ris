@@ -174,4 +174,9 @@ export class ListComponent implements OnInit {
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
+
+  mailDelivery(current_appointment: any){
+    //Open dialog to display downloadable files:
+    this.sharedFunctions.openDialog('mail_delivery', current_appointment);
+  }
 }
