@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'backend'.
 # Example:
-# docker build -t opendicom/sirius-backend:1.0.0-beta.10 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-backend:1.0.0 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------------------------- #
 FROM node:18.13.0
 
-LABEL version="1.0.0-beta.10"
+LABEL version="1.0.0"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
