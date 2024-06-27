@@ -15,6 +15,9 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
+//DICOM Viewer component (For patients):
+import { DcmViewerComponent } from '@shared/components/dcm-viewer/dcm-viewer.component';
+
 //Default patients init:
 import { PatientsComponent } from '@shared/components/patients/patients.component';
 
@@ -56,6 +59,9 @@ import * as IC from '@shared/directives/input-control.directive';
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
+
+    //DICOM Viewer component (For patients):
+    DcmViewerComponent,
 
     //Default patients init:
     PatientsComponent,
@@ -108,6 +114,9 @@ import * as IC from '@shared/directives/input-control.directive';
     SettingsComponent,
     NotFoundComponent,
     SharedMaterialModule,
+
+    //DICOM Viewer component (For patients):
+    DcmViewerComponent,
 
     //Default patients init:
     PatientsComponent,

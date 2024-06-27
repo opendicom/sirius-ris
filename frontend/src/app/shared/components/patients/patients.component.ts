@@ -28,6 +28,9 @@ export class PatientsComponent implements OnInit {
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
 
+  //Initializate ohifPath:
+  public ohifPath                : string = '';
+
   //Set visible columns of the list:
   public displayedColumns: string[] = [
     'element_action',
@@ -138,5 +141,22 @@ export class PatientsComponent implements OnInit {
 
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+  }
+
+  getStudyDICOM(fk_performing: string){
+    //Request DICOM image query path:
+    this.sharedFunctions.wezenStudyToken(fk_performing, (wezenStudyTokenRes) => {
+      if(wezenStudyTokenRes.success === true){
+        //Set ohifPath:
+        this.ohifPath = wezenStudyTokenRes.path;
+      } else {
+        //Send Console Warn Message:
+        console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
+      }
+    });
+  }
+
+  clearOHIFPath(){
+    this.ohifPath = '';
   }
 }

@@ -1,3 +1,8 @@
 .documents {
     padding-left: 10px;
 }
+
+.viewer-container {
+    background-color: #232338;
+    padding: 6px;
+}

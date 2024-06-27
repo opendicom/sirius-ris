@@ -9,7 +9,6 @@ import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FormComponent } from '@modules/reports/components/form/form.component';
-import { DcmViewerComponent } from '@modules/reports/components/dcm-viewer/dcm-viewer.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -17,8 +16,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
-    FormComponent,
-    DcmViewerComponent
+    FormComponent
   ],
   imports: [
     CommonModule,
