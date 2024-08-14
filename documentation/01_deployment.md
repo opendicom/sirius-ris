@@ -1,23 +1,50 @@
-# Deployment
+# Basic deployment
 
 **Sirius RIS** is fully dockerized and its images are publicly accessible in [DockerHub](https://hub.docker.com/search?q=opendicom%2Fsirius).
 
+* **STEP 1** - Clone Sirius-RIS repository:
+
+```bash
+git clone https://github.com/opendicom/sirius-ris
+```
+
+
+
+* **STEP 2** - Go to repository directory:
+
+```bash
+cd sirius-ris/
+```
+
+
+
+* **STEP 3** - Deploy with docker:
+
+```bash
+docker compose up -d
+```
+
+
+
+* **STEP 4** - Login with demo credentials:
+
+  <small>**Document:**</small> `1231230`
+
+  <small>**Password:**</small> `opendicom`
+
+  
+
+---
+
+
+
+# Custom deployment
+
 In order to correctly deploy **Sirius RIS** with **docker**, you must have a dump with the initial database or restore a previous installation.
-
-Within this repository, there is an [**entrypoint.dump**](../service_sirius_db/dumps/entrypoint.dump) with the following credentials:
-
-* <small>**Document:**</small> `1231230`
-* <small>**Password:**</small> `opendicom`
-
-
 
 > **Note:**
 >
 > The database restore process is established according to the official documentation of the **mongodb** images in docker.
-
-
-
----
 
 
 
@@ -44,7 +71,7 @@ services:
 
   opendicom_sirius_backend:
     container_name: opendicom_sirius_backend
-    image: opendicom/sirius-backend:latest
+    image: opendicom/sirius-backend:<TAG_VERSION>
     env_file: ./docker-compose.env
     ports:
       - 2000:2000
@@ -56,7 +83,7 @@ services:
 
   opendicom_sirius_frontend:
     container_name: opendicom_sirius_frontend
-    image: opendicom/sirius-frontend:latest
+    image: opendicom/sirius-frontend:<TAG_VERSION>
     env_file: ./docker-compose.env
     ports:
       - 4000:80
