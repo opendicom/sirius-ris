@@ -26,12 +26,14 @@ docker compose up -d
 
 
 
-* **STEP 4** - Login with demo credentials:
+* **STEP 4** - Login with demo credentials on `http://localhost:4000`:
+
+  **Demo credentials:**
 
   <small>**Document:**</small> `1231230`
 
   <small>**Password:**</small> `opendicom`
-
+  
   
 
 ---
