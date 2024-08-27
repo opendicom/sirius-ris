@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from '@modules/branches/components/list/list.component';
 import { FormComponent } from '@modules/branches/components/form/form.component';
 
+// Import CKEditor Module:
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,10 @@ import { FormComponent } from '@modules/branches/components/form/form.component'
     SharedModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    //CKEditor:
+    CKEditorModule,
   ],
   providers: [
     // If you enter this module directly having an authentication file in the browser, it is necessary to 

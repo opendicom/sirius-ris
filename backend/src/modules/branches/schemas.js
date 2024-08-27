@@ -15,7 +15,8 @@ const Schema = new mongoose.Schema({
     structure_id:           { type: String },
     suffix:                 { type: String },
     status:                 { type: Boolean, required: true, default: false },
-    base64_logo:            { type: String } //This parameter is created in backend server (not validate).
+    base64_logo:            { type: String }, //This parameter is created in backend server (not validate).
+    appointment_footer:     { type: String }
 },
 { timestamps: true },
 { versionKey: false });
@@ -34,7 +35,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'appointment_footer'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -88,6 +89,12 @@ const Validator = [
 
     body('base64_logo')
         .optional(),
+
+    body('appointment_footer')
+        .optional()
+        .trim()
+        .isLength({ min: 10, max: 1500 })
+        .withMessage('El parametro appointment_footer ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

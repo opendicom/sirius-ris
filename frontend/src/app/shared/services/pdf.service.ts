@@ -77,6 +77,7 @@ export class PdfService {
             'proj[imaging.organization.short_name]' : 1,
             'proj[imaging.organization.name]' : 1,
             'proj[imaging.branch.short_name]' : 1,
+            'proj[imaging.branch.appointment_footer]' : 1,
             'proj[imaging.service.name]' : 1,
             'proj[imaging.organization.base64_logo]' : 1,
             'proj[imaging.branch.base64_logo]' : 1
@@ -96,6 +97,12 @@ export class PdfService {
 
                 //Start and End datetime:
                 datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
+
+                //Check appointment footer:
+                let appointment_footer = '';
+                if(res.data[0].imaging.branch.appointment_footer !== undefined && res.data[0].imaging.branch.appointment_footer !== null && res.data[0].imaging.branch.appointment_footer !== ''){
+                  appointment_footer = res.data[0].imaging.branch.appointment_footer;
+                }
 
                 //Convert HTML to PDF Make syntax:
                 if(res.data[0].procedure.preparation !== undefined && res.data[0].procedure.preparation !== '' && res.data[0].procedure.preparation.length > 0){
@@ -167,6 +174,12 @@ export class PdfService {
                         ]
                       }
                     },
+
+                    //FOOTER:
+                    {
+                      text: appointment_footer,
+                      style: 'html-p'
+                    }
                   ],
 
                   //IMAGES:

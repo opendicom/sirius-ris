@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ISO_3166 } from '@env/environment';                                            // Enviroment
+import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -17,6 +18,9 @@ import { ISO_3166 } from '@env/environment';                                    
 })
 export class FormComponent implements OnInit {
   public country_codes    : any = ISO_3166;
+
+  //Create CKEditor component and configure them:
+  public appointmentFooterEditor = customBuildEditor;
 
   //Initialize Selected File Control Variable:
   public selectedFile           : any = null;
@@ -68,14 +72,15 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      fk_organization : ['', [Validators.required]],
-      short_name      : ['', [Validators.required]],
-      name            : ['', [Validators.required]],
-      OID             : [''],
-      country_code    : [ this.sharedProp.mainSettings.appSettings.default_country, [Validators.required]],
-      structure_id    : [''],
-      suffix          : [''],
-      status          : ['true']
+      fk_organization     : ['', [Validators.required]],
+      short_name          : ['', [Validators.required]],
+      name                : ['', [Validators.required]],
+      OID                 : [''],
+      country_code        : [ this.sharedProp.mainSettings.appSettings.default_country, [Validators.required]],
+      structure_id        : [''],
+      suffix              : [''],
+      status              : ['true'],
+      appointment_footer  : ['']
     });
   }
 
@@ -104,7 +109,8 @@ export class FormComponent implements OnInit {
           'proj[structure_id]': 1,
           'proj[suffix]': 1,
           'proj[status]': 1,
-          'proj[base64_logo]': 1
+          'proj[base64_logo]': 1,
+          'proj[appointment_footer]': 1
         };
 
         //Find element to update:
@@ -112,16 +118,20 @@ export class FormComponent implements OnInit {
 
           //Check operation status:
           if(res.success === true){
+            //Prevent undefined error on CKEditor fields:
+            if(res.data[0].appointment_footer == undefined ){ res.data[0].appointment_footer = ''; }
+
             //Send data to the form:
             this.setReactiveForm({
-              fk_organization : res.data[0].fk_organization,
-              short_name      : res.data[0].short_name,
-              name            : res.data[0].name,
-              OID             : res.data[0].OID,
-              country_code    : res.data[0].country_code,
-              structure_id    : res.data[0].structure_id,
-              suffix          : res.data[0].suffix,
-              status          : [ `${res.data[0].status}` ] //Use back tip notation to convert string
+              fk_organization     : res.data[0].fk_organization,
+              short_name          : res.data[0].short_name,
+              name                : res.data[0].name,
+              OID                 : res.data[0].OID,
+              country_code        : res.data[0].country_code,
+              structure_id        : res.data[0].structure_id,
+              suffix              : res.data[0].suffix,
+              status              : [ `${res.data[0].status}` ], //Use back tip notation to convert string
+              appointment_footer  : res.data[0].appointment_footer
             });
 
             //Set base64_logo:

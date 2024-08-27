@@ -30,21 +30,9 @@
         <input matInput icNumbersWD type="text" formControlName="OID" placeholder="Ingrese el OID">
       </mat-form-field>
 
-      <hr class="dashed" /><br/>
-
-      <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
-      </mat-radio-group>
-
-      <br/><br/>
-    </div> <!-- end fxLayout wrapper -->
-
-    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>País de la organización:</h4>
+      <h4>País de la sucursal:</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>País de la organización</mat-label>
+        <mat-label>País de la sucursal</mat-label>
         <mat-select formControlName="country_code">
           <div *ngFor="let currentCode of getKeys(country_codes, true)">
             <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -64,7 +52,14 @@
         <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
       </mat-form-field>
 
-      <hr class="dashed" /><br/>
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>Pie de página de citas <span class="label-info">min: 10, max: 1500</span>:</h4>
+      <ckeditor formControlName="appointment_footer" #appointmentFooter [editor]="appointmentFooterEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
+      <br/><hr class="dashed" /><br/>
 
       <div *ngIf="selectedLogoController; then thenBlockLogo else elseBlockLogo"></div>
 
@@ -80,6 +75,15 @@
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
         <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA SUCURSAL</button>
       </ng-template>
+
+      <div class="clear"></div><br/><hr class="dashed" /><br/>
+
+      <h4>Estado:</h4>
+      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-button value="true">Activo</mat-radio-button>
+        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      </mat-radio-group>
+
     </div> <!-- end fxLayout wrapper -->
 
   </div>
