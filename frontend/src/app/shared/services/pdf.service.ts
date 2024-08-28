@@ -114,7 +114,7 @@ export class PdfService {
                 //Define document structure:
                 docDefinition = {
                   //PAGE MARGINS:
-                  pageMargins: [40, 80, 40, 40],
+                  pageMargins: [40, 90, 40, 40],
 
                   //HEADER:
                   header: this.logoPDFContent,
@@ -501,7 +501,7 @@ export class PdfService {
                 //Define document structure:
                 docDefinition = {
                   //PAGE MARGINS:
-                  pageMargins: [40, 80, 40, 40],
+                  pageMargins: [40, 90, 40, 40],
 
                   //HEADER:
                   header: this.logoPDFContent,
@@ -726,12 +726,12 @@ export class PdfService {
       //Set logo content:
       this.logoPDFContent = {
         table: {
-          widths: ['*', '*', '*'],
+          widths: ['*', 1, '*'], //Three columns, the middle one 1px (Spacing)
           body: [
             [
               {
                 image: 'organizationLogo',
-                width: 150,
+                width: 220,
                 alignment: 'center',
                 margin: [0, 20, 0, 0],
                 opacity: 0.8
@@ -739,7 +739,7 @@ export class PdfService {
               ' ', //Spacing
               {
                 image: 'branchLogo',
-                width: 150,
+                width: 220,
                 alignment: 'center',
                 margin: [0, 20, 0, 0],
                 opacity: 0.8
@@ -761,7 +761,7 @@ export class PdfService {
       //Set logo content:
       this.logoPDFContent = {
         image: 'organizationLogo',
-        width: 150,
+        width: 220,
         alignment: 'center',
         margin: [0, 20, 0, 0],
         opacity: 0.8
@@ -778,7 +778,7 @@ export class PdfService {
       //Set logo content:
       this.logoPDFContent = {
         image: 'branchLogo',
-        width: 150,
+        width: 220,
         alignment: 'center',
         margin: [0, 20, 0, 0],
         opacity: 0.8

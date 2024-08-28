@@ -831,7 +831,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
     //Define document structure:
     const docDefinition = {
         //PAGE MARGINS:
-        pageMargins: [40, 80, 40, 40],
+        pageMargins: [40, 90, 40, 40],
 
         //HEADER:
         header: obj_logos.logoPDFContent,
@@ -1391,12 +1391,12 @@ async function setLogos(fk_performing){
             //Set logo content:
             objLogos.logoPDFContent = {
             table: {
-                widths: ['*', '*', '*'],
+                widths: ['*', 1, '*'], //Three columns, the middle one 1px (Spacing)
                 body: [
                     [
                     {
                         image: 'organizationLogo',
-                        width: 150,
+                        width: 220,
                         alignment: 'center',
                         margin: [0, 20, 0, 0],
                         opacity: 0.8
@@ -1404,7 +1404,7 @@ async function setLogos(fk_performing){
                     ' ', //Spacing
                     {
                         image: 'branchLogo',
-                        width: 150,
+                        width: 220,
                         alignment: 'center',
                         margin: [0, 20, 0, 0],
                         opacity: 0.8
@@ -1426,7 +1426,7 @@ async function setLogos(fk_performing){
             //Set logo content:
             objLogos.logoPDFContent = {
                 image: 'organizationLogo',
-                width: 150,
+                width: 220,
                 alignment: 'center',
                 margin: [0, 20, 0, 0],
                 opacity: 0.8
@@ -1443,7 +1443,7 @@ async function setLogos(fk_performing){
             //Set logo content:
             objLogos.logoPDFContent = {
                 image: 'branchLogo',
-                width: 150,
+                width: 220,
                 alignment: 'center',
                 margin: [0, 20, 0, 0],
                 opacity: 0.8
