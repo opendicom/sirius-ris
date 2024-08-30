@@ -154,8 +154,16 @@
                 <small>
                   <!-- Create authDaysPassed to prevent multiple function exectution: -->
                   <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
-                    Autenticado: {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
-                    <span class="report-control-finished">{{ authDaysPassed }} día/s de espera</span>
+                    <!-- Days passed count: -->
+                    <ng-container *ngIf="authDaysPassed != 'zero'; else noDaysPassed">
+                      Autenticado: {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
+                      <span class="report-control-finished">{{ authDaysPassed }} día/s de espera</span>
+                    </ng-container>
+
+                    <!-- Authenticated on the day: -->
+                    <ng-template #noDaysPassed>
+                      Autenticado en el día
+                    </ng-template>
                   </ng-container>
                 </small>          
               </ng-template>
@@ -174,7 +182,7 @@
                           'report-control-good': daysPassed < reportBeforeDays,
                           'report-control-warn': daysPassed >= reportBeforeDays
                         }">
-                          {{ daysPassed }} día/s de espera
+                          {{ daysPassed == 'zero' ? 0 : daysPassed  }} día/s de espera
                         </span>
                       </ng-template>
 

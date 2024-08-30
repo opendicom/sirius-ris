@@ -1919,7 +1919,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // GET DAYS PASSED:
   //--------------------------------------------------------------------------------------------------------------------//
-  getDaysPassed(date: string, second_date: any = undefined): number {
+  getDaysPassed(date: string, second_date: any = undefined): any {
     //Convert the input date to a Date object and prevent TZ errors using the same time (T00:00:00.000Z):
     const startDate: Date = new Date(date.split('T')[0].slice(0) + 'T00:00:00.000Z');
     
@@ -1938,7 +1938,12 @@ export class SharedFunctionsService {
     
     //Convert the difference from milliseconds to days:
     const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
-    const daysPassed: number = Math.floor(millisecondsDiff / millisecondsPerDay);
+    let daysPassed: any = Math.floor(millisecondsDiff / millisecondsPerDay);
+    
+    //Check if daysPassed is zero (0 = false for IF):
+    if(daysPassed == 0){
+      daysPassed = 'zero';
+    }
     
     return daysPassed;
   }
