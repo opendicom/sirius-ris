@@ -159,6 +159,7 @@ export class TabDetailsComponent implements OnInit {
       //Prevent undefined error on CKEditor fields:
       if(res.data[0].anamnesis == undefined ){ res.data[0].anamnesis = ''; }
       if(res.data[0].indications == undefined ){ res.data[0].indications = ''; }
+      if(res.data[0].private_health.medication == undefined ){ res.data[0].private_health.medication = ''; }
 
       //Send data to the form:
       this.setReactiveForm({

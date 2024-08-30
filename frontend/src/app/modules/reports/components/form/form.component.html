@@ -217,7 +217,9 @@
 
             <div class="input-wrapper"> <!-- start fxLayout wrapper -->
               <ul>
-                <li><strong>Medicación:</strong> {{ performingData.appointment.private_health.medication }}</li>
+                <li><strong>Medicación:</strong>
+                  <span innerHTML="{{ performingData.appointment.private_health.medication }}"></span>
+                </li>
                 <li><strong>Alergias:</strong> {{ performingData.appointment.private_health.allergies }}</li>
               </ul>
             </div> <!-- end fxLayout wrapper -->

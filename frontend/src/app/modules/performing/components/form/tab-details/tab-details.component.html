@@ -284,23 +284,16 @@
   
           <br/><hr class="dashed" /><br/>
   
-          <div fxLayout="row" fxLayoutAlign="start start">
-            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ privateHealthLang.ES['medication'] }}:</h4>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>{{ privateHealthLang.ES['medication'] }}</mat-label>
-                <input matInput type="text" formControlName="medication" placeholder="Indique si consume algún tipo de medicación.">
-              </mat-form-field>
-            </div> <!-- end fxLayout wrapper -->
-  
-            <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ privateHealthLang.ES['allergies'] }}:</h4>
-              <mat-form-field appearance="fill" class="full">
-                <mat-label>{{ privateHealthLang.ES['allergies'] }}</mat-label>
-                <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
-              </mat-form-field>
-            </div> <!-- end fxLayout wrapper -->
-          </div>
+          <h4>{{ privateHealthLang.ES['medication'] }} <span class="label-info">min: 2, max: 1000</span>:</h4>
+          <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          
+          <br/>
+
+          <h4>{{ privateHealthLang.ES['allergies'] }}:</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>{{ privateHealthLang.ES['allergies'] }}</mat-label>
+            <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
+          </mat-form-field>
   
           <hr class="dashed" />
   

@@ -522,8 +522,8 @@ const Validator = [
     body('private_health.medication')
         .optional()
         .trim()
-        .isLength({ min: 3, max: 150 })
-        .withMessage('El parametro private_health.medication ingresado es demasiado corto o demasiado largo (min: 3, max: 150 [caracteres]).'),
+        .isLength({ min: 2, max: 1000 })
+        .withMessage('El parametro private_health.medication ingresado es demasiado corto o demasiado largo (min: 2, max: 1000 [caracteres]).'),
 
     body('private_health.allergies')
         .optional()
