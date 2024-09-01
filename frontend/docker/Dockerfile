@@ -11,7 +11,7 @@
 # OHIF STAGE (Extract bundles):
 # ------------------------------------------------------------------------------------- #
 # Set ohif-bundles image:
-FROM opendicom/ohif-viewer:3.7 as ohif-bundles
+FROM opendicom/ohif-viewer:3.7 AS ohif-bundles
 # ------------------------------------------------------------------------------------- #
 
 
@@ -19,7 +19,7 @@ FROM opendicom/ohif-viewer:3.7 as ohif-bundles
 # SIRIUS FRONTEND STAGE:
 # ------------------------------------------------------------------------------------- #
 # Set frontend-builder image:
-FROM node:18 as frontend-builder
+FROM node:18 AS frontend-builder
 
 # Install gettext-base (envsubst):
 RUN apt-get update && apt-get -y install gettext-base

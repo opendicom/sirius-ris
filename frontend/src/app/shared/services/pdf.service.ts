@@ -99,9 +99,9 @@ export class PdfService {
                 datetime = this.sharedFunctions.datetimeFulCalendarFormater(new Date(res.data[0].start), new Date(res.data[0].end));
 
                 //Check appointment footer:
-                let appointment_footer = '';
+                let appointment_footer: any = '';
                 if(res.data[0].imaging.branch.appointment_footer !== undefined && res.data[0].imaging.branch.appointment_footer !== null && res.data[0].imaging.branch.appointment_footer !== ''){
-                  appointment_footer = res.data[0].imaging.branch.appointment_footer;
+                  appointment_footer = htmlToPdfmake(res.data[0].imaging.branch.appointment_footer);
                 }
 
                 //Convert HTML to PDF Make syntax:
