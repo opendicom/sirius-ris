@@ -1,6 +1,6 @@
 # Basic deployment
 
-**Sirius RIS** is fully dockerized and its images are publicly accessible in [DockerHub](https://hub.docker.com/search?q=opendicom%2Fsirius).
+**Sirius RIS** is fully dockerized and its images are publicly accessible in [DockerHub](https://hub.docker.com/u/opendicom?page=1&search=sirius).
 
 * **STEP 1** - Clone Sirius-RIS repository:
 
@@ -55,16 +55,16 @@ In order to correctly deploy **Sirius RIS** with **docker**, you must have a dum
 ##### `Default content of docker-compose.yml file:`
 
 ```yaml
-version: "3.5"
 services:
-  opendicom_sirius_db:
-    container_name: opendicom_sirius_db
-    image: mongo:latest
+  opendicom_sirius_database:
+    container_name: opendicom_sirius_database
+    image: opendicom/sirius-database:<TAG_VERSION>
     env_file: ./docker-compose.env
     volumes:
-      - ./service_sirius_db/mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
-      - ./service_sirius_db/dumps:/dumps
-      - ./service_sirius_db/data:/data/db
+      - ./database/dumps:/dumps
+      - ./database/data:/data/db
+      - ./database/cron/crontab_file:/etc/crontab
+      - ./database/backups/:/backups
     ports:
       - 27017:27017
     restart: unless-stopped
@@ -78,7 +78,7 @@ services:
     ports:
       - 2000:2000
     depends_on:
-      - opendicom_sirius_db
+      - opendicom_sirius_database
     restart: unless-stopped
     networks:
       - opendicom_net
@@ -160,7 +160,7 @@ MONGO_INITDB_DATABASE='sirius_db'
 # SIRIUS BACKEND:
 # ------------------------------------------------------------------------------------- #
 # SIRIUS BACKEND DB:
-SIRIUS_BACKEND_DB_HOST='opendicom_sirius_db'
+SIRIUS_BACKEND_DB_HOST='opendicom_sirius_database'
 SIRIUS_BACKEND_DB_PORT=27017
 
 # SIRIUS BACKEND REST SERVER:

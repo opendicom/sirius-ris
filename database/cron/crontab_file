@@ -1,0 +1,9 @@
+# Definicion de variables
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+TZ='America/Argentina/Buenos_Aires'
+BASH_ENV=/.env
+
+## Run Sirius RIS database backup every day at 1:00:
+## See backup.sh for details
+# 0 1 * * * /opt/scripts/backup.sh /backups/ 10
