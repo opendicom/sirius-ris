@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'database'.
 # Example:
-# docker build -t opendicom/sirius-database:1.1.0 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-database:1.1.1 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------------------------- #
 FROM mongo:latest
 
-LABEL version="1.1.0"
+LABEL version="1.1.1"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
@@ -40,6 +40,13 @@ COPY ./docker/backup.sh /opt/scripts/backup.sh
 
 # Give backup.sh execute permissions:
 RUN chmod +x /opt/scripts/backup.sh
+
+# Copy crontab-env.sh:
+# Environment variables in file for cron usage.
+COPY ./docker/contrab-env.sh /.env
+
+# Give .env permissions:
+RUN chmod 755 /.env
 
 # Add cron start lines to docker-entrypoint.sh:
 RUN sed -i '2i# Start cron\n/usr/sbin/cron\ncrontab /etc/crontab' /usr/local/bin/docker-entrypoint.sh

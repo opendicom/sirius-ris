@@ -1,7 +1,7 @@
 services:
   opendicom_sirius_database:
     container_name: opendicom_sirius_database
-    image: opendicom/sirius-database:1.1.0
+    image: opendicom/sirius-database:1.1.1
     env_file: ./docker-compose.env
     volumes:
       - ./database/dumps:/dumps
