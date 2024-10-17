@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'database'.
 # Example:
-# docker build -t opendicom/sirius-database:1.1.1 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-database:1.1.2 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------------------------- #
 FROM mongo:latest
 
-LABEL version="1.1.1"
+LABEL version="1.1.2"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
@@ -41,13 +41,16 @@ COPY ./docker/backup.sh /opt/scripts/backup.sh
 # Give backup.sh execute permissions:
 RUN chmod +x /opt/scripts/backup.sh
 
-# Copy crontab-env.sh:
-# Environment variables in file for cron usage.
-COPY ./docker/contrab-env.sh /.env
+# Copy pre-entrypoint.sh:
+COPY ./docker/pre-entrypoint.sh /usr/local/bin/pre-entrypoint.sh
 
-# Give .env permissions:
-RUN chmod 755 /.env
+# Add pre-entrypoint file into docker-entrypoint.sh
+RUN { \
+    head -n 1 /usr/local/bin/docker-entrypoint.sh; \
+    cat /usr/local/bin/pre-entrypoint.sh; \
+    tail -n +2 /usr/local/bin/docker-entrypoint.sh; \
+} > /usr/local/bin/docker-entrypoint-temp.sh && mv /usr/local/bin/docker-entrypoint-temp.sh /usr/local/bin/docker-entrypoint.sh
 
-# Add cron start lines to docker-entrypoint.sh:
-RUN sed -i '2i# Start cron\n/usr/sbin/cron\ncrontab /etc/crontab' /usr/local/bin/docker-entrypoint.sh
+# Give docker-entrypoint.sh execute permissions:
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # ------------------------------------------------------------------------------------- #

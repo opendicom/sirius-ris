@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# Store environment variables in file for cron usage:
-export TZ=${TZ}
-export MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-export MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-export MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
