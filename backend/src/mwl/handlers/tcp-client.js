@@ -134,7 +134,13 @@ module.exports = async (req, res) => {
 
             // Performing Physician [OBR-34] (00400006) <reporting>:
             // organization_short_name^branch_short_name^surname_01>surname_02^name_01 name_02
-            const reporting_user = mainServices.setDicomNamePersonFormat(data[0].reporting.fk_reporting.person.name_01, data[0].reporting.fk_reporting.person.name_02, data[0].reporting.fk_reporting.person.surname_01, data[0].reporting.fk_reporting.person.surname_02);
+            let reporting_user = '';
+            if(data[0].reporting.fk_reporting !== undefined && data[0].reporting.fk_reporting !== null && data[0].reporting.fk_reporting !== ''){
+                reporting_user = mainServices.setDicomNamePersonFormat(data[0].reporting.fk_reporting.person.name_01, data[0].reporting.fk_reporting.person.name_02, data[0].reporting.fk_reporting.person.surname_01, data[0].reporting.fk_reporting.person.surname_02);
+            } else {
+                reporting_user = '*';
+            }
+            
             const PP = data[0].reporting.organization.short_name + '^' + data[0].reporting.branch.short_name + '^' + reporting_user;
 
             // Requesting Procedure Description:
