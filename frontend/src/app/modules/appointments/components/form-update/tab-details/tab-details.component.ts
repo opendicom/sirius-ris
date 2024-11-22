@@ -283,12 +283,35 @@ export class TabDetailsComponent implements OnInit {
   }
 
   onSubmit(callback = (res: any) => {}){
+    //Check that report before is not less than the appointment start date:
+    if(this.reporting_delay_controller === true){
+      const current_report_before = this.sharedFunctions.datetimeFulCalendarFormater(this.form.controls['report_before'].value, this.form.controls['report_before'].value);
+
+      //Convert text strings to Date objects for comparison:
+      const reportBeforeDate = new Date(current_report_before.start);
+      const currentDateTime = new Date(this.sharedProp.current_datetime.start);
+
+      //Compare dates:
+      if (reportBeforeDate < currentDateTime) {
+        //Clear report before field and set error:
+        this.form.controls['report_before'].setValue('');
+        this.form.controls['report_before'].setErrors({ invalid: true });
+        this.form.markAllAsTouched();
+
+        //Send Message:
+        this.sharedFunctions.sendMessage('Debe establecerce nuevamente una fecha para el campo "Informe requerido antes de" (No puede ser menor a la fecha de coordinación).')
+      }
+    }
+
     //Validate fields:
     if(this.form.valid){
       this.appointmentsService.saveAppointment('update', this.form, this.fileManager, this.sharedProp.current_id, this.sharedProp.current_keysWithValues, (res) => {
         //Execute callback:
         callback(res);
       });
+    } else {
+      //Return false for tab details validate errors:
+      callback(false);
     }
   }
 

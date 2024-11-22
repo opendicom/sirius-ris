@@ -194,7 +194,9 @@
 
     <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
-      <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita</ng-template>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">perm_contact_calendar</mat-icon> Detalles de la cita 
+      <mat-icon *ngIf="detailsTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+      </ng-template>
       <app-tab-details></app-tab-details>
     </mat-tab>
     <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->

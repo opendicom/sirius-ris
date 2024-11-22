@@ -36,6 +36,9 @@ export class FormUpdateComponent implements OnInit {
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
 
+  //Initializate validation tab errors:
+  public detailsTabErrors       : boolean = false;
+
   //Initialize previous:
   public previous : any = undefined;
 
@@ -146,8 +149,16 @@ export class FormUpdateComponent implements OnInit {
 
         //Send second submit in controlled order (Update appointment):
         this.tabDetails.onSubmit((res) => {
-          //Response the form according to the result:
-          this.sharedFunctions.formResponder(res, 'appointments', this.router);
+          if(res !== false){
+            //Set details tab errors:
+            this.detailsTabErrors = false;
+
+            //Response the form according to the result:
+            this.sharedFunctions.formResponder(res, 'appointments', this.router);
+          } else {
+            //Set details tab errors:
+            this.detailsTabErrors = true;
+          }
         });
       });
 
