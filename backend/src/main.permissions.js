@@ -440,9 +440,14 @@ const concessionPermissions = {
     22: {
         people                  : ['find', 'findOne', 'update'],
         users                   : ['find', 'findOne', 'update'],
-    }
+    },
 
-    // 23 : Supervisar citas en curso:
+    // 23 : Sobreagenda (Overbooking):
+    23: {
+        appointments            : ['find', 'findOne', 'insert', 'update'],
+        appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
+    }
+    
     // 24 : Listados de facturación:
 }
 //--------------------------------------------------------------------------------------------------------------------//

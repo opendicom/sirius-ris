@@ -209,7 +209,8 @@ Throughout the entire **Sirius RIS** application, reference is made on many occa
 | 19   | Eliminación física de archivos          |
 | 20   | Acceso al módulo de exportación         |
 | 21   | Acceso al servicio de imágenes del PACS |
-| 22   | Supervisar citas en curso               |
+| 22   | Edición de identificación de pacientes  |
+| 23   | Sobreagenda (overbooking)               |
 
 
 

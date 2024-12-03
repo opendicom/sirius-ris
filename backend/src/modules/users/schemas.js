@@ -86,8 +86,8 @@ const Validator = [
     
     body('password')
         .trim()
-        .isLength(8)
-        .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
+        .isLength(16)
+        .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 16 caracteres).'),
 
     body('email')
         .optional()

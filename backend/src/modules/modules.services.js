@@ -1491,87 +1491,104 @@ async function isDuplicated(req, res, currentSchema, params, message = ''){
 // CHECK SLOT:
 //--------------------------------------------------------------------------------------------------------------------//
 async function checkSlot(req, res){
-    //Import schema:
-    const appointments = require('./appointments/schemas');
+    //Get authenticated user information (Decoded JWT):
+    const userAuth = {
+        _id: req.decoded.sub,
+        domain: req.decoded.session.domain,
+        role: req.decoded.session.role,
+        concession: req.decoded.session.concession
+    };
 
-    //Initialize result (available):
-    result = true;
+    //Check overbooking in request and if the user has a overbooking concession:
+    if(mainServices.stringToBoolean(req.body.overbooking) === true && ( userAuth.role == 1 || userAuth.concession.includes(parseInt(currentConcession, 23)) ) ){
+        //Dont check slot (Force insert, overbooking)
+        result = true;
+    } else {
+        //Import schema:
+        const appointments = require('./appointments/schemas');
 
-    //Set datetime backend format regex:
-    const datetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/i;
+        //Initialize result (available):
+        result = true;
 
-    //Check start and end datetimes format:
-    if(datetimeRegex.test(req.body.start) && datetimeRegex.test(req.body.end)){
-        //Get current dates from the request:
-        const currentStart = req.body.start;
-        const currentEnd = req.body.end;
+        //Set datetime backend format regex:
+        const datetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/i;
 
-        //Set in date format:
-        let dateStart = new Date(currentStart);
-        let dateEnd = new Date(currentEnd);
-        
-        //Add one minute to start and subtract one minute to end to allow (Allow minimal overlap):
-        let addedMinuteStart = new Date(dateStart.setMinutes(dateStart.getMinutes() + 1));
-        let removedMinuteEnd = new Date(dateEnd.setMinutes(dateEnd.getMinutes() - 1));
+        //Check start and end datetimes format:
+        if(datetimeRegex.test(req.body.start) && datetimeRegex.test(req.body.end)){
+            //Get current dates from the request:
+            const currentStart = req.body.start;
+            const currentEnd = req.body.end;
 
-        //Format dates:
-        const formattedDates = mainServices.datetimeFulCalendarFormater(addedMinuteStart, removedMinuteEnd);
+            //Set in date format:
+            let dateStart = new Date(currentStart);
+            let dateEnd = new Date(currentEnd);
 
-        //Set params:
-        const params = { "$and" : [
-            { "fk_slot" : req.body.fk_slot },
-            { "$or" : [
-                { "start" : {
-                    "$gte" : formattedDates.start + '.000Z',
-                    "$lte" : formattedDates.end + '.000Z'
-                }},
-                { "end" : {
-                    "$gte" : formattedDates.start + '.000Z',
-                    "$lte" : formattedDates.end + '.000Z'
-                }}
-            ]}
-        ]};
+            //Format dates:
+            const formattedDates = mainServices.datetimeFulCalendarFormater(dateStart, dateEnd);
 
-        //Find:
-        await appointments.Model.findOne(params, { _id: 1 })
-        .exec()
-        .then((data) => {
-            //Check data:
-            if(data){
-                //Check operation:
-                //INSERT:
-                if(req.body._id == undefined){
-                    //Check if have results:
-                    if(data){
-                        //Set result (unavailable):
-                        result = false;
-
-                        //Send unavailable slot message:
-                        res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
+            // Set params:
+            const params = {
+                "$and": [
+                    { "fk_slot": req.body.fk_slot },
+                    {
+                        "$or": [
+                            // Case 1: The new appointment starts before the existing appointment ends, but after it starts.
+                            { "start": { "$gte": formattedDates.start + '.000Z', "$lt": formattedDates.end + '.000Z' } },
+                            // Case 2: The new appointment ends after the existing appointment starts, but before it ends.
+                            { "end": { "$gt": formattedDates.start + '.000Z', "$lte": formattedDates.end + '.000Z' } },
+                            // Case 3: The new appointment starts before the existing one and ends after it.
+                            {
+                                "$and": [
+                                    { "start": { "$lt": formattedDates.start + '.000Z' } },
+                                    { "end": { "$gt": formattedDates.end + '.000Z' } }
+                                ]
+                            }
+                        ]
                     }
+                ]
+            };
+            
+            //Find:
+            await appointments.Model.findOne(params, { _id: 1 })
+            .exec()
+            .then((data) => {
+                //Check data:
+                if(data){
+                    //Check operation:
+                    //INSERT:
+                    if(req.body._id == undefined){
+                        //Check if have results:
+                        if(data){
+                            //Set result (unavailable):
+                            result = false;
 
-                //UPDATE
-                } else {
-                    if(data._id != req.body._id){
-                        //Set result (unavailable):
-                        result = false;
+                            //Send unavailable slot message:
+                            res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
+                        }
 
-                        //Send unavailable slot message:
-                        res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
+                    //UPDATE
+                    } else {
+                        if(data._id != req.body._id){
+                            //Set result (unavailable):
+                            result = false;
+
+                            //Send unavailable slot message:
+                            res.status(422).send({ success: false, message: currentLang.ris.unavailable_slot + data._id });
+                        }
                     }
                 }
-            }
-        })
-        .catch((err) => {
-            //Send error:
-            mainServices.sendError(res, currentLang.db.query_error, err);
-        });
-    } else {
-        //Set result (wrong datetime format):
-        result = false;
+            })
+            .catch((err) => {
+                //Send error:
+                mainServices.sendError(res, currentLang.db.query_error, err);
+            });
+        } else {
+            //Set result (wrong datetime format):
+            result = false;
 
-        //Send wrong datetime format message:
-        res.status(422).send({ success: false, message: currentLang.ris.wrong_date_format_slot });
+            //Send wrong datetime format message:
+            res.status(422).send({ success: false, message: currentLang.ris.wrong_date_format_slot });
+        }
     }
 
     //Return result:
