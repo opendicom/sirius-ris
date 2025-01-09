@@ -2,3 +2,7 @@
   cursor: pointer;
   padding-left: 10px;
 }
+
+.overbooking {
+  color: #ff7c7c !important;
+}

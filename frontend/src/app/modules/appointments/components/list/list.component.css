@@ -18,3 +18,7 @@ mat-chip.line-break {
   height: auto;
   line-height: 1.1em;
 }
+
+.overbooking {
+  color: #ff7c7c !important;
+}

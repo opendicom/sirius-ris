@@ -1500,8 +1500,8 @@ async function checkSlot(req, res){
     };
 
     //Check overbooking in request and if the user has a overbooking concession:
-    if(mainServices.stringToBoolean(req.body.overbooking) === true && ( userAuth.role == 1 || userAuth.concession.includes(parseInt(currentConcession, 23)) ) ){
-        //Dont check slot (Force insert, overbooking)
+    if(mainServices.stringToBoolean(req.body.overbooking) === true && ( userAuth.role == 1 || userAuth.role == 2 || userAuth.concession.includes(parseInt(currentConcession, 23)) ) ){
+        //Dont check slot (Force insert, overbooking):
         result = true;
     } else {
         //Import schema:
@@ -2305,6 +2305,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'attached_files'] != undefined){ filter[asPrefix + 'attached_files'] = filter[asPrefix + 'attached_files'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'attached_files']); }
 
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+                if(filter[asPrefix + 'overbooking'] != undefined){ filter[asPrefix + 'overbooking'] = mainServices.stringToBoolean(filter[asPrefix + 'overbooking']); };
 
                 return filter;
             });
@@ -2349,7 +2350,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
                 if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
-    
+                if(filter[asPrefix + 'overbooking'] != undefined){ filter[asPrefix + 'overbooking'] = mainServices.stringToBoolean(filter[asPrefix + 'overbooking']); };
+                
                 return filter;
             });
             break;

@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
+import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import {                                                                                    // Enviroments
   regexObjectId,
@@ -47,6 +48,9 @@ export class SelectSlotComponent implements OnInit {
   public selectedEnd          : Date | undefined;
   public selectedSlot         : any  | undefined;
 
+  //Initializate overbooking input:
+  public overbooking         : Boolean = false;
+
   //Set appointment_request flag:
   public appointment_request    : any;
 
@@ -73,7 +77,7 @@ export class SelectSlotComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService
+    public sharedFunctions : SharedFunctionsService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -262,7 +266,8 @@ export class SelectSlotComponent implements OnInit {
         'proj[patient.person.name_01]': 1,
         'proj[patient.person.name_02]': 1,
         'proj[patient.person.surname_01]': 1,
-        'proj[patient.person.surname_02]': 1
+        'proj[patient.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Set appointments drafts params (In progress events)
@@ -288,7 +293,8 @@ export class SelectSlotComponent implements OnInit {
         'proj[coordinator.person.name_01]': 1,
         'proj[coordinator.person.name_02]': 1,
         'proj[coordinator.person.surname_01]': 1,
-        'proj[coordinator.person.surname_02]': 1
+        'proj[coordinator.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Create slots observable slots:
@@ -381,6 +387,11 @@ export class SelectSlotComponent implements OnInit {
                   textColor = '#fff'
                 }
 
+                //Check overbooking:
+                if(res.data[key].overbooking){
+                  textColor = '#ffdcdc';
+                }
+
                 //Add event in calendar (Appointment):
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
@@ -398,7 +409,8 @@ export class SelectSlotComponent implements OnInit {
                       'name_02'     : res.data[key].patient.person.name_02,
                       'surname_01'  : res.data[key].patient.person.surname_01,
                       'surname_02'  : res.data[key].patient.person.surname_02
-                    }
+                    },
+                    overbooking: res.data[key].overbooking
                   }
                 });
               }));
@@ -432,6 +444,11 @@ export class SelectSlotComponent implements OnInit {
                   textColor = '#fff'
                 }
 
+                //Check overbooking:
+                if(res.data[key].overbooking){
+                  textColor = '#ffdcdc';
+                }
+
                 //Add event in calendar (Appointment drafts):
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
@@ -455,7 +472,8 @@ export class SelectSlotComponent implements OnInit {
                       'name_02'     : res.data[key].coordinator.person.name_02,
                       'surname_01'  : res.data[key].coordinator.person.surname_01,
                       'surname_02'  : res.data[key].coordinator.person.surname_02
-                    }
+                    },
+                    overbooking: res.data[key].overbooking
                   }
                 });
               }));
@@ -633,6 +651,18 @@ export class SelectSlotComponent implements OnInit {
       urgency         : this.sharedProp.current_urgency,
     };
 
+    //Check overbooking:
+    if(this.overbooking){
+      //Set overbooking into save data (appointment draft):
+      appointmentsDraftsSaveData['overbooking'] = 'true';
+
+      //Set overbooking into sharedProp (insert appointment):
+      this.sharedProp.current_overbooking = true;
+    } else {
+      //Set overbooking into sharedProp (insert appointment):
+      this.sharedProp.current_overbooking = false;
+    }
+
     //Initializate form destiny (default):
     let form_destiny = '/appointments/form/insert';
 
@@ -751,6 +781,31 @@ export class SelectSlotComponent implements OnInit {
           this.calendarOptions.resources = [this.calendarResources[key]];
         }
       }));
+    }
+  }
+
+  onCheckOverbooking(event: any){
+    //Get calendar events (current in memory):
+    let calendarEvents = this.calendarComponent.getApi().getEvents();
+
+    //Set overbooking field:
+    this.overbooking = event.checked;
+
+    //Verify checkbox:
+    if (event.checked) {
+      //Remove non-background events:
+      calendarEvents.forEach((event: EventApi) => {
+        if (event['display'] !== 'background') {
+          //Remove overbooked element from calendar:
+          event.remove();
+        }
+      });
+    } else {
+      //Remove all events:
+      this.calendarComponent.getApi().removeAllEvents();
+
+      //Re-initialize slot tab:
+      this.ngOnInit();
     }
   }
 }

@@ -282,7 +282,7 @@ export class TabDetailsComponent implements OnInit {
     }
   }
 
-  onSubmit(callback = (res: any) => {}){
+  onSubmit(callback = (res: any) => {}, overbooking: Boolean = false){
     //Check that report before is not less than the appointment start date:
     if(this.reporting_delay_controller === true){
       const current_report_before = this.sharedFunctions.datetimeFulCalendarFormater(this.form.controls['report_before'].value, this.form.controls['report_before'].value);
@@ -305,6 +305,10 @@ export class TabDetailsComponent implements OnInit {
 
     //Validate fields:
     if(this.form.valid){
+      //Check overbooking:
+      if(overbooking){ this.form.value['overbooking'] = 'true'; }
+
+      //Save data:
       this.appointmentsService.saveAppointment('update', this.form, this.fileManager, this.sharedProp.current_id, this.sharedProp.current_keysWithValues, (res) => {
         //Execute callback:
         callback(res);

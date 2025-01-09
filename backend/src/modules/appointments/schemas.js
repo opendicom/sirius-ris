@@ -152,7 +152,8 @@ const Schema = new mongoose.Schema({
     inpatient:              { type: subSchemaInpatient },
     attached_files:         { type: [mongoose.ObjectId] },
     cancellation_reasons:   { type: Number },
-    status:                 { type: Boolean, required: true, default: false }
+    status:                 { type: Boolean, required: true, default: false },
+    overbooking:            { type: Boolean }
 },
 { timestamps: true },
 { versionKey: false });
@@ -659,6 +660,13 @@ const Validator = [
         .trim()
         .isBoolean()
         .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean(),
+
+    body('overbooking')
+        .optional()
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro overbooking ingresado no es de tipo booleano (verdadero o falso).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

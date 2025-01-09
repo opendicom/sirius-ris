@@ -22,6 +22,8 @@
     <strong>APELLIDO/S:</strong> {{ data.coordinator.surname_01 }} <span *ngIf="data.coordinator.surname_02">{{ data.coordinator.surname_02 }}</span><br/>
   </div>
 
+  <div *ngIf="data.overbooking" class="text-center overbooking"><small>Esta cita fué sobreagendada</small></div>
+
   <br/><hr class="dashed" />
 </div>
 <div mat-dialog-actions>

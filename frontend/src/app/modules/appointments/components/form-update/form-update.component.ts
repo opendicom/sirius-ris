@@ -145,7 +145,7 @@ export class FormUpdateComponent implements OnInit {
     //Check selected element in slot tab:
     if(this.tabSlot.selectedEquipment !== undefined && this.tabSlot.selectedStart !== undefined && this.tabSlot.selectedEnd !== undefined && this.tabSlot.selectedSlot !== undefined){
       //Send first submit in controlled order (Set appointments tab slot info, only if this has changes):
-      this.tabSlot.onSubmit(() => {
+      this.tabSlot.onSubmit((overbooking: Boolean) => {
 
         //Send second submit in controlled order (Update appointment):
         this.tabDetails.onSubmit((res) => {
@@ -159,7 +159,7 @@ export class FormUpdateComponent implements OnInit {
             //Set details tab errors:
             this.detailsTabErrors = true;
           }
-        });
+        }, overbooking); // <-- Send overbooking (true or false)
       });
 
     } else {

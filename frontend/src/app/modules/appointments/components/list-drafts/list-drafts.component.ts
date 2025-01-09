@@ -139,7 +139,8 @@ export class ListDraftsComponent implements OnInit {
       'coordinator.person.name_01': 1,
       'coordinator.person.name_02': 1,
       'coordinator.person.surname_01': 1,
-      'coordinator.person.surname_02': 1
+      'coordinator.person.surname_02': 1,
+      'overbooking': 1
     };
     this.sharedProp.sort          = { 'urgency': 1, 'status': 1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };
@@ -198,6 +199,7 @@ export class ListDraftsComponent implements OnInit {
         'proj[urgency]': 1,
         'proj[friendly_pass]': 1,
         'proj[fk_appointment_request]': 1,
+        'proj[overbooking]': 1,
 
         //Projection - Patient:
         'proj[patient._id]': 1,
@@ -276,6 +278,11 @@ export class ListDraftsComponent implements OnInit {
 
           //Current Urgency:
           this.sharedProp.current_urgency = res.data[0].urgency;
+
+          //Current overbooking:
+          if(res.data[0].overbooking !== undefined && res.data[0].overbooking !== null && res.data[0].overbooking !== ''){
+            this.sharedProp.current_overbooking = res.data[0].overbooking;  
+          }
 
           //Clear previous friendly passwords:
           this.sharedProp.current_friendly_pass = '';

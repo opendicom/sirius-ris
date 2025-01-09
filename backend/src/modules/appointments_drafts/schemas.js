@@ -25,7 +25,8 @@ const Schema = new mongoose.Schema({
     fk_procedure:           { type: mongoose.ObjectId, required: true },
     extra_procedures:       { type: [mongoose.ObjectId] },
     urgency:                { type: Boolean, required: true },
-    friendly_pass:          { type: String }
+    friendly_pass:          { type: String },
+    overbooking:            { type: Boolean }
 },
 { timestamps: true },
 { versionKey: false });
@@ -113,7 +114,14 @@ const Validator = [
         .toBoolean(),
 
     body('friendly_pass')
+        .optional(),
+
+    body('overbooking')
         .optional()
+        .trim()
+        .isBoolean()
+        .withMessage('El parametro overbooking ingresado no es de tipo booleano (verdadero o falso).')
+        .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

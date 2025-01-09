@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
+import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { regexObjectId } from '@env/environment';                                           // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
@@ -42,6 +43,9 @@ export class TabSlotComponent implements OnInit {
   public initialStart        : Date | undefined;
   public initialEnd          : Date | undefined;
   public initialSlot         : any  | undefined;
+
+  //Initializate overbooking input:
+  public overbooking         : Boolean = false;
 
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
@@ -605,7 +609,7 @@ export class TabSlotComponent implements OnInit {
     }
   }
 
-  onSubmit(callback = () => {}){
+  onSubmit(callback = (overbooking: Boolean) => {}){
     //Only coordinated appointments have control in slot tab and Check if the appointment was modified in slot coordination:
     if (this.sharedProp.current_flow_state == 'A01' && !(this.initialEquipment == this.selectedEquipment && this.initialStart?.toString() == this.selectedStart?.toString() && this.initialEnd?.toString() == this.selectedEnd?.toString() && this.initialSlot == this.selectedSlot)){
 
@@ -619,7 +623,7 @@ export class TabSlotComponent implements OnInit {
     }
 
     //Execute callback:
-    callback();
+    callback(this.overbooking);
   }
 
   findReferences(){
@@ -709,8 +713,28 @@ export class TabSlotComponent implements OnInit {
     }
   }
 
-  test(){
-    alert('TEST WORKS!!');
-    console.log('TEST WORKS!!');
+  onCheckOverbooking(event: any){
+    //Get calendar events (current in memory):
+    let calendarEvents = this.calendarComponent.getApi().getEvents();
+
+    //Set overbooking field:
+    this.overbooking = event.checked;
+
+    //Verify checkbox:
+    if (event.checked) {
+      //Remove non-background events:
+      calendarEvents.forEach((event: EventApi) => {
+        if (event['display'] !== 'background') {
+          //Remove overbooked element from calendar:
+          event.remove();
+        }
+      });
+    } else {
+      //Remove all events:
+      this.calendarComponent.getApi().removeAllEvents();
+
+      //Re-initialize slot tab:
+      this.manualOnInit();
+    }
   }
 }

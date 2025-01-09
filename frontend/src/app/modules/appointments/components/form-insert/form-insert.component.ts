@@ -50,6 +50,9 @@ export class FormInsertComponent implements OnInit {
   public minDate: Date;
   public maxDate: Date;
 
+  //Initializate overbooking input:
+  public overbooking : Boolean = false;
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -263,6 +266,10 @@ export class FormInsertComponent implements OnInit {
 
     //Validate fields:
     if(this.form.valid){
+
+      //Check overbooking (sharedProp):
+      if(this.sharedProp.current_overbooking){ this.form.value['overbooking'] = 'true'; }
+
       //Check appointment request and add FK in SaveData:
       if(this.appointment_request !== undefined && this.sharedFunctions.stringToBoolean(this.appointment_request) && this.sharedProp.current_appointment_request !== undefined){
         //Check fk_appointment_request is an ObjectId:

@@ -39,7 +39,7 @@ export SIRIUS_FRONTEND_FC_SLOTMAXTIME=${SIRIUS_FRONTEND_FC_SLOTMAXTIME:-'18:00:0
 export SIRIUS_FRONTEND_FC_SLOTDURATION=${SIRIUS_FRONTEND_FC_SLOTDURATION:-'00:10:00'}
 
 # Patient password keywords:
-export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"]'}
+export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalipto", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"]'}
 # ------------------------------------------------------------------------------------- #
 
 # Create main.settings file based on template with environment variables:

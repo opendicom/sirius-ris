@@ -152,7 +152,8 @@ export class ListComponent implements OnInit {
       'slot.equipment.AET': 1,
       'procedure.name': 1,
       'procedure.code': 1,
-      'modality': 1
+      'modality': 1,
+      'overbooking': 1
     };
     this.sharedProp.sort          = { 'start': -1, 'urgency': 1, 'status': -1, 'imaging.organization._id': 1 };
     this.sharedProp.pager         = { page_number: 1, page_limit: this.sharedProp.mainSettings.appSettings.default_page_sizes[0] };

@@ -242,6 +242,12 @@
         <button mat-flat-button type="button" color="accent" (click)="onDelete();"><mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN</button>
       </div>
 
+      <!-- 1: Superusuario, 2: Administrador, Concesiones: [23: Sobreagenda] -->
+      <div class="text-center" *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [23]))" >
+        <br/><hr class="dashed" /><br/>
+        <mat-checkbox color="primary" (change)="onCheckOverbooking($event)">Permitir sobre agendar</mat-checkbox>
+      </div>
+      
       <br/>
 
     </div>

@@ -205,6 +205,8 @@ function stringToBoolean(string){
         return true;
     } else if(string === 'false') {
         return false;
+    } else if(string === true || false){
+        return string; //Not string
     } else {
         return undefined;
     }

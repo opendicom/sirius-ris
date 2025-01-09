@@ -257,7 +257,8 @@ export class SlotsAppointmentsComponent implements OnInit {
         'proj[patient.person.name_01]': 1,
         'proj[patient.person.name_02]': 1,
         'proj[patient.person.surname_01]': 1,
-        'proj[patient.person.surname_02]': 1
+        'proj[patient.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Set appointments drafts params (In progress events)
@@ -283,7 +284,8 @@ export class SlotsAppointmentsComponent implements OnInit {
         'proj[coordinator.person.name_01]': 1,
         'proj[coordinator.person.name_02]': 1,
         'proj[coordinator.person.surname_01]': 1,
-        'proj[coordinator.person.surname_02]': 1
+        'proj[coordinator.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Create slots observable slots:
@@ -374,7 +376,12 @@ export class SlotsAppointmentsComponent implements OnInit {
                 if(res.data[key].urgency){
                   backgroundColor = '#f44336';
                   borderColor = '#f7594d';
-                  textColor = '#fff'
+                  textColor = '#fff';
+                }
+
+                //Check overbooking:
+                if(res.data[key].overbooking){
+                  textColor = '#ffdcdc';
                 }
 
                 //Add event in calendar (Appointment):
@@ -394,7 +401,8 @@ export class SlotsAppointmentsComponent implements OnInit {
                       'name_02'     : res.data[key].patient.person.name_02,
                       'surname_01'  : res.data[key].patient.person.surname_01,
                       'surname_02'  : res.data[key].patient.person.surname_02
-                    }
+                    },
+                    overbooking: res.data[key].overbooking
                   }
                 });
               }));
