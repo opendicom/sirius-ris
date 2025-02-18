@@ -183,6 +183,9 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
     //Get validation result:
     const errors = validationResult(req);
 
+    //Initializate insertController:
+    let insertController = false;
+
     //Check validation result (express-validator):
     if(!errors.isEmpty()){
         //Initialize container array of validation messages:
@@ -249,6 +252,9 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
                         //Send successfully response:
                         res.status(200).send({ success: true, message: currentLang.db.insert_success, data: data });
 
+                        //Set insertController:
+                        insertController = true;
+
                         //Set header sent property to check if header have already been sent:
                         res.headerSent = true;
 
@@ -272,6 +278,9 @@ async function insert(req, res, currentSchema, referencedElements = false, succe
             res.headerSent = true;
         }
     }
+
+    //Return insertController:
+    return insertController;
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -5117,6 +5126,7 @@ module.exports = {
     checkSHA2Report,
     setSHA2Report,
     setBase64Files,
-    setFlowState
+    setFlowState,
+    setPerformingFS
 };
 //--------------------------------------------------------------------------------------------------------------------//

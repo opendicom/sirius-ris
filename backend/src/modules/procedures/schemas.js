@@ -116,14 +116,14 @@ const Validator = [
     body('preparation')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1500 })
-        .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
+        .isLength({ min: 10, max: 3000 })
+        .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
 
     body('procedure_template')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1500 })
-        .withMessage('El parametro procedure_template ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
+        .isLength({ min: 10, max: 3000 })
+        .withMessage('El parametro procedure_template ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
 
     body('report_template')
         .optional()

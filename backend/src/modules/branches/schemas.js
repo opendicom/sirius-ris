@@ -93,8 +93,8 @@ const Validator = [
     body('appointment_footer')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1500 })
-        .withMessage('El parametro appointment_footer ingresado es demasiado corto o demasiado largo (min: 10, max: 1500 [caracteres]).'),
+        .isLength({ min: 10, max: 3000 })
+        .withMessage('El parametro appointment_footer ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

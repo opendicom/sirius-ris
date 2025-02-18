@@ -41,7 +41,13 @@ module.exports = async (req, res, currentSchema, operation) => {
             //Check result:
             if(insertResult.success){
                 //Save report data:
-                await moduleServices.insert(req, res, currentSchema, referencedElements);
+                const insertController = await moduleServices.insert(req, res, currentSchema, referencedElements);
+
+                //Check insertController:
+                if(insertController === false){
+                    //Return to 'P06 - Para informar' status recently changed to 'P07 - Informe borrador':
+                    await moduleServices.setPerformingFS(req.body.fk_performing, 'P06');
+                }
             } else {
                 //Send error message:
                 res.status(422).send({ success: false, message: insertResult.message });
