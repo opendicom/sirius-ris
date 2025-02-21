@@ -34,8 +34,8 @@
 
 **Sirius RIS** works together with two other services with which it interacts for the management of **MWL** and **DICOM** images:
 
-* [wezen](https://github.com/opendicom/wezen)
-* [dockerpacs](https://github.com/opendicom/dockerpacs)
+* [wezen](https://hub.docker.com/r/opendicom/wezen)
+* [dockerpacs](https://hub.docker.com/r/opendicom/dcm4chee)
 
 
 
@@ -58,6 +58,21 @@
 ---
 
 
+
+## Official Support
+
+**[opendicom](https://github.com/opendicom)** is a company that provides **PACS** and **RIS** services to hospitals and imaging clinic clients based on its own and third-party **opensource** software.
+
+The business model does not include charitable support, but allows collaboration with local IT professionals and knowledge transfer knowledge transfer so that it is beneficial to both parties in the long term.
+
+Through the following contact you can request a demo, commercial proposal, or submit a collaboration proposal.
+
+**Jacques Fauquex**
+jacquesfauquex@opendicom.com
+
+
+
+---
 
 ## License
 

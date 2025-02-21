@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
 # Example:
-# docker build -t opendicom/sirius-frontend:1.2.1 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-frontend:1.2.2 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -11,7 +11,7 @@
 # OHIF STAGE (Extract bundles):
 # ------------------------------------------------------------------------------------- #
 # Set ohif-bundles image:
-FROM opendicom/ohif-viewer:3.7 AS ohif-bundles
+FROM opendicom/ohif-viewer:3.9 AS ohif-bundles
 # ------------------------------------------------------------------------------------- #
 
 
@@ -48,7 +48,7 @@ RUN ng build
 # Docker Multi stage build (Final image):
 FROM nginx:alpine
 
-LABEL version="1.2.1"
+LABEL version="1.2.2"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
