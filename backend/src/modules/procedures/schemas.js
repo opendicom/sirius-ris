@@ -84,8 +84,8 @@ const Validator = [
 
     body('name')
         .trim()
-        .isLength({ min: 3, max: 64 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .isLength({ min: 3, max: 70 })
+        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 70 [caracteres]).'),
 
     body('code')
         .optional()

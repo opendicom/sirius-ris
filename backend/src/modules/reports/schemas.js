@@ -84,8 +84,8 @@ const Validator = [
     body('findings.*.title')
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 3, max: 50 })
-        .withMessage('El parametro findings.*.title ingresado es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
+        .isLength({ min: 3, max: 80 })
+        .withMessage('El parametro findings.*.title ingresado es demasiado corto o demasiado largo (min: 3, max: 80 [caracteres]).'),
 
     body('summary')
         .optional()
