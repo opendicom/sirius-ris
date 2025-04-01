@@ -638,7 +638,7 @@ export class FormComponent implements OnInit {
     //Check that the study has not been previously requested:
     if(this.requestedDICOMController === false){
       //Request DICOM image query path:
-      this.sharedFunctions.wezenStudyToken(this.fk_performing, (wezenStudyTokenRes) => {
+      this.sharedFunctions.wezenStudyToken(this.fk_performing, 'ohif', (wezenStudyTokenRes) => {
         if(wezenStudyTokenRes.success === true){
           //Set requestedDICOMController and ohifPath:
           this.requestedDICOMController = true;

@@ -1,0 +1,196 @@
+<h1 mat-dialog-title id="IDdialogTitle" class="underline-ok"><mat-icon>visibility</mat-icon>&nbsp; Imágenes del estudio</h1>
+<div mat-dialog-content [class.adjust-mat-dialog-content-ohif]="ohifPath !== undefined && ohifPath !== null && ohifPath !== ''">
+  <div *ngIf="ohifPath !== undefined && ohifPath !== null && ohifPath !== ''; then thenBlockViewer else elseBlockViewer"></div>
+
+  <!-- DICOM VIEWER -->
+  <ng-template #thenBlockViewer>
+    <!-- documents -->
+    <div class="current-info divider-alt">
+      <small>Documento/s:</small><br/>
+      <span *ngFor="let current of data.patient.person.documents" >
+        <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+        <span matTooltip="{{ document_types[current.doc_type] }}">
+          <span>{{ current.document }}</span>
+        </span>
+        <br/>
+      </span>
+    </div>
+      
+    <!-- names -->
+    <div class="current-info divider-alt">
+      <small>Nombre completo:</small><br/>
+      <span class="current-firts">
+        <span>{{ data.patient.person.name_01 }}</span>
+
+        <span *ngIf="data.patient.person.name_02">
+          <span> {{ data.patient.person.name_02 }}</span>
+        </span>
+
+        <span> {{ data.patient.person.surname_01 }}</span>
+
+        <span *ngIf="data.patient.person.surname_02">
+          <span> {{ data.patient.person.surname_02 }}</span>
+        </span>
+      </span>
+    </div>
+
+    <!-- date -->
+    <div class="current-info">
+      <small>Fecha:</small><br/>
+      <span>{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+    </div>
+
+    <div class="clear"></div>
+
+    <!-- DICOM VIEWER COMPONENT -->
+    <div class="dcm-viewer">
+      <app-dcm-viewer src="{{ ohifPath }}"></app-dcm-viewer>
+    </div>
+  </ng-template>
+
+  <!-- DIALOG -->
+  <ng-template #elseBlockViewer>
+    
+    <h3 class="details-title">Datos de la realización:</h3>
+      
+    <!-- imaging -->
+    <div class="current-info divider-alt">
+      <small>Organización ► Sucursal ► Servicio:</small><br/>
+      <span class="current-firts">{{ data.appointment.imaging.organization.short_name + ' ► ' + data.appointment.imaging.branch.short_name + ' ► ' + data.appointment.imaging.service.name }}</span>
+    </div>
+
+    <!-- date -->
+    <div class="current-info divider-alt">
+      <small>Fecha:</small><br/>
+      <span class="performing-firts">{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+    </div>
+
+    <!-- time -->
+    <div class="current-info divider-alt">
+      <small>Hora:</small><br/>
+      <span class="performing-firts">{{ data.date | date : "HH:mm" : "UTC" }}</span>
+    </div>
+
+    <!-- procedure -->
+    <div class="current-info text-center divider-alt">
+      <small>Procedimiento a realizar:</small><br/>
+      <span class="badge-alt">
+        <span>{{ data.procedure.name }}</span>
+      </span>
+    </div>
+
+    <!-- modality -->
+    <div class="current-info text-center">
+      <small>Modalidad:</small><br/>
+      <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
+        <span>{{ data.modality.code_value }}</span>
+      </span>
+    </div>
+
+    <div class="clear"></div>
+    <hr class="dashed" />
+
+    <!-- documents -->
+    <div class="current-info divider-alt">
+      <small>Documento/s:</small><br/>
+      <span *ngFor="let current of data.patient.person.documents" >
+        <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+        <span matTooltip="{{ document_types[current.doc_type] }}">
+          <span>{{ current.document }}</span>
+        </span>
+        <br/>
+      </span>
+    </div>
+      
+    <!-- names -->
+    <div class="current-info">
+      <small>Nombre completo:</small><br/>
+      <span class="current-firts">
+        <span>{{ data.patient.person.name_01 }}</span>
+
+        <span *ngIf="data.patient.person.name_02">
+          <span> {{ data.patient.person.name_02 }}</span>
+        </span>
+
+        <span> {{ data.patient.person.surname_01 }}</span>
+
+        <span *ngIf="data.patient.person.surname_02">
+          <span> {{ data.patient.person.surname_02 }}</span>
+        </span>
+      </span>
+    </div>
+
+    <div class="clear"></div>
+    <hr class="dashed" /><br/>
+
+    <div class="text-center">
+      <small>Study IUID</small><br/><span class="label-accent">{{ data.appointment.study_iuid }}</span>
+    </div>
+
+    <div class="clear"></div><br/>
+    <hr class="dashed" /><br/>
+
+    <div *ngIf="dicomZipURL !== undefined && dicomZipURL !== null && dicomZipURL !== ''; then thenBlockDICOM else elseBlockDICOM"></div>
+
+    <!-- DICOM ACTION TYPES -->
+    <ng-template #thenBlockDICOM>
+      <div class="text-center">
+        <button mat-flat-button (click)="getStudyDICOM(data._id, 'ohif')" class="view-button">
+          <mat-icon>visibility</mat-icon>&nbsp;OHIF
+        </button> &nbsp;
+
+        <!--
+        <button mat-flat-button color="accent" (click)="getStudyDICOM(data._id, 'weasis')">
+          <mat-icon>preview</mat-icon>&nbsp;WEASIS
+        </button> &nbsp;
+        -->
+        
+        <span *ngIf="isMac">
+          <a mat-flat-button color="accent" href="osirix://?methodName=downloadURL&URL='{{ dicomZipURL }}'" (click)="current_dialog.closeAll()">
+            <mat-icon>download</mat-icon>&nbsp;OSIRIX | HOROS
+          </a> &nbsp;
+        </span>
+
+        <a mat-flat-button href="{{ dicomZipURL }}" (click)="current_dialog.closeAll()" class="download-button">
+          <mat-icon>download</mat-icon>&nbsp;DESCARGAR
+        </a>
+
+        <div class="clear"></div><br/>
+        <hr class="dashed" />
+
+        <small class="text-center">  
+          <strong>Download Weasis DICOM Medical Viewer</strong><br/>
+          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=windows" (click)="current_dialog.closeAll()" class="small_button">
+            <mat-icon>download</mat-icon>&nbsp;Windows
+          </a> &nbsp;
+
+          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=macos" (click)="current_dialog.closeAll()" class="small_button">
+            <mat-icon>download</mat-icon>&nbsp;MacOS
+          </a> &nbsp;
+
+          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=linux.deb" (click)="current_dialog.closeAll()" class="small_button">
+            <mat-icon>download</mat-icon>&nbsp;Linux DEB
+          </a> &nbsp;
+
+          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=linux.rpm" (click)="current_dialog.closeAll()" class="small_button">
+            <mat-icon>download</mat-icon>&nbsp;Linux RPM
+          </a> &nbsp;
+        </small>
+      </div>
+    </ng-template>
+
+    <ng-template #elseBlockDICOM>
+      <div class="text-center">
+        <mat-icon class="no-dicom">visibility_off</mat-icon>
+        <h3>No se encontraron imágenes asociadas al estudio</h3>
+      </div>
+    </ng-template>
+
+    <div class="clear"></div><br/>
+  </ng-template>
+</div>
+
+<div mat-dialog-actions>
+  <span class="mat-spacer"></span>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+</div>

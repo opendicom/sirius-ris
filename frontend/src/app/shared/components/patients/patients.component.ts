@@ -145,7 +145,7 @@ export class PatientsComponent implements OnInit {
 
   getStudyDICOM(fk_performing: string){
     //Request DICOM image query path:
-    this.sharedFunctions.wezenStudyToken(fk_performing, (wezenStudyTokenRes) => {
+    this.sharedFunctions.wezenStudyToken(fk_performing, 'ohif', (wezenStudyTokenRes) => {
       if(wezenStudyTokenRes.success === true){
         //Set ohifPath:
         this.ohifPath = wezenStudyTokenRes.path;

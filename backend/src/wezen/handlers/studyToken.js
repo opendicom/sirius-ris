@@ -336,10 +336,14 @@ module.exports = async (req, res) => {
                                         //Set viewer external path (ip_server):
                                         wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.sirius_frontend.port + '/dcm-viewer/viewer/dicomjson?url=http%3A%2F%2F' + mainSettings.ip_server + '%3A' + mainSettings.wezen.port + '%2FstudyToken%3FaccessType%3Dohif%26token%3D' + token + '%26StudyInstanceUID%3D' + performingData[0].appointment.study_iuid;
                                         break;
+
+                                    case 'weasis':
+                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=weasis.xml&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid;
+                                        break;
                                     
                                     case 'dicom.zip':
                                         //Set DICOM download external path (ip_server):
-                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=dicom.zip?token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid;
+                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=dicom.zip&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid;
                                         break;
                                 }
                                 

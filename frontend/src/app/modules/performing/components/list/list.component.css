@@ -25,6 +25,7 @@ mat-chip.line-break {
     height: 25px !important;
     border-radius: 5px !important;
     padding: 0% !important;
+    color: #27293d !important;
 }
 
 .small_button mat-icon {

@@ -34,6 +34,7 @@ import { ReportReviewComponent } from '@shared/components/dialogs/report-review/
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
+import { DicomAccessComponent } from '@shared/components/dialogs/dicom-access/dicom-access.component';
 import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
 import { PatientDetailsComponent } from '@shared/components/dialogs/patient-details/patient-details.component';
@@ -79,6 +80,7 @@ import * as IC from '@shared/directives/input-control.directive';
     PasswordRequestComponent,
     PerformingDownloadsComponent,
     MailDeliveryComponent,
+    DicomAccessComponent,
     AppointmentRequestDetailsComponent,
     SearchInfoComponent,
     PatientDetailsComponent,
@@ -134,6 +136,7 @@ import * as IC from '@shared/directives/input-control.directive';
     PasswordRequestComponent,
     PerformingDownloadsComponent,
     MailDeliveryComponent,
+    DicomAccessComponent,
     AppointmentRequestDetailsComponent,
     SearchInfoComponent,
     PatientDetailsComponent,

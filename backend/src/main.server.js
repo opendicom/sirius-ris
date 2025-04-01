@@ -42,6 +42,7 @@ module.exports = function() {
     const exporterRoutes                = require('./exporter/routes');
     const wezenRoutes                   = require('./wezen/routes');
     const statsRoutes                   = require('./stats/routes');
+    const downloadsRoutes               = require('./downloads/routes');
 
     //Import app modules:
     const mainServices  = require('./main.services');                           // Main services
@@ -159,6 +160,7 @@ module.exports = function() {
     app.use('/exporter',                exporterRoutes);
     app.use('/wezen',                   wezenRoutes);
     app.use('/stats',                   statsRoutes);
+    app.use('/downloads',               downloadsRoutes);
 
     //Start message:
     let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });

@@ -1,0 +1,45 @@
+.male {
+  color: #05a3ff;
+}
+
+.female {
+  color: #d53a9d;
+}
+
+.other {
+  color: #05ffa1;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.performing-firts {
+  font-size: 18px;
+}
+
+.details-title {
+  margin-bottom: 5px !important;
+}
+
+.no-dicom {
+  color: #383a53;
+  margin-left: -12.6%;
+  font-size: 120px;
+}
+
+.adjust-mat-dialog-content-ohif {
+  min-height: 860px !important;
+}
+
+.view-button {
+  background-color: #733ad5a9;
+  color: #ffffff;
+}
+
+.download-button {
+background-color: #05ff9f8e;
+color: #ffffff;
+}

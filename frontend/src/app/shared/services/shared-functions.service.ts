@@ -22,6 +22,7 @@ import { ReportReviewComponent } from '@shared/components/dialogs/report-review/
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
 import { MailDeliveryComponent } from '@shared/components/dialogs/mail-delivery/mail-delivery.component';
+import { DicomAccessComponent } from '@shared/components/dialogs/dicom-access/dicom-access.component';
 import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/appointment-request-details/appointment-request-details.component';
 import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
 import { PatientDetailsComponent } from '@shared/components/dialogs/patient-details/patient-details.component';
@@ -461,6 +462,11 @@ export class SharedFunctionsService {
         //SEARCH INFO:
         case 'search_info':
           this.basicDialog(SearchInfoComponent, operationHandler, (result) => { callback(result) });
+          break;
+
+        //DICOM ACCESS:
+        case 'dicom_access':
+          this.basicDialog(DicomAccessComponent, operationHandler, (result) => { callback(result) });
           break;
       }
     }
@@ -969,9 +975,9 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // WEZEN STUDY TOKEN:
   //--------------------------------------------------------------------------------------------------------------------//
-  wezenStudyToken(fk_performing: string, callback = (res: any) => {}): void {
+  wezenStudyToken(fk_performing: string, accessType: string = 'ohif', callback = (res: any) => {}): void {
     //Create observable obsFind:
-    const obsFind = this.apiClient.sendRequest('GET', 'wezen/studyToken', { fk_performing: fk_performing, accessType: 'ohif' });
+    const obsFind = this.apiClient.sendRequest('GET', 'wezen/studyToken', { fk_performing: fk_performing, accessType });
 
     //Observe content (Subscribe):
     obsFind.subscribe({
@@ -1957,6 +1963,15 @@ export class SharedFunctionsService {
     const resultDate = new Date(date);
     resultDate.setDate(resultDate.getDate() + days);
     return resultDate.toISOString();
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // IS MAC:
+  //--------------------------------------------------------------------------------------------------------------------//
+  isMac(): boolean {
+    return navigator.userAgent.includes('Mac');
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

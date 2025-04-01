@@ -151,6 +151,7 @@ export class ListComponent implements OnInit {
       'appointment.report_before': 1,
       'appointment.attached_files._id': 1,    //Only _id and name for performing downloads dialog.
       'appointment.attached_files.name': 1,   //Only _id and name for performing downloads dialog.
+      'appointment.study_iuid': 1,
       'fk_appointment': 1,
       'date': 1,
       'flow_state': 1,
@@ -200,5 +201,10 @@ export class ListComponent implements OnInit {
   mailDelivery(current_performing: any){
     //Open dialog to display downloadable files:
     this.sharedFunctions.openDialog('mail_delivery', current_performing);
+  }
+
+  dicomAccess(current_performing: any){
+    //Open dialog to display DICOM options:
+    this.sharedFunctions.openDialog('dicom_access', current_performing);
   }
 }
