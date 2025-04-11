@@ -139,16 +139,14 @@
           <mat-icon>visibility</mat-icon>&nbsp;OHIF
         </button> &nbsp;
 
-        <!--
         <button mat-flat-button color="accent" (click)="getStudyDICOM(data._id, 'weasis')">
           <mat-icon>preview</mat-icon>&nbsp;WEASIS
         </button> &nbsp;
-        -->
         
         <span *ngIf="isMac">
-          <a mat-flat-button color="accent" href="osirix://?methodName=downloadURL&URL='{{ dicomZipURL }}'" (click)="current_dialog.closeAll()">
-            <mat-icon>download</mat-icon>&nbsp;OSIRIX | HOROS
-          </a> &nbsp;
+          <button mat-flat-button color="accent" (click)="getStudyDICOM(data._id, 'osirix')">
+            <mat-icon>preview</mat-icon>&nbsp;OSIRIX | HOROS
+          </button> &nbsp;
         </span>
 
         <a mat-flat-button href="{{ dicomZipURL }}" (click)="current_dialog.closeAll()" class="download-button">
@@ -164,7 +162,7 @@
             <mat-icon>download</mat-icon>&nbsp;Windows
           </a> &nbsp;
 
-          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=macos" (click)="current_dialog.closeAll()" class="small_button">
+          <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=macos" (click)="current_dialog.closeAll()" class="small_button" target="_blank">
             <mat-icon>download</mat-icon>&nbsp;MacOS
           </a> &nbsp;
 

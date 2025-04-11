@@ -53,7 +53,7 @@ export class DicomAccessComponent implements OnInit {
         switch(accessType){
           case 'ohif':
             //Set ohifPath:
-            this.ohifPath = wezenStudyTokenRes.path.replace('localhost:4000', 'localhost:3000');
+            this.ohifPath = wezenStudyTokenRes.path;
 
             //Get native element to remove:
             const dialogTitle = document.getElementById('IDdialogTitle');
@@ -63,10 +63,16 @@ export class DicomAccessComponent implements OnInit {
             this.dialogRef.updateSize('1200px', '960px');
             break;
 
+          case 'osirix':
+            //Redirect to osirix service:
+            window.location.href = "osirix://?methodName=downloadURL&URL='" + this.dicomZipURL + "'";
+            this.current_dialog.closeAll();
+            break;
+
           case 'weasis':
-            //Redirect to weasis with wezen:
-            //router.navigate([wezenStudyTokenRes]);
-            console.log(wezenStudyTokenRes);
+            //Redirect to weasis:
+            window.location.href = 'weasis://' + encodeURIComponent('$dicom:get -w "' + wezenStudyTokenRes.path + '"');
+            this.current_dialog.closeAll();            
             break;
 
           case 'dicom.zip':

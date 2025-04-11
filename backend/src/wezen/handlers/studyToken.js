@@ -338,7 +338,8 @@ module.exports = async (req, res) => {
                                         break;
 
                                     case 'weasis':
-                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=weasis.xml&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid;
+                                        //Set weasis manifiest path (ip_server):
+                                        wezenPath = 'http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/studyToken?accessType=weasis.xml&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid + '&proxyURI=http://' + mainSettings.ip_server + ':' + mainSettings.wezen.port + '/wado';
                                         break;
                                     
                                     case 'dicom.zip':
