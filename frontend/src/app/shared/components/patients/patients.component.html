@@ -30,16 +30,14 @@
                   </button>
 
                   <!--view dicom in HTML-->
-                  <button mat-icon-button color="accent" aria-label="Ver imágenes asociadas" (click)="getStudyDICOM(element._id)" matTooltip="Ver imágenes asociadas">
+                  <button mat-icon-button color="accent" aria-label="Ver imágenes asociadas" (click)="getStudyDICOM(element._id, 'ohif')" matTooltip="Ver imágenes asociadas">
                       <mat-icon>visibility</mat-icon>
                   </button>
 
                   <!--download dicom-->
-                  <!--
-                  <button mat-icon-button color="accent" aria-label="Descargar imágenes" matTooltip="Descargar imágenes">
-                      <mat-icon>cloud_download</mat-icon>
+                  <button mat-icon-button color="accent" aria-label="Descargar imágenes asociadas" (click)="getStudyDICOM(element._id, 'dicom.zip')" matTooltip="Descargar imágenes asociadas">
+                    <mat-icon>download</mat-icon>
                   </button>
-                  -->
               </ng-template>
 
               <!-- flow_state -->

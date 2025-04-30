@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -22,6 +22,8 @@ import {                                                                        
   styleUrls: ['./patients.component.css']
 })
 export class PatientsComponent implements OnInit {
+  @ViewChild('hiddenLink') hiddenLink!: ElementRef;
+
   //Set component properties:
   public country_codes          : any = ISO_3166;
   public document_types         : any = document_types;
@@ -29,7 +31,8 @@ export class PatientsComponent implements OnInit {
   public cancellation_reasons   : any = cancellation_reasons;
 
   //Initializate ohifPath:
-  public ohifPath                : string = '';
+  public ohifPath               : string = '';
+  public dicomZipURL            : string = '';
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -143,12 +146,29 @@ export class PatientsComponent implements OnInit {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
 
-  getStudyDICOM(fk_performing: string){
+  getStudyDICOM(fk_performing: string, accessType: string){
     //Request DICOM image query path:
-    this.sharedFunctions.wezenStudyToken(fk_performing, 'ohif', (wezenStudyTokenRes) => {
+    this.sharedFunctions.wezenStudyToken(fk_performing, accessType, (wezenStudyTokenRes) => {
       if(wezenStudyTokenRes.success === true){
-        //Set ohifPath:
-        this.ohifPath = wezenStudyTokenRes.path;
+        //Switch by accessType:
+        switch(accessType){
+          case 'ohif':
+            //Set ohifPath:
+            this.ohifPath = wezenStudyTokenRes.path;
+            break;
+
+          case 'dicom.zip':
+            // Create a link from Javascript:
+            // Prevent the Angular Router from handling the path when the click event is triggered.
+            const a = document.createElement('a');
+            a.href = wezenStudyTokenRes.path; //Set dicomZipURL:
+            a.rel = 'noopener';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            break;
+        }
       } else {
         //Send Console Warn Message:
         console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
