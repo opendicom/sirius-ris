@@ -35,7 +35,13 @@
               "./node_modules/@ckeditor/ckeditor5-build-classic/build/translations/es.js",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "url",
+              "@auth0/angular-jwt",
+              "html-to-pdfmake",
+              "pdfmake"
+            ]
           },
           "configurations": {
             "production": {

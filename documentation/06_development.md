@@ -53,7 +53,7 @@ npm install --save-dev @angular-devkit/build-angular@13.3.4
 * Install **frontend** dependencies [ Run inside project `src` folder ]:
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 

@@ -11,10 +11,10 @@ import { regexObjectId } from '@env/environment';                               
 //PDF Make:
 // Note: Use ts-ignore comment to suppress PDFMake declarations errors.
 // @ts-ignore
-import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfMake from 'pdfmake/build/pdfmake';
 // @ts-ignore
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+(pdfMake as any).vfs = pdfFonts.vfs;
 
 //HTML to PDF Make:
 import htmlToPdfmake from 'html-to-pdfmake';
