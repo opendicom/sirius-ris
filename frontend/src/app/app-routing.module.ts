@@ -37,6 +37,7 @@ const routes: Routes = [
   //Advanced options:
   { path: 'advanced-search', loadChildren: () => import('@modules/advanced-search/advanced-search.module').then( m => m.AdvancedSearchModule ), canActivate: [AuthGuard] },
   { path: 'stats', loadChildren: () => import('@modules/stats/stats.module').then( m => m.StatsModule ), canActivate: [AuthGuard] },
+  { path: 'billing', loadChildren: () => import('@modules/billing/billing.module').then( m => m.BillingModule ), canActivate: [AuthGuard] },
 
   { path: 'logs', loadChildren: () => import('@modules/logs/logs.module').then( m => m.LogsModule ), canActivate: [AuthGuard] },
   { path: 'users', loadChildren: () => import('@modules/users/users.module').then( m => m.UsersModule ), canActivate: [AuthGuard] },

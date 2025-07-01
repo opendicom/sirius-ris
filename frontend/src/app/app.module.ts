@@ -65,6 +65,7 @@ import { PerformingModule } from '@modules/performing/performing.module';
 import { ReportsModule } from '@modules/reports/reports.module';
 import { AdvancedSearchModule } from '@modules/advanced-search/advanced-search.module';
 import { StatsModule } from '@modules/stats/stats.module';
+import { BillingModule } from '@modules/billing/billing.module';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -105,7 +106,8 @@ import { StatsModule } from '@modules/stats/stats.module';
     PerformingModule,
     ReportsModule,
     AdvancedSearchModule,
-    StatsModule
+    StatsModule,
+    BillingModule
   ],
   providers: [
     AppInitializer,

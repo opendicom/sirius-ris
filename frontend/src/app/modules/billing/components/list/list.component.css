@@ -1,0 +1,64 @@
+.domain-container {
+    background-color: rgba(255, 255, 255, 0.035);
+    margin: 0px -17px 0px 8px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.documents {
+    padding-left: 10px;
+}
+
+mat-chip.line-break {
+    height: auto;
+    line-height: 1.1em;
+}
+
+.badge-mini {
+    float: none !important;
+}
+
+.small_button{
+    margin-left: 6px !important;
+    margin-bottom: 7px !important;
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: 5px !important;
+    padding: 0% !important;
+    color: #27293d !important;
+}
+
+.small_button mat-icon {
+    position: relative !important;
+    margin: 0px !important;
+    top: -8px !important;
+}
+
+.patient-details {
+  cursor: pointer;
+  color: rgb(240, 206, 122);
+}
+
+.report-control-pristine {
+    color: #05ffa1 !important;
+}
+
+.report-control-good {
+    color: rgb(240, 206, 122);
+}
+
+.report-control-warn {
+    color: #ff7c7c;
+}
+
+.report-control-finished {
+    color: #c4acea;
+}
+
+.bg-color-ok{
+  background-color: #05ff9f87 !important;
+}
+
+.bg-color-fail{
+  background-color: #ff6f69 !important;
+}

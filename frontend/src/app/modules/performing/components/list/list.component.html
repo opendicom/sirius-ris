@@ -329,11 +329,9 @@
       <ng-container matColumnDef="urgency">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <span *ngIf="element.appointment">
-              <div *ngIf="element.appointment.urgency; then thenBlock else elseBlock"></div>
-              <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-              <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
-          </span>
+            <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
+            <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
         </td>
       </ng-container>
 
