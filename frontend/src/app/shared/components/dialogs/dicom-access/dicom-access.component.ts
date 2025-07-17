@@ -53,7 +53,7 @@ export class DicomAccessComponent implements OnInit {
         switch(accessType){
           case 'ohif':
             //Set ohifPath:
-            this.ohifPath = wezenStudyTokenRes.path;
+            this.ohifPath = wezenStudyTokenRes.path; //.replace("localhost:4000", "localhost:3000"); // <-- OHIF container dev-test.
 
             //Get native element to remove:
             const dialogTitle = document.getElementById('IDdialogTitle');

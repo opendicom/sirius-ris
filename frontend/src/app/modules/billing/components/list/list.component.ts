@@ -40,6 +40,7 @@ export class ListComponent implements OnInit {
     'element_action',
     'flow_state',
     'date',
+    'auth_date',
     'report_control',
     'documents',
     'names',

@@ -446,9 +446,18 @@ const concessionPermissions = {
     23: {
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
-    }
+    },
     
-    // 24 : Listados de facturación:
+    // 24 : Listados de facturación (Performing -> 5 : Gestión de estudios):
+    24: {
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
+        appointments            : ['find', 'findOne', 'update'],
+        pathologies             : ['find', 'findOne'],
+        performing              : ['find', 'findOne', 'insert', 'update'],
+        reports                 : ['find', 'findOne'],
+        signatures              : ['find', 'findOne']
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

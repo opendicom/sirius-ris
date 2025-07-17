@@ -38,15 +38,51 @@
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha realización</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
         </td>
       </ng-container>
 
+       <!-- auth_date -->
+      <ng-container matColumnDef="auth_date">
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha informe</th>
+        <td mat-cell *matCellDef="let element" class="column-alt text-center">
+          <!-- Check if current performing is cancelled or not -->
+          <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled_A else elseBlockCancelled_A"></span>
+          <ng-template #thenBlockNotCancelled_A>
+
+            <!-- Check if procedure requires or not report -->
+            <span *ngIf="element.date && element.procedure && element.procedure.reporting_delay !== undefined && element.procedure.reporting_delay !== null && element.procedure.reporting_delay !== ''; then thenBlocklReportControl_A else elseBlocklReportControl_A"></span>
+
+            <ng-template #thenBlocklReportControl_A>
+              
+              <!-- Authenticate control -->
+              <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated_A else elseBlockNotAuthenticated_A"></span>
+              <ng-template #thenBlockAuthenticated_A>
+                {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}       
+              </ng-template>
+
+              <ng-template #elseBlockNotAuthenticated_A>
+                <mat-chip class="bg-color-fail">NO</mat-chip>
+              </ng-template>
+            </ng-template>
+
+            <ng-template #elseBlocklReportControl_A>
+              <mat-chip>NO REQUIERE INFORME</mat-chip>
+            </ng-template>
+          </ng-template>
+
+          <!--Cancelled (disable control)-->
+          <ng-template #elseBlockCancelled_A>
+            <mat-chip class="bg-color-fail">NO</mat-chip>
+          </ng-template>
+        </td>
+      </ng-container>
+
       <!-- report control -->
       <ng-container matColumnDef="report_control">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Informe </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Días transcurridos </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <!-- Check if current performing is cancelled or not -->
           <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled else elseBlockCancelled"></span>
@@ -60,38 +96,35 @@
               <!-- Authenticate control -->
               <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated else elseBlockNotAuthenticated"></span>
               <ng-template #thenBlockAuthenticated>
-                <span class="badge">
-                  <small>
-                    <!-- Create authDaysPassed to prevent multiple function exectution: -->
-                    <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
-                      <!-- Days passed count: -->
-                      <ng-container *ngIf="authDaysPassed != 'zero'; else noDaysPassed">
-                        Autenticado: {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
-                        <span class="report-control-finished">{{ authDaysPassed }} día/s de espera</span>
-                      </ng-container>
-
-                      <!-- Authenticated on the day: -->
-                      <ng-template #noDaysPassed>
-                        Autenticado en el día
-                      </ng-template>
+                <small>
+                  <!-- Create authDaysPassed to prevent multiple function exectution: -->
+                  <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
+                    <!-- Days passed count: -->
+                    <ng-container *ngIf="authDaysPassed != 'zero'; else noDaysPassed">
+                      <span class="report-control-finished">{{ authDaysPassed }} día/s de espera</span>
                     </ng-container>
-                  </small>
-                </span>         
+
+                    <!-- Authenticated on the day: -->
+                    <ng-template #noDaysPassed>
+                      Autenticado en el día
+                    </ng-template>
+                  </ng-container>
+                </small>         
               </ng-template>
 
               <ng-template #elseBlockNotAuthenticated>
-                <mat-chip class="bg-color-fail">NO</mat-chip>
+                <small>N/A</small>
               </ng-template>
             </ng-template>
 
             <ng-template #elseBlocklReportControl>
-              <mat-chip>NO REQUIERE INFORME</mat-chip>
+              <small>N/A</small>
             </ng-template>
           </ng-template>
 
           <!--Cancelled (disable control)-->
           <ng-template #elseBlockCancelled>
-            <mat-chip class="bg-color-fail">NO</mat-chip>
+            <small>N/A</small>
           </ng-template>
         </td>
       </ng-container>

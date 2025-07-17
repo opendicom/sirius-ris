@@ -156,7 +156,7 @@ export class ActionComponent implements OnInit {
         }
 
         //Check if it is the performing list to find the authenticated ones:
-        if(this.sharedProp.element === 'performing' && this.sharedProp.action.content_title === 'Listado de estudios'){
+        if(this.sharedProp.element === 'performing' && (this.sharedProp.action.content_title === 'Listado de estudios' || this.sharedProp.action.content_title === 'Listado para facturación')){
           this.sharedFunctions.getAuthenticated(res.data);
         }
 

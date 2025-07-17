@@ -87,13 +87,15 @@
     
     <!-- 1: Superusuario (En desarrollo) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
-
       <mat-divider></mat-divider>
 
       <mat-list-item>
         <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
       </mat-list-item>
+    </div>
 
+    <!-- 1: Superusuario, 2: Administrador, Concesiones: [24: Listados de facturación] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [24]))" >
       <mat-divider></mat-divider>
 
       <mat-list-item routerLink="/billing/list">
