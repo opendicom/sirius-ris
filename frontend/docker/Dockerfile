@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
 # Example:
-# docker build -t opendicom/sirius-frontend:1.3.0 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-frontend:1.4.0 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -50,7 +50,7 @@ RUN ng build
 # Docker Multi stage build (Final image):
 FROM nginx:alpine
 
-LABEL version="1.3.0"
+LABEL version="1.4.0"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
