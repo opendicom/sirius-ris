@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.4 Chrome/138.0.7204.97 Electron/37.2.1 Safari/537.36" version="28.0.4" pages="5">
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16" pages="5">
   <diagram id="c8AlniNgnC6gUzvwT8JO" name="Services">
     <mxGraphModel dx="1674" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -541,7 +541,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="_PimjJ2pTZH04JPI4NIP" name="UML">
-    <mxGraphModel dx="1426" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1470" dy="916" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -779,7 +779,7 @@
         <mxCell id="tOGAFc4aiXuX_3bDdGZt-74" value="- coefficient: number" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="tOGAFc4aiXuX_3bDdGZt-54" vertex="1">
           <mxGeometry y="482" width="211" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="7JzWt9bhwdXDRrgpOfo1-1" value="- reporting_delay: number" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="tOGAFc4aiXuX_3bDdGZt-54" vertex="1">
+        <mxCell id="7JzWt9bhwdXDRrgpOfo1-1" value="- reporting_delay: number" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" vertex="1" parent="tOGAFc4aiXuX_3bDdGZt-54">
           <mxGeometry y="506" width="211" height="24" as="geometry" />
         </mxCell>
         <mxCell id="tOGAFc4aiXuX_3bDdGZt-75" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="tOGAFc4aiXuX_3bDdGZt-54" vertex="1">
@@ -1242,7 +1242,7 @@
         <mxCell id="tOGAFc4aiXuX_3bDdGZt-224" value="}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFFFFF;" parent="tOGAFc4aiXuX_3bDdGZt-209" vertex="1">
           <mxGeometry y="362" width="230" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="tOGAFc4aiXuX_3bDdGZt-225" value="- medical_signatures: [ ObjectId ]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFCCE6;" parent="tOGAFc4aiXuX_3bDdGZt-209" vertex="1">
+        <mxCell id="tOGAFc4aiXuX_3bDdGZt-225" value="- fk_medical_signatures: [ ObjectId ]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFCCE6;" parent="tOGAFc4aiXuX_3bDdGZt-209" vertex="1">
           <mxGeometry y="386" width="230" height="24" as="geometry" />
         </mxCell>
         <mxCell id="tOGAFc4aiXuX_3bDdGZt-226" value="- fk_pathologies: [ ObjectId ]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#FFCCE6;" parent="tOGAFc4aiXuX_3bDdGZt-209" vertex="1">

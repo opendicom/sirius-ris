@@ -51,7 +51,7 @@
 4. [Sirius Backend `API REST`](./documentation/04_sirius_backend_api_rest.md)
 5. [Sirius Web Module](https://github.com/opendicom/sirius-web)
 6. [Development guide](./documentation/06_development.md)
-7. [Scheduled tasks and Backups](./documentation/07_scheduled_tasks_and_backups.md)
+7. [Scheduled tasks, Backups and Database Indexes](./documentation/07_scheduled_tasks_backups_and_database_indexes.md)
 
 
 

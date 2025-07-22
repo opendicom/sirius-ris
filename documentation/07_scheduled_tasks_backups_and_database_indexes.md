@@ -64,3 +64,23 @@ Inside the cron file defined in `/etc/crontab` of the `opendicom/opendicom_siriu
 By uncommenting this line and restarting the container to take the changes to the `/etc/crontab` file, a script will start to run according to the defined periodicity (default: *every day at 1:00*), which will make backups of the **sirius-ris ** database on the `/backups` path.
 
 This script has a policy to control the retention of the number of dumps and logs to be preserved (default 10). This is intended to avoid an accumulation of unnecessary backups that could fill the available storage on a volume intended for backups.
+
+
+
+---
+
+
+
+## Database indexes
+
+The database created for **Sirius RIS** by default only contains the indexes created for each collection for its primary identifier (PK) *_id*.
+This is because **MongoDB** does not allow the creation of indexes on nonexistent collections or attributes.
+
+Once the database has the information for a complete cycle, for best performance, it is recommended to run the index creation script that the **sirius_database** container has in the `/opt/scripts/create-indexes.js` directory.
+
+```sh
+docker exec -it opendicom_sirius_database \
+  mongosh "mongodb://sirius_user:sirius_pass@localhost:27017/sirius_db?authSource=admin" \
+  /opt/scripts/create-indexes.js
+```
+

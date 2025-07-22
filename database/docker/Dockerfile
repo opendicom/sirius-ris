@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'database'.
 # Example:
-# docker build -t opendicom/sirius-database:1.1.2 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-database:1.2.0 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -12,7 +12,7 @@
 # ------------------------------------------------------------------------------------- #
 FROM mongo:latest
 
-LABEL version="1.1.2"
+LABEL version="1.2.0"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
@@ -40,6 +40,12 @@ COPY ./docker/backup.sh /opt/scripts/backup.sh
 
 # Give backup.sh execute permissions:
 RUN chmod +x /opt/scripts/backup.sh
+
+# Copy create-indexes.js for future execution (once the database already has information).
+COPY ./docker/create-indexes.js /opt/scripts/create-indexes.js
+
+# Give create-indexes.js execute permissions:
+RUN chmod +x /opt/scripts/create-indexes.js
 
 # Copy pre-entrypoint.sh:
 COPY ./docker/pre-entrypoint.sh /usr/local/bin/pre-entrypoint.sh
