@@ -1539,6 +1539,7 @@ async function checkSlot(req, res){
             const params = {
                 "$and": [
                     { "fk_slot": req.body.fk_slot },
+                    { "flow_state": "A01" }, // Only coordinated appointments, not canceled or suspended.
                     {
                         "$or": [
                             // Case 1: The new appointment starts before the existing appointment ends, but after it starts.
