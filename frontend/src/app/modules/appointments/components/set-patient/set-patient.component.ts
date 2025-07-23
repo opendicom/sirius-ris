@@ -707,7 +707,7 @@ export class SetPatientComponent implements OnInit {
     }
 
     //Set default no email value:
-    const defaultEmail = prefix + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description + '.com';
+    const defaultEmail = prefix + this.form.value.person.document + '@' + this.sharedProp.userLogged.permissions[0].description.replaceAll(" ", "") + '.com';
     this.form.get('user.email')?.setValue(defaultEmail);
   }
 
