@@ -2,7 +2,7 @@
 // MAIN SERVER:
 // This module creates Sirius RIS backend server (WebServer).
 //--------------------------------------------------------------------------------------------------------------------//
-module.exports = function() {
+module.exports = async function() {
     //Import external modules:
     const express       = require('express');
     const http          = require('http');
@@ -95,43 +95,7 @@ module.exports = function() {
     app.use(express.urlencoded({ limit: '50mb', extended: true }));    //Parsing application/x-www-form-urlencoded
     app.use(express.text({ limit: '200mb' }));
 
-    //Set MongoDB URI:
-    const mongodbURI = 'mongodb://' + mainSettings.db.user + ':' + mainSettings.db.pass + '@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name + '?authSource=admin';
-    const publicURI = 'mongodb://' + mainSettings.db.user + ':***@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
-
-    //Establish connection with MongoDB:
-    let cnxMongoDBStatus = false;
-    let cnXMongoDBMessage = '';
-
-    mongoose.connect(mongodbURI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true }, (err) => {
-        if(err){
-            //Set status conexion:
-            cnxMongoDBStatus = false;
-
-            //Set MongoDB Message:
-            cnXMongoDBMessage = currentLang.server.db_cnx_error + publicURI;
-
-            //Send messages to console:
-            console.error('| ' + cnXMongoDBMessage);
-            console.log(consoleLn + '\n');
-            throw err;
-        } else {
-            //Set status conexion:
-            cnxMongoDBStatus = true;
-
-            //Set MongoDB Message:
-            cnXMongoDBMessage = currentLang.server.db_cnx_success + publicURI;
-
-            //Send messages to console:
-            console.log('| ' + cnXMongoDBMessage);
-            console.log(consoleLn + '\n');
-        }
-
-        //Log level message:
-        console.log(' • Log level : ' + mainSettings.log_level + '\n');
-    });
-
-    //Set modules routes:
+    //Set modules routes (Only if database connection is established successful):
     app.use('/logs',                    logsRoutes);
     app.use('/sessions',                sessionsRoutes);
     app.use('/modalities',              modalitiesRoutes);
@@ -201,6 +165,42 @@ module.exports = function() {
     //HTTP and HTTPS Advice:
     if(mainSettings.webserver.http_enabled === false && mainSettings.webserver.https_enabled === false ){
         console.log('| ' + currentLang.server.non_server);
+    }
+
+    //Set MongoDB URI:
+    const mongodbURI = 'mongodb://' + mainSettings.db.user + ':' + mainSettings.db.pass + '@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name + '?authSource=admin';
+    const publicURI = 'mongodb://' + mainSettings.db.user + ':***@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
+
+    //Initializate mongo check status and message variables:
+    let cnxMongoDBStatus = false;
+    let cnXMongoDBMessage = '';
+
+    //Establish connection with MongoDB:
+    try {
+        await mongoose.connect(mongodbURI);
+
+        //Set status conexion:
+        cnxMongoDBStatus = true;
+
+        //Set MongoDB Message:
+        cnXMongoDBMessage = currentLang.server.db_cnx_success + publicURI;
+
+        //Send messages to console:
+        console.log('| ' + cnXMongoDBMessage);
+        console.log(consoleLn + '\n');
+
+        //Log level message:
+        console.log(' • Log level : ' + mainSettings.log_level + '\n');
+    } catch (err) {
+        //Set status conexion:
+        cnxMongoDBStatus = false;
+
+        //Set MongoDB Message:
+        cnXMongoDBMessage = currentLang.server.db_cnx_error + publicURI;
+
+        //Send messages to console:
+        console.error('| ' + cnXMongoDBMessage);
+        console.log(consoleLn + '\n');
     }
 
     //Set default server path:

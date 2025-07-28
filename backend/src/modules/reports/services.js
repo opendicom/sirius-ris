@@ -564,7 +564,7 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
         }},
 
         //Add report _id match condition in reports aggregate:
-        { '$match' : { _id: mongoose.Types.ObjectId(req.body._id) } }
+        { '$match' : { _id: new mongoose.Types.ObjectId(req.body._id) } }
     ];
 
     //Initializate operation result and report_complete_data:
@@ -1360,7 +1360,7 @@ async function setLogos(fk_performing){
         //------------------------------------------------------------------------------------------------------------//
 
         //Add fk_performing match condition in performing aggregate:
-        { '$match' : { _id: mongoose.Types.ObjectId(fk_performing) } }
+        { '$match' : { _id: new mongoose.Types.ObjectId(fk_performing) } }
     ];
 
     //Find performing by _id (Aggregate):

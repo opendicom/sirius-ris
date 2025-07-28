@@ -31,6 +31,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
@@ -42,6 +43,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Force limit to one result:
@@ -58,6 +60,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     signatures.Validator,
     (req, res) => {
@@ -70,6 +73,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     (req, res) => { 

@@ -35,6 +35,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
@@ -46,6 +47,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Force limit to one result:
@@ -62,6 +64,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     procedure_categories.Validator,
     async (req, res) => {
@@ -74,6 +77,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, procedure_categories.AllowedUnsetValues),
     procedure_categories.Validator,
@@ -87,6 +91,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     (req, res) => {
@@ -103,6 +108,7 @@ router.post(
 router.post(
     '/batch/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { await moduleServices.batchDelete(req, res, procedure_categories) }

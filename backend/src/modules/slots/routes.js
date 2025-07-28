@@ -36,6 +36,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
@@ -47,6 +48,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Force limit to one result:
@@ -63,6 +65,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     slots.Validator,
     (req, res) => {
@@ -75,6 +78,7 @@ router.post(
 router.post(
     '/update',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, slots.AllowedUnsetValues),
     slots.Validator,
@@ -88,6 +92,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     (req, res) => { 
@@ -104,6 +109,7 @@ router.post(
 router.post(
     '/batch/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     //slots.Validator, //Desactivated because request have other parameters (Example: range_start).
     (req, res) => {
@@ -116,6 +122,7 @@ router.post(
 router.post(
     '/batch/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { await moduleServices.batchDelete(req, res, slots) }

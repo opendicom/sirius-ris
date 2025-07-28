@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
                             permisionChecked = true;
 
                             //Set userPermission:
-                            userPermission.domain = mongoose.Types.ObjectId(domain);
+                            userPermission.domain = new mongoose.Types.ObjectId(domain);
                             userPermission.role = parseInt(role, 10);
                             userPermission.concession = value['concession'];
                         }

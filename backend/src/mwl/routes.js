@@ -27,6 +27,7 @@ const regexObjectId = /^[0-9a-fA-F]{24}$/;
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         //Check fk_appointment:

@@ -39,6 +39,7 @@ const router = express.Router();
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
@@ -50,6 +51,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Force limit to one result:
@@ -66,6 +68,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     files.Validator,
@@ -79,6 +82,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { 
@@ -95,6 +99,7 @@ router.post(
 router.post(
     '/batch/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { await moduleServices.batchDelete(req, res, files) }

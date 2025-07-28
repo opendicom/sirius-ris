@@ -26,7 +26,7 @@ async function createSession(user_id, user_permission, req, res, response_data =
     //Create session object:
     const sessionObj = {
         start: creation_date,                       //Same as payload iat
-        fk_user: mongoose.Types.ObjectId(user_id),  //Cast to ObjectId
+        fk_user: new mongoose.Types.ObjectId(user_id),  //Cast to ObjectId
         current_access: user_permission
     };
 

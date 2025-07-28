@@ -44,6 +44,7 @@ router.post(
 router.post(
     '/authorize',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     (req, res) => {
         if (req.body.domain && req.body.role){
             authorizeHandler(req, res);

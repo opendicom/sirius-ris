@@ -74,7 +74,7 @@ function mongoDBObjFormat(obj){
 //--------------------------------------------------------------------------------------------------------------------//
 function validateRequestID(id, res){
     //Check that the entered ID is valid for MongoDB:
-    if(mongoose.Types.ObjectId.isValid(id)) {
+    if(new mongoose.Types.ObjectId.isValid(id)) {
         return true;
     } else {
         res.status(400).json({ success: false, message: currentLang.db.invalid_id });

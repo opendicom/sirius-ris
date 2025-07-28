@@ -25,6 +25,7 @@ const router = express.Router();
 router.get(
     '/studyToken',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         studyTokenHandler(req, res);

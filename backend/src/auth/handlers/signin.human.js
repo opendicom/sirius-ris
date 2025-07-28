@@ -91,7 +91,7 @@ module.exports = async (req, res) => {
                                 //ORGANIZATIONS:
                                 //If contain organizations permissions:
                                 if (Object.keys(peopleData.user.permissions[0]).includes('organization')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].organization);
+                                    userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].organization);
                                     userPermission.type = 'organization';
 
                                     //Find organization short_name (userPermission description):
@@ -101,7 +101,7 @@ module.exports = async (req, res) => {
                                 //BRANCHES:
                                 //If contain branches permissions:
                                 } else if (Object.keys(peopleData.user.permissions[0]).includes('branch')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].branch);
+                                    userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].branch);
                                     userPermission.type = 'branch';
 
                                     //Find branch short_name (userPermission description):
@@ -111,7 +111,7 @@ module.exports = async (req, res) => {
                                 //SERVICES:
                                 //If contain services permissions:
                                 } else if (Object.keys(peopleData.user.permissions[0]).includes('service')){
-                                    userPermission.domain = mongoose.Types.ObjectId(peopleData.user.permissions[0].service);
+                                    userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].service);
                                     userPermission.type = 'service';
 
                                     //Find service name (userPermission description):

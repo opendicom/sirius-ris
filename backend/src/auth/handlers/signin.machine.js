@@ -51,11 +51,11 @@ module.exports = async (req, res) => {
 
                         //Set domain:
                         if(userData.permissions[0].organization){
-                            userPermission.domain = mongoose.Types.ObjectId(userData.permissions[0].organization);
+                            userPermission.domain = new mongoose.Types.ObjectId(userData.permissions[0].organization);
                         } else if(userData.permissions[0].branch){
-                            userPermission.domain = mongoose.Types.ObjectId(userData.permissions[0].branch);
+                            userPermission.domain = new mongoose.Types.ObjectId(userData.permissions[0].branch);
                         } else if(userData.permissions[0].service){
-                            userPermission.domain = mongoose.Types.ObjectId(userData.permissions[0].service);
+                            userPermission.domain = new mongoose.Types.ObjectId(userData.permissions[0].service);
                         }
 
                         //Set role:

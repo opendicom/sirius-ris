@@ -38,6 +38,7 @@ const regexObjectId = /^[0-9a-fA-F]{24}$/;
 router.get(
     '/find',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Send to handler:
@@ -49,6 +50,7 @@ router.get(
 router.get(
     '/findOne',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     (req, res) => {
         //Force limit to one result:
@@ -65,6 +67,7 @@ router.get(
 router.post(
     '/insert',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     appointments_drafts.Validator,
     async (req, res) => {
@@ -102,6 +105,7 @@ router.post(
 router.post(
     '/delete',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     //Disabled checkDeleteCode (all users should be able to cancel appointments in progress):
     //mainMiddlewares.checkDeleteCode,      

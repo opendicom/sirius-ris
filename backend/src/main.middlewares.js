@@ -3,6 +3,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
 const jwt = require('jsonwebtoken');
+const mongoose  = require('mongoose');
 
 //Import app modules:
 const mainServices  = require('./main.services');                           // Main services
@@ -15,6 +16,9 @@ const mainPermissions = require('./main.permissions');
 //Import Module Services:
 const moduleServices = require('./modules/modules.services');
 const mainLanguages = require('./main.languages');
+
+//Set Public URI:
+const publicURI = 'mongodb://' + mainSettings.db.user + ':***@' + mainSettings.db.host + ':' + mainSettings.db.port + '/' + mainSettings.db.name;
 
 //--------------------------------------------------------------------------------------------------------------------//
 // ALLOWED VALIDATE:
@@ -214,6 +218,25 @@ const checkJWT = (req, res, next) => {
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// CHECK DB CONNECTION:
+//--------------------------------------------------------------------------------------------------------------------//
+function checkDBConnection(req, res, next) {
+    const readyState = mongoose.connection.readyState;
+
+    //Check DB State:
+    if(readyState === 1) {
+        return next(); // Active connection
+    }
+
+    //Send INFO Message:
+    mainServices.sendConsoleMessage('ERROR', 'Check DB Connection Middleware: ' + currentLang.server.db_cnx_check_error);
+
+    //Send response:
+    return res.status(503).send({ success: false, message: currentLang.server.db_cnx_check_error });
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // CHECK DELETE CODE:
 //--------------------------------------------------------------------------------------------------------------------//
 const checkDeleteCode = (req, res, next) => {
@@ -337,6 +360,7 @@ module.exports = {
     allowedValidate,
     isPassword,
     checkJWT,
+    checkDBConnection,
     checkDeleteCode,
     roleAccessBasedControl
 };

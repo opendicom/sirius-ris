@@ -46,14 +46,14 @@ module.exports = async (req, res) => {
             if(branchCheck == true){
 
                 //Initializate domain condition:
-                let domainCondition = { 'appointment.imaging.branch._id': mongoose.Types.ObjectId(fk_branch) };
+                let domainCondition = { 'appointment.imaging.branch._id': new mongoose.Types.ObjectId(fk_branch) };
 
                 //Check RABC filter condition:
                 if(req.query.rabc_filter !== undefined && req.query.rabc_filter !== null && req.query.rabc_filter !== ''){
                     domainCondition = {
                         "$and":[
                             req.query.rabc_filter, //Add RABC filter condition.
-                            { 'appointment.imaging.branch._id': mongoose.Types.ObjectId(fk_branch) }
+                            { 'appointment.imaging.branch._id': new mongoose.Types.ObjectId(fk_branch) }
                         ]
                     };
                 }

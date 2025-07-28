@@ -24,6 +24,7 @@ const router = express.Router();
 router.get(
     '/reports',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,     //Without exporter addDomain case (Force filters in handler with JWT data).
     async (req, res) => {
         reportsHandler(req, res);

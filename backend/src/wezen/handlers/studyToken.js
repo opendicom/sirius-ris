@@ -280,7 +280,7 @@ module.exports = async (req, res) => {
             }},
             
             //Add performing _id match condition in performing aggregate:
-            { '$match' : { _id: mongoose.Types.ObjectId(req.query.fk_performing) } }
+            { '$match' : { _id: new mongoose.Types.ObjectId(req.query.fk_performing) } }
         ];
 
         //Send DEBUG Message:

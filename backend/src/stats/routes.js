@@ -27,6 +27,7 @@ const router = express.Router();
 router.get(
     '/appointments',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         appointmentsHandler(req, res);
@@ -37,6 +38,7 @@ router.get(
 router.get(
     '/performing',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         performingHandler(req, res);
@@ -47,6 +49,7 @@ router.get(
 router.get(
     '/organizations',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         organizationsHandler(req, res);

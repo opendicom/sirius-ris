@@ -24,6 +24,7 @@ const router = express.Router();
 router.post(
     '/send',
     mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         sendHandler(req, res);

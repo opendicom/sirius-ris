@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
     let appointment_aggregate = require('../aggregate');
 
     //Set match condition:
-    const match = { "_id": mongoose.Types.ObjectId(req.body.fk_appointment) };
+    const match = { "_id": new mongoose.Types.ObjectId(req.body.fk_appointment) };
 
     //Add match if not exist operation to appointment aggregation:
     //42 is the number of objects inside the agregation array of objects.

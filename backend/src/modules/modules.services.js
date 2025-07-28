@@ -1259,7 +1259,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
     await Promise.all(affectedCollections.map(async (value, key) => {
         //Set FK Keys:
         fk_singular[ForeignKeys.Singular] = _id;
-        fk_plural[ForeignKeys.Plural] = mongoose.Types.ObjectId(_id);
+        fk_plural[ForeignKeys.Plural] = new mongoose.Types.ObjectId(_id);
         
         //Create OR condition:
         filter = { $or: [
@@ -1342,7 +1342,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         //Check if contain injection technician property:
         if(ForeignKeys.Injection){
             //Set injection condition:
-            injection_condition[ForeignKeys.Injection] = mongoose.Types.ObjectId(_id);
+            injection_condition[ForeignKeys.Injection] = new mongoose.Types.ObjectId(_id);
 
             //Add injection contition in OR condition:
             filter.$or.push(injection_condition);
@@ -1351,7 +1351,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         //Check if contain console technician property:
         if(ForeignKeys.Console){
             //Set console condition:
-            console_condition[ForeignKeys.Console] = mongoose.Types.ObjectId(_id);
+            console_condition[ForeignKeys.Console] = new mongoose.Types.ObjectId(_id);
 
             //Add console contition in OR condition:
             filter.$or.push(console_condition);
@@ -1360,7 +1360,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
         //Check if contain extra property:
         if(ForeignKeys.Extra){
             //Set extra condition:
-            extra_condition[ForeignKeys.Extra] = mongoose.Types.ObjectId(_id);
+            extra_condition[ForeignKeys.Extra] = new mongoose.Types.ObjectId(_id);
 
             //Add extra contition in OR condition:
             filter.$or.push(extra_condition);
@@ -2017,8 +2017,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
     switch(schemaName){
         case 'logs':            
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'event'] != undefined){ filter[asPrefix + 'event'] = parseInt(filter['event'], 10); }
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'datetime'] != undefined){
@@ -2030,19 +2030,19 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                         }
                     });
                 }
-                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
-                if(filter[asPrefix + 'element._id'] != undefined){ filter[asPrefix + 'element._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'element._id']); };
+                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
+                if(filter[asPrefix + 'element._id'] != undefined){ filter[asPrefix + 'element._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'element._id']); };
                 return filter;
             });
             break;
 
         case 'users':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_person'] != undefined){ filter[asPrefix + 'fk_person'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_person']); };
-                if(filter[asPrefix + 'permissions.organization'] != undefined){ filter[asPrefix + 'permissions.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.organization']); }
-                if(filter[asPrefix + 'permissions.branch'] != undefined){ filter[asPrefix + 'permissions.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.branch']); }
-                if(filter[asPrefix + 'permissions.service'] != undefined){ filter[asPrefix + 'permissions.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'permissions.service']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_person'] != undefined){ filter[asPrefix + 'fk_person'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_person']); };
+                if(filter[asPrefix + 'permissions.organization'] != undefined){ filter[asPrefix + 'permissions.organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'permissions.organization']); }
+                if(filter[asPrefix + 'permissions.branch'] != undefined){ filter[asPrefix + 'permissions.branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'permissions.branch']); }
+                if(filter[asPrefix + 'permissions.service'] != undefined){ filter[asPrefix + 'permissions.service'] = new mongoose.Types.ObjectId(filter[asPrefix + 'permissions.service']); }
                 if(filter[asPrefix + 'permissions.role'] != undefined){ filter[asPrefix + 'permissions.role'] = parseInt(filter['permissions.role'], 10); }
                 if(filter[asPrefix + 'permissions.concession'] != undefined){ filter[asPrefix + 'permissions.concession'] = filter[asPrefix + 'permissions.concession'][0] = parseInt(filter[asPrefix + 'permissions.concession'], 10); }
                 if(filter[asPrefix + 'professional.workload'] != undefined){ filter[asPrefix + 'professional.workload'] = parseInt(filter[asPrefix + 'professional.workload'], 10); }
@@ -2056,7 +2056,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'people':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'documents.doc_type'] != undefined){ filter[asPrefix + 'documents.doc_type'] = parseInt(filter[asPrefix + 'documents.doc_type'], 10); }
                 if(filter[asPrefix + 'gender'] != undefined){ filter[asPrefix + 'gender'] = parseInt(filter[asPrefix + 'gender'], 10); }
                 if(filter[asPrefix + 'phone_numbers'] != undefined){ filter[asPrefix + 'phone_numbers'] = filter[asPrefix + 'phone_numbers'][0] = parseInt(filter[asPrefix + 'phone_numbers'], 10); }
@@ -2078,7 +2078,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'organizations':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2086,8 +2086,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'branches':            
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2095,10 +2095,10 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'services':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
-                if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
-                if(filter[asPrefix + 'fk_equipments'] != undefined){ filter[asPrefix + 'fk_equipments'] = filter[asPrefix + 'fk_equipments'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipments']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
+                if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
+                if(filter[asPrefix + 'fk_equipments'] != undefined){ filter[asPrefix + 'fk_equipments'] = filter[asPrefix + 'fk_equipments'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipments']); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2106,7 +2106,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'modalities':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2114,9 +2114,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'equipments':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
-                if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_modalities'] != undefined){ filter[asPrefix + 'fk_modalities'] = filter[asPrefix + 'fk_modalities'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_modalities']); }
+                if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2125,14 +2125,14 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'slots':
             filter = adjustCondition(filter, (filter) => {
                 //Domain:
-                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
-                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
-                if(filter[asPrefix + 'domain.service'] != undefined){ filter[asPrefix + 'domain.service'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.service']); };
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+                if(filter[asPrefix + 'domain.service'] != undefined){ filter[asPrefix + 'domain.service'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.service']); };
 
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
-                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
                 
                 //Set allowed explicit operators:
@@ -2163,13 +2163,13 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'procedures':
             filter = adjustCondition(filter, (filter) => {
                 //Domain:
-                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
-                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
 
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
-                if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_modality'] != undefined){ filter[asPrefix + 'fk_modality'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_modality']); };
+                if(filter[asPrefix + 'equipments.fk_equipment'] != undefined){ filter[asPrefix + 'equipments.fk_equipment'] = new mongoose.Types.ObjectId(filter[asPrefix + 'equipments.fk_equipment']); };
                 if(filter[asPrefix + 'equipments.duration'] != undefined){ filter[asPrefix + 'equipments.duration'] = parseInt(filter[asPrefix + 'equipments.duration'], 10); }
                 if(filter[asPrefix + 'has_interview'] != undefined){ filter[asPrefix + 'has_interview'] = mainServices.stringToBoolean(filter[asPrefix + 'has_interview']); };
                 if(filter[asPrefix + 'informed_consent'] != undefined){ filter[asPrefix + 'informed_consent'] = mainServices.stringToBoolean(filter[asPrefix + 'informed_consent']); };
@@ -2185,12 +2185,12 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'procedure_categories':
             filter = adjustCondition(filter, (filter) => {
                 //Domain:
-                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
-                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
     
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_procedures'] != undefined){ filter[asPrefix + 'fk_procedures'] = filter[asPrefix + 'fk_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedures']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_procedures'] != undefined){ filter[asPrefix + 'fk_procedures'] = filter[asPrefix + 'fk_procedures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedures']); }
                 return filter;
             });
             break;
@@ -2198,11 +2198,11 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'files':
             filter = adjustCondition(filter, (filter) => {
                 //Domain:
-                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
-                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
+                if(filter[asPrefix + 'domain.organization'] != undefined){ filter[asPrefix + 'domain.organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.organization']); };
+                if(filter[asPrefix + 'domain.branch'] != undefined){ filter[asPrefix + 'domain.branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'domain.branch']); };
     
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 return filter;
             });
             break;
@@ -2210,24 +2210,24 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'appointments':
             filter = adjustCondition(filter, (filter) => {
                 //Appointment request:
-                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
+                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
 
                 //Imaging - Post aggregate lookup:
-                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
-                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
-                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
 
                 //Referring - Post aggregate lookup:
-                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
-                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
-                if(filter[asPrefix + 'referring.service._id'] != undefined){ filter[asPrefix + 'referring.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.service._id']); };
-                if(filter[asPrefix + 'referring.fk_referring._id'] != undefined){ filter[asPrefix + 'referring.fk_referring._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring._id']); };
+                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
+                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
+                if(filter[asPrefix + 'referring.service._id'] != undefined){ filter[asPrefix + 'referring.service._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.service._id']); };
+                if(filter[asPrefix + 'referring.fk_referring._id'] != undefined){ filter[asPrefix + 'referring.fk_referring._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.fk_referring._id']); };
 
                 //Reporting - Post aggregate lookup:
-                if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
-                if(filter[asPrefix + 'reporting.branch._id'] != undefined){ filter[asPrefix + 'reporting.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch._id']); };
-                if(filter[asPrefix + 'reporting.service._id'] != undefined){ filter[asPrefix + 'reporting.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service._id']); };
-                if(filter[asPrefix + 'reporting.fk_reporting._id'] != undefined){ filter[asPrefix + 'reporting.fk_reporting._id'] = filter[asPrefix + 'reporting.fk_reporting._id'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting._id']); }
+                if(filter[asPrefix + 'reporting.organization._id'] != undefined){ filter[asPrefix + 'reporting.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'reporting.organization._id']); };
+                if(filter[asPrefix + 'reporting.branch._id'] != undefined){ filter[asPrefix + 'reporting.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'reporting.branch._id']); };
+                if(filter[asPrefix + 'reporting.service._id'] != undefined){ filter[asPrefix + 'reporting.service._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'reporting.service._id']); };
+                if(filter[asPrefix + 'reporting.fk_reporting._id'] != undefined){ filter[asPrefix + 'reporting.fk_reporting._id'] = filter[asPrefix + 'reporting.fk_reporting._id'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'reporting.fk_reporting._id']); }
 
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'start'] != undefined){
@@ -2261,11 +2261,11 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
-                if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
-                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
+                if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
 
                 if(filter[asPrefix + 'media.CD'] != undefined){ filter[asPrefix + 'media.CD'] = mainServices.stringToBoolean(filter[asPrefix + 'media.CD']); };
@@ -2308,11 +2308,11 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'private_health.covid19.vaccinated'] != undefined){ filter[asPrefix + 'private_health.covid19.vaccinated'] = mainServices.stringToBoolean(filter[asPrefix + 'private_health.covid19.vaccinated']); };
 
                 //Consents:
-                if(filter[asPrefix + 'consents.informed_consent'] != undefined){ filter[asPrefix + 'consents.informed_consent'] = mongoose.Types.ObjectId(filter[asPrefix + 'consents.informed_consent']); };
-                if(filter[asPrefix + 'consents.clinical_trial'] != undefined){ filter[asPrefix + 'consents.clinical_trial'] = mongoose.Types.ObjectId(filter[asPrefix + 'consents.clinical_trial']); };
+                if(filter[asPrefix + 'consents.informed_consent'] != undefined){ filter[asPrefix + 'consents.informed_consent'] = new mongoose.Types.ObjectId(filter[asPrefix + 'consents.informed_consent']); };
+                if(filter[asPrefix + 'consents.clinical_trial'] != undefined){ filter[asPrefix + 'consents.clinical_trial'] = new mongoose.Types.ObjectId(filter[asPrefix + 'consents.clinical_trial']); };
 
                 //Attached files:
-                if(filter[asPrefix + 'attached_files'] != undefined){ filter[asPrefix + 'attached_files'] = filter[asPrefix + 'attached_files'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'attached_files']); }
+                if(filter[asPrefix + 'attached_files'] != undefined){ filter[asPrefix + 'attached_files'] = filter[asPrefix + 'attached_files'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'attached_files']); }
 
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 if(filter[asPrefix + 'overbooking'] != undefined){ filter[asPrefix + 'overbooking'] = mainServices.stringToBoolean(filter[asPrefix + 'overbooking']); };
@@ -2324,12 +2324,12 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'appointments_drafts':
             filter = adjustCondition(filter, (filter) => {
                 //Appointment request:
-                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
+                if(filter[asPrefix + 'fk_appointment_request'] != undefined){ filter[asPrefix + 'fk_appointment_request'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment_request']); };
                 
                 //Imaging - Post aggregate lookup:
-                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
-                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
-                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                if(filter[asPrefix + 'imaging.service._id'] != undefined){ filter[asPrefix + 'imaging.service._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.service._id']); };
     
                 //Set allowed explicit operators:
                 if(filter[asPrefix + 'start'] != undefined){
@@ -2353,12 +2353,12 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
     
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
-                if(filter[asPrefix + 'fk_coordinator'] != undefined){ filter[asPrefix + 'fk_coordinator'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_coordinator']); };
-                if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
-                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
+                if(filter[asPrefix + 'fk_coordinator'] != undefined){ filter[asPrefix + 'fk_coordinator'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_coordinator']); };
+                if(filter[asPrefix + 'fk_slot'] != undefined){ filter[asPrefix + 'fk_slot'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_slot']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
                 if(filter[asPrefix + 'overbooking'] != undefined){ filter[asPrefix + 'overbooking'] = mainServices.stringToBoolean(filter[asPrefix + 'overbooking']); };
                 
@@ -2368,20 +2368,20 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'appointment_requests':
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
 
                 //Imaging - Post aggregate lookup:
-                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
-                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
+                if(filter[asPrefix + 'imaging.organization._id'] != undefined){ filter[asPrefix + 'imaging.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.organization._id']); };
+                if(filter[asPrefix + 'imaging.branch._id'] != undefined){ filter[asPrefix + 'imaging.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'imaging.branch._id']); };
                 
                 //Referring - Post aggregate lookup:
-                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
-                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
+                if(filter[asPrefix + 'referring.organization._id'] != undefined){ filter[asPrefix + 'referring.organization._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.organization._id']); };
+                if(filter[asPrefix + 'referring.branch._id'] != undefined){ filter[asPrefix + 'referring.branch._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'referring.branch._id']); };
         
                 //Study:
-                if(filter[asPrefix + 'study.fk_procedure'] != undefined){ filter[asPrefix + 'study.fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_procedure']); };
-                if(filter[asPrefix + 'study.fk_modality'] != undefined){ filter[asPrefix + 'study.fk_modality'] = mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_modality']); };
+                if(filter[asPrefix + 'study.fk_procedure'] != undefined){ filter[asPrefix + 'study.fk_procedure'] = new mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_procedure']); };
+                if(filter[asPrefix + 'study.fk_modality'] != undefined){ filter[asPrefix + 'study.fk_modality'] = new mongoose.Types.ObjectId(filter[asPrefix + 'study.fk_modality']); };
 
                 //Patient:
                 if(filter[asPrefix + 'patient.doc_type'] != undefined){ filter[asPrefix + 'patient.documents.doc_type'] = parseInt(filter[asPrefix + 'patient.documents.doc_type'], 10); }
@@ -2405,8 +2405,8 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
 
         case 'pathologies':            
             filter = adjustCondition(filter, (filter) => {
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -2415,11 +2415,11 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'performing':
             filter = adjustCondition(filter, (filter) => {
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_appointment'] != undefined){ filter[asPrefix + 'fk_appointment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment']); };
-                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
-                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
-                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_appointment'] != undefined){ filter[asPrefix + 'fk_appointment'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_appointment']); };
+                if(filter[asPrefix + 'fk_equipment'] != undefined){ filter[asPrefix + 'fk_equipment'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_equipment']); };
+                if(filter[asPrefix + 'fk_procedure'] != undefined){ filter[asPrefix + 'fk_procedure'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_procedure']); };
+                if(filter[asPrefix + 'extra_procedures'] != undefined){ filter[asPrefix + 'extra_procedures'] = filter[asPrefix + 'extra_procedures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'extra_procedures']); }
                 if(filter[asPrefix + 'urgency'] != undefined){ filter[asPrefix + 'urgency'] = mainServices.stringToBoolean(filter[asPrefix + 'urgency']); };
                 
                 //Set allowed explicit operators:
@@ -2440,9 +2440,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'injection.administered_volume'] != undefined){ filter[asPrefix + 'injection.administered_volume'] = parseInt(filter[asPrefix + 'injection.administered_volume'], 10); }
 
                 //Injection user - Post aggregate lookup:
-                if(filter[asPrefix + 'injection.injection_user._id'] != undefined){ filter[asPrefix + 'injection.injection_user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user._id']); };
+                if(filter[asPrefix + 'injection.injection_user._id'] != undefined){ filter[asPrefix + 'injection.injection_user._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user._id']); };
                 if(filter[asPrefix + 'injection.injection_user.status'] != undefined){ filter[asPrefix + 'injection.injection_user.status'] = mainServices.stringToBoolean(filter[asPrefix + 'injection.injection_user.status']); };
-                if(filter[asPrefix + 'injection.injection_user.person._id'] != undefined){ filter[asPrefix + 'injection.injection_user.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user.person._id']); };
+                if(filter[asPrefix + 'injection.injection_user.person._id'] != undefined){ filter[asPrefix + 'injection.injection_user.person._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'injection.injection_user.person._id']); };
                 if(filter[asPrefix + 'injection.injection_user.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.injection_user.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.injection_user.person.documents.doc_type'], 10); }
                 if(filter[asPrefix + 'injection.injection_user.person.gender'] != undefined){ filter[asPrefix + 'injection.injection_user.person.gender'] = parseInt(filter[asPrefix + 'injection.injection_user.person.gender'], 10); }
                 if(filter[asPrefix + 'injection.injection_user.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.injection_user.person.phone_numbers'] = filter[asPrefix + 'injection.injection_user.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.injection_user.person.phone_numbers'], 10); }
@@ -2459,9 +2459,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 //Acquisition console technician - Post aggregate lookup:
-                if(filter[asPrefix + 'acquisition.console_technician._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician._id']); };
+                if(filter[asPrefix + 'acquisition.console_technician._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician._id']); };
                 if(filter[asPrefix + 'acquisition.console_technician.status'] != undefined){ filter[asPrefix + 'acquisition.console_technician.status'] = mainServices.stringToBoolean(filter[asPrefix + 'acquisition.console_technician.status']); };
-                if(filter[asPrefix + 'acquisition.console_technician.person._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician.person._id']); };
+                if(filter[asPrefix + 'acquisition.console_technician.person._id'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician.person._id']); };
                 if(filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.documents.doc_type'], 10); }
                 if(filter[asPrefix + 'acquisition.console_technician.person.gender'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.gender'] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.gender'], 10); }
                 if(filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'] != undefined){ filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'] = filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'acquisition.console_technician.person.phone_numbers'], 10); }
@@ -2481,9 +2481,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'injection.pet_ct.administred_activity'] != undefined){ filter[asPrefix + 'injection.pet_ct.administred_activity'] = parseFloat(filter[asPrefix + 'injection.pet_ct.administred_activity']); }
 
                 //PET-CT | Laboratory user - Post aggregate lookup:
-                if(filter[asPrefix + 'injection.pet_ct.laboratory_user._id'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.pet_ct.laboratory_user._id']); };
+                if(filter[asPrefix + 'injection.pet_ct.laboratory_user._id'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'injection.pet_ct.laboratory_user._id']); };
                 if(filter[asPrefix + 'injection.pet_ct.laboratory_user.status'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.status'] = mainServices.stringToBoolean(filter[asPrefix + 'injection.pet_ct.laboratory_user.status']); };
-                if(filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id'] = mongoose.Types.ObjectId(filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id']); };
+                if(filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id'] = new mongoose.Types.ObjectId(filter[asPrefix + 'injection.pet_ct.laboratory_user.person._id']); };
                 if(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.documents.doc_type'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.person.documents.doc_type'] = parseInt(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.documents.doc_type'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.gender'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.person.gender'] = parseInt(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.gender'], 10); }
                 if(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.phone_numbers'] != undefined){ filter[asPrefix + 'injection.pet_ct.laboratory_user.person.phone_numbers'] = filter[asPrefix + 'injection.pet_ct.laboratory_user.person.phone_numbers'][0] = parseInt(filter[asPrefix + 'injection.pet_ct.laboratory_user.person.phone_numbers'], 10); }
@@ -2500,7 +2500,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 }
 
                 //Acquisition:
-                if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
+                if(filter[asPrefix + 'acquisition.console_technician'] != undefined){ filter[asPrefix + 'acquisition.console_technician'] = new mongoose.Types.ObjectId(filter[asPrefix + 'acquisition.console_technician']); };
 
                 return filter;
             });
@@ -2509,14 +2509,14 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'reports':
             filter = adjustCondition(filter, (filter) => {
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_performing'] != undefined){ filter[asPrefix + 'fk_performing'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_performing']); };
-                if(filter[asPrefix + 'findings.fk_procedure'] != undefined){ filter[asPrefix + 'findings.fk_procedure'] = filter[asPrefix + 'findings.fk_procedure'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'findings.fk_procedure']); }
-                if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
-                if(filter[asPrefix + 'fk_pathologies'] != undefined){ filter[asPrefix + 'fk_pathologies'] = filter[asPrefix + 'fk_pathologies'][0] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_pathologies']); }
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_performing'] != undefined){ filter[asPrefix + 'fk_performing'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_performing']); };
+                if(filter[asPrefix + 'findings.fk_procedure'] != undefined){ filter[asPrefix + 'findings.fk_procedure'] = filter[asPrefix + 'findings.fk_procedure'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'findings.fk_procedure']); }
+                if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
+                if(filter[asPrefix + 'fk_pathologies'] != undefined){ filter[asPrefix + 'fk_pathologies'] = filter[asPrefix + 'fk_pathologies'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_pathologies']); }
 
                 //Authenticated:
-                if(filter[asPrefix + 'authenticated.fk_user'] != undefined){ filter[asPrefix + 'authenticated.fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.fk_user']); };
+                if(filter[asPrefix + 'authenticated.fk_user'] != undefined){ filter[asPrefix + 'authenticated.fk_user'] = new mongoose.Types.ObjectId(filter[asPrefix + 'authenticated.fk_user']); };
                 if(filter[asPrefix + 'authenticated.datetime'] != undefined){
                     setExplicitOperator(filter[asPrefix + 'authenticated.datetime'], (explicitOperator) => {
                         if(explicitOperator){
@@ -2534,9 +2534,9 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
         case 'signatures':
             filter = adjustCondition(filter, (filter) => {
                 //Schema:
-                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
-                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
-                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
+                if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
 
                 return filter;
             });
@@ -2759,10 +2759,10 @@ async function insertLog(req, res, event, element = undefined, fk_user = undefin
 
     //Create log object:
     const logObj = {
-        fk_organization: mongoose.Types.ObjectId(fk_organization),
+        fk_organization: new mongoose.Types.ObjectId(fk_organization),
         event: event,
         datetime: datetime,
-        fk_user: mongoose.Types.ObjectId(fk_user),
+        fk_user: new mongoose.Types.ObjectId(fk_user),
         ip_client: mainServices.getIPClient(req)
     }
 
@@ -3206,11 +3206,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(domainType == 'organizations'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
-                            referring['referring.organization._id'] = mongoose.Types.ObjectId(domain);
-                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            reporting['reporting.organization._id'] = mongoose.Types.ObjectId(domain);
-                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            imaging['imaging.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            referring['referring.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            reporting['reporting.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
@@ -3222,11 +3222,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'branches'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
-                            referring['referring.branch._id'] = mongoose.Types.ObjectId(domain);
-                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            reporting['reporting.branch._id'] = mongoose.Types.ObjectId(domain);
-                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            imaging['imaging.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            referring['referring.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            reporting['reporting.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
@@ -3238,11 +3238,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'services'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging['imaging.service._id'] = mongoose.Types.ObjectId(domain);
-                            referring['referring.service._id'] = mongoose.Types.ObjectId(domain);
-                            fk_referring['referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            reporting['reporting.service._id'] = mongoose.Types.ObjectId(domain);
-                            fk_reporting['reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            imaging['imaging.service._id'] = new mongoose.Types.ObjectId(domain);
+                            referring['referring.service._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_referring['referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            reporting['reporting.service._id'] = new mongoose.Types.ObjectId(domain);
+                            fk_reporting['reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging, referring, fk_referring, reporting, fk_reporting] };
@@ -3269,7 +3269,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(domainType == 'organizations'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging_drafts['imaging.organization._id'] = mongoose.Types.ObjectId(domain);
+                            imaging_drafts['imaging.organization._id'] = new mongoose.Types.ObjectId(domain);
                                 
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging_drafts ] };
@@ -3281,7 +3281,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'branches'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging_drafts['imaging.branch._id'] = mongoose.Types.ObjectId(domain);
+                            imaging_drafts['imaging.branch._id'] = new mongoose.Types.ObjectId(domain);
                                 
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging_drafts ] };
@@ -3293,7 +3293,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'services'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            imaging_drafts['imaging.service._id'] = mongoose.Types.ObjectId(domain);
+                            imaging_drafts['imaging.service._id'] = new mongoose.Types.ObjectId(domain);
                                 
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ imaging_drafts ] };
@@ -3325,11 +3325,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(domainType == 'organizations'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            appointment_imaging['appointment.imaging.organization._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_referring['appointment.referring.organization._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            appointment_reporting['appointment.reporting.organization._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_imaging['appointment.imaging.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
 
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
@@ -3341,11 +3341,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'branches'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            appointment_imaging['appointment.imaging.branch._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_referring['appointment.referring.branch._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            appointment_reporting['appointment.reporting.branch._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_imaging['appointment.imaging.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
@@ -3357,11 +3357,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'services'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            appointment_imaging['appointment.imaging.service._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_referring['appointment.referring.service._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            appointment_reporting['appointment.reporting.service._id'] = mongoose.Types.ObjectId(domain);
-                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            appointment_imaging['appointment.imaging.service._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_referring['appointment.referring.service._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            appointment_reporting['appointment.reporting.service._id'] = new mongoose.Types.ObjectId(domain);
+                            appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ appointment_imaging, appointment_referring, appointment_fk_referring, appointment_reporting, appointment_fk_reporting] };
@@ -3391,11 +3391,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         if(domainType == 'organizations'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            performing_appointment_imaging['appointment.imaging.organization._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_referring['appointment.referring.organization._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            performing_appointment_reporting['appointment.reporting.organization._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_imaging['appointment.imaging.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.organization._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
@@ -3407,11 +3407,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'branches'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            performing_appointment_imaging['appointment.imaging.branch._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_referring['appointment.referring.branch._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            performing_appointment_reporting['appointment.reporting.branch._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_imaging['appointment.imaging.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.branch._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
@@ -3423,11 +3423,11 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         } else if(domainType == 'services'){
                             //Set composite domain:
                             //The data type is adjusted manually because $AND does not go through the adjustDataTypes function.
-                            performing_appointment_imaging['appointment.imaging.service._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_referring['appointment.referring.service._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = mongoose.Types.ObjectId(user_id);
-                            performing_appointment_reporting['appointment.reporting.service._id'] = mongoose.Types.ObjectId(domain);
-                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = mongoose.Types.ObjectId(user_id);
+                            performing_appointment_imaging['appointment.imaging.service._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_referring['appointment.referring.service._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_referring['appointment.referring.fk_referring._id'] = new mongoose.Types.ObjectId(user_id);
+                            performing_appointment_reporting['appointment.reporting.service._id'] = new mongoose.Types.ObjectId(domain);
+                            performing_appointment_fk_reporting['appointment.reporting.fk_reporting._id'] = new mongoose.Types.ObjectId(user_id);
                             
                             //Create explicit operators (Third operator level):
                             let or_condition    = { '$or'   : [ performing_appointment_imaging, performing_appointment_referring, performing_appointment_fk_referring, performing_appointment_reporting, performing_appointment_fk_reporting] };
@@ -3470,7 +3470,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         //In this case it is necessary to obtain all the _id of branches and services associated with the organization.
                         if(domainType == 'organizations'){
                             //Add into ORGANIZATION domain condition:
-                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.organization': new mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let branchesIds = [];
@@ -3495,7 +3495,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                                 branchesIN.push(branchesIds[current]._id);
 
                                 //Add into BRANCH domain condition:
-                                explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(branchesIds[current]._id) });
+                                explicit_or.push({ 'permissions.branch': new mongoose.Types.ObjectId(branchesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -3519,7 +3519,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                                 // OR operator is used since it is not possible to use IN.
                                 // If more than one operator is used (IN, OR in this case),
                                 // the master condition is an AND and an OR would be required.
-                                explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                                explicit_or.push({ 'permissions.service': new mongoose.Types.ObjectId(servicesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -3529,7 +3529,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         //In this case it is necessary to obtain the organization _id and all the services _id
                         } else if(domainType == 'branches'){
                             //Add into BRANCH domain condition:
-                            explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.branch': new mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let fk_organization = '';
@@ -3547,7 +3547,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             });
 
                             //Add into ORGANIZATION domain condition:
-                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+                            explicit_or.push({ 'permissions.organization': new mongoose.Types.ObjectId(fk_organization) });
 
                             //Get all service _id of this branch:
                             await services.Model.find({ fk_branch: domain }, { _id: 1 })
@@ -3566,7 +3566,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                                 // OR operator is used since it is not possible to use IN.
                                 // If more than one operator is used (IN, OR in this case),
                                 // the master condition is an AND and an OR would be required.
-                                explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(servicesIds[current]._id) });
+                                explicit_or.push({ 'permissions.service': new mongoose.Types.ObjectId(servicesIds[current]._id) });
                             }));
 
                             //Delete temp array:
@@ -3576,7 +3576,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         //In this case it is necessary to obtain the _id of branch and organization.
                         } else if(domainType == 'services'){
                             //Add into SERVICE domain condition:
-                            explicit_or.push({ 'permissions.service': mongoose.Types.ObjectId(domain) });
+                            explicit_or.push({ 'permissions.service': new mongoose.Types.ObjectId(domain) });
 
                             //Initializate query results variables:
                             let fk_branch = '';
@@ -3594,7 +3594,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             });
 
                             //Add into BRANCH domain condition:
-                            explicit_or.push({ 'permissions.branch': mongoose.Types.ObjectId(fk_branch) });
+                            explicit_or.push({ 'permissions.branch': new mongoose.Types.ObjectId(fk_branch) });
                             
 
                             //Get organization _id from branches collection (fk_organization):
@@ -3609,7 +3609,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             });
 
                             //Add into ORGANIZATION domain condition:
-                            explicit_or.push({ 'permissions.organization': mongoose.Types.ObjectId(fk_organization) });
+                            explicit_or.push({ 'permissions.organization': new mongoose.Types.ObjectId(fk_organization) });
                         }
 
                         //Create explicit $AND operator to contain $OR (Explicit operator):
@@ -3627,14 +3627,14 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             //------------------------------------------------------------------------------------------------------------//
             case 'appointment_requests':
             case 'appointments':
-                req.query.rabc_filter = { 'imaging.organization': mongoose.Types.ObjectId(completeDomain.organization) };
+                req.query.rabc_filter = { 'imaging.organization': new mongoose.Types.ObjectId(completeDomain.organization) };
                 break;
             case 'performing':
             case 'reports':
-                req.query.rabc_filter = { 'appointment.imaging.organization._id': mongoose.Types.ObjectId(completeDomain.organization) };
+                req.query.rabc_filter = { 'appointment.imaging.organization._id': new mongoose.Types.ObjectId(completeDomain.organization) };
                 break;
             case 'organizations':
-                req.query.rabc_filter = { 'appointment.imaging.organization._id': mongoose.Types.ObjectId(completeDomain.organization) };
+                req.query.rabc_filter = { 'appointment.imaging.organization._id': new mongoose.Types.ObjectId(completeDomain.organization) };
                 break;
 
             //------------------------------------------------------------------------------------------------------------//
@@ -4476,12 +4476,12 @@ async function getCompleteDomain(domain, type){
     switch(type){
         case 'organizations':
             //Set organization _id with current domain as ObjectId type:
-            completeDomain['organization'] = mongoose.Types.ObjectId(domain);
+            completeDomain['organization'] = new mongoose.Types.ObjectId(domain);
             break;
 
         case 'branches':
             //Set branch _id with current domain as ObjectId type:
-            completeDomain['branch'] = mongoose.Types.ObjectId(domain);
+            completeDomain['branch'] = new mongoose.Types.ObjectId(domain);
 
             //Find domain branch to obtain fk_organization:
             await branches.Model.findById(domain, { fk_organization: 1 })
@@ -4492,7 +4492,7 @@ async function getCompleteDomain(domain, type){
                 if(branch_data){
 
                     //Set organization _id with fk_organization as ObjectId type:
-                    completeDomain['organization'] = mongoose.Types.ObjectId(branch_data.fk_organization);
+                    completeDomain['organization'] = new mongoose.Types.ObjectId(branch_data.fk_organization);
                 }
             })
             .catch((err) => {
@@ -4503,7 +4503,7 @@ async function getCompleteDomain(domain, type){
 
         case 'services':
             //Set service _id with current domain as ObjectId type:
-            completeDomain['service'] = mongoose.Types.ObjectId(domain);
+            completeDomain['service'] = new mongoose.Types.ObjectId(domain);
 
             //Find domain service to obtain fk_branch://Search in Branches:
             await services.Model.findById(domain, { fk_branch: 1 })
@@ -4514,7 +4514,7 @@ async function getCompleteDomain(domain, type){
                 if(service_data){
 
                     //Set branch _id with fk_branch as ObjectId type:
-                    completeDomain['branch'] = mongoose.Types.ObjectId(service_data.fk_branch);
+                    completeDomain['branch'] = new mongoose.Types.ObjectId(service_data.fk_branch);
                     
                     //Find referenced branch to obtain fk_organization:
                     await branches.Model.findById(service_data.fk_branch, { fk_organization: 1 })
@@ -4525,7 +4525,7 @@ async function getCompleteDomain(domain, type){
                         if(branch_data){
                             
                             //Set organization _id with fk_organization as ObjectId type:
-                            completeDomain['organization'] = mongoose.Types.ObjectId(branch_data.fk_organization);
+                            completeDomain['organization'] = new mongoose.Types.ObjectId(branch_data.fk_organization);
                         }
                     })
                     .catch((err) => {
