@@ -2,42 +2,42 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Nombre corto:</h4>
+      <h4>{{ 'organizations.short_name' | translate }}:</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>Nombre corto</mat-label>
-        <input matInput type="text" formControlName="short_name" placeholder="Ingrese el nombre corto">
+        <mat-label>{{ 'organizations.short_name' | translate }}</mat-label>
+        <input matInput type="text" formControlName="short_name" [placeholder]="'organizations.short_name_placeholder' | translate">
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'organizations.name' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'organizations.name' | translate }}</mat-label>
+        <input matInput type="text" formControlName="name" [placeholder]="'organizations.name_placeholder' | translate">
       </mat-form-field>
 
-      <h4>OID:</h4>
+      <h4>{{ 'organizations.oid' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>OID</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="OID" placeholder="Ingrese el OID">
+        <mat-label>{{ 'organizations.oid' | translate }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="OID" [placeholder]="'organizations.oid_placeholder' | translate">
       </mat-form-field>
 
       <hr class="dashed" /><br/>
 
-      <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      <h4>{{ 'organizations.status' | translate }}:</h4>
+      <mat-radio-group [attr.aria-label]="'organizations.status' | translate" color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'organizations.active' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'organizations.inactive' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed" /><br/>
 
-      <h3 class="form-title underline-fail-alt">Certificado <span class="label-info">.PK12</span>:</h3>
+      <h3 class="form-title underline-fail-alt">{{ 'organizations.certificate_title' | translate }} <span class="label-info">{{ 'organizations.certificate_pk12' | translate }}</span>:</h3>
 
       <!-- Start cert file -->
       <div *ngIf="selectedCertController; then thenBlockCert else elseBlockCert"></div>
 
       <ng-template #thenBlockCert>
         <button mat-flat-button type="button" color="primary">
-          <mat-icon>workspace_premium</mat-icon> CERTIFICADO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedCertFile === null" matTooltip="Eliminar certificado de la organización" class="delete-file" (click)="onDeleteFileRef('base64_cert')">close</mat-icon>
+          <mat-icon>workspace_premium</mat-icon> {{ 'organizations.organization_certificate' | translate }} <mat-icon *ngIf="form_action == 'update' && selectedCertFile === null" [matTooltip]="'organizations.delete_certificate_tooltip' | translate" class="delete-file" (click)="onDeleteFileRef('base64_cert')">close</mat-icon>
         </button>
         
       </ng-template>
@@ -45,16 +45,16 @@
       <ng-template #elseBlockCert>
         <input type="file" (change)="onFileSelected($event, 'cert')" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>workspace_premium</mat-icon> SELECCIONAR CERTIFICADO DE LA ORGANIZACIÓN</button>
+        <mat-icon>workspace_premium</mat-icon> {{ 'organizations.select_certificate' | translate }}</button>
       </ng-template>
       <!-- End cert file -->
 
       <br/><br/>
 
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Clave del certificado</mat-label>
-        <input matInput type="password" formControlName="password_cert" placeholder="Ingrese clave del certificado.">
-        <mat-hint *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].password_cert" align="start">Ya existe una clave de certificado en la base de datos, indique una solo si desea cambiarla.</mat-hint>
+        <mat-label>{{ 'organizations.certificate_password' | translate }}</mat-label>
+        <input matInput type="password" formControlName="password_cert" [placeholder]="'organizations.certificate_password_placeholder' | translate">
+        <mat-hint *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].password_cert" align="start">{{ 'organizations.certificate_password_hint' | translate }}</mat-hint>
       </mat-form-field>
 
       <br/><br/>
@@ -62,9 +62,9 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>País de la organización:</h4>
+      <h4>{{ 'organizations.country_required' | translate }}:</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>País de la organización</mat-label>
+        <mat-label>{{ 'organizations.country_placeholder' | translate }}</mat-label>
         <mat-select formControlName="country_code">
           <div *ngFor="let currentCode of getKeys(country_codes, true)">
             <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -72,16 +72,16 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>ID Estructura:</h4>
+      <h4>{{ 'organizations.structure_id' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>ID Estructura</mat-label>
-        <input matInput icNumbers type="text" formControlName="structure_id" placeholder="Ingrese el ID Estructura">
+        <mat-label>{{ 'organizations.structure_id' | translate }}</mat-label>
+        <input matInput icNumbers type="text" formControlName="structure_id" [placeholder]="'organizations.structure_id_placeholder' | translate">
       </mat-form-field>
 
-      <h4>Sufijo:</h4>
+      <h4>{{ 'organizations.suffix' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sufijo</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
+        <mat-label>{{ 'organizations.suffix' | translate }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="suffix" [placeholder]="'organizations.suffix_placeholder' | translate">
       </mat-form-field>
 
       <br/><br/><hr class="dashed" /><br/>
@@ -91,7 +91,7 @@
 
       <ng-template #thenBlockLogo>
         <button mat-flat-button type="button" class="file-button">
-          <mat-icon>image</mat-icon> LOGO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" matTooltip="Eliminar logo de la organización" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
+          <mat-icon>image</mat-icon> {{ 'organizations.organization_logo' | translate }} <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" [matTooltip]="'organizations.delete_logo_tooltip' | translate" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
         </button>
         
       </ng-template>
@@ -99,7 +99,7 @@
       <ng-template #elseBlockLogo>
         <input type="file" (change)="onFileSelected($event, 'logo')" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
+        <mat-icon>add_photo_alternate</mat-icon> {{ 'organizations.select_logo' | translate }}</button>
       </ng-template>
       <!-- End logo file -->
 
@@ -109,8 +109,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'organizations.cancel' | translate }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'organizations.save' | translate }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>
