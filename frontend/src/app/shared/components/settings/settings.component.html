@@ -1,59 +1,59 @@
 <div class="settings-content">
   <div class="settings-card">
-    Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación <strong>Sirius RIS</strong>.<br/>
-    En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.
+    {{ 'system.description' | translate }} <strong>Sirius RIS</strong>.<br/>
+    {{ 'system.warning' | translate }}
   </div>
 
   <br/>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/organizations/list">
     <mat-icon>apartment</mat-icon><br/>
-    Organizaciones
+    {{ 'nav.organizations' | translate }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/branches/list">
     <mat-icon>account_tree</mat-icon><br/>
-    Sucursales
+    {{ 'nav.branches' | translate }}
   </button>
 
   <button mat-button routerLink="/services/list">
     <mat-icon>health_and_safety</mat-icon><br/>
-    Servicios
+    {{ 'nav.services' | translate }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/modalities/list">
     <mat-icon>multiple_stop</mat-icon><br/>
-    Modalidades
+    {{ 'nav.modalities' | translate }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/equipments/list">
     <mat-icon>precision_manufacturing</mat-icon><br/>
-    Equipamiento
+    {{ 'nav.equipments' | translate }}
   </button>
 
   <button mat-button routerLink="/procedures/list">
     <mat-icon>format_list_numbered</mat-icon><br/>
-    Procedimientos
+    {{ 'nav.procedures' | translate }}
   </button>
 
   <button mat-button routerLink="/procedure_categories/list">
     <mat-icon>category</mat-icon><br/>
-    Categorías de procedimientos
+    {{ 'nav.procedure_categories' | translate }}
   </button>
 
   <button mat-button routerLink="/pathologies/list">
     <mat-icon>coronavirus</mat-icon><br/>
-    Patologías
+    {{ 'nav.pathologies' | translate }}
   </button>
 
   <button mat-button routerLink="/users/list">
     <mat-icon>people</mat-icon><br/>
-    Cuentas de usuarios
+    {{ 'nav.users' | translate }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/files/list">
     <mat-icon>folder</mat-icon><br/>
-    Archivos
+    {{ 'nav.files' | translate }}
   </button>
 
   <br/><hr class="dashed" />

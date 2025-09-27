@@ -5,7 +5,7 @@
     <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'table.actions' | translate }} </th>
         <td mat-cell *matCellDef="let element">
 
           <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
@@ -26,19 +26,19 @@
 
       <!-- flow_state -->
       <ng-container matColumnDef="flow_state">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Realizado </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'billing.completed' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <mat-chip-list>
             <div *ngIf="completeFS.includes(element.flow_state) ; then thenBlockFlowState else elseBlockFlowState"></div>
-            <ng-template #thenBlockFlowState><mat-chip class="bg-color-ok">SI</mat-chip></ng-template>
-            <ng-template #elseBlockFlowState><mat-chip class="bg-color-fail">NO</mat-chip></ng-template>
+            <ng-template #thenBlockFlowState><mat-chip class="bg-color-ok">{{ 'table.yes' | translate }}</mat-chip></ng-template>
+            <ng-template #elseBlockFlowState><mat-chip class="bg-color-fail">{{ 'table.no' | translate }}</mat-chip></ng-template>
           </mat-chip-list>
         </td>
       </ng-container>
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha realización</th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'billing.completion_date' | translate }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
         </td>
@@ -46,7 +46,7 @@
 
        <!-- auth_date -->
       <ng-container matColumnDef="auth_date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha informe</th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'billing.report_date' | translate }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <!-- Check if current performing is cancelled or not -->
           <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled_A else elseBlockCancelled_A"></span>
@@ -82,7 +82,7 @@
 
       <!-- report control -->
       <ng-container matColumnDef="report_control">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Días transcurridos </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'billing.days_elapsed' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <!-- Check if current performing is cancelled or not -->
           <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled else elseBlockCancelled"></span>
@@ -131,7 +131,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'billing.documents' | translate }} </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : sharedProp.element })">
@@ -149,7 +149,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'billing.names' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -165,7 +165,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'billing.surnames' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -181,7 +181,7 @@
 
       <!-- details -->
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'billing.details' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <!-- procedure -->
           <span *ngIf="element.procedure">
@@ -212,7 +212,7 @@
 
       <!-- urgency -->
       <ng-container matColumnDef="urgency">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Urgencia </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'billing.urgency' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <!-- Appointment urgency -->
           <small>Solicitada: </small>
@@ -238,7 +238,7 @@
 
       <!-- contrast -->
       <ng-container matColumnDef="contrast">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Contraste </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'billing.contrast' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <mat-chip-list *ngIf="element.appointment">
             <span *ngIf="element.appointment.contrast">
@@ -252,7 +252,7 @@
 
       <!-- anesthesia -->
       <ng-container matColumnDef="anesthesia">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Anestesia </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'billing.anesthesia' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <mat-chip-list>
             <div *ngIf="element.anesthesia; then thenBlockAnesthesia else elseBlockAnesthesia"></div>
@@ -276,7 +276,7 @@
 
       <!-- referring -->
       <ng-container matColumnDef="referring">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Solicitante</th>
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'billing.requester' | translate }}</th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.appointment" class="domain-container">
             <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
@@ -301,7 +301,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'billing.waiting_results' | translate }}
   </div>
 </ng-template>
 
@@ -311,4 +311,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'billing.export_list' | translate }}</button></div>

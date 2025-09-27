@@ -6,7 +6,7 @@
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'appointments.actions' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/appointments/form/update/{{ element._id }}">
             <mat-icon>edit</mat-icon>
@@ -42,7 +42,7 @@
 
       <!-- flow_state -->
       <ng-container matColumnDef="flow_state">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de cita</th>
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'appointments.appointment_flow' | translate }}</th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span class="badge {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ appointmentsFlowStates[element.flow_state] }}</span>
         </td>
@@ -50,7 +50,7 @@
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'appointments.date' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
         </td>
@@ -58,9 +58,9 @@
 
       <!-- schedule -->
       <ng-container matColumnDef="schedule">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'appointments.schedule' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <span [class.overbooking]="element.overbooking===true" [matTooltip]="element.overbooking ? 'Esta cita fue sobreagendada.' : ''">
+          <span [class.overbooking]="element.overbooking===true" [matTooltip]="element.overbooking ? ('appointments.overbooking_tooltip' | translate) : ''">
             <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
             <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
           </span>
@@ -69,7 +69,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'appointments.documents' | translate }} </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : sharedProp.element })">
@@ -87,7 +87,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'appointments.names' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -103,7 +103,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'appointments.surnames' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -119,7 +119,7 @@
 
       <!-- patient_age -->
       <ng-container matColumnDef="patient_age">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <th mat-header-cell *matHeaderCellDef [matTooltip]="'appointments.age_tooltip' | translate" class="column-alt text-center"> {{ 'appointments.age' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -131,7 +131,7 @@
 
       <!-- details -->
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'appointments.details' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <!-- procedure -->
           <span *ngIf="element.procedure">
@@ -150,7 +150,7 @@
                 <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
               </span>
             </ng-template>
-            <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+            <ng-template #elseBlockTableEquipment>{{ 'appointments.no_data' | translate }}</ng-template>
           </span>
 
           <!-- modality -->
@@ -158,17 +158,17 @@
           <ng-template #thenBlockTableModality>
             <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
           </ng-template>
-          <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableModality>{{ 'appointments.no_data' | translate }}</ng-template>
         </td>
       </ng-container>
 
       <!-- outpatient_inpatient -->
       <ng-container matColumnDef="outpatient_inpatient">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Hospitalización </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'appointments.hospitalization' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.outpatient; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon color="accent" matTooltip="Ambulatorio">house</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Internado">hotel</mat-icon></ng-template>
+          <ng-template #thenBlock><mat-icon color="accent" [matTooltip]="'appointments.ambulatory' | translate">house</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon class="color-fail" [matTooltip]="'appointments.inpatient' | translate">hotel</mat-icon></ng-template>
         </td>
       </ng-container>
 
