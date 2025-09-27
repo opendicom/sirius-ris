@@ -6,13 +6,13 @@
 
       <!-- order -->
       <ng-container matColumnDef="order">
-        <th mat-header-cell *matHeaderCellDef> Nº </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.number' | translate }} </th>
         <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
       </ng-container>
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.actions' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center" style="padding-bottom: 0px !important; margin-bottom: 0px !important;">
           
           <span *ngIf="sharedFunctions.nested_response">
@@ -27,14 +27,14 @@
                   <span *ngFor="let currentNested of sharedFunctions.nested_response.data">
                     <span *ngIf="element._id == currentNested.fk_appointment">
                       <!-- update performing -->
-                      <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Editar estudio" aria-label="Editar" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
+                      <button mat-mini-fab class="small_button" type="button" color="primary" [matTooltip]="'common.edit' | translate" [attr.aria-label]="'common.edit' | translate" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
                         <mat-icon>edit</mat-icon>
                       </button>
         
                       <!-- insert more performing as same fk_appointment -->
                       <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                       <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                        <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                        <button mat-mini-fab class="small_button" type="button" color="accent" [matTooltip]="'receptions.check_in_another' | translate" [attr.aria-label]="'receptions.check_in_another' | translate" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                           <mat-icon>add_location_alt</mat-icon>
                         </button>
                       </span>
@@ -47,13 +47,13 @@
                       <!-- MWL -->
                       <span *ngIf="element.accession_date; then thenBlockMWL else elseBlockMWL;"></span>
                       <ng-template  #thenBlockMWL>
-                        <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviado a MWL: {{ element.accession_date | accno_date }}" (click)="mwlResend(element._id, element.accession_date)">
+                        <button mat-icon-button class="small_button" color="accent" type="button" [matTooltip]="('receptions.sent_to_mwl' | translate) + ': ' + (element.accession_date | accno_date)" (click)="mwlResend(element._id, element.accession_date)">
                           <mat-icon>done_all</mat-icon>
                         </button>
                       </ng-template >
                       
                       <ng-template  #elseBlockMWL>
-                        <button mat-icon-button class="small_button" color="accent" type="button" matTooltip="Enviar a MWL" (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })">
+                        <button mat-icon-button class="small_button" color="accent" type="button" [matTooltip]="'receptions.send_to_mwl' | translate" (click)="sharedFunctions.sendToMWL(element._id, true, { element: sharedProp.element, params: sharedProp.params })">
                           <mat-icon>upload</mat-icon>
                         </button>
                       </ng-template >
@@ -68,7 +68,7 @@
                   <!-- insert first performing | Duplicated button on diferent cases -->
                   <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                   <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                    <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                    <button mat-mini-fab class="small_button" type="button" color="primary" [matTooltip]="'receptions.check_in' | translate" [attr.aria-label]="'receptions.check_in' | translate" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                       <mat-icon>location_on</mat-icon>
                     </button>
                   </span>
@@ -80,7 +80,7 @@
                 <!-- insert first performing | Duplicated button on diferent cases -->
                 <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                 <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                  <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                  <button mat-mini-fab class="small_button" type="button" color="primary" [matTooltip]="'receptions.check_in' | translate" [attr.aria-label]="'receptions.check_in' | translate" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                     <mat-icon>location_on</mat-icon>
                   </button>
                 </span>
@@ -94,7 +94,7 @@
 
       <!-- schedule -->
       <ng-container matColumnDef="schedule">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'receptions.schedule' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
           <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
@@ -103,7 +103,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'receptions.documents' | translate }} </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : 'check-in' })">
@@ -121,7 +121,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.names' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -137,7 +137,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.surnames' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -161,7 +161,7 @@
 
       <!-- patient_age -->
       <ng-container matColumnDef="patient_age">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <th mat-header-cell *matHeaderCellDef [matTooltip]="'receptions.age_tooltip' | translate" class="column-alt text-center"> {{ 'receptions.age' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -173,7 +173,7 @@
 
       <!-- gender -->
       <ng-container matColumnDef="gender">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Género </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.gender' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -189,7 +189,7 @@
 
       <!-- height -->
       <ng-container matColumnDef="height" class="text-center">
-        <th mat-header-cell *matHeaderCellDef> Altura </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.height' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.private_health">{{ element.private_health.height }} <small>cm</small></span>
         </td>
@@ -197,7 +197,7 @@
 
       <!-- weight -->
       <ng-container matColumnDef="weight" class="text-center">
-        <th mat-header-cell *matHeaderCellDef> Peso </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.weight' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.private_health">{{ element.private_health.weight }} <small>kg</small></span>
         </td>
@@ -205,7 +205,7 @@
 
       <!-- details -->
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.details' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <!-- procedure -->
           <span *ngIf="element.procedure">
@@ -249,7 +249,7 @@
 
       <!-- private_health -->
       <ng-container matColumnDef="private_health">
-        <th mat-header-cell *matHeaderCellDef> Información sensible </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'receptions.sensitive_info' | translate }} </th>
         <td mat-cell *matCellDef="let element;">
           <span *ngIf="element.private_health">
             <span *ngFor="let currentPrivateHealth of getKeys(element.private_health) | keyvalue;">
@@ -263,33 +263,33 @@
 
       <!-- wait_time -->
       <ng-container matColumnDef="wait_time">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Reposo/Espera </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.rest_wait' | translate }} </th>
         <td mat-cell *matCellDef="let element;" class="text-center">
           <span *ngIf="element.procedure">
             <div *ngIf="element.procedure.wait_time; then thenBlock else elseBlock"></div>
             <ng-template #thenBlock><small>{{ element.procedure.wait_time }} min</small></ng-template>
-            <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
+            <ng-template #elseBlock><mat-icon class="color-fail" [matTooltip]="'receptions.no' | translate">clear</mat-icon></ng-template>
           </span>
         </td>
       </ng-container>
 
       <!-- outpatient_inpatient -->
       <ng-container matColumnDef="outpatient_inpatient">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Hospitalización </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.hospitalization' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.outpatient; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon color="accent" matTooltip="Ambulatorio">house</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Internado">hotel</mat-icon></ng-template>
+          <ng-template #thenBlock><mat-icon color="accent" [matTooltip]="'receptions.outpatient' | translate">house</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon class="color-fail" [matTooltip]="'receptions.inpatient' | translate">hotel</mat-icon></ng-template>
         </td>
       </ng-container>
 
       <!-- urgency -->
       <ng-container matColumnDef="urgency">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'receptions.urgency' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          <ng-template #thenBlock><mat-icon class="color-fail" [matTooltip]="'receptions.urgent' | translate">directions_run</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon color="accent" [matTooltip]="'receptions.normal' | translate">man</mat-icon></ng-template>
         </td>
       </ng-container>
 
@@ -302,7 +302,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'receptions.waiting_results' | translate }}
   </div>
 </ng-template>
 
@@ -312,4 +312,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'receptions.export_list' | translate }}</button></div>

@@ -69,7 +69,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Recepción de pacientes',
+      content_title       : 'receptions.title',
       content_icon        : 'today',
       add_button          : false,
       duplicated_surnames : true,         // Check duplicated surnames
