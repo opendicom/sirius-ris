@@ -18,7 +18,7 @@
         <!-- 1: Superusuario, 2: Administrador, Concesiones: [16: Estadísticas sobre citas] -->
         <mat-tab *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [16]))">
             <ng-template mat-tab-label>
-              <mat-icon class="tab-icon">event_available</mat-icon> Citas
+              <mat-icon class="tab-icon">event_available</mat-icon> {{ 'stats.appointments' | translate }}
             </ng-template>
             <div class="stat-container">
                 <app-stats-appointments></app-stats-appointments>    
@@ -30,7 +30,7 @@
         <!-- 1: Superusuario, 2: Administrador, Concesiones: [17: Estadísticas sobre estudios] -->
         <mat-tab *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [17]))">
             <ng-template mat-tab-label>
-              <mat-icon class="tab-icon">assignment_ind</mat-icon> Estudios
+              <mat-icon class="tab-icon">assignment_ind</mat-icon> {{ 'stats.studies' | translate }}
             </ng-template>
             <div class="stat-container">
                 <app-stats-performing></app-stats-performing>

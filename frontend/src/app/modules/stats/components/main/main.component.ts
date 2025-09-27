@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Estadística',
+      content_title : 'stats.title',
       content_icon  : 'query_stats',
       add_button    : false,
       filters_form  : false,

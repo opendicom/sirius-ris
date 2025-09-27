@@ -1,7 +1,7 @@
 <form class="form-element" [formGroup]="form">
     <mat-form-field appearance="outline">
-        <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal" class="auto-width">
+        <mat-label>{{ 'stats.branch' | translate }}</mat-label>
+        <mat-select formControlName="fk_branch" [placeholder]="'stats.select_branch' | translate" class="auto-width">
           <div *ngFor="let currentBranch of statsService.availableBranches">
             <div *ngFor="let currentOrganization of statsService.availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
@@ -11,17 +11,17 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-label>{{ 'stats.select_date_range' | translate }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
-        <input matStartDate formControlName="range_start" readonly placeholder="Fecha inicio">
-        <input matEndDate formControlName="range_end" readonly placeholder="Fecha fin">
+        <input matStartDate formControlName="range_start" readonly [placeholder]="'stats.start_date' | translate">
+        <input matEndDate formControlName="range_end" readonly [placeholder]="'stats.end_date' | translate">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
     <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
-        <mat-icon>search</mat-icon>&nbsp; BUSCAR
+        <mat-icon>search</mat-icon>&nbsp; {{ 'stats.search' | translate }}
     </button>
 </form>
 
@@ -32,15 +32,15 @@
 <ng-template #thenStatsResult>
     <!-- summary -->
     <div class="summary">
-        Cantidad total de estudios: <strong>{{ performingLocalResponse.total_items }}</strong> &nbsp;|&nbsp; 
+        {{ 'stats.total_studies' | translate }}: <strong>{{ performingLocalResponse.total_items }}</strong> &nbsp;|&nbsp; 
         <span *ngIf="performingLocalResponse.anesthesia; then thenAnesthesia else elseAnesthesia"></span>
-        <ng-template #thenAnesthesia>Anestesias realizadas: <strong>{{ performingLocalResponse.anesthesia }}</strong></ng-template>
-        <ng-template #elseAnesthesia>No se hallaron anestesias realizadas.</ng-template>
+        <ng-template #thenAnesthesia>{{ 'stats.anesthesia_performed' | translate }}: <strong>{{ performingLocalResponse.anesthesia }}</strong></ng-template>
+        <ng-template #elseAnesthesia>{{ 'stats.no_anesthesia_found' | translate }}</ng-template>
     </div>
 
     <!-- gender -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Género</h2>
+        <h2 class="text-center">{{ 'stats.gender' | translate }}</h2>
         <div #genderContainerRef class="chart-wrapper">
             <ngx-charts-pie-grid
                 [view]="[genderContainerRef.offsetWidth, 400]"
@@ -52,7 +52,7 @@
     
     <!-- urgency -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Coordinación</h2>
+        <h2 class="text-center">{{ 'stats.urgency' | translate }}</h2>
         <div #urgencyContainerRef class="chart-wrapper">
             <ngx-charts-bar-vertical 
                 [view]="[urgencyContainerRef.offsetWidth, 400]"
@@ -69,7 +69,7 @@
 
     <!-- flow_state -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Flujos de trabajo</h2>
+        <h2 class="text-center">{{ 'stats.flow_state' | translate }}</h2>
         <div #flow_stateContainerRef class="chart-wrapper">
             <ngx-charts-bar-vertical 
                 [view]="[flow_stateContainerRef.offsetWidth, 400]"
@@ -84,7 +84,7 @@
 
     <!-- modality -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Modalidades</h2>
+        <h2 class="text-center">{{ 'stats.modality' | translate }}</h2>
         <div #modalityContainerRef class="chart-wrapper">
             <ngx-charts-pie-chart
                 [view]="[modalityContainerRef.offsetWidth, 400]"
@@ -99,7 +99,7 @@
 
     <!-- procedure -->
     <div class="chart-responsive chart-col-100">
-        <h2 class="text-center">Procedimientos</h2>
+        <h2 class="text-center">{{ 'common.procedures' | translate }}</h2>
         <div #procedureContainerRef class="chart-wrapper">
             <ngx-charts-bar-vertical 
                 [view]="[procedureContainerRef.offsetWidth, 400]"
@@ -116,7 +116,7 @@
 
     <!-- equipment -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Equipos</h2>
+        <h2 class="text-center">{{ 'stats.equipment' | translate }}</h2>
         <div #equipmentContainerRef class="chart-wrapper">
             <ngx-charts-pie-grid
                 [view]="[equipmentContainerRef.offsetWidth, 400]"
@@ -128,7 +128,7 @@
 
     <!-- cancellation_reasons -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">Cancelaciones</h2>
+        <h2 class="text-center">{{ 'common.cancellations' | translate }}</h2>
         <div #cancellationContainerRef class="chart-wrapper">
             <ngx-charts-pie-chart
                 [view]="[cancellationContainerRef.offsetWidth, 400]"
@@ -144,7 +144,7 @@
 
     <!-- country -->
     <div class="chart-responsive chart-col-50">
-        <h2 class="text-center">País de residencia</h2>
+        <h2 class="text-center">{{ 'common.country_of_residence' | translate }}</h2>
         <div #countryContainerRef class="chart-wrapper">
             <ngx-charts-pie-chart
                 [view]="[countryContainerRef.offsetWidth, 400]"
@@ -162,7 +162,7 @@
 
     <!-- state -->
     <div class="chart-responsive chart-col-100">
-        <h2 class="text-center">Estado de residencia</h2>
+        <h2 class="text-center">{{ 'common.state_of_residence' | translate }}</h2>
         <div #stateContainerRef class="chart-wrapper">
             <ngx-charts-bar-vertical 
                 [view]="[stateContainerRef.offsetWidth, 400]"
@@ -178,7 +178,7 @@
 
     <!-- referring -->
     <div class="chart-responsive chart-col-100">
-        <h2 class="text-center">Solicitantes</h2>
+        <h2 class="text-center">{{ 'common.requesters' | translate }}</h2>
         <div #referringContainerRef class="chart-wrapper">
             <ngx-charts-pie-grid
                 [view]="[referringContainerRef.offsetWidth, 400]"
@@ -206,7 +206,7 @@
 
     <!-- injection_user -->
     <div class="chart-responsive chart-col-30">
-        <h2 class="text-center">Responsables de inyección</h2>
+        <h2 class="text-center">{{ 'common.injection_responsible' | translate }}</h2>
         <table class="simple-table">
             <tr *ngFor="let current of datasets.injection_user;">
                 <td>{{ current.name }}</td>
@@ -217,7 +217,7 @@
 
     <!-- laboratory_user -->
     <div class="chart-responsive chart-col-30">
-        <h2 class="text-center">Responsables de laboratorio</h2>
+        <h2 class="text-center">{{ 'common.laboratory_responsible' | translate }}</h2>
         <table class="simple-table">
             <tr *ngFor="let current of datasets.laboratory_user;">
                 <td>{{ current.name }}</td>
@@ -228,7 +228,7 @@
 
     <!-- console_technician -->
     <div class="chart-responsive chart-col-30">
-        <h2 class="text-center">Técnicos en consola</h2>
+        <h2 class="text-center">{{ 'common.console_technicians' | translate }}</h2>
         <table class="simple-table">
             <tr *ngFor="let current of datasets.console_technician;">
                 <td>{{ current.name }}</td>
@@ -243,7 +243,7 @@
     <!-- Export to XSLX -->
     <div class="text-right">
         <button mat-flat-button class="button_filters" (click)="sharedFunctions.jsonToXLSX(datasets, 'stats_result');">
-            <mat-icon class="export-icon">get_app</mat-icon> EXPORTAR
+            <mat-icon class="export-icon">get_app</mat-icon> {{ 'common.export' | translate }}
         </button>
     </div>
 </ng-template>
@@ -252,7 +252,7 @@
     <div class="text-center">
         <br/>
         <mat-icon class="no-result-icon">query_stats</mat-icon><br/>
-        <span class="no-result-text">Sin resultados</span><br/>
+        <span class="no-result-text">{{ 'stats.no_results' | translate }}</span><br/>
         <br/>
     </div>
 </ng-template>
