@@ -12,14 +12,14 @@
   <div class="welcome_header">
     <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
     <br/><br/>
-    <h1>Bienvenidos a Sirius RIS</h1>
+    <h1>{{ 'welcome.title' | translate }}</h1>
   </div>
 
   <br/>
 
   <div class="welcome_card">
-    <h2 class="underline-fail-alt">Acerca de</h2>
-    <strong>Sirius RIS</strong> es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.<br/>
+    <h2 class="underline-fail-alt">{{ 'welcome.about' | translate }}</h2>
+    <strong>Sirius RIS</strong> {{ 'welcome.description' | translate }}<br/>
     <br/>
     <mat-chip-list>
       <mat-chip>Angular</mat-chip>
@@ -32,18 +32,18 @@
 
     <br/><hr class="dashed" /><br/>
 
-    <h2 class="underline-ok-alt">Ayuda</h2>
+    <h2 class="underline-ok-alt">{{ 'welcome.help' | translate }}</h2>
     <ul>
-      <li>Documentación oficial en <strong><a href="https://github.com/opendicom/sirius-ris" target="_blank">GitHub</a></strong> & <strong><a href="https://hub.docker.com/search?q=opendicom%2Fsirius" target="_blank">DockerHub</a></strong></li>
-      <li>Servicio de <strong><a class="link-alt" href="mailto:info@opendicom.com?subject=Solicitud de soporte para Sirius RIS">soporte oficial</a></strong></li>
+      <li>{{ 'welcome.documentation' | translate }} <strong><a href="https://github.com/opendicom/sirius-ris" target="_blank">GitHub</a></strong> & <strong><a href="https://hub.docker.com/search?q=opendicom%2Fsirius" target="_blank">DockerHub</a></strong></li>
+      <li>{{ 'welcome.support' | translate }} <strong><a class="link-alt" href="mailto:info@opendicom.com?subject=Solicitud de soporte para Sirius RIS">soporte oficial</a></strong></li>
     </ul>
   </div>
 
-  <div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> Simple, eficiente y rápido</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> Robusto, seguro y auditable</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>Interfaz opaca</strong> para respetar ambientes radiológicos</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> Identificación inequivoca de personas | <strong>ISO-3166</strong> | <strong>UNAOID/ICAO v1.0</strong></div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon>Sistema de <strong>privilegios escalables</strong> para usuarios</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> {{ 'welcome.features.simple' | translate }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> {{ 'welcome.features.robust' | translate }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>{{ 'welcome.features.interface' | translate }}</strong></div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> {{ 'welcome.features.identification' | translate }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon>{{ 'welcome.features.privileges' | translate }}</div>
 
   <div class="clear"></div>
 

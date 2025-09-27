@@ -9,6 +9,7 @@ import { UsersAuthService } from '@auth/services/users-auth.service';           
 import { document_types, ISO_3166 } from '@env/environment';                            // Enviroment
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { DocumentTypesService } from '@shared/services/document-types.service';         // Document Types Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,7 +19,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 })
 export class SigninComponent implements OnInit {
   public country_codes: any = ISO_3166;
-  public document_types: any = document_types;
+  public document_types: any = {};
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -34,10 +35,14 @@ export class SigninComponent implements OnInit {
     private userAuth: UsersAuthService,
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService,
-    private objRoute: ActivatedRoute
+    private objRoute: ActivatedRoute,
+    private documentTypesService: DocumentTypesService
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
+    
+    // Initialize document types with translations
+    this.document_types = this.documentTypesService.getDocumentTypes();
   }
 
   ngOnInit(): void {

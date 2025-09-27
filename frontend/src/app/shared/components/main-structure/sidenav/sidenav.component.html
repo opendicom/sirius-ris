@@ -1,18 +1,18 @@
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 <!-- SIDENAV -->
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
-<h2>Menú principal</h2>
+<h2>{{ 'nav.main_menu' | translate }}</h2>
 
 <mat-list>
   <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos, 2: Gestión de citas, 3: Calendario de citas) -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1, 2, 3]))">
-    <h3>Coordinación</h3>
+    <h3>{{ 'nav.coordination' | translate }}</h3>
 
     <!-- Gestión de solicitudes -->
     <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [13: Gestión de solicitudes) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [13]))">
       <mat-list-item routerLink="/appointments/list_requests">
-        <mat-icon>move_to_inbox</mat-icon><span>Solicitudes</span>
+        <mat-icon>move_to_inbox</mat-icon><span>{{ 'nav.requests' | translate }}</span>
       </mat-list-item>
 
       <mat-divider></mat-divider>
@@ -22,7 +22,7 @@
     <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [1]))">
       <mat-list-item routerLink="/slots/list">
-        <mat-icon>date_range</mat-icon><span>Turnos</span>
+        <mat-icon>date_range</mat-icon><span>{{ 'nav.slots' | translate }}</span>
       </mat-list-item>
 
       <mat-divider></mat-divider>
@@ -32,7 +32,7 @@
     <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [2: Gestión de citas) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [2]))">
       <mat-list-item routerLink="/appointments/list">
-        <mat-icon>event_available</mat-icon><span>Citas</span>
+        <mat-icon>event_available</mat-icon><span>{{ 'nav.appointments' | translate }}</span>
       </mat-list-item>
 
       <mat-divider></mat-divider>
@@ -42,37 +42,37 @@
     <!-- 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [3: Calendario de citas) -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 7 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [3]))">
       <mat-list-item routerLink="/calendar/slots_appointments">
-        <mat-icon>calendar_month</mat-icon><span>Calendario</span>
+        <mat-icon>calendar_month</mat-icon><span>{{ 'nav.calendar' | translate }}</span>
       </mat-list-item>
     </div>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones] -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
-    <h3>Recepción</h3>
+    <h3>{{ 'nav.reception' | translate }}</h3>
 
     <mat-list-item routerLink="/check-in/list">
-      <mat-icon>today</mat-icon><span>Recepciones</span>
+      <mat-icon>today</mat-icon><span>{{ 'nav.receptions' | translate }}</span>
     </mat-list-item>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador, 3: Supervisor, 4: Médico, Concesiones: [5: Gestión de estudios] -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
-    <h3>Realización</h3>
+    <h3>{{ 'nav.realization' | translate }}</h3>
 
     <mat-list-item routerLink="/performing/list">
-      <mat-icon>assignment_ind</mat-icon><span>Estudios</span>
+      <mat-icon>assignment_ind</mat-icon><span>{{ 'nav.studies' | translate }}</span>
     </mat-list-item>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas, 15: Estadísticas sobre solicitudes, 16: Estadísticas sobre citas, 17, Estadísticas sobre estudios, 18: Estadísticas sobre informes, 19: Estadísticas sobre la organización] -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14, 15, 16, 17, 18, 19]))" >
-    <h3>Funciones avanzadas</h3>
+    <h3>{{ 'nav.advanced_functions' | translate }}</h3>
 
     <!-- 1: Superusuario, 2: Administrador, Concesiones: [14: Búsquedas avanzadas] -->
     <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [14]))" >
       <mat-list-item routerLink="/advanced-search/list">
-        <mat-icon>search</mat-icon><span>Busqueda avanzada</span>
+        <mat-icon>search</mat-icon><span>{{ 'nav.advanced_search' | translate }}</span>
       </mat-list-item>
     </div>
 
@@ -81,7 +81,7 @@
       <mat-divider></mat-divider>
 
       <mat-list-item routerLink="/stats/main">
-        <mat-icon>query_stats</mat-icon><span>Estadística</span>
+        <mat-icon>query_stats</mat-icon><span>{{ 'nav.statistics' | translate }}</span>
       </mat-list-item>
     </div>
     
@@ -90,7 +90,7 @@
       <mat-divider></mat-divider>
 
       <mat-list-item>
-        <mat-icon>all_inbox</mat-icon><span>Casillero médico</span>
+        <mat-icon>all_inbox</mat-icon><span>{{ 'nav.medical_locker' | translate }}</span>
       </mat-list-item>
     </div>
 
@@ -99,26 +99,26 @@
       <mat-divider></mat-divider>
 
       <mat-list-item routerLink="/billing/list">
-        <mat-icon>attach_money</mat-icon><span>Facturación</span>
+        <mat-icon>attach_money</mat-icon><span>{{ 'nav.billing' | translate }}</span>
       </mat-list-item>
     </div>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2">
-    <h3>Administrador</h3>
+    <h3>{{ 'nav.administrator' | translate }}</h3>
 
     <mat-list-item routerLink="/settings">
-      <mat-icon>settings</mat-icon><span>Configuración de sistema</span>
+      <mat-icon>settings</mat-icon><span>{{ 'nav.system_configuration' | translate }}</span>
     </mat-list-item>
   </div>
 
   <!-- 9: Paciente -->
   <div *ngIf="sharedProp.userLogged.permissions[0].role == 9">
-    <h3>Paciente</h3>
+    <h3>{{ 'role.patient' | translate }}</h3>
 
     <mat-list-item routerLink="/start">
-      <mat-icon>fact_check</mat-icon><span>Resultado de estudios</span>
+      <mat-icon>fact_check</mat-icon><span>{{ 'nav.study_results' | translate }}</span>
     </mat-list-item>
   </div>
 

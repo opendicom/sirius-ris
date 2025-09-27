@@ -184,8 +184,10 @@ export class I18nService {
       'role.functional': 'Funcional',
 
       // Navigation
+      'nav.main_menu': 'Menú principal',
       'nav.coordination': 'Coordinación',
       'nav.requests': 'Solicitudes',
+      'nav.slots': 'Turnos',
       'nav.appointments': 'Citas',
       'nav.calendar': 'Calendario',
       'nav.reception': 'Recepción',
@@ -199,6 +201,7 @@ export class I18nService {
       'nav.billing': 'Facturación',
       'nav.administrator': 'Administrador',
       'nav.system_configuration': 'Configuración de sistema',
+      'nav.study_results': 'Resultado de estudios',
       'nav.dashboard': 'Escritorio',
       'nav.patients': 'Pacientes',
       'nav.reports': 'Informes',
@@ -296,8 +299,10 @@ export class I18nService {
       'role.functional': 'Functional',
 
       // Navigation
+      'nav.main_menu': 'Main Menu',
       'nav.coordination': 'Coordination',
       'nav.requests': 'Requests',
+      'nav.slots': 'Slots',
       'nav.appointments': 'Appointments',
       'nav.calendar': 'Calendar',
       'nav.reception': 'Reception',
@@ -311,6 +316,7 @@ export class I18nService {
       'nav.billing': 'Billing',
       'nav.administrator': 'Administrator',
       'nav.system_configuration': 'System Configuration',
+      'nav.study_results': 'Study Results',
       'nav.dashboard': 'Dashboard',
       'nav.patients': 'Patients',
       'nav.reports': 'Reports',
