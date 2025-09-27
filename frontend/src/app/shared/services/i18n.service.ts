@@ -150,6 +150,12 @@ export class I18nService {
       'common.generate_batch': 'Generar lote',
       'common.view_current_appointments': 'Ver citas en curso',
       'common.add_machine_user': 'Añadir usuario máquina',
+      'common.search_criteria': 'Criterio de busqueda [RegEx]',
+      'common.date_range': 'Seleccione rango de fechas',
+      'common.start_date': 'Fecha inicio',
+      'common.end_date': 'Fecha fin',
+      'common.select_organization': 'Seleccione la organización',
+      'common.clear_search': 'LIMPIAR BÚSQUEDA',
       
       // Authentication
       'auth.login': 'Iniciar Sesión',
@@ -575,6 +581,12 @@ export class I18nService {
       'common.generate_batch': 'Generate batch',
       'common.view_current_appointments': 'View current appointments',
       'common.add_machine_user': 'Add machine user',
+      'common.search_criteria': 'Search criteria [RegEx]',
+      'common.date_range': 'Select date range',
+      'common.start_date': 'Start date',
+      'common.end_date': 'End date',
+      'common.select_organization': 'Select organization',
+      'common.clear_search': 'CLEAR SEARCH',
       
       // Authentication
       'auth.login': 'Login',

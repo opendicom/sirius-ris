@@ -36,16 +36,16 @@
   <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
     <div class="filters"> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
-        <mat-label>Buscar</mat-label>
-        <input matInput type="search" placeholder="Criterio de busqueda [RegEx]" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'common.search' | translate }}</mat-label>
+        <input matInput type="search" [placeholder]="'common.search_criteria' | translate" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.date_range">
-        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-label>{{ 'common.date_range' | translate }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
-          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly placeholder="Fecha inicio">
-          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly placeholder="Fecha fin">
+          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly [placeholder]="'common.start_date' | translate">
+          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly [placeholder]="'common.end_date' | translate">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker (closed)="onSearch();"></mat-date-range-picker>
@@ -189,62 +189,62 @@
 <div *ngIf="sharedProp.action.advanced_search" class="form-element advanced-search-panel">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h2 class="form-title text-center underline-fail-alt">Buscar palabras clave:</h2>
+      <h2 class="form-title text-center underline-fail-alt">{{ 'advanced_search.keywords' | translate }}</h2>
     
-      <h4>Anamnesis <span class="label-info">CITA</span>:</h4>
+      <h4>{{ 'advanced_search.anamnesis' | translate }}</h4>
       <mat-form-field appearance="outline" class="large">
-        <mat-label>Buscar palabra sobre anamnesis</mat-label>
-        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" placeholder="Buscar palabra sobre el contenido del anamnesis" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'advanced_search.anamnesis_search' | translate }}</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" [placeholder]="'advanced_search.anamnesis_search' | translate" (keyup.enter)="onSearch();">
       </mat-form-field>
     
       <br/><br/>
 
-      <h3 class="form-title text-center underline-ok-alt">En el contenido del <span class="label-info">INFORME</span>:</h3>
+      <h3 class="form-title text-center underline-ok-alt">{{ 'advanced_search.report_content' | translate }}</h3>
     
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
-          <h4>Dato clínico:</h4>
+          <h4>{{ 'advanced_search.clinical_data' | translate }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en dato clínico</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.clinical_info" placeholder="Buscar palabra sobre el dato clínico" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'advanced_search.clinical_data_word' | translate }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.clinical_info" [placeholder]="'advanced_search.clinical_data_word' | translate" (keyup.enter)="onSearch();">
           </mat-form-field>
     
           <br/>
     
-          <h4>Hallazgos:</h4>
+          <h4>{{ 'advanced_search.findings' | translate }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en hallazgos</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_findings" placeholder="Buscar palabra sobre los hallazgos" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'advanced_search.findings_word' | translate }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_findings" [placeholder]="'advanced_search.findings_word' | translate" (keyup.enter)="onSearch();">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
     
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>Procedimiento:</h4>
+          <h4>{{ 'advanced_search.procedure' | translate }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en procedimiento</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_description" placeholder="Buscar palabra sobre el procedimiento" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'advanced_search.procedure_word' | translate }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_description" [placeholder]="'advanced_search.procedure_word' | translate" (keyup.enter)="onSearch();">
           </mat-form-field>
     
           <br/>
   
-          <h4>En suma:</h4>
+          <h4>{{ 'advanced_search.summary' | translate }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en el en suma</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.summary" placeholder="Buscar palabra sobre en suma" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'advanced_search.summary_word' | translate }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.summary" [placeholder]="'advanced_search.summary_word' | translate" (keyup.enter)="onSearch();">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
       </div>
     
       <hr class="dashed"/><br/>
 
-      <h2 class="form-title text-center underline-fail-alt">Patologías del <span class="label-info">INFORME</span>:</h2>
+      <h2 class="form-title text-center underline-fail-alt">{{ 'advanced_search.pathologies' | translate }}</h2>
   
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> Patologías:</span></span>
+          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> {{ 'advanced_search.pathologies_label' | translate }}</span></span>
           <br/>
           <mat-form-field class="full" appearance="outline">
-            <mat-label>Patologías</mat-label>
+            <mat-label>{{ 'advanced_search.pathologies_placeholder' | translate }}</mat-label>
             <input type="text" [(ngModel)]="sharedProp.pathologies_input" matInput (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
             <mat-autocomplete #autoPathologies="matAutocomplete">
               <mat-option (click)="addPathology(currentPathology)" *ngFor="let currentPathology of sharedProp.filteredPathologies" [value]="currentPathology.name">
@@ -261,13 +261,13 @@
               <mat-chip-list>
                 <mat-chip class="mat-pathology" *ngFor="let currentPathology of sharedProp.advanced_search.pathologies; let i = index">
                   <small>{{ currentPathology.name }}</small> 
-                  <mat-icon matTooltip="Quitar patología" (click)="removePathology(currentPathology)">close</mat-icon>
+                  <mat-icon [matTooltip]="'common.remove' | translate" (click)="removePathology(currentPathology)">close</mat-icon>
                 </mat-chip>
               </mat-chip-list>
             </small>
           </ng-template>
           <ng-template #elseBlockPathologies>
-            <div class="text-center"><span class="label-accent">Sin filtrar por patologías</span></div>
+            <div class="text-center"><span class="label-accent">{{ 'advanced_search.no_pathology_filter' | translate }}</span></div>
           </ng-template>
         </div> <!-- end fxLayout wrapper -->
       </div>
@@ -275,10 +275,10 @@
       <!-- Only superuser can set pathologies organization -->
       <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
         <hr class="dashed"/><br/>
-        <h4>Organización <span class="label-accent">Administradora de patologías</span>:</h4>
+        <h4>{{ 'advanced_search.pathology_org' | translate }}</h4>
         <mat-form-field appearance="outline" class="full">
-          <mat-label>Organización</mat-label>
-          <mat-select [(ngModel)]="sharedProp.current_organization" placeholder="Seleccione la organización" (selectionChange)="onChangeOrganization($event);">
+          <mat-label>{{ 'advanced_search.organization' | translate }}</mat-label>
+          <mat-select [(ngModel)]="sharedProp.current_organization" [placeholder]="'common.select_organization' | translate" (selectionChange)="onChangeOrganization($event);">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
             </div>
@@ -290,26 +290,26 @@
     </div> <!-- end fxLayout wrapper -->
     
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h2 class="form-title text-center underline-fail-alt">Médicos involucrados:</h2>
+      <h2 class="form-title text-center underline-fail-alt">{{ 'advanced_search.involved_doctors' | translate }}</h2>
 
-      <h4>Médico solicitante <span class="label-info">SOLICITUD</span>:</h4>
+      <h4>{{ 'advanced_search.requesting_doctor' | translate }}</h4>
       <mat-form-field appearance="outline" class="large">
-        <mat-label>Nombre/s o Apellido/s del médico solicitante</mat-label>
-        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.referring_physician" placeholder="Nombre/s o Apellido/s del médico solicitante" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'advanced_search.doctor_name' | translate }}</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.referring_physician" [placeholder]="'advanced_search.doctor_name' | translate" (keyup.enter)="onSearch();">
       </mat-form-field>
 
       <br/><br/>
 
-      <h3 class="form-title text-center underline-ok-alt">Sobre la <span class="label-info">FIRMA</span> y <span class="label-info">AUTENTICACIÓN</span> del <span class="label-info">INFORME</span>:</h3>
+      <h3 class="form-title text-center underline-ok-alt">{{ 'advanced_search.signature_auth' | translate }}</h3>
 
       
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
           <span *ngIf="this.sharedProp.current_signer_users">
-            <h4>Firmado por:</h4>
+            <h4>{{ 'advanced_search.signed_by' | translate }}</h4>
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Usuario firmante</mat-label>
-              <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" placeholder="Seleccione el usuario firmante" (selectionChange)="onSearch();">
+              <mat-label>{{ 'advanced_search.signer' | translate }}</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" [placeholder]="'advanced_search.signer_select' | translate" (selectionChange)="onSearch();">
                 <div *ngFor="let currentSignUser of this.sharedProp.current_signer_users">
                   <mat-option *ngIf="currentSignUser.person" value="{{ currentSignUser._id }}">
                     <!--names-->
@@ -331,10 +331,10 @@
 
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           <span *ngIf="this.sharedProp.current_authenticator_users">
-            <h4>Autenticado por:</h4>
+            <h4>{{ 'advanced_search.authenticated_by' | translate }}</h4>
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Usuario autenticador</mat-label>
-              <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" placeholder="Seleccione el usuario autenticador" (selectionChange)="onSearch();">
+              <mat-label>{{ 'advanced_search.authenticator' | translate }}</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" [placeholder]="'advanced_search.authenticator_select' | translate" (selectionChange)="onSearch();">
                 <div *ngFor="let currentAuthUser of this.sharedProp.current_authenticator_users">
                   <mat-option *ngIf="currentAuthUser.person" value="{{ currentAuthUser._id }}">
                     <!--names-->
@@ -372,12 +372,12 @@
         
     <!-- advanced search -->
     <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
-      <mat-icon>search</mat-icon>&nbsp; BUSCAR
+      <mat-icon>search</mat-icon>&nbsp; {{ 'common.search' | translate }}
     </button>
     
     <!-- reset seach -->
     <button mat-flat-button color="accent" class="button_filters clean_button" (click)="advancedSearchClear()" *ngIf="sharedProp.action.filters.clear_filters">
-      <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+      <mat-icon>cleaning_services</mat-icon>&nbsp; {{ 'common.clear_search' | translate }}
     </button>
     
     <div class="clear"></div>

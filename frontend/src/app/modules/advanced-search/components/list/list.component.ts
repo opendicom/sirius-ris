@@ -57,7 +57,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Búsqueda avanzada de informes',
+      content_title       : 'advanced_search.title',
       content_icon        : 'search',
       add_button          : false,
       duplicated_surnames : false,                        // Check duplicated surnames
