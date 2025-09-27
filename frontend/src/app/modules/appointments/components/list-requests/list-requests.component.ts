@@ -70,7 +70,7 @@ export class ListRequestsComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de solicitudes',
+      content_title       : 'requests.title',
       content_icon        : 'move_to_inbox',
       add_button          : false,
       duplicated_surnames : false,    // Check duplicated surnames
