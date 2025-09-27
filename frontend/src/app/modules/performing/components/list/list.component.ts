@@ -72,7 +72,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de estudios',
+      content_title       : 'studies.title',
       content_icon        : 'assignment_ind',
       add_button          : false,
       duplicated_surnames : true,     // Check duplicated surnames
