@@ -11,10 +11,10 @@ import {                                                                        
   regexObjectId,
   appointments_flow_states,
   ISO_3166,
-  document_types,
   gender_types,
   cancellation_reasons
 } from '@env/environment';
+import { DocumentTypesService } from '@shared/services/document-types.service';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -25,7 +25,7 @@ import {                                                                        
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
+  public document_types         : any = {};
   public gender_types           : any = gender_types;
   public appointmentsFlowStates : any = appointments_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
@@ -57,14 +57,15 @@ export class ListComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
-    public pdfService       : PdfService
+    public pdfService       : PdfService,
+    private documentTypesService: DocumentTypesService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de citas',
+      content_title       : 'appointments.title',
       content_icon        : 'event_available',
       add_button          : '/appointments/set_patient',
       manage_drafts       : '/appointments/list_drafts',
@@ -164,6 +165,9 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Initialize document types
+    this.document_types = this.documentTypesService.getDocumentTypes();
+
     //Extract sent data (Parameters by routing):
     const id = this.objRoute.snapshot.params['_id'];
 

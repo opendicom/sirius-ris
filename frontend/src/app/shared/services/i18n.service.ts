@@ -461,6 +461,25 @@ export class I18nService {
       'branches.export_list': 'EXPORTAR LISTADO',
       'branches.edit': 'Editar',
       'branches.element_logs': 'Logs del elemento',
+      'branches.form_title': 'Formulario de sucursales',
+      'branches.select_organization': 'Seleccione la organización',
+      'branches.organization_required': 'Organización *',
+      'branches.short_name_required': 'Nombre corto *',
+      'branches.short_name_placeholder': 'Ingrese el nombre corto',
+      'branches.name_required': 'Nombre *',
+      'branches.name_placeholder': 'Ingrese el nombre',
+      'branches.oid_placeholder': 'Ingrese el OID',
+      'branches.country_required': 'País de la sucursal *',
+      'branches.structure_id_placeholder': 'Ingrese el ID Estructura',
+      'branches.suffix_placeholder': 'Ingrese el Sufijo',
+      'branches.appointment_footer': 'Pie de página de citas',
+      'branches.appointment_footer_min_max': 'min: 10, max: 3000',
+      'branches.branch_logo': 'LOGO DE LA SUCURSAL',
+      'branches.select_branch_logo': 'SELECCIONAR LOGO DE LA SUCURSAL',
+      'branches.delete_logo': 'Eliminar logo de la organización',
+      'branches.cancel': 'CANCELAR',
+      'branches.save': 'GUARDAR',
+
       
       // Authentication
       'auth.login': 'Iniciar Sesión',
@@ -722,6 +741,9 @@ export class I18nService {
       'appointments.appointment_pdf': 'PDF de cita',
       'appointments.mail_forward': 'Reenvío de correos',
       'appointments.study_request': 'Solicitud de estudio',
+      'appointments.email_forward': 'Reenvío de correos',
+      'appointments.referring': 'Solicitante',
+      'appointments.imaging': 'Realizador',
 
 
       // Requests
@@ -1258,6 +1280,25 @@ export class I18nService {
       'branches.export_list': 'EXPORT LIST',
       'branches.edit': 'Edit',
       'branches.element_logs': 'Element logs',
+      'branches.form_title': 'Branches Form',
+      'branches.select_organization': 'Select organization',
+      'branches.organization_required': 'Organization *',
+      'branches.short_name_required': 'Short Name *',
+      'branches.short_name_placeholder': 'Enter the short name',
+      'branches.name_required': 'Name *',
+      'branches.name_placeholder': 'Enter the name',
+      'branches.oid_placeholder': 'Enter the OID',
+      'branches.country_required': 'Branch Country *',
+      'branches.structure_id_placeholder': 'Enter the Structure ID',
+      'branches.suffix_placeholder': 'Enter the Suffix',
+      'branches.appointment_footer': 'Appointment Footer',
+      'branches.appointment_footer_min_max': 'min: 10, max: 3000',
+      'branches.branch_logo': 'BRANCH LOGO',
+      'branches.select_branch_logo': 'SELECT BRANCH LOGO',
+      'branches.delete_logo': 'Delete organization logo',
+      'branches.cancel': 'CANCEL',
+      'branches.save': 'SAVE',
+
       
       // Authentication
       'auth.login': 'Login',
@@ -1519,6 +1560,9 @@ export class I18nService {
       'appointments.appointment_pdf': 'Appointment PDF',
       'appointments.mail_forward': 'Mail forwarding',
       'appointments.study_request': 'Study request',
+      'appointments.email_forward': 'Email forward',
+      'appointments.referring': 'Referring',
+      'appointments.imaging': 'Imaging',
 
 
       // Requests
