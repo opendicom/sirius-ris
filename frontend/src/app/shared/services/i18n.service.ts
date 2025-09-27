@@ -147,6 +147,9 @@ export class I18nService {
       'common.status': 'Estado',
       'common.settings': 'Configuración',
       'common.language': 'Idioma',
+      'common.generate_batch': 'Generar lote',
+      'common.view_current_appointments': 'Ver citas en curso',
+      'common.add_machine_user': 'Añadir usuario máquina',
       
       // Authentication
       'auth.login': 'Iniciar Sesión',
@@ -480,6 +483,7 @@ export class I18nService {
       'requests.requesting_institution': 'Institución Solicitante',
       'requests.performing_institution': 'Institución realizadora',
       'requests.no_records': 'No se encontraron registros.',
+      'common.no_records_found': 'No se encontraron registros.',
       'requests.export_list': 'EXPORTAR LISTADO',
       'requests.waiting_results': 'Aguarde, aún no hay resultados.',
       'requests.select_all_tooltip': 'Seleccionar todos (Página actual)',
@@ -493,7 +497,52 @@ export class I18nService {
       'requests.no_data': '(Sin dato)',
       'requests.male': 'Masculino',
       'requests.female': 'Femenino',
-      'requests.other': 'Otro'
+      'requests.other': 'Otro',
+
+      // Request Flow States
+      'flow_state.administration': 'Administración',
+      'flow_state.retained_administration': 'Retenida en administración',
+      'flow_state.medical_area': 'Área médica',
+      'flow_state.retained_medical_area': 'Retenida en área médica',
+      'flow_state.appointment_in_progress': 'Cita en curso creada',
+      'flow_state.appointment_created': 'Cita creada',
+      'flow_state.cancelled': 'Cancelada',
+
+      // Performing Flow States
+      'flow_state.reception': 'Recepción',
+      'flow_state.interview': 'Entrevista',
+      'flow_state.preparation_injection': 'Preparación/Inyección',
+      'flow_state.acquisition': 'Adquisición',
+      'flow_state.image_verification': 'Verificación de imágenes',
+      'flow_state.to_report': 'Para informar',
+      'flow_state.draft_report': 'Informe borrador',
+      'flow_state.signed_report': 'Informe firmado',
+      'flow_state.completed_with_report': 'Terminado (con informe)',
+      'flow_state.completed_without_report': 'Terminado (sin informe)',
+
+      // Slots
+      'slots.title': 'Listado de turnos',
+      'slots.search': 'Buscar',
+      'slots.date_range': 'Seleccione rango de fechas',
+      'slots.modality': 'Modalidad',
+      'slots.urgency': 'Urgencia',
+      'slots.actions': 'Acciones',
+      'slots.organization': 'Organización',
+      'slots.branch': 'Sucursal',
+      'slots.service': 'Servicio',
+      'slots.day': 'Día',
+      'slots.date': 'Fecha',
+      'slots.schedule': 'Horario',
+      'slots.equipment': 'Equipamiento',
+      'slots.no_records': 'No se encontraron registros.',
+      'slots.export_list': 'EXPORTAR LISTADO',
+      'slots.waiting_results': 'Aguarde, aún no hay resultados.',
+      'slots.select_all_tooltip': 'Seleccionar todos (Página actual)',
+      'slots.edit': 'Editar',
+      'slots.element_logs': 'Logs del elemento',
+      'slots.urgent': 'Urgente',
+      'slots.normal': 'Normal',
+      'slots.no_data': '(Sin dato)'
     };
     
     // English translations
@@ -523,6 +572,9 @@ export class I18nService {
       'common.status': 'Status',
       'common.settings': 'Settings',
       'common.language': 'Language',
+      'common.generate_batch': 'Generate batch',
+      'common.view_current_appointments': 'View current appointments',
+      'common.add_machine_user': 'Add machine user',
       
       // Authentication
       'auth.login': 'Login',
@@ -856,6 +908,7 @@ export class I18nService {
       'requests.requesting_institution': 'Requesting Institution',
       'requests.performing_institution': 'Performing Institution',
       'requests.no_records': 'No records found.',
+      'common.no_records_found': 'No records found.',
       'requests.export_list': 'EXPORT LIST',
       'requests.waiting_results': 'Please wait, no results yet.',
       'requests.select_all_tooltip': 'Select all (Current page)',
@@ -869,7 +922,52 @@ export class I18nService {
       'requests.no_data': '(No data)',
       'requests.male': 'Male',
       'requests.female': 'Female',
-      'requests.other': 'Other'
+      'requests.other': 'Other',
+
+      // Request Flow States
+      'flow_state.administration': 'Administration',
+      'flow_state.retained_administration': 'Retained in administration',
+      'flow_state.medical_area': 'Medical area',
+      'flow_state.retained_medical_area': 'Retained in medical area',
+      'flow_state.appointment_in_progress': 'Appointment in progress created',
+      'flow_state.appointment_created': 'Appointment created',
+      'flow_state.cancelled': 'Cancelled',
+
+      // Performing Flow States
+      'flow_state.reception': 'Reception',
+      'flow_state.interview': 'Interview',
+      'flow_state.preparation_injection': 'Preparation/Injection',
+      'flow_state.acquisition': 'Acquisition',
+      'flow_state.image_verification': 'Image verification',
+      'flow_state.to_report': 'To report',
+      'flow_state.draft_report': 'Draft report',
+      'flow_state.signed_report': 'Signed report',
+      'flow_state.completed_with_report': 'Completed (with report)',
+      'flow_state.completed_without_report': 'Completed (without report)',
+
+      // Slots
+      'slots.title': 'Slots List',
+      'slots.search': 'Search',
+      'slots.date_range': 'Select date range',
+      'slots.modality': 'Modality',
+      'slots.urgency': 'Urgency',
+      'slots.actions': 'Actions',
+      'slots.organization': 'Organization',
+      'slots.branch': 'Branch',
+      'slots.service': 'Service',
+      'slots.day': 'Day',
+      'slots.date': 'Date',
+      'slots.schedule': 'Schedule',
+      'slots.equipment': 'Equipment',
+      'slots.no_records': 'No records found.',
+      'slots.export_list': 'EXPORT LIST',
+      'slots.waiting_results': 'Please wait, no results yet.',
+      'slots.select_all_tooltip': 'Select all (Current page)',
+      'slots.edit': 'Edit',
+      'slots.element_logs': 'Element logs',
+      'slots.urgent': 'Urgent',
+      'slots.normal': 'Normal',
+      'slots.no_data': '(No data)'
     };
   }
 }

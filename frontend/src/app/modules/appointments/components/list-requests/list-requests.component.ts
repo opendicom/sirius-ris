@@ -8,12 +8,12 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import {                                                                                // Enviroments
   regexObjectId,
-  appointment_requests_flow_states,
   cancellation_reasons,
   ISO_3166,
   document_types,
   gender_types
 } from '@env/environment';
+import { FlowStatesService } from '@shared/services/flow-states.service';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -26,7 +26,7 @@ export class ListRequestsComponent implements OnInit {
   public country_codes                  : any = ISO_3166;
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;
-  public appointmentRequestsFlowStates  : any = appointment_requests_flow_states;
+  public appointmentRequestsFlowStates  : any = {};
   public cancellation_reasons           : any = cancellation_reasons;
 
   //Set visible columns of the list:
@@ -60,7 +60,8 @@ export class ListRequestsComponent implements OnInit {
     private router          : Router,
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private flowStatesService: FlowStatesService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -153,6 +154,9 @@ export class ListRequestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Initialize flow states with translations:
+    this.appointmentRequestsFlowStates = this.flowStatesService.getAppointmentRequestsFlowStates();
+
     //Extract sent data (Parameters by routing):
     const id = this.objRoute.snapshot.params['_id'];
 

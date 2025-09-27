@@ -34,7 +34,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de turnos',
+      content_title       : 'slots.title',
       content_icon        : 'date_range',
       add_button          : '/slots/form/insert/0',   // Zero indicates empty :id (Activated Route) [content is ignored]
       add_slots_batch     : '/slots/batch',

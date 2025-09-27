@@ -1,10 +1,10 @@
 <mat-toolbar class="second-toolbar" *ngIf="sharedProp.action.content_title">
-  <mat-icon>{{ sharedProp.action.content_icon }}</mat-icon>&nbsp;&nbsp;<span>{{ sharedProp.action.content_title }}</span>
+  <mat-icon>{{ sharedProp.action.content_icon }}</mat-icon>&nbsp;&nbsp;<span>{{ sharedProp.action.content_title | translate }}</span>
 
   <span class="mat-spacer"></span>
 
   <button mat-flat-button color="primary" routerLink="{{ sharedProp.action.add_button }}" *ngIf="sharedProp.action.add_button">
-    <mat-icon>add</mat-icon> AÑADIR
+    <mat-icon>add</mat-icon> {{ 'common.add' | translate }}
   </button>
 
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
@@ -13,20 +13,20 @@
   <span *ngIf="sharedProp.action.add_slots_batch">
     &nbsp;
     <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_slots_batch }}">
-      <mat-icon>content_copy</mat-icon> GENERAR LOTE
+      <mat-icon>content_copy</mat-icon> {{ 'common.generate_batch' | translate }}
     </button>
   </span>
 
   <span *ngIf="sharedProp.action.manage_drafts">
     &nbsp;
-    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> VER CITAS EN CURSO</button>
+    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> {{ 'common.view_current_appointments' | translate }}</button>
   </span>
 
   <!-- Only superuser can add machine users -->
   <span *ngIf="sharedProp.action.add_machine && sharedProp.userLogged.permissions[0].role == 1">
     &nbsp;
     <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_machine }}">
-      <mat-icon>add_box</mat-icon> AÑADIR USUARIO MAQUINA
+      <mat-icon>add_box</mat-icon> {{ 'common.add_machine_user' | translate }}
     </button>
   </span>
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
