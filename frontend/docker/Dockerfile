@@ -35,9 +35,8 @@ WORKDIR /app
 COPY ../ .
 
 # Install dependencies using legacy-peer-deps to match your local environment setup:
-# The 'npm ci' command is optimized for continuous integration (CI) environments,
-# as it performs a faster and more deterministic installation.
-RUN npm ci --legacy-peer-deps
+# Using npm install instead of npm ci since package-lock.json needs to be updated
+RUN npm install --legacy-peer-deps
 
 # Build Sirius Frontend:
 RUN ng build

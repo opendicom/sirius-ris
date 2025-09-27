@@ -39,10 +39,14 @@ import { AppointmentRequestDetailsComponent } from '@shared/components/dialogs/a
 import { SearchInfoComponent } from '@shared/components/dialogs/search-info/search-info.component';
 import { PatientDetailsComponent } from '@shared/components/dialogs/patient-details/patient-details.component';
 
+// Language components:
+import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
+
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
 import { AccnoDatePipe } from '@shared/pipes/accno_date.pipe';
 import { SafeURLPipe } from '@shared/pipes/safe_url.pipe';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 
 // Required for bidirectional binding (ngModule):
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -85,10 +89,14 @@ import * as IC from '@shared/directives/input-control.directive';
     SearchInfoComponent,
     PatientDetailsComponent,
 
+    // Language components:
+    LanguageSelectorComponent,
+
     // Shared pipes:
     HighlighterPipe,
     AccnoDatePipe,
     SafeURLPipe,
+    TranslatePipe,
 
     //Input Control:
     IC.numbersDirective,
@@ -141,10 +149,14 @@ import * as IC from '@shared/directives/input-control.directive';
     SearchInfoComponent,
     PatientDetailsComponent,
 
+    // Language components:
+    LanguageSelectorComponent,
+
     // Shared pipes:
     HighlighterPipe,
     AccnoDatePipe,
     SafeURLPipe,
+    TranslatePipe,
 
     //Input Control:
     IC.numbersDirective,

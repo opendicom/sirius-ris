@@ -13,12 +13,35 @@ import { AppInitializer } from '@app/app-initializer';
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------------------------------------------------------//
+// Import I18n Service:
+//---------------------------------------------------------------------------------------------------------------------------//
+import { I18nService } from '@shared/services/i18n.service';
+//---------------------------------------------------------------------------------------------------------------------------//
+
+//---------------------------------------------------------------------------------------------------------------------------//
+// Locale provider factory:
+//---------------------------------------------------------------------------------------------------------------------------//
+export function getLocaleId(): string {
+  // Try to get from localStorage first (for language persistence)
+  const savedLanguage = localStorage.getItem('sirius_language');
+  if (savedLanguage) {
+    return savedLanguage;
+  }
+  
+  // Fallback to Spanish as default
+  return 'es';
+}
+//---------------------------------------------------------------------------------------------------------------------------//
+
+//---------------------------------------------------------------------------------------------------------------------------//
 // Import LOCALE_ID to set locale code & language:
 //---------------------------------------------------------------------------------------------------------------------------//
 import { LOCALE_ID } from '@angular/core';
 import es from '@angular/common/locales/es';
+import en from '@angular/common/locales/en';
 import { registerLocaleData } from '@angular/common';
-registerLocaleData(es);
+registerLocaleData(es, 'es');
+registerLocaleData(en, 'en');
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -113,7 +136,8 @@ import { BillingModule } from '@modules/billing/billing.module';
     AppInitializer,
     { provide: APP_INITIALIZER, useFactory: (appInitializer: AppInitializer) => appInitializer.initializeApp(), multi: true, deps: [AppInitializer] },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    { provide: LOCALE_ID, useValue: 'es-AR' },
+    { provide: LOCALE_ID, useFactory: getLocaleId },
+    I18nService
   ],
   bootstrap: [AppComponent]
 })

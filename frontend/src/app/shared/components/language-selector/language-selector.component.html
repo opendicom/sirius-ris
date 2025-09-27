@@ -1,0 +1,20 @@
+<div class="language-selector">
+  <mat-form-field appearance="outline" class="language-field">
+    <mat-label>{{ 'common.language' | translate }}</mat-label>
+    <mat-select 
+      [value]="currentLanguage" 
+      (selectionChange)="changeLanguage($event.value)"
+      class="language-select">
+      <mat-option 
+        *ngFor="let language of languages" 
+        [value]="language.code"
+        class="language-option">
+        <div class="language-option-content">
+          <span class="flag-icon flag-icon-{{language.flag}}" 
+                [attr.aria-label]="language.name"></span>
+          <span class="language-name">{{ language.name }}</span>
+        </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

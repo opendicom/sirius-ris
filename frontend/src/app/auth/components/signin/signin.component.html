@@ -4,26 +4,26 @@
   <br/><br/><hr class="dashed" /><br/>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Documento</mat-label>
-    <input matInput type="text" name="document" ngModel required placeholder="Ingrese su documento">
+    <mat-label>{{ 'auth.document' | translate }}</mat-label>
+    <input matInput type="text" name="document" ngModel required [placeholder]="'auth.enter_document' | translate">
   </mat-form-field>
 
   <br/>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Contraseña</mat-label>
-    <input matInput type="password" name="password" ngModel required placeholder="Ingrese su contraseña">
+    <mat-label>{{ 'auth.password' | translate }}</mat-label>
+    <input matInput type="password" name="password" ngModel required [placeholder]="'auth.enter_password' | translate">
   </mat-form-field>
 
   <br/>
 
-  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">INICIAR SESIÓN</button>
+  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">{{ 'auth.login' | translate }}</button>
 
   <br/><br/>
 
   <div class="document-section" *ngIf="sharedProp.mainSettings.appSettings != undefined">
     <mat-form-field appearance="fill" class="medium">
-      <mat-label>País del documento</mat-label>
+      <mat-label>{{ 'auth.document_country' | translate }}</mat-label>
       <mat-select name="doc_country_code" [(ngModel)]="sharedProp.mainSettings.appSettings.default_country" required >
         <div *ngFor="let currentCode of getKeys(country_codes, true)">
           <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -32,7 +32,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="medium">
-      <mat-label>Tipo de documento</mat-label>
+      <mat-label>{{ 'auth.document_type' | translate }}</mat-label>
       <mat-select name="doc_type" [(ngModel)]="sharedProp.mainSettings.appSettings.default_doc_type" required >
         <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
           <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>

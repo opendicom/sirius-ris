@@ -12,7 +12,8 @@
         "default_state_name": "${SIRIUS_FRONTEND_DEFAULT_STATE_NAME}",
         "default_city_name": "${SIRIUS_FRONTEND_DEFAULT_CITY_NAME}",
         "default_doc_type": "${SIRIUS_FRONTEND_DEFAULT_DOC_TYPE}",
-        "default_utc": "${SIRIUS_FRONTEND_DEFAULT_UTC}"
+        "default_utc": "${SIRIUS_FRONTEND_DEFAULT_UTC}",
+        "language": "${SIRIUS_FRONTEND_LANGUAGE}"
     },
 
     "passKeywords": ${SIRIUS_FRONTEND_PASS_KEYWORDS},
@@ -72,8 +73,8 @@
             "shouldNotGroupWhenFull": true
         },
         "language": {
-            "ui": "es",
-            "content": "es"
+            "ui": "${SIRIUS_FRONTEND_LANGUAGE}",
+            "content": "${SIRIUS_FRONTEND_LANGUAGE}"
         }
     }
 }

@@ -1,0 +1,60 @@
+.language-selector {
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+}
+
+.language-field {
+  width: 100%;
+  margin: 0;
+}
+
+.language-field .mat-form-field-infix {
+  padding: 0.5em 0;
+}
+
+.language-option-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flag-icon {
+  width: 20px;
+  height: 15px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.language-name {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.language-select {
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .language-selector {
+    min-width: 120px;
+  }
+  
+  .language-name {
+    font-size: 12px;
+  }
+}
+
+/* Dark theme support */
+.mat-dark-theme .language-selector {
+  color: white;
+}
+
+.mat-dark-theme .flag-icon {
+  opacity: 0.9;
+}

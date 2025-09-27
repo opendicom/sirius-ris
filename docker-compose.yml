@@ -28,7 +28,10 @@ services:
 
   opendicom_sirius_frontend:
     container_name: opendicom_sirius_frontend
-    image: opendicom/sirius-frontend:1.4.1
+    build:
+      context: ./frontend
+      dockerfile: docker/Dockerfile
+    image: sirius-frontend:local
     env_file: ./docker-compose.env
     ports:
       - 4000:80

@@ -32,7 +32,6 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "./node_modules/flag-icon-css/css/flag-icons.min.css",
-              "./node_modules/@ckeditor/ckeditor5-build-classic/build/translations/es.js",
               "src/styles.css"
             ],
             "scripts": [],

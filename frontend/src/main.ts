@@ -8,5 +8,28 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+function bootstrapApplication(language?: string): void {
+  if (language) {
+    localStorage.setItem('sirius_language', language);
+    document.documentElement.lang = language;
+  }
+
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.error(err));
+}
+
+fetch('assets/main-settings.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Unable to load main-settings.json: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(settings => {
+    const language = settings?.appSettings?.language || 'es';
+    bootstrapApplication(language);
+  })
+  .catch(error => {
+    console.error('[main.ts] Failed to preload main-settings.json', error);
+    bootstrapApplication('es');
+  });

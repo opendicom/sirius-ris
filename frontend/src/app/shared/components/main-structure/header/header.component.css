@@ -1,8 +1,32 @@
 /*----------------------------------------------------------------------------------------------------------------------*/
 /* HEADER: */
 /*----------------------------------------------------------------------------------------------------------------------*/
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.language-selector-container {
+  display: flex;
+  align-items: center;
+}
+
 .user_info {
   font-size: 15.5px;
   font-weight: normal;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .language-selector-container {
+    order: -1;
+  }
 }
 /*----------------------------------------------------------------------------------------------------------------------*/

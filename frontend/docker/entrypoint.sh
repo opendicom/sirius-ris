@@ -40,6 +40,12 @@ export SIRIUS_FRONTEND_FC_SLOTDURATION=${SIRIUS_FRONTEND_FC_SLOTDURATION:-'00:10
 
 # Patient password keywords:
 export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalipto", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"]'}
+
+# Language configuration:
+SIRIUS_FRONTEND_LANGUAGE=${SIRIUS_FRONTEND_LANGUAGE:-es}
+SIRIUS_FRONTEND_LANGUAGE=${SIRIUS_FRONTEND_LANGUAGE//\"/}
+SIRIUS_FRONTEND_LANGUAGE=${SIRIUS_FRONTEND_LANGUAGE//\'/}
+export SIRIUS_FRONTEND_LANGUAGE
 # ------------------------------------------------------------------------------------- #
 
 # Create main.settings file based on template with environment variables:
