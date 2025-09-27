@@ -5,28 +5,28 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">person</mat-icon>
-        Persona &nbsp;
+        {{ 'appointment_form.person' | translate }} &nbsp;
         <span *ngIf="personOperation">
           <div [ngSwitch]="personOperation">
-            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
-            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+            <mat-icon *ngSwitchCase="'insert'" [matTooltip]="'appointment_form.insert_new_record' | translate" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" [matTooltip]="'appointment_form.update_existing_record' | translate" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
-        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" [matTooltip]="'appointment_form.validation_errors' | translate">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="person">
         <h2 class="form-title text-center underline-fail-alt">
-          Datos de la persona:
-          <mat-icon class="label-light label-tab anonymize-button" (click)="anonymizeUser()" matTooltip="Anonimizar usuario">person_off</mat-icon>
+          {{ 'appointment_form.person_data' | translate }}:
+          <mat-icon class="label-light label-tab anonymize-button" (click)="anonymizeUser()" [matTooltip]="'appointment_form.anonymize_user' | translate">person_off</mat-icon>
         </h2>
         
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
             <div class="documents">
-              <h4>Documentos:</h4>
+              <h4>{{ 'appointment_form.documents' | translate }}:</h4>
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>País del documento</mat-label>
+                <mat-label>{{ 'appointment_form.document_country' | translate }}</mat-label>
                 <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentCode of getKeys(country_codes, true)">
                     <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -37,7 +37,7 @@
               <br/>
 
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>Tipo de documento</mat-label>
+                <mat-label>{{ 'appointment_form.document_type' | translate }}</mat-label>
                 <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
                     <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
@@ -48,8 +48,8 @@
               <br/>
 
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>Documento</mat-label>
-                <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (blur)="onSetDocument()" (keyup)="validateDocument()">
+                <mat-label>{{ 'appointment_form.document' | translate }}</mat-label>
+                <input matInput type="text" formControlName="document" [placeholder]="'appointment_form.document_placeholder' | translate" (blur)="onSetDocument()" (keyup)="validateDocument()">
               </mat-form-field>
             </div>
 
@@ -75,34 +75,34 @@
 
             <hr class="dashed" /><br/>
 
-            <h4>Nombres:</h4>
+            <h4>{{ 'appointment_form.names' | translate }}:</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Primer nombre</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
+              <mat-label>{{ 'appointment_form.first_name' | translate }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_01" [placeholder]="'appointment_form.first_name_placeholder' | translate">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Segundo nombre</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
+              <mat-label>{{ 'appointment_form.second_name' | translate }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_02" [placeholder]="'appointment_form.second_name_placeholder' | translate">
             </mat-form-field>
 
             <br/>
 
-            <h4>Apellidos:</h4>
+            <h4>{{ 'appointment_form.surnames' | translate }}:</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Primer apellido</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
+              <mat-label>{{ 'appointment_form.first_surname' | translate }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" [placeholder]="'appointment_form.first_surname_placeholder' | translate">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Segundo apellido</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
+              <mat-label>{{ 'appointment_form.second_surname' | translate }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" [placeholder]="'appointment_form.second_surname_placeholder' | translate">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Género:</h4>
-            <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+            <h4>{{ 'appointment_form.gender' | translate }}:</h4>
+            <mat-radio-group [attr.aria-label]="'appointment_form.gender' | translate" color="primary" formControlName="gender">
               <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
             </mat-radio-group>
 
@@ -112,33 +112,33 @@
 
           <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
-            <h4>Fecha de nacimiento:</h4>
+            <h4>{{ 'appointment_form.birth_date' | translate }}:</h4>
             <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
-              <mat-label>Seleccione fecha</mat-label>
+              <mat-label>{{ 'appointment_form.select_date' | translate }}</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="birth_date" (keydown)="false">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+              <mat-hint align="end">{{ 'appointment_form.date_picker_hint' | translate }}</mat-hint>
             </mat-form-field>
 
             <br/><br/><hr class="dashed" /><br/>
 
-            <h4>Teléfono de contacto:</h4>
+            <h4>{{ 'appointment_form.contact_phone' | translate }}:</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Número de teléfono</mat-label>
-              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+              <mat-label>{{ 'appointment_form.phone_number' | translate }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" [placeholder]="'appointment_form.phone_placeholder' | translate">
               <mat-icon matSuffix>phone</mat-icon>
-              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+              <mat-hint align="start">{{ 'appointment_form.phone_hint' | translate }}</mat-hint>
             </mat-form-field>
 
             <br/><br/>
 
-            <h4>Contacto alternativo:</h4>
+            <h4>{{ 'appointment_form.alternative_contact' | translate }}:</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Número de teléfono</mat-label>
-              <input matInput icNumbers type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+              <mat-label>{{ 'appointment_form.phone_number' | translate }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="phone_numbers[1]" [placeholder]="'appointment_form.alternative_phone_placeholder' | translate">
               <mat-icon matSuffix>phone</mat-icon>
-              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+              <mat-hint align="start">{{ 'appointment_form.phone_hint' | translate }}</mat-hint>
             </mat-form-field>
 
           </div> <!-- end fxLayout wrapper -->
@@ -152,51 +152,51 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">account_circle</mat-icon>
-        Usuario &nbsp;
+        {{ 'appointment_form.user' | translate }} &nbsp;
         <span *ngIf="userOperation">
           <div [ngSwitch]="userOperation">
-            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
-            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+            <mat-icon *ngSwitchCase="'insert'" [matTooltip]="'appointment_form.insert_new_record' | translate" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" [matTooltip]="'appointment_form.update_existing_record' | translate" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
-        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" [matTooltip]="'appointment_form.validation_errors' | translate">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="user">
-        <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
+        <h2 class="form-title text-center underline-fail-alt">{{ 'appointment_form.user_data' | translate }}:</h2>
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
 
-            <h4>Correo electrónico:</h4>
+            <h4>{{ 'appointment_form.email' | translate }}:</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>E-mail</mat-label>
-              <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="Ej: nombre@casilla.com" (change)="onSetEmail()">
-              <mat-icon matSuffix (click)="setDefaultEmail()" matTooltip="Establecer correo por defecto">mail</mat-icon>
+              <mat-label>{{ 'appointment_form.email_required' | translate }}</mat-label>
+              <input matInput type="text" id="IDtxtEmail" formControlName="email" [placeholder]="'appointment_form.email_placeholder' | translate" (change)="onSetEmail()">
+              <mat-icon matSuffix (click)="setDefaultEmail()" [matTooltip]="'appointment_form.set_default_email' | translate">mail</mat-icon>
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Clave del usuario <span *ngIf="userOperation == 'update'" class="label-info">Vacío sino desea modificar</span>:</h4>
+            <h4>{{ 'appointment_form.password' | translate }} <span *ngIf="userOperation == 'update'" class="label-info">{{ 'appointment_form.empty_if_no_change' | translate }}</span>:</h4>
 
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Contraseña</mat-label>
-              <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
-              <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
+              <mat-label>{{ 'appointment_form.password_required' | translate }}</mat-label>
+              <input matInput type="password" formControlName="password" [placeholder]="'appointment_form.password_placeholder' | translate">
+              <mat-hint align="start">{{ 'appointment_form.password_hint' | translate }}</mat-hint>
             </mat-form-field>
 
             <br/><br/>
 
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Reitere la contraseña</mat-label>
-              <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
+              <mat-label>{{ 'appointment_form.password_repeat' | translate }}</mat-label>
+              <input matInput type="password" formControlName="password_repeat" [placeholder]="'appointment_form.password_repeat_placeholder' | translate">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Estado:</h4>
-            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-              <mat-radio-button value="true">Activo</mat-radio-button>
-              <mat-radio-button value="false">Inactivo</mat-radio-button>
+            <h4>{{ 'appointment_form.status' | translate }}:</h4>
+            <mat-radio-group [attr.aria-label]="'appointment_form.status' | translate" color="primary" formControlName="status">
+              <mat-radio-button value="true">{{ 'appointment_form.active' | translate }}</mat-radio-button>
+              <mat-radio-button value="false">{{ 'appointment_form.inactive' | translate }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>
@@ -207,10 +207,10 @@
           <div class="input-wrapper"> <!-- start fxLayout wrapper -->
             <!-- Only superuser can set patient organization -->
             <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
-              <h4>Organización del paciente <span class="label-info">Permisos del paciente</span>:</h4>
+              <h4>{{ 'appointment_form.patient_organization' | translate }} <span class="label-info">{{ 'appointment_form.patient_permissions' | translate }}</span>:</h4>
               <mat-form-field appearance="fill" class="large">
-                <mat-label>Organización</mat-label>
-                <mat-select formControlName="organization"  placeholder="Seleccione la organización">
+                <mat-label>{{ 'appointment_form.organization' | translate }}</mat-label>
+                <mat-select formControlName="organization" [placeholder]="'appointment_form.select_organization' | translate">
                   <div *ngFor="let currentOrganization of availableOrganizations">
                     <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
                   </div>
@@ -232,8 +232,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">SIGUIENTE &nbsp;►</button>
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'appointment_form.cancel' | translate }}</button>
+      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">{{ 'appointment_form.next' | translate }}</button>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

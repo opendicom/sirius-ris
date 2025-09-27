@@ -97,7 +97,7 @@ export class SetPatientComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Paso 01 - Chequeo de datos del paciente',
+      content_title : 'appointment_form.title',
       content_icon  : 'hotel',
       add_button    : false,
       filters_form  : false,

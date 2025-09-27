@@ -36,7 +36,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de sucursales',
+      content_title       : 'branches.title',
       content_icon        : 'account_tree',
       add_button          : '/branches/form/insert/0',    // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                        // Check duplicated surnames
