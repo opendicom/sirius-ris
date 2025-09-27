@@ -44,7 +44,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de patologías',
+      content_title : 'pathologies.form_title',
       content_icon  : 'coronavirus',
       add_button    : false,
       filters_form  : false,

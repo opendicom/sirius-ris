@@ -109,7 +109,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de usuarios',
+      content_title : 'users.form_title',
       content_icon  : 'people',
       add_button    : false,
       filters_form  : false,

@@ -4,10 +4,10 @@
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
         <!-- Only superuser can set patient organization -->
         <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
-          <h4>Organización:</h4>
+          <h4>{{ 'pathologies.organization' | translate }}:</h4>
           <mat-form-field appearance="fill" class="large">
-            <mat-label>Organización</mat-label>
-            <mat-select formControlName="fk_organization"  placeholder="Seleccione la organización">
+            <mat-label>{{ 'pathologies.organization' | translate }}</mat-label>
+            <mat-select formControlName="fk_organization" [placeholder]="'pathologies.select_organization' | translate">
               <div *ngFor="let currentOrganization of availableOrganizations">
                 <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
               </div>
@@ -15,24 +15,24 @@
           </mat-form-field>
         </div>
 
-        <h4>Nombre:</h4>
+        <h4>{{ 'pathologies.name' | translate }}:</h4>
         <mat-form-field appearance="fill" class="medium">
-          <mat-label>Nombre</mat-label>
-          <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre de la patología">
+          <mat-label>{{ 'pathologies.name' | translate }}</mat-label>
+          <input matInput type="text" formControlName="name" [placeholder]="'pathologies.name_placeholder' | translate">
         </mat-form-field>
   
-        <h4>Descripción:</h4>
+        <h4>{{ 'pathologies.description' | translate }}:</h4>
           <mat-form-field appearance="fill" class="full">
-          <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="description" placeholder="Escriba aquí la descripción de la patología."></textarea>
+          <mat-label>{{ 'pathologies.description' | translate }}</mat-label>
+        <textarea matInput formControlName="description" [placeholder]="'pathologies.description_placeholder' | translate"></textarea>
         </mat-form-field>
   
         <hr class="dashed" /><br/>
   
-        <h4>Estado:</h4>
-        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-          <mat-radio-button value="true">Activo</mat-radio-button>
-          <mat-radio-button value="false">Inactivo</mat-radio-button>
+        <h4>{{ 'pathologies.status' | translate }}:</h4>
+        <mat-radio-group [attr.aria-label]="'pathologies.status' | translate" color="primary" formControlName="status">
+          <mat-radio-button value="true">{{ 'pathologies.active' | translate }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'pathologies.inactive' | translate }}</mat-radio-button>
         </mat-radio-group>
   
         <br/><br/>
@@ -46,8 +46,8 @@
   
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'pathologies.cancel' | translate }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'pathologies.save' | translate }}</button> <!-- [disabled]="form_data.invalid" -->
       </div> <!-- end fxLayout wrapper -->
     </div>
   </form>
