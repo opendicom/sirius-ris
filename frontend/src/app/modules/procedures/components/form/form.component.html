@@ -2,16 +2,16 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Nombre:</h4>
+      <h4>{{ 'procedures.name' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'procedures.name' | translate }}</mat-label>
+        <input matInput type="text" formControlName="name" [placeholder]="'procedures.name_placeholder' | translate">
       </mat-form-field>
 
-      <h4>Sucursal:</h4>
+      <h4>{{ 'procedures.branch' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" placeholder="Seleccione la sucursal">
+        <mat-label>{{ 'procedures.branch' | translate }}</mat-label>
+        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" [placeholder]="'procedures.select_branch' | translate">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentOrganization._id + '.' + currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }}</mat-option>
@@ -20,36 +20,36 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Equipamiento:</h4>
+      <h4>{{ 'procedures.equipment' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="equipments" (closed)="onChangeEquipment()" placeholder="Seleccione el equipamiento" multiple>
+        <mat-label>{{ 'procedures.equipment' | translate }}</mat-label>
+        <mat-select formControlName="equipments" (closed)="onChangeEquipment()" [placeholder]="'procedures.select_equipment' | translate" multiple>
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option #matOption (click)="addModalities(matOption.selected, currentEquipment._id, currentEquipment.fk_modalities)" value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
 
-      <h4>Duración del procedimiento: <span class="label-info">En minutos</span>:</h4>
+      <h4>{{ 'procedures.duration' | translate }}: <span class="label-info">{{ 'procedures.duration_minutes' | translate }}</span>:</h4>
       <span *ngIf="getKeys(selectedEquipments).length > 0; then thenBlockDurationEquipment else elseBlockDurationEquipment"></span>
       <ng-template #thenBlockDurationEquipment>
         <span *ngIf="getKeys(selectedDurations).length > 0;">
           <span *ngFor="let currentDuration of getKeys(selectedDurations);">
             <mat-form-field appearance="fill">
               <mat-label>{{ selectedDurations[currentDuration].name }}</mat-label>
-              <input matInput icNumbers type="text" [(ngModel)]="selectedDurations[currentDuration].duration" [ngModelOptions]="{standalone: true}" required placeholder="Duración en minutos">
+              <input matInput icNumbers type="text" [(ngModel)]="selectedDurations[currentDuration].duration" [ngModelOptions]="{standalone: true}" required [placeholder]="'procedures.duration_placeholder' | translate">
             </mat-form-field>
           </span>
         </span>
       </ng-template>
       <ng-template #elseBlockDurationEquipment>
-        <span class="label-accent">Aún no hay equipos seleccionados</span><br/><br/>
+        <span class="label-accent">{{ 'procedures.no_equipment_selected' | translate }}</span><br/><br/>
       </ng-template>
 
-      <h4>Modalidad:</h4>
+      <h4>{{ 'procedures.modality' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Modalidad</mat-label>
-        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad" (selectionChange)="onChangeModality($event)">
+        <mat-label>{{ 'procedures.modality' | translate }}</mat-label>
+        <mat-select formControlName="fk_modality" [placeholder]="'procedures.select_modality' | translate" (selectionChange)="onChangeModality($event)">
           <div *ngFor="let currentModality of availableModalities">
             <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
           </div>
@@ -57,53 +57,53 @@
       </mat-form-field>
 
       <div [class.non-display]="enableCoefPETInput === false">
-        <h4>Coeficiente <span class="label-info">MBq/kg</span>:</h4>
+        <h4>{{ 'procedures.coefficient' | translate }} <span class="label-info">{{ 'procedures.coefficient_mbq_kg' | translate }}</span>:</h4>
         <mat-form-field appearance="fill">
-          <mat-label>Coeficiente</mat-label>
+          <mat-label>{{ 'procedures.coefficient' | translate }}</mat-label>
           <input icNumbersWD type="text" matInput formControlName="coefficient">
         </mat-form-field>
       </div>
 
       <br/><br/><hr class="dashed"/><br/>
 
-      <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      <h4>{{ 'procedures.status' | translate }}:</h4>
+      <mat-radio-group [attr.aria-label]="'procedures.status' | translate" color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'procedures.active' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'procedures.inactive' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed"/><br/>
 
-      <h4>¿El procedimiento requiere de consentimiento informado?</h4>
-      <mat-radio-group aria-label="Consentimiento informado" color="primary" formControlName="informed_consent">
-        <mat-radio-button value="true">Si</mat-radio-button>
-        <mat-radio-button value="false">No</mat-radio-button>
+      <h4>{{ 'procedures.informed_consent_question' | translate }}</h4>
+      <mat-radio-group [attr.aria-label]="'procedures.informed_consent_label' | translate" color="primary" formControlName="informed_consent">
+        <mat-radio-button value="true">{{ 'common.yes' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'common.no' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed"/><br/>
 
-      <h4>¿El procedimiento requiere de la realización de una entrevista?</h4>
-      <mat-radio-group aria-label="Requiere entrevista" color="primary" formControlName="has_interview">
-        <mat-radio-button value="true">Si</mat-radio-button>
-        <mat-radio-button value="false">No</mat-radio-button>
+      <h4>{{ 'procedures.interview_question' | translate }}</h4>
+      <mat-radio-group [attr.aria-label]="'procedures.interview_label' | translate" color="primary" formControlName="has_interview">
+        <mat-radio-button value="true">{{ 'common.yes' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'common.no' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed"/><br/>
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>SNOMED:</h4>
+          <h4>{{ 'procedures.snomed' | translate }}:</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>Código SNOMED</mat-label>
-            <input matInput type="text" formControlName="snomed" placeholder="Ingrese código SNOMED">
+            <mat-label>{{ 'procedures.snomed_code' | translate }}</mat-label>
+            <input matInput type="text" formControlName="snomed" [placeholder]="'procedures.snomed_placeholder' | translate">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>Codificación alternativa:</h4>
+          <h4>{{ 'procedures.alternative_coding' | translate }}:</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>Codificación</mat-label>
-            <input matInput type="text" formControlName="code" placeholder="Ingrese la codificación">
+            <mat-label>{{ 'procedures.coding' | translate }}</mat-label>
+            <input matInput type="text" formControlName="code" [placeholder]="'procedures.coding_placeholder' | translate">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
       </div>
@@ -112,19 +112,19 @@
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>¿El procedimiento requiere informe?</h4>
-          <mat-radio-group aria-label="Requiere informe" color="primary" formControlName="reporting_delay_controller" (change)="onChangeEnableController($event, 'reporting_delay', '0')">
-            <mat-radio-button value="true">Si</mat-radio-button>
-            <mat-radio-button value="false">No</mat-radio-button>
+          <h4>{{ 'procedures.report_question' | translate }}</h4>
+          <mat-radio-group [attr.aria-label]="'procedures.report_label' | translate" color="primary" formControlName="reporting_delay_controller" (change)="onChangeEnableController($event, 'reporting_delay', '0')">
+            <mat-radio-button value="true">{{ 'common.yes' | translate }}</mat-radio-button>
+            <mat-radio-button value="false">{{ 'common.no' | translate }}</mat-radio-button>
           </mat-radio-group>
 
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
           <span *ngIf="enableField" [class.non-display]="enableField.reporting_delay === false">
-            <h4>Tiempo de espera máximo <span class="label-info">Días</span>:</h4>
+            <h4>{{ 'procedures.max_wait_time' | translate }} <span class="label-info">{{ 'procedures.max_wait_days' | translate }}</span>:</h4>
             <mat-form-field appearance="fill">
-              <mat-label>Días de espera</mat-label>
+              <mat-label>{{ 'procedures.wait_days_label' | translate }}</mat-label>
               <input icNumbers type="text" matInput formControlName="reporting_delay">
             </mat-form-field>
           </span>
@@ -135,19 +135,19 @@
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>¿El procedimiento requiere tiempo de reposo/espera?</h4>
-          <mat-radio-group aria-label="Requiere reposo/espera" color="primary" formControlName="wait_time_controller" (change)="onChangeEnableController($event, 'wait_time', '15')">
-            <mat-radio-button value="true">Si</mat-radio-button>
-            <mat-radio-button value="false">No</mat-radio-button>
+          <h4>{{ 'procedures.rest_wait_question' | translate }}</h4>
+          <mat-radio-group [attr.aria-label]="'procedures.rest_wait_label' | translate" color="primary" formControlName="wait_time_controller" (change)="onChangeEnableController($event, 'wait_time', '15')">
+            <mat-radio-button value="true">{{ 'common.yes' | translate }}</mat-radio-button>
+            <mat-radio-button value="false">{{ 'common.no' | translate }}</mat-radio-button>
           </mat-radio-group>
 
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
           <span *ngIf="enableField" [class.non-display]="enableField.wait_time === false">
-            <h4>Tiempo de reposo/espera <span class="label-info">Minutos</span>:</h4>
+            <h4>{{ 'procedures.rest_wait_time' | translate }} <span class="label-info">{{ 'procedures.rest_wait_minutes' | translate }}</span>:</h4>
             <mat-form-field appearance="fill">
-              <mat-label>Minutos de reposo/espera</mat-label>
+              <mat-label>{{ 'procedures.rest_wait_minutes_label' | translate }}</mat-label>
               <input icNumbers type="text" matInput formControlName="wait_time">
             </mat-form-field>
           </span>
@@ -158,17 +158,17 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Preparación <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <h4>{{ 'procedures.preparation' | translate }} <span class="label-info">{{ 'procedures.preparation_min_max' | translate }}</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed"/><br/>
 
-      <h4>Plantilla de procedimiento <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <h4>{{ 'procedures.procedure_template' | translate }} <span class="label-info">{{ 'procedures.procedure_template_min_max' | translate }}</span>:</h4>
       <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed"/><br/>
 
-      <h4>Plantilla de informe <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <h4>{{ 'procedures.report_template' | translate }} <span class="label-info">{{ 'procedures.report_template_min_max' | translate }}</span>:</h4>
       <ckeditor formControlName="report_template" #report_template [editor]="reportTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
     </div> <!-- end fxLayout wrapper -->
@@ -177,8 +177,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'procedures.cancel' | translate }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'procedures.save' | translate }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>
