@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Configuración del sistema',
+      content_title : 'system.configuration',
       content_icon  : 'settings',
       filters_form    : false,
     });

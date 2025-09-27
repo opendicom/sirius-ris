@@ -165,6 +165,31 @@ export class I18nService {
       'common.injection_responsible': 'Responsables de inyección',
       'common.laboratory_responsible': 'Responsables de laboratorio',
       'common.console_technicians': 'Técnicos en consola',
+      'common.element_logs': 'Logs del elemento',
+
+      // System Configuration
+      'system.configuration': 'Configuración del sistema',
+      'system.description': 'Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de operación de la aplicación Sirius RIS.',
+      'system.warning': 'Si no está seguro de la operación a realizar, le recomendamos que consulte con personal calificado para esta tarea.',
+      'system.version_info': 'Frontend: 1.4.1 | Backend: 1.4.1 | Database: 1.2.0',
+
+      // Modalities
+      'modalities.title': 'Listado de modalidades',
+      'modalities.form_title': 'Formulario de modalidades',
+      'modalities.search': 'Buscar',
+      'modalities.status': 'Estado',
+      'modalities.actions': 'Acciones',
+      'modalities.meaning': 'Significado',
+      'modalities.value': 'Valor',
+      'modalities.meaning_placeholder': 'Ingrese el significado',
+      'modalities.value_placeholder': 'Ingrese el código de valor',
+      'modalities.active': 'Activo',
+      'modalities.inactive': 'Inactivo',
+      'modalities.cancel': 'CANCELAR',
+      'modalities.save': 'GUARDAR',
+      'modalities.export_list': 'EXPORTAR LISTADO',
+      'modalities.waiting_results': 'Aguarde, aún no hay resultados.',
+      'modalities.no_records': 'No se encontraron registros.',
       
       // Authentication
       'auth.login': 'Iniciar Sesión',
@@ -258,11 +283,8 @@ export class I18nService {
       'message.confirm_delete': '¿Está seguro de que desea eliminar este elemento?',
       
       // System
-      'system.configuration': 'Configuración del sistema',
       'system.user_settings': 'Configuración de usuario',
       'system.language_settings': 'Configuración de idioma',
-      'system.description': 'Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación Sirius RIS.',
-      'system.warning': 'En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.',
 
       // Billing
       'billing.title': 'Listado para facturación',
@@ -717,6 +739,31 @@ export class I18nService {
       'common.injection_responsible': 'Injection responsible',
       'common.laboratory_responsible': 'Laboratory responsible',
       'common.console_technicians': 'Console technicians',
+      'common.element_logs': 'Element logs',
+
+      // System Configuration
+      'system.configuration': 'System Configuration',
+      'system.description': 'The following configurations affect records throughout the entire data flow and the operation mode of the Sirius RIS application.',
+      'system.warning': 'If you are not sure about the operation to perform, we recommend that you consult with qualified personnel for this task.',
+      'system.version_info': 'Frontend: 1.4.1 | Backend: 1.4.1 | Database: 1.2.0',
+
+      // Modalities
+      'modalities.title': 'Modalities List',
+      'modalities.form_title': 'Modalities Form',
+      'modalities.search': 'Search',
+      'modalities.status': 'Status',
+      'modalities.actions': 'Actions',
+      'modalities.meaning': 'Meaning',
+      'modalities.value': 'Value',
+      'modalities.meaning_placeholder': 'Enter the meaning',
+      'modalities.value_placeholder': 'Enter the value code',
+      'modalities.active': 'Active',
+      'modalities.inactive': 'Inactive',
+      'modalities.cancel': 'CANCEL',
+      'modalities.save': 'SAVE',
+      'modalities.export_list': 'EXPORT LIST',
+      'modalities.waiting_results': 'Please wait, no results yet.',
+      'modalities.no_records': 'No records found.',
       
       // Authentication
       'auth.login': 'Login',
@@ -810,11 +857,8 @@ export class I18nService {
       'message.confirm_delete': 'Are you sure you want to delete this item?',
       
       // System
-      'system.configuration': 'System Configuration',
       'system.user_settings': 'User Settings',
       'system.language_settings': 'Language Settings',
-      'system.description': 'The following configurations affect records throughout the entire data flow and the operation mode of the Sirius RIS application.',
-      'system.warning': 'If you are not sure about the operation to perform, we recommend that you consult with qualified personnel for this task.',
 
       // Billing
       'billing.title': 'Billing List',
