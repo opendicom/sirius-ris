@@ -107,8 +107,8 @@
 
           <!-- reporting users (performing) -->
           <span *ngSwitchCase="'appointment.reporting.fk_reporting._id'">
-            <button mat-flat-button color="primary" matTooltip="Mostrar solo los estudios asignados al usuario" class="button_filters" (click)="setReportingUser();">
-              <mat-icon>move_to_inbox</mat-icon>&nbsp; VER SOLO ESTUDIOS ASIGNADOS
+            <button mat-flat-button color="primary" [matTooltip]="'common.view_assigned_studies_tooltip' | translate" class="button_filters" (click)="setReportingUser();">
+              <mat-icon>move_to_inbox</mat-icon>&nbsp; {{ 'common.view_assigned_studies' | translate }}
             </button>
           </span>
         </span>
