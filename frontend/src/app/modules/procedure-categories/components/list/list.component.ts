@@ -40,7 +40,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de categorías de procedimientos',
+      content_title       : 'procedure_categories.title',
       content_icon        : 'category',
       add_button          : '/procedure_categories/form/insert/0',  // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                                  // Check duplicated surnames

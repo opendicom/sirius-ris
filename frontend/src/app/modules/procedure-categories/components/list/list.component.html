@@ -7,7 +7,7 @@
       <!-- select element-->
       <ng-container matColumnDef="select_element">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox *ngIf="sharedFunctions.response.pager" [checked]="this.sharedProp.getTotalChecked() == sharedFunctions.response.pager.viewed_items" (change)="this.sharedProp.onSelectAll($event)" matTooltip="Seleccionar todos (Página actual)"></mat-checkbox>
+          <mat-checkbox *ngIf="sharedFunctions.response.pager" [checked]="this.sharedProp.getTotalChecked() == sharedFunctions.response.pager.viewed_items" (change)="this.sharedProp.onSelectAll($event)" [matTooltip]="'procedure_categories.select_all_tooltip' | translate"></mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let element; let i = index;">
           <mat-checkbox [(ngModel)]="this.sharedProp.checked_items[i]" (change)="this.sharedProp.onCheckItem($event, element._id, i)" class="itemCheck" color="primary" value="{{ element._id }}"></mat-checkbox>
@@ -16,15 +16,15 @@
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'procedure_categories.actions' | translate }} </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/procedure_categories/form/update/{{ element._id }}">
+          <button mat-icon-button color="accent" [attr.aria-label]="'procedure_categories.edit' | translate" [matTooltip]="'procedure_categories.edit' | translate" routerLink="/procedure_categories/form/update/{{ element._id }}">
             <mat-icon>edit</mat-icon>
           </button>
 
           <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-            <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+            <button mat-icon-button color="accent" [attr.aria-label]="'procedure_categories.element_logs' | translate" [matTooltip]="'procedure_categories.element_logs' | translate" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
               <mat-icon>format_list_bulleted</mat-icon>
             </button>
           </span>
@@ -33,31 +33,31 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> Organización </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'procedure_categories.organization' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockOrganization else elseBlockOrganization"></span>
           <ng-template #thenBlockOrganization>
             <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
           </ng-template>
-          <ng-template #elseBlockOrganization>(Sin dato)</ng-template>
+          <ng-template #elseBlockOrganization>{{ 'procedure_categories.no_data' | translate }}</ng-template>
         </td>
       </ng-container>
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'procedure_categories.branch' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.branch; then thenBlockBranch else elseBlockBranch"></span>
           <ng-template #thenBlockBranch>
             <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter }}"></span>
           </ng-template>
-          <ng-template #elseBlockBranch>(Sin dato)</ng-template>
+          <ng-template #elseBlockBranch>{{ 'procedure_categories.no_data' | translate }}</ng-template>
         </td>
       </ng-container>
 
       <!-- name -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'procedure_categories.name' | translate }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -65,7 +65,7 @@
 
       <!-- procedures_count -->
       <ng-container matColumnDef="procedures_count">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Cantidad de procedimientos </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'procedure_categories.procedures_count' | translate }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.procedures">{{ getKeys(element.procedures).length }}</span>
         </td>
@@ -80,7 +80,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'procedure_categories.waiting_results' | translate }}
   </div>
 </ng-template>
 
@@ -90,4 +90,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'procedure_categories.export_list' | translate }}</button></div>
