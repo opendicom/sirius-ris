@@ -2,10 +2,10 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Servicio:</h4>
+      <h4>{{ 'slots_form.service' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Servicio</mat-label>
-        <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
+        <mat-label>{{ 'slots_form.service' | translate }}</mat-label>
+        <mat-select formControlName="domain" (closed)="onChangeService()" [placeholder]="'slots_form.select_service' | translate">
           <div *ngFor="let currentService of availableServices">
             <div *ngFor="let currentBranch of availableBranches">
               <div *ngFor="let currentOrganization of availableOrganizations">
@@ -16,10 +16,10 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Equipamiento:</h4>
+      <h4>{{ 'slots_form.equipment' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipment" placeholder="Seleccione el equipamiento">
+        <mat-label>{{ 'slots_form.equipment' | translate }}</mat-label>
+        <mat-select formControlName="fk_equipment" [placeholder]="'slots_form.select_equipment' | translate">
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
@@ -28,36 +28,36 @@
 
       <hr class="dashed" /><br/>
 
-      <h4>Urgencia:</h4>
-      <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
-        <mat-radio-button value="true">Si</mat-radio-button>
-        <mat-radio-button value="false">No</mat-radio-button>
+      <h4>{{ 'slots_form.urgency' | translate }}:</h4>
+      <mat-radio-group [attr.aria-label]="'slots_form.urgency' | translate" color="primary" formControlName="urgency">
+        <mat-radio-button value="true">{{ 'slots_form.yes' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'slots_form.no' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/>
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Fecha:</h4>
+      <h4>{{ 'slots_form.date' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large" (click)="picker.open()">
-        <mat-label>Seleccione fecha</mat-label>
+        <mat-label>{{ 'slots_form.select_date' | translate }}</mat-label>
         <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="date" (keydown)="false">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+        <mat-hint align="end">{{ 'slots_form.click_to_select_date' | translate }}</mat-hint>
       </mat-form-field>
 
       <hr class="dashed" /><br/>
 
-      <h4>Inicio turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <h4>{{ 'slots_form.slot_start' | translate }} <span class="label-info">{{ 'slots_form.format_24h' | translate }}</span>:</h4>
       <mat-form-field appearance="fill">
-        <mat-label>Inicio</mat-label>
+        <mat-label>{{ 'slots_form.start' | translate }}</mat-label>
         <input type="time" matInput formControlName="start" min="00:00" max="24:00">
       </mat-form-field>
 
-      <h4>Fin turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <h4>{{ 'slots_form.slot_end' | translate }} <span class="label-info">{{ 'slots_form.format_24h' | translate }}</span>:</h4>
       <mat-form-field appearance="fill">
-        <mat-label>Fin</mat-label>
+        <mat-label>{{ 'slots_form.end' | translate }}</mat-label>
         <input type="time" matInput formControlName="end" min="00:00" max="24:00">
       </mat-form-field>
     </div> <!-- end fxLayout wrapper -->
@@ -66,8 +66,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'slots_form.cancel' | translate }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'slots_form.save' | translate }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

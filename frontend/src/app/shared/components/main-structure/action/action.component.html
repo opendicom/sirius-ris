@@ -52,14 +52,14 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" (click)="picker.open()" *ngIf="sharedProp.action.filters.date">
-        <mat-label>Seleccione fecha</mat-label>
+        <mat-label>{{ 'filters.select_date' | translate }}</mat-label>
         <input matInput [(ngModel)]="sharedProp.date" [matDatepicker]="picker" (keydown)="false">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker (closed)="onSearch();"></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.flow_state">
-        <mat-label>Flujo del elemento</mat-label>
+        <mat-label>{{ 'filters.flow_state' | translate }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.flow_state" (selectionChange)="onSearch();">
           <div *ngFor="let currentFS of flow_states[sharedProp.element] | keyvalue">
             <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
@@ -68,7 +68,7 @@
       </mat-form-field>
       
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.modality">
-        <mat-label>Modalidad</mat-label>
+        <mat-label>{{ 'filters.modality' | translate }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.modality" (selectionChange)="onSearch();">
           <div *ngFor="let currentModality of modalities">
             <mat-option value="{{ currentModality._id }}" (click)="setCurrentCodeValue(currentModality.code_value)">{{ currentModality.code_value }}</mat-option>
@@ -77,18 +77,18 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
-        <mat-label>Estado</mat-label>
+        <mat-label>{{ 'filters.status' | translate }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.status" (selectionChange)="onSearch();">
-          <mat-option value="true">Activo</mat-option>
-          <mat-option value="false">Inactivo</mat-option>
+          <mat-option value="true">{{ 'filters.active' | translate }}</mat-option>
+          <mat-option value="false">{{ 'filters.inactive' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.urgency">
-        <mat-label>Urgencia</mat-label>
+        <mat-label>{{ 'filters.urgency' | translate }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.urgency" (selectionChange)="onSearch();">
-          <mat-option value="true">Urgente</mat-option>
-          <mat-option value="false">Normal</mat-option>
+          <mat-option value="true">{{ 'filters.urgent' | translate }}</mat-option>
+          <mat-option value="false">{{ 'filters.normal' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
 

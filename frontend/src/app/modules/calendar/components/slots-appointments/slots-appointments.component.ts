@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
@@ -55,7 +56,8 @@ export class SlotsAppointmentsComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    public i18nService: I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -65,7 +67,7 @@ export class SlotsAppointmentsComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Calendario de turnos y citas',
+      content_title   : 'calendar.title',
       content_icon    : 'calendar_month',
       add_button      : false,
       filters_form    : false
@@ -119,33 +121,33 @@ export class SlotsAppointmentsComponent implements OnInit {
     //Set FullCalendar Custom Buttons methods:
     this.calendarOptions['customButtons'] = {
       datepicker: {
-        text: 'BUSCAR FECHA',
+        text: this.i18nService.translate('calendar.search_date'),
         click: () => {
           this.openDatePicker();
         }
       },
       normal_slots: {
-        text: 'TURNOS COMÚNES',
+        text: this.i18nService.translate('calendar.normal_slots'),
         click: () => {
           //Find slots:
           this.findSlots();
         }
       },
       urgency_slots: {
-        text: 'TURNOS URGENTES',
+        text: this.i18nService.translate('calendar.urgency_slots'),
         click: () => {
           //Find slots (urgency true):
           this.findSlots(true);
         }
       },
       view_day: {
-        text: 'DÍA',
+        text: this.i18nService.translate('calendar.day_view'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridDay');
         }
       },
       view_week: {
-        text: 'SEMANA',
+        text: this.i18nService.translate('calendar.week_view'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridWeek');
         }
