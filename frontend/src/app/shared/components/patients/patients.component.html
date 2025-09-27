@@ -3,7 +3,7 @@
 <!-- DICOM VIEWER -->
 <ng-template #thenBlockViewer>
   <div class="viewer-container text-right">
-    <button mat-flat-button type="button" color="accent" (click)="clearOHIFPath();"><mat-icon>close</mat-icon> CERRAR VISOR</button><br/><hr class="dashed" />
+    <button mat-flat-button type="button" color="accent" (click)="clearOHIFPath();"><mat-icon>close</mat-icon> {{ 'common.close_viewer' | translate }}</button><br/><hr class="dashed" />
     <app-dcm-viewer src="{{ ohifPath }}"></app-dcm-viewer>
   </div>
 </ng-template>

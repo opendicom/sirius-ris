@@ -126,12 +126,12 @@
 
       <!-- reset seach -->
       <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters && sharedProp.action.advanced_search === false">
-        <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+        <mat-icon>cleaning_services</mat-icon>&nbsp; {{ 'common.clear_search' | translate }}
       </button>
 
       <!-- clear list selection -->
       <button mat-flat-button color="accent" class="button_filters" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0">
-        <mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})
+        <mat-icon>delete_forever</mat-icon>&nbsp; {{ 'common.delete_selection' | translate }} ({{ this.sharedProp.getTotalChecked() }})
       </button>
 
       <!-- search info -->
