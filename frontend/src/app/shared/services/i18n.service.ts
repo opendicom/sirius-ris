@@ -368,6 +368,15 @@ export class I18nService {
       'services.no_data': '(Sin dato)',
       'services.active': 'Activo',
       'services.inactive': 'Inactivo',
+      'services.form_title': 'Formulario de servicios',
+      'services.branch_required': 'Sucursal *',
+      'services.select_branch': 'Seleccione la sucursal',
+      'services.name_required': 'Nombre *',
+      'services.name_placeholder': 'Ingrese el nombre',
+      'services.select_equipment': 'Seleccione el equipamiento',
+      'services.select_modality': 'Seleccione la modalidad',
+      'services.cancel': 'CANCELAR',
+      'services.save': 'GUARDAR',
       
       // Authentication
       'auth.login': 'Iniciar Sesión',
@@ -1072,6 +1081,15 @@ export class I18nService {
       'services.no_data': '(No data)',
       'services.active': 'Active',
       'services.inactive': 'Inactive',
+      'services.form_title': 'Services Form',
+      'services.branch_required': 'Branch *',
+      'services.select_branch': 'Select branch',
+      'services.name_required': 'Name *',
+      'services.name_placeholder': 'Enter the name',
+      'services.select_equipment': 'Select equipment',
+      'services.select_modality': 'Select modality',
+      'services.cancel': 'CANCEL',
+      'services.save': 'SAVE',
       
       // Authentication
       'auth.login': 'Login',

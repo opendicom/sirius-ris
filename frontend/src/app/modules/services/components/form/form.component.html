@@ -2,10 +2,10 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Sucursal:</h4>
+      <h4>{{ 'services.branch' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="fk_branch" (selectionChange)="onChangeBranch($event)" placeholder="Seleccione la sucursal">
+        <mat-label>{{ 'services.branch' | translate }}</mat-label>
+        <mat-select formControlName="fk_branch" (selectionChange)="onChangeBranch($event)" [placeholder]="'services.select_branch' | translate">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
@@ -14,36 +14,36 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'services.name' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'services.name' | translate }}</mat-label>
+        <input matInput type="text" formControlName="name" [placeholder]="'services.name_placeholder' | translate">
       </mat-form-field>
 
-      <h4>Equipamiento:</h4>
+      <h4>{{ 'services.equipment' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipments" (closed)="onChangeEquipment()" placeholder="Seleccione el equipamiento" multiple>
+        <mat-label>{{ 'services.equipment' | translate }}</mat-label>
+        <mat-select formControlName="fk_equipments" (closed)="onChangeEquipment()" [placeholder]="'services.select_equipment' | translate" multiple>
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option #matOption (click)="addModalities(matOption.selected, currentEquipment._id, currentEquipment.fk_modalities)" value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
 
-      <h4>Modalidad:</h4>
+      <h4>{{ 'services.modality' | translate }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Modalidad</mat-label>
-        <mat-select formControlName="fk_modality" placeholder="Seleccione la modalidad">
+        <mat-label>{{ 'services.modality' | translate }}</mat-label>
+        <mat-select formControlName="fk_modality" [placeholder]="'services.select_modality' | translate">
           <div *ngFor="let currentModality of availableModalities">
             <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} ({{ currentModality.code_meaning }})</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
 
-      <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      <h4>{{ 'services.status' | translate }}:</h4>
+      <mat-radio-group [attr.aria-label]="'services.status' | translate" color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'services.active' | translate }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'services.inactive' | translate }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/>
@@ -57,8 +57,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'services.cancel' | translate }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'services.save' | translate }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>
