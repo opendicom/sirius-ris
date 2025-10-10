@@ -1,17 +1,10 @@
-.domain-container {
-  background-color: rgba(255, 255, 255, 0.035);
-  margin: 0px -17px 0px 8px;
-  padding: 8px;
-  border-radius: 5px;
-}
-
 .documents {
   padding-left: 10px;
 }
 
 .patient-details {
   cursor: pointer;
-  color: rgb(240, 206, 122);
+  color: var(--highlighted-gold);
 }
 
 mat-chip.line-break {

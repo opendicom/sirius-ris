@@ -154,7 +154,7 @@
             <span *ngIf="element.date && element.procedure && element.procedure.reporting_delay !== undefined && element.procedure.reporting_delay !== null && element.procedure.reporting_delay !== ''; then thenBlocklReportControl else elseBlocklReportControl"></span>
 
             <ng-template #thenBlocklReportControl>
-              <span class="badge">
+              <span class="badge report-control-badge">
               <!-- Authenticate control -->
               <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated else elseBlockNotAuthenticated"></span>
               <ng-template #thenBlockAuthenticated>  

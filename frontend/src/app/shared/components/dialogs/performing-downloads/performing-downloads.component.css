@@ -1,10 +1,10 @@
 .download-button {
-    background-color: #733ad5a9;
+    background-color: var(--opaque-purple);
     color: #ffffff;
 }
 
 .download-report {
-  background-color: #05ff9f8e;
+  background-color: var(--opaque-green);
   color: #ffffff;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
 
 .current-info {

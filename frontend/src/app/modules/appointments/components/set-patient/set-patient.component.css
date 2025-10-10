@@ -22,7 +22,7 @@
   padding-right: 15px;
   padding-top: 7px;
   padding-bottom: 7px;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 27%, rgba(56,59,86,1) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0) 27%, var(--form-documents-bg-color) 100%);
   border-radius: 4px;
   opacity: 0.70;
 }

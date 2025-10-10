@@ -22,7 +22,7 @@
   padding-right: 15px;
   padding-top: 7px;
   padding-bottom: 7px;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 27%, rgba(56,59,86,1) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0) 27%, var(--form-documents-bg-color) 100%);
   border-radius: 4px;
   opacity: 0.70;
 }
@@ -46,26 +46,27 @@
   overflow-y: auto;
   height: 440px;
   max-height: 440px;
-  background-color: #1e1e2f92;
-  border: 3px solid #383b56b2;
+  background-color: var(--base-color-01);
+  border: 3px solid var(--base-color-05);
   border-radius: 4px;
 }
 
 .permission-table {
   font-size: 13px;
   margin-bottom: 20px;
-  border: 1px solid #404362;
+  border: 1px solid var(--base-color-02);
+  color: var(--opposite-color-02);
   border-radius: 4px;
 }
 
 .permission-table > div {
-  border: 1px solid #404362;
-  background-color: #383b56b2;
+  border: 1px solid var(--base-color-02);
+  background-color: var(--base-color-03);
   padding: 5px;
 }
 
 .permission-header {
-  background-color: #404362bb !important;
+  background-color: var(--base-color-02) !important;
 }
 
 .permission-title {
@@ -90,9 +91,10 @@
 
 .permission-card {
   text-align: left;
-  background-color: #383b56b2;
+  background-color: var(--base-color-05);
+  color: var(--opposite-color-02);
   opacity: 0.8;
-  border-left: 2px solid #05ff9f77;
+  border-left: 2px solid var(--highlighted-green);
   padding: 10px 15px 10px 15px;
   border-radius: 5px;
 }

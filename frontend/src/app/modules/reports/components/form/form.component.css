@@ -13,14 +13,7 @@
 }
 
 .other {
-  color: #05ffa1;
-}
-
-.current-wrap {
-  background-color: #2e304b;
-  border-radius: 4px;
-  padding: 0px 0px 0px 12px;
-  margin-bottom: 10px;
+  color: var(--highlighted-green);
 }
 
 .current-info {
@@ -71,7 +64,7 @@ li {
 }
 
 .sign-button {
-  background: #733ad5a9;
+  background: var(--opaque-purple);
   color: #ffffff;
 }
 
@@ -81,13 +74,14 @@ li {
 }
 
 .mat-pathology {
-  background-color: #05ff9f8e !important;
+  background-color: var(--opaque-green) !important;
 }
 
 .label-editor {
   font-size: 13px;
   opacity: 0.75;
   background-color: #607d8b;
+  color: #fff;
   border-radius: 5px 5px 0px 0px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -98,7 +92,7 @@ li {
 .dose{
   text-align: center;
   opacity: 0.8;
-  background-color: #43466e79;
+  background-color: var(--petct-recomended-dose-color);
   border-radius: 5px;
   padding: 5px 12px 5px 5px;
 }
@@ -107,18 +101,8 @@ li {
   float: none !important;
 }
 
-.MBq {
-  background-color: #05ff9f8e !important;
-  color: #fff;
-}
-
-.mCi {
-  background-color: #ff6e69d2 !important;
-  color: #fff;
-}
-
 .pdf_preview {
-  background-color: #05ff9f8e !important;
+  background-color: var(--opaque-green) !important;
   color: #fff;
 }
 
@@ -127,6 +111,7 @@ li {
   font-size: 13px;
   opacity: 0.75;
   background-color: #d53a9d;
+  color: #fff;
   border-radius: 5px;
   padding-top: 14px;
   padding-bottom: 1px;
@@ -137,16 +122,9 @@ li {
 }
 
 .no-dicom {
-  color: #383a53;
+  color: var(--base-color-05);
   margin-left: -12.6%;
   font-size: 120px;
-}
-
-.domain-container {
-  background-color: rgba(255, 255, 255, 0.035);
-  margin: 0px -17px 0px 8px;
-  padding: 8px;
-  border-radius: 5px;
 }
 
 .badge-mini {
@@ -160,6 +138,10 @@ li {
   height: 25px !important;
   border-radius: 5px !important;
   padding: 0% !important;
+}
+
+.history_small_button .mat-icon {
+    color: #27293dc3 !important;
 }
 
 .history_small_button mat-icon {
@@ -177,4 +159,29 @@ li {
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.mat-mini-fab {
+  box-shadow: none !important;
+}
+
+.action-wrapper{
+  background-color: var(--report-rewiew-bg-color) !important;
+}
+
+.current-info .mat-accent {
+  color: var(--base-icon-color) !important;
+}
+
+.mat-expansion-panel {
+    background-color: var(--base-color-05);
+    color: var(--oposite-color-02) !important;
+}
+
+.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+    box-shadow: none !important;
+}
+
+.mat-expansion-panel-header-title {
+    color: var(--oposite-color-02) !important;
 }

@@ -19,14 +19,7 @@
 }
 
 .other {
-  color: #05ffa1;
-}
-
-.current-wrap {
-  background-color: #2e304b;
-  border-radius: 4px;
-  padding: 0px 0px 0px 12px;
-  margin-bottom: 10px;
+  color: var(--highlighted-green);
 }
 
 .current-info {
@@ -64,7 +57,7 @@
 }
 
 .friendly-pass-wrap {
-  background-color: #2e304b;
+  background-color: var(--current-wrap-bg-color) !important;
   border-radius: 4px;
   padding: 6px 0px 4px 12px;
   margin-bottom: 10px;

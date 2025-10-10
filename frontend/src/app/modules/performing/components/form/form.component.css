@@ -13,14 +13,7 @@
 }
 
 .other {
-  color: #05ffa1;
-}
-
-.current-wrap {
-  background-color: #2e304b;
-  border-radius: 4px;
-  padding: 0px 0px 0px 12px;
-  margin-bottom: 10px;
+  color: var(--highlighted-green);
 }
 
 .current-info {
@@ -41,12 +34,6 @@
   margin-bottom: 5px !important;
 }
 
-.preparation-wrap {
-  background-color: #43466ea6;
-  min-height: 200px;
-  padding-top: 5px;
-}
-
 .primary-color{
   background-color: #c2185b;
   color: #fff;
@@ -60,29 +47,12 @@
 .dose{
   text-align: center;
   opacity: 0.8;
-  background-color: #43466e79;
+  background-color: var(--petct-recomended-dose-color);
   border-radius: 5px;
 }
 
 .badge-dose{
   float: none !important;
-}
-
-.MBq {
-  background-color: #05ff9f8e !important;
-  color: #fff;
-}
-
-.mCi {
-  background-color: #ff6e69d2 !important;
-  color: #fff;
-}
-
-.domain-container {
-  background-color: rgba(255, 255, 255, 0.035);
-  margin: 0px -17px 0px 8px;
-  padding: 8px;
-  border-radius: 5px;
 }
 
 .badge-mini {
@@ -98,6 +68,10 @@
   padding: 0% !important;
 }
 
+.small_button_alt .mat-icon {
+    color: #27293dc3 !important;
+}
+
 .small_button_alt mat-icon {
   position: relative !important;
   margin: 0px !important;
@@ -106,4 +80,8 @@
 
 .current_item {
   color: #d53a9d;
+}
+
+.mat-mini-fab {
+  box-shadow: none !important;
 }

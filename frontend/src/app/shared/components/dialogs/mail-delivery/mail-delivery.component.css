@@ -1,9 +1,9 @@
 .appointment-button {
-    background-color: #733ad5a9;
+    background-color: var(--opaque-purple);
     color: #ffffff;
 }
 
 .report-button {
-  background-color: #05ff9f8e;
+  background-color: var(--opaque-green);
   color: #ffffff;
 }

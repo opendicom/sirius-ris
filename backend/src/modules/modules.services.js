@@ -26,6 +26,9 @@ async function find(req, res, currentSchema){
     //Get query params:
     let { filter, proj, sort, pager, regex } = req.query;
 
+    //Adjust sort format (Mongoose strict format):
+    sort = await adjustSortFormat(sort);
+
     //Set condition:
     const condition = await setCondition(filter, regex);
 
@@ -50,7 +53,7 @@ async function find(req, res, currentSchema){
         if(count > 0){
             //Excecute main query:
             await currentSchema.Model.find(condition, formatted_proj)
-            .sort({ '_id': -1 })    //Add default first sort (last records first).
+            .sort({ '_id': 'desc' })    //Add default first sort (last records first).
             .skip(req.query.skip)
             .limit(req.query.limit)
             .sort(sort)
@@ -146,6 +149,9 @@ async function findOne(req, res, currentSchema){
     //Get query params:
     let { filter, proj, sort, regex } = req.query;
 
+    //Adjust sort format (Mongoose strict format):
+    sort = await adjustSortFormat(sort);
+    
     //Set condition:
     const condition = await setCondition(filter, regex);
 
@@ -2047,8 +2053,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + 'permissions.concession'] != undefined){ filter[asPrefix + 'permissions.concession'] = filter[asPrefix + 'permissions.concession'][0] = parseInt(filter[asPrefix + 'permissions.concession'], 10); }
                 if(filter[asPrefix + 'professional.workload'] != undefined){ filter[asPrefix + 'professional.workload'] = parseInt(filter[asPrefix + 'professional.workload'], 10); }
                 if(filter[asPrefix + 'professional.vacation'] != undefined){ filter[asPrefix + 'professional.vacation'] = mainServices.stringToBoolean(filter[asPrefix + 'professional.vacation']); };
-                if(filter[asPrefix + 'settings.viewer'] != undefined){ filter[asPrefix + 'settings.viewer'] = parseInt(filter[asPrefix + 'settings.viewer'], 10); }
-                if(filter[asPrefix + 'settings.theme'] != undefined){ filter[asPrefix + 'settings.theme'] = parseInt(filter[asPrefix + 'settings.theme'], 10); }
+                if(filter[asPrefix + 'settings.max_row'] != undefined){ filter[asPrefix + 'settings.max_row'] = parseInt(filter[asPrefix + 'settings.max_row'], 10); }
                 if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
                 return filter;
             });
@@ -4193,6 +4198,14 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                 break;
 
             //------------------------------------------------------------------------------------------------------------//
+            // UPDATE SETTINGS (ALL USERS):
+            //------------------------------------------------------------------------------------------------------------//
+            // case 'updateSettings':
+                /* All users can change their own settings. */
+                // break;
+            //------------------------------------------------------------------------------------------------------------//
+
+            //------------------------------------------------------------------------------------------------------------//
             // DELETE:
             //------------------------------------------------------------------------------------------------------------//
             // Restricted by roles (Superuser is only user allowed).
@@ -4816,6 +4829,61 @@ async function setPerformingFS(_id, flow_state){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// UPDATE USER SETTINGS:
+//--------------------------------------------------------------------------------------------------------------------//
+async function updateUserSettings(req, res){
+    //Import users Schema:
+    const users = require('./users/schemas');
+
+    //Initializate update data:
+    let updateData = { $set: {} };
+
+    // Check Properties:
+    // Max Row:
+    if(req.body.hasOwnProperty('max_row')){ updateData.$set['settings.max_row'] = req.body.max_row; }
+
+    // Viewer:
+    if(req.body.hasOwnProperty('viewer')){ updateData.$set['settings.viewer'] = req.body.viewer; }
+
+    // Language:
+    if(req.body.hasOwnProperty('language')){ updateData.$set['settings.language'] = req.body.language; }
+
+    // Theme:
+    if(req.body.hasOwnProperty('theme')){ updateData.$set['settings.theme'] = req.body.theme; }
+    
+    //Update user settings:
+    await users.Model.findOneAndUpdate({ _id: req.decoded.sub }, updateData, { new: true })
+    .then(async (data) => {
+        //Check if have results:
+        if(data) {
+            //Set log element:
+            const element = {
+                type    : 'users',
+                _id     : data._id
+            };
+
+            //Save registry in Log DB:
+            await insertLog(req, res, 3, element);
+
+            //Send successfully response:
+            res.status(200).send({
+                success: true,
+                data: data,
+            });
+        } else {
+            //Dont match (empty result):
+            res.status(200).send({ success: true, message: currentLang.db.id_no_results });
+        }
+    })
+    .catch((err) => {
+        //Send error:
+        mainServices.sendError(res, currentLang.db.update_error, err);
+    });
+    
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // ADD SIGN TO REPORT:
 //--------------------------------------------------------------------------------------------------------------------//
 async function addSignatureToReport(reportData, signature_id, req, res){
@@ -5085,6 +5153,21 @@ async function setFlowState(_id, flow_sate, schemaName){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// ADJUST SORT FORMAT (MONGOOSE STRICT MODE):
+//--------------------------------------------------------------------------------------------------------------------//
+async function adjustSortFormat(sort){
+    switch(sort){
+        case 1:
+            return 'asc';
+        case 2:
+            return 'desc';
+        default:
+            return 'asc';
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export Module services:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -5128,6 +5211,7 @@ module.exports = {
     setSHA2Report,
     setBase64Files,
     setFlowState,
-    setPerformingFS
+    setPerformingFS,
+    updateUserSettings
 };
 //--------------------------------------------------------------------------------------------------------------------//

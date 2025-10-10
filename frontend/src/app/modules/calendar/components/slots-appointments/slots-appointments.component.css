@@ -3,15 +3,16 @@
   width: 98% !important;
   padding: 0% 1% 1% 1% !important;
   margin-top: 0px;
-  background-color: #27293d !important;
+  background-color: var(--base-color-03) !important;
   border-radius: 0px 0px 4px 4px !important;
 }
+
 .calendar-container button {
   margin-right: 8px !important;
 }
 
 .service-container {
-  background-color: #232338;
+  background-color: var(--base-color-04);
   border-bottom: 2px solid;
   -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
      border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
@@ -21,11 +22,15 @@
 }
 
 .select-icon {
-  color: #383a53;
+  color: var(--base-color-05);
   margin-left: -12.6%;
   font-size: 120px;
 }
 
 .service-container ::ng-deep .mat-form-field-outline {
-  background-color: #2d2d47;
+  background-color: var(--base-color-02);
+}
+
+.service-container ::ng-deep .mat-form-field-flex {
+  background-color: #ffffff00 !important;
 }

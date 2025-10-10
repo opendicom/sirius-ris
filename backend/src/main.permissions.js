@@ -7,7 +7,7 @@ const rolePermissions = {
     // Superusuario:
     1: {
         people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'delete'],            
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'delete', 'updateSettings'],            
         logs                    : ['find', 'findOne'],
         sessions                : ['find', 'findOne', 'delete'],
         modalities              : ['find', 'findOne', 'insert', 'update', 'delete'],
@@ -36,7 +36,7 @@ const rolePermissions = {
     // Administrador:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
         logs                    : ['find', 'findOne'],
         sessions                : ['find', 'findOne'],
         modalities              : ['find', 'findOne'],
@@ -65,7 +65,7 @@ const rolePermissions = {
     // Supervisor:
     3: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -94,7 +94,7 @@ const rolePermissions = {
     // Médico:
     4: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -123,7 +123,7 @@ const rolePermissions = {
     // Técnico:
     5: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -152,7 +152,7 @@ const rolePermissions = {
     // Enfermero:
     6: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -181,7 +181,7 @@ const rolePermissions = {
     // Coordinador:
     7: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -210,7 +210,7 @@ const rolePermissions = {
     // Recepcionista:
     8: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],

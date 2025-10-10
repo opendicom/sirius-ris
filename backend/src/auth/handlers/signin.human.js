@@ -40,6 +40,7 @@ module.exports = async (req, res) => {
         'user._id': 1,
         'user.password': 1,
         'user.permissions': 1,
+        'user.settings': 1,
         'user.status': 1
     };
 
@@ -71,6 +72,14 @@ module.exports = async (req, res) => {
 
             //Check user status:
             if(peopleData.user.status === true){
+
+                //Initializate user settings:
+                let userSettings = {};
+
+                //Check user settings:
+                if(peopleData.user.settings !== undefined && peopleData.user.settings !== null && peopleData.user.settings !== ''){
+                    userSettings = peopleData.user.settings;
+                }
                         
                 //Check user password:
                 mainServices.verifyPass(peopleData.user.password, password)
@@ -129,7 +138,8 @@ module.exports = async (req, res) => {
                                     user_id: peopleData.user._id,
                                     name: peopleData.name_01,
                                     surname: peopleData.surname_01,
-                                    permissions: [ userPermission ]
+                                    permissions: [ userPermission ],
+                                    settings: userSettings
                                 }
 
                                 //Create session:
@@ -335,7 +345,8 @@ module.exports = async (req, res) => {
                                         user_id: peopleData.user._id,
                                         name: peopleData.name_01,
                                         surname: peopleData.surname_01,
-                                        permissions: userPermissions
+                                        permissions: userPermissions,
+                                        settings: userSettings
                                     }
                                     
                                     //Send successfully response:

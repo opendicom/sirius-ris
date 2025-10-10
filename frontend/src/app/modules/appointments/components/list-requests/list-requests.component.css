@@ -11,9 +11,9 @@
 }
 
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
 
 .imaging {
-   border-left: 2px solid #05ffa1;
+   border-left: 2px solid var(--highlighted-green);
 }

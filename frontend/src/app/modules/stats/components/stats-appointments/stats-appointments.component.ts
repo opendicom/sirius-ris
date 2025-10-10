@@ -47,11 +47,11 @@ export class StatsAppointmentsComponent implements OnInit {
   public gender_colors = [
     { name: "Macsulino", value: '#05a3ff87' },
     { name: "Femenino", value: '#d53a9d87' },
-    { name: "Otros", value: '#05ffa187' },
+    { name: "Otros", value: 'var(--highlighted-green)' },
   ];
 
   public flow_states_colors = [
-    { name: "Coordinada", value: '#05ff9f87' },
+    { name: "Coordinada", value: 'var(--opaque-green)' },
     { name: "Cancelada-suspendida", value: '#ff6e69d3' }
   ];
 

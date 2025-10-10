@@ -24,26 +24,25 @@
 }
 
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
 
 .badge-mini {
   float: none !important;
 }
 
-.MBq {
-  background-color: #05ff9f8e !important;
-  color: #fff;
+
+.mat-mini-fab .mat-icon {
+  color: #27293dc3 !important;
 }
 
-.mCi {
-  background-color: #ff6e69d2 !important;
-  color: #fff;
+.mat-primary .mat-icon {
+  color: #fff !important;
 }
 
 .patient-details {
   cursor: pointer;
-  color: rgb(240, 206, 122);
+  color: var(--highlighted-gold);
 }
 
 .private_health {
@@ -55,4 +54,5 @@
   font-weight: bold;
   font-size: 11px;
   background: #e91e6299;
+  color: #fff !important;
 }

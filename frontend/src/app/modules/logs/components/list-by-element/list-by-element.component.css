@@ -5,40 +5,48 @@
 .event {
     cursor: pointer;
     padding: 2px 5px 2px 5px;
-    background-color: #4e4e79;
+    background-color: var(--soft-color-01);
     border-radius: 3px;
 }
 
 .amend {
-    background-color: #f44336b3;
+    background-color: #b63b38;
+    color: #fff;
 }
 
 .ip_client {
-    background-color: #607d8b34;
+    background-color: #363c50;
+    color: #fff;
 }
 
 .e2 {
     background-color: #607d8b;
+    color: #fff;
 }
 
 .e3 {
-    background-color: #d53a9cc8;
+    background-color: #b03688;
+    color: #fff;
 }
 
 .e4 {
     background-color: #f44336;
+    color: #fff;
 }
 
 .e5 {
     background-color: #743ad5;
+    color: #fff;
 }
 
 .e6 {
-    background-color: #05ff9f8e;
+    background-color: #14a074;
+    color: #fff;
 }
 
 .e7 {
     background-color: goldenrod;
+    color: #fff;
 }
 
 .sign-auth {
@@ -48,11 +56,11 @@
 
 /* Stripped table: */
 .mat-row:nth-child(even){
-  background-color: #27293d;
+  background-color: var(--base-color-03);
 }
 
 .mat-row:nth-child(odd){
-  background-color: #2b2d42;
+  background-color: var(--list-color-hover);
 }
 
 .machine-icon {

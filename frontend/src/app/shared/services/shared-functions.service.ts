@@ -1443,6 +1443,34 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // UPDATE USER SETTINGS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  updateUserSettings(settings: any, callback = (res: any) => {}){
+    //Save data:
+    //Create observable obsSave:
+    const obsSave = this.apiClient.sendRequest('POST', 'users/updateSettings', settings);
+
+    //Observe content (Subscribe):
+    obsSave.subscribe({
+      next: res => {
+        //Excecute optional callback with response:
+        callback(res);
+      },
+      error: res => {
+        //Send snakbar message:
+        if(res.error.message){
+          //Send other errors:
+          this.sendMessage(res.error.message);
+        } else {
+          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+        }
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // CALCULATE DOSE:
   //--------------------------------------------------------------------------------------------------------------------//
   calculateDose(weight: string, coefficient: string): string{

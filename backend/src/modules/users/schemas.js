@@ -27,10 +27,10 @@ const subSchemaProfessional = new mongoose.Schema({
 
 //Define Settings Sub-Schema:
 const subSchemaSettings = new mongoose.Schema({
-    max_row:        { type: String },
-    viewer:         { type: Number },
+    max_row:        { type: Number },
+    viewer:         { type: String },
     language:       { type: String },
-    theme:          { type: Number }
+    theme:          { type: String }
 },
 { _id : false });
 
@@ -42,7 +42,7 @@ const preSchema = new mongoose.Schema({
     email:              { type: String, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
-    settings:           { type: [subSchemaSettings] },
+    settings:           { type: subSchemaSettings },
     status:             { type: Boolean, required: true, default: false },
 },
 { timestamps: true },
@@ -155,29 +155,29 @@ const Validator = [
 
     body('settings').optional().isArray(),
 
-    body('settings.*.max_row')
+    body('settings.max_row')
         .optional()
         .trim()
         .isInt()
         .withMessage('El parametro max_row es requerido y debe ser numérico.'),
 
-    body('settings.*.viewer')
+    body('settings.viewer')
         .optional()
         .trim()
-        .isInt()
-        .withMessage('El parametro viewer debe ser numérico.'),
+        .isLength({ min: 3, max: 10 })
+        .withMessage('El parametro viewer es demasiado corto o demasiado largo (min: 3, max: 10 [caracteres]).'),
 
-    body('settings.*.language')
+    body('settings.language')
         .optional()
         .trim()
-        .isInt()
-        .withMessage('El parametro language es requerido y debe ser numérico.'),
+        .isLength({ min: 3, max: 5 })
+        .withMessage('El parametro language es demasiado corto o demasiado largo (min: 3, max: 5 [caracteres]).'),
 
-    body('settings.*.theme')
+    body('settings.theme')
         .optional()
         .trim()
-        .isInt()
-        .withMessage('El parametro theme es requerido y debe ser numérico.'),
+        .isLength({ min: 3, max: 20 })
+        .withMessage('El theme language es demasiado corto o demasiado largo (min: 3, max: 20 [caracteres]).'),
 
     body('status')
         .trim()

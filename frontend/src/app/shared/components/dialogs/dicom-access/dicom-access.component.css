@@ -7,7 +7,7 @@
 }
 
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
 
 .current-info {
@@ -25,7 +25,7 @@
 }
 
 .no-dicom {
-  color: #383a53;
+  color: var(--base-color-05);
   margin-left: -12.6%;
   font-size: 120px;
 }
@@ -35,11 +35,11 @@
 }
 
 .view-button {
-  background-color: #733ad5a9;
+  background-color: var(--opaque-purple);
   color: #ffffff;
 }
 
 .download-button {
-background-color: #05ff9f8e;
+background-color: var(--opaque-green);
 color: #ffffff;
 }

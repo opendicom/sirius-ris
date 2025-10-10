@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
 import { user_roles } from '@env/environment';                                          // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -19,7 +20,8 @@ export class HeaderComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public themesService    : ThemesService
   ) { }
 
   ngOnInit(): void { }

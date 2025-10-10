@@ -7,7 +7,7 @@
 }
   
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
   
 .current-info {
@@ -25,8 +25,8 @@
 }
 
 .details-wrap {
-  background-color: #3d3f51;
-  color: #fff;
+  background-color: var(--base-color-05);
+  color: var(--opposite-color-02);
   padding: 20px;
   border-radius: 6px;
 }

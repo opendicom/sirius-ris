@@ -2,7 +2,7 @@
 /* FORM: */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .form-element ::ng-deep .mat-form-field-outline {
-    background-color: #2d2d47;
+    background-color: var(--base-color-02);
 }
   
 .button_filters {
@@ -31,10 +31,14 @@
 
 .summary {
     font-size: 18px;
-    background-color: #b0bec50e;
+    background-color: var(--current-wrap-bg-color);
     margin: 1% 2% 1% 1%;
     padding: 1%;
     border-radius: 5px;
+}
+
+::ng-deep .mat-form-field-flex {
+  background-color: #ffffff00 !important;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------*/

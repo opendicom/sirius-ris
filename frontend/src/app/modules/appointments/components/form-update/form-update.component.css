@@ -19,14 +19,7 @@
 }
 
 .other {
-  color: #05ffa1;
-}
-
-.current-wrap {
-  background-color: #2e304b;
-  border-radius: 4px;
-  padding: 0px 0px 0px 12px;
-  margin-bottom: 10px;
+  color: var(--highlighted-green);
 }
 
 .current-info {
@@ -63,13 +56,6 @@
   color: #fff;
 }
 
-.domain-container {
-  background-color: rgba(255, 255, 255, 0.035);
-  margin: 0px -17px 0px 8px;
-  padding: 8px;
-  border-radius: 5px;
-}
-
 .badge-mini {
   float: none !important;
 }
@@ -81,7 +67,10 @@
   height: 25px !important;
   border-radius: 5px !important;
   padding: 0% !important;
-  color: #27293d !important;
+}
+
+.small_button .mat-icon {
+    color: #27293dc3 !important;
 }
 
 .small_button mat-icon {

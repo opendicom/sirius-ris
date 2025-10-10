@@ -2,13 +2,14 @@
 /* ACTION: */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .second-toolbar{
-  color: #ddd;
-  background-color: #1e1e2f;
+  color: var(--opposite-color-01);
+  background-color: var(--base-color-01);
 }
 
 .main-action {
   font-size: 15px;
-  background-color: #232338;
+  background-color: var(--base-color-04);
+  color: var(--base-icon-color) !important;
   padding-top: 6px;
   padding-left: 8px;
   border-top-right-radius: 4px;
@@ -23,12 +24,13 @@
   margin-right: 8px;
 }
 
-mat-form-field {
+.mat-form-field {
   margin-bottom: -8px !important;
 }
 
 .main-action ::ng-deep .mat-form-field-outline {
-  background-color: #2d2d47;
+  background-color: var(--base-color-02);
+  color: var(--soft-color-02);
 }
 
 .filters {
@@ -62,7 +64,11 @@ mat-form-field {
 }
 
 .advanced-search-panel ::ng-deep .mat-form-field-outline {
-  background-color: #2d2d47;
+  background-color: var(--base-color-02);
+}
+
+.advanced-search-panel ::ng-deep .mat-form-field-flex {
+  background-color: #ffffff00 !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -73,7 +79,7 @@ mat-form-field {
 .pager {
   position: relative;
   top: -4px;
-  color: rgba(255, 255, 255, 0.678);
+  color: var(--pager-active-color) !important;
   font-size: 12px;
   min-width: 330px;
 }
@@ -110,7 +116,7 @@ mat-form-field {
 
 .pager-disabled {
   cursor: default;
-  color: rgba(255, 255, 255, 0.137);
+  color: var(--pager-disabled-color);
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -124,6 +130,6 @@ mat-form-field {
 }
 
 .mat-pathology {
-  background-color: #05ff9f8e !important;
+  background-color: var(--opaque-green) !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/

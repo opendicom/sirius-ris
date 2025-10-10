@@ -1,3 +1,13 @@
+<!-- Theme select -->
+<!-- Medical users don't change themes: Force opaque interface to preserve radiological environments (4: Médico). -->
+<span *ngIf="sharedProp.userLogged.permissions[0].role !== 4" >
+  <button mat-button><mat-icon [matMenuTriggerFor]="themeMenu" matTooltip="Tema">format_color_fill</mat-icon></button>
+  <mat-menu #themeMenu="matMenu">
+    <button mat-menu-item (click)="themesService.switchTheme('dark', true)"><mat-icon>dark_mode</mat-icon> Oscuro</button>
+    <button mat-menu-item (click)="themesService.switchTheme('light', true)"><mat-icon>light_mode</mat-icon> Claro</button>
+  </mat-menu>
+</span>
+
 <button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
   <mat-icon>person</mat-icon>&nbsp;
   <span class="user_info">

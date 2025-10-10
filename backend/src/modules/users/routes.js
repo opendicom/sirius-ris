@@ -17,12 +17,14 @@ const mainMiddlewares = require('../../main.middlewares');
 const findHandler = require('./handlers/find');
 const findByServiceHandler = require('./handlers/findByService');
 const findByRoleInReportHandler = require('./handlers/findByRoleInReport');
+const updateSettingsHandler = require('./handlers/updateSettings');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
 
 //Import schemas:
 const users = require('./schemas');
+const updateSettings = require('./handlers/updateSettings');
 
 //Get keys from current schema:
 const allSchemaKeys     = mainServices.getSchemaKeys(users);            //All.
@@ -179,6 +181,18 @@ router.post(
     (req, res) => {
         //Send to module service:
         moduleServices._delete(req, res, users);
+    }
+);
+
+//UPDATE SETTINGS:
+router.post(
+    '/updateSettings',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
+    mainMiddlewares.roleAccessBasedControl,
+    async (req, res) => {
+        //Send to handler:
+        updateSettings(req, res);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

@@ -127,7 +127,7 @@
       <ng-template #elseBlockAuthenticated>
         <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes, 8: Autenticar informes] -->
         <form *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7, 8]))" [formGroup]="form">
-          <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: #2d2d47;">
+          <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: var(--report-rewiew-bg-color);">
             <div class="text-right"> <!-- start fxLayout wrapper -->
               <mat-form-field appearance="fill" class="full">
                 <mat-label>Contraseña</mat-label>

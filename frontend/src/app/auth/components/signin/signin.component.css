@@ -5,6 +5,7 @@
   padding: 5% 5% 2% 5%;
   width: 40%;
   text-align: center;
+  background-color: var(--login-form-bg-color);
 }
 
 .form-element > img {
@@ -12,7 +13,7 @@
 }
 
 .document-section {
-  background-color: #1e1e2f5b;
+  background-color: var(--login-document-bg-color);
   padding: 3% 1% 1% 1%;
   border-radius: 5px;
 }

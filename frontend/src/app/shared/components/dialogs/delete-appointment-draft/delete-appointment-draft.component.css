@@ -7,7 +7,7 @@
 }
 
 .other {
-  color: #05ffa1;
+  color: var(--highlighted-green);
 }
 
 .current-info {

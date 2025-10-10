@@ -49,7 +49,7 @@ export class StatsPerformingComponent implements OnInit {
   public gender_colors = [
     { name: "Macsulino", value: '#05a3ff87' },
     { name: "Femenino", value: '#d53a9d87' },
-    { name: "Otros", value: '#05ffa187' },
+    { name: "Otros", value: 'var(--highlighted-green)' },
   ];
 
   public flow_states_colors = [
@@ -61,8 +61,8 @@ export class StatsPerformingComponent implements OnInit {
     { name: "Para informar", value: '#607d8b87' },
     { name: "Informe borrador", value: '#d53a9cc9' },
     { name: "Informe firmado", value: '#733ad5a9' },
-    { name: "Terminado (con informe)", value: '#05ff9f87' },
-    { name: "Terminado (sin informe)", value: '#05ff9f87' },
+    { name: "Terminado (con informe)", value: 'var(--opaque-green)' },
+    { name: "Terminado (sin informe)", value: 'var(--opaque-green)' },
     { name: "Cancelado", value: '#ff6e69d3' },
   ];
 

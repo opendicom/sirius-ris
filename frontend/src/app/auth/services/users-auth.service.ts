@@ -9,6 +9,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { MatSnackBar } from '@angular/material/snack-bar';                              // SnackBar (Angular Material)
 import { Router } from '@angular/router';                                               // Router
 import { JwtHelperService } from "@auth0/angular-jwt";                                  // JWT Helper Service (Check JWT Expiration)
+import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Create helper object:
@@ -21,10 +22,11 @@ export class UsersAuthService {
 
   //Inject services to the constructor:
   constructor(
-    private router: Router,
-    private apiClient: ApiClientService,
-    private sharedFunctions: SharedFunctionsService,
-    private snackBar: MatSnackBar,
+    private router          : Router,
+    private apiClient       : ApiClientService,
+    private sharedFunctions : SharedFunctionsService,
+    private snackBar        : MatSnackBar,
+    public themesService    : ThemesService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -51,6 +53,28 @@ export class UsersAuthService {
 
           //Stringify final authentication object:
           const final_siriusAuth = JSON.stringify(siriusAuth);
+
+          //Check settings:
+          if(siriusAuth.settings !== undefined && siriusAuth.settings !== null && siriusAuth.settings !== ''){
+            //Set settings:
+            localStorage.setItem('sirius_settings', JSON.stringify(siriusAuth.settings));
+
+            // Initializate or force CSS theme:
+            // Medical users don't change themes: Force opaque interface to preserve radiological environments (4: Médico).
+            if(Object.keys(res.data.permissions).length == 1 && res.data.permissions[0].role == 4){
+              //Force CSS theme to preserve radiological environments:
+              this.themesService.initializeTheme('dark');
+            } else {
+              // Initializate CSS theme:
+              this.themesService.initializeTheme();
+            }
+            
+          } else {
+            //Delete settings from previous users:
+            if(localStorage.getItem('sirius_settings')){
+              localStorage.removeItem('sirius_settings');
+            }
+          }
 
           //If user signin with only one permission:
           if(Object.keys(res.data.permissions).length == 1){
@@ -151,6 +175,15 @@ export class UsersAuthService {
           this.snackBar.open(res.message, '', {
             duration: 2000
           });
+
+          // Initializate or force CSS theme:
+          // Medical users don't change themes: Force opaque interface to preserve radiological environments (4: Médico).
+          if(siriusAuth.permissions[0].role == 4){
+            this.themesService.initializeTheme('dark');
+          } else { 
+            // Initializate CSS theme:
+            this.themesService.initializeTheme();
+          }
 
           //Redirect to Start Page:
           this.router.navigate(['/start']);

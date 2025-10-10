@@ -25,10 +25,10 @@ export class AuthorizeComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    private router: Router,
-    private userAuth: UsersAuthService,
-    public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private router          : Router,
+    private userAuth        : UsersAuthService,
+    public  sharedProp      : SharedPropertiesService,
+    private sharedFunctions : SharedFunctionsService
   ) { }
 
   ngOnInit(): void {

@@ -4,8 +4,8 @@
   top: 0;                   /* Sets the fixed toolbar to be on top */
   z-index: 1000;            /* Ensure that your app's content doesn't overlap the toolbar */
 
-  color: #ddd;
-  background-color: #27293d;
+  color: var(--header-txt-color);
+  background-color: var(--header-bg-color);
   border-bottom: 3px solid;
     -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
        border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
@@ -22,14 +22,14 @@
 .main-container{
   width: 100%;
   min-height: calc(100vh - 64px);
-  background-color: #1e1e2f;
+  background-color: var(--base-color-01);
 }
 
 .main-sidenav {
   position:fixed;
   padding-top: 64px;
-  color: #ddd;
-  background-color: #2d2d47;
+  color: var(--sidenav-txt-color);
+  background-color: var(--sidenav-bg-color);
 }
 
 .main-content {

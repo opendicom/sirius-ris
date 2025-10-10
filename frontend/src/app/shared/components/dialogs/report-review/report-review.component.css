@@ -1,6 +1,6 @@
 .report-wrap {
-    background-color: #3d3f51;
-    color: #fff;
+    background-color: var(--base-color-05);
+    color: var(--oposite-color-02);
     padding: 20px;
     border-radius: 6px;
 }
@@ -16,20 +16,24 @@
     padding-left: 15px !important;
 }
 
-.settings-card {
-    text-align: left;
-    background: #2d2d47;
-    opacity: 0.8;
-    border-left: 2px solid #05ff9f77;
-    padding: 20px;
-    border-radius: 5px;
-}
-
 .amend-title {
     position: relative;
     top: -6px;
 }
 
 .mat-pathology {
-    background-color: #05ff9f8e !important;
+    background-color: var(--opaque-green) !important;
+}
+
+.mat-expansion-panel {
+    background-color: var(--base-color-05);
+    color: var(--oposite-color-02) !important;
+}
+
+.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+    box-shadow: none !important;
+}
+
+.mat-expansion-panel-header-title {
+    color: var(--oposite-color-02) !important;
 }

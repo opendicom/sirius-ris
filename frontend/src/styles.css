@@ -1,12 +1,177 @@
 /*----------------------------------------------------------------------------------------------------------------------*/
+/* DEFINE CSS THEMES: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* LIGHT THEME: */
+.light-theme {
+  /* global : */
+  --base-color-01: #fff;
+  --base-color-02: #dddddd94;
+  --base-color-03: #f6f6f6;
+  --base-color-04: #e5e5e5ad;
+  --base-color-05: #eaeaef;
+  --opposite-color-01: #1e1e2f;
+  --opposite-color-02: #5d5d79;
+  --opposite-color-03: rgba(0, 0, 0, 0.678);
+  --oposite-color-04: #8e91a9c6;
+  --soft-color-01: #5d5d79c4;
+  --soft-color-02: #8888a68d;
+  --soft-color-03: #e5e5e555;
+  --soft-color-04: #4e4e792a;
+  --base-icon-color: #666689f0;
+
+  /* login: */
+  --login-form-bg-color: #eaeaefa6;
+  --login-document-bg-color: #eaeaef;
+
+  /* header: */
+  --header-bg-color: #404070;
+  --header-txt-color: #ddd;
+
+  /* sidenav: */
+  --sidenav-bg-color: #f6f6f6;
+  --sidenav-txt-color: #27293d;
+
+  /* lists: */
+  --list-txt-color: #1e1e2fd4;
+  --list-header-color: #6b6b7d;
+  --list-color-alt: #e8e8e87b;
+  --list-color-hover: #e8e8e877;
+  --list-border-color: #c9c8c8;
+  --list-xsl-bg-color: #e5e5e5;
+  --list-domain-color: #eaeaef;
+  --list-stripped-color: #dadadda6;
+
+  /* forms: */
+  --form-field-bg-color: rgba(0,0,0,.1);
+  --form-field-disabled-bg-color: rgba(0,0,0,.05);
+  --form-disabled-txt-color: rgba(0,0,0,.5);
+  --form-documents-bg-color: rgb(224, 217, 217);
+
+  /* pager: */
+  --pager-active-color: #414153e0;
+  --pager-disabled-color: #41415353;
+
+  /* calendar: */
+  --calendar-header-bg-color: #eaeaef;
+  --calendar-cell-border-color: #4d4f6521;
+  --calendar-disabled-col-bg-color: #2021340a;
+
+  /* specific styles: */
+  --earth-planet-opacity: 0.05;
+  --form-nodes-opacity: 0.05;
+  --sirius-opacity: 0.15;
+  --mat-divider-color: rgba(0,0,0,0.12);
+  --mat-tab-label-color: #000;
+  --current-wrap-bg-color: #eaeaef;
+  --report-control-bg-color: #dedee2;
+  --report-control-txt-color: #5d5d79;
+  --report-control-txt-finished: #a581e0;
+  --petct-dose-mbq-bg-color: #188869;
+  --petct-dose-mci-bg-color: #b55659;
+  --petct-recomended-dose-color: #eaeaef;
+  --settings-bg-color: #21223307;
+  --settings-btn-bg-color: #27293d11;
+  --report-rewiew-bg-color: #eaeaef;
+  --chart-bg-color: #eaeaef;
+
+  /* theme colors: */
+  --opaque-purple: #6d4bac;
+  --opaque-green: #14a074;
+  --highlighted-green: #0ec17c;
+  --highlighted-gold: rgb(157, 112, 0);
+}
+
+/* DARK THEME: */
+.dark-theme {
+  /* global : */
+  --base-color-01: #1e1e2f;
+  --base-color-02: #2d2d47;
+  --base-color-03: #27293d;
+  --base-color-04: #232338;
+  --base-color-05: #3d3f51;
+  --opposite-color-01: #ddd;
+  --opposite-color-02: #fff;
+  --opposite-color-03: rgba(255, 255, 255, 0.678);
+  --oposite-color-04: #444657;
+  --soft-color-01: #4e4e79;
+  --soft-color-02: #54546b;
+  --soft-color-03: #4d4f65;
+  --soft-color-04: #4e4e7968;
+  --base-icon-color: #b0bec5;
+
+  /* login: */
+  --login-form-bg-color: #27293d;
+  --login-document-bg-color: #242538;
+
+  /* header: */
+  --header-bg-color: #27293d;
+  --header-txt-color: #ddd;
+
+  /* sidenav: */
+  --sidenav-bg-color: #2d2d47;
+  --sidenav-txt-color: #ddd;
+
+  /* lists: */
+  --list-txt-color: #fff;
+  --list-header-color: #bebfc5;
+  --list-color-alt: #2e304b94;
+  --list-color-hover: #2b2d42;
+  --list-border-color: #393a51;
+  --list-xsl-bg-color: #27293d;
+  --list-domain-color: #2e3043;
+  --list-stripped-color: #2a2c3f;
+
+  /* forms: */
+  --form-field-bg-color: rgba(255,255,255,.1);
+  --form-field-disabled-bg-color: rgba(255,255,255,.05);
+  --form-disabled-txt-color: rgba(255,255,255,.5);
+  --form-documents-bg-color: rgba(56,59,86,1);
+
+  /* pager: */
+  --pager-active-color: rgba(255, 255, 255, 0.678);
+  --pager-disabled-color: #414153;
+
+  /* calendar: */
+  --calendar-header-bg-color: #2e304b;
+  --calendar-cell-border-color: #4d4f65;
+  --calendar-disabled-col-bg-color: #202134be;
+
+  /* specific styles: */
+  --earth-planet-opacity: 0.5;
+  --form-nodes-opacity: 0.45;
+  --sirius-opacity: 1;
+  --mat-divider-color: rgba(255,255,255,0.12);
+  --mat-tab-label-color: #fff;
+  --current-wrap-bg-color: #2e304b;
+  --report-control-bg-color: #4e4e79;
+  --report-control-txt-color: #fff;
+  --report-control-txt-finished: #c4acea;
+  --petct-dose-mbq-bg-color: #188869;
+  --petct-dose-mci-bg-color: #b55659;
+  --petct-recomended-dose-color: #43466e79;
+  --settings-bg-color: #212233cb;
+  --settings-btn-bg-color: #27293d;
+  --report-rewiew-bg-color: #2d2d47;
+  --chart-bg-color: #2d2f46;
+
+  /* theme colors: */
+  --opaque-purple: #6d4bac;
+  --opaque-green: #14a074;
+  --highlighted-green: #05ffa1;
+  --highlighted-gold: rgb(240, 206, 122);
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
 /* GENERAL */
 /*----------------------------------------------------------------------------------------------------------------------*/
 html, body { height: 100%; }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #1e1e2f;
-  color: #ddd;
+  background-color: var(--base-color-01);
+  color: var(--opposite-color-01);
 }
 
 .clear{
@@ -18,45 +183,45 @@ body {
 }
 
 .dashed{
-  border:#4e4e79 1px dashed;
+  border: var(--soft-color-01) 1px dashed;
 	border-style: none none dashed;
 	margin-top: 5px !important;
 	margin-bottom: 5px !important;
 }
 
 .soft-alt{
-  border:#4e4e7968 1px solid;
+  border:var(--soft-color-04) 1px solid;
   border-style: none none solid;
 	margin-top: 5px !important;
 	margin: 0px !important;
 }
 
 .divider{
-  border-right: 2px solid #05ffa1;
+  border-right: 2px solid var(--highlighted-green);
 }
 
 .divider-alt {
-  border-right: 2px solid rgba(255, 255, 255, 0.137);
+  border-right: 2px solid var(--oposite-color-04);
 }
 
 .color-ok{
-  color: #05ffa1;
+  color: var(--highlighted-green) !important;
 }
 
 .color-fail{
-  color: #ff6f69;
+  color: #ff6f69 !important;
 }
 
 .color-ok-alt{
-  color: #d53a9d;
+  color: #d53a9d !important;
 }
 
 .color-fail-alt{
-  color: #743ad5;
+  color: #743ad5 !important;
 }
 
 .underline-ok {
-  border-bottom: 2px solid #05ffa1;
+  border-bottom: 2px solid var(--highlighted-green);
 }
 
 .underline-fail {
@@ -93,6 +258,7 @@ body {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
   background-color: #4e4e79;
+  color: #fff;
   border-radius: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -117,6 +283,7 @@ body {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
   background-color: #607d8b;
+  color: #fff;
   border-radius: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -129,6 +296,7 @@ body {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
   background-color: #f44336;
+  color: #fff;
   border-radius: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -140,7 +308,8 @@ body {
 .badge-alt {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #733ad58a;
+  background-color: #4f318f;
+  color: #fff;
   border-radius: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -160,7 +329,8 @@ mark {
 .label-info {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #733ad5a9;
+  background-color: #5933a1;
+  color: #fff;
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -173,7 +343,7 @@ mark {
 .label-ok {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #05ffa1;
+  background-color: var(--highlighted-green);
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -187,6 +357,7 @@ mark {
   font-size: 13px;
   opacity: 0.75;
   background-color: #ff6f69;
+  color: #fff;
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -213,6 +384,7 @@ mark {
   font-size: 13px;
   opacity: 0.75;
   background-color: #d53a9d;
+  color: #fff;
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -226,7 +398,7 @@ mark {
   font-size: 13px;
   opacity: 0.75;
   color: #1e1e2f;
-  background-color: #ffffffb6;
+  background-color: #b6b7c0;
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -245,13 +417,13 @@ mark {
 }
 
 .export-icon {
-  color: #05ffa1 !important;
+  color: var(--highlighted-green) !important;
 }
 
 .export-xslx {
   border-radius: 0px 0px 5px 5px !important;
-  background-color: #30324ad9 !important;
-  color: #fff !important;
+  background-color: var(--list-xsl-bg-color) !important;
+  color: var(--opposite-color-02) !important;
   font-size: 12px !important;
   padding: 0px 10px 0px 7px !important;
   box-shadow: none !important;
@@ -260,6 +432,40 @@ mark {
   margin-bottom: 0px !important;
   margin-top: 0px !important;
 }
+
+.settings-card {
+  text-align: left;
+  background: var(--base-color-02);
+  color: var(--opposite-color-02);
+  opacity: 0.8;
+  border-left: 2px solid var(--opaque-green);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.domain-container {
+  background-color: var(--list-domain-color);
+  margin: 0px -17px 0px 8px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.current-wrap {
+  background-color: var(--current-wrap-bg-color) !important;
+  border-radius: 4px;
+  padding: 0px 0px 0px 12px;
+  margin-bottom: 10px;
+}
+
+.MBq {
+  background-color: var(--petct-dose-mbq-bg-color) !important;
+  color: #fff;
+}
+
+.mCi {
+  background-color: var(--petct-dose-mci-bg-color) !important;
+  color: #fff;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -267,7 +473,7 @@ mark {
 /* CHARTS: */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .chart-responsive {
-  background-color: #2d2f46;
+  background-color: var(--chart-bg-color);
   border-radius: 4px;
   padding-right: 2%;
   margin-left: 1%;
@@ -300,46 +506,60 @@ mark {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /* Appointments: */
 .A01 {
-  background-color: #05ff9f87;
+  background-color: #159a70;
+  color: #fff !important;
 }
 
 .A02 {
-  background-color: #ff6e69d3;
+  background-color: #d96261;
+  color: #fff !important;
 }
 
 /* Appointment request: */
+.AR01, .AR02, .AR03, .AR04 {
+  color: #fff !important;
+}
+
 .AR05 {
-  background-color: #d53a9cc9;
+  background-color: #b03688;
+  color: #fff !important;
 }
 
 .AR06 {
-  background-color: #05ff9f87;
+  background-color: #159a70;
+  color: #fff !important;
 }
 
 .AR07 {
-  background-color: #ff6e69d3;
+  background-color: #d96261;
+  color: #fff !important;
 }
 
 /* Performing: */
 .P01, .P02, .P03, .P04, .P05, .P06 {
-  background-color: #607d8b87;
+  background-color: #455566;
+  color: #fff !important;
   
 }
 
 .P07 {
-  background-color: #d53a9cc9;
+  background-color: #b03688;
+  color: #fff !important;
 }
 
 .P08 {
-  background-color: #733ad5a9;
+  background-color: #5933a1;
+  color: #fff !important;
 }
 
 .P09, .P10 {
-  background-color: #05ff9f87;
+  background-color: #159a70;
+  color: #fff !important;
 }
 
 .P11 {
-  background-color: #ff6e69d3;
+  background-color: #d96261;
+  color: #fff !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -349,35 +569,50 @@ mark {
 /*----------------------------------------------------------------------------------------------------------------------*/
 .mat-table {
   width: 100%;
-  color: #ddd;
-  background-color: #27293d !important;
+  color: var(--opposite-color-01);
+  background-color: var(--base-color-03) !important;
+}
+
+.mat-header-cell {
+  color: var(--list-header-color);
+  border-color: var(--list-border-color) !important;
 }
 
 .mat-cell {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+  color: var(--list-txt-color);
+  border-color: var(--list-border-color) !important;
 }
 
 .mat-row:hover {
-  background-color: #2b2d42;
+  background-color: var(--list-color-hover);
 }
 
 .mat-paginator {
-  color: #ddd;
-  background-color: #27293d;
+  color: var(--opposite-color-01);
+  background-color: var(--base-color-03);
 }
 
 .response-info {
   font-size: 12px !important;
   padding: 10px;
-  color: #ddd;
-  background-color: #27293d !important;
+  color: var(--opposite-color-01);
+  background-color: var(--base-color-03) !important;
 }
 
 .column-alt {
-  background-color: #2e304b94 !important;
+  background-color: var(--list-color-alt) !important;
   padding-left: 5px !important;
   padding-right: 5px !important;
+}
+
+.mat-table .mat-icon {
+  color: var(--base-icon-color);
+}
+
+.reporting-indicator.mat-primary {
+  color: #c2185b !important;
 }
 
 /* Table Header color:
@@ -388,18 +623,13 @@ mark {
 
 /* Stripped table:
 .mat-row:nth-child(even){
-  background-color: #27293d;
+  background-color: var(--base-color-03);
 }
 
 .mat-row:nth-child(odd){
-  background-color: #2b2d42;
+  background-color: var(--list-color-hover);
 }
 */
-
-/* Datepicker */
-.mat-calendar{
-  background-color: #27293d !important;
-}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -407,7 +637,8 @@ mark {
 /* SIMPLE TABLE */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .simple-table {
-  background-color: #27293d;
+  background-color: var(--base-color-03);
+  color: var(--opposite-color-02);
   border-collapse: collapse;
   width: 98%;
   margin-left: 4%;
@@ -422,7 +653,7 @@ mark {
 
 /* Stripped table: */
 .simple-table tr:nth-child(even) {
-  background-color: #2a2c3f;
+  background-color: var(--list-stripped-color);
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -431,7 +662,8 @@ mark {
 /* FORMS */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .form-element{
-  background-color: #27293d;
+  background-color: var(--base-color-03);
+  color: var(--opposite-color-01);
   border-radius: 4px;
   max-width: 100% !important;
   overflow-x: hidden !important;
@@ -453,7 +685,7 @@ mark {
   width: 45%;
   max-width: 551px;
   max-height: 497px;
-  opacity: 0.45;
+  opacity: var(--form-nodes-opacity);
 }
 
 .form_sirius {
@@ -489,17 +721,17 @@ mark {
 
 .action-wrapper{
   padding: 12px 5px 12px 12px;
-  background: #2d2d47;
+  background: var(--base-color-02);
 }
 
 .mat-menu-content, .mat-select-panel, .mat-autocomplete-panel, .mat-expansion-panel {
   background-color: #3d3f51;
-  color: #fff;
+  color: var(--opposite-color-02);
 }
 
 .mat-selected {
   background-color: #353644 !important;
-  color: #fff !important;
+  color: var(--opposite-color-02) !important;
 }
 
 .tab-icon {
@@ -522,6 +754,55 @@ mark {
   margin-bottom: 3px !important;
   margin-top: 5px !important;
 }
+
+.form-element .mat-form-field-flex {
+  background-color: var(--form-field-bg-color);
+}
+
+.form-element .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-flex {
+  background-color: var(--form-field-disabled-bg-color);
+}
+
+.mat-form-field-underline, .mat-form-field-ripple {
+  background-color: var(--opposite-color-02) !important;
+}
+
+.mat-checkbox-frame {
+  border-color: var(--base-icon-color) !important;
+  opacity: 0.8;
+}
+
+/* Mat Checkbox selected Background:
+.mat-checkbox-checked .mat-checkbox-background {
+  background-color: var(--highlighted-green) !important;
+}
+*/
+
+.mat-primary .mat-checkbox-checkmark-path {
+  stroke: #fff !important;
+}
+
+.mat-radio-outer-circle {
+  border-color: var(--base-icon-color);
+  opacity: 0.8;
+}
+
+.mat-datepicker-toggle-default-icon, .mat-select-arrow, .mat-select-value {
+  color: var(--opposite-color-02);
+}
+
+.mat-form-field .mat-select.mat-select-disabled .mat-select-arrow  {
+  color: var(--opposite-color-02);
+}
+
+.mat-select-min-line {
+  color: var(--form-disabled-txt-color) !important;
+}
+
+/* Datepicker */
+.mat-calendar{
+  background-color: #27293d !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -529,13 +810,13 @@ mark {
 /* NOTIFICATIONS: */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .mat-snack-bar-container {
-  background-color: #3d3f51;
-  color: #fff;
+  background-color: var(--base-color-05);
+  color: var(--opposite-color-02);
 }
 
 .mat-dialog-container {
-  background-color: #27293d;
-  color: #fff;
+  background-color: var(--base-color-03);
+  color: var(--opposite-color-02);
 }
 
 .mat-dialog-title {
@@ -545,37 +826,74 @@ mark {
 
 
 /*----------------------------------------------------------------------------------------------------------------------*/
+/* ANGULAR MATERIAL ADJUST THEME : */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.mat-list-item {
+  color: var(--opposite-color-01) !important;
+}
+
+.mat-divider {
+  border-color: var(--mat-divider-color) !important;
+}
+
+.main-toolbar .mat-icon {
+  color: var(--header-txt-color) !important;
+}
+
+.mat-form-field-label, .mat-form-field, .mat-date-range-input-separator, .mat-input-element::placeholder {
+  color: var(--base-icon-color) !important;
+}
+
+.mat-input-element:disabled {
+  color: var(--opposite-color-04);
+}
+
+.mat-tab-label-content {
+  color: var(--mat-tab-label-color) !important;
+}
+
+.label-accent {
+  color: #ddd !important;
+}
+
+.mat-expansion-indicator, .mat-expansion-indicator::after {
+    color: var(--opposite-color-02) !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------------------------------------------------*/
 /* CKEDITOR CUSTOMIZATION: */
 /*----------------------------------------------------------------------------------------------------------------------*/
 .ck-editor {
-  color: #fff !important;
+  color: var(--opposite-color-02) !important;
   border-radius: 10px !important;
 }
 
 .ck-toolbar {
-  background-color: #3d3f51 !important;
-  border-color: #3d3f51 !important;
+  background-color: var(--base-color-05) !important;
+  border-color: var(--base-color-05) !important;
 }
 
 .ck-button {
-  color: #fff !important;
+  color: var(--opposite-color-02) !important;
 }
 
 .ck-button:hover {
-  background-color: #4d4f65 !important;
+  background-color: var(--soft-color-03) !important;
 }
 
 .ck-content {
-  border-color: #3d3f51 !important;
-  background-color: #4d4f65 !important;
+  border-color: var(--base-color-05) !important;
+  background-color: var(--soft-color-03) !important;
 }
 
 .ck-dropdown__panel {
-  border-color: #3d3f51 !important;
+  border-color: var(--base-color-05) !important;
 }
 
 .ck-list{
-  background-color: #4d4f65 !important;
+  background-color: var(--soft-color-03) !important;
 }
 
 .ck-editor__editable {
@@ -583,9 +901,9 @@ mark {
 }
 
 .ck-find-and-replace-form {
-  background-color: #3d3f51 !important;
-  border-color: #3d3f51 !important;
-  color: #fff !important;
+  background-color: var(--base-color-05) !important;
+  border-color: var(--base-color-05) !important;
+  color: var(--opposite-color-02) !important;
 }
 
 .ck-form__header {
@@ -594,13 +912,13 @@ mark {
 }
 
 .ck-form__header__label {
-  color: #fff !important;
+  color: var(--opposite-color-02) !important;
 }
 
 .ck-input-text {
-  color: #fff !important;
-  background-color: #4d4f65 !important;
-  border: 1px #4d4f65 !important;
+  color: var(--opposite-color-02) !important;
+  background-color: var(--soft-color-03) !important;
+  border: 1px var(--soft-color-03) !important;
 }
 
 .ck-input_focused {
@@ -609,7 +927,7 @@ mark {
 }
 
 .ck-labeled-field-view__status {
-  color: #fff !important;
+  color: var(--opposite-color-02) !important;
 }
 
 .ck-button-find {
@@ -617,13 +935,13 @@ mark {
 }
 
 .ck-label {
-  background-color: #4d4f65 !important;
-  color: #fff !important;
+  background-color: var(--soft-color-03) !important;
+  color: var(--opposite-color-02) !important;
   border-radius: 5px;
 }
 
 .ck-on {
-  background-color: #4d4f65 !important;
+  background-color: var(--soft-color-03) !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -644,22 +962,31 @@ mark {
 }
 
 .fc-timegrid {
-  background-color: #2d2d47;
+  background-color: var(--base-color-02);
 }
 
 .fc-theme-standard .fc-scrollgrid {
   border-radius: 5px !important;
-  border: 1px solid #343654 !important;
+  border: 1px solid var(--base-color-02) !important;
 }
 
 .fc-col-header {
-  background-color: #2e304b;
+  background-color: var(--calendar-header-bg-color);
+  color: var(--opposite-color-02);
   font-size: 16px !important;
   padding: 5px !important;
 }
 
+.fc-toolbar-title {
+  color: var(--opposite-color-02);
+}
+
+.fc-timegrid-slot-label-cushion {
+  color: var(--opposite-color-02);
+}
+
 .fc-theme-standard td, .fc-theme-standard th {
-  border-color: #4d4f65 !important;
+  border-color: var(--calendar-cell-border-color) !important;
 }
 
 .fc-day-today {
@@ -676,7 +1003,7 @@ mark {
 }
 
 .fc .fc-cell-shaded, .fc .fc-day-disabled {
-  background-color: #202134be !important;
+  background-color: var(--calendar-disabled-col-bg-color) !important;
 }
 
 .invisible-datepicker {
@@ -687,7 +1014,7 @@ mark {
 }
 
 .fc-datepicker-button {
-  background-color: #4e4e79 !important;
+  background-color: var(--soft-color-01) !important;
   border: none !important;
   font-weight: 500 !important;
 }
@@ -717,7 +1044,7 @@ mark {
 /* NGX CHARTS CUSTOMIZATION:
 /*----------------------------------------------------------------------------------------------------------------------*/
 .ngx-charts text {
-  fill: #fff !important; 
+  fill: var(--opposite-color-02) !important; 
 }
 
 .ngx-charts .gridline-path {
