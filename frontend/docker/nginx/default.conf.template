@@ -1,3 +1,4 @@
+# This file was created using "default.conf.template".
 server {
     # Port that this Virtual Host will listen to:
     listen 80;
@@ -40,6 +41,16 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    }
+
+    # Sirius Backend API location:
+    # VH to centralize requests from the frontend to the backend that forwards the necessary headers.
+    location /sirius-api/ {
+        proxy_pass http://opendicom_sirius_backend:${SIRIUS_BACKEND_HTTP_PORT}/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
  
     # Redirect server error pages to the static page /50x.html

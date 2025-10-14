@@ -1,6 +1,6 @@
 {
     "appSettings": {
-        "backend_url": "http://localhost:2000/",
+        "backend_url": "/sirius-api/",
         "rabc_exclude_code": "exclude_code",
         "file_max_size": 10,
         "default_page_sizes": [10, 25, 50, 100],

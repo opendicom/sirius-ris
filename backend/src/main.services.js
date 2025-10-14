@@ -148,19 +148,26 @@ function sendConsoleMessage(level, message, details = false){
 //--------------------------------------------------------------------------------------------------------------------//
 // GET IP CLIENT:
 //--------------------------------------------------------------------------------------------------------------------//
-function getIPClient(request) {
-    let ip = request.headers['x-forwarded-for'] ||
-        request.connection.remoteAddress ||
-        request.socket.remoteAddress ||
-        request.connection.socket.remoteAddress;
-    
-    ip = ip.split(',')[0];
+function getIPClient(req) {
+    // X-Forwarded-For can contain a list of IPs, the first being the original:
+    const xForwardedFor = req.headers['x-forwarded-for'];
+    let ip = null;
+    if (xForwardedFor) {
+        ip = xForwardedFor.split(',')[0].trim();
+    // Other possible headers:
+    } else if (req.headers['x-real-ip']) {
+        ip = req.headers['x-real-ip'];
+    } else {
+        ip = req.connection.remoteAddress || req.socket.remoteAddress;
+    }
 
-    //In case the IP returned in a format: "::ffff:146.xxx.xxx.xxx"
-    ip = ip.split(':').slice(-1);
+    // Normalize IPv4-mapped IPv6 ("::ffff:192.168.0.1" -> "192.168.0.1"):
+    if (typeof ip === 'string' && ip.startsWith('::ffff:')) {
+        ip = ip.substring(7);
+    }
 
     //Return the IP:
-    return ip[0];
+    return ip;
 }
 //--------------------------------------------------------------------------------------------------------------------//
 

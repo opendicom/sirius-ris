@@ -43,8 +43,19 @@ export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalip
 # ------------------------------------------------------------------------------------- #
 
 # Create main.settings file based on template with environment variables:
-find "/docker/" -follow -type f -name "main-settings.template" -print | while read -r template; do
-   envsubst < "$template" > /usr/share/nginx/html/assets/main-settings.json
+find "/docker/" -follow -type f -name "main-settings.template" -print | while read -r settings_template; do
+   envsubst < "$settings_template" > /usr/share/nginx/html/assets/main-settings.json
+done
+
+# Nginx Variable Whitelist:
+# envsubst replaces all occurrences beginning with $, which is a problem for nginx variables.
+# A whitelist of variables to consider is defined here to avoid this issue.
+# Example: NGINX_VARS='${VAR1} ${VAR2} ${VAR3}'
+NGINX_VARS='${SIRIUS_BACKEND_HTTP_PORT}'
+
+# Create default.conf file based on template with environment variables:
+find "/docker/nginx/" -follow -type f -name "default.conf.template" -print | while read -r nginx_template; do
+   envsubst "$NGINX_VARS" < "$nginx_template" > /etc/nginx/conf.d/default.conf
 done
 
 exec "$@"
