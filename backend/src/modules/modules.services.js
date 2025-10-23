@@ -909,6 +909,13 @@ async function setIn(filter, condition){
     if(filter){
         //Check if the IN operator exists:
         if(filter.in){
+            // Normalize IN values: sometimes query parsing turns arrays into objects with numeric keys (MongoDB $in needs an array):
+            Object.keys(filter.in).forEach((k) => {
+                if(!Array.isArray(filter.in[k])){
+                    filter.in[k] = Object.values(filter.in[k]);
+                }
+            });
+
             //Create IN condition:
             let global_in_condition = {};
 
@@ -963,6 +970,13 @@ async function setAll(filter, condition){
     if(filter){
         //Check if the ALL operator exists:
         if(filter.all){
+            // Normalize ALL values, similar to IN: convert numeric-keyed objects into arrays:
+            Object.keys(filter.all).forEach((k) => {
+                if(!Array.isArray(filter.all[k])){
+                    filter.all[k] = Object.values(filter.all[k]);
+                }
+            });
+            
             //Create ALL condition:
             let global_all_condition = {};
 
@@ -3504,7 +3518,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             }));
 
                             //Delete temp array:
-                            delete branchesIds;
+                            // In strict mode, delete cannot be used on identifiers (variables).
+                            // Replacing it with = null is a safe and explicit way to release the reference in this context.
+                            branchesIds = null;
                             
                             //Get all service _id of this organization:
                             //Attribute to cross: fk_branch (branchesIN obtained).
@@ -3528,7 +3544,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             }));
 
                             //Delete temp array:
-                            delete servicesIds;
+                            // In strict mode, delete cannot be used on identifiers (variables).
+                            // Replacing it with = null is a safe and explicit way to release the reference in this context.
+                            servicesIds = null;
 
                         //If domainType is BRANCHES:
                         //In this case it is necessary to obtain the organization _id and all the services _id
@@ -3575,7 +3593,9 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                             }));
 
                             //Delete temp array:
-                            delete servicesIds;
+                            // In strict mode, delete cannot be used on identifiers (variables).
+                            // Replacing it with = null is a safe and explicit way to release the reference in this context.
+                            servicesIds = null;
 
                         //If domainType is SERVICES:
                         //In this case it is necessary to obtain the _id of branch and organization.
