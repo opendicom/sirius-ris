@@ -767,6 +767,10 @@ mark {
   background-color: var(--opposite-color-02) !important;
 }
 
+.mat-form-field-invalid .mat-form-field-underline, .mat-form-field-invalid .mat-form-field-ripple {
+  background-color: #f44336 !important;
+}
+
 .mat-checkbox-frame {
   border-color: var(--base-icon-color) !important;
   opacity: 0.8;
@@ -858,6 +862,10 @@ mark {
 
 .mat-expansion-indicator, .mat-expansion-indicator::after {
     color: var(--opposite-color-02) !important;
+}
+
+.mat-form-field-invalid {
+  color: #f44336 !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
