@@ -60,5 +60,8 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2"
+  },
+  "overrides": {
+    "ip": "1.1.9"
   }
 }
