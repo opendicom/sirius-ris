@@ -29,6 +29,10 @@ module.exports = function(language){
             'check_empty_token'     : 'The authentication token is required.',
             'check_invalid_token'   : 'Invalid token.'
         },
+        'file_upload': {
+            'error_size'            : 'Error uploading file: The file size exceeds the allowed limit.',
+            'error_uncontrolled'    : 'Internal server error.'
+        },      
         'db': {
             'invalid_id'                : 'The specified ID is NOT valid for MongoDB.',
             'query_error'               : 'Error during query to MongoDB.',
@@ -141,6 +145,10 @@ module.exports = function(language){
             lang.jwt.sign_error                 = 'Ha ocurrido un error durante la generación del JWT.';
             lang.jwt.check_empty_token          = 'Es necesario un token de autenticación.';
             lang.jwt.check_invalid_token        = 'El token no es válido.';
+
+            //File Upload:
+            lang.file_upload.error_size         = 'Error al subir archivo: El tamaño del archivo excede el límite permitido.';
+            lang.file_upload.error_uncontrolled = 'Error interno del servidor.';
 
             //Database:
             lang.db.invalid_id                  = 'El ID especificado NO es válido para MongoDB.';

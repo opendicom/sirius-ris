@@ -28,8 +28,11 @@ const files = require('./schemas');
 const allSchemaKeys     = mainServices.getSchemaKeys(files);            //All.
 const allowedSchemaKeys = mainServices.getSchemaKeys(files, true);      //No parameters that cannot be modified.
 
-//Set storage parameters:
-const upload = multer({ storage: mainServices.setStorage() });
+//Set storage parameters (file_max_size: 10 MB):
+const upload = multer({
+  storage: mainServices.setStorage(),
+  limits: { fileSize: mainSettings.file_max_size || 10 * 1024 * 1024 }
+});
 
 //Create Router.
 const router = express.Router();
@@ -104,6 +107,12 @@ router.post(
     mainMiddlewares.checkDeleteCode,
     async (req, res) => { await moduleServices.batchDelete(req, res, files) }
 );
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// Handling specific file upload errors (Multer):
+//--------------------------------------------------------------------------------------------------------------------//
+router.use(mainMiddlewares.fileUploadControl);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

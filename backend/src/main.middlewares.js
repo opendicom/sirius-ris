@@ -2,8 +2,9 @@
 // MAIN MIDDLEWARES:
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules:
-const jwt = require('jsonwebtoken');
+const jwt       = require('jsonwebtoken');
 const mongoose  = require('mongoose');
+const multer    = require('multer');
 
 //Import app modules:
 const mainServices  = require('./main.services');                           // Main services
@@ -228,7 +229,7 @@ function checkDBConnection(req, res, next) {
         return next(); // Active connection
     }
 
-    //Send INFO Message:
+    //Send ERROR Message:
     mainServices.sendConsoleMessage('ERROR', 'Check DB Connection Middleware: ' + currentLang.server.db_cnx_check_error);
 
     //Send response:
@@ -353,6 +354,28 @@ const roleAccessBasedControl = async (req, res, next) => {
 }
 //--------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------------------------------------------------------------------//
+// FILE UPLOAD CONTROL:
+//--------------------------------------------------------------------------------------------------------------------//
+const fileUploadControl = async (err, req, res, next) => {
+    //Check Multer errors:
+    if(err instanceof multer.MulterError){
+        // Multer error (size limit):
+        return res.status(400).send({ success: false, message: currentLang.file_upload.error_size });
+    }
+
+    //Check other errors:
+    if(err){
+        //Send ERROR Message:
+        mainServices.sendConsoleMessage('ERROR', 'File Upload Control Middleware: ' + currentLang.file_upload.error_uncontrolled + ' - ' + err.message);
+
+        // Any other uncontrolled errors:
+        return res.status(500).send({ success: false, message: currentLang.file_upload.error_uncontrolled });
+    }
+
+    next();
+}
+//--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
 //Export middlewares:
@@ -362,6 +385,7 @@ module.exports = {
     checkJWT,
     checkDBConnection,
     checkDeleteCode,
-    roleAccessBasedControl
+    roleAccessBasedControl,
+    fileUploadControl
 };
 //--------------------------------------------------------------------------------------------------------------------//
