@@ -179,8 +179,11 @@ export class FormComponent implements OnInit {
     //Check selected modalities:
     if(this.selectedModalities.length > 0){
       //Find corresponding modalities:
-      const paramsModalities = {
-        'filter[in][_id]' : this.selectedModalities
+      let paramsModalities: any = {};
+      if(this.selectedModalities.length == 1){
+        paramsModalities = { 'filter[and][_id]' : this.selectedModalities };
+      } else {
+        paramsModalities = { 'filter[in][_id]' : this.selectedModalities };
       }
 
       //Find modalities:
