@@ -134,13 +134,30 @@ module.exports = async (req, res) => {
 
             // Performing Physician [OBR-34] (00400006) <reporting>:
             // organization_short_name^branch_short_name^surname_01>surname_02^name_01 name_02
-            let reporting_user = '';
-            if(data[0].reporting.fk_reporting !== undefined && data[0].reporting.fk_reporting !== null && data[0].reporting.fk_reporting !== ''){
-                reporting_user = mainServices.setDicomNamePersonFormat(data[0].reporting.fk_reporting.person.name_01, data[0].reporting.fk_reporting.person.name_02, data[0].reporting.fk_reporting.person.surname_01, data[0].reporting.fk_reporting.person.surname_02);
-            } else {
-                reporting_user = '*';
-            }
             
+            // Check reporting person:
+            const fkReporting = data?.[0]?.reporting?.fk_reporting;
+            const reportingPerson = fkReporting?.person; // Person must exist.
+
+            // Set hasRequiredFields flag:
+            // name_01 and surname_01 must exist and not be empty.
+            // name_02 and surname_02 can be undefined, null, or ''.
+            const hasRequiredFields = reportingPerson?.name_01?.trim() && reportingPerson?.surname_01?.trim();
+
+            // Default reporting user:
+            let reporting_user = '*';
+
+            // If has required fields, set reporting user:
+            if (hasRequiredFields) {
+                reporting_user = mainServices.setDicomNamePersonFormat(
+                    reportingPerson.name_01,
+                    reportingPerson.name_02,
+                    reportingPerson.surname_01,
+                    reportingPerson.surname_02
+                );
+            }
+
+            // Set Performing Physician field:
             const PP = data[0].reporting.organization.short_name + '^' + data[0].reporting.branch.short_name + '^' + reporting_user;
 
             // Requesting Procedure Description:
