@@ -75,10 +75,37 @@
   --chart-bg-color: #eaeaef;
 
   /* theme colors: */
-  --opaque-purple: #6d4bac;
-  --opaque-green: #14a074;
-  --highlighted-green: #0ec17c;
-  --highlighted-gold: rgb(157, 112, 0);
+  --pink: #d53a9d;
+  --pink-alt: #b03687ea;
+  --pink-intense: #e91e63;
+  --pink-intense-alt: #c2185bea;
+
+  --purple: #743ad5;
+  --purple-alt: #5933a1ea;
+  --purple-intense: #4f318fea;
+  --purple-opacity: #733ad597;
+  --purple-opaque: #6d4bac;
+
+  --orange: #ff6f69;
+  --orange-alt: #d96261ea;
+  --orange-intense: #f44336;
+  --orange-instense-alt: #cd382d;
+
+  --gray: #607d8bea;
+  --gray-alt: #455566ea;
+  --gray-opaque: #4e4e79ea;
+  --gray-opacity: #4e4e79d8;
+  --gray-light: #b6b7c0;
+  --gray-default: #424242ea;
+    
+  --gold: goldenrod;
+  --gold-highlighted: rgb(157, 112, 0);
+
+  --green: #159a70ea;
+  --green-highlighted: #0ec17c;
+  --green-opaque: #14a074;
+
+  --light-blue: #05a3ff;
 }
 
 /* DARK THEME: */
@@ -155,10 +182,37 @@
   --chart-bg-color: #2d2f46;
 
   /* theme colors: */
-  --opaque-purple: #6d4bac;
-  --opaque-green: #14a074;
-  --highlighted-green: #05ffa1;
-  --highlighted-gold: rgb(240, 206, 122);
+  --pink: #d53a9d;
+  --pink-alt: #b03688;
+  --pink-intense: #e91e63;
+  --pink-intense-alt: #c2185b;
+
+  --purple: #743ad5;
+  --purple-alt: #5933a1;
+  --purple-intense: #4f318f;
+  --purple-opacity: #733ad597;
+  --purple-opaque: #6d4bac;
+
+  --orange: #ff6f69;
+  --orange-alt: #d96261;
+  --orange-intense: #f44336;
+  --orange-instense-alt: #cd382d;
+
+  --gray: #607d8b;
+  --gray-alt: #455566;
+  --gray-opaque: #4e4e79;
+  --gray-opacity: #4e4e79d8;
+  --gray-light: #b6b7c0;
+  --gray-default: #424242;
+    
+  --gold: goldenrod;
+  --gold-highlighted: rgb(240, 206, 122);
+
+  --green: #159a70;
+  --green-highlighted: #05ffa1;
+  --green-opaque: #14a074;
+
+  --light-blue: #05a3ff;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -197,7 +251,7 @@ body {
 }
 
 .divider{
-  border-right: 2px solid var(--highlighted-green);
+  border-right: 2px solid var(--green-highlighted);
 }
 
 .divider-alt {
@@ -205,35 +259,35 @@ body {
 }
 
 .color-ok{
-  color: var(--highlighted-green) !important;
+  color: var(--green-highlighted) !important;
 }
 
 .color-fail{
-  color: #ff6f69 !important;
+  color: var(--orange) !important;
 }
 
 .color-ok-alt{
-  color: #d53a9d !important;
+  color: var(--pink) !important;
 }
 
 .color-fail-alt{
-  color: #743ad5 !important;
+  color: var(--purple) !important;
 }
 
 .underline-ok {
-  border-bottom: 2px solid var(--highlighted-green);
+  border-bottom: 2px solid var(--green-highlighted);
 }
 
 .underline-fail {
-  border-bottom: 2px solid #ff6f69;
+  border-bottom: 2px solid var(--orange);
 }
 
 .underline-ok-alt {
-  border-bottom: 2px solid #d53a9d;
+  border-bottom: 2px solid var(--pink);
 }
 
 .underline-fail-alt {
-  border-bottom: 2px solid #743ad5;
+  border-bottom: 2px solid var(--purple);
 }
 
 .text-left{
@@ -257,7 +311,7 @@ body {
 .badge {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #4e4e79;
+  background-color: var(--gray-opaque);
   color: #fff;
   border-radius: 3px;
   margin-top: 2px;
@@ -270,7 +324,7 @@ body {
 .badge-primary {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #e91e63;
+  background-color: var(--pink-intense);
   border-radius: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -282,7 +336,7 @@ body {
 .badge-accent {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #607d8b;
+  background-color: var(--gray);
   color: #fff;
   border-radius: 3px;
   margin-top: 2px;
@@ -295,7 +349,7 @@ body {
 .badge-warn {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #f44336;
+  background-color: var(--orange-intense);
   color: #fff;
   border-radius: 3px;
   margin-top: 2px;
@@ -308,7 +362,7 @@ body {
 .badge-alt {
   cursor: pointer;
   padding: 2px 5px 2px 5px;
-  background-color: #4f318f;
+  background-color: var(--purple-intense);
   color: #fff;
   border-radius: 3px;
   margin-top: 2px;
@@ -320,7 +374,7 @@ body {
 
 /* mark (highlighter pipe) */
 mark {
-  background: goldenrod;
+  background: var(--gold);
   color: #1e1e2f;
   border-radius: 2px;
   padding: 1px;
@@ -329,7 +383,7 @@ mark {
 .label-info {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #5933a1;
+  background-color: var(--purple-alt);
   color: #fff;
   border-radius: 5px;
   padding-top: 4px;
@@ -343,7 +397,7 @@ mark {
 .label-ok {
   font-size: 13px;
   opacity: 0.75;
-  background-color: var(--highlighted-green);
+  background-color: var(--green-highlighted);
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -356,7 +410,7 @@ mark {
 .label-fail {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #ff6f69;
+  background-color: var(--orange);
   color: #fff;
   border-radius: 5px;
   padding-top: 4px;
@@ -370,7 +424,7 @@ mark {
 .label-accent {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #607d8b;
+  background-color: var(--gray);
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -383,7 +437,7 @@ mark {
 .label-alt {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #d53a9d;
+  background-color: var(--pink);
   color: #fff;
   border-radius: 5px;
   padding-top: 4px;
@@ -398,7 +452,7 @@ mark {
   font-size: 13px;
   opacity: 0.75;
   color: #1e1e2f;
-  background-color: #b6b7c0;
+  background-color: var(--gray-light);
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -417,7 +471,7 @@ mark {
 }
 
 .export-icon {
-  color: var(--highlighted-green) !important;
+  color: var(--green-highlighted) !important;
 }
 
 .export-xslx {
@@ -438,7 +492,7 @@ mark {
   background: var(--base-color-02);
   color: var(--opposite-color-02);
   opacity: 0.8;
-  border-left: 2px solid var(--opaque-green);
+  border-left: 2px solid var(--green-opaque);
   padding: 20px;
   border-radius: 5px;
 }
@@ -506,12 +560,12 @@ mark {
 /*----------------------------------------------------------------------------------------------------------------------*/
 /* Appointments: */
 .A01 {
-  background-color: #159a70;
+  background-color: var(--green);
   color: #fff !important;
 }
 
 .A02 {
-  background-color: #d96261;
+  background-color: var(--orange-alt);
   color: #fff !important;
 }
 
@@ -521,44 +575,44 @@ mark {
 }
 
 .AR05 {
-  background-color: #b03688;
+  background-color: var(--pink-alt);
   color: #fff !important;
 }
 
 .AR06 {
-  background-color: #159a70;
+  background-color: var(--green);
   color: #fff !important;
 }
 
 .AR07 {
-  background-color: #d96261;
+  background-color: var(--orange-alt);
   color: #fff !important;
 }
 
 /* Performing: */
 .P01, .P02, .P03, .P04, .P05, .P06 {
-  background-color: #455566;
+  background-color: var(--gray-alt);
   color: #fff !important;
   
 }
 
 .P07 {
-  background-color: #b03688;
+  background-color: var(--pink-alt);
   color: #fff !important;
 }
 
 .P08 {
-  background-color: #5933a1;
+  background-color: var(--purple-alt);
   color: #fff !important;
 }
 
 .P09, .P10 {
-  background-color: #159a70;
+  background-color: var(--green);
   color: #fff !important;
 }
 
 .P11 {
-  background-color: #d96261;
+  background-color: var(--orange-alt);
   color: #fff !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -612,7 +666,7 @@ mark {
 }
 
 .reporting-indicator.mat-primary {
-  color: #c2185b !important;
+  color: var(--pink-intense-alt) !important;
 }
 
 /* Table Header color:
@@ -739,11 +793,11 @@ mark {
 }
 
 .validate-error-tab, .validate-error{
-  color: #f44336;
+  color: var(--orange-intense);
 }
 
 .unselected {
-  border-bottom: 3px solid #f44336 !important;
+  border-bottom: 3px solid var(--orange-intense) !important;
 }
 
 .small_button {
@@ -768,7 +822,7 @@ mark {
 }
 
 .mat-form-field-invalid .mat-form-field-underline, .mat-form-field-invalid .mat-form-field-ripple {
-  background-color: #f44336 !important;
+  background-color: var(--orange-intense) !important;
 }
 
 .mat-checkbox-frame {
@@ -778,7 +832,7 @@ mark {
 
 /* Mat Checkbox selected Background:
 .mat-checkbox-checked .mat-checkbox-background {
-  background-color: var(--highlighted-green) !important;
+  background-color: var(--green-highlighted) !important;
 }
 */
 
@@ -865,7 +919,15 @@ mark {
 }
 
 .mat-form-field-invalid {
-  color: #f44336 !important;
+  color: var(--orange-intense) !important;
+}
+
+.mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
+  background-color: var(--gray-default);
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  background-color: var(--pink-intense-alt);
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
@@ -930,7 +992,7 @@ mark {
 }
 
 .ck-input_focused {
-  border-bottom: 3px solid #d53a9d !important;
+  border-bottom: 3px solid var(--pink) !important;
   box-shadow: none !important;
 }
 
@@ -939,7 +1001,7 @@ mark {
 }
 
 .ck-button-find {
-  background-color: #733ad597 !important;
+  background-color: var(--purple-opacity) !important;
 }
 
 .ck-label {
@@ -1035,7 +1097,7 @@ mark {
 }
 
 .fc-urgency_slots-button {
-  background-color: #cd382d !important;
+  background-color: var(--orange-intense-alt) !important;
   border: none !important;
   font-weight: 500 !important;
 }

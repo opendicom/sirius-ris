@@ -20,22 +20,22 @@
 }
 
 .e2 {
-    background-color: #607d8b;
+    background-color: var(--gray);
     color: #fff;
 }
 
 .e3 {
-    background-color: #b03688;
+    background-color: var(--pink-alt);
     color: #fff;
 }
 
 .e4 {
-    background-color: #f44336;
+    background-color: var(--orange-intense);
     color: #fff;
 }
 
 .e5 {
-    background-color: #743ad5;
+    background-color: var(--purple);
     color: #fff;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .e7 {
-    background-color: goldenrod;
+    background-color: var(--gold);
     color: #fff;
 }
 

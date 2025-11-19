@@ -1,9 +1,9 @@
 .appointment-button {
-    background-color: var(--opaque-purple);
+    background-color: var(--purple-opaque);
     color: #ffffff;
 }
 
 .report-button {
-  background-color: var(--opaque-green);
+  background-color: var(--green-opaque);
   color: #ffffff;
 }

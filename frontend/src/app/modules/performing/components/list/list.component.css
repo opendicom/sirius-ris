@@ -38,7 +38,7 @@ mat-chip.line-break {
 
 .patient-details {
   cursor: pointer;
-  color: var(--highlighted-gold);
+  color: var(--gold-highlighted);
 }
 
 .report-control-badge {
@@ -47,11 +47,11 @@ mat-chip.line-break {
 }
 
 .report-control-pristine {
-    color: var(--highlighted-green) !important;
+    color: var(--green-highlighted) !important;
 }
 
 .report-control-good {
-    color: var(--highlighted-gold);
+    color: var(--gold-highlighted);
 }
 
 .report-control-warn {

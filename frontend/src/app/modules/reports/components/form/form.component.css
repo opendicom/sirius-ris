@@ -5,15 +5,15 @@
 }
 
 .male {
-  color: #05a3ff;
+  color: var(--light-blue);
 }
 
 .female {
-  color: #d53a9d;
+  color: var(--pink);
 }
 
 .other {
-  color: var(--highlighted-green);
+  color: var(--green-highlighted);
 }
 
 .current-info {
@@ -55,7 +55,7 @@ li {
 }
 
 .report-underline {
-  border-bottom: 3px solid #4e4e79d8;
+  border-bottom: 3px solid var(--gray-opacity);
 }
 
 .pathologies-title {
@@ -64,7 +64,7 @@ li {
 }
 
 .sign-button {
-  background: var(--opaque-purple);
+  background: var(--purple-opaque);
   color: #ffffff;
 }
 
@@ -74,13 +74,13 @@ li {
 }
 
 .mat-pathology {
-  background-color: var(--opaque-green) !important;
+  background-color: var(--green-opaque) !important;
 }
 
 .label-editor {
   font-size: 13px;
   opacity: 0.75;
-  background-color: #607d8b;
+  background-color: var(--gray);
   color: #fff;
   border-radius: 5px 5px 0px 0px;
   padding-top: 4px;
@@ -102,7 +102,7 @@ li {
 }
 
 .pdf_preview {
-  background-color: var(--opaque-green) !important;
+  background-color: var(--green-opaque) !important;
   color: #fff;
 }
 
@@ -110,7 +110,7 @@ li {
   cursor: pointer;
   font-size: 13px;
   opacity: 0.75;
-  background-color: #d53a9d;
+  background-color: var(--pink);
   color: #fff;
   border-radius: 5px;
   padding-top: 14px;
@@ -151,7 +151,7 @@ li {
 }
 
 .current_item {
-  color: #d53a9d;
+  color: var(--pink);
 }
 
 .iframe-container {

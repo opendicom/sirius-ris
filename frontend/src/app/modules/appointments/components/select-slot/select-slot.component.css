@@ -11,15 +11,15 @@
 }
 
 .male {
-  color: #05a3ff;
+  color: var(--light-blue);
 }
 
 .female {
-  color: #d53a9d;
+  color: var(--pink);
 }
 
 .other {
-  color: var(--highlighted-green);
+  color: var(--green-highlighted);
 }
 
 .current-info {

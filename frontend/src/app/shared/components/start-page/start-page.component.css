@@ -11,7 +11,7 @@ h1 {
 }
 
 a {
-  color: #d53a9d;
+  color: var(--pink);
   text-decoration: none;
 }
 
@@ -34,7 +34,7 @@ a {
   color: var(--opposite-color-01);
   background-color: var(--base-color-03);
   opacity: 0.8;
-  border-left: 2px solid var(--highlighted-green);
+  border-left: 2px solid var(--green-highlighted);
   padding: 25px;
   border-radius: 5px;
 }

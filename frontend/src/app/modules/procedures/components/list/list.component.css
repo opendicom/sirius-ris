@@ -4,5 +4,5 @@ mat-chip {
 }
 
 .snomed {
-  background-color: #d53a9d !important;
+  background-color: var(--pink) !important;
 }

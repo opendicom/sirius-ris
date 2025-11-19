@@ -22,7 +22,7 @@
 }
 
 .mat-pathology {
-    background-color: var(--opaque-green) !important;
+    background-color: var(--green-opaque) !important;
 }
 
 .mat-expansion-panel {

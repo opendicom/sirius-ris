@@ -47,7 +47,7 @@
 }
 
 .clean_button {
-  background-color: #50328f !important;
+  background-color: var(--purple-alt) !important;
   color: rgba(255, 255, 255, 0.936) !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
@@ -130,6 +130,6 @@
 }
 
 .mat-pathology {
-  background-color: var(--opaque-green) !important;
+  background-color: var(--green-opaque) !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/

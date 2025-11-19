@@ -4,7 +4,7 @@
 
 .patient-details {
   cursor: pointer;
-  color: var(--highlighted-gold);
+  color: var(--gold-highlighted);
 }
 
 mat-chip.line-break {

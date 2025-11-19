@@ -57,7 +57,7 @@
   background-color: var(--base-color-05);
   color: var(--opposite-color-02);
   opacity: 0.8;
-  border-left: 2px solid var(--highlighted-green);
+  border-left: 2px solid var(--green-highlighted);
   padding: 10px 15px 10px 15px;
   border-radius: 5px;
 }

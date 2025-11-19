@@ -32,15 +32,15 @@ mat-chip.line-break {
 
 .patient-details {
   cursor: pointer;
-  color: var(--highlighted-gold);
+  color: var(--gold-highlighted);
 }
 
 .report-control-pristine {
-    color: var(--opaque-green) !important;
+    color: var(--green-opaque) !important;
 }
 
 .report-control-good {
-    color: var(--highlighted-gold);
+    color: var(--gold-highlighted);
 }
 
 .report-control-warn {
@@ -52,9 +52,9 @@ mat-chip.line-break {
 }
 
 .bg-color-ok{
-  background-color: var(--opaque-green) !important;
+  background-color: var(--green-opaque) !important;
 }
 
 .bg-color-fail{
-  background-color: #ff6f69 !important;
+  background-color: var(--orange) !important;
 }

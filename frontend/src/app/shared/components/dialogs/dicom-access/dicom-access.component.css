@@ -1,13 +1,13 @@
 .male {
-  color: #05a3ff;
+  color: var(--light-blue);
 }
 
 .female {
-  color: #d53a9d;
+  color: var(--pink);
 }
 
 .other {
-  color: var(--highlighted-green);
+  color: var(--green-highlighted);
 }
 
 .current-info {
@@ -35,11 +35,11 @@
 }
 
 .view-button {
-  background-color: var(--opaque-purple);
+  background-color: var(--purple-opaque);
   color: #ffffff;
 }
 
 .download-button {
-background-color: var(--opaque-green);
+background-color: var(--green-opaque);
 color: #ffffff;
 }
