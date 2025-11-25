@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Domain Sub-Schema:
 const subSchemaDomain = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -44,17 +49,17 @@ const Validator = [
     body('domain.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.organization" (ObjectId).'),
     
     body('domain.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.branch" (ObjectId).'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 50 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name" (min: 3, max: 50 [chars]).'),
 
     body('base64')
         .optional(),

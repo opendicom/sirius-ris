@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Privileges Sub-Schema:
 const subSchemaElement = new mongoose.Schema({
     type:               { type: String, required: true },
@@ -45,42 +50,42 @@ const Validator = [
     body('fk_organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_organization" (ObjectId).'),
         
     body('event')
         .trim()
         .isInt()
-        .withMessage('El parametro event es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "event".'),
 
     body('datetime').trim(),
 
     body('fk_user')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_user NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_user" (ObjectId).'),
 
     body('element').optional(),
 
     body('element.type')
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro element.type es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "element.type" (min: 3, max: 30 [chars]).'),
 
     body('element._id')
         .trim()
         .isMongoId()
-        .withMessage('El parametro element._id NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "element._id" (ObjectId).'),
 
     body('element.details')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro element.details es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "element.details" (min: 3, max: 30 [chars]).'),
 
     body('ip_client')
         .trim()
         .isIP(4)
-        .withMessage('El parametro ip_client debe ser una IP válida.'),
+        .withMessage(currentLang.ris.schema_validator.isIP + ' | "ip_client" (IPv4).')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

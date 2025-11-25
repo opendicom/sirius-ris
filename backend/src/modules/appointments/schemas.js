@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Imaging Sub-Schema:
 const subSchemaImaging = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -179,7 +184,7 @@ const Validator = [
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_appointment_request NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_appointment_request" (ObjectId).'),
 
     //----------------------------------------------------------------------------------------------------------------//
     // IMAGING:
@@ -187,17 +192,17 @@ const Validator = [
     body('imaging.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.organization" (ObjectId).'),
     
     body('imaging.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.branch" (ObjectId).'),
 
     body('imaging.service')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.service" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
     
     //----------------------------------------------------------------------------------------------------------------//
@@ -206,25 +211,25 @@ const Validator = [
     body('referring.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro referring.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.organization" (ObjectId).'),
     
     body('referring.branch')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro referring.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.branch" (ObjectId).'),
 
     body('referring.service')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro referring.service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.service" (ObjectId).'),
 
     body('referring.fk_referring')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_referring NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.fk_referring" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -233,17 +238,17 @@ const Validator = [
     body('reporting.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro reporting.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "reporting.organization" (ObjectId).'),
     
     body('reporting.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro reporting.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "reporting.branch" (ObjectId).'),
 
     body('reporting.service')
         .trim()
         .isMongoId()
-        .withMessage('El parametro reporting.service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "reporting.service" (ObjectId).'),
 
     body('reporting.fk_reporting')
         .optional()
@@ -252,13 +257,13 @@ const Validator = [
     body('reporting.fk_reporting.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_reporting NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "reporting.fk_reporting.*" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
     
     body('fk_patient')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_patient NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_patient" (ObjectId).'),
 
     body('start').trim(),
 
@@ -267,39 +272,39 @@ const Validator = [
     body('flow_state')
         .trim()
         .isLength({ min: 3, max: 3 })
-        .withMessage('El parametro flow_state ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "flow_state" (min: 3, max: 3 [chars]).'),
 
     body('fk_slot')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_slot NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_slot" (ObjectId).'),
 
     body('fk_procedure')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_procedure" (ObjectId).'),
 
     body('extra_procedures')
         .optional()
         .isArray()
-        .withMessage('El parametro extra_procedures debe ser un array.'),
+        .withMessage(currentLang.ris.schema_validator.isArray + ' | "extra_procedures" (Array).'),
 
     body('extra_procedures.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro extra_procedures.* NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "extra_procedures.*" (ObjectId).'),
 
     body('urgency')
         .trim()
         .isBoolean()
-        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "urgency" (true or false).')
         .toBoolean(),
 
     body('study_iuid')
         .optional()
         .trim()
         .isLength({ min: 3, max: 64 })
-        .withMessage('El parametro study_iuid generado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "study_iuid" (min: 3, max: 64 [chars]).'),
 
     body('accession_number')
         .optional(),
@@ -311,13 +316,13 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro anamnesis ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 10, max: 1000 [chars]).'),
 
     body('indications')
         .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro indications ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 10, max: 1000 [chars]).'),
 
     body('report_before').trim(),
 
@@ -330,28 +335,28 @@ const Validator = [
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El media.CD ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "media.CD" (true or false).')
         .toBoolean(),
 
     body('media.DVD')
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El media.DVD ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "media.DVD" (true or false).')
         .toBoolean(),
 
     body('media.acetate_sheets')
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El media.acetate_sheets ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "media.acetate_sheets" (true or false).')
         .toBoolean(),
     //----------------------------------------------------------------------------------------------------------------//
 
     body('contrast.use_contrast')
         .trim()
         .isBoolean()
-        .withMessage('El media.CD ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "contrast.use_contrast" (true or false).')
         .toBoolean(),
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -361,35 +366,35 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro current_address.country ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "current_address.country" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('current_address.state')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro current_address.state ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "current_address.state" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('current_address.city')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro current_address.city ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "current_address.city" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('current_address.neighborhood')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro current_address.neighborhood ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "current_address.neighborhood" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('current_address.address')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro current_address.address ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "current_address.address" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
     //----------------------------------------------------------------------------------------------------------------//
 
@@ -399,198 +404,198 @@ const Validator = [
     body('private_health.height')
         .trim()
         .isDecimal()
-        .withMessage('El parametro height es requerido y debe ser numérico (decimal).'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredDecimal + ' | "private_health.height".'),
 
     body('private_health.weight')
         .trim()
         .isDecimal()
-        .withMessage('El parametro weight es requerido y debe ser numérico (decimal).'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredDecimal + ' | "private_health.weight".'),
 
     body('private_health.diabetes')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.diabetes ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.diabetes" (true or false).')
         .toBoolean(),
 
     body('private_health.hypertension')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.hypertension ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.hypertension" (true or false).')
         .toBoolean(),
 
     body('private_health.epoc')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.epoc ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.epoc" (true or false).')
         .toBoolean(),
 
     body('private_health.smoking')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.smoking ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.smoking" (true or false).')
         .toBoolean(),
 
     body('private_health.malnutrition')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.malnutrition ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.malnutrition" (true or false).')
         .toBoolean(),
 
     body('private_health.obesity')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.obesity ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.obesity" (true or false).')
         .toBoolean(),
 
     body('private_health.hiv')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.hiv ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.hiv" (true or false).')
         .toBoolean(),
 
     body('private_health.renal_insufficiency')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.renal_insufficiency ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.renal_insufficiency" (true or false).')
         .toBoolean(),
 
     body('private_health.heart_failure')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.heart_failure ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.heart_failure" (true or false).')
         .toBoolean(),
 
     body('private_health.ischemic_heart_disease')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.ischemic_heart_disease ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.ischemic_heart_disease" (true or false).')
         .toBoolean(),
 
     body('private_health.valvulopathy')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.valvulopathy ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.valvulopathy" (true or false).')
         .toBoolean(),
 
     body('private_health.arrhythmia')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.arrhythmia ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.arrhythmia" (true or false).')
         .toBoolean(),
 
     body('private_health.cancer')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.cancer ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.cancer" (true or false).')
         .toBoolean(),
 
     body('private_health.dementia')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.dementia ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.dementia" (true or false).')
         .toBoolean(),
 
     body('private_health.claustrophobia')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.claustrophobia ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.claustrophobia" (true or false).')
         .toBoolean(),
 
     body('private_health.asthma')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.asthma ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.asthma" (true or false).')
         .toBoolean(),
 
     body('private_health.hyperthyroidism')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.hyperthyroidism ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.hyperthyroidism" (true or false).')
         .toBoolean(),
 
     body('private_health.hypothyroidism')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.hypothyroidism ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.hypothyroidism" (true or false).')
         .toBoolean(),
 
     body('private_health.pregnancy')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.pregnancy ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.pregnancy" (true or false).')
         .toBoolean(),
 
     body('private_health.medication')
         .optional()
         .trim()
         .isLength({ min: 2, max: 1000 })
-        .withMessage('El parametro private_health.medication ingresado es demasiado corto o demasiado largo (min: 2, max: 1000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.medication" (min: 2, max: 1000 [chars]).'),
 
     body('private_health.allergies')
         .optional()
         .trim()
         .isLength({ min: 3, max: 60 })
-        .withMessage('El parametro private_health.allergies ingresado es demasiado corto o demasiado largo (min: 3, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.allergies" (min: 3, max: 60 [chars]).'),
     
     body('private_health.other')
         .optional()
         .trim()
         .isLength({ min: 3, max: 60 })
-        .withMessage('El parametro private_health.other ingresado es demasiado corto o demasiado largo (min: 3, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.other" (min: 3, max: 60 [chars]).'),
 
     body('private_health.implants.cochlear_implant')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.implants.cochlear_implant ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.implants.cochlear_implant" (true or false).')
         .toBoolean(),
 
     body('private_health.implants.cardiac_stent')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.implants.cardiac_stent ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.implants.cardiac_stent" (true or false).')
         .toBoolean(),
 
     body('private_health.implants.metal_prostheses')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.implants.metal_prostheses ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.implants.metal_prostheses" (true or false).')
         .toBoolean(),
 
     body('private_health.implants.metal_shards')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.implants.metal_shards ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.implants.metal_shards" (true or false).')
         .toBoolean(),
 
     body('private_health.implants.pacemaker')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.implants.pacemaker ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.implants.pacemaker" (true or false).')
         .toBoolean(),
 
     body('private_health.implants.other')
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro private_health.implants.other ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.implants.other" (min: 3, max: 30 [chars]).'),
 
     body('private_health.covid19.had_covid')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.covid19.had_covid ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.covid19.had_covid" (true or false).')
         .toBoolean(),
 
     body('private_health.covid19.vaccinated')
         .trim()
         .isBoolean()
-        .withMessage('El parametro private_health.covid19.vaccinated ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "private_health.covid19.vaccinated" (true or false).')
         .toBoolean(),
 
     body('private_health.covid19.details')
         .optional()
         .trim()
         .isLength({ min: 3, max: 100 })
-        .withMessage('El parametro private_health.covid19.details ingresado es demasiado corto o demasiado largo (min: 3, max: 100 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.covid19.details" (min: 3, max: 100 [chars]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -603,19 +608,19 @@ const Validator = [
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro consents.informed_consent NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "consents.informed_consent" (ObjectId).'),
 
     body('consents.clinical_trial')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro consents.clinical_trial NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "consents.clinical_trial" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     body('outpatient')
         .trim()
         .isBoolean()
-        .withMessage('El parametro outpatient ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "outpatient" (true or false).')
         .toBoolean(),
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -625,48 +630,48 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El parametro inpatient.where ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "inpatient.where" (min: 3, max: 40 [chars]).'),
 
     body('inpatient.room')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El parametro inpatient.room ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "inpatient.room" (min: 3, max: 40 [chars]).'),
 
     body('inpatient.contact')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El parametro inpatient.contact ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "inpatient.contact" (min: 3, max: 40 [chars]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     body('attached_files')
         .optional()
         .isArray()
-        .withMessage('El parametro attached_files debe ser un array.'),
+        .withMessage(currentLang.ris.schema_validator.isArray + ' | "attached_files" (Array).'),
 
     body('attached_files.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro attached_files.* NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "attached_files.*" (ObjectId).'),
 
     body('cancellation_reasons')
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro cancellation_reasons debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "cancellation_reasons".'),
     
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "outpatient" (true or false).')
         .toBoolean(),
 
     body('overbooking')
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El parametro overbooking ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "overbooking" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

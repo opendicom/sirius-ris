@@ -6,6 +6,11 @@ const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 const middlewares   = require('../../main.middlewares');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Privileges Sub-Schema:
 const subSchemaPermissions = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId },
@@ -78,7 +83,7 @@ const Validator = [
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_person NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_person" (ObjectId).'),
 
     body('username')
         .optional()
@@ -87,42 +92,42 @@ const Validator = [
     body('password')
         .trim()
         .isLength(8)
-        .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).'),
+        .withMessage(currentLang.ris.schema_validator.isPassword),
 
     body('email')
         .optional()
         .trim()
         .isEmail()
-        .withMessage('El valor ingresado NO es una dirección de correo válida.')
+        .withMessage(currentLang.ris.schema_validator.isEmail + ' | "email".')
         .normalizeEmail({ gmail_remove_dots: false })
         .toLowerCase(),
         
     body('permissions')
         .isArray()
-        .withMessage('El parametro permissions es requerido.'),
+        .withMessage(currentLang.ris.schema_validator.isRequired + ' | "permissions" (Array).'),
 
     body('permissions.*.organization')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "permissions.*.organization" (ObjectId).'),
 
     body('permissions.*.service')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "permissions.*.service" (ObjectId).'),
 
     body('permissions.*.branch')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "permissions.*.branch" (ObjectId).'),
 
     body('permissions.*.role')
         .trim()
         .isInt()
-        .withMessage('El parametro rol es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "permissions.*.role".'),
 
     body('permissions.*.concession').optional().isArray(),
 
@@ -132,25 +137,25 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El parametro ID es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "professional.id" (min: 3, max: 30 [chars]).'),
 
     body('professional.description')
         .optional()
         .trim()
         .isLength({ min: 3, max: 50 })
-        .withMessage('El parametro description es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "professional.description" (min: 3, max: 50 [chars]).'),
 
     body('professional.workload')
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro workload debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "professional.workload".'),
 
     body('professional.vacation')
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El parametro vacation ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "professional.vacation" (true or false).')
         .toBoolean(),
 
     body('settings').optional().isArray(),
@@ -159,30 +164,30 @@ const Validator = [
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro max_row es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "settings.max_row".'),
 
     body('settings.viewer')
         .optional()
         .trim()
         .isLength({ min: 3, max: 10 })
-        .withMessage('El parametro viewer es demasiado corto o demasiado largo (min: 3, max: 10 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "settings.viewer" (min: 3, max: 10 [chars]).'),
 
     body('settings.language')
         .optional()
         .trim()
         .isLength({ min: 3, max: 5 })
-        .withMessage('El parametro language es demasiado corto o demasiado largo (min: 3, max: 5 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "settings.language" (min: 3, max: 5 [chars]).'),
 
     body('settings.theme')
         .optional()
         .trim()
         .isLength({ min: 3, max: 20 })
-        .withMessage('El theme language es demasiado corto o demasiado largo (min: 3, max: 20 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "settings.theme" (min: 3, max: 20 [chars]).'),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

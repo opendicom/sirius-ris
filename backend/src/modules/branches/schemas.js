@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_organization:        { type: mongoose.ObjectId, required: true },
@@ -45,46 +50,46 @@ const Validator = [
     body('fk_organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_organization" (ObjectId).'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 64 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name" (min: 3, max: 64 [chars]).'),
 
     body('short_name')
         .trim()
         .isLength({ min: 3, max: 32 })
-        .withMessage('El primer nombre corto ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "short_name" (min: 3, max: 32 [chars]).'),
 
     body('OID')
         .optional()
         .trim()
         .isLength({ min: 1, max: 64 })
-        .withMessage('El OID ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "OID" (min: 1, max: 64 [chars]).'),
 
     body('country_code')
         .trim()
         .isLength({ min: 3, max: 3 })
-        .withMessage('El código de país ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "country_code" (min: 3, max: 3 [chars]).')
         .toLowerCase(),
 
     body('structure_id')
         .optional()
         .trim()
         .isLength({ min: 1, max: 64 })
-        .withMessage('El ID de Estructura ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "structure_id" (min: 1, max: 64 [chars]).'),
 
     body('suffix')
         .optional()
         .trim()
         .isLength({ min: 1, max: 64 })
-        .withMessage('El suffix ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "suffix" (min: 1, max: 64 [chars]).'),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean(),
 
     body('base64_logo')
@@ -94,7 +99,7 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 10, max: 3000 })
-        .withMessage('El parametro appointment_footer ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "appointment_footer" (min: 10, max: 3000 [chars]).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

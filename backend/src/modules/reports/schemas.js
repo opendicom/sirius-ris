@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Findings Sub-Schema:
 const subSchemaFindings = new mongoose.Schema({
     fk_procedure:           { type: mongoose.ObjectId, required: true },
@@ -55,17 +60,17 @@ const Validator = [
     body('fk_performing')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_performing NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_performing" (ObjectId).'),
 
     body('clinical_info')
         .trim()
         .isLength({ min: 10, max: 10000 })
-        .withMessage('El parametro clinical_info ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "clinical_info" (min: 10, max: 10000 [chars]).'),
 
     body('procedure_description')
         .trim()
         .isLength({ min: 10, max: 10000 })
-        .withMessage('El parametro procedure_description ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "procedure_description" (min: 10, max: 10000 [chars]).'),
 
     body('findings').optional().isArray(),
 
@@ -73,25 +78,25 @@ const Validator = [
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
         .isMongoId()
-        .withMessage('El parametro findings.*.fk_procedure NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "findings.*.fk_procedure" (ObjectId).'),
 
     body('findings.*.procedure_findings')
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 10, max: 10000 })
-        .withMessage('El parametro findings.*.procedure_findings ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "findings.*.procedure_findings" (min: 10, max: 10000 [chars]).'),
 
     body('findings.*.title')
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
         .isLength({ min: 3, max: 80 })
-        .withMessage('El parametro findings.*.title ingresado es demasiado corto o demasiado largo (min: 3, max: 80 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "findings.*.title" (min: 3, max: 80 [chars]).'),
 
     body('summary')
         .optional()
         .trim()
         .isLength({ min: 10, max: 10000 })
-        .withMessage('El parametro summary ingresado es demasiado corto o demasiado largo (min: 10, max: 10000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "summary" (min: 10, max: 10000 [chars]).'),
 
     body('fk_pathologies')
         .optional()
@@ -100,7 +105,7 @@ const Validator = [
     body('fk_pathologies.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_pathologies NO es un ID MongoDB válido.')
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_pathologies.*" (ObjectId).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

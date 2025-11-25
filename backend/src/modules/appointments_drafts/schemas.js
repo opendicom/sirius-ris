@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Imaging Sub-Schema:
 const subSchemaImaging = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -52,7 +57,7 @@ const Validator = [
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_appointment_request NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_appointment_request" (ObjectId).'),
 
     //----------------------------------------------------------------------------------------------------------------//
     // IMAGING:
@@ -60,28 +65,28 @@ const Validator = [
     body('imaging.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.organization" (ObjectId).'),
     
     body('imaging.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.branch" (ObjectId).'),
 
     body('imaging.service')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.service" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
     
     body('fk_patient')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_patient NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_patient" (ObjectId).'),
 
     body('fk_coordinator')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_coordinator NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_coordinator" (ObjectId).'),
 
     body('start').trim(),
 
@@ -90,27 +95,27 @@ const Validator = [
     body('fk_slot')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_slot NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_slot" (ObjectId).'),
 
     body('fk_procedure')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_procedure" (ObjectId).'),
 
     body('extra_procedures')
         .optional()
         .isArray()
-        .withMessage('El parametro extra_procedures debe ser un array.'),
+        .withMessage(currentLang.ris.schema_validator.isArray + ' | "extra_procedures" (Array).'),
 
     body('extra_procedures.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro extra_procedures.* NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "extra_procedures.*" (ObjectId).'),
 
     body('urgency')
         .trim()
         .isBoolean()
-        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "urgency" (true or false).')
         .toBoolean(),
 
     body('friendly_pass')
@@ -120,7 +125,7 @@ const Validator = [
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El parametro overbooking ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "overbooking" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

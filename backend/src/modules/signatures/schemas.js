@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_organization:    { type: mongoose.ObjectId },                    // Not required in the main request, set on save handler (Auth organization).
@@ -36,12 +41,12 @@ const Validator = [
     body('fk_report')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_report NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_report" (ObjectId).'),
 
     body('password')
         .trim()
         .isLength(8)
-        .withMessage('La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).')
+        .withMessage(currentLang.ris.schema_validator.isPassword)
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

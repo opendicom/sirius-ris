@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     code_meaning:   { type: String, required: true },
@@ -34,18 +39,18 @@ const Validator = [
     body('code_meaning')
         .trim()
         .isLength({ min: 3, max: 50 })
-        .withMessage('El code meaning ingresado es demasiado corto o demasiado largo (min: 3, max: 50 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "code meaning" (min: 3, max: 50 [chars]).'),
 
     body('code_value')
         .trim()
         .isLength({ min: 2, max: 10 })
-        .withMessage('El code value ingresado es demasiado corto o demasiado largo (min: 2, max: 10 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "code value" (min: 2, max: 10 [chars]).')
         .toUpperCase(),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

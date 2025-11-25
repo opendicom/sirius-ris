@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Documents Sub-Schema:
 const subSchemaDocuments = new mongoose.Schema({
     doc_country_code:   { type: String, required: true }, // ¯¯¯|
@@ -50,45 +55,45 @@ const Validator = [
     body('documents.*.doc_country_code')
         .trim()
         .isLength({ min: 3, max: 3 })
-        .withMessage('El código de país del documento ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "documents.*.doc_country_code" (min: 3, max: 3 [chars]).')
         .toLowerCase(),
 
     body('documents.*.doc_type')
         .trim()
         .isInt()
-        .withMessage('El parametro tipo de documento es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "documents.*.doc_type".'),
 
     body('documents.*.document')
         .trim()
         .isLength({ min: 3, max: 25 })
-        .withMessage('El documento ingresado es demasiado corto o demasiado largo (min: 3, max: 25 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "documents.*.document" (min: 3, max: 25 [chars]).')
         .toUpperCase(),
 
     //Validate Schema:
     body('name_01')
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El primer nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name_01" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('name_02')
         .trim()
         .optional()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El segundo nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name_02" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('surname_01')
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El primer apellido ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "surname_01" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('surname_02')
         .trim()
         .optional()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El segundo apellido ingresado es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "surname_02" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('birth_date').trim(),
@@ -96,14 +101,14 @@ const Validator = [
     body('gender')
         .trim()
         .isInt()
-        .withMessage('El parametro género es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "gender".'),
 
     body('phone_numbers').optional().isArray(),
 
     body('phone_numbers.*')
         .trim()
         .isLength({ min: 3, max: 20 })
-        .withMessage('El número de teléfono ingresado es demasiado corto o demasiado largo (min: 3, max: 20 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "phone_numbers.*" (min: 3, max: 20 [chars]).')
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

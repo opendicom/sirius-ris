@@ -7,6 +7,9 @@ set -e
 # TIMEZONE:
 export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
+# SIRIUS LANGUAJE:
+export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'ES'}
+
 # JWT SECRET:
 export AUTH_JWT_SECRET=${AUTH_JWT_SECRET:-'top_secret'}
 
@@ -77,9 +80,6 @@ export SIRIUS_BACKEND_AC_PENALTY_TIME=${SIRIUS_BACKEND_AC_PENALTY_TIME:-'15'} # 
 # SIRIUS BACKEND SIGNATURE LENGTH:
 # Used in signature PDF service.
 export SIRIUS_BACKEND_SIGNATURE_LENGTH=${SIRIUS_BACKEND_SIGNATURE_LENGTH:-'4628'}
-
-# SIRIUS BACKEND LANGUAJE:
-export SIRIUS_BACKEND_LANGUAJE=${SIRIUS_BACKEND_LANGUAJE:-'ES'}
 # ------------------------------------------------------------------------------------- #
 
 # Create main settings file based on template with environment variables:

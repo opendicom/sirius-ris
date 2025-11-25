@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Domain Sub-Schema:
 const subSchemaDomain = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -45,28 +50,28 @@ const Validator = [
     body('domain.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.organization" (ObjectId).'),
     
     body('domain.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.branch" (ObjectId).'),
 
     body('domain.service')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.service NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.service" (ObjectId).'),
 
     body('fk_equipment')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_equipment NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_equipment" (ObjectId).'),
 
     body('fk_procedure')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_procedure" (ObjectId).'),
 
     body('start').trim(),
 
@@ -75,7 +80,7 @@ const Validator = [
     body('urgency')
         .trim()
         .isBoolean()
-        .withMessage('El parametro urgencia ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "urgency" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

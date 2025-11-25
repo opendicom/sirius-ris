@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_branch:      { type: mongoose.ObjectId, required: true },
@@ -40,31 +45,31 @@ const Validator = [
     body('fk_branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_branch" (ObjectId).'),
 
     body('fk_modality')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_modality NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_modality" (ObjectId).'),
 
     body('fk_equipments')
         .isArray()
-        .withMessage('El parametro fk_equipments es requerido.'),
+        .withMessage(currentLang.ris.schema_validator.isRequired + '"fk_equipments".'),
 
     body('fk_equipments.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_equipments NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_equipments" (ObjectId).'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 64 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name" (min: 3, max: 64 [chars]).'),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

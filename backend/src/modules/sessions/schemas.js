@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Current Access Sub-Schema:
 const subSchemaCurrentAccess = new mongoose.Schema({
     domain:         { type: mongoose.ObjectId, required: true },
@@ -44,17 +49,17 @@ const Validator = [
     body('fk_user')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_user NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_user" (ObjectId).'),
 
     body('current_access.domain')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "current_access.domain" (ObjectId).'),
 
     body('current_access.role')
         .trim()
         .isInt()
-        .withMessage('El parametro role es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "current_access.role".'),
 
     body('current_access.concession').optional().isArray(),
 ];

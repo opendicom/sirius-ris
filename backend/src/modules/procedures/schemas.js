@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Domain Sub-Schema:
 const subSchemaDomain = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -70,54 +75,54 @@ const Validator = [
     body('domain.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.organization" (ObjectId).'),
     
     body('domain.branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro domain.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "domain.branch" (ObjectId).'),
 
     body('fk_modality')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_modality NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_modality" (ObjectId).'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 70 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 70 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name" (min: 3, max: 70 [chars]).'),
 
     body('code')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El código ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "code" (min: 3, max: 40 [chars]).'),
 
     body('snomed')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El código snomed ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "snomed" (min: 3, max: 40 [chars]).'),
 
     body('equipments')
         .isArray()
-        .withMessage('El parametro equipments es requerido.'),
+        .withMessage(currentLang.ris.schema_validator.isRequired + ' | "equipments" (Array).'),
 
     body('equipments.*.fk_equipment')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_equipment NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "equipments.*.fk_equipment" (ObjectId).'),
 
     body('equipments.*.duration')
         .trim()
         .isInt()
-        .withMessage('El parametro duration es requerido y debe ser numérico [minutos].'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "equipments.*.duration" (minutes).'),
 
     body('preparation')
         .optional()
         .trim()
         .isLength({ min: 10, max: 3000 })
-        .withMessage('El parametro preparation ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "preparation" (min: 10, max: 3000 [chars]).'),
 
     body('procedure_template')
         .optional()
@@ -129,43 +134,43 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 10, max: 3000 })
-        .withMessage('El parametro report_template ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "report_template" (min: 10, max: 3000 [chars]).'),
 
     body('informed_consent')
         .trim()
         .isBoolean()
-        .withMessage('El parametro informed_consent ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "informed_consent" (true or false).')
         .toBoolean(),
 
     body('has_interview')
         .trim()
         .isBoolean()
-        .withMessage('El parametro has_interview ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "has_interview" (true or false).')
         .toBoolean(),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean(),
     
     body('coefficient')
         .optional()
         .trim()
         .isDecimal()
-        .withMessage('El parametro coefficient debe ser numérico (decimal).'),
+        .withMessage(currentLang.ris.schema_validator.isDecimal + ' | "coefficient".'),
 
     body('reporting_delay')
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro reporting_delay debe ser numérico (cant. días).'),
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "reporting_delay" (days).'),
 
     body('wait_time')
         .optional()
         .trim()
         .isInt()
-        .withMessage('El parametro wait_time debe ser numérico (minutos).')
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "wait_time" (minutes).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_modalities:  { type: [mongoose.ObjectId], required: true },
@@ -36,39 +41,39 @@ const AllowedUnsetValues = ['serial_number', 'AET'];
 const Validator = [
     body('fk_modalities')
         .isArray()
-        .withMessage('El parametro fk_modalities es requerido.'),
+        .withMessage(currentLang.ris.schema_validator.isRequired + ' | "fk_modalities" (Array).'),
 
     body('fk_modalities.*')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_modalities NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_modalities.*" (ObjectId).'),
 
     body('fk_branch')
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_branch" (ObjectId).'),
 
     body('name')
         .trim()
         .isLength({ min: 3, max: 64 })
-        .withMessage('El nombre ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "name" (min: 3, max: 64 [chars]).'),
     
     body('serial_number')
         .optional()
         .trim()
         .isLength({ min: 3, max: 64 })
-        .withMessage('El serial_number ingresado es demasiado corto o demasiado largo (min: 3, max: 64 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "serial_number" (min: 3, max: 64 [chars]).'),
 
     body('AET')
         .optional()
         .trim()
         .isLength({ min: 3, max: 32 })
-        .withMessage('El AET ingresado es demasiado corto o demasiado largo (min: 3, max: 32 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "AET" (min: 3, max: 32 [chars]).'),
 
     body('status')
         .trim()
         .isBoolean()
-        .withMessage('El estado ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "status" (true or false).')
         .toBoolean()
 ];
 //--------------------------------------------------------------------------------------------------------------------//

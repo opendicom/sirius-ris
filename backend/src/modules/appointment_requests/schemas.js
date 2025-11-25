@@ -5,6 +5,11 @@
 const mongoose      = require('mongoose');
 const { body }      = require('express-validator');
 
+//Import app modules:
+const mainServices  = require('../../main.services');                           // Main services
+const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
+const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
+
 //Define Imaging Sub-Schema:
 const subSchemaImaging = new mongoose.Schema({
     organization:   { type: mongoose.ObjectId, required: true },
@@ -94,7 +99,7 @@ const Validator = [
         .optional()
         .trim()
         .isBoolean()
-        .withMessage('El parametro urgency ingresado no es de tipo booleano (verdadero o falso).')
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "urgency" (true or false).')
         .toBoolean(),
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -103,13 +108,13 @@ const Validator = [
     body('imaging.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.organization" (ObjectId).'),
     
     body('imaging.branch')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro imaging.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "imaging.branch" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -118,13 +123,13 @@ const Validator = [
     body('referring.organization')
         .trim()
         .isMongoId()
-        .withMessage('El parametro referring.organization NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.organization" (ObjectId).'),
     
     body('referring.branch')
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro referring.branch NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "referring.branch" (ObjectId).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -134,44 +139,44 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 3, max: 3 })
-        .withMessage('El código de país del documento de paciente ingresado es demasiado corto o demasiado largo (min: 3, max: 3 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.doc_country_code" (min: 3, max: 3 [chars]).')
         .toLowerCase(),
 
     body('patient.doc_type')
         .trim()
         .isInt()
-        .withMessage('El parametro tipo de documento de paciente es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "patient.doc_type".'),
 
     body('patient.document')
         .trim()
         .isLength({ min: 3, max: 25 })
-        .withMessage('El documento ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 25 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.document" (min: 3, max: 25 [chars]).')
         .toUpperCase(),
 
     body('patient.name_01')
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El primer nombre ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.name_01" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('patient.name_02')
         .trim()
         .optional()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El segundo nombre ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.name_02" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('patient.surname_01')
         .trim()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El primer apellido ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.surname_01" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('patient.surname_02')
         .trim()
         .optional()
         .isLength({ min: 3, max: 30 })
-        .withMessage('El segundo apellido ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 30 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.surname_02" (min: 3, max: 30 [chars]).')
         .toUpperCase(),
 
     body('patient.birth_date').trim().toDate(),
@@ -179,20 +184,20 @@ const Validator = [
     body('patient.gender')
         .trim()
         .isInt()
-        .withMessage('El parametro género de paciente es requerido y debe ser numérico.'),
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "patient.gender".'),
 
     body('patient.phone_numbers').optional().isArray(),
 
     body('patient.phone_numbers.*')
         .trim()
         .isLength({ min: 3, max: 20 })
-        .withMessage('El número de teléfono ingresado de paciente es demasiado corto o demasiado largo (min: 3, max: 20 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "patient.phone_numbers.*" (min: 3, max: 20 [chars]).'),
 
     body('patient.email')
         .optional()
         .trim()
         .isEmail()
-        .withMessage('El valor ingresado NO es una dirección de correo válida.')
+        .withMessage(currentLang.ris.schema_validator.isEmail + ' | "patient.email".')
         .normalizeEmail({ gmail_remove_dots: false })
         .toLowerCase(),
     //----------------------------------------------------------------------------------------------------------------//
@@ -204,39 +209,39 @@ const Validator = [
         .optional()
         .trim()
         .isMongoId()
-        .withMessage('El parametro fk_procedure NO es un ID MongoDB válido.'),
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "study.fk_procedure" (ObjectId).'),
 
     body('study.snomed')
         .optional()
         .trim()
         .isLength({ min: 3, max: 40 })
-        .withMessage('El código snomed ingresado es demasiado corto o demasiado largo (min: 3, max: 40 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "study.snomed" (min: 3, max: 40 [chars]).'),
 
     //Modality (code_value)
     body('study.modality')
         .optional()
         .trim()
         .isLength({ min: 2, max: 10 })
-        .withMessage('El code value de modality ingresado es demasiado corto o demasiado largo (min: 2, max: 10 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "study.modality" (min: 2, max: 10 [chars]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
     body('annotations')
         .optional()
         .trim()
         .isLength({ min: 10, max: 2000 })
-        .withMessage('El parametro annotations ingresado es demasiado corto o demasiado largo (min: 10, max: 2000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "annotations" (min: 10, max: 2000 [chars]).'),
 
     body('anamnesis')
         .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro anamnesis ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 10, max: 1000 [chars]).'),
 
     body('indications')
         .optional()
         .trim()
         .isLength({ min: 10, max: 1000 })
-        .withMessage('El parametro indications ingresado es demasiado corto o demasiado largo (min: 10, max: 1000 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 10, max: 1000 [chars]).'),
 
     //----------------------------------------------------------------------------------------------------------------//
     // EXTRA:
@@ -245,51 +250,51 @@ const Validator = [
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.patient_id ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.patient_id" (min: 1, max: 60 [chars]).'),
     
     body('extra.study_id')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.study_id ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.study_id" (min: 1, max: 60 [chars]).'),
 
     body('extra.physician_id')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.physician_id ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.physician_id" (min: 1, max: 60 [chars]).'),
 
     body('extra.physician_name')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.physician_name ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.physician_name" (min: 1, max: 60 [chars]).')
         .toUpperCase(),
 
     body('extra.physician_prof_id')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.physician_prof_id ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.physician_prof_id" (min: 1, max: 60 [chars]).'),
 
     body('extra.physician_contact')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.physician_contact ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.physician_contact" (min: 1, max: 60 [chars]).'),
 
     body('extra.requesting_id')
         .optional()
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.requesting_id ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).'),
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.requesting_id" (min: 1, max: 60 [chars]).'),
 
     body('extra.custom_fields').optional().isArray(),
 
     body('extra.custom_fields.*')
         .trim()
         .isLength({ min: 1, max: 60 })
-        .withMessage('El parametro extra.custom_fields ingresado es demasiado corto o demasiado largo (min: 1, max: 60 [caracteres]).')
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "extra.custom_fields.*" (min: 1, max: 60 [chars]).')
     //----------------------------------------------------------------------------------------------------------------//
 ];
 //--------------------------------------------------------------------------------------------------------------------//

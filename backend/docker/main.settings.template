@@ -78,4 +78,4 @@ AC_PENALTY_TIME: ${SIRIUS_BACKEND_AC_PENALTY_TIME}   # Seconds
 signature_length: ${SIRIUS_BACKEND_SIGNATURE_LENGTH}
 
 # Set the language of the responses:
-language: '${SIRIUS_BACKEND_LANGUAJE}'
+language: '${SIRIUS_LANGUAJE}'
