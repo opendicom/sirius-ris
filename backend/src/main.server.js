@@ -49,6 +49,10 @@ module.exports = async function() {
     const mainSettings = mainServices.getFileSettings();                        // File settings (YAML)
     const currentLang = require('./main.languages')(mainSettings.language);     // Language Module
 
+    //Import package.json file:
+    const pkg = require("./package.json");
+    const sirius_backend_version = pkg.version;
+
     //Initialize enviroment variables:
     process.env.REGISTERED_IPS = '';
 
@@ -127,7 +131,7 @@ module.exports = async function() {
     app.use('/downloads',               downloadsRoutes);
 
     //Start message:
-    let startMessage = currentLang.server.start + ' | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });
+    let startMessage = currentLang.server.start + ' (v' + sirius_backend_version + ') | ' + moment().format('DD/MM/YYYY HH:mm:ss', { trim: false });
     console.log('\n' + consoleLn);
     console.log('| ' + startMessage);
     console.log(consoleLn);
@@ -208,7 +212,8 @@ module.exports = async function() {
         //Initialize webSerberOptions:
         let sirius_backend = {
             HTTP    : { status: 'disabled', url: false },
-            HTTPS   : { status: 'disabled', url: false, ssl_certificates: false }
+            HTTPS   : { status: 'disabled', url: false, ssl_certificates: false },
+            version: sirius_backend_version
         };
 
         //HTTP Enabled:
