@@ -41,6 +41,7 @@ import { PatientDetailsComponent } from '@shared/components/dialogs/patient-deta
 
 // Shared pipes:
 import { HighlighterPipe } from '@shared/pipes/highlighter.pipe';
+import { TranslatePipe } from '@shared/pipes/translate.pipe';
 import { AccnoDatePipe } from '@shared/pipes/accno_date.pipe';
 import { SafeURLPipe } from '@shared/pipes/safe_url.pipe';
 
@@ -87,6 +88,7 @@ import * as IC from '@shared/directives/input-control.directive';
 
     // Shared pipes:
     HighlighterPipe,
+    TranslatePipe,
     AccnoDatePipe,
     SafeURLPipe,
 
@@ -143,6 +145,7 @@ import * as IC from '@shared/directives/input-control.directive';
 
     // Shared pipes:
     HighlighterPipe,
+    TranslatePipe,
     AccnoDatePipe,
     SafeURLPipe,
 

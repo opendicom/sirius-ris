@@ -1,59 +1,59 @@
 <div class="settings-content">
   <div class="settings-card">
-    Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación <strong>Sirius RIS</strong>.<br/>
-    En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.
+    {{ 'SETTINGS.DESCRIPTION_PRE' | i18n }} <strong>{{ 'SETTINGS.DESCRIPTION_BRAND' | i18n }}</strong>.<br/>
+    {{ 'SETTINGS.DESCRIPTION_ADVICE' | i18n }}
   </div>
 
   <br/>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/organizations/list">
     <mat-icon>apartment</mat-icon><br/>
-    Organizaciones
+    {{ 'SETTINGS.ORGANIZATIONS' | i18n }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/branches/list">
     <mat-icon>account_tree</mat-icon><br/>
-    Sucursales
+    {{ 'SETTINGS.BRANCHES' | i18n }}
   </button>
 
   <button mat-button routerLink="/services/list">
     <mat-icon>health_and_safety</mat-icon><br/>
-    Servicios
+    {{ 'SETTINGS.SERVICES' | i18n }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/modalities/list">
     <mat-icon>multiple_stop</mat-icon><br/>
-    Modalidades
+    {{ 'SETTINGS.MODALITIES' | i18n }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/equipments/list">
     <mat-icon>precision_manufacturing</mat-icon><br/>
-    Equipamiento
+    {{ 'SETTINGS.EQUIPMENTS' | i18n }}
   </button>
 
   <button mat-button routerLink="/procedures/list">
     <mat-icon>format_list_numbered</mat-icon><br/>
-    Procedimientos
+    {{ 'SETTINGS.PROCEDURES' | i18n }}
   </button>
 
   <button mat-button routerLink="/procedure_categories/list">
     <mat-icon>category</mat-icon><br/>
-    Categorías de procedimientos
+    {{ 'SETTINGS.PROCEDURE_CATEGORIES' | i18n }}
   </button>
 
   <button mat-button routerLink="/pathologies/list">
     <mat-icon>coronavirus</mat-icon><br/>
-    Patologías
+    {{ 'SETTINGS.PATHOLOGIES' | i18n }}
   </button>
 
   <button mat-button routerLink="/users/list">
     <mat-icon>people</mat-icon><br/>
-    Cuentas de usuarios
+    {{ 'SETTINGS.USERS' | i18n }}
   </button>
 
   <button *ngIf="sharedProp.userLogged.permissions[0].role == 1" mat-button routerLink="/files/list">
     <mat-icon>folder</mat-icon><br/>
-    Archivos
+    {{ 'SETTINGS.FILES' | i18n }}
   </button>
 
   <br/><hr class="dashed" />

@@ -12,38 +12,38 @@
   <div class="welcome_header">
     <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
     <br/><br/>
-    <h1>Bienvenidos a Sirius RIS</h1>
+    <h1>{{ 'START_PAGE.WELCOME' | i18n }}</h1>
   </div>
 
   <br/>
 
   <div class="welcome_card">
-    <h2 class="underline-fail-alt">Acerca de</h2>
-    <strong>Sirius RIS</strong> es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.<br/>
+    <h2 class="underline-fail-alt">{{ 'START_PAGE.ABOUT_TITLE' | i18n }}</h2>
+    <strong>{{ 'START_PAGE.ABOUT_BRAND' | i18n }}</strong> {{ 'START_PAGE.ABOUT_TEXT' | i18n }}<br/>
     <br/>
     <mat-chip-list>
-      <mat-chip>Angular</mat-chip>
-      <mat-chip>RxJS</mat-chip>
-      <mat-chip>OHIF</mat-chip>
-      <mat-chip>NodeJS</mat-chip>
-      <mat-chip>MongoDB</mat-chip>
-      <mat-chip>Docker</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_ANGULAR' | i18n }}</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_RXJS' | i18n }}</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_OHIF' | i18n }}</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_NODE' | i18n }}</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_MONGODB' | i18n }}</mat-chip>
+      <mat-chip>{{ 'START_PAGE.TECH_DOCKER' | i18n }}</mat-chip>
     </mat-chip-list>
 
     <br/><hr class="dashed" /><br/>
 
-    <h2 class="underline-ok-alt">Ayuda</h2>
+    <h2 class="underline-ok-alt">{{ 'START_PAGE.HELP_TITLE' | i18n }}</h2>
     <ul>
-      <li>Documentación oficial en <strong><a href="https://github.com/opendicom/sirius-ris" target="_blank">GitHub</a></strong> & <strong><a href="https://hub.docker.com/search?q=opendicom%2Fsirius" target="_blank">DockerHub</a></strong></li>
-      <li>Servicio de <strong><a class="link-alt" href="mailto:info@opendicom.com?subject=Solicitud de soporte para Sirius RIS">soporte oficial</a></strong></li>
+      <li>{{ 'START_PAGE.HELP_GITHUB' | i18n }} <strong><a href="https://github.com/opendicom/sirius-ris" target="_blank">GitHub</a></strong> & <strong><a href="https://hub.docker.com/search?q=opendicom%2Fsirius" target="_blank">DockerHub</a></strong></li>
+      <li><strong><a class="link-alt" href="mailto:info@opendicom.com?subject=Solicitud de soporte para Sirius RIS">{{ 'START_PAGE.HELP_SUPPORT' | i18n }}</a></strong></li>
     </ul>
   </div>
 
-  <div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> Simple, eficiente y rápido</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> Robusto, seguro y auditable</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>Interfaz opaca</strong> para respetar ambientes radiológicos</div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> Identificación inequivoca de personas | <strong>ISO-3166</strong> | <strong>UNAOID/ICAO v1.0</strong></div>
-  <div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon>Sistema de <strong>privilegios escalables</strong> para usuarios</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>speed</mat-icon> {{ 'START_PAGE.CARD_SIMPLE' | i18n }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>verified_user</mat-icon> {{ 'START_PAGE.CARD_ROBUST' | i18n }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>visibility</mat-icon> <strong>{{ 'START_PAGE.CARD_OPAQUE_STRONG' | i18n }}</strong> {{ 'START_PAGE.CARD_OPAQUE_TEXT' | i18n }}</div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>badge</mat-icon> {{ 'START_PAGE.CARD_IDENTITY_LEAD' | i18n }} <strong>{{ 'START_PAGE.CARD_IDENTITY_STRONG1' | i18n }}</strong> | <strong>{{ 'START_PAGE.CARD_IDENTITY_STRONG2' | i18n }}</strong></div>
+  <div class="welcome_card slim" mat-menu-item><mat-icon>account_tree</mat-icon> {{ 'START_PAGE.CARD_PRIVILEGES_LEAD' | i18n }} <strong>{{ 'START_PAGE.CARD_PRIVILEGES_STRONG' | i18n }}</strong> {{ 'START_PAGE.CARD_PRIVILEGES_TAIL' | i18n }}</div>
 
   <div class="clear"></div>
 

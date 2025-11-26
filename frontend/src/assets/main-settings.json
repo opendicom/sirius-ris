@@ -1,5 +1,6 @@
 {
     "appSettings": {
+        "language": "ES",
         "backend_url": "/sirius-api/",
         "rabc_exclude_code": "exclude_code",
         "file_max_size": 10,

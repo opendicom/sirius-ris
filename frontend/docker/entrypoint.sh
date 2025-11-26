@@ -7,6 +7,9 @@ set -e
 # TIMEZONE:
 export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
+# SIRIUS LANGUAJE:
+export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'ES'}
+
 # IP SERVER:
 export IP_SERVER=${IP_SERVER:-'localhost'}
 

@@ -1,0 +1,177 @@
+{
+  "APP": {
+    "TITLE": "Sirius RIS",
+    "WELCOME": "Welcome to Sirius RIS"
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "SEARCH": "Search"
+  },
+  "THEME": {
+    "LABEL": "Theme",
+    "DARK": "Dark",
+    "LIGHT": "Light"
+  },
+  "USER": {
+    "LOGS": "User logs",
+    "OPTIONS": "User options",
+    "TOOLTIP": "User",
+    "ROLE": "Role",
+    "ORGANIZATION": "Organization",
+    "BRANCH": "Branch",
+    "SERVICE": "Service"
+  },
+  "NAV": {
+    "HOME": "Home",
+    "SETTINGS": "Settings",
+    "LOGOUT": "Log out"
+  },
+  "SIDENAV": {
+    "MAIN_MENU": "Main menu",
+    "COORDINATION": "Coordination",
+    "COORDINATION_REQUESTS": "Requests",
+    "COORDINATION_SLOTS": "Slots",
+    "COORDINATION_APPOINTMENTS": "Appointments",
+    "COORDINATION_CALENDAR": "Calendar",
+    "RECEPTION": "Reception",
+    "RECEPTION_CHECKINS": "Check-ins",
+    "PERFORMING": "Performing",
+    "PERFORMING_STUDIES": "Studies",
+    "ADVANCED": "Advanced features",
+    "ADVANCED_SEARCH": "Advanced search",
+    "ADVANCED_STATS": "Statistics",
+    "ADVANCED_MEDICAL_LOCKER": "Medical locker",
+    "ADVANCED_BILLING": "Billing",
+    "ADMIN": "Administrator",
+    "ADMIN_SETTINGS": "System settings",
+    "PATIENT": "Patient",
+    "PATIENT_RESULTS": "Study results"
+  },
+  "START_PAGE": {
+    "WELCOME": "Welcome to Sirius RIS",
+    "ABOUT_TITLE": "About",
+    "ABOUT_BRAND": "Sirius RIS",
+    "ABOUT_TEXT": "is an open-source radiology information system built using the following technologies.",
+    "TECH_ANGULAR": "Angular",
+    "TECH_RXJS": "RxJS",
+    "TECH_OHIF": "OHIF",
+    "TECH_NODE": "NodeJS",
+    "TECH_MONGODB": "MongoDB",
+    "TECH_DOCKER": "Docker",
+    "HELP_TITLE": "Help",
+    "HELP_GITHUB": "Official documentation on GitHub",
+    "HELP_DOCKERHUB": "Images on DockerHub",
+    "HELP_SUPPORT": "Official support service",
+    "CARD_SIMPLE": "Simple, efficient and fast",
+    "CARD_ROBUST": "Robust, secure and auditable",
+    "CARD_OPAQUE": "Opaque UI to respect radiological environments",
+    "CARD_OPAQUE_STRONG": "Opaque UI",
+    "CARD_OPAQUE_TEXT": "to respect radiological environments",
+    "CARD_IDENTITY": "Unambiguous person identification | ISO-3166 | UNAOID/ICAO v1.0",
+    "CARD_IDENTITY_LEAD": "Unambiguous person identification",
+    "CARD_IDENTITY_STRONG1": "ISO-3166",
+    "CARD_IDENTITY_STRONG2": "UNAOID/ICAO v1.0",
+    "CARD_PRIVILEGES": "Scalable privileges system for users",
+    "CARD_PRIVILEGES_LEAD": "System of",
+    "CARD_PRIVILEGES_STRONG": "scalable privileges",
+    "CARD_PRIVILEGES_TAIL": "for users"
+  },
+  "NOT_FOUND": {
+    "TITLE": "The requested page was not found",
+    "ACTION_HOME": "GO TO HOME PAGE",
+    "IMG_ALT": "Page not found"
+  },
+  "SETTINGS": {
+    "DESCRIPTION_PRE": "The settings below affect records throughout the data flow and the application's behaviour",
+    "DESCRIPTION_BRAND": "Sirius RIS",
+    "DESCRIPTION_ADVICE": "If you are not sure about an operation, we recommend consulting qualified personnel.",
+    "ORGANIZATIONS": "Organizations",
+    "BRANCHES": "Branches",
+    "SERVICES": "Services",
+    "MODALITIES": "Modalities",
+    "EQUIPMENTS": "Equipment",
+    "PROCEDURES": "Procedures",
+    "PROCEDURE_CATEGORIES": "Procedure categories",
+    "PATHOLOGIES": "Pathologies",
+    "USERS": "User accounts",
+    "FILES": "Files"
+  },
+  "ACTION": {
+    "ADD": "ADD",
+    "GENERATE_BATCH": "GENERATE BATCH",
+    "VIEW_APPOINTMENTS_DRAFTS": "VIEW APPOINTMENTS DRAFTS",
+    "ADD_MACHINE_USER": "ADD MACHINE USER",
+
+    "SEARCH": "Search",
+    "SEARCH_PLACEHOLDER": "Search criteria [RegEx]",
+    "SELECT_DATE_RANGE": "Select date range",
+    "START_DATE": "Start date",
+    "END_DATE": "End date",
+    "SELECT_DATE": "Select date",
+
+    "FLOW_STATE": "Flow state",
+    "MODALITY": "Modality",
+    "STATUS": "Status",
+    "STATUS_ACTIVE": "Active",
+    "STATUS_INACTIVE": "Inactive",
+    "URGENCY": "Urgency",
+    "URGENCY_HIGH": "Urgent",
+    "URGENCY_NORMAL": "Normal",
+
+    "USER_ID": "User ID",
+    "USER_ID_PLACEHOLDER": "user _id",
+    "SHOW_ASSIGNED_STUDIES_ONLY": "SHOW ASSIGNED STUDIES ONLY",
+
+    "EVENT": "Event",
+    "CLEAR_SEARCH": "CLEAR SEARCH",
+    "DELETE_SELECTION": "DELETE SELECTION",
+    "SEARCH_HELP": "Search help",
+
+    "TOTAL": "Total",
+    "SHOWN": "Shown",
+    "PAGE": "Page",
+    "OF": "of",
+    "ITEMS_PER_PAGE": "Items per page",
+
+    "KEYWORDS": "Search keywords:",
+    "ANAMNESIS": "Anamnesis",
+    "ANAMNESIS_HINT": "Search word about anamnesis",
+    "REPORT_CONTENT": "Inside the REPORT",
+    "CLINICAL_INFO": "Clinical data:",
+    "CLINICAL_INFO_LABEL": "Word in clinical data",
+    "FINDINGS": "Findings:",
+    "FINDINGS_LABEL": "Word in findings",
+    "PROCEDURE": "Procedure:",
+    "PROCEDURE_LABEL": "Word in procedure",
+    "SUMMARY": "Summary:",
+    "SUMMARY_LABEL": "Word in the summary",
+    "REPORT": "REPORT",
+
+    "PATHOLOGIES": "Pathologies",
+    "PATHOLOGIES_OF": "Pathologies of",
+    "NO_PATHOLOGIES_FILTERED": "Not filtered by pathologies",
+
+    "ORGANIZATION": "Organization",
+    "SELECT_ORGANIZATION": "Select organization",
+
+    "INVOLVED_DOCTORS": "Involved doctors:",
+    "REQUESTING_PHYSICIAN": "Requesting physician",
+    "REQUEST_LABEL": "REQUEST",
+    "REQUESTING_PHYSICIAN_LABEL": "First or last name of requesting physician",
+
+    "SIGNED_BY": "Signed by:",
+    "SIGNING_USER": "Signing user",
+    "SELECT_SIGNING_USER": "Select signing user",
+
+    "AUTHENTICATED_BY": "Authenticated by:",
+    "AUTHENTICATOR_USER": "Authenticator user",
+    "SELECT_AUTHENTICATOR_USER": "Select authenticator user",
+
+    "SEARCH_BUTTON": "SEARCH",
+    "CLEAN_BUTTON": "CLEAN SEARCH",
+    "PATHOLOGIES_ADMIN_LABEL": "Pathologies administrator"
+  }
+}

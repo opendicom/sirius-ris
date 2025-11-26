@@ -1,29 +1,29 @@
 <!-- Theme select -->
 <!-- Medical users don't change themes: Force opaque interface to preserve radiological environments (4: Médico). -->
 <span *ngIf="sharedProp.userLogged.permissions[0].role !== 4" >
-  <button mat-button><mat-icon [matMenuTriggerFor]="themeMenu" matTooltip="Tema">format_color_fill</mat-icon></button>
+  <button mat-button><mat-icon [matMenuTriggerFor]="themeMenu" matTooltip="{{ 'THEME.LABEL' | i18n }}">format_color_fill</mat-icon></button>
   <mat-menu #themeMenu="matMenu">
-    <button mat-menu-item (click)="themesService.switchTheme('dark', true)"><mat-icon>dark_mode</mat-icon> Oscuro</button>
-    <button mat-menu-item (click)="themesService.switchTheme('light', true)"><mat-icon>light_mode</mat-icon> Claro</button>
+    <button mat-menu-item (click)="themesService.switchTheme('dark', true)"><mat-icon>dark_mode</mat-icon> {{ 'THEME.DARK' | i18n }}</button>
+    <button mat-menu-item (click)="themesService.switchTheme('light', true)"><mat-icon>light_mode</mat-icon> {{ 'THEME.LIGHT' | i18n }}</button>
   </mat-menu>
 </span>
 
-<button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
+<button mat-button [matMenuTriggerFor]="userMenu">
   <mat-icon>person</mat-icon>&nbsp;
   <span class="user_info">
-    <small matTooltip="Usuario">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
+    <small matTooltip="{{ 'USER.TOOLTIP' | i18n }}">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
     &nbsp; ► &nbsp;
-    <small matTooltip="Rol">{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small>
+    <small matTooltip="{{ 'USER.ROLE' | i18n }}">{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small>
     &nbsp; ► &nbsp;
     <span [ngSwitch]="sharedProp.userLogged.permissions[0].type">
       <span *ngSwitchCase="'organization'">
-        <small matTooltip="Organización">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+        <small matTooltip="{{ 'USER.ORGANIZATION' | i18n }}">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
       </span>
       <span *ngSwitchCase="'branch'">
-        <small matTooltip="Sucursal">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+        <small matTooltip="{{ 'USER.BRANCH' | i18n }}">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
       </span>
       <span *ngSwitchCase="'service'">
-        <small matTooltip="Servicio">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+        <small matTooltip="{{ 'USER.SERVICE' | i18n }}">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
       </span>
     </span>
 
@@ -34,10 +34,10 @@
 <mat-menu #userMenu="matMenu" xPosition="before">
   <!-- 1: Superusuario, 2: Administrador, Concesiones: [10: Acceso a logs del usuario] -->
   <button mat-menu-item *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [10]))" routerLink="/logs/user">
-    <mat-icon>format_list_bulleted</mat-icon><span>Logs del usuario</span>
+    <mat-icon>format_list_bulleted</mat-icon><span>{{ 'USER.LOGS' | i18n }}</span>
   </button>
   
   <button mat-menu-item routerLink="/signin">
-    <mat-icon>logout</mat-icon><span>Cerrar sesión</span>
+    <mat-icon>logout</mat-icon><span>{{ 'NAV.LOGOUT' | i18n }}</span>
   </button>
 </mat-menu>

@@ -1,0 +1,177 @@
+{
+  "APP": {
+    "TITLE": "Sirius RIS",
+    "WELCOME": "Bienvenido a Sirius RIS"
+  },
+  "COMMON": {
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "SEARCH": "Buscar"
+  },
+  "THEME": {
+    "LABEL": "Tema",
+    "DARK": "Oscuro",
+    "LIGHT": "Claro"
+  },
+  "USER": {
+    "LOGS": "Logs del usuario",
+    "OPTIONS": "Opciones de usuario",
+    "TOOLTIP": "Usuario",
+    "ROLE": "Rol",
+    "ORGANIZATION": "Organización",
+    "BRANCH": "Sucursal",
+    "SERVICE": "Servicio"
+  },
+  "NAV": {
+    "HOME": "Inicio",
+    "SETTINGS": "Ajustes",
+    "LOGOUT": "Cerrar sesión"
+  },
+  "SIDENAV": {
+    "MAIN_MENU": "Menú principal",
+    "COORDINATION": "Coordinación",
+    "COORDINATION_REQUESTS": "Solicitudes",
+    "COORDINATION_SLOTS": "Turnos",
+    "COORDINATION_APPOINTMENTS": "Citas",
+    "COORDINATION_CALENDAR": "Calendario",
+    "RECEPTION": "Recepción",
+    "RECEPTION_CHECKINS": "Recepciones",
+    "PERFORMING": "Realización",
+    "PERFORMING_STUDIES": "Estudios",
+    "ADVANCED": "Funciones avanzadas",
+    "ADVANCED_SEARCH": "Búsqueda avanzada",
+    "ADVANCED_STATS": "Estadística",
+    "ADVANCED_MEDICAL_LOCKER": "Casillero médico",
+    "ADVANCED_BILLING": "Facturación",
+    "ADMIN": "Administrador",
+    "ADMIN_SETTINGS": "Configuración de sistema",
+    "PATIENT": "Paciente",
+    "PATIENT_RESULTS": "Resultado de estudios"
+  },
+  "START_PAGE": {
+    "WELCOME": "Bienvenidos a Sirius RIS",
+    "ABOUT_TITLE": "Acerca de",
+    "ABOUT_BRAND": "Sirius RIS",
+    "ABOUT_TEXT": "es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.",
+    "TECH_ANGULAR": "Angular",
+    "TECH_RXJS": "RxJS",
+    "TECH_OHIF": "OHIF",
+    "TECH_NODE": "NodeJS",
+    "TECH_MONGODB": "MongoDB",
+    "TECH_DOCKER": "Docker",
+    "HELP_TITLE": "Ayuda",
+    "HELP_GITHUB": "Documentación oficial en GitHub",
+    "HELP_DOCKERHUB": "Imágenes en DockerHub",
+    "HELP_SUPPORT": "Servicio de soporte oficial",
+    "CARD_SIMPLE": "Simple, eficiente y rápido",
+    "CARD_ROBUST": "Robusto, seguro y auditable",
+    "CARD_OPAQUE": "Interfaz opaca para respetar ambientes radiológicos",
+    "CARD_OPAQUE_STRONG": "Interfaz opaca",
+    "CARD_OPAQUE_TEXT": "para respetar ambientes radiológicos",
+    "CARD_IDENTITY": "Identificación inequívoca de personas | ISO-3166 | UNAOID/ICAO v1.0",
+    "CARD_IDENTITY_LEAD": "Identificación inequívoca de personas",
+    "CARD_IDENTITY_STRONG1": "ISO-3166",
+    "CARD_IDENTITY_STRONG2": "UNAOID/ICAO v1.0",
+    "CARD_PRIVILEGES": "Sistema de privilegios escalables para usuarios",
+    "CARD_PRIVILEGES_LEAD": "Sistema de",
+    "CARD_PRIVILEGES_STRONG": "privilegios escalables",
+    "CARD_PRIVILEGES_TAIL": "para usuarios"
+  },
+  "NOT_FOUND": {
+    "TITLE": "No se encuentra la página indicada",
+    "ACTION_HOME": "IR A PÁGINA DE INICIO",
+    "IMG_ALT": "Página no encontrada"
+  },
+  "SETTINGS": {
+    "DESCRIPTION_PRE": "Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación",
+    "DESCRIPTION_BRAND": "Sirius RIS",
+    "DESCRIPTION_ADVICE": "En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.",
+    "ORGANIZATIONS": "Organizaciones",
+    "BRANCHES": "Sucursales",
+    "SERVICES": "Servicios",
+    "MODALITIES": "Modalidades",
+    "EQUIPMENTS": "Equipamiento",
+    "PROCEDURES": "Procedimientos",
+    "PROCEDURE_CATEGORIES": "Categorías de procedimientos",
+    "PATHOLOGIES": "Patologías",
+    "USERS": "Cuentas de usuarios",
+    "FILES": "Archivos"
+  },
+  "ACTION": {
+    "ADD": "AÑADIR",
+    "GENERATE_BATCH": "GENERAR LOTE",
+    "VIEW_APPOINTMENTS_DRAFTS": "VER CITAS EN CURSO",
+    "ADD_MACHINE_USER": "AÑADIR USUARIO MAQUINA",
+
+    "SEARCH": "Buscar",
+    "SEARCH_PLACEHOLDER": "Criterio de busqueda [RegEx]",
+    "SELECT_DATE_RANGE": "Seleccione rango de fechas",
+    "START_DATE": "Fecha inicio",
+    "END_DATE": "Fecha fin",
+    "SELECT_DATE": "Seleccione fecha",
+
+    "FLOW_STATE": "Flujo del elemento",
+    "MODALITY": "Modalidad",
+    "STATUS": "Estado",
+    "STATUS_ACTIVE": "Activo",
+    "STATUS_INACTIVE": "Inactivo",
+    "URGENCY": "Urgencia",
+    "URGENCY_HIGH": "Urgente",
+    "URGENCY_NORMAL": "Normal",
+
+    "USER_ID": "ID Usuario",
+    "USER_ID_PLACEHOLDER": "_id de usuario",
+    "SHOW_ASSIGNED_STUDIES_ONLY": "VER SOLO ESTUDIOS ASIGNADOS",
+
+    "EVENT": "Evento",
+    "CLEAR_SEARCH": "LIMPIAR BÚSQUEDA",
+    "DELETE_SELECTION": "BORRAR SELECCIÓN",
+    "SEARCH_HELP": "Ayuda para búsquedas",
+
+    "TOTAL": "Total",
+    "SHOWN": "Mostrados",
+    "PAGE": "Página",
+    "OF": "de",
+    "ITEMS_PER_PAGE": "Items por página",
+
+    "KEYWORDS": "Buscar palabras clave:",
+    "ANAMNESIS": "Anamnesis",
+    "ANAMNESIS_HINT": "Buscar palabra sobre anamnesis",
+    "REPORT_CONTENT": "En el contenido del INFORME",
+    "CLINICAL_INFO": "Dato clínico:",
+    "CLINICAL_INFO_LABEL": "Palabra en dato clínico",
+    "FINDINGS": "Hallazgos:",
+    "FINDINGS_LABEL": "Palabra en hallazgos",
+    "PROCEDURE": "Procedimiento:",
+    "PROCEDURE_LABEL": "Palabra en procedimiento",
+    "SUMMARY": "En suma:",
+    "SUMMARY_LABEL": "Palabra en el en suma",
+    "REPORT": "INFORME",
+
+    "PATHOLOGIES": "Patologías",
+    "PATHOLOGIES_OF": "Patologías del",
+    "NO_PATHOLOGIES_FILTERED": "Sin filtrar por patologías",
+
+    "ORGANIZATION": "Organización",
+    "SELECT_ORGANIZATION": "Seleccione la organización",
+
+    "INVOLVED_DOCTORS": "Médicos involucrados:",
+    "REQUESTING_PHYSICIAN": "Médico solicitante",
+    "REQUEST_LABEL": "SOLICITUD",
+    "REQUESTING_PHYSICIAN_LABEL": "Nombre/s o Apellido/s del médico solicitante",
+
+    "SIGNED_BY": "Firmado por:",
+    "SIGNING_USER": "Usuario firmante",
+    "SELECT_SIGNING_USER": "Seleccione el usuario firmante",
+
+    "AUTHENTICATED_BY": "Autenticado por:",
+    "AUTHENTICATOR_USER": "Usuario autenticador",
+    "SELECT_AUTHENTICATOR_USER": "Seleccione el usuario autenticador",
+
+    "SEARCH_BUTTON": "BUSCAR",
+    "CLEAN_BUTTON": "LIMPIAR BÚSQUEDA",
+    "PATHOLOGIES_ADMIN_LABEL": "Administradora de patologías"
+  }
+}

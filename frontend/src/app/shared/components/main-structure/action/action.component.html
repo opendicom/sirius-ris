@@ -4,7 +4,7 @@
   <span class="mat-spacer"></span>
 
   <button mat-flat-button color="primary" routerLink="{{ sharedProp.action.add_button }}" *ngIf="sharedProp.action.add_button">
-    <mat-icon>add</mat-icon> AÑADIR
+    <mat-icon>add</mat-icon> {{ 'ACTION.ADD' | i18n }}
   </button>
 
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
@@ -13,20 +13,20 @@
   <span *ngIf="sharedProp.action.add_slots_batch">
     &nbsp;
     <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_slots_batch }}">
-      <mat-icon>content_copy</mat-icon> GENERAR LOTE
+      <mat-icon>content_copy</mat-icon> {{ 'ACTION.GENERATE_BATCH' | i18n }}
     </button>
   </span>
 
   <span *ngIf="sharedProp.action.manage_drafts">
     &nbsp;
-    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> VER CITAS EN CURSO</button>
+    <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.manage_drafts }}"><mat-icon>free_cancellation</mat-icon> {{ 'ACTION.VIEW_APPOINTMENTS_DRAFTS' | i18n }}</button>
   </span>
 
   <!-- Only superuser can add machine users -->
   <span *ngIf="sharedProp.action.add_machine && sharedProp.userLogged.permissions[0].role == 1">
     &nbsp;
     <button mat-flat-button color="accent" routerLink="{{ sharedProp.action.add_machine }}">
-      <mat-icon>add_box</mat-icon> AÑADIR USUARIO MAQUINA
+      <mat-icon>add_box</mat-icon> {{ 'ACTION.ADD_MACHINE_USER' | i18n }}
     </button>
   </span>
   <!-- ------------------------------------------------------------------------------------------------------------------------ -->
@@ -36,30 +36,30 @@
   <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
     <div class="filters"> <!-- start fxLayout wrapper -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.search">
-        <mat-label>Buscar</mat-label>
-        <input matInput type="search" placeholder="Criterio de busqueda [RegEx]" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'ACTION.SEARCH' | i18n }}</mat-label>
+        <input matInput type="search" placeholder="{{ 'ACTION.SEARCH_PLACEHOLDER' | i18n }}" [(ngModel)]="sharedProp.filter" (keyup.enter)="onSearch();">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.date_range">
-        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-label>{{ 'ACTION.SELECT_DATE_RANGE' | i18n }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
-          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly placeholder="Fecha inicio">
-          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly placeholder="Fecha fin">
+          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly placeholder="{{ 'ACTION.START_DATE' | i18n }}">
+          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly placeholder="{{ 'ACTION.END_DATE' | i18n }}">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker (closed)="onSearch();"></mat-date-range-picker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" (click)="picker.open()" *ngIf="sharedProp.action.filters.date">
-        <mat-label>Seleccione fecha</mat-label>
+        <mat-label>{{ 'ACTION.SELECT_DATE' | i18n }}</mat-label>
         <input matInput [(ngModel)]="sharedProp.date" [matDatepicker]="picker" (keydown)="false">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker (closed)="onSearch();"></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.flow_state">
-        <mat-label>Flujo del elemento</mat-label>
+        <mat-label>{{ 'ACTION.FLOW_STATE' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.flow_state" (selectionChange)="onSearch();">
           <div *ngFor="let currentFS of flow_states[sharedProp.element] | keyvalue">
             <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
@@ -68,7 +68,7 @@
       </mat-form-field>
       
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.modality">
-        <mat-label>Modalidad</mat-label>
+        <mat-label>{{ 'ACTION.MODALITY' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.modality" (selectionChange)="onSearch();">
           <div *ngFor="let currentModality of modalities">
             <mat-option value="{{ currentModality._id }}" (click)="setCurrentCodeValue(currentModality.code_value)">{{ currentModality.code_value }}</mat-option>
@@ -77,18 +77,18 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
-        <mat-label>Estado</mat-label>
+        <mat-label>{{ 'ACTION.STATUS' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.status" (selectionChange)="onSearch();">
-          <mat-option value="true">Activo</mat-option>
-          <mat-option value="false">Inactivo</mat-option>
+          <mat-option value="true">{{ 'ACTION.STATUS_ACTIVE' | i18n }}</mat-option>
+          <mat-option value="false">{{ 'ACTION.STATUS_INACTIVE' | i18n }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.urgency">
-        <mat-label>Urgencia</mat-label>
+        <mat-label>{{ 'ACTION.URGENCY' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.urgency" (selectionChange)="onSearch();">
-          <mat-option value="true">Urgente</mat-option>
-          <mat-option value="false">Normal</mat-option>
+          <mat-option value="true">{{ 'ACTION.URGENCY_HIGH' | i18n }}</mat-option>
+          <mat-option value="false">{{ 'ACTION.URGENCY_NORMAL' | i18n }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -98,17 +98,17 @@
           <!-- fk_user (aggregation user._id) -->
           <span *ngSwitchCase="'user._id'">
             <!-- 1: Superusuario, 2: Administrador (Non display only) -->
-            <mat-form-field appearance="outline" [class.non-display]="sharedProp.userLogged.permissions[0].role != 1 && sharedProp.userLogged.permissions[0].role != 2">
-              <mat-label>ID Usuario</mat-label>
-              <input matInput type="search" placeholder="_id de usuario" [(ngModel)]="sharedProp.fk_user" (keyup.enter)="onSearch();">
+              <mat-form-field appearance="outline" [class.non-display]="sharedProp.userLogged.permissions[0].role != 1 && sharedProp.userLogged.permissions[0].role != 2">
+              <mat-label>{{ 'ACTION.USER_ID' | i18n }}</mat-label>
+              <input matInput type="search" placeholder="{{ 'ACTION.USER_ID_PLACEHOLDER' | i18n }}" [(ngModel)]="sharedProp.fk_user" (keyup.enter)="onSearch();">
               <mat-icon matSuffix>user</mat-icon>
             </mat-form-field>
           </span>
 
           <!-- reporting users (performing) -->
           <span *ngSwitchCase="'appointment.reporting.fk_reporting._id'">
-            <button mat-flat-button color="primary" matTooltip="Mostrar solo los estudios asignados al usuario" class="button_filters" (click)="setReportingUser();">
-              <mat-icon>move_to_inbox</mat-icon>&nbsp; VER SOLO ESTUDIOS ASIGNADOS
+            <button mat-flat-button color="primary" matTooltip="{{ 'ACTION.SHOW_ASSIGNED_STUDIES_ONLY' | i18n }}" class="button_filters" (click)="setReportingUser();">
+              <mat-icon>move_to_inbox</mat-icon>&nbsp; {{ 'ACTION.SHOW_ASSIGNED_STUDIES_ONLY' | i18n }}
             </button>
           </span>
         </span>
@@ -116,7 +116,7 @@
 
       <!-- event log -->
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.log_event">
-        <mat-label>Evento</mat-label>
+        <mat-label>{{ 'ACTION.EVENT' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.log_event" (selectionChange)="onSearch();">
           <div *ngFor="let currentEvent of eventsLog | keyvalue">
             <mat-option value="{{ currentEvent.key}}">{{ currentEvent.value }}</mat-option>
@@ -126,16 +126,16 @@
 
       <!-- reset seach -->
       <button mat-flat-button color="accent" class="button_filters clean_button" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters && sharedProp.action.advanced_search === false">
-        <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+      <mat-icon>cleaning_services</mat-icon>&nbsp; {{ 'ACTION.CLEAR_SEARCH' | i18n }}
       </button>
 
       <!-- clear list selection -->
       <button mat-flat-button color="accent" class="button_filters" (click)="deleteSelectedItems()" *ngIf="this.sharedProp.selected_items.length > 0">
-        <mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN ({{ this.sharedProp.getTotalChecked() }})
+      <mat-icon>delete_forever</mat-icon>&nbsp; {{ 'ACTION.DELETE_SELECTION' | i18n }} ({{ this.sharedProp.getTotalChecked() }})
       </button>
 
       <!-- search info -->
-      <button mat-icon-button color="accent" class="button_filters" matTooltip="Ayuda para búsquedas" (click)="this.sharedFunctions.openDialog('search_info', true);">
+      <button mat-icon-button color="accent" class="button_filters" matTooltip="{{ 'ACTION.SEARCH_HELP' | i18n }}" (click)="this.sharedFunctions.openDialog('search_info', true);">
         <mat-icon>help</mat-icon>
       </button>
     </div> <!-- end fxLayout wrapper -->
@@ -148,8 +148,8 @@
     <div *ngIf="sharedProp.action.filters.pager && sharedFunctions.response.pager"> <!-- start fxLayout wrapper -->
       <div class="pager">
         <div class="pager-info divider-alt">
-          Total: {{ sharedFunctions.response.pager.total_items }} <br/>
-          Mostrados: {{ sharedFunctions.response.pager.viewed_items }} <br/>
+          {{ 'ACTION.TOTAL' | i18n }}: {{ sharedFunctions.response.pager.total_items }} <br/>
+          {{ 'ACTION.SHOWN' | i18n }}: {{ sharedFunctions.response.pager.viewed_items }} <br/>
           <hr class="dashed" />
           <div>
             <mat-icon class="pager-arrows" (click)="prevPage(sharedFunctions.response.pager);" [class.pager-disabled]="sharedFunctions.response.pager.actual_page === 1">chevron_left</mat-icon>
@@ -159,15 +159,15 @@
         </div>
 
         <div class="pager-select">
-          Página
+          {{ 'ACTION.PAGE' | i18n }}
           <mat-form-field class="pager-input" appearance="standard">
             <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.actual_page" (selectionChange)="onSearch(sharedFunctions.response.pager.actual_page);">
               <mat-option *ngFor="let currentPage of counterPages(sharedFunctions.response.pager.number_of_pages);" [value]="currentPage">{{ currentPage }}</mat-option>
             </mat-select>
           </mat-form-field>
-          de {{ sharedFunctions.response.pager.number_of_pages }}
+          {{ 'ACTION.OF' | i18n }} {{ sharedFunctions.response.pager.number_of_pages }}
           <br/>
-          Items por página:
+          {{ 'ACTION.ITEMS_PER_PAGE' | i18n }}:
           <mat-form-field class="pager-input" appearance="standard" style="margin-top: -17px;">
             <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.items_per_page" (selectionChange)="setPageLimit(sharedFunctions.response.pager.items_per_page);">
               <mat-option *ngFor="let currentSize of page_sizes" [value]="currentSize">{{ currentSize }}</mat-option>
@@ -189,62 +189,62 @@
 <div *ngIf="sharedProp.action.advanced_search" class="form-element advanced-search-panel">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h2 class="form-title text-center underline-fail-alt">Buscar palabras clave:</h2>
+          <h2 class="form-title text-center underline-fail-alt">{{ 'ACTION.KEYWORDS' | i18n }}</h2>
     
-      <h4>Anamnesis <span class="label-info">CITA</span>:</h4>
+      <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">{{ 'ACTION.REQUEST_LABEL' | i18n }}</span>:</h4>
       <mat-form-field appearance="outline" class="large">
-        <mat-label>Buscar palabra sobre anamnesis</mat-label>
-        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" placeholder="Buscar palabra sobre el contenido del anamnesis" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'ACTION.ANAMNESIS_HINT' | i18n }}</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.anamnesis" placeholder="{{ 'ACTION.ANAMNESIS_HINT' | i18n }}" (keyup.enter)="onSearch();">
       </mat-form-field>
     
       <br/><br/>
 
-      <h3 class="form-title text-center underline-ok-alt">En el contenido del <span class="label-info">INFORME</span>:</h3>
+      <h3 class="form-title text-center underline-ok-alt">{{ 'ACTION.REPORT_CONTENT' | i18n }}:</h3>
     
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
-          <h4>Dato clínico:</h4>
+          <h4>{{ 'ACTION.CLINICAL_INFO' | i18n }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en dato clínico</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.clinical_info" placeholder="Buscar palabra sobre el dato clínico" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'ACTION.CLINICAL_INFO_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.clinical_info" placeholder="{{ 'ACTION.CLINICAL_INFO_LABEL' | i18n }}" (keyup.enter)="onSearch();">
           </mat-form-field>
     
           <br/>
     
-          <h4>Hallazgos:</h4>
+          <h4>{{ 'ACTION.FINDINGS' | i18n }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en hallazgos</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_findings" placeholder="Buscar palabra sobre los hallazgos" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'ACTION.FINDINGS_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_findings" placeholder="{{ 'ACTION.FINDINGS_LABEL' | i18n }}" (keyup.enter)="onSearch();">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
     
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>Procedimiento:</h4>
+          <h4>{{ 'ACTION.PROCEDURE' | i18n }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en procedimiento</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_description" placeholder="Buscar palabra sobre el procedimiento" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'ACTION.PROCEDURE_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.procedure_description" placeholder="{{ 'ACTION.PROCEDURE_LABEL' | i18n }}" (keyup.enter)="onSearch();">
           </mat-form-field>
     
           <br/>
   
-          <h4>En suma:</h4>
+          <h4>{{ 'ACTION.SUMMARY' | i18n }}</h4>
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Palabra en el en suma</mat-label>
-            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.summary" placeholder="Buscar palabra sobre en suma" (keyup.enter)="onSearch();">
+            <mat-label>{{ 'ACTION.SUMMARY_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.summary" placeholder="{{ 'ACTION.SUMMARY_LABEL' | i18n }}" (keyup.enter)="onSearch();">
           </mat-form-field>
         </div> <!-- end fxLayout wrapper -->
       </div>
     
       <hr class="dashed"/><br/>
 
-      <h2 class="form-title text-center underline-fail-alt">Patologías del <span class="label-info">INFORME</span>:</h2>
+      <h2 class="form-title text-center underline-fail-alt">{{ 'ACTION.PATHOLOGIES_OF' | i18n }} <span class="label-info">{{ 'ACTION.REPORT' | i18n }}</span>:</h2>
   
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> Patologías:</span></span>
+          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> {{ 'ACTION.PATHOLOGIES' | i18n }}:</span></span>
           <br/>
           <mat-form-field class="full" appearance="outline">
-            <mat-label>Patologías</mat-label>
+            <mat-label>{{ 'ACTION.PATHOLOGIES' | i18n }}</mat-label>
             <input type="text" [(ngModel)]="sharedProp.pathologies_input" matInput (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
             <mat-autocomplete #autoPathologies="matAutocomplete">
               <mat-option (click)="addPathology(currentPathology)" *ngFor="let currentPathology of sharedProp.filteredPathologies" [value]="currentPathology.name">
@@ -267,7 +267,7 @@
             </small>
           </ng-template>
           <ng-template #elseBlockPathologies>
-            <div class="text-center"><span class="label-accent">Sin filtrar por patologías</span></div>
+            <div class="text-center"><span class="label-accent">{{ 'ACTION.NO_PATHOLOGIES_FILTERED' | i18n }}</span></div>
           </ng-template>
         </div> <!-- end fxLayout wrapper -->
       </div>
@@ -275,10 +275,10 @@
       <!-- Only superuser can set pathologies organization -->
       <div [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1">
         <hr class="dashed"/><br/>
-        <h4>Organización <span class="label-accent">Administradora de patologías</span>:</h4>
+        <h4>{{ 'ACTION.ORGANIZATION' | i18n }} <span class="label-accent">{{ 'ACTION.PATHOLOGIES_ADMIN_LABEL' | i18n }}</span>:</h4>
         <mat-form-field appearance="outline" class="full">
-          <mat-label>Organización</mat-label>
-          <mat-select [(ngModel)]="sharedProp.current_organization" placeholder="Seleccione la organización" (selectionChange)="onChangeOrganization($event);">
+          <mat-label>{{ 'ACTION.ORGANIZATION' | i18n }}</mat-label>
+          <mat-select [(ngModel)]="sharedProp.current_organization" placeholder="{{ 'ACTION.SELECT_ORGANIZATION' | i18n }}" (selectionChange)="onChangeOrganization($event);">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
             </div>
@@ -290,12 +290,12 @@
     </div> <!-- end fxLayout wrapper -->
     
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h2 class="form-title text-center underline-fail-alt">Médicos involucrados:</h2>
+      <h2 class="form-title text-center underline-fail-alt">{{ 'ACTION.INVOLVED_DOCTORS' | i18n }}</h2>
 
-      <h4>Médico solicitante <span class="label-info">SOLICITUD</span>:</h4>
+      <h4>{{ 'ACTION.REQUESTING_PHYSICIAN' | i18n }} <span class="label-info">{{ 'ACTION.REQUEST_LABEL' | i18n }}</span>:</h4>
       <mat-form-field appearance="outline" class="large">
-        <mat-label>Nombre/s o Apellido/s del médico solicitante</mat-label>
-        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.referring_physician" placeholder="Nombre/s o Apellido/s del médico solicitante" (keyup.enter)="onSearch();">
+        <mat-label>{{ 'ACTION.REQUESTING_PHYSICIAN_LABEL' | i18n }}</mat-label>
+        <input matInput type="text" [(ngModel)]="sharedProp.advanced_search.referring_physician" placeholder="{{ 'ACTION.REQUESTING_PHYSICIAN_LABEL' | i18n }}" (keyup.enter)="onSearch();">
       </mat-form-field>
 
       <br/><br/>
@@ -306,10 +306,10 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
           <span *ngIf="this.sharedProp.current_signer_users">
-            <h4>Firmado por:</h4>
+            <h4>{{ 'ACTION.SIGNED_BY' | i18n }}</h4>
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Usuario firmante</mat-label>
-              <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" placeholder="Seleccione el usuario firmante" (selectionChange)="onSearch();">
+              <mat-label>{{ 'ACTION.SIGNING_USER' | i18n }}</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.signing_user" placeholder="{{ 'ACTION.SELECT_SIGNING_USER' | i18n }}" (selectionChange)="onSearch();">
                 <div *ngFor="let currentSignUser of this.sharedProp.current_signer_users">
                   <mat-option *ngIf="currentSignUser.person" value="{{ currentSignUser._id }}">
                     <!--names-->
@@ -331,10 +331,10 @@
 
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           <span *ngIf="this.sharedProp.current_authenticator_users">
-            <h4>Autenticado por:</h4>
+            <h4>{{ 'ACTION.AUTHENTICATED_BY' | i18n }}</h4>
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Usuario autenticador</mat-label>
-              <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" placeholder="Seleccione el usuario autenticador" (selectionChange)="onSearch();">
+              <mat-label>{{ 'ACTION.AUTHENTICATOR_USER' | i18n }}</mat-label>
+              <mat-select [(ngModel)]="sharedProp.advanced_search.authenticator_user" placeholder="{{ 'ACTION.SELECT_AUTHENTICATOR_USER' | i18n }}" (selectionChange)="onSearch();">
                 <div *ngFor="let currentAuthUser of this.sharedProp.current_authenticator_users">
                   <mat-option *ngIf="currentAuthUser.person" value="{{ currentAuthUser._id }}">
                     <!--names-->
@@ -372,12 +372,12 @@
         
     <!-- advanced search -->
     <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
-      <mat-icon>search</mat-icon>&nbsp; BUSCAR
+      <mat-icon>search</mat-icon>&nbsp; {{ 'ACTION.SEARCH_BUTTON' | i18n }}
     </button>
     
     <!-- reset seach -->
     <button mat-flat-button color="accent" class="button_filters clean_button" (click)="advancedSearchClear()" *ngIf="sharedProp.action.filters.clear_filters">
-      <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+      <mat-icon>cleaning_services</mat-icon>&nbsp; {{ 'ACTION.CLEAN_BUTTON' | i18n }}
     </button>
     
     <div class="clear"></div>
