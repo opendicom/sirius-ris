@@ -103,7 +103,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Género:</h4>
-            <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+            <mat-radio-group color="primary" formControlName="gender">
               <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
             </mat-radio-group>
 
@@ -195,7 +195,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Estado:</h4>
-            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+            <mat-radio-group color="primary" formControlName="status">
               <mat-radio-button value="true">Activo</mat-radio-button>
               <mat-radio-button value="false">Inactivo</mat-radio-button>
             </mat-radio-group>
@@ -230,7 +230,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Se encuentra de licencia:</h4>
-            <mat-radio-group aria-label="Licencia" color="primary" formControlName="professional[vacation]">
+            <mat-radio-group color="primary" formControlName="professional[vacation]">
               <mat-radio-button value="true">Si</mat-radio-button>
               <mat-radio-button value="false">No</mat-radio-button>
             </mat-radio-group>
@@ -293,7 +293,7 @@
             <br/><hr class="dashed" /><br/>
 
             <h4>Tipo de dominio:</h4>
-            <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
+            <mat-radio-group color="primary" formControlName="domain_type">
               <mat-radio-button value ="organization" [disabled]="userService.disableRadioOrganization">Organización</mat-radio-button>
               <mat-radio-button value ="branch" [disabled]="userService.disableRadioBranch">Sucursal</mat-radio-button>
               <mat-radio-button value ="service" [disabled]="userService.disableRadioService">Servicio</mat-radio-button>

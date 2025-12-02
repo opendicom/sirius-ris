@@ -4,6 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ActivatedRoute } from '@angular/router';                                             // Activated Route Interface
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
 import { ISO_3166, regexObjectId } from '@env/environment';                                   // Enviroments
@@ -18,9 +19,9 @@ export class ListComponent implements OnInit {
   public country_codes    : any = ISO_3166;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones', 'País'];
+  private excludedColumns: string[];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('organizaciones', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('ORGANIZATIONS.LIST.SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['element_action', 'short_name', 'name', 'OID', 'country_code', 'structure_id', 'suffix', 'status'];
@@ -28,6 +29,7 @@ export class ListComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     private objRoute: ActivatedRoute,
+    private i18n: I18nService,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
   ){
@@ -36,7 +38,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de organizaciones',
+      content_title       : this.i18n.instant('ORGANIZATIONS.LIST.TITLE'),
       content_icon        : 'apartment',
       add_button          : '/organizations/form/insert/0', // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                          // Check duplicated surnames
@@ -57,6 +59,9 @@ export class ListComponent implements OnInit {
       },
       advanced_search : false
     });
+
+    //Set excluded columns:
+    this.excludedColumns = [this.i18n.instant('ORGANIZATIONS.LIST.ACTIONS'), this.i18n.instant('ORGANIZATIONS.LIST.COUNTRY')];
 
     //Set element:
     sharedProp.elementSetter('organizations');

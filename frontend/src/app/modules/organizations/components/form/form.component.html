@@ -2,42 +2,42 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Nombre corto:</h4>
+      <h4>{{ 'ORGANIZATIONS.LIST.SHORT_NAME' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>Nombre corto</mat-label>
-        <input matInput type="text" formControlName="short_name" placeholder="Ingrese el nombre corto">
+        <mat-label>{{ 'ORGANIZATIONS.LIST.SHORT_NAME' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="short_name" [placeholder]="'ORGANIZATIONS.FORM.SHORT_NAME_PLACEHOLDER' | i18n">
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'ORGANIZATIONS.LIST.NAME' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'ORGANIZATIONS.LIST.NAME' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="name" [placeholder]="'ORGANIZATIONS.FORM.NAME_PLACEHOLDER' | i18n">
       </mat-form-field>
 
-      <h4>OID:</h4>
+      <h4>{{ 'ORGANIZATIONS.LIST.OID' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>OID</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="OID" placeholder="Ingrese el OID">
+        <mat-label>{{ 'ORGANIZATIONS.LIST.OID' | i18n }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="OID" [placeholder]="'ORGANIZATIONS.FORM.OID_PLACEHOLDER' | i18n">
       </mat-form-field>
 
       <hr class="dashed" /><br/>
 
-      <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+      <h4>{{ 'ORGANIZATIONS.LIST.STATUS' | i18n }}:</h4>
+      <mat-radio-group color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'ACTION.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'ACTION.STATUS_INACTIVE' | i18n }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed" /><br/>
 
-      <h3 class="form-title underline-fail-alt">Certificado <span class="label-info">.PK12</span>:</h3>
+      <h3 class="form-title underline-fail-alt">{{ 'ORGANIZATIONS.FORM.CERTIFICATE_TITLE' | i18n }}:</h3>
 
       <!-- Start cert file -->
       <div *ngIf="selectedCertController; then thenBlockCert else elseBlockCert"></div>
 
       <ng-template #thenBlockCert>
         <button mat-flat-button type="button" color="primary">
-          <mat-icon>workspace_premium</mat-icon> CERTIFICADO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedCertFile === null" matTooltip="Eliminar certificado de la organización" class="delete-file" (click)="onDeleteFileRef('base64_cert')">close</mat-icon>
+          <mat-icon>workspace_premium</mat-icon> {{ 'ORGANIZATIONS.FORM.CERT_BUTTON_LABEL' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedCertFile === null" [matTooltip]="'ORGANIZATIONS.FORM.DELETE_CERT_TOOLTIP' | i18n" class="delete-file" (click)="onDeleteFileRef('base64_cert')">close</mat-icon>
         </button>
         
       </ng-template>
@@ -45,16 +45,16 @@
       <ng-template #elseBlockCert>
         <input type="file" (change)="onFileSelected($event, 'cert')" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>workspace_premium</mat-icon> SELECCIONAR CERTIFICADO DE LA ORGANIZACIÓN</button>
+        <mat-icon>workspace_premium</mat-icon> {{ 'ORGANIZATIONS.FORM.CERT_SELECT' | i18n }}</button>
       </ng-template>
       <!-- End cert file -->
 
       <br/><br/>
 
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Clave del certificado</mat-label>
-        <input matInput type="password" formControlName="password_cert" placeholder="Ingrese clave del certificado.">
-        <mat-hint *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].password_cert" align="start">Ya existe una clave de certificado en la base de datos, indique una solo si desea cambiarla.</mat-hint>
+        <mat-label>{{ 'ORGANIZATIONS.FORM.CERT_PASSWORD' | i18n }}</mat-label>
+        <input matInput type="password" formControlName="password_cert" [placeholder]="'ORGANIZATIONS.FORM.CERT_PASSWORD_PLACEHOLDER' | i18n">
+        <mat-hint *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].password_cert" align="start">{{ 'ORGANIZATIONS.FORM.CERT_PASSWORD_HINT' | i18n }}</mat-hint>
       </mat-form-field>
 
       <br/><br/>
@@ -62,9 +62,9 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>País de la organización:</h4>
+      <h4>{{ 'ORGANIZATIONS.FORM.COUNTRY_LABEL' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>País de la organización</mat-label>
+        <mat-label>{{ 'ORGANIZATIONS.FORM.COUNTRY_LABEL' | i18n }}</mat-label>
         <mat-select formControlName="country_code">
           <div *ngFor="let currentCode of getKeys(country_codes, true)">
             <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -72,16 +72,16 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>ID Estructura:</h4>
+      <h4>{{ 'ORGANIZATIONS.LIST.STRUCTURE_ID' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>ID Estructura</mat-label>
-        <input matInput icNumbers type="text" formControlName="structure_id" placeholder="Ingrese el ID Estructura">
+        <mat-label>{{ 'ORGANIZATIONS.LIST.STRUCTURE_ID' | i18n }}</mat-label>
+        <input matInput icNumbers type="text" formControlName="structure_id" [placeholder]="'ORGANIZATIONS.FORM.STRUCTURE_ID_PLACEHOLDER' | i18n">
       </mat-form-field>
 
-      <h4>Sufijo:</h4>
+      <h4>{{ 'ORGANIZATIONS.LIST.SUFFIX' | i18n }}:</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sufijo</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
+        <mat-label>{{ 'ORGANIZATIONS.LIST.SUFFIX' | i18n }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="suffix" [placeholder]="'ORGANIZATIONS.FORM.SUFFIX_PLACEHOLDER' | i18n">
       </mat-form-field>
 
       <br/><br/><hr class="dashed" /><br/>
@@ -91,7 +91,7 @@
 
       <ng-template #thenBlockLogo>
         <button mat-flat-button type="button" class="file-button">
-          <mat-icon>image</mat-icon> LOGO DE LA ORGANIZACIÓN <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" matTooltip="Eliminar logo de la organización" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
+          <mat-icon>image</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_BUTTON_LABEL' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" [matTooltip]="'ORGANIZATIONS.FORM.DELETE_LOGO_TOOLTIP' | i18n" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
         </button>
         
       </ng-template>
@@ -99,7 +99,7 @@
       <ng-template #elseBlockLogo>
         <input type="file" (change)="onFileSelected($event, 'logo')" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA ORGANIZACIÓN</button>
+        <mat-icon>add_photo_alternate</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_SELECT' | i18n }}</button>
       </ng-template>
       <!-- End logo file -->
 
@@ -109,8 +109,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'ACTION.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'ACTION.SAVE_BUTTON' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

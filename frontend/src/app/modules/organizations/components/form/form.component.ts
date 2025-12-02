@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ISO_3166 } from '@env/environment';                                            // Enviroment
@@ -45,6 +46,7 @@ export class FormComponent implements OnInit {
     public  formBuilder     : FormBuilder,
     private router          : Router,
     private objRoute        : ActivatedRoute,
+    private i18n            : I18nService,
     public  sharedProp      : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
   ){
@@ -56,7 +58,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de organizaciones',
+      content_title : this.i18n.instant('ORGANIZATIONS.FORM.TITLE'),
       content_icon  : 'apartment',
       add_button    : false,
       filters_form  : false,
@@ -137,7 +139,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('COMMON.ERROR_EDITING_ELEMENT') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });
@@ -215,7 +217,7 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {
       //Check result:
       if(res.success == true){
-        this.sharedFunctions.sendMessage('Archivo eliminado exitosamente', { duration : 2000 });
+        this.sharedFunctions.sendMessage(this.i18n.instant('ORGANIZATIONS.FORM.FILE_DELETED_SUCCESS'), { duration : 2000 });
 
         //Reset logo file controllers:
         switch(fieldName){

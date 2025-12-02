@@ -39,27 +39,27 @@
 
           <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
-            <button mat-icon-button color="accent" aria-label="Editar" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}/performing">
+            <button mat-icon-button color="accent" matTooltip="Editar" routerLink="/performing/form/update/{{ element._id }}/performing">
               <mat-icon>edit</mat-icon>
             </button>
           </span>
 
           <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-            <button mat-icon-button color="accent" aria-label="Logs del elemento" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+            <button mat-icon-button color="accent" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
               <mat-icon>format_list_bulleted</mat-icon>
             </button>
           </span>
 
           <br/>
 
-          <button mat-icon-button color="accent" aria-label="Archivos asociados" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
+          <button mat-icon-button color="accent" matTooltip="Archivos asociados" (click)="performingDownloads(element)">
             <mat-icon>cloud_download</mat-icon>
           </button>
 
           <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
-            <button mat-icon-button color="accent" class="smaller-icons" aria-label="Reenvío de correos" matTooltip="Reenvío de correos" (click)="mailDelivery(element)">
+            <button mat-icon-button color="accent" class="smaller-icons" matTooltip="Reenvío de correos" (click)="mailDelivery(element)">
               <mat-icon>forward_to_inbox</mat-icon>
             </button>
           </span>
@@ -76,7 +76,7 @@
             <span *ngSwitchCase="'P06'">
               <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Crear informe" aria-label="Crear informe" routerLink="/reports/form/insert/{{ element._id }}">
+                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Crear informe" routerLink="/reports/form/insert/{{ element._id }}">
                   <mat-icon>playlist_add</mat-icon>
                 </button>
               </span>
@@ -86,7 +86,7 @@
             <span *ngSwitchCase="'P07'">
               <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
+                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
                   <mat-icon>edit_note</mat-icon>
                 </button>
               </span>
@@ -100,7 +100,7 @@
             <span *ngSwitchCase="'P08'">
               <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" aria-label="Editar informe" routerLink="/reports/form/update/{{ element._id }}">
+                <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" routerLink="/reports/form/update/{{ element._id }}">
                   <mat-icon>edit_note</mat-icon>
                 </button>
               </span>

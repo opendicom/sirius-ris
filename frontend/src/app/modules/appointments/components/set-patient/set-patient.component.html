@@ -102,7 +102,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Género:</h4>
-            <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+            <mat-radio-group color="primary" formControlName="gender">
               <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
             </mat-radio-group>
 
@@ -194,7 +194,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Estado:</h4>
-            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+            <mat-radio-group color="primary" formControlName="status">
               <mat-radio-button value="true">Activo</mat-radio-button>
               <mat-radio-button value="false">Inactivo</mat-radio-button>
             </mat-radio-group>

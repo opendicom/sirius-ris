@@ -8,7 +8,8 @@
     "CANCEL": "Cancelar",
     "DELETE": "Eliminar",
     "EDIT": "Editar",
-    "SEARCH": "Buscar"
+    "SEARCH": "Buscar",
+    "ERROR_EDITING_ELEMENT": "Error al intentar editar el elemento: "
   },
   "THEME": {
     "LABEL": "Tema",
@@ -172,6 +173,64 @@
 
     "SEARCH_BUTTON": "BUSCAR",
     "CLEAN_BUTTON": "LIMPIAR BÚSQUEDA",
-    "PATHOLOGIES_ADMIN_LABEL": "Administradora de patologías"
+    "PATHOLOGIES_ADMIN_LABEL": "Administradora de patologías",
+    "SAVE_BUTTON": "GUARDAR",
+    "CANCEL_BUTTON": "CANCELAR"
+  },
+  "MODALITIES": {
+    "LIST": {
+      "TITLE": "Listado de modalidades",
+      "SHEET_NAME": "modalidades",
+      "ACTIONS": "Acciones",
+      "LOGS_TOOLTIP": "Logs del elemento",
+      "CODE_MEANING": "Significado",
+      "CODE_VALUE": "Valor",
+      "STATUS": "Estado",
+      "WAITING_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT": "EXPORTAR LISTADO"
+    },
+    "FORM": {
+      "TITLE": "Formulario de modalidades",
+      "CODE_MEANING_PLACEHOLDER": "Ingrese el significado",
+      "CODE_VALUE_PLACEHOLDER": "Ingrese el código de valor"
+    }
+  },
+  "ORGANIZATIONS": {
+    "LIST": {
+      "TITLE": "Listado de organizaciones",
+      "SHEET_NAME": "organizaciones",
+      "ACTIONS": "Acciones",
+      "EDIT_TOOLTIP": "Editar",
+      "LOGS_TOOLTIP": "Logs del elemento",
+      "SHORT_NAME": "Nombre corto",
+      "NAME": "Nombre",
+      "OID": "OID",
+      "COUNTRY": "País",
+      "STRUCTURE_ID": "ID Estructura",
+      "SUFFIX": "Sufijo",
+      "STATUS": "Estado",
+      "WAITING_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT": "EXPORTAR LISTADO"
+    },
+    "FORM": {
+      "TITLE": "Formulario de organizaciones",
+      "SHORT_NAME_PLACEHOLDER": "Ingrese el nombre corto",
+      "NAME_PLACEHOLDER": "Ingrese el nombre",
+      "OID_PLACEHOLDER": "Ingrese el OID",
+      "CERTIFICATE_TITLE": "Certificado .PK12",
+      "CERT_BUTTON_LABEL": "CERTIFICADO DE LA ORGANIZACIÓN",
+      "DELETE_CERT_TOOLTIP": "Eliminar certificado de la organización",
+      "CERT_SELECT": "SELECCIONAR CERTIFICADO DE LA ORGANIZACIÓN",
+      "CERT_PASSWORD": "Clave del certificado",
+      "CERT_PASSWORD_PLACEHOLDER": "Ingrese clave del certificado.",
+      "CERT_PASSWORD_HINT": "Ya existe una clave de certificado en la base de datos, indique una solo si desea cambiarla.",
+      "COUNTRY_LABEL": "País de la organización",
+      "STRUCTURE_ID_PLACEHOLDER": "Ingrese el ID Estructura",
+      "SUFFIX_PLACEHOLDER": "Ingrese el Sufijo",
+      "LOGO_BUTTON_LABEL": "LOGO DE LA ORGANIZACIÓN",
+      "DELETE_LOGO_TOOLTIP": "Eliminar logo de la organización",
+      "LOGO_SELECT": "SELECCIONAR LOGO DE LA ORGANIZACIÓN",
+      "FILE_DELETED_SUCCESS": "Archivo eliminado exitosamente"
+    }
   }
 }

@@ -244,7 +244,7 @@ export class FormComponent implements OnInit {
 
               //Prevent undefined error on CKEditor fields:
               if(this.reportData.findings == undefined || this.reportData.findings.length == 0 ){
-                finding_title = 'Hallázgos de ' + this.performingData.procedure.name;
+                finding_title = 'Hallazgos de ' + this.performingData.procedure.name;
                 procedure_findings = '';
               } else {
                 finding_title = this.reportData.findings[0].title;
@@ -479,7 +479,7 @@ export class FormComponent implements OnInit {
 
           //Set findings title (only insert cases):
           if(this.form_action == 'insert'){
-            this.form.controls['findings_title'].setValue('Hallázgos de ' + this.performingData.procedure.name);
+            this.form.controls['findings_title'].setValue('Hallazgos de ' + this.performingData.procedure.name);
           }
 
           //Find previous:

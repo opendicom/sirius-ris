@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, ActivatedRoute } from '@angular/router';                               // Router and Activated Route Interface (To get information about the routes)
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 //--------------------------------------------------------------------------------------------------------------------//
@@ -33,6 +34,7 @@ export class FormComponent implements OnInit {
     public formBuilder        : FormBuilder,
     private router            : Router,
     private objRoute          : ActivatedRoute,
+    private i18n              : I18nService,
     public sharedProp         : SharedPropertiesService,
     private sharedFunctions   : SharedFunctionsService
   ){
@@ -41,7 +43,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de modalidades',
+      content_title : this.i18n.instant('MODALITIES.FORM.TITLE'),
       content_icon  : 'multiple_stop',
       add_button    : false,
       filters_form  : false,
@@ -88,7 +90,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('COMMON.ERROR_EDITING_ELEMENT') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });

@@ -404,7 +404,7 @@
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                 <h4>Solicita contraste:</h4>
-                <mat-radio-group aria-label="Contraste" color="primary" formControlName="use_contrast" (change)="appointmentsService.onChangeContrast($event, form)">
+                <mat-radio-group color="primary" formControlName="use_contrast" (change)="appointmentsService.onChangeContrast($event, form)">
                   <mat-radio-button value="true">Si</mat-radio-button>
                   <mat-radio-button value="false">No</mat-radio-button>
                 </mat-radio-group>
@@ -427,7 +427,7 @@
         <hr class="dashed" /><br/>
 
         <h4>Estado:</h4>
-        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-group color="primary" formControlName="status">
           <mat-radio-button value="true">Activo</mat-radio-button>
           <mat-radio-button value="false">Inactivo</mat-radio-button>
         </mat-radio-group>
@@ -565,7 +565,7 @@
         <h3 class="form-title text-center underline-fail-alt">Hospitalización:</h3>
         <br/>
 
-        <mat-radio-group aria-label="Hospitalización" color="primary" formControlName="outpatient" (change)="appointmentsService.onChangeOutpatient($event, form)">
+        <mat-radio-group color="primary" formControlName="outpatient" (change)="appointmentsService.onChangeOutpatient($event, form)">
           <mat-radio-button value="true">Ambulatorio</mat-radio-button>
           <mat-radio-button value="false">Internado</mat-radio-button>
         </mat-radio-group>

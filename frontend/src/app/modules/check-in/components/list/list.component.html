@@ -27,14 +27,14 @@
                   <span *ngFor="let currentNested of sharedFunctions.nested_response.data">
                     <span *ngIf="element._id == currentNested.fk_appointment">
                       <!-- update performing -->
-                      <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Editar estudio" aria-label="Editar" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
+                      <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Editar estudio" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
                         <mat-icon>edit</mat-icon>
                       </button>
         
                       <!-- insert more performing as same fk_appointment -->
                       <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                       <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                        <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" aria-label="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                        <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Recepcionar otro estudio con la misma cita" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                           <mat-icon>add_location_alt</mat-icon>
                         </button>
                       </span>
@@ -68,7 +68,7 @@
                   <!-- insert first performing | Duplicated button on diferent cases -->
                   <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                   <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                    <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                    <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                       <mat-icon>location_on</mat-icon>
                     </button>
                   </span>
@@ -80,7 +80,7 @@
                 <!-- insert first performing | Duplicated button on diferent cases -->
                 <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [4: Gestión de recepciones) -->
                 <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))">
-                  <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" aria-label="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
+                  <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="Recepcionar" routerLink="/performing/form/insert/{{ element._id }}/check-in">
                     <mat-icon>location_on</mat-icon>
                   </button>
                 </span>

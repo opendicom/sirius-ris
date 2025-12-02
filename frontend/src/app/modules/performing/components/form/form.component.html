@@ -147,7 +147,7 @@
         </div>
 
         <h4>Urgencia:</h4>
-        <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
+        <mat-radio-group color="primary" formControlName="urgency">
           <mat-radio-button value="true">Si</mat-radio-button>
           <mat-radio-button value="false">No</mat-radio-button>
         </mat-radio-group>
@@ -155,7 +155,7 @@
         <div class="clear"></div><br/><hr class="dashed" /><br/>
 
         <h4>Estado:</h4>
-        <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+        <mat-radio-group color="primary" formControlName="status">
           <mat-radio-button value="true">Activo</mat-radio-button>
           <mat-radio-button value="false">Inactivo</mat-radio-button>
         </mat-radio-group>
@@ -427,7 +427,7 @@
             <div class="text-center">
               <br/>
               <h2>¿El estudio requiere anestesia?</h2>
-              <mat-radio-group aria-label="Anestesia" color="primary" formControlName="use_anesthesia" (change)="onChangeAnesthesia($event, form)">
+              <mat-radio-group color="primary" formControlName="use_anesthesia" (change)="onChangeAnesthesia($event, form)">
                 <mat-radio-button value="true">Si</mat-radio-button>
                 <mat-radio-button value="false">No</mat-radio-button>
               </mat-radio-group>

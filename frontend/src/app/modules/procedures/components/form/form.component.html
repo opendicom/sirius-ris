@@ -67,7 +67,7 @@
       <br/><br/><hr class="dashed"/><br/>
 
       <h4>Estado:</h4>
-      <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+      <mat-radio-group color="primary" formControlName="status">
         <mat-radio-button value="true">Activo</mat-radio-button>
         <mat-radio-button value="false">Inactivo</mat-radio-button>
       </mat-radio-group>
@@ -75,7 +75,7 @@
       <br/><br/><hr class="dashed"/><br/>
 
       <h4>¿El procedimiento requiere de consentimiento informado?</h4>
-      <mat-radio-group aria-label="Consentimiento informado" color="primary" formControlName="informed_consent">
+      <mat-radio-group color="primary" formControlName="informed_consent">
         <mat-radio-button value="true">Si</mat-radio-button>
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
@@ -83,7 +83,7 @@
       <br/><br/><hr class="dashed"/><br/>
 
       <h4>¿El procedimiento requiere de la realización de una entrevista?</h4>
-      <mat-radio-group aria-label="Requiere entrevista" color="primary" formControlName="has_interview">
+      <mat-radio-group color="primary" formControlName="has_interview">
         <mat-radio-button value="true">Si</mat-radio-button>
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
@@ -113,7 +113,7 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
           <h4>¿El procedimiento requiere informe?</h4>
-          <mat-radio-group aria-label="Requiere informe" color="primary" formControlName="reporting_delay_controller" (change)="onChangeEnableController($event, 'reporting_delay', '0')">
+          <mat-radio-group color="primary" formControlName="reporting_delay_controller" (change)="onChangeEnableController($event, 'reporting_delay', '0')">
             <mat-radio-button value="true">Si</mat-radio-button>
             <mat-radio-button value="false">No</mat-radio-button>
           </mat-radio-group>
@@ -136,7 +136,7 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
           <h4>¿El procedimiento requiere tiempo de reposo/espera?</h4>
-          <mat-radio-group aria-label="Requiere reposo/espera" color="primary" formControlName="wait_time_controller" (change)="onChangeEnableController($event, 'wait_time', '15')">
+          <mat-radio-group color="primary" formControlName="wait_time_controller" (change)="onChangeEnableController($event, 'wait_time', '15')">
             <mat-radio-button value="true">Si</mat-radio-button>
             <mat-radio-button value="false">No</mat-radio-button>
           </mat-radio-group>

@@ -47,7 +47,7 @@
             <hr class="dashed" /><br/>
 
             <h4>Estado:</h4>
-            <mat-radio-group aria-label="Estado" color="primary" formControlName="status">
+            <mat-radio-group color="primary" formControlName="status">
               <mat-radio-button value="true">Activo</mat-radio-button>
               <mat-radio-button value="false">Inactivo</mat-radio-button>
             </mat-radio-group>
@@ -105,7 +105,7 @@
           <br/><hr class="dashed" /><br/>
 
           <h4>Tipo de dominio:</h4>
-          <mat-radio-group aria-label="Tipo de dominio" color="primary" formControlName="domain_type">
+          <mat-radio-group color="primary" formControlName="domain_type">
             <mat-radio-button value="organization" [disabled]="userService.disableRadioOrganization">Organización</mat-radio-button>
             <mat-radio-button value="branch" [disabled]="userService.disableRadioBranch">Sucursal</mat-radio-button>
             <mat-radio-button value="service" [disabled]="userService.disableRadioService">Servicio</mat-radio-button>

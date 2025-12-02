@@ -8,7 +8,8 @@
     "CANCEL": "Cancel",
     "DELETE": "Delete",
     "EDIT": "Edit",
-    "SEARCH": "Search"
+    "SEARCH": "Search",
+    "ERROR_EDITING_ELEMENT": "Error trying to edit element: "
   },
   "THEME": {
     "LABEL": "Theme",
@@ -172,6 +173,64 @@
 
     "SEARCH_BUTTON": "SEARCH",
     "CLEAN_BUTTON": "CLEAN SEARCH",
-    "PATHOLOGIES_ADMIN_LABEL": "Pathologies administrator"
+    "PATHOLOGIES_ADMIN_LABEL": "Pathologies administrator",
+    "SAVE_BUTTON": "SAVE",
+    "CANCEL_BUTTON": "CANCEL"
+  },
+  "MODALITIES": {
+    "LIST": {
+      "TITLE": "Modalities list",
+      "SHEET_NAME": "modalities",
+      "ACTIONS": "Actions",
+      "LOGS_TOOLTIP": "Element logs",
+      "CODE_MEANING": "Meaning",
+      "CODE_VALUE": "Value",
+      "STATUS": "Status",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST"
+    },
+    "FORM": {
+      "TITLE": "Modalities form",
+      "CODE_MEANING_PLACEHOLDER": "Enter the meaning",
+      "CODE_VALUE_PLACEHOLDER": "Enter the code value"
+    }
+  },
+  "ORGANIZATIONS": {
+    "LIST": {
+      "TITLE": "Organizations list",
+      "SHEET_NAME": "organizations",
+      "ACTIONS": "Actions",
+      "EDIT_TOOLTIP": "Edit",
+      "LOGS_TOOLTIP": "Element logs",
+      "SHORT_NAME": "Short name",
+      "NAME": "Name",
+      "OID": "OID",
+      "COUNTRY": "Country",
+      "STRUCTURE_ID": "Structure ID",
+      "SUFFIX": "Suffix",
+      "STATUS": "Status",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST"
+    },
+    "FORM": {
+      "TITLE": "Organizations form",
+      "SHORT_NAME_PLACEHOLDER": "Enter the short name",
+      "NAME_PLACEHOLDER": "Enter the name",
+      "OID_PLACEHOLDER": "Enter the OID",
+      "CERTIFICATE_TITLE": "Certificate .PK12",
+      "CERT_BUTTON_LABEL": "ORGANIZATION CERTIFICATE",
+      "DELETE_CERT_TOOLTIP": "Delete organization certificate",
+      "CERT_SELECT": "SELECT ORGANIZATION CERTIFICATE",
+      "CERT_PASSWORD": "Certificate key",
+      "CERT_PASSWORD_PLACEHOLDER": "Enter certificate key.",
+      "CERT_PASSWORD_HINT": "A certificate key already exists in the database, only enter one if you want to change it.",
+      "COUNTRY_LABEL": "Organization country",
+      "STRUCTURE_ID_PLACEHOLDER": "Enter the Structure ID",
+      "SUFFIX_PLACEHOLDER": "Enter the Suffix",
+      "LOGO_BUTTON_LABEL": "ORGANIZATION LOGO",
+      "DELETE_LOGO_TOOLTIP": "Delete organization logo",
+      "LOGO_SELECT": "SELECT ORGANIZATION LOGO",
+      "FILE_DELETED_SUCCESS": "File deleted successfully"
+    }
   }
 }
