@@ -6,7 +6,7 @@
 
       <!-- log_id -->
       <ng-container matColumnDef="log_id">
-        <th mat-header-cell *matHeaderCellDef class="text-center divider"> Log ID </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center divider"> {{ 'LOGS.LIST_BY_ELEMENT.TABLE.LOG_ID' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center divider">
           <small *ngIf="element._id">{{ element._id }}</small>
         </td>
@@ -14,7 +14,7 @@
 
       <!-- datetime -->
       <ng-container matColumnDef="datetime">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center divider"> Fecha y hora</th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center divider"> {{ 'LOGS.LIST_BY_ELEMENT.TABLE.DATETIME' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center divider">
           <span *ngIf="element.datetime">{{ element.datetime | date : "dd/MM/yyyy HH:mm:ss" : "UTC" }}</span>
         </td>
@@ -22,17 +22,17 @@
 
       <!-- event -->
       <ng-container matColumnDef="event">
-        <th mat-header-cell *matHeaderCellDef class="events-col"> Evento </th>
+        <th mat-header-cell *matHeaderCellDef class="events-col"> {{ 'LOGS.LIST_BY_ELEMENT.TABLE.EVENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="events-col">
           <span *ngIf="element.event">
             <span class="event e{{ element.event }}">{{ eventsLog[element.event] }}</span>
             <span *ngIf="element.element">
-              de <strong matTooltip="{{ element.element._id }}">{{ elementTypesLang['ES'][element.element.type] }}</strong>
+              {{ 'LOGS.LIST_BY_ELEMENT.TABLE.OF' | i18n }} <strong matTooltip="{{ element.element._id }}">{{ elementTypesLang['ES'][element.element.type] }}</strong>
               <span *ngIf="element.element.details">
                 <hr class="dashed" />
                 <div [ngSwitch]="element.element.details">
-                  <span *ngSwitchCase="'amend'"><span class="event amend">Enmienda</span></span>
-                  <span *ngSwitchDefault><small>Detalles: {{ element.element.details }}</small></span>
+                  <span *ngSwitchCase="'amend'"><span class="event amend">{{ 'LOGS.LIST_BY_ELEMENT.TABLE.AMEND' | i18n }}</span></span>
+                  <span *ngSwitchDefault><small>{{ 'LOGS.LIST_BY_ELEMENT.TABLE.DETAILS' | i18n }}{{ element.element.details }}</small></span>
                 </div>
               </span>
             </span>
@@ -42,7 +42,7 @@
 
       <!-- fk_user -->
       <ng-container matColumnDef="fk_user">
-        <th mat-header-cell *matHeaderCellDef>Usuario</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'LOGS.LIST_BY_ELEMENT.TABLE.USER' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.user">
             <!--Human user-->
@@ -54,7 +54,7 @@
               <span *ngIf="element.user.person.surname_02">{{ ' ' + element.user.person.surname_02 }}</span>
             </small>
             <!--Machine user-->
-            <span *ngIf="element.user.username" matTooltip="Maquina">
+            <span *ngIf="element.user.username" matTooltip="{{ 'LOGS.LIST_BY_ELEMENT.TOOLTIPS.MACHINE' | i18n }}">
               <mat-icon class="machine-icon">smart_toy</mat-icon>&nbsp;&nbsp;<small>{{ element.user.username }}</small>
             </span>
           </span>
@@ -63,19 +63,19 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> Organización </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'LOGS.LIST_BY_ELEMENT.TABLE.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
           <ng-template #thenBlockTableOrganization>
             <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
           </ng-template>
-          <ng-template #elseBlockTableOrganization>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableOrganization>{{ 'LOGS.LIST_BY_ELEMENT.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- ip_client -->
       <ng-container matColumnDef="ip_client">
-        <th mat-header-cell *matHeaderCellDef> IP Cliente </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'LOGS.LIST_BY_ELEMENT.TABLE.IP_CLIENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <mat-chip-list>
             <mat-chip class="ip_client"><small *ngIf="element.ip_client" innerHTML="{{ element.ip_client | highlighter : sharedProp.filter }}"></small></mat-chip>
@@ -92,7 +92,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'LOGS.LIST_BY_ELEMENT.WAIT_NO_RESULTS' | i18n }}
   </div>
 </ng-template>
 
@@ -102,4 +102,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'LOGS.LIST_BY_ELEMENT.EXPORT_LIST' | i18n }}</button></div>

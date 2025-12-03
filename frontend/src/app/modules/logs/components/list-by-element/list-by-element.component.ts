@@ -12,6 +12,7 @@ import {                                                                        
   events_log, 
   elementTypesLang
 } from '@env/environment';
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -26,7 +27,7 @@ export class ListByElementComponent implements OnInit {
 
   //Table to XLSX (SheetJS CE):
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('logs', this.table) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('LOGS.LIST_BY_ELEMENT.EXCEL_SHEET_NAME'), this.table) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['log_id', 'datetime', 'event', 'fk_user', 'organization', 'ip_client'];
@@ -35,14 +36,15 @@ export class ListByElementComponent implements OnInit {
   constructor(
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de logs del elemento',
+      content_title       : this.i18n.instant('LOGS.LIST_BY_ELEMENT.TITLE'),
       content_icon        : 'format_list_bulleted',
       add_button          : false,
       duplicated_surnames : false,                          // Check duplicated surnames

@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
 import { ISO_3166, regexObjectId } from '@env/environment';                                   // Enviroments
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,9 +19,9 @@ export class ListComponent implements OnInit {
   public country_codes    : any = ISO_3166;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones', 'País'];
+  private excludedColumns = [this.i18n.instant('BRANCHES.LIST.EXCLUDED_COLUMNS_XLSX').split(',')[0], this.i18n.instant('BRANCHES.LIST.EXCLUDED_COLUMNS_XLSX').split(',')[1]];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('sucursales', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('BRANCHES.LIST.EXCEL_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['element_action', 'organization', 'short_name', 'name', 'OID', 'country_code', 'structure_id', 'suffix', 'status'];
@@ -29,14 +30,15 @@ export class ListComponent implements OnInit {
   constructor(
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de sucursales',
+      content_title       : this.i18n.instant('BRANCHES.LIST.TITLE'),
       content_icon        : 'account_tree',
       add_button          : '/branches/form/insert/0',    // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                        // Check duplicated surnames

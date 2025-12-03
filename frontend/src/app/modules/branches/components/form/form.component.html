@@ -2,37 +2,37 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Organización:</h4>
+      <h4>{{ 'BRANCHES.FORM.ORGANIZATION_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Organización</mat-label>
-        <mat-select formControlName="fk_organization" placeholder="Seleccione la organización">
+        <mat-label>{{ 'BRANCHES.FORM.ORGANIZATION_LABEL' | i18n }}</mat-label>
+        <mat-select formControlName="fk_organization" placeholder="{{ 'BRANCHES.FORM.ORGANIZATION_PLACEHOLDER' | i18n }}">
           <div *ngFor="let currentOrganization of availableOrganizations">
             <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
 
-      <h4>Nombre corto:</h4>
+      <h4>{{ 'BRANCHES.FORM.SHORT_NAME_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>Nombre corto</mat-label>
-        <input matInput type="text" formControlName="short_name" placeholder="Ingrese el nombre corto">
+        <mat-label>{{ 'BRANCHES.FORM.SHORT_NAME_LABEL' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="short_name" placeholder="{{ 'BRANCHES.FORM.SHORT_NAME_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'BRANCHES.FORM.NAME_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'BRANCHES.FORM.NAME_LABEL' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="{{ 'BRANCHES.FORM.NAME_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
-      <h4>OID:</h4>
+      <h4>{{ 'BRANCHES.FORM.OID_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>OID</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="OID" placeholder="Ingrese el OID">
+        <mat-label>{{ 'BRANCHES.FORM.OID_LABEL' | i18n }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="OID" placeholder="{{ 'BRANCHES.FORM.OID_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
-      <h4>País de la sucursal:</h4>
+      <h4>{{ 'BRANCHES.FORM.COUNTRY_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="medium">
-        <mat-label>País de la sucursal</mat-label>
+        <mat-label>{{ 'BRANCHES.FORM.COUNTRY_LABEL' | i18n }}</mat-label>
         <mat-select formControlName="country_code">
           <div *ngFor="let currentCode of getKeys(country_codes, true)">
             <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -40,23 +40,23 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>ID Estructura:</h4>
+      <h4>{{ 'BRANCHES.FORM.STRUCTURE_ID_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>ID Estructura</mat-label>
-        <input matInput icNumbers type="text" formControlName="structure_id" placeholder="Ingrese el ID Estructura">
+        <mat-label>{{ 'BRANCHES.FORM.STRUCTURE_ID_LABEL' | i18n }}</mat-label>
+        <input matInput icNumbers type="text" formControlName="structure_id" placeholder="{{ 'BRANCHES.FORM.STRUCTURE_ID_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
-      <h4>Sufijo:</h4>
+      <h4>{{ 'BRANCHES.FORM.SUFFIX_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sufijo</mat-label>
-        <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="Ingrese el Sufijo">
+        <mat-label>{{ 'BRANCHES.FORM.SUFFIX_LABEL' | i18n }}</mat-label>
+        <input matInput icNumbersWD type="text" formControlName="suffix" placeholder="{{ 'BRANCHES.FORM.SUFFIX_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
       <br/><br/>
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Pie de página de citas <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <h4>{{ 'BRANCHES.FORM.APPOINTMENT_FOOTER_H4' | i18n }} <span class="label-info">min: 10, max: 3000</span>:</h4>
       <ckeditor formControlName="appointment_footer" #appointmentFooter [editor]="appointmentFooterEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
       <br/><hr class="dashed" /><br/>
@@ -65,7 +65,7 @@
 
       <ng-template #thenBlockLogo>
         <button mat-flat-button type="button" class="logo-button">
-          <mat-icon>image</mat-icon> LOGO DE LA SUCURSAL <mat-icon *ngIf="form_action == 'update' && selectedFile === null" matTooltip="Eliminar logo de la organización" class="delete-logo" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
+          <mat-icon>image</mat-icon> {{ 'BRANCHES.FORM.BRANCH_LOGO_BUTTON' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedFile === null" matTooltip="{{ 'BRANCHES.FORM.DELETE_ORGANIZATION_LOGO_TOOLTIP' | i18n }}" class="delete-logo" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
         </button>
         
       </ng-template>
@@ -73,15 +73,15 @@
       <ng-template #elseBlockLogo>
         <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none" />
         <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
-        <mat-icon>add_photo_alternate</mat-icon> SELECCIONAR LOGO DE LA SUCURSAL</button>
+        <mat-icon>add_photo_alternate</mat-icon> {{ 'BRANCHES.FORM.SELECT_BRANCH_LOGO_BUTTON' | i18n }}</button>
       </ng-template>
 
       <div class="clear"></div><br/><hr class="dashed" /><br/>
 
-      <h4>Estado:</h4>
+      <h4>{{ 'BRANCHES.FORM.STATUS_H4' | i18n }}</h4>
       <mat-radio-group color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+        <mat-radio-button value="true">{{ 'BRANCHES.FORM.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'BRANCHES.FORM.STATUS_INACTIVE' | i18n }}</mat-radio-button>
       </mat-radio-group>
 
     </div> <!-- end fxLayout wrapper -->
@@ -90,8 +90,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'BRANCHES.FORM.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'BRANCHES.FORM.SAVE_BUTTON' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

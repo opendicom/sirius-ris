@@ -8,6 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ApiClientService } from '@shared/services/api-client.service';                 // API Client Service
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -32,7 +33,7 @@ export class BatchComponent implements OnInit {
   public maxDate: Date;
 
   //Initialize days of week arrays to checkbox:
-  public daysOfWeek: string[] = [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado' ];
+  public daysOfWeek: string[] = [ this.i18n.instant('SLOTS.BATCH.SUNDAY'), this.i18n.instant('SLOTS.BATCH.MONDAY'), this.i18n.instant('SLOTS.BATCH.TUESDAY'), this.i18n.instant('SLOTS.BATCH.WEDNESDAY'), this.i18n.instant('SLOTS.BATCH.THURSDAY'), this.i18n.instant('SLOTS.BATCH.FRIDAY'), this.i18n.instant('SLOTS.BATCH.SATURDAY') ];
   public selectedDays: boolean[] = [ false, false, false, false, false, false, false ];
 
   //Define Formgroup (Reactive form handling):
@@ -53,7 +54,8 @@ export class BatchComponent implements OnInit {
     private router: Router,
     public sharedProp: SharedPropertiesService,
     private sharedFunctions: SharedFunctionsService,
-    private apiClient: ApiClientService
+    private apiClient: ApiClientService,
+    private i18n: I18nService
   ){
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
@@ -65,7 +67,7 @@ export class BatchComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Generar lote de turnos',
+      content_title : this.i18n.instant('SLOTS.BATCH.TITLE'),
       content_icon  : 'content_copy',
       add_button    : false,
       filters_form  : false,
@@ -122,7 +124,7 @@ export class BatchComponent implements OnInit {
       this.form.controls['fk_equipment'].setValue([]);
 
       //Send message:
-      this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún equipo.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('SLOTS.BATCH.WARNING_NO_EQUIPMENT'));
     }
 
   }
@@ -203,12 +205,12 @@ export class BatchComponent implements OnInit {
                 this.sharedFunctions.sendMessage(res.error.message);
               }
             } else {
-              this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              this.sharedFunctions.sendMessage(this.i18n.instant('SLOTS.BATCH.ERROR_BACKEND_NO_RESPONSE'));
             }
           }
         });
       } else {
-        this.sharedFunctions.sendMessage('Debe seleccionar al menos un día de la semana para poder aplicar el rango de fechas.')
+        this.sharedFunctions.sendMessage(this.i18n.instant('SLOTS.BATCH.ERROR_SELECT_DAY'))
       }
     }
   }

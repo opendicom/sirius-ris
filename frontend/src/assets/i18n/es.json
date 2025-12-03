@@ -232,5 +232,273 @@
       "LOGO_SELECT": "SELECCIONAR LOGO DE LA ORGANIZACIÓN",
       "FILE_DELETED_SUCCESS": "Archivo eliminado exitosamente"
     }
+  },
+  "BRANCHES": {
+    "LIST": {
+      "TITLE": "Listado de sucursales",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "ORGANIZATION": "Organización",
+        "SHORT_NAME": "Nombre corto",
+        "NAME": "Nombre",
+        "OID": "OID",
+        "COUNTRY": "País",
+        "STRUCTURE_ID": "ID Estructura",
+        "SUFFIX": "Sufijo",
+        "STATUS": "Estado"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs del elemento"
+      },
+      "NO_DATA": "(Sin dato)",
+      "STATUS": {
+        "ACTIVE": "Activo",
+        "INACTIVE": "Inactivo"
+      },
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "sucursales",
+      "EXCLUDED_COLUMNS_XLSX": "Acciones,País"
+    },
+    "FORM": {
+      "TITLE": "Formulario de sucursales",
+      "ORGANIZATION_H4": "Organización:",
+      "ORGANIZATION_LABEL": "Organización",
+      "ORGANIZATION_PLACEHOLDER": "Seleccione la organización",
+      "SHORT_NAME_H4": "Nombre corto:",
+      "SHORT_NAME_LABEL": "Nombre corto",
+      "SHORT_NAME_PLACEHOLDER": "Ingrese el nombre corto",
+      "NAME_H4": "Nombre:",
+      "NAME_LABEL": "Nombre",
+      "NAME_PLACEHOLDER": "Ingrese el nombre",
+      "OID_H4": "OID:",
+      "OID_LABEL": "OID",
+      "OID_PLACEHOLDER": "Ingrese el OID",
+      "COUNTRY_H4": "País de la sucursal:",
+      "COUNTRY_LABEL": "País de la sucursal",
+      "STRUCTURE_ID_H4": "ID Estructura:",
+      "STRUCTURE_ID_LABEL": "ID Estructura",
+      "STRUCTURE_ID_PLACEHOLDER": "Ingrese el ID Estructura",
+      "SUFFIX_H4": "Sufijo:",
+      "SUFFIX_LABEL": "Sufijo",
+      "SUFFIX_PLACEHOLDER": "Ingrese el Sufijo",
+      "APPOINTMENT_FOOTER_H4": "Pie de página de citas",
+      "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
+      "BRANCH_LOGO_BUTTON": "LOGO DE LA SUCURSAL",
+      "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Eliminar logo de la organización",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELECCIONAR LOGO DE LA SUCURSAL",
+      "STATUS_H4": "Estado:",
+      "STATUS_ACTIVE": "Activo",
+      "STATUS_INACTIVE": "Inactivo",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "GUARDAR",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "DELETE_FILE_SUCCESS": "Archivo eliminado exitosamente"
+    }
+  },
+  "SERVICES": {
+    "LIST": {
+      "TITLE": "Listado de servicios",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "ORGANIZATION": "Organización",
+        "BRANCH": "Sucursal",
+        "NAME": "Nombre",
+        "MODALITY": "Modalidad",
+        "EQUIPMENTS": "Equipamiento",
+        "STATUS": "Estado"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs del elemento",
+        "AET": "AET: "
+      },
+      "NO_DATA": "(Sin dato)",
+      "STATUS": {
+        "ACTIVE": "Activo",
+        "INACTIVE": "Inactivo"
+      },
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "servicios",
+      "EXCLUDED_COLUMNS_XLSX": "Acciones"
+    },
+    "FORM": {
+      "TITLE": "Formulario de servicios",
+      "BRANCH_H4": "Sucursal:",
+      "BRANCH_LABEL": "Sucursal",
+      "BRANCH_PLACEHOLDER": "Seleccione la sucursal",
+      "NAME_H4": "Nombre:",
+      "NAME_LABEL": "Nombre",
+      "NAME_PLACEHOLDER": "Ingrese el nombre",
+      "EQUIPMENT_H4": "Equipamiento:",
+      "EQUIPMENT_LABEL": "Equipamiento",
+      "EQUIPMENT_PLACEHOLDER": "Seleccione el equipamiento",
+      "MODALITY_H4": "Modalidad:",
+      "MODALITY_LABEL": "Modalidad",
+      "MODALITY_PLACEHOLDER": "Seleccione la modalidad",
+      "STATUS_H4": "Estado:",
+      "STATUS_ACTIVE": "Activo",
+      "STATUS_INACTIVE": "Inactivo",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "GUARDAR",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "NODES_ALT": "nodos"
+    }
+  },
+  "SLOTS": {
+    "LIST": {
+      "TITLE": "Listado de turnos",
+      "TABLE": {
+        "SELECT_ALL_TOOLTIP": "Seleccionar todos (Página actual)",
+        "ACTIONS": "Acciones",
+        "ORGANIZATION": "Organización",
+        "BRANCH": "Sucursal",
+        "SERVICE": "Servicio",
+        "DAY": "Día",
+        "DATE": "Fecha",
+        "SCHEDULE": "Horario",
+        "SCHEDULE_TO": "a",
+        "SCHEDULE_HS": "hs",
+        "EQUIPMENT": "Equipamiento",
+        "MODALITY": "Modalidad",
+        "URGENCY": "Urgencia"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs del elemento",
+        "AET": "AET: ",
+        "URGENT": "Urgente",
+        "NORMAL": "Normal"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "turnos",
+      "EXCLUDED_COLUMNS_XLSX": "Acciones"
+    },
+    "FORM": {
+      "TITLE": "Formulario de turnos",
+      "SERVICE_H4": "Servicio:",
+      "SERVICE_LABEL": "Servicio",
+      "SERVICE_PLACEHOLDER": "Seleccione el servicio",
+      "EQUIPMENT_H4": "Equipamiento:",
+      "EQUIPMENT_LABEL": "Equipamiento",
+      "EQUIPMENT_PLACEHOLDER": "Seleccione el equipamiento",
+      "URGENCY_H4": "Urgencia:",
+      "YES": "Si",
+      "NO": "No",
+      "DATE_H4": "Fecha:",
+      "DATE_LABEL": "Seleccione fecha",
+      "DATE_HINT": "Click para selecionar una fecha ^",
+      "START_SHIFT_H4": "Inicio turno",
+      "FORMAT_24HS": "Formato 24 hs",
+      "START_LABEL": "Inicio",
+      "END_SHIFT_H4": "Fin turno",
+      "END_LABEL": "Fin",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "GUARDAR",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "WARNING_NO_EQUIPMENT": "Advertencia: El servicio seleccionado NO tiene asignado ningún equipo."
+    },
+    "BATCH": {
+      "TITLE": "Generar lote de turnos",
+      "SERVICE_H4": "Servicio:",
+      "SERVICE_LABEL": "Servicio",
+      "SERVICE_PLACEHOLDER": "Seleccione el servicio",
+      "EQUIPMENT_H4": "Equipamiento:",
+      "EQUIPMENT_LABEL": "Equipamiento",
+      "EQUIPMENT_PLACEHOLDER": "Seleccione el equipamiento",
+      "DATE_RANGE_H4": "Rango de fechas:",
+      "DATE_RANGE_LABEL": "Seleccione rango de fechas",
+      "START_DATE_PLACEHOLDER": "Fecha inicio",
+      "END_DATE_PLACEHOLDER": "Fecha fin",
+      "DAYS_OF_WEEK_H4": "Día/s de la semana:",
+      "SUNDAY": "Domingo",
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado",
+      "URGENCY_H4": "Urgencia:",
+      "YES": "Si",
+      "NO": "No",
+      "START_SHIFT_H4": "Inicio turno",
+      "FORMAT_24HS": "Formato 24 hs",
+      "START_LABEL": "Inicio",
+      "END_SHIFT_H4": "Fin turno",
+      "END_LABEL": "Fin",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "GUARDAR",
+      "WARNING_NO_EQUIPMENT": "Advertencia: El servicio seleccionado NO tiene asignado ningún equipo.",
+      "ERROR_BACKEND_NO_RESPONSE": "Error: No se obtuvo respuesta del servidor backend.",
+      "ERROR_SELECT_DAY": "Debe seleccionar al menos un día de la semana para poder aplicar el rango de fechas."
+    }
+  },
+  "FILES": {
+    "LIST": {
+      "TITLE": "Listado de archivos",
+      "TABLE": {
+        "SELECT_ALL_TOOLTIP": "Seleccionar todos (Página actual)",
+        "ACTIONS": "Acciones",
+        "ORGANIZATION": "Organización",
+        "BRANCH": "Sucursal",
+        "NAME": "Nombre",
+        "DOWNLOAD": "Descargar"
+      },
+      "TOOLTIPS": {
+        "LOGS": "Logs del elemento",
+        "DOWNLOAD": "Descargar"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "archivos",
+      "EXCLUDED_COLUMNS_XLSX": "Acciones,Descargar"
+    }
+  },
+  "LOGS": {
+    "LIST_BY_ELEMENT": {
+      "TITLE": "Listado de logs del elemento",
+      "TABLE": {
+        "LOG_ID": "Log ID",
+        "DATETIME": "Fecha y hora",
+        "EVENT": "Evento",
+        "OF": "de ",
+        "AMEND": "Enmienda",
+        "DETAILS": "Detalles: ",
+        "USER": "Usuario",
+        "MACHINE_TOOLTIP": "Maquina",
+        "ORGANIZATION": "Organización",
+        "IP_CLIENT": "IP Cliente"
+      },
+      "TOOLTIPS": {
+        "MACHINE": "Maquina"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "logs"
+    },
+    "LIST_BY_USER": {
+      "TITLE": "Listado de logs del usuario",
+      "TABLE": {
+        "LOG_ID": "Log ID",
+        "DATETIME": "Fecha y hora",
+        "EVENT": "Evento",
+        "OF": "de ",
+        "AMEND": "Enmienda",
+        "DETAILS": "Detalles: ",
+        "USER": "Usuario",
+        "ORGANIZATION": "Organización",
+        "IP_CLIENT": "IP Cliente"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "EXCEL_SHEET_NAME": "logs"
+    }
   }
 }

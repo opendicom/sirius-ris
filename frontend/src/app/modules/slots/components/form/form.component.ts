@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -49,7 +50,8 @@ export class FormComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Set min and max dates (Datepicker):
     const dateRangeLimit = this.sharedFunctions.setDateRangeLimit(new Date()); //Today
@@ -61,7 +63,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de turnos',
+      content_title : this.i18n.instant('SLOTS.FORM.TITLE'),
       content_icon  : 'date_range',
       add_button    : false,
       filters_form  : false,
@@ -128,7 +130,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('SLOTS.FORM.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });
@@ -158,7 +160,7 @@ export class FormComponent implements OnInit {
       this.form.controls['fk_equipment'].setValue([]);
 
       //Send message:
-      this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún equipo.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('SLOTS.FORM.WARNING_NO_EQUIPMENT'));
     }
 
   }

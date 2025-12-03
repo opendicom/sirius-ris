@@ -232,5 +232,273 @@
       "LOGO_SELECT": "SELECT ORGANIZATION LOGO",
       "FILE_DELETED_SUCCESS": "File deleted successfully"
     }
+  },
+  "BRANCHES": {
+    "LIST": {
+      "TITLE": "Branch list",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "SHORT_NAME": "Short name",
+        "NAME": "Name",
+        "OID": "OID",
+        "COUNTRY": "Country",
+        "STRUCTURE_ID": "Structure ID",
+        "SUFFIX": "Suffix",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element logs"
+      },
+      "NO_DATA": "(No data)",
+      "STATUS": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      },
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "branches",
+      "EXCLUDED_COLUMNS_XLSX": "Actions,Country"
+    },
+    "FORM": {
+      "TITLE": "Branch form",
+      "ORGANIZATION_H4": "Organization:",
+      "ORGANIZATION_LABEL": "Organization",
+      "ORGANIZATION_PLACEHOLDER": "Select the organization",
+      "SHORT_NAME_H4": "Short name:",
+      "SHORT_NAME_LABEL": "Short name",
+      "SHORT_NAME_PLACEHOLDER": "Enter the short name",
+      "NAME_H4": "Name:",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Enter the name",
+      "OID_H4": "OID:",
+      "OID_LABEL": "OID",
+      "OID_PLACEHOLDER": "Enter the OID",
+      "COUNTRY_H4": "Branch country:",
+      "COUNTRY_LABEL": "Branch country",
+      "STRUCTURE_ID_H4": "Structure ID:",
+      "STRUCTURE_ID_LABEL": "Structure ID",
+      "STRUCTURE_ID_PLACEHOLDER": "Enter the Structure ID",
+      "SUFFIX_H4": "Suffix:",
+      "SUFFIX_LABEL": "Suffix",
+      "SUFFIX_PLACEHOLDER": "Enter the Suffix",
+      "APPOINTMENT_FOOTER_H4": "Appointment footer",
+      "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
+      "BRANCH_LOGO_BUTTON": "BRANCH LOGO",
+      "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Delete organization logo",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELECT BRANCH LOGO",
+      "STATUS_H4": "Status:",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_INACTIVE": "Inactive",
+      "CANCEL_BUTTON": "CANCEL",
+      "SAVE_BUTTON": "SAVE",
+      "EDIT_ERROR": "Error trying to edit the element: ",
+      "DELETE_FILE_SUCCESS": "File successfully deleted"
+    }
+  },
+  "SERVICES": {
+    "LIST": {
+      "TITLE": "Services list",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "BRANCH": "Branch",
+        "NAME": "Name",
+        "MODALITY": "Modality",
+        "EQUIPMENTS": "Equipments",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element logs",
+        "AET": "AET: "
+      },
+      "NO_DATA": "(No data)",
+      "STATUS": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      },
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "services",
+      "EXCLUDED_COLUMNS_XLSX": "Actions"
+    },
+    "FORM": {
+      "TITLE": "Service form",
+      "BRANCH_H4": "Branch:",
+      "BRANCH_LABEL": "Branch",
+      "BRANCH_PLACEHOLDER": "Select the branch",
+      "NAME_H4": "Name:",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Enter the name",
+      "EQUIPMENT_H4": "Equipment:",
+      "EQUIPMENT_LABEL": "Equipment",
+      "EQUIPMENT_PLACEHOLDER": "Select the equipment",
+      "MODALITY_H4": "Modality:",
+      "MODALITY_LABEL": "Modality",
+      "MODALITY_PLACEHOLDER": "Select the modality",
+      "STATUS_H4": "Status:",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_INACTIVE": "Inactive",
+      "CANCEL_BUTTON": "CANCEL",
+      "SAVE_BUTTON": "SAVE",
+      "EDIT_ERROR": "Error trying to edit the element: ",
+      "NODES_ALT": "nodes"
+    }
+  },
+  "SLOTS": {
+    "LIST": {
+      "TITLE": "Slot list",
+      "TABLE": {
+        "SELECT_ALL_TOOLTIP": "Select all (Current page)",
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "BRANCH": "Branch",
+        "SERVICE": "Service",
+        "DAY": "Day",
+        "DATE": "Date",
+        "SCHEDULE": "Schedule",
+        "SCHEDULE_TO": "to",
+        "SCHEDULE_HS": "hs",
+        "EQUIPMENT": "Equipment",
+        "MODALITY": "Modality",
+        "URGENCY": "Urgency"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element logs",
+        "AET": "AET: ",
+        "URGENT": "Urgent",
+        "NORMAL": "Normal"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "slots",
+      "EXCLUDED_COLUMNS_XLSX": "Actions"
+    },
+    "FORM": {
+      "TITLE": "Slot form",
+      "SERVICE_H4": "Service:",
+      "SERVICE_LABEL": "Service",
+      "SERVICE_PLACEHOLDER": "Select the service",
+      "EQUIPMENT_H4": "Equipment:",
+      "EQUIPMENT_LABEL": "Equipment",
+      "EQUIPMENT_PLACEHOLDER": "Select the equipment",
+      "URGENCY_H4": "Urgency:",
+      "YES": "Yes",
+      "NO": "No",
+      "DATE_H4": "Date:",
+      "DATE_LABEL": "Select date",
+      "DATE_HINT": "Click to select a date ^",
+      "START_SHIFT_H4": "Start shift",
+      "FORMAT_24HS": "24 hs format",
+      "START_LABEL": "Start",
+      "END_SHIFT_H4": "End shift",
+      "END_LABEL": "End",
+      "CANCEL_BUTTON": "CANCEL",
+      "SAVE_BUTTON": "SAVE",
+      "EDIT_ERROR": "Error trying to edit the element: ",
+      "WARNING_NO_EQUIPMENT": "Warning: The selected service has NO assigned equipment."
+    },
+    "BATCH": {
+      "TITLE": "Generate slot batch",
+      "SERVICE_H4": "Service:",
+      "SERVICE_LABEL": "Service",
+      "SERVICE_PLACEHOLDER": "Select the service",
+      "EQUIPMENT_H4": "Equipment:",
+      "EQUIPMENT_LABEL": "Equipment",
+      "EQUIPMENT_PLACEHOLDER": "Select the equipment",
+      "DATE_RANGE_H4": "Date range:",
+      "DATE_RANGE_LABEL": "Select date range",
+      "START_DATE_PLACEHOLDER": "Start date",
+      "END_DATE_PLACEHOLDER": "End date",
+      "DAYS_OF_WEEK_H4": "Day(s) of the week:",
+      "SUNDAY": "Sunday",
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday",
+      "URGENCY_H4": "Urgency:",
+      "YES": "Yes",
+      "NO": "No",
+      "START_SHIFT_H4": "Start shift",
+      "FORMAT_24HS": "24 hs format",
+      "START_LABEL": "Start",
+      "END_SHIFT_H4": "End shift",
+      "END_LABEL": "End",
+      "CANCEL_BUTTON": "CANCEL",
+      "SAVE_BUTTON": "SAVE",
+      "WARNING_NO_EQUIPMENT": "Warning: The selected service has NO assigned equipment.",
+      "ERROR_BACKEND_NO_RESPONSE": "Error: No response from backend server.",
+      "ERROR_SELECT_DAY": "You must select at least one day of the week to apply the date range."
+    }
+  },
+  "FILES": {
+    "LIST": {
+      "TITLE": "File list",
+      "TABLE": {
+        "SELECT_ALL_TOOLTIP": "Select all (Current page)",
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "BRANCH": "Branch",
+        "NAME": "Name",
+        "DOWNLOAD": "Download"
+      },
+      "TOOLTIPS": {
+        "LOGS": "Element logs",
+        "DOWNLOAD": "Download"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "files",
+      "EXCLUDED_COLUMNS_XLSX": "Actions,Download"
+    }
+  },
+  "LOGS": {
+    "LIST_BY_ELEMENT": {
+      "TITLE": "Element log list",
+      "TABLE": {
+        "LOG_ID": "Log ID",
+        "DATETIME": "Date and time",
+        "EVENT": "Event",
+        "OF": "of ",
+        "AMEND": "Amendment",
+        "DETAILS": "Details: ",
+        "USER": "User",
+        "MACHINE_TOOLTIP": "Machine",
+        "ORGANIZATION": "Organization",
+        "IP_CLIENT": "Client IP"
+      },
+      "TOOLTIPS": {
+        "MACHINE": "Machine"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "logs"
+    },
+    "LIST_BY_USER": {
+      "TITLE": "User log list",
+      "TABLE": {
+        "LOG_ID": "Log ID",
+        "DATETIME": "Date and time",
+        "EVENT": "Event",
+        "OF": "of ",
+        "AMEND": "Amendment",
+        "DETAILS": "Details: ",
+        "USER": "User",
+        "ORGANIZATION": "Organization",
+        "IP_CLIENT": "Client IP"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "EXCEL_SHEET_NAME": "logs"
+    }
   }
 }

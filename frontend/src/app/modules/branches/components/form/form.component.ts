@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ISO_3166 } from '@env/environment';                                            // Enviroment
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -51,7 +52,8 @@ export class FormComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -61,7 +63,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de sucursales',
+      content_title : this.i18n.instant('BRANCHES.FORM.TITLE'),
       content_icon  : 'account_tree',
       add_button    : false,
       filters_form  : false,
@@ -145,7 +147,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('BRANCHES.FORM.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });
@@ -220,7 +222,7 @@ export class FormComponent implements OnInit {
     this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {
       //Check result:
       if(res.success == true){
-        this.sharedFunctions.sendMessage('Archivo eliminado exitosamente', { duration : 2000 });
+        this.sharedFunctions.sendMessage(this.i18n.instant('BRANCHES.FORM.DELETE_FILE_SUCCESS'), { duration : 2000 });
 
         //Reset logo file controllers:
         this.selectedFile = null;

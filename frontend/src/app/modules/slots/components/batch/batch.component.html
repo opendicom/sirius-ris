@@ -2,10 +2,10 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Servicio:</h4>
+      <h4>{{ 'SLOTS.BATCH.SERVICE_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Servicio</mat-label>
-        <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
+        <mat-label>{{ 'SLOTS.BATCH.SERVICE_LABEL' | i18n }}</mat-label>
+        <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="{{ 'SLOTS.BATCH.SERVICE_PLACEHOLDER' | i18n }}">
           <div *ngFor="let currentService of availableServices">
             <div *ngFor="let currentBranch of availableBranches">
               <div *ngFor="let currentOrganization of availableOrganizations">
@@ -16,10 +16,10 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Equipamiento:</h4>
+      <h4>{{ 'SLOTS.BATCH.EQUIPMENT_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Equipamiento</mat-label>
-        <mat-select formControlName="fk_equipment" placeholder="Seleccione el equipamiento">
+        <mat-label>{{ 'SLOTS.BATCH.EQUIPMENT_LABEL' | i18n }}</mat-label>
+        <mat-select formControlName="fk_equipment" placeholder="{{ 'SLOTS.BATCH.EQUIPMENT_PLACEHOLDER' | i18n }}">
           <div *ngFor="let currentEquipment of availableEquipments">
             <mat-option value="{{ currentEquipment._id }}">{{ currentEquipment.name }}</mat-option>
           </div>
@@ -28,12 +28,12 @@
 
       <hr class="dashed" /><br/>
 
-      <h4>Rango de fechas:</h4>
+      <h4>{{ 'SLOTS.BATCH.DATE_RANGE_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-label>{{ 'SLOTS.BATCH.DATE_RANGE_LABEL' | i18n }}</mat-label>
         <mat-date-range-input [rangePicker]="picker" [min]="minDate" [max]="maxDate" (click)="picker.open()">
-          <input matStartDate  formControlName="range_start" readonly placeholder="Fecha inicio">
-          <input matEndDate formControlName="range_end" readonly placeholder="Fecha fin">
+          <input matStartDate  formControlName="range_start" readonly placeholder="{{ 'SLOTS.BATCH.START_DATE_PLACEHOLDER' | i18n }}">
+          <input matEndDate formControlName="range_end" readonly placeholder="{{ 'SLOTS.BATCH.END_DATE_PLACEHOLDER' | i18n }}">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -41,7 +41,7 @@
 
       <br/><hr class="dashed" /><br/>
 
-      <h4>Día/s de la semana:</h4>
+      <h4>{{ 'SLOTS.BATCH.DAYS_OF_WEEK_H4' | i18n }}</h4>
       <div class="item-container" formArrayName="day">
         <ng-container *ngFor="let currentDay of daysOfWeek | keyvalue; let key = index">
           <mat-checkbox color="primary" (change)="onCheckDay($event, key)">{{ currentDay.value }}</mat-checkbox>
@@ -52,23 +52,23 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>Urgencia:</h4>
+      <h4>{{ 'SLOTS.BATCH.URGENCY_H4' | i18n }}</h4>
       <mat-radio-group color="primary" formControlName="urgency">
-        <mat-radio-button value="true">Si</mat-radio-button>
-        <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-button value="true">{{ 'SLOTS.BATCH.YES' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'SLOTS.BATCH.NO' | i18n }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/><hr class="dashed" /><br/>
 
-      <h4>Inicio turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <h4>{{ 'SLOTS.BATCH.START_SHIFT_H4' | i18n }} <span class="label-info">{{ 'SLOTS.BATCH.FORMAT_24HS' | i18n }}</span>:</h4>
       <mat-form-field appearance="fill">
-        <mat-label>Inicio</mat-label>
+        <mat-label>{{ 'SLOTS.BATCH.START_LABEL' | i18n }}</mat-label>
         <input type="time" matInput formControlName="start" min="00:00" max="24:00">
      </mat-form-field>
 
-      <h4>Fin turno <span class="label-info">Formato 24 hs</span>:</h4>
+      <h4>{{ 'SLOTS.BATCH.END_SHIFT_H4' | i18n }} <span class="label-info">{{ 'SLOTS.BATCH.FORMAT_24HS' | i18n }}</span>:</h4>
       <mat-form-field appearance="fill">
-        <mat-label>Fin</mat-label>
+        <mat-label>{{ 'SLOTS.BATCH.END_LABEL' | i18n }}</mat-label>
         <input type="time" matInput formControlName="end" min="00:00" max="24:00">
      </mat-form-field>
     </div> <!-- end fxLayout wrapper -->
@@ -77,8 +77,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'SLOTS.BATCH.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'SLOTS.BATCH.SAVE_BUTTON' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>
