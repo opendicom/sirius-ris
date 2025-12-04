@@ -8,6 +8,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -63,7 +64,8 @@ export class FormComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -73,7 +75,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de procedimientos',
+      content_title : this.i18n.instant('PROCEDURES.FORM.CONTENT_TITLE'),
       content_icon  : 'format_list_numbered',
       add_button    : false,
       filters_form  : false,
@@ -187,7 +189,7 @@ export class FormComponent implements OnInit {
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('PROCEDURES.FORM.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });

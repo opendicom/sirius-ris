@@ -2,10 +2,10 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Sucursal:</h4>
+      <h4>{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" placeholder="Seleccione la sucursal">
+        <mat-label>{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_PLACEHOLDER' | i18n }}</mat-label>
+        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" placeholder="{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_SELECT' | i18n }}">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentOrganization._id + '.' + currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }}</mat-option>
@@ -14,18 +14,18 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'PROCEDURE_CATEGORIES.FORM.NAME_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'PROCEDURE_CATEGORIES.FORM.NAME_PLACEHOLDER' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="{{ 'PROCEDURE_CATEGORIES.FORM.NAME_INPUT' | i18n }}">
       </mat-form-field>
 
       <br/><hr class="dashed" /><br/>
 
-      <h4>Procedimientos:</h4>
+      <h4>{{ 'PROCEDURE_CATEGORIES.FORM.PROCEDURES_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Procedimientos</mat-label>
-        <mat-select formControlName="fk_procedures" placeholder="Seleccione las modalidades" multiple>
+        <mat-label>{{ 'PROCEDURE_CATEGORIES.FORM.PROCEDURES_PLACEHOLDER' | i18n }}</mat-label>
+        <mat-select formControlName="fk_procedures" placeholder="{{ 'PROCEDURE_CATEGORIES.FORM.PROCEDURES_SELECT' | i18n }}" multiple>
           <div *ngFor="let currentProcedure of availableProcedures">
             <mat-option value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
           </div>
@@ -43,8 +43,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'PROCEDURE_CATEGORIES.FORM.CANCEL' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'PROCEDURE_CATEGORIES.FORM.SAVE' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

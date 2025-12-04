@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';       // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -42,7 +43,8 @@ export class FormComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -52,7 +54,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de categorías de procedimientos',
+      content_title : this.i18n.instant('PROCEDURE_CATEGORIES.FORM.CONTENT_TITLE'),
       content_icon  : 'category',
       add_button    : false,
       filters_form  : false,
@@ -107,7 +109,7 @@ export class FormComponent implements OnInit {
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('PROCEDURE_CATEGORIES.FORM.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });

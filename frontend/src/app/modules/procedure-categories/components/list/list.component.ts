@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { regexObjectId } from '@env/environment';                                       // Enviroments
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -19,9 +20,9 @@ export class ListComponent implements OnInit {
   public displayedColumns: string[] = ['select_element', 'element_action', 'organization', 'branch', 'name', 'procedures_count'];
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('PROCEDURE_CATEGORIES.LIST.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('categorias_de_procedimientos', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('PROCEDURE_CATEGORIES.LIST.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -30,7 +31,8 @@ export class ListComponent implements OnInit {
   constructor(
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -40,7 +42,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de categorías de procedimientos',
+      content_title       : this.i18n.instant('PROCEDURE_CATEGORIES.LIST.CONTENT_TITLE'),
       content_icon        : 'category',
       add_button          : '/procedure_categories/form/insert/0',  // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                                  // Check duplicated surnames
