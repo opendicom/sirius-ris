@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import { regexObjectId } from '@env/environment';                                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -19,22 +20,23 @@ export class ListComponent implements OnInit {
   public displayedColumns: string[] = ['element_action', 'organization', 'branch', 'name', 'serial_number', 'AET', 'modalities', 'status'];
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('EQUIPMENTS.LIST.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('equipamiento', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('EQUIPMENTS.LIST.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Inject services to the constructor:
   constructor(
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de equipamiento',
+      content_title       : this.i18n.instant('EQUIPMENTS.LIST.CONTENT_TITLE'),
       content_icon        : 'precision_manufacturing',
       add_button          : '/equipments/form/insert/0',    // Zero indicates empty :id (Activated Route) [content is ignored]
       duplicated_surnames : false,                          // Check duplicated surnames

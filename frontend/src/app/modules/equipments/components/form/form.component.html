@@ -2,10 +2,10 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>Sucursal:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.BRANCH_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Sucursal</mat-label>
-        <mat-select formControlName="fk_branch" placeholder="Seleccione la sucursal">
+        <mat-label>{{ 'EQUIPMENTS.FORM.BRANCH_PLACEHOLDER' | i18n }}</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="{{ 'EQUIPMENTS.FORM.BRANCH_SELECT' | i18n }}">
           <div *ngFor="let currentBranch of availableBranches">
             <div *ngFor="let currentOrganization of availableOrganizations">
               <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
@@ -14,38 +14,38 @@
         </mat-select>
       </mat-form-field>
 
-      <h4>Modalidades:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.MODALITIES_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Modalidades</mat-label>
-        <mat-select formControlName="fk_modalities" placeholder="Seleccione las modalidades" multiple>
+        <mat-label>{{ 'EQUIPMENTS.FORM.MODALITIES_PLACEHOLDER' | i18n }}</mat-label>
+        <mat-select formControlName="fk_modalities" placeholder="{{ 'EQUIPMENTS.FORM.MODALITIES_SELECT' | i18n }}" multiple>
           <div *ngFor="let currentModality of availableModalities">
             <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} - {{ currentModality.code_meaning }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>
 
-      <h4>Nombre:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.NAME_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Ingrese el nombre">
+        <mat-label>{{ 'EQUIPMENTS.FORM.NAME_PLACEHOLDER' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="name" placeholder="{{ 'EQUIPMENTS.FORM.NAME_INPUT' | i18n }}">
       </mat-form-field>
 
-      <h4>Número de serie:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.SERIAL_NUMBER_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Número de serie</mat-label>
-        <input matInput type="text" formControlName="serial_number" placeholder="Ingrese el número de serie">
+        <mat-label>{{ 'EQUIPMENTS.FORM.SERIAL_NUMBER_PLACEHOLDER' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="serial_number" placeholder="{{ 'EQUIPMENTS.FORM.SERIAL_NUMBER_INPUT' | i18n }}">
       </mat-form-field>
 
-      <h4>AET:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.AET_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
-        <mat-label>Application Entity Title</mat-label>
-        <input matInput type="text" formControlName="AET" placeholder="Ingrese el AET">
+        <mat-label>{{ 'EQUIPMENTS.FORM.AET_PLACEHOLDER' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="AET" placeholder="{{ 'EQUIPMENTS.FORM.AET_INPUT' | i18n }}">
       </mat-form-field>
 
-      <h4>Estado:</h4>
+      <h4>{{ 'EQUIPMENTS.FORM.STATUS_LABEL' | i18n }}</h4>
       <mat-radio-group color="primary" formControlName="status">
-        <mat-radio-button value="true">Activo</mat-radio-button>
-        <mat-radio-button value="false">Inactivo</mat-radio-button>
+        <mat-radio-button value="true">{{ 'EQUIPMENTS.FORM.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'EQUIPMENTS.FORM.STATUS_INACTIVE' | i18n }}</mat-radio-button>
       </mat-radio-group>
 
       <br/><br/>
@@ -59,8 +59,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'EQUIPMENTS.FORM.CANCEL' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'EQUIPMENTS.FORM.SAVE' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

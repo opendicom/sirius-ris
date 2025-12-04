@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
+import { I18nService } from '@shared/services/i18n.service';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -99,7 +100,8 @@ export class FormComponent implements OnInit {
     public  sharedProp      : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
     private sharedValidate  : ValidateDocumentsService,
-    public  userService     : UsersService
+    public  userService     : UsersService,
+    private i18n            : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -109,7 +111,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de usuarios',
+      content_title : this.i18n.instant('USERS.FORM.CONTENT_TITLE'),
       content_icon  : 'people',
       add_button    : false,
       filters_form  : false,
@@ -291,7 +293,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.destiny + '/list']);
           }
         });
@@ -554,7 +556,7 @@ export class FormComponent implements OnInit {
                 });
               } else {
                 //Send message, clear email input and focus on this:
-                this.sharedFunctions.sendMessage('El correo indicado NO puede utilizarse, el mismo se encuentra asociado a un usuario de tipo máquina.')
+                this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.EMAIL_IN_USE_MACHINE_ERROR'));
                 this.form.get('user.email')?.setValue('');
                 inputEmail?.focus();
               }
@@ -654,7 +656,7 @@ export class FormComponent implements OnInit {
     } else {
       this.permissionTabErrors = true;
       //Send message:
-      this.sharedFunctions.sendMessage('El usuario debe poseer al menos un permiso para poder ser guardado.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.PERMISSION_ERROR'));
     }
 
     //Check gender mat-opetion errors (mat-option validate but does not show validation error):
@@ -767,7 +769,7 @@ export class FormComponent implements OnInit {
       this.userTabErrors = true;
 
       //Send message:
-      this.sharedFunctions.sendMessage('Las contraseñas ingresadas no coinciden entre si.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.PASSWORD_MISMATCH_ERROR'));
     }
   }
 
@@ -809,8 +811,8 @@ export class FormComponent implements OnInit {
     this.validateDocument();
 
     //Set anonymized name and surname:
-    this.form.get('person.name_01')?.setValue('ANÓNIMO');
-    this.form.get('person.surname_01')?.setValue('ANÓNIMO');
+    this.form.get('person.name_01')?.setValue(this.i18n.instant('USERS.FORM.ANONYMOUS'));
+    this.form.get('person.surname_01')?.setValue(this.i18n.instant('USERS.FORM.ANONYMOUS'));
 
     //Set gender:
     this.form.get('person.gender')?.setValue('3');

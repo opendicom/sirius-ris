@@ -6,15 +6,15 @@
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.ACTIONS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" matTooltip="Editar" routerLink="/equipments/form/update/{{ element._id }}">
+          <button mat-icon-button color="accent" matTooltip="{{ 'EQUIPMENTS.LIST.EDIT' | i18n }}" routerLink="/equipments/form/update/{{ element._id }}">
             <mat-icon>edit</mat-icon>
           </button>
 
           <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-            <button mat-icon-button color="accent" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+            <button mat-icon-button color="accent" matTooltip="{{ 'EQUIPMENTS.LIST.LOGS' | i18n }}" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
               <mat-icon>format_list_bulleted</mat-icon>
             </button>
           </span>
@@ -23,31 +23,31 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> Organización </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
           <ng-template #thenBlockTableOrganization>
             <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
           </ng-template>
-          <ng-template #elseBlockTableOrganization>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableOrganization>{{ 'EQUIPMENTS.LIST.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.BRANCH' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
           <ng-template #thenBlockTableBranch>
             <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter }}"></span>
           </ng-template>
-          <ng-template #elseBlockTableBranch>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableBranch>{{ 'EQUIPMENTS.LIST.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- name -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.NAME' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span class="badge-accent" *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -55,7 +55,7 @@
 
       <!-- serial_number -->
       <ng-container matColumnDef="serial_number">
-        <th mat-header-cell *matHeaderCellDef> S/N </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.SERIAL_NUMBER' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.serial_number" innerHTML="{{ element.serial_number | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -63,7 +63,7 @@
 
       <!-- AET -->
       <ng-container matColumnDef="AET">
-        <th mat-header-cell *matHeaderCellDef> AET </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.AET' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.AET" innerHTML="{{ element.AET | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -71,7 +71,7 @@
 
       <!-- modalities -->
       <ng-container matColumnDef="modalities">
-        <th mat-header-cell *matHeaderCellDef> Modalidades </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.MODALITIES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.modalities; then thenBlockTableModalities else elseBlockTableModalities"></span>
           <ng-template #thenBlockTableModalities>
@@ -79,17 +79,17 @@
               <span class="badge" matTooltip="{{ current.code_meaning }}">{{ current.code_value }}</span>
             </div>
           </ng-template>
-          <ng-template #elseBlockTableModalities>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableModalities>{{ 'EQUIPMENTS.LIST.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- status -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.STATUS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <div *ngIf="element.status; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+          <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'EQUIPMENTS.LIST.ACTIVE' | i18n }}">done</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'EQUIPMENTS.LIST.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
         </td>
       </ng-container>
 
@@ -102,7 +102,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'EQUIPMENTS.LIST.AWAIT_RESULTS' | i18n }}
   </div>
 </ng-template>
 
@@ -112,4 +112,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'EQUIPMENTS.LIST.EXPORT' | i18n }}</button></div>

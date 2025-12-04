@@ -6,28 +6,28 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">person</mat-icon>
-        Persona &nbsp;
+        {{ 'USERS.FORM.PERSON_TAB.TITLE' | i18n }} &nbsp;
         <span *ngIf="personOperation">
           <div [ngSwitch]="personOperation">
-            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
-            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.INSERT_TOOLTIP' | i18n }}" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.UPDATE_TOOLTIP' | i18n }}" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
-        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon *ngIf="personTabErrors" class="validate-error-tab" matTooltip="{{ 'USERS.FORM.PERSON_TAB.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="person">
         <h2 class="form-title text-center underline-fail-alt">
-          Datos de la persona:
-          <mat-icon class="label-light label-tab anonymize-button" (click)="anonymizeUser()" matTooltip="Anonimizar usuario">person_off</mat-icon>
+          {{ 'USERS.FORM.PERSON_TAB.SUBTITLE' | i18n }}
+          <mat-icon class="label-light label-tab anonymize-button" (click)="anonymizeUser()" matTooltip="{{ 'USERS.FORM.PERSON_TAB.ANONYMIZE_TOOLTIP' | i18n }}">person_off</mat-icon>
         </h2>
         
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
             <div class="documents">
-              <h4>Documentos:</h4>
+              <h4>{{ 'USERS.FORM.PERSON_TAB.DOCUMENTS_TITLE' | i18n }}</h4>
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>País del documento</mat-label>
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
                 <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentCode of getKeys(country_codes, true)">
                     <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -38,7 +38,7 @@
               <br/>
 
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>Tipo de documento</mat-label>
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
                 <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
                     <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
@@ -49,14 +49,14 @@
               <br/>
 
               <mat-form-field appearance="fill" class="medium document_inputs">
-                <mat-label>Documento</mat-label>
-                <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (blur)="onSetDocument()" (keyup)="validateDocument()">
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}" (blur)="onSetDocument()" (keyup)="validateDocument()">
               </mat-form-field>
             </div>
 
 
             <div *ngIf="getKeys(documents).length > 0" class="documents-info text-right">
-              <small>Documento/s persona:</small><br/>
+              <small>{{ 'USERS.FORM.PERSON_TAB.PERSON_DOCUMENTS' | i18n }}</small><br/>
               <span *ngFor="let currentDoc of documents" >
                 <span matTooltip="{{ country_codes[currentDoc.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[currentDoc.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                 <span matTooltip="{{ document_types[currentDoc.doc_type] }}">
@@ -68,41 +68,41 @@
 
             <div *ngIf="this.registered_doc_type === true" class="validate-info text-right">
               <div *ngIf="this.validation_result; then thenBlock else elseBlock"></div>
-              <ng-template #thenBlock><span class="label-accent" matTooltip="El documento ingresado cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
-              <ng-template #elseBlock><span class="label-accent" matTooltip="El documento ingresado NO cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
+              <ng-template #thenBlock><span class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_OK' | i18n }}">{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }}<mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
+              <ng-template #elseBlock><span class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_FAIL' | i18n }}">{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }}<mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
             </div>
 
             <div class="clear"></div>
 
             <hr class="dashed" /><br/>
 
-            <h4>Nombres:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.NAMES_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Primer nombre</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.NAME1_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="{{ 'USERS.FORM.PERSON_TAB.NAME1_INPUT' | i18n }}">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Segundo nombre</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.NAME2_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="{{ 'USERS.FORM.PERSON_TAB.NAME2_INPUT' | i18n }}">
             </mat-form-field>
 
             <br/>
 
-            <h4>Apellidos:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.SURNAMES_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Primer apellido</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.SURNAME1_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="{{ 'USERS.FORM.PERSON_TAB.SURNAME1_INPUT' | i18n }}">
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Segundo apellido</mat-label>
-              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.SURNAME2_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="{{ 'USERS.FORM.PERSON_TAB.SURNAME2_INPUT' | i18n }}">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Género:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="gender">
               <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
             </mat-radio-group>
@@ -113,33 +113,33 @@
 
           <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
-            <h4>Fecha de nacimiento:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.BIRTH_DATE_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
-              <mat-label>Seleccione fecha</mat-label>
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.BIRTH_DATE_PLACEHOLDER' | i18n }}</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="birth_date" (keydown)="false">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+              <mat-hint align="end">{{ 'USERS.FORM.PERSON_TAB.BIRTH_DATE_HINT' | i18n }}</mat-hint>
             </mat-form-field>
 
             <br/><br/><hr class="dashed" /><br/>
 
-            <h4>Teléfono de contacto:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.PHONE_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Número de teléfono</mat-label>
-              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.PHONE_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="{{ 'USERS.FORM.PERSON_TAB.PHONE_INPUT' | i18n }}">
               <mat-icon matSuffix>phone</mat-icon>
-              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+              <mat-hint align="start">{{ 'USERS.FORM.PERSON_TAB.PHONE_HINT' | i18n }}</mat-hint>
             </mat-form-field>
 
             <br/><br/>
 
-            <h4>Contacto alternativo:</h4>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.ALT_PHONE_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Número de teléfono</mat-label>
-              <input matInput icNumbers type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.PHONE_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="phone_numbers[1]" placeholder="{{ 'USERS.FORM.PERSON_TAB.ALT_PHONE_INPUT' | i18n }}">
               <mat-icon matSuffix>phone</mat-icon>
-              <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+              <mat-hint align="start">{{ 'USERS.FORM.PERSON_TAB.PHONE_HINT' | i18n }}</mat-hint>
             </mat-form-field>
 
           </div> <!-- end fxLayout wrapper -->
@@ -153,51 +153,51 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">account_circle</mat-icon>
-        Usuario &nbsp;
+        {{ 'USERS.FORM.USER_TAB.TITLE' | i18n }} &nbsp;
         <span *ngIf="userOperation">
           <div [ngSwitch]="userOperation">
-            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
-            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.INSERT_TOOLTIP' | i18n }}" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.UPDATE_TOOLTIP' | i18n }}" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
-        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon *ngIf="userTabErrors" class="validate-error-tab" matTooltip="{{ 'USERS.FORM.PERSON_TAB.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
       </ng-template>
 
       <div formGroupName="user">
-        <h2 class="form-title text-center underline-fail-alt">Datos del usuario:</h2>
+        <h2 class="form-title text-center underline-fail-alt">{{ 'USERS.FORM.USER_TAB.SUBTITLE' | i18n }}</h2>
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
 
-            <h4>Correo electrónico:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.EMAIL_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>E-mail</mat-label>
-              <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="Ej: nombre@casilla.com" (change)="onSetEmail()">
-              <mat-icon matSuffix (click)="setDefaultEmail()" matTooltip="Establecer correo por defecto">mail</mat-icon>
+              <mat-label>{{ 'USERS.FORM.USER_TAB.EMAIL_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="{{ 'USERS.FORM.USER_TAB.EMAIL_INPUT' | i18n }}" (change)="onSetEmail()">
+              <mat-icon matSuffix (click)="setDefaultEmail()" matTooltip="{{ 'USERS.FORM.USER_TAB.DEFAULT_EMAIL_TOOLTIP' | i18n }}">mail</mat-icon>
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Clave del usuario <span *ngIf="userOperation == 'update'" class="label-info">Vacío sino desea modificar</span>:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.PASSWORD_TITLE' | i18n }} <span *ngIf="userOperation == 'update'" class="label-info">{{ 'USERS.FORM.USER_TAB.PASSWORD_HINT_UPDATE' | i18n }}</span>:</h4>
 
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Contraseña</mat-label>
-              <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña, mínimo 8 caracteres">
-              <mat-hint align="start">Largo mínimo: 8 caracteres</mat-hint>
+              <mat-label>{{ 'USERS.FORM.USER_TAB.PASSWORD_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="password" formControlName="password" placeholder="{{ 'USERS.FORM.USER_TAB.PASSWORD_INPUT' | i18n }}">
+              <mat-hint align="start">{{ 'USERS.FORM.USER_TAB.PASSWORD_HINT' | i18n }}</mat-hint>
             </mat-form-field>
 
             <br/><br/>
 
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Reitere la contraseña</mat-label>
-              <input matInput type="password" formControlName="password_repeat" placeholder="Reitere la contraseña">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.PASSWORD_REPEAT_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="password" formControlName="password_repeat" placeholder="{{ 'USERS.FORM.USER_TAB.PASSWORD_REPEAT_PLACEHOLDER' | i18n }}">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Estado:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.STATUS_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="status">
-              <mat-radio-button value="true">Activo</mat-radio-button>
-              <mat-radio-button value="false">Inactivo</mat-radio-button>
+              <mat-radio-button value="true">{{ 'USERS.FORM.USER_TAB.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+              <mat-radio-button value="false">{{ 'USERS.FORM.USER_TAB.STATUS_INACTIVE' | i18n }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>
@@ -206,33 +206,33 @@
 
           <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
-            <h4>Datos del profesional:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.PROFESSIONAL_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Nº de profesional</mat-label>
-              <input matInput type="text" formControlName="professional[id]" placeholder="Ingrese el número de profesional">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.PROFESSIONAL_ID_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="professional[id]" placeholder="{{ 'USERS.FORM.USER_TAB.PROFESSIONAL_ID_INPUT' | i18n }}">
             </mat-form-field>
 
             <br/>
 
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Descripción</mat-label>
-              <input matInput type="text" formControlName="professional[description]" placeholder="Ingrese una descripción del profesional">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.PROFESSIONAL_DESC_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="professional[description]" placeholder="{{ 'USERS.FORM.USER_TAB.PROFESSIONAL_DESC_INPUT' | i18n }}">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Carga horaria <span class="label-info">Semanal en horas</span>:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.WORKLOAD_TITLE' | i18n }} <span class="label-info">{{ 'USERS.FORM.USER_TAB.WORKLOAD_HINT' | i18n }}</span>:</h4>
             <mat-form-field appearance="fill">
-              <mat-label>Carga horaria</mat-label>
-              <input matInput icNumbers type="text" formControlName="professional[workload]" placeholder="Ingrese carga horaria del profesional">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.WORKLOAD_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="professional[workload]" placeholder="{{ 'USERS.FORM.USER_TAB.WORKLOAD_INPUT' | i18n }}">
             </mat-form-field>
 
             <hr class="dashed" /><br/>
 
-            <h4>Se encuentra de licencia:</h4>
+            <h4>{{ 'USERS.FORM.USER_TAB.ON_LEAVE_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="professional[vacation]">
-              <mat-radio-button value="true">Si</mat-radio-button>
-              <mat-radio-button value="false">No</mat-radio-button>
+              <mat-radio-button value="true">{{ 'USERS.FORM.USER_TAB.ON_LEAVE_YES' | i18n }}</mat-radio-button>
+              <mat-radio-button value="false">{{ 'USERS.FORM.USER_TAB.ON_LEAVE_NO' | i18n }}</mat-radio-button>
             </mat-radio-group>
 
             <br><br/>
@@ -249,32 +249,32 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">admin_panel_settings</mat-icon>
-        Permisos &nbsp;
+        {{ 'USERS.FORM.PERMISSIONS_TAB.TITLE' | i18n }} &nbsp;
         <span *ngIf="userOperation">
           <div [ngSwitch]="userOperation">
-            <mat-icon *ngSwitchCase="'insert'" matTooltip="Insersión de nuevo registro" class="label-alt label-tab">add</mat-icon>
-            <mat-icon *ngSwitchCase="'update'" matTooltip="Actualización de registro existente" class="label-info label-tab">edit</mat-icon>
+            <mat-icon *ngSwitchCase="'insert'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.INSERT_TOOLTIP' | i18n }}" class="label-alt label-tab">add</mat-icon>
+            <mat-icon *ngSwitchCase="'update'" matTooltip="{{ 'USERS.FORM.PERSON_TAB.UPDATE_TOOLTIP' | i18n }}" class="label-info label-tab">edit</mat-icon>
           </div>
         </span>
-        <mat-icon *ngIf="permissionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon *ngIf="permissionTabErrors" class="validate-error-tab" matTooltip="{{ 'USERS.FORM.PERSON_TAB.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
       </ng-template>
 
       <!-- 1: Superusuario, 2: Administrador -->
       <!-- Only superusers and administrators can set permissions -->
       <div class="permission-denied" [class.non-display]="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2">
         <mat-icon>gpp_maybe</mat-icon><br/><br/>
-        Solo los administradores del sistema pueden establecer los permisos de los usuarios.<br/>
-        Si necesita realizar cambios de accesos, por favor comuníquese con su administrador.
+        {{ 'USERS.FORM.PERMISSIONS_TAB.ADMIN_ONLY_MSG1' | i18n }}<br/>
+        {{ 'USERS.FORM.PERMISSIONS_TAB.ADMIN_ONLY_MSG2' | i18n }}
       </div>
 
       <span [class.non-display]="sharedProp.userLogged.permissions[0].role !== 1 && sharedProp.userLogged.permissions[0].role !== 2">
-        <h2 class="form-title text-center underline-fail-alt">Permisos del usuario:</h2>
+        <h2 class="form-title text-center underline-fail-alt">{{ 'USERS.FORM.PERMISSIONS_TAB.SUBTITLE' | i18n }}</h2>
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
 
-            <h4>Rol:</h4>
+            <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.ROLE_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="medium">
-              <mat-label>Rol</mat-label>
+              <mat-label>{{ 'USERS.FORM.PERMISSIONS_TAB.ROLE_PLACEHOLDER' | i18n }}</mat-label>
               <mat-select formControlName="role" (selectionChange)="userService.onSetRole($event, form)">
                 <div *ngFor="let currentRole of userRoles | keyvalue">
                   <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
@@ -292,11 +292,11 @@
 
             <br/><hr class="dashed" /><br/>
 
-            <h4>Tipo de dominio:</h4>
+            <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TYPE_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="domain_type">
-              <mat-radio-button value ="organization" [disabled]="userService.disableRadioOrganization">Organización</mat-radio-button>
-              <mat-radio-button value ="branch" [disabled]="userService.disableRadioBranch">Sucursal</mat-radio-button>
-              <mat-radio-button value ="service" [disabled]="userService.disableRadioService">Servicio</mat-radio-button>
+              <mat-radio-button value ="organization" [disabled]="userService.disableRadioOrganization">{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TYPE_ORG' | i18n }}</mat-radio-button>
+              <mat-radio-button value ="branch" [disabled]="userService.disableRadioBranch">{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TYPE_BRANCH' | i18n }}</mat-radio-button>
+              <mat-radio-button value ="service" [disabled]="userService.disableRadioService">{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TYPE_SERVICE' | i18n }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>
@@ -304,10 +304,10 @@
             <div [ngSwitch]="form.value.domain_type">
               <!--ORGANIZATION-->
               <span *ngSwitchCase="'organization'">
-                <h4>Dominio:</h4>
+                <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
                 <mat-form-field appearance="fill" class="large">
-                  <mat-label>Dominio</mat-label>
-                  <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <mat-label>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
+                  <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
                     <div *ngFor="let currentOrganization of availableOrganizations">
                       <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
                     </div>
@@ -317,10 +317,10 @@
 
               <!--BRANCH-->
               <span *ngSwitchCase="'branch'">
-                <h4>Dominio:</h4>
+                <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
                 <mat-form-field appearance="fill" class="large">
-                  <mat-label>Dominio</mat-label>
-                  <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <mat-label>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
+                  <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
                     <div *ngFor="let currentBranch of availableBranches">
                       <div *ngFor="let currentOrganization of availableOrganizations">
                         <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
@@ -332,10 +332,10 @@
 
               <!--SERVICE-->
               <span *ngSwitchCase="'service'">
-                <h4>Dominio:</h4>
+                <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
                 <mat-form-field appearance="fill" class="large">
-                  <mat-label>Dominio</mat-label>
-                  <mat-select formControlName="domain" placeholder="Seleccione el dominio">
+                  <mat-label>{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
+                  <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
                     <div *ngFor="let currentService of availableServices">
                       <div *ngFor="let currentBranch of availableBranches">
                         <div *ngFor="let currentOrganization of availableOrganizations">
@@ -350,7 +350,7 @@
 
             <hr class="dashed" /><br/>
 
-            <h4>Concesiones particulares:</h4>
+            <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.CONCESSIONS_TITLE' | i18n }}</h4>
             <div fxLayout="row" fxLayoutAlign="start start" class="item-container" formArrayName="concessions">
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                 <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue: unsorted; ; let i = index;">
@@ -372,7 +372,7 @@
             <br/><hr class="dashed" /><br/>
 
             <div class="text-right">
-              <button mat-flat-button type="button" color="accent" (click)="userService.addPermission(form, permissions, selectedConcession)"><mat-icon>add</mat-icon> AÑADIR PERMISO</button>
+              <button mat-flat-button type="button" color="accent" (click)="userService.addPermission(form, permissions, selectedConcession)"><mat-icon>add</mat-icon> {{ 'USERS.FORM.PERMISSIONS_TAB.ADD_PERMISSION_BUTTON' | i18n }}</button>
             </div>
 
             <br/>
@@ -383,7 +383,7 @@
             <div *ngIf="getKeys(permissions).length > 0; then thenBlockPermissions else elseBlockPermissions"></div>
 
             <ng-template #thenBlockPermissions>
-              <h4>Permisos asignados al usuario:</h4>
+              <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.ASSIGNED_PERMISSIONS_TITLE' | i18n }}</h4>
 
               <div  class="permission-container">
                 <ng-container *ngFor="let currentPermission of permissions; let permissionIndex = index;">
@@ -394,11 +394,11 @@
                         <div *ngIf="currentOrganization._id == currentPermission.organization" class="permission-table">
                           <div class="permission-header">
                             <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                            <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                            <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                             <div class="clear"></div>
                           </div>
-                          <div><strong>Organización:</strong> {{ currentOrganization.short_name }} ({{ currentOrganization.name }})</div>
-                          <div><strong>Conceciones: </strong>
+                          <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.ORGANIZATION' | i18n }}</strong> {{ currentOrganization.short_name }} ({{ currentOrganization.name }})</div>
+                          <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.CONCESSIONS' | i18n }}</strong>
                             <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0 then thenBlockConcession else elseBlockConcession"></div>
 
                             <ng-template #thenBlockConcession>
@@ -407,7 +407,7 @@
                               </ng-container>
                             </ng-template>
 
-                            <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                            <ng-template #elseBlockConcession>{{ 'USERS.FORM.PERMISSIONS_TAB.NO_CONCESSIONS' | i18n }}</ng-template>
                           </div>
                         </div>
                       </div>
@@ -420,11 +420,11 @@
                           <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentBranch._id == currentPermission['branch']" class="permission-table">
                             <div class="permission-header">
                               <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                              <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                              <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                               <div class="clear"></div>
                             </div>
-                            <div><strong>Sucursal:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</div>
-                            <div><strong>Conceciones: </strong>
+                            <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.BRANCH' | i18n }}</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</div>
+                            <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.CONCESSIONS' | i18n }}</strong>
                               <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0; then thenBlockConcession else elseBlockConcession"></div>
 
                               <ng-template #thenBlockConcession>
@@ -433,7 +433,7 @@
                                 </ng-container>
                               </ng-template>
 
-                              <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                              <ng-template #elseBlockConcession>{{ 'USERS.FORM.PERMISSIONS_TAB.NO_CONCESSIONS' | i18n }}</ng-template>
                             </div>
                           </div>
                         </div>
@@ -448,11 +448,11 @@
                             <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id && currentService._id == currentPermission['service']" class="permission-table">
                               <div class="permission-header">
                                 <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
-                                <div class="permission-button"><mat-icon matTooltip="Quitar éste permiso" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
+                                <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                                 <div class="clear"></div>
                               </div>
-                              <div><strong>Servicio:</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</div>
-                              <div><strong>Conceciones: </strong>
+                              <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.SERVICE' | i18n }}</strong> {{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</div>
+                              <div><strong>{{ 'USERS.FORM.PERMISSIONS_TAB.CONCESSIONS' | i18n }}</strong>
                                 <div *ngIf="currentPermission.concession && currentPermission.concession.length > 0; then thenBlockConcession else elseBlockConcession"></div>
 
                                 <ng-template #thenBlockConcession>
@@ -461,7 +461,7 @@
                                   </ng-container>
                                 </ng-template>
 
-                                <ng-template #elseBlockConcession>Sin concesiones.</ng-template>
+                                <ng-template #elseBlockConcession>{{ 'USERS.FORM.PERMISSIONS_TAB.NO_CONCESSIONS' | i18n }}</ng-template>
                               </div>
                             </div>
                           </div>
@@ -473,14 +473,14 @@
             </ng-template>
 
             <ng-template #elseBlockPermissions>
-              <br/><span class="label-accent">El usuario no posee permisos asignados</span>
+              <br/><span class="label-accent">{{ 'USERS.FORM.PERMISSIONS_TAB.NO_PERMISSIONS' | i18n }}</span>
             </ng-template>
 
             <br/><br/>
 
             <div class="permission-card">
               <mat-icon>info</mat-icon>&nbsp;
-              <span>Para que se apliquen los cambios realizados sobre los permisos es necesario guardar el formulario.</span>
+              <span>{{ 'USERS.FORM.PERMISSIONS_TAB.SAVE_FORM_INFO' | i18n }}</span>
             </div>
 
           </div> <!-- end fxLayout wrapper -->
@@ -493,8 +493,8 @@
 
   <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
     <div> <!-- start fxLayout wrapper -->
-      <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">GUARDAR</button>
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'USERS.FORM.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">{{ 'USERS.FORM.SAVE_BUTTON' | i18n }}</button>
     </div> <!-- end fxLayout wrapper -->
   </div>
 </form>

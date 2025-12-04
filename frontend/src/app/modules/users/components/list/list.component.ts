@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                           // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   ISO_3166, 
   user_roles, 
@@ -28,9 +29,9 @@ export class ListComponent implements OnInit {
   public user_roles     : any = user_roles;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('USERS.LIST.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('usuarios', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('USERS.LIST.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   displayedColumns: string[] = [
@@ -51,14 +52,15 @@ export class ListComponent implements OnInit {
   constructor(
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de usuarios',
+      content_title       : this.i18n.instant('USERS.LIST.CONTENT_TITLE'),
       content_icon        : 'people',
       add_button          : '/users/form/insert/0',           // Zero indicates empty :id (Activated Route) [content is ignored]
       add_machine         : '/users/form_machine/insert/0',   // Zero indicates empty :id (Activated Route) [content is ignored]

@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                          // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { user_roles, user_concessions } from '@env/environment';                              // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
@@ -68,7 +69,8 @@ export class FormMachineComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public  sharedProp      : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
-    public  userService     : UsersService
+    public  userService     : UsersService,
+    private i18n            : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -78,7 +80,7 @@ export class FormMachineComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de usuarios máquina',
+      content_title : this.i18n.instant('USERS.FORM_MACHINE.CONTENT_TITLE'),
       content_icon  : 'smart_toy',
       add_button    : false,
       filters_form  : false,
@@ -153,7 +155,7 @@ export class FormMachineComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM_MACHINE.EDIT_ERROR') + res.message);
             this.router.navigate(['/' + this.sharedProp.element + '/list']);
           }
         });
@@ -250,7 +252,7 @@ export class FormMachineComponent implements OnInit {
     } else {
       this.permissionTabErrors = true;
       //Send message:
-      this.sharedFunctions.sendMessage('El usuario debe poseer al menos un permiso para poder ser guardado.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM_MACHINE.PERMISSION_ERROR'));
     }
 
     //Check that the entered passwords are the same:
@@ -284,7 +286,7 @@ export class FormMachineComponent implements OnInit {
       this.userTabErrors = true;
 
       //Send message:
-      this.sharedFunctions.sendMessage('Las contraseñas ingresadas no coinciden entre si.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM_MACHINE.PASSWORD_MISMATCH_ERROR'));
     }
   }
 
