@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
@@ -53,6 +54,7 @@ export class SlotsAppointmentsComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
+    private i18n: I18nService,
     public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService
@@ -65,7 +67,7 @@ export class SlotsAppointmentsComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title   : 'Calendario de turnos y citas',
+      content_title   : this.i18n.instant('CALENDAR.TITLE'),
       content_icon    : 'calendar_month',
       add_button      : false,
       filters_form    : false
@@ -119,33 +121,33 @@ export class SlotsAppointmentsComponent implements OnInit {
     //Set FullCalendar Custom Buttons methods:
     this.calendarOptions['customButtons'] = {
       datepicker: {
-        text: 'BUSCAR FECHA',
+        text: this.i18n.instant('CALENDAR.SEARCH_DATE'),
         click: () => {
           this.openDatePicker();
         }
       },
       normal_slots: {
-        text: 'TURNOS COMÚNES',
+        text: this.i18n.instant('CALENDAR.COMMON_SLOTS'),
         click: () => {
           //Find slots:
           this.findSlots();
         }
       },
       urgency_slots: {
-        text: 'TURNOS URGENTES',
+        text: this.i18n.instant('CALENDAR.URGENCY_SLOTS'),
         click: () => {
           //Find slots (urgency true):
           this.findSlots(true);
         }
       },
       view_day: {
-        text: 'DÍA',
+        text: this.i18n.instant('CALENDAR.DAY'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridDay');
         }
       },
       view_week: {
-        text: 'SEMANA',
+        text: this.i18n.instant('CALENDAR.WEEK'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridWeek');
         }
@@ -441,7 +443,7 @@ export class SlotsAppointmentsComponent implements OnInit {
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
                   resourceId: res.data[key].slot.equipment._id,
-                  title: res.data[key].procedure.name + ' [Coordinación en curso]',
+                  title: res.data[key].procedure.name + ' ' + this.i18n.instant('CALENDAR.COORDINATION_IN_PROGRESS'),
                   start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,

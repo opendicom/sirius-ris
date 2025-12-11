@@ -1182,5 +1182,59 @@
       "CONTENT_TITLE": "Procedure categories form",
       "EDIT_ERROR": "Error trying to edit the element: "
     }
+  },
+  "CALENDAR": {
+    "TITLE": "Appointments and shifts calendar",
+    "SELECT_SERVICE_TO_START": "You must select a service to start.",
+    "SERVICE": "Service",
+    "SELECT_SERVICE": "Select a service",
+    "SELECT_DATE": "Select a date",
+    "ALL_EQUIPMENTS": "All equipments",
+    "SEARCH_DATE": "SEARCH DATE",
+    "COMMON_SLOTS": "COMMON SLOTS",
+    "URGENCY_SLOTS": "URGENCY SLOTS",
+    "DAY": "DAY",
+    "WEEK": "WEEK",
+    "COORDINATION_IN_PROGRESS": "[Coordination in progress]"
+  },
+  "CHECK-IN": {
+    "LIST": {
+      "ORDER": "Nº",
+      "ACTIONS": "Actions",
+      "EDIT-STUDY": "Edit study",
+      "CHECK-IN-ANOTHER-STUDY": "Check-in another study with the same appointment",
+      "SENT-TO-MWL": "Sent to MWL",
+      "SEND-TO-MWL": "Send to MWL",
+      "CHECK-IN": "Check-in",
+      "SCHEDULE": "Schedule",
+      "DOCUMENTS": "Documents",
+      "NAMES": "Names",
+      "SURNAMES": "Surnames",
+      "DUPLICATED-SURNAME": "ATTENTION: Duplicated surname.",
+      "AGE-AT-TIME": "Age at the time of the study",
+      "AGE": "Age",
+      "GENDER": "Gender",
+      "DETAILS": "Details",
+      "RECOMMENDED-DOSE": "Recommended dose",
+      "TYPE-OF-CONTRAST": "Type of contrast",
+      "WITH-CONTRAST": "With contrast",
+      "NO-DATA": "No data",
+      "SENSITIVE-INFORMATION": "Sensitive information",
+      "REST-WAIT": "Rest/Wait",
+      "NO": "NO",
+      "HOSPITALIZATION": "Hospitalization",
+      "OUTPATIENT": "Outpatient",
+      "INPATIENT": "Inpatient",
+      "URGENCY": "Urgency",
+      "URGENT": "Urgent",
+      "NORMAL": "Normal",
+      "AWAITING-RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT-LIST": "EXPORT LIST",
+      "TITLE": "Patient Check-in",
+      "DEFAULT-MODALITY-ERROR": "There was a problem determining the default modality."
+    },
+    "BOARD": {
+      "IN-PROGRESS": "In-progress care list in process..."
+    }
   }
 }

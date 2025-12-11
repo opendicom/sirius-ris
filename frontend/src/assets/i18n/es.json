@@ -1172,5 +1172,59 @@
       "CONTENT_TITLE": "Formulario de categorías de procedimientos",
       "EDIT_ERROR": "Error al intentar editar el elemento: "
     }
+  },
+  "CALENDAR": {
+    "TITLE": "Calendario de turnos y citas",
+    "SELECT_SERVICE_TO_START": "Debe seleccionar un servicio para comenzar.",
+    "SERVICE": "Servicio",
+    "SELECT_SERVICE": "Seleccione el servicio",
+    "SELECT_DATE": "Seleccione fecha",
+    "ALL_EQUIPMENTS": "Todos los equipos",
+    "SEARCH_DATE": "BUSCAR FECHA",
+    "COMMON_SLOTS": "TURNOS COMÚNES",
+    "URGENCY_SLOTS": "TURNOS URGENTES",
+    "DAY": "DÍA",
+    "WEEK": "SEMANA",
+    "COORDINATION_IN_PROGRESS": "[Coordinación en curso]"
+  },
+  "CHECK-IN": {
+    "LIST": {
+      "ORDER": "Nº",
+      "ACTIONS": "Acciones",
+      "EDIT-STUDY": "Editar estudio",
+      "CHECK-IN-ANOTHER-STUDY": "Recepcionar otro estudio con la misma cita",
+      "SENT-TO-MWL": "Enviado a MWL",
+      "SEND-TO-MWL": "Enviar a MWL",
+      "CHECK-IN": "Recepcionar",
+      "SCHEDULE": "Horario",
+      "DOCUMENTS": "Documentos",
+      "NAMES": "Nombres",
+      "SURNAMES": "Apellidos",
+      "DUPLICATED-SURNAME": "ATENCIÓN: Apellido duplicado.",
+      "AGE-AT-TIME": "Edad al momento de la realización del estudio",
+      "AGE": "Edad",
+      "GENDER": "Género",
+      "DETAILS": "Detalle",
+      "RECOMMENDED-DOSE": "Dósis recomendada",
+      "TYPE-OF-CONTRAST": "Tipo de contraste",
+      "WITH-CONTRAST": "Con contraste",
+      "NO-DATA": "Sin dato",
+      "SENSITIVE-INFORMATION": "Información sensible",
+      "REST-WAIT": "Reposo/Espera",
+      "NO": "NO",
+      "HOSPITALIZATION": "Hospitalización",
+      "OUTPATIENT": "Ambulatorio",
+      "INPATIENT": "Internado",
+      "URGENCY": "Urgencia",
+      "URGENT": "Urgente",
+      "NORMAL": "Normal",
+      "AWAITING-RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT-LIST": "EXPORTAR LISTADO",
+      "TITLE": "Recepción de pacientes",
+      "DEFAULT-MODALITY-ERROR": "Hubo un problema al determinar la modalidad por defecto."
+    },
+    "BOARD": {
+      "IN-PROGRESS": "Listado de atención en curso en proceso..."
+    }
   }
 }

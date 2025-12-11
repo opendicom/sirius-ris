@@ -5,13 +5,13 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 import {                                                                                          // Enviroments
   ISO_3166,
   document_types,
   gender_types,
   performing_flow_states,
-  cancellation_reasons,
-  privateHealthLang
+  cancellation_reasons
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -27,12 +27,11 @@ export class ListComponent implements OnInit {
   public gender_types           : any = gender_types;
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
-  public privateHealthLang      : any = privateHealthLang;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('CHECK-IN.LIST.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('rececpciones', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('CHECK-IN.LIST.TITLE'), this.table, this.excludedColumns) }
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -59,7 +58,8 @@ export class ListComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -69,7 +69,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Recepción de pacientes',
+      content_title       : this.i18n.instant('CHECK-IN.LIST.TITLE'),
       content_icon        : 'today',
       add_button          : false,
       duplicated_surnames : true,         // Check duplicated surnames
@@ -201,7 +201,7 @@ export class ListComponent implements OnInit {
 
       } else {
         //Send message:
-        this.sharedFunctions.sendMessage('Hubo un problema al determinar la modalidad por defecto.');
+        this.sharedFunctions.sendMessage(this.i18n.instant('CHECK-IN.LIST.DEFAULT-MODALITY-ERROR'));
       }
     }, findOne);
   }
