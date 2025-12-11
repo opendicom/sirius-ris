@@ -18,7 +18,7 @@
 
 * System of **scalable privileges** for users.
 
-* Backend **multilanguage** ( `English` , `Spanish` ).
+* Backend **multilanguage** ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH-CN`).
 
   
 
@@ -54,6 +54,12 @@
 7. [Scheduled tasks, Backups and Database Indexes](./documentation/07_scheduled_tasks_backups_and_database_indexes.md)
 
 
+
+---
+
+## Interactive wiki by DeepWiki (AI)
+
+[DeepWiki Documentation](https://deepwiki.com/opendicom/sirius-ris)
 
 ---
 
