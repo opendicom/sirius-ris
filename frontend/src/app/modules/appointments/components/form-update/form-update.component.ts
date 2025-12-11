@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';                                   // Router and Activated Route Interface (To get information about the routes)
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   ISO_3166, 
   document_types, 
@@ -60,7 +61,8 @@ export class FormUpdateComponent implements OnInit {
     private router              : Router,
     private objRoute            : ActivatedRoute,
     public sharedProp           : SharedPropertiesService,
-    public sharedFunctions      : SharedFunctionsService
+    public sharedFunctions      : SharedFunctionsService,
+    private i18n                : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -70,7 +72,7 @@ export class FormUpdateComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de actualización de cita',
+      content_title : this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TITLE'),
       content_icon  : 'edit_calendar',
       add_button    : false,
       filters_form  : false,
@@ -129,7 +131,7 @@ export class FormUpdateComponent implements OnInit {
           });
         } else {
           //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+          this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_REQUEST.EDIT_ERROR') + res.message);
           this.router.navigate(['/' + this.sharedProp.element + '/list']);
         }
       });
@@ -163,7 +165,7 @@ export class FormUpdateComponent implements OnInit {
       });
 
     } else {
-      this.sharedFunctions.sendMessage('Falta seleccionar en la pestaña de Detalles de la coordinación en qué momento se llevará a cabo la cita.')
+      this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_UPDATE.MISSING_SLOT_SELECTION_ERROR'))
     }
   }
 
@@ -243,7 +245,7 @@ export class FormUpdateComponent implements OnInit {
 
       } else {
         //Return to the list with request error message:
-        this.sharedFunctions.sendMessage('Error al intentar cargar el procedimiento asociado: ' + procedureRes.message);
+        this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_UPDATE.PROCEDURE_LOAD_ERROR') + procedureRes.message);
         this.router.navigate(['/' + this.sharedProp.element + '/list']);
       }
     });

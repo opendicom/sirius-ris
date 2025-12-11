@@ -3,13 +3,335 @@
     "TITLE": "Sirius RIS",
     "WELCOME": "Welcome to Sirius RIS"
   },
+  "APPOINTMENTS": {
+    "LIST": {
+      "TITLE": "Appointments List",
+      "XLSX_SHEET_NAME": "appointments",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "FLOW_STATE": "Appointment Flow",
+        "DATE": "Date",
+        "SCHEDULE": "Schedule",
+        "DOCUMENTS": "Documents",
+        "NAMES": "Names",
+        "SURNAMES": "Surnames",
+        "AGE": "Age",
+        "DETAILS": "Details",
+        "HOSPITALIZATION": "Hospitalization",
+        "URGENCY": "Urgency",
+        "STATUS": "Status",
+        "DOMAIN": "Domain"
+      },
+      "TOOLTIPS": {
+        "PDF": "Appointment PDF",
+        "MAIL_FORWARD": "Mail forward",
+        "REQUEST": "Study request",
+        "OVERBOOKING": "This appointment was overbooked.",
+        "AGE": "Age at the time of the study",
+        "OUTPATIENT": "Outpatient",
+        "INPATIENT": "Inpatient"
+      },
+      "DOMAIN": {
+        "REQUESTING": "Requesting: ",
+        "IMAGING": "Imaging: ",
+        "REPORTING": "Reporting: "
+      }
+    },
+    "FORM_INSERT": {
+      "TITLE": "Step 04 - Appointment Details",
+      "SUMMARY": {
+        "TITLE": "Summary:",
+        "APPOINTMENT_DATA_TITLE": "Appointment data to be scheduled:",
+        "APPOINTMENT_DATE": "Appointment date:",
+        "START_TIME": "Start time:",
+        "END_TIME": "End time:",
+        "EQUIPMENT": "Equipment:",
+        "URGENCY": "Urgency:",
+        "PREPARATION_TITLE": "Previous preparation:",
+        "NO_PREPARATION": "The selected procedure has NO previous preparation.",
+        "ACCESS_KEY_TITLE": "Access key:",
+        "RANDOM_PASSWORD": "Designated random password:",
+        "PASSWORD_NOTE": "Note: Once the appointment is entered, the designated password will NOT be accessible."
+      },
+      "PATIENT": {
+        "TITLE": "Patient data:",
+        "DOCUMENTS": "Document(s):",
+        "FULL_NAME": "Full name:",
+        "BIRTH_DATE": "Birth date:",
+        "GENDER": "Gender:",
+        "STATUS": "Status:",
+        "SENSITIVE_INFO": "Sensitive information"
+      },
+      "STUDY": {
+        "TITLE": "Study performance:",
+        "DOMAIN_HIERARCHY": "Organization ► Branch ► Service:",
+        "PROCEDURE": "Procedure to be performed:",
+        "MODALITY": "Modality:",
+        "REQUIRES_INFORMED_CONSENT": "Requires informed consent:"
+      },
+      "DETAILS": {
+        "TITLE": "Appointment details",
+        "INDICATIONS": "Indications",
+        "CONTACT": "Contact"
+      },
+      "REQUESTING_PARTY": {
+        "TITLE": "Requesting party:",
+        "ORGANIZATION": "Requesting organization:",
+        "ORGANIZATION_PLACEHOLDER": "Select the requesting organization"
+      },
+      "INFORMING_PARTY": {
+        "TITLE": "Informing party:",
+        "SERVICE": "Informing service:",
+        "SERVICE_PLACEHOLDER": "Select the informing service",
+        "DOCTOR": "Informing doctor:",
+        "DOCTOR_PLACEHOLDER": "Select the informing doctor",
+        "REPORT_DUE_DATE": "Report required before:"
+      },
+      "ADDRESS": {
+        "TITLE": "Patient's current address:",
+        "COUNTRY": "Country:",
+        "STATE": "State | Province | Department",
+        "CITY": "City:",
+        "NEIGHBORHOOD": "Neighborhood | Zone:",
+        "ADDRESS": "Home address:",
+        "COUNTRY_PLACEHOLDER": "Enter the country",
+        "STATE_PLACEHOLDER": "Enter the State | Province | Department",
+        "CITY_PLACEHOLDER": "Enter the city",
+        "NEIGHBORHOOD_PLACEHOLDER": "Enter the Neighborhood | Zone of the address",
+        "ADDRESS_PLACEHOLDER": "Enter the full home address",
+        "CONTACT_PLACEHOLDER": "Enter contact information (phone, cell phone, email)"
+      },
+      "CONTRAST": {
+        "TITLE": "Contrast media:",
+        "REQUEST": "Request contrast:",
+        "TYPE": "Type of contrast:",
+        "TYPE_PLACEHOLDER": "Enter the type of contrast requested."
+      },
+      "HOSPITALIZATION": {
+        "TITLE": "Hospitalization:",
+        "TYPE": "Type of hospitalization:",
+        "TYPE_PLACEHOLDER": "Select the type of hospitalization",
+        "WHERE": "Where:",
+        "WHERE_PLACEHOLDER": "Enter where the patient is hospitalized (Institution).",
+        "ROOM": "Ward | Room | Floor:",
+        "ROOM_PLACEHOLDER": "Enter the ward, room, floor where the patient is hospitalized.",
+        "CONTACT": "Contact:",
+        "CONTACT_PLACEHOLDER": "Enter contact information (phone, cell phone, email)"
+      },
+      "CONSENTS": {
+        "TITLE": "Consents",
+        "FILE_MAX_SIZE_PRE": "Max.",
+        "FILE_MAX_SIZE_POST": "MB",
+        "INFORMED_CONSENT": "INFORMED CONSENT",
+        "UPLOADING_INFORMED_CONSENT": "UPLOADING INFORMED CONSENT",
+        "UPLOAD_INFORMED_CONSENT": "UPLOAD INFORMED CONSENT",
+        "RESEARCH_CONSENT": "RESEARCH CONSENT",
+        "UPLOADING_RESEARCH_CONSENT": "UPLOADING RESEARCH CONSENT",
+        "UPLOAD_RESEARCH_CONSENT": "UPLOAD RESEARCH CONSENT"
+      },
+      "ATTACHMENTS": {
+        "TITLE": "Attached files",
+        "NO_FILES_FOUND": "No attached files found.",
+        "UPLOADING_FILE": "UPLOADING FILE",
+        "ATTACH_FILE": "ATTACH FILE"
+      },
+      "ERROR": {
+        "INSUFFICIENT_DATA": "Not enough data was found to continue (patient, service, modality, procedure, slot and/or appointment dates).",
+        "BACK_TO_LIST": "BACK TO LIST"
+      }
+    },
+    "FORM_REQUEST": {
+      "TITLE": "Request Form",
+      "EDIT_ERROR": "Error trying to edit element: ",
+      "DETAILS_TITLE": "Request details:",
+      "REQUESTING_INSTITUTION": "Requesting institution:",
+      "PERFORMING_INSTITUTION": "Performing institution:",
+      "REQUEST_DATE": "Request date:",
+      "REQUESTED_PROCEDURE": "Requested procedure:",
+      "MODALITY": "Modality:",
+      "URGENCY": "Urgency:",
+      "PATIENT_DOCUMENT": "Document:",
+      "PATIENT_FULL_NAME": "Full name:",
+      "PATIENT_AGE": "Age:",
+      "PATIENT_AGE_TOOLTIP": "Age at the time of the study request",
+      "PATIENT_GENDER": "Gender:",
+      "PATIENT_EMAIL": "Email:",
+      "PATIENT_PHONES": "Phones:",
+      "REQUESTING_PHYSICIAN": "Requesting physician:",
+      "PHYSICIAN_ID": "Physician ID:",
+      "PHYSICIAN_CONTACT": "Contact:",
+      "WAITING_FOR_DETAILS": "Please wait, request details are not yet loaded.",
+      "STATUS_AND_ANNOTATIONS": "Status and annotations:",
+      "WORKFLOW": "Workflow:",
+      "ANNOTATIONS": "Annotations"
+    },
+    "FORM_UPDATE": {
+      "TITLE": "Appointment Update Form",
+      "APPOINTMENT_DETAILS_TITLE": "Appointment details:",
+      "MISSING_SLOT_SELECTION_ERROR": "You must select when the appointment will take place in the Coordination Details tab.",
+      "PROCEDURE_LOAD_ERROR": "Error trying to load the associated procedure: ",
+      "TABS": {
+        "DETAILS": "Appointment Details",
+        "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab",
+        "COORDINATION_DETAILS": "Coordination Details",
+        "PREVIOUS_STUDIES": "Previous Studies"
+      },
+      "PREVIOUS_STUDIES": {
+        "TABLE": {
+          "WORKFLOW": "Study flow",
+          "VIEW_REPORT": "View report",
+          "CHECKIN_TIME": "Check-in time"
+        },
+        "NO_STUDIES_FOUND": "No previous studies found."
+      },
+      "TAB_DETAILS": {
+        "REPORT_DATE_ERROR": "A new date must be set for the \"Report required before\" field (It cannot be less than the coordination date).",
+        "CANCELLATION_REASONS": "Cancellation reasons"
+      },
+      "TAB_SLOT": {
+        "DATEPICKER_BUTTON": "SEARCH DATE",
+        "NORMAL_SLOTS_BUTTON": "COMMON SLOTS",
+        "URGENT_SLOTS_BUTTON": "URGENT SLOTS",
+        "VIEW_DAY_BUTTON": "DAY",
+        "VIEW_WEEK_BUTTON": "WEEK",
+        "CURRENTLY_EDITING_EVENT": " [Currently editing]",
+        "IN_PROGRESS_EVENT": " [Coordination in progress]",
+        "ALL_EQUIPMENTS_BUTTON": "All equipments",
+        "EQUIPMENT_DATA_TITLE": "Equipment data:",
+        "SELECTED_EQUIPMENT": "Selected equipment:",
+        "PROCEDURE_DURATION": "Procedure duration:",
+        "APPOINTMENT_DATA_TITLE": "Appointment data:",
+        "APPOINTMENT_DATE": "Appointment date:",
+        "START_TIME": "Start time:",
+        "END_TIME": "End time:",
+        "ALLOW_OVERBOOKING": "Allow overbooking",
+        "EDIT_COORDINATION_DISABLED_MESSAGE": "To be able to edit the details of the coordination of the appointment, it must be Active and in the flow state as Coordinated."
+      }
+    },
+    "LIST_DRAFTS": {
+      "TITLE": "List of appointments in progress",
+      "XLSX_SHEET_NAME": "appointments_in_progress",
+      "EDIT_ERROR": "Error trying to edit the element with _id: ",
+      "TOOLTIPS": {
+        "CONTINUE": "Continue with appointment in progress",
+        "DISCARD": "Discard appointment in progress",
+        "OVERBOOKING_DRAFT": "This appointment in progress will be overbooked."
+      }
+    },
+    "LIST_REQUESTS": {
+      "TITLE": "List of requests",
+      "XLSX_SHEET_NAME": "requests",
+      "TOOLTIPS": {
+        "DETAILS": "Request details",
+        "CREATE_APPOINTMENT": "Create appointment from request"
+      },
+      "TABLE": {
+        "FLOW_STATE": "Request flow",
+        "REFERRING_INSTITUTION": "Requesting Institution",
+        "IMAGING_INSTITUTION": "Performing Institution"
+      }
+    },
+    "SELECT_PROCEDURE": {
+      "TITLE": "Step 02 - Service and Procedure Selection",
+      "NO_CATEGORY_WARNING": "Warning: No procedure category found for the selected service.",
+      "NO_PROCEDURE_WARNING": "Warning: No procedure found for the modality of the selected service.",
+      "INVALID_PROCEDURE_ID_WARNING": "Warning: The indicated procedure does NOT have a valid _id (ObjectId).",
+      "TABS": {
+        "SERVICE_AND_PROCEDURE": "Service and procedure"
+      },
+      "SERVICE_AND_PROCEDURE_TITLE": "Service and procedure:",
+      "SERVICE_PLACEHOLDER": "Select the service",
+      "CATEGORY_LABEL": "Procedure category:",
+      "CATEGORY_PLACEHOLDER": "Select the category",
+      "PROCEDURE_PLACEHOLDER": "Select the procedure",
+      "REQUESTED_STUDY_TITLE": "Study indicated in the request:",
+      "BACK_BUTTON": "BACK",
+      "NEXT_BUTTON": "NEXT",
+      "NO_PATIENT_DATA_ERROR": "No patient data found, please try from the person check form.",
+      "GO_TO_CHECK_FORM_BUTTON": "GO TO CHECK FORM"
+    },
+    "SELECT_SLOT": {
+      "TITLE": "Step 03 - Coordinate procedure on a slot",
+      "SAVE_SUCCESS_MESSAGE": "Appointment in progress saved successfully!",
+      "NO_DATA_ERROR": "Not enough data was found to continue (patient, service, modality and/or procedure)."
+    },
+    "SET_PATIENT": {
+      "TITLE": "Step 01 - Patient Data Check",
+      "EMAIL_MACHINE_ERROR": "The indicated email cannot be used, it is associated with a machine type user.",
+      "DATA_LOADED_MESSAGE": "Data loaded from the local database by document match.",
+      "ANONYMOUS_NAME": "ANONYMOUS",
+      "PASSWORD_MISMATCH_ERROR": "The entered passwords do not match each other.",
+      "TABS": {
+        "PERSON": "Person",
+        "INSERT_TOOLTIP": "New record insertion",
+        "UPDATE_TOOLTIP": "Existing record update",
+        "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab",
+        "USER": "User"
+      },
+      "PERSON_DATA_TITLE": "Person data:",
+      "ANONYMIZE_USER_TOOLTIP": "Anonymize user",
+      "PATIENT_ORGANIZATION": "Patient organization ",
+      "PATIENT_PERMISSIONS": "Patient permissions"
+    }
+  },
+  "PRIVATE_HEALTH": {
+    "TITLE": "Private health data",
+    "HEIGHT": "Height",
+    "WEIGHT": "Weight",
+    "CENTIMETERS": "Centimeters",
+    "KILOGRAMS": "Kilograms",
+    "DIABETES": "Diabetes",
+    "HYPERTENSION": "Hypertension",
+    "EPOC": "EPOC",
+    "SMOKING": "Smoking",
+    "MALNUTRITION": "Malnutrition",
+    "OBESITY": "Obesity",
+    "ASTHMA": "Asthma",
+    "PREGNANCY": "Pregnancy",
+    "CLAUSTROPHOBIA": "Claustrophobia",
+    "RENAL_INSUFFICIENCY": "Renal insufficiency",
+    "HEART_FAILURE": "Heart failure",
+    "ISCHEMIC_HEART_DISEASE": "Ischemic heart disease",
+    "VALVULOPATHY": "Valvulopathy",
+    "ARRHYTHMIA": "Arrhythmia",
+    "HIV": "HIV",
+    "CANCER": "Cancer",
+    "DEMENTIA": "Dementia",
+    "HYPERTHYROIDISM": "Hyperthyroidism",
+    "HYPOTHYROIDISM": "Hypothyroidism",
+    "OTHER_PATOLOGY": "Other history/pathology",
+    "OTHER_PATOLOGY_PLACEHOLDER": "Enter the history/pathology(s).",
+    "MEDICATION": "Medication",
+    "ALLERGIES": "Allergies",
+    "ALLERGIES_PLACEHOLDER": "Indicate if you have any allergies.",
+    "IMPLANTS": {
+      "TITLE": "Implants",
+      "COCHLEAR_IMPLANT": "Cochlear implant",
+      "CARDIAC_STENT": "Cardiac stent",
+      "METAL_PROSTHESES": "Metal prostheses",
+      "METAL_SHARDS": "Metal shards",
+      "PACEMAKER": "Pacemaker",
+      "OTHER_TYPE": "Other type of implant",
+      "OTHER_PLACEHOLDER": "Enter the type(s) of implants."
+    },
+    "COVID19": {
+      "TITLE": "COVID-19",
+      "HAD_COVID": "Had COVID-19",
+      "VACCINATED": "Vaccinated",
+      "DETAILS": "Details",
+      "DETAILS_PLACEHOLDER": "Indicate details"
+    }
+  },
   "COMMON": {
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "DELETE": "Delete",
     "EDIT": "Edit",
     "SEARCH": "Search",
-    "ERROR_EDITING_ELEMENT": "Error trying to edit element: "
+    "ERROR_EDITING_ELEMENT": "Error trying to edit element: ",
+    "ORGANIZATION_LABEL": "Organization",
+    "BRANCH_LABEL": "Branch",
+    "SERVICE_LABEL": "Service"
   },
   "THEME": {
     "LABEL": "Theme",
@@ -105,14 +427,12 @@
     "GENERATE_BATCH": "GENERATE BATCH",
     "VIEW_APPOINTMENTS_DRAFTS": "VIEW APPOINTMENTS DRAFTS",
     "ADD_MACHINE_USER": "ADD MACHINE USER",
-
     "SEARCH": "Search",
     "SEARCH_PLACEHOLDER": "Search criteria [RegEx]",
     "SELECT_DATE_RANGE": "Select date range",
     "START_DATE": "Start date",
     "END_DATE": "End date",
     "SELECT_DATE": "Select date",
-
     "FLOW_STATE": "Flow state",
     "MODALITY": "Modality",
     "STATUS": "Status",
@@ -121,22 +441,18 @@
     "URGENCY": "Urgency",
     "URGENCY_HIGH": "Urgent",
     "URGENCY_NORMAL": "Normal",
-
     "USER_ID": "User ID",
     "USER_ID_PLACEHOLDER": "user _id",
     "SHOW_ASSIGNED_STUDIES_ONLY": "SHOW ASSIGNED STUDIES ONLY",
-
     "EVENT": "Event",
     "CLEAR_SEARCH": "CLEAR SEARCH",
     "DELETE_SELECTION": "DELETE SELECTION",
     "SEARCH_HELP": "Search help",
-
     "TOTAL": "Total",
     "SHOWN": "Shown",
     "PAGE": "Page",
     "OF": "of",
     "ITEMS_PER_PAGE": "Items per page",
-
     "KEYWORDS": "Search keywords:",
     "ANAMNESIS": "Anamnesis",
     "ANAMNESIS_HINT": "Search word about anamnesis",
@@ -150,27 +466,21 @@
     "SUMMARY": "Summary:",
     "SUMMARY_LABEL": "Word in the summary",
     "REPORT": "REPORT",
-
     "PATHOLOGIES": "Pathologies",
     "PATHOLOGIES_OF": "Pathologies of",
     "NO_PATHOLOGIES_FILTERED": "Not filtered by pathologies",
-
     "ORGANIZATION": "Organization",
     "SELECT_ORGANIZATION": "Select organization",
-
     "INVOLVED_DOCTORS": "Involved doctors:",
     "REQUESTING_PHYSICIAN": "Requesting physician",
     "REQUEST_LABEL": "REQUEST",
     "REQUESTING_PHYSICIAN_LABEL": "First or last name of requesting physician",
-
     "SIGNED_BY": "Signed by:",
     "SIGNING_USER": "Signing user",
     "SELECT_SIGNING_USER": "Select signing user",
-
     "AUTHENTICATED_BY": "Authenticated by:",
     "AUTHENTICATOR_USER": "Authenticator user",
     "SELECT_AUTHENTICATOR_USER": "Select authenticator user",
-
     "SEARCH_BUTTON": "SEARCH",
     "CLEAN_BUTTON": "CLEAN SEARCH",
     "PATHOLOGIES_ADMIN_LABEL": "Pathologies administrator",

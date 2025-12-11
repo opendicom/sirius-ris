@@ -82,7 +82,7 @@ export const user_types = {
 
 // Gender types:
 export const gender_types = {
-  1: 'Macsulino',
+  1: 'Masculino',
   2: 'Femenino',
   3: 'Otros',
 };

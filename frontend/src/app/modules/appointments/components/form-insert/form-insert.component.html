@@ -2,33 +2,33 @@
 
 <ng-template #thenBlockCurrentObj>
   <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="sharedProp.mainSettings != undefined && sharedProp.mainSettings.appSettings != undefined">
-    <h2 class="form-title text-center underline-fail-alt">Resumen:</h2>
+    <h2 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.TITLE' | i18n }}</h2>
     <div fxLayout="row" fxLayoutAlign="start start">
 
       <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
-        <h3 class="details-title">Datos de la cita a coordinar:</h3>
+        <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.APPOINTMENT_DATA_TITLE' | i18n }}</h3>
         <div class="current-wrap">
           <!-- appointment_date -->
           <div class="current-info divider-alt">
-            <small>Fecha de cita:</small><br/>
+            <small>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.APPOINTMENT_DATE' | i18n }}</small><br/>
             <span class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
           </div>
 
           <!-- appointment_start -->
           <div class="current-info divider-alt">
-            <small>Hora de inicio:</small><br/>
+            <small>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.START_TIME' | i18n }}</small><br/>
             <span class="appointment-firts">{{ this.sharedProp.current_datetime.startHours + ':' + this.sharedProp.current_datetime.startMinutes }}</span>
           </div>
 
           <!-- appointment_end -->
           <div class="current-info divider-alt">
-            <small>Hora de fin:</small><br/>
+            <small>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.END_TIME' | i18n }}</small><br/>
             <span class="appointment-firts">{{ this.sharedProp.current_datetime.endHours + ':' + this.sharedProp.current_datetime.endMinutes }}</span>
           </div>
 
           <!-- equipment -->
           <div class="current-info text-center divider-alt">
-            <small>Equipamiento:</small><br/>
+            <small>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.EQUIPMENT' | i18n }}</small><br/>
             <span class="badge-accent" matTooltip="{{ 'AET: ' + this.sharedProp.current_equipment.details.AET }}">
               <span>{{ this.sharedProp.current_equipment.details.name }}</span>
             </span>
@@ -36,10 +36,10 @@
 
           <!-- urgency -->
           <div class="current-info text-center">
-            <small>Urgencia:</small><br/>
+            <small>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.URGENCY' | i18n }}</small><br/>
             <div *ngIf="this.sharedProp.current_urgency; then thenBlockUrgency else elseBlockUrgency"></div>
-            <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-            <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+            <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
+            <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
           </div>
 
           <div class="clear"></div>
@@ -47,7 +47,7 @@
 
         <hr class="dashed" /><br/>
 
-        <h3 class="details-title">Preparación previa:</h3>
+        <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.PREPARATION_TITLE' | i18n }}</h3>
         <div class="current-wrap preparation-wrap">
           <!-- preparation -->
           <div class="current-info">
@@ -58,7 +58,7 @@
             </ng-template>
 
             <ng-template #elseBlockPreparation>
-              <span>El procedimiento seleccionado NO posee preparación previa.</span>
+              <span>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.NO_PREPARATION' | i18n }}</span>
             </ng-template>
           </div>
 
@@ -68,25 +68,25 @@
         <hr class="dashed" /><br/>
 
         <!-- friendly password -->
-        <h3 class="details-title">Clave de acceso:</h3>
+        <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.ACCESS_KEY_TITLE' | i18n }}</h3>
         <div class="friendly-pass-wrap" *ngIf="this.sharedProp.current_friendly_pass !== ''">
-          <div class="current-info">Contraseña aleatoria designada: </div>
+          <div class="current-info">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.RANDOM_PASSWORD' | i18n }}</div>
           <div class="current-info">
             <span class="friendly-pass">{{ this.sharedProp.current_friendly_pass }}</span>
           </div>
           <div class="clear"></div><hr class="dashed" />
-          <small><strong>Nota: </strong>Una vez finalizado el ingreso de la cita la contraseña designada NO será accesible.</small>
+          <small><strong>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.PASSWORD_NOTE' | i18n }}</strong></small>
         </div>
       </div> <!-- end fxLayout wrapper -->
 
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
         <span *ngIf="this.sharedProp.current_patient">
           <span *ngIf="this.sharedProp.current_patient.person">
-            <h3 class="details-title">Datos del paciente:</h3>
+            <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.TITLE' | i18n }}</h3>
             <div class="current-wrap">
               <!-- documents -->
               <div class="current-info">
-                <small>Documento/s:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</small><br/>
                 <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
                   <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                   <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -98,7 +98,7 @@
 
               <!-- names -->
               <div class="current-info">
-                <small>Nombre completo:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</small><br/>
                 <span class="current-firts">
                   <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
 
@@ -122,13 +122,13 @@
             <div class="current-wrap">
               <!-- birth_date -->
               <div class="current-info">
-                <small>Fecha de nacimiento:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.BIRTH_DATE' | i18n }}</small><br/>
                 <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
               </div>
 
               <!-- genre -->
               <div class="current-info text-center">
-                <small>Género:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.GENDER' | i18n }}</small><br/>
                 <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
                   <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                   <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
@@ -138,10 +138,10 @@
 
               <!-- status -->
               <div class="current-info text-center">
-                <small>Estado:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.STATUS' | i18n }}</small><br/>
                 <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
-                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
-                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
               </div>
 
               <div class="clear"></div>
@@ -154,12 +154,12 @@
 
         <span *ngIf="this.sharedProp.current_imaging">
           <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
-            <h3 class="details-title">Realización del estudio:</h3>
+            <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.STUDY.TITLE' | i18n }}</h3>
 
             <div class="current-wrap">
               <!-- imaging -->
               <div class="current-info">
-                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.DOMAIN_HIERARCHY' | i18n }}</small><br/>
                 <span class="current-firts">{{ this.sharedProp.current_imaging.organization.short_name + ' ► ' + this.sharedProp.current_imaging.branch.short_name + ' ► ' + this.sharedProp.current_imaging.service.name }}</span>
               </div>
 
@@ -171,7 +171,7 @@
             <div class="current-wrap">
               <!-- procedure -->
               <div class="current-info text-center">
-                <small>Procedimiento a realizar:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.PROCEDURE' | i18n }}</small><br/>
                 <span class="badge-alt">
                   <span>{{ this.sharedProp.current_procedure.name }}</span>
                 </span>
@@ -179,7 +179,7 @@
 
               <!-- modality -->
               <div class="current-info text-center">
-                <small>Modalidad:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.MODALITY' | i18n }}</small><br/>
                 <span class="badge" matTooltip="{{ this.sharedProp.current_modality.code_meaning }}">
                   <span>{{ this.sharedProp.current_modality.code_value }}</span>
                 </span>
@@ -187,10 +187,10 @@
 
               <!-- informed_consent -->
               <div class="current-info text-center">
-                <small>Requiere consentimiento informado:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.REQUIRES_INFORMED_CONSENT' | i18n }}</small><br/>
                 <span *ngIf="this.sharedProp.current_procedure.informed_consent; then thenBlock else elseBlock"></span>
-                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="SI">done</mat-icon></ng-template>
-                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="NO">clear</mat-icon></ng-template>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'PROCEDURES.FORM.YES' | i18n }}">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'PROCEDURES.FORM.NO' | i18n }}">clear</mat-icon></ng-template>
               </div>
 
               <div class="clear"></div>
@@ -203,17 +203,17 @@
 
     <hr class="dashed"/>
 
-    <h2 class="form-title text-center underline-ok-alt">Detalles de la cita</h2>
+    <h2 class="form-title text-center underline-ok-alt">{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.TITLE' | i18n }}</h2>
     <div fxLayout="row" fxLayoutAlign="start start">
 
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">Solicitante:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.TITLE' | i18n }}</h3>
         <br/>
 
-        <h4>Organización solicitante:</h4>
+        <h4>{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION' | i18n }}</h4>
         <mat-form-field appearance="fill" class="large">
-          <mat-label>Organización solicitante</mat-label>
-          <mat-select formControlName="referring_organization" placeholder="Seleccione la organización solicitante">
+          <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION' | i18n }}</mat-label>
+          <mat-select formControlName="referring_organization" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION_PLACEHOLDER' | i18n }}">
             <span *ngIf="appointmentsService.referringOrganizations">
               <div *ngFor="let currentOrganization of appointmentsService.referringOrganizations">
                 <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
@@ -226,13 +226,13 @@
 
         <!-- No report cases: Hide reporting_domain, report_before and reporting_user fields -->
         <span [class.non-display]="this.sharedProp.current_procedure.reporting_delay === undefined || this.sharedProp.current_procedure.reporting_delay === null || this.sharedProp.current_procedure.reporting_delay === ''">
-          <h3 class="form-title text-center underline-fail-alt">Informador:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.TITLE' | i18n }}</h3>
           <br/>
 
-          <h4>Servicio informador:</h4>
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.SERVICE' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
-            <mat-label>Servicio informador</mat-label>
-            <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
+            <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.SERVICE' | i18n }}</mat-label>
+            <mat-select formControlName="reporting_domain" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.SERVICE_PLACEHOLDER' | i18n }}">
               <div *ngFor="let currentService of appointmentsService.availableServices">
                 <div *ngFor="let currentBranch of appointmentsService.availableBranches">
                   <div *ngFor="let currentOrganization of appointmentsService.availableOrganizations">
@@ -243,10 +243,10 @@
             </mat-select>
           </mat-form-field>
 
-          <h4>Médico informador:</h4>
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
-            <mat-label>Médico informador</mat-label>
-            <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
+            <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</mat-label>
+            <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}">
               <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
                 <mat-option value="{{ currentReporting._id }}">
                   <!--names-->
@@ -264,46 +264,46 @@
             </mat-select>
           </mat-form-field>
 
-          <h4>Informe requerido antes de:</h4>
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.REPORT_DUE_DATE' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large" (click)="picker.open()">
-            <mat-label>Seleccione fecha</mat-label>
+            <mat-label>{{ 'ACTION.SELECT_DATE' | i18n }}</mat-label>
             <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+            <mat-hint align="end">{{ 'SLOTS.FORM.DATE_HINT' | i18n }}</mat-hint>
           </mat-form-field>
 
           <br/><hr class="dashed" /><br/>
         </span>
 
-        <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
         <div [class.unselected]="anamnesisValidator == false">
           <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
         </div>
 
         <br/><hr class="dashed" /><br/>
 
-        <h4>Indicaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
         <div [class.unselected]="indicationsValidator == false">
           <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
         </div>
 
         <br/><hr class="dashed" /><br/>
 
-        <h3 class="form-title text-center underline-fail-alt">Domicilio actual del paciente:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.TITLE' | i18n }}</h3>
         <br/>
 
         <!-- Current address start-->
         <div formGroupName="current_address">
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>País:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.COUNTRY' | i18n }}</h4>
               <span *ngIf="getKeys(appointmentsService.allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
 
               <ng-template #thenBlockCountries>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>País</mat-label>
-                  <mat-select formControlName="country" placeholder="Seleccione el país">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.COUNTRY' | i18n }}</mat-label>
+                  <mat-select formControlName="country" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}">
                     <div *ngFor="let currentCountry of appointmentsService.allCountries">
                       <mat-option (click)="appointmentsService.setCurrentStates(currentCountry.isoCode, form)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
                     </div>
@@ -313,21 +313,21 @@
 
               <ng-template #elseBlockCountries>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>País</mat-label>
-                  <input matInput type="text" formControlName="country" placeholder="Ingrese el país">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.COUNTRY' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="country" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.COUNTRY_PLACEHOLDER' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
 
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Estado:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.STATE' | i18n }}:</h4>
               <span *ngIf="getKeys(appointmentsService.currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
 
               <ng-template #thenBlockStates>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Estado | Provincia | Departamento</mat-label>
-                  <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.STATE' | i18n }}</mat-label>
+                  <mat-select formControlName="state" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.STATE_PLACEHOLDER' | i18n }}">
                     <div *ngFor="let currentState of appointmentsService.currentStates">
                       <mat-option (click)="appointmentsService.setCurrentCities(currentState.countryCode, currentState.isoCode, form)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
                     </div>
@@ -337,8 +337,8 @@
 
               <ng-template #elseBlockStates>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Estado | Provincia | Departamento</mat-label>
-                  <input matInput type="text" formControlName="state" placeholder="Ingrese el Estado | Provincia | Departamento">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.STATE' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="state" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.STATE_PLACEHOLDER' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
@@ -347,13 +347,13 @@
 
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Ciudad:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CITY' | i18n }}</h4>
               <span *ngIf="getKeys(appointmentsService.currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
 
               <ng-template #thenBlockCities>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Ciudad</mat-label>
-                  <mat-select formControlName="city" placeholder="Seleccione la ciudad">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CITY' | i18n }}</mat-label>
+                  <mat-select formControlName="city" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CITY_PLACEHOLDER' | i18n }}">
                     <div *ngFor="let currentCity of appointmentsService.currentCities">
                       <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
                     </div>
@@ -363,59 +363,59 @@
 
               <ng-template #elseBlockCities>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Ciudad</mat-label>
-                  <input matInput type="text" formControlName="city" placeholder="Ingrese la ciudad">
+                  <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CITY' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="city" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CITY_PLACEHOLDER' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Barrio | Zona:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.NEIGHBORHOOD' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Barrio | Zona</mat-label>
-                <input matInput type="text" formControlName="neighborhood" placeholder="Ingrese el Barrio | Zona del domicilio">
+                <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.NEIGHBORHOOD' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="neighborhood" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.NEIGHBORHOOD_PLACEHOLDER' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
 
-          <h4>Dirección del domicilio:</h4>
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.ADDRESS' | i18n }}</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>Dirección</mat-label>
-            <input matInput type="text" formControlName="address" placeholder="Ingrese la dirección completa del domicilio">
+            <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.ADDRESS' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="address" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.ADDRESS_PLACEHOLDER' | i18n }}">
           </mat-form-field>
         </div>
         <!-- Current address end -->
 
         <br/><hr class="dashed" /><br/>
 
-        <h4>Contacto:</h4>
+        <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.CONTACT' | i18n }}:</h4>
         <mat-form-field appearance="fill" class="large">
-          <mat-label>Contacto</mat-label>
-          <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+          <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.CONTACT' | i18n }}</mat-label>
+          <input matInput type="text" formControlName="contact" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CONTACT_PLACEHOLDER' | i18n }}">
         </mat-form-field>
-
+        
         <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
         <div *ngIf="this.sharedProp.current_modality.code_value !== 'PT'">
           <br/><hr class="dashed" />
 
-          <h3 class="form-title text-center underline-fail-alt">Medios de contraste:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.TITLE' | i18n }}</h3>
           <!-- Contrast start-->
           <div formGroupName="contrast">
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <h4>Solicita contraste:</h4>
+                <h4>{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.REQUEST' | i18n }}</h4>
                 <mat-radio-group color="primary" formControlName="use_contrast" (change)="appointmentsService.onChangeContrast($event, form)">
-                  <mat-radio-button value="true">Si</mat-radio-button>
-                  <mat-radio-button value="false">No</mat-radio-button>
+                  <mat-radio-button value="true">{{ 'PROCEDURES.FORM.YES' | i18n }}</mat-radio-button>
+                  <mat-radio-button value="false">{{ 'PROCEDURES.FORM.NO' | i18n }}</mat-radio-button>
                 </mat-radio-group>
               </div> <!-- end fxLayout wrapper -->
 
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                 <div [class.non-display]="appointmentsService.booleanContrast == false">
-                  <h4>Tipo de contraste:</h4>
+                  <h4>{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.TYPE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="full">
-                    <mat-label>Tipo de contraste</mat-label>
-                    <input matInput type="text" formControlName="description" placeholder="Ingrese el tipo de contraste solicitado.">
+                    <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.TYPE' | i18n }}</mat-label>
+                    <input matInput type="text" formControlName="description" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.TYPE_PLACEHOLDER' | i18n }}">
                   </mat-form-field>
                 </div>
               </div> <!-- end fxLayout wrapper -->
@@ -426,34 +426,34 @@
 
         <hr class="dashed" /><br/>
 
-        <h4>Estado:</h4>
+        <h4>{{ 'APPOINTMENTS.LIST.TABLE.STATUS' | i18n }}:</h4>
         <mat-radio-group color="primary" formControlName="status">
-          <mat-radio-button value="true">Activo</mat-radio-button>
-          <mat-radio-button value="false">Inactivo</mat-radio-button>
+          <mat-radio-button value="true">{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}</mat-radio-button>
         </mat-radio-group>
 
         <br/><br/>
       </div> <!-- end fxLayout wrapper -->
 
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.TITLE' | i18n }} <span class="label-alt">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.SENSITIVE_INFO' | i18n }}</span>:</h3>
         <br/>
 
         <!-- Private health start --->
         <div formGroupName="private_health">
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Altura <span class="label-info">Centímetros</span>:</h4>
+              <h4>{{ 'PRIVATE_HEALTH.HEIGHT' | i18n }} <span class="label-info">{{ 'PRIVATE_HEALTH.CENTIMETERS' | i18n }}</span>:</h4>
               <mat-form-field appearance="fill" class="large">
-                <mat-label>Altura</mat-label>
+                <mat-label>{{ 'PRIVATE_HEALTH.HEIGHT' | i18n }}</mat-label>
                 <input type="text" icNumbers matInput formControlName="height" min="1" max="300">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Peso <span class="label-info">Kilogramos</span>:</h4>
+              <h4>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }} <span class="label-info">{{ 'PRIVATE_HEALTH.KILOGRAMS' | i18n }}</span>:</h4>
               <mat-form-field appearance="fill" class="large">
-                <mat-label>Peso</mat-label>
+                <mat-label>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }}</mat-label>
                 <input type="text" icNumbersWD matInput formControlName="weight" min="1" max="300">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
@@ -463,78 +463,78 @@
 
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="diabetes" color="primary">{{ privateHealthLang.ES['diabetes'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypertension" color="primary">{{ privateHealthLang.ES['hypertension'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="epoc" color="primary">{{ privateHealthLang.ES['epoc'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="smoking" color="primary">{{ privateHealthLang.ES['smoking'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="malnutrition" color="primary">{{ privateHealthLang.ES['malnutrition'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="obesity" color="primary">{{ privateHealthLang.ES['obesity'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="asthma" color="primary">{{ privateHealthLang.ES['asthma'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="diabetes" color="primary">{{ 'PRIVATE_HEALTH.DIABETES' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypertension" color="primary">{{ 'PRIVATE_HEALTH.HYPERTENSION' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="epoc" color="primary">{{ 'PRIVATE_HEALTH.EPOC' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="smoking" color="primary">{{ 'PRIVATE_HEALTH.SMOKING' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="malnutrition" color="primary">{{ 'PRIVATE_HEALTH.MALNUTRITION' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="obesity" color="primary">{{ 'PRIVATE_HEALTH.OBESITY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="asthma" color="primary">{{ 'PRIVATE_HEALTH.ASTHMA' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="pregnancy" color="primary">{{ privateHealthLang.ES['pregnancy'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="claustrophobia" color="primary">{{ privateHealthLang.ES['claustrophobia'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="renal_insufficiency" color="primary">{{ privateHealthLang.ES['renal_insufficiency'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="heart_failure" color="primary">{{ privateHealthLang.ES['heart_failure'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">{{ privateHealthLang.ES['ischemic_heart_disease'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="valvulopathy" color="primary">{{ privateHealthLang.ES['valvulopathy'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="arrhythmia" color="primary">{{ privateHealthLang.ES['arrhythmia'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="pregnancy" color="primary">{{ 'PRIVATE_HEALTH.PREGNANCY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="claustrophobia" color="primary">{{ 'PRIVATE_HEALTH.CLAUSTROPHOBIA' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="renal_insufficiency" color="primary">{{ 'PRIVATE_HEALTH.RENAL_INSUFFICIENCY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="heart_failure" color="primary">{{ 'PRIVATE_HEALTH.HEART_FAILURE' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">{{ 'PRIVATE_HEALTH.ISCHEMIC_HEART_DISEASE' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="valvulopathy" color="primary">{{ 'PRIVATE_HEALTH.VALVULOPATHY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="arrhythmia" color="primary">{{ 'PRIVATE_HEALTH.ARRHYTHMIA' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="hiv" color="primary">{{ privateHealthLang.ES['hiv'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="cancer" color="primary">{{ privateHealthLang.ES['cancer'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="dementia" color="primary">{{ privateHealthLang.ES['dementia'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hyperthyroidism" color="primary">{{ privateHealthLang.ES['hyperthyroidism'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypothyroidism" color="primary">{{ privateHealthLang.ES['hypothyroidism'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hiv" color="primary">{{ 'PRIVATE_HEALTH.HIV' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="cancer" color="primary">{{ 'PRIVATE_HEALTH.CANCER' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="dementia" color="primary">{{ 'PRIVATE_HEALTH.DEMENTIA' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hyperthyroidism" color="primary">{{ 'PRIVATE_HEALTH.HYPERTHYROIDISM' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypothyroidism" color="primary">{{ 'PRIVATE_HEALTH.HYPOTHYROIDISM' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
           </div>
 
-          <mat-checkbox color="primary" (change)="appointmentsService.onCheckOtherPatology($event, form)">Otro antecedente/patología</mat-checkbox><br/>
+          <mat-checkbox color="primary" (change)="appointmentsService.onCheckOtherPatology($event, form)">{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-checkbox><br/>
 
           <div [class.non-display]="appointmentsService.booleanPatology == false">
             <mat-form-field appearance="fill" class="full">
-              <mat-label>{{ privateHealthLang.ES['other'] }}</mat-label>
-              <input matInput type="text" formControlName="other" placeholder="Ingrese el o los antecedentes/patologías.">
+              <mat-label>{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="other" placeholder="{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY_PLACEHOLDER' | i18n }}">
             </mat-form-field>
           </div>
 
           <br/><hr class="dashed" /><br/>
 
-          <h4>{{ privateHealthLang.ES['medication'] }} <span class="label-info">min: 2, max: 1000</span>:</h4>
+          <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="label-info">min: 2, max: 1000</span>:</h4>
           <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           
           <br/>
 
-          <h4>{{ privateHealthLang.ES['allergies'] }}:</h4>
+          <h4>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}:</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>{{ privateHealthLang.ES['allergies'] }}</mat-label>
-            <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
+            <mat-label>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="allergies" placeholder="{{ 'PRIVATE_HEALTH.ALLERGIES_PLACEHOLDER' | i18n }}">
           </mat-form-field>
 
           <hr class="dashed" />
 
-          <h4 class="form-title text-center underline-fail">Implantes</h4>
+          <h4 class="form-title text-center underline-fail">{{ 'PRIVATE_HEALTH.IMPLANTS.TITLE' | i18n }}</h4>
           <br/>
 
           <div formGroupName="implants">
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox formControlName="cochlear_implant" color="primary">{{ privateHealthLang.ES.implants['cochlear_implant'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="cardiac_stent" color="primary">{{ privateHealthLang.ES.implants['cardiac_stent'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_prostheses" color="primary">{{ privateHealthLang.ES.implants['metal_prostheses'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_shards" color="primary">{{ privateHealthLang.ES.implants['metal_shards'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="pacemaker" color="primary">{{ privateHealthLang.ES.implants['pacemaker'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="cochlear_implant" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.COCHLEAR_IMPLANT' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="cardiac_stent" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.CARDIAC_STENT' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_prostheses" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.METAL_PROSTHESES' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_shards" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.METAL_SHARDS' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="pacemaker" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.PACEMAKER' | i18n }}</mat-checkbox><br/>
               </div> <!-- end fxLayout wrapper -->
 
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">Otro tipo de implante</mat-checkbox><br/>
+                <mat-checkbox (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-checkbox><br/>
 
                 <div [class.non-display]="appointmentsService.booleanImplants == false">
                   <mat-form-field appearance="fill" class="full">
-                    <mat-label>{{ privateHealthLang.ES.implants['other'] }}</mat-label>
-                    <input matInput type="text" formControlName="other" placeholder="Ingrese el o los tipos de impantes.">
+                    <mat-label>{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-label>
+                    <input matInput type="text" formControlName="other" placeholder="{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_PLACEHOLDER' | i18n }}">
                   </mat-form-field>
                 </div>
               </div> <!-- end fxLayout wrapper -->
@@ -542,19 +542,19 @@
           </div>
           <hr class="dashed" />
 
-          <h4 class="form-title text-center underline-fail">COVID-19</h4>
+          <h4 class="form-title text-center underline-fail">{{ 'PRIVATE_HEALTH.COVID19.TITLE' | i18n }}</h4>
           <br/>
 
           <div formGroupName="covid19">
-            <mat-checkbox formControlName="had_covid" color="primary">{{ privateHealthLang.ES.covid19['had_covid'] }}</mat-checkbox><br/>
-            <mat-checkbox formControlName="vaccinated" color="primary">{{ privateHealthLang.ES.covid19['vaccinated'] }}</mat-checkbox><br/>
+            <mat-checkbox formControlName="had_covid" color="primary">{{ 'PRIVATE_HEALTH.COVID19.HAD_COVID' | i18n }}</mat-checkbox><br/>
+            <mat-checkbox formControlName="vaccinated" color="primary">{{ 'PRIVATE_HEALTH.COVID19.VACCINATED' | i18n }}</mat-checkbox><br/>
 
             <br/>
 
-            <h4>Detalles:</h4>
+            <h4>{{ 'PRIVATE_HEALTH.COVID19.DETAILS' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="full">
-              <mat-label>Detalles</mat-label>
-              <input matInput type="text" formControlName="details" placeholder="Indique {{ privateHealthLang.ES.covid19['details'] }}">
+              <mat-label>{{ 'PRIVATE_HEALTH.COVID19.DETAILS' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="details" placeholder="{{ 'PRIVATE_HEALTH.COVID19.DETAILS_PLACEHOLDER' | i18n }}">
             </mat-form-field>
           </div>
         </div>
@@ -562,12 +562,12 @@
 
         <hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Hospitalización:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TITLE' | i18n }}</h3>
         <br/>
 
         <mat-radio-group color="primary" formControlName="outpatient" (change)="appointmentsService.onChangeOutpatient($event, form)">
-          <mat-radio-button value="true">Ambulatorio</mat-radio-button>
-          <mat-radio-button value="false">Internado</mat-radio-button>
+          <mat-radio-button value="true">{{ 'APPOINTMENTS.LIST.TOOLTIPS.OUTPATIENT' | i18n }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'APPOINTMENTS.LIST.TOOLTIPS.INPATIENT' | i18n }}</mat-radio-button>
         </mat-radio-group>
 
         <br/>
@@ -578,10 +578,10 @@
 
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Tipo de hospitalización:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TYPE' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Tipo de hospitalización</mat-label>
-                <mat-select formControlName="type" placeholder="Seleccione el tipo de hospitalización">
+                <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TYPE' | i18n }}</mat-label>
+                <mat-select formControlName="type" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TYPE_PLACEHOLDER' | i18n }}">
                   <div *ngFor="let currentType of inpatient_types | keyvalue">
                     <mat-option value="{{ currentType.key }}">{{ currentType.value }}</mat-option>
                   </div>
@@ -590,28 +590,28 @@
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Donde:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.WHERE' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Donde</mat-label>
-                <input matInput type="text" formControlName="where" placeholder="Ingrese donde está hospitalizado el paciente (Institución).">
+                <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.WHERE' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="where" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.WHERE_PLACEHOLDER' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
 
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Sala | Habitación | Piso:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.ROOM' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Sala | Habitación | Piso</mat-label>
-                <input matInput type="text" formControlName="room" placeholder="Ingrese la sala, habitación, piso donde está hospitalizado el paciente.">
+                <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.ROOM' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="room" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.ROOM_PLACEHOLDER' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Contacto:</h4>
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.CONTACT' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Contacto</mat-label>
-                <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+                <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.CONTACT' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="contact" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.CONTACT_PLACEHOLDER' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
@@ -620,7 +620,7 @@
 
         <br/><hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.TITLE' | i18n }} <span class="label-info">{{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.FILE_MAX_SIZE_PRE' | i18n }} {{ sharedProp.mainSettings.appSettings.file_max_size }} {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.FILE_MAX_SIZE_POST' | i18n }}</span>:</h3>
         <br/>
 
         <span *ngIf="getKeys(fileManager.controller.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
@@ -628,7 +628,7 @@
         <ng-template #thenBlockInformedConsent>
           <mat-chip-list>
             <mat-chip *ngFor="let informedConsentFile of fileManager.controller.informed_consent.files | keyvalue" class="primary-color">
-              <mat-icon (click)="fileManager.download(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.download(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(informedConsentFile.key, 'informed_consent')">close</mat-icon>
+              <mat-icon (click)="fileManager.download(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.download(informedConsentFile.key)"> &nbsp; {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.INFORMED_CONSENT' | i18n }}</span> &nbsp;<mat-icon matTooltip="{{ 'COMMON.DELETE' | i18n }}" (click)="fileManager.delete(informedConsentFile.key, 'informed_consent')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -638,8 +638,8 @@
           <input type="file" (change)="fileManager.upload($event, 'informed_consent')" #fileInputInformedConsent style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
             <span *ngIf="fileManager.controller['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
-            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> SUBIR CONSENTIMIENTO INFORMADO</ng-template>
+            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.UPLOADING_INFORMED_CONSENT' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.UPLOAD_INFORMED_CONSENT' | i18n }}</ng-template>
           </button>
           <br/><br/>
         </ng-template>
@@ -649,7 +649,7 @@
         <ng-template #thenBlockClinicalTrial>
           <mat-chip-list>
             <mat-chip *ngFor="let clinicalTrialFile of fileManager.controller.clinical_trial.files | keyvalue" class="default-color">
-              <mat-icon (click)="fileManager.download(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.download(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
+              <mat-icon (click)="fileManager.download(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.download(clinicalTrialFile.key)"> &nbsp; {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.RESEARCH_CONSENT' | i18n }}</span> &nbsp;<mat-icon matTooltip="{{ 'COMMON.DELETE' | i18n }}" (click)="fileManager.delete(clinicalTrialFile.key, 'clinical_trial')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -659,15 +659,15 @@
           <input type="file" (change)="fileManager.upload($event, 'clinical_trial')" #fileInputClinicalTrial style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
             <span *ngIf="fileManager.controller['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
-            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> SUBIR CONSENTIMIENTO DE INVESTIGACIÓN</ng-template>
+            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.UPLOADING_RESEARCH_CONSENT' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.UPLOAD_RESEARCH_CONSENT' | i18n }}</ng-template>
           </button>
           <br/><br/>
         </ng-template>
 
         <hr class="dashed" />
 
-        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.ATTACHMENTS.TITLE' | i18n }} <span class="label-info">{{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.FILE_MAX_SIZE_PRE' | i18n }} {{ sharedProp.mainSettings.appSettings.file_max_size }} {{ 'APPOINTMENTS.FORM_INSERT.CONSENTS.FILE_MAX_SIZE_POST' | i18n }}</span>:</h3>
         <br/>
 
         <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
@@ -675,7 +675,7 @@
         <ng-template #thenBlockAttached>
           <mat-chip-list>
             <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
-              <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files')">close</mat-icon>
+              <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="{{ 'COMMON.DELETE' | i18n }}" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files')">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -683,7 +683,7 @@
 
         <ng-template #elseBlockAttached>
           <div class="text-center">
-            <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+            <mat-icon>folder_off</mat-icon> <h3>{{ 'APPOINTMENTS.FORM_INSERT.ATTACHMENTS.NO_FILES_FOUND' | i18n }}</h3>
           </div>
         </ng-template>
 
@@ -693,8 +693,8 @@
           <input type="file" (change)="fileManager.upload($event, 'attached_files')" #fileInputAttached style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
             <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
-            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
+            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.ATTACHMENTS.UPLOADING_FILE' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> {{ 'APPOINTMENTS.FORM_INSERT.ATTACHMENTS.ATTACH_FILE' | i18n }}</ng-template>
           </button>
         </div>
 
@@ -706,8 +706,8 @@
 
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="submit" color="primary">GUARDAR</button>
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n }}</button>
       </div> <!-- end fxLayout wrapper -->
     </div>
 
@@ -720,9 +720,9 @@
     <mat-icon class="search-off-icon">search_off</mat-icon>
 
     <br/><br/><hr class="dashed" /><br/>
-    <h4>No se hallaron datos suficientes para poder continuar (paciente, servicio, modalidad, procedimiento, turno y/o fechas de cita).</h4>
+    <h4>{{ 'APPOINTMENTS.FORM_INSERT.ERROR.INSUFFICIENT_DATA' | i18n }}</h4>
 
-    <button mat-flat-button type="button" (click)="onCancel();">VOLVER AL LISTADO</button>
+    <button mat-flat-button type="button" (click)="onCancel();">{{ 'APPOINTMENTS.FORM_INSERT.ERROR.BACK_TO_LIST' | i18n }}</button>
 
     <br/><br/>
   </form>

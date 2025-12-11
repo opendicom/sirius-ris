@@ -7,6 +7,7 @@ import { Router } from '@angular/router';                                       
 import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
 import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
@@ -69,7 +70,8 @@ export class TabSlotComponent implements OnInit {
     private router: Router,
     public formBuilder: FormBuilder,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){}
 
   ngOnInit(): void {
@@ -115,33 +117,33 @@ export class TabSlotComponent implements OnInit {
     //Set FullCalendar Custom Buttons methods:
     this.calendarOptions['customButtons'] = {
       datepicker: {
-        text: 'BUSCAR FECHA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.DATEPICKER_BUTTON'),
         click: () => {
           this.openDatePicker();
         }
       },
       normal_slots: {
-        text: 'TURNOS COMÚNES',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.NORMAL_SLOTS_BUTTON'),
         click: () => {
           //Find slots:
           this.findSlots();
         }
       },
       urgency_slots: {
-        text: 'TURNOS URGENTES',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.URGENT_SLOTS_BUTTON'),
         click: () => {
           //Find slots (urgency true):
           this.findSlots(true);
         }
       },
       view_day: {
-        text: 'DÍA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.VIEW_DAY_BUTTON'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridDay');
         }
       },
       view_week: {
-        text: 'SEMANA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.VIEW_WEEK_BUTTON'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridWeek');
         }
@@ -377,7 +379,7 @@ export class TabSlotComponent implements OnInit {
                   backgroundColor = '#b0bec5';
                   borderColor = '#909da4';
                   textColor = '#17191a';
-                  title = res.data[key].procedure.name + ' [Editando actualmente]';
+                  title = res.data[key].procedure.name + this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.CURRENTLY_EDITING_EVENT');
 
                   //Set selected elements (To preserve delete button):
                   this.selectedEquipment  = this.sharedProp.current_equipment;
@@ -441,7 +443,7 @@ export class TabSlotComponent implements OnInit {
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
                   resourceId: res.data[key].slot.equipment._id,
-                  title: res.data[key].procedure.name + ' [Coordinación en curso]',
+                  title: res.data[key].procedure.name + this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.IN_PROGRESS_EVENT'),
                   start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,

@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder } from '@angular/forms';                                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
 import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
@@ -77,14 +78,15 @@ export class SelectSlotComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Paso 03 - Coordinar procedimiento sobre un turno',
+      content_title : this.i18n.instant('APPOINTMENTS.SELECT_SLOT.TITLE'),
       content_icon  : 'event_available',
       add_button    : false,
       filters_form  : false,
@@ -117,33 +119,33 @@ export class SelectSlotComponent implements OnInit {
     //Set FullCalendar Custom Buttons methods:
     this.calendarOptions['customButtons'] = {
       datepicker: {
-        text: 'BUSCAR FECHA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.DATEPICKER_BUTTON'),
         click: () => {
           this.openDatePicker();
         }
       },
       normal_slots: {
-        text: 'TURNOS COMÚNES',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.NORMAL_SLOTS_BUTTON'),
         click: () => {
           //Find slots:
           this.findSlots();
         }
       },
       urgency_slots: {
-        text: 'TURNOS URGENTES',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.URGENT_SLOTS_BUTTON'),
         click: () => {
           //Find slots (urgency true):
           this.findSlots(true);
         }
       },
       view_day: {
-        text: 'DÍA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.VIEW_DAY_BUTTON'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridDay');
         }
       },
       view_week: {
-        text: 'SEMANA',
+        text: this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.VIEW_WEEK_BUTTON'),
         click: () => {
           this.calendarComponent.getApi().changeView('resourceTimeGridWeek');
         }
@@ -453,7 +455,7 @@ export class SelectSlotComponent implements OnInit {
                 this.calendarComponent.getApi().addEvent({
                   id: res.data[key]._id,
                   resourceId: res.data[key].slot.equipment._id,
-                  title: res.data[key].procedure.name + ' [Coordinación en curso]',
+                  title: res.data[key].procedure.name + this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_SLOT.IN_PROGRESS_EVENT'),
                   start: res.data[key].start.slice(0, -5),  //Remove last 5 chars '.000Z'
                   end: res.data[key].end.slice(0, -5),       //Remove last 5 chars '.000Z'
                   backgroundColor: backgroundColor,
@@ -690,7 +692,7 @@ export class SelectSlotComponent implements OnInit {
       }
 
       //Response the form according to the result and redirect to appointments form in success case:
-      this.sharedFunctions.formResponder(res, form_destiny, this.router, false, '¡Guardado de cita en proceso exitoso!');
+      this.sharedFunctions.formResponder(res, form_destiny, this.router, false, this.i18n.instant('APPOINTMENTS.SELECT_SLOT.SAVE_SUCCESS_MESSAGE'));
     });
   }
 

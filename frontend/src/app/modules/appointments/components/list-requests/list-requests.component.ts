@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';                               // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import {                                                                                // Enviroments
   regexObjectId,
   appointment_requests_flow_states,
@@ -50,7 +51,7 @@ export class ListRequestsComponent implements OnInit {
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones', 'Descargar'];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('solicitudes', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('APPOINTMENTS.LIST_REQUESTS.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -60,7 +61,8 @@ export class ListRequestsComponent implements OnInit {
     private router          : Router,
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -70,7 +72,7 @@ export class ListRequestsComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de solicitudes',
+      content_title       : this.i18n.instant('APPOINTMENTS.LIST_REQUESTS.TITLE'),
       content_icon        : 'move_to_inbox',
       add_button          : false,
       duplicated_surnames : false,    // Check duplicated surnames

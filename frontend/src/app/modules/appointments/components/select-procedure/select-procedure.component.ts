@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';           // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   regexObjectId,
   ISO_3166,
@@ -71,14 +72,15 @@ export class SelectProcedureComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Paso 02 - Selección de servicio y procedimiento',
+      content_title : this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.TITLE'),
       content_icon  : 'health_and_safety',
       add_button    : false,
       filters_form  : false,
@@ -164,7 +166,7 @@ export class SelectProcedureComponent implements OnInit {
           this.form.controls['fk_procedure'].setValue([]);
 
           //Send message:
-          this.sharedFunctions.sendMessage('Advertencia: No se encuentra ninguna categoría de procedimiento cargada en el servicio seleccionado.');
+          this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_CATEGORY_WARNING'));
         }
       });
     }
@@ -217,7 +219,7 @@ export class SelectProcedureComponent implements OnInit {
           this.form.controls['fk_procedure'].setValue([]);
 
           //Send message:
-          this.sharedFunctions.sendMessage('Advertencia: No se encuentra ningún procedimiento cargado en la modalidad del servicio seleccionado.');
+          this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_PROCEDURE_WARNING'));
         }
       });
     }
@@ -255,7 +257,7 @@ export class SelectProcedureComponent implements OnInit {
         }
       } else {
         //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: El procedimiento indicado NO posee un _id válido (ObjectId).');
+        this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.INVALID_PROCEDURE_ID_WARNING'));
       }
     }
   }

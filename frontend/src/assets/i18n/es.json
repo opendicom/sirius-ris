@@ -3,13 +3,325 @@
     "TITLE": "Sirius RIS",
     "WELCOME": "Bienvenido a Sirius RIS"
   },
+  "APPOINTMENTS": {
+    "LIST": {
+      "TITLE": "Listado de citas",
+      "XLSX_SHEET_NAME": "citas",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "FLOW_STATE": "Flujo de cita",
+        "DATE": "Fecha",
+        "SCHEDULE": "Horario",
+        "DOCUMENTS": "Documentos",
+        "NAMES": "Nombres",
+        "SURNAMES": "Apellidos",
+        "AGE": "Edad",
+        "DETAILS": "Detalle",
+        "HOSPITALIZATION": "Hospitalización",
+        "URGENCY": "Urgencia",
+        "STATUS": "Estado",
+        "DOMAIN": "Dominio"
+      },
+      "TOOLTIPS": {
+        "PDF": "PDF de cita",
+        "MAIL_FORWARD": "Reenvío de correos",
+        "REQUEST": "Solicitud de estudio",
+        "OVERBOOKING": "Esta cita fue sobreagendada.",
+        "AGE": "Edad al momento de la realización del estudio",
+        "OUTPATIENT": "Ambulatorio",
+        "INPATIENT": "Internado"
+      },
+      "DOMAIN": {
+        "REQUESTING": "Solicitante: ",
+        "IMAGING": "Realizador: ",
+        "REPORTING": "Informador: "
+      }
+    },
+    "FORM_INSERT": {
+      "TITLE": "Paso 04 - Detalles de la cita",
+      "SUMMARY": {
+        "TITLE": "Resumen:",
+        "APPOINTMENT_DATA_TITLE": "Datos de la cita a coordinar:",
+        "APPOINTMENT_DATE": "Fecha de cita:",
+        "START_TIME": "Hora de inicio:",
+        "END_TIME": "Hora de fin:",
+        "EQUIPMENT": "Equipamiento:",
+        "URGENCY": "Urgencia:",
+        "PREPARATION_TITLE": "Preparación previa:",
+        "NO_PREPARATION": "El procedimiento seleccionado NO posee preparación previa.",
+        "ACCESS_KEY_TITLE": "Clave de acceso:",
+        "RANDOM_PASSWORD": "Contraseña aleatoria designada:",
+        "PASSWORD_NOTE": "Nota: Una vez finalizado el ingreso de la cita la contraseña designada NO será accesible."
+      },
+      "PATIENT": {
+        "TITLE": "Datos del paciente:",
+        "DOCUMENTS": "Documento/s:",
+        "FULL_NAME": "Nombre completo:",
+        "BIRTH_DATE": "Fecha de nacimiento:",
+        "GENDER": "Género:",
+        "STATUS": "Estado:",
+        "SENSITIVE_INFO": "Información sensible"
+      },
+      "STUDY": {
+        "TITLE": "Realización del estudio:",
+        "DOMAIN_HIERARCHY": "Organización ► Sucursal ► Servicio:",
+        "PROCEDURE": "Procedimiento a realizar:",
+        "MODALITY": "Modalidad:",
+        "REQUIRES_INFORMED_CONSENT": "Requiere consentimiento informado:"
+      },
+      "DETAILS": {
+        "TITLE": "Detalles de la cita",
+        "INDICATIONS": "Indicaciones",
+        "CONTACT": "Contacto"
+      },
+      "REQUESTING_PARTY": {
+        "TITLE": "Solicitante:",
+        "ORGANIZATION": "Organización solicitante:",
+        "ORGANIZATION_PLACEHOLDER": "Seleccione la organización solicitante"
+      },
+      "INFORMING_PARTY": {
+        "TITLE": "Informador:",
+        "SERVICE": "Servicio informador:",
+        "SERVICE_PLACEHOLDER": "Seleccione el servicio informador",
+        "DOCTOR": "Médico informador:",
+        "DOCTOR_PLACEHOLDER": "Seleccione el médico informador",
+        "REPORT_DUE_DATE": "Informe requerido antes de:"
+      },
+      "ADDRESS": {
+        "TITLE": "Domicilio actual del paciente:",
+        "COUNTRY": "País:",
+        "STATE": "Estado | Provincia | Departamento",
+        "CITY": "Ciudad:",
+        "NEIGHBORHOOD": "Barrio | Zona:",
+        "ADDRESS": "Dirección del domicilio:",
+        "COUNTRY_PLACEHOLDER": "Ingrese el país",
+        "STATE_PLACEHOLDER": "Ingrese el Estado | Provincia | Departamento",
+        "CITY_PLACEHOLDER": "Ingrese la ciudad",
+        "NEIGHBORHOOD_PLACEHOLDER": "Ingrese el Barrio | Zona del domicilio",
+        "ADDRESS_PLACEHOLDER": "Ingrese la dirección completa del domicilio",
+        "CONTACT_PLACEHOLDER": "Ingrese dato de contacto (teléfono, celular, correo)"
+      },
+      "CONTRAST": {
+        "TITLE": "Medios de contraste:",
+        "REQUEST": "Solicita contraste:",
+        "TYPE": "Tipo de contraste:",
+        "TYPE_PLACEHOLDER": "Ingrese el tipo de contraste solicitado."
+      },
+      "HOSPITALIZATION": {
+        "TITLE": "Hospitalización:",
+        "TYPE": "Tipo de hospitalización:",
+        "TYPE_PLACEHOLDER": "Seleccione el tipo de hospitalización",
+        "WHERE": "Donde:",
+        "WHERE_PLACEHOLDER": "Ingrese donde está hospitalizado el paciente (Institución).",
+        "ROOM": "Sala | Habitación | Piso:",
+        "ROOM_PLACEHOLDER": "Ingrese la sala, habitación, piso donde está hospitalizado el paciente.",
+        "CONTACT": "Contacto:",
+        "CONTACT_PLACEHOLDER": "Ingrese dato de contacto (teléfono, celular, correo)"
+      },
+      "CONSENTS": {
+        "TITLE": "Consentimientos",
+        "FILE_MAX_SIZE_PRE": "Máx.",
+        "FILE_MAX_SIZE_POST": "MB",
+        "INFORMED_CONSENT": "CONSENTIMIENTO INFORMADO",
+        "UPLOADING_INFORMED_CONSENT": "SUBIENDO CONSENTIMIENTO INFORMADO",
+        "UPLOAD_INFORMED_CONSENT": "SUBIR CONSENTIMIENTO INFORMADO",
+        "RESEARCH_CONSENT": "CONSENTIMIENTO DE INVESTIGACIÓN",
+        "UPLOADING_RESEARCH_CONSENT": "SUBIENDO CONSENTIMIENTO DE INVESTIGACIÓN",
+        "UPLOAD_RESEARCH_CONSENT": "SUBIR CONSENTIMIENTO DE INVESTIGACIÓN"
+      },
+      "ATTACHMENTS": {
+        "TITLE": "Archivos adjuntos",
+        "NO_FILES_FOUND": "No se encontraron archivos adjuntos.",
+        "UPLOADING_FILE": "SUBIENDO ARCHIVO",
+        "ATTACH_FILE": "ADJUNTAR ARCHIVO"
+      },
+      "ERROR": {
+        "INSUFFICIENT_DATA": "No se hallaron datos suficientes para poder continuar (paciente, servicio, modalidad, procedimiento, turno y/o fechas de cita).",
+        "BACK_TO_LIST": "VOLVER AL LISTADO"
+      }
+    },
+    "FORM_REQUEST": {
+      "TITLE": "Formulario de solicitudes",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "DETAILS_TITLE": "Detalles de la solicitud:",
+      "REQUESTING_INSTITUTION": "Institución solicitante:",
+      "PERFORMING_INSTITUTION": "Institución realizadora:",
+      "REQUEST_DATE": "Fecha de solicitud:",
+      "REQUESTED_PROCEDURE": "Procedimiento solicitado:",
+      "MODALITY": "Modalidad:",
+      "URGENCY": "Urgencia:",
+      "PATIENT_DOCUMENT": "Documento:",
+      "PATIENT_FULL_NAME": "Nombre completo:",
+      "PATIENT_AGE": "Edad:",
+      "PATIENT_AGE_TOOLTIP": "Edad al momento de realizar la solicitud del estudio",
+      "PATIENT_GENDER": "Género:",
+      "PATIENT_EMAIL": "Correo:",
+      "PATIENT_PHONES": "Teléfonos:",
+      "REQUESTING_PHYSICIAN": "Médico solicitante:",
+      "PHYSICIAN_ID": "Nro de caja:",
+      "PHYSICIAN_CONTACT": "Contacto:",
+      "WAITING_FOR_DETAILS": "Aguarde, aún no se cargaron los detalles de la solicitud.",
+      "STATUS_AND_ANNOTATIONS": "Estado y anotaciones:",
+      "WORKFLOW": "Flujo de trabajo:",
+      "ANNOTATIONS": "Anotaciones"
+    },
+    "FORM_UPDATE": {
+      "TITLE": "Formulario de actualización de cita",
+      "APPOINTMENT_DETAILS_TITLE": "Detalles de la cita:",
+      "MISSING_SLOT_SELECTION_ERROR": "Falta seleccionar en la pestaña de Detalles de la coordinación en qué momento se llevará a cabo la cita.",
+      "PROCEDURE_LOAD_ERROR": "Error al intentar cargar el procedimiento asociado: ",
+      "TABS": {
+        "DETAILS": "Detalles de la cita",
+        "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña",
+        "COORDINATION_DETAILS": "Detalles de la coordinación",
+        "PREVIOUS_STUDIES": "Estudios previos"
+      },
+      "PREVIOUS_STUDIES": {
+        "TABLE": {
+          "WORKFLOW": "Flujo de estudio",
+          "VIEW_REPORT": "Ver informe",
+          "CHECKIN_TIME": "Hora recepción"
+        },
+        "NO_STUDIES_FOUND": "No se encontraron estudios previos."
+      },
+      "TAB_DETAILS": {
+        "REPORT_DATE_ERROR": "Debe establecerce nuevamente una fecha para el campo \"Informe requerido antes de\" (No puede ser menor a la fecha de coordinación).",
+        "CANCELLATION_REASONS": "Motivos de cancelación"
+      },
+      "TAB_SLOT": {
+        "DATEPICKER_BUTTON": "BUSCAR FECHA",
+        "NORMAL_SLOTS_BUTTON": "TURNOS COMÚNES",
+        "URGENT_SLOTS_BUTTON": "TURNOS URGENTES",
+        "VIEW_DAY_BUTTON": "DÍA",
+        "VIEW_WEEK_BUTTON": "SEMANA",
+        "CURRENTLY_EDITING_EVENT": " [Editando actualmente]",
+        "IN_PROGRESS_EVENT": " [Coordinación en curso]",
+        "ALL_EQUIPMENTS_BUTTON": "Todos los equipos",
+        "EQUIPMENT_DATA_TITLE": "Datos del equipo:",
+        "SELECTED_EQUIPMENT": "Equipo seleccionado:",
+        "PROCEDURE_DURATION": "Duración del procedimiento:",
+        "APPOINTMENT_DATA_TITLE": "Datos de la cita:",
+        "APPOINTMENT_DATE": "Fecha de la cita:",
+        "START_TIME": "Hora de inicio:",
+        "END_TIME": "Hora de fin:",
+        "ALLOW_OVERBOOKING": "Permitir sobre agendar",
+        "EDIT_COORDINATION_DISABLED_MESSAGE": "Para poder editar los detalles de la coordinación de la cita, la misma debe encontrarse Activa y en estado de flujo como Coordinada."
+      }
+    },
+    "LIST_REQUESTS": {
+      "TITLE": "Listado de solicitudes",
+      "XLSX_SHEET_NAME": "solicitudes",
+      "TOOLTIPS": {
+        "DETAILS": "Detalles de la solicitud",
+        "CREATE_APPOINTMENT": "Crear cita a partir de la solicitud"
+      },
+      "TABLE": {
+        "FLOW_STATE": "Flujo de solicitud",
+        "REFERRING_INSTITUTION": "Institución Solicitante",
+        "IMAGING_INSTITUTION": "Institución realizadora"
+      }
+    },
+    "SELECT_PROCEDURE": {
+      "TITLE": "Paso 02 - Selección de servicio y procedimiento",
+      "NO_CATEGORY_WARNING": "Advertencia: No se encuentra ninguna categoría de procedimiento cargada en el servicio seleccionado.",
+      "NO_PROCEDURE_WARNING": "Advertencia: No se encuentra ningún procedimiento cargado en la modalidad del servicio seleccionado.",
+      "INVALID_PROCEDURE_ID_WARNING": "Advertencia: El procedimiento indicado NO posee un _id válido (ObjectId).",
+      "TABS": {
+        "SERVICE_AND_PROCEDURE": "Servicio y procedimiento"
+      },
+      "SERVICE_AND_PROCEDURE_TITLE": "Servicio y procedimiento:",
+      "SERVICE_PLACEHOLDER": "Seleccione el servicio",
+      "CATEGORY_LABEL": "Categoría de procedimiento:",
+      "CATEGORY_PLACEHOLDER": "Seleccione la categoría",
+      "PROCEDURE_PLACEHOLDER": "Seleccione el procedimiento",
+      "REQUESTED_STUDY_TITLE": "Estudio indicado en la solicitud:",
+      "BACK_BUTTON": "ATRÁS",
+      "NEXT_BUTTON": "SIGUIENTE",
+      "NO_PATIENT_DATA_ERROR": "No se hallaron los datos correspondientes al paciente, intente desde el formulario de chequeo de personas.",
+      "GO_TO_CHECK_FORM_BUTTON": "IR AL FORMULARIO DE CHEQUEO"
+    },
+    "SELECT_SLOT": {
+      "TITLE": "Paso 03 - Coordinar procedimiento sobre un turno",
+      "SAVE_SUCCESS_MESSAGE": "¡Guardado de cita en proceso exitoso!",
+      "NO_DATA_ERROR": "No se hallaron datos suficientes para poder continuar (paciente, servicio, modalidad y/o procedimiento)."
+    },
+    "SET_PATIENT": {
+      "TITLE": "Paso 01 - Chequeo de datos del paciente",
+      "EMAIL_MACHINE_ERROR": "El correo indicado NO puede utilizarse, el mismo se encuentra asociado a un usuario de tipo máquina.",
+      "DATA_LOADED_MESSAGE": "Datos cargados desde la base de datos local por coincidencia de documento.",
+      "ANONYMOUS_NAME": "ANÓNIMO",
+      "PASSWORD_MISMATCH_ERROR": "Las contraseñas ingresadas no coinciden entre si.",
+      "TABS": {
+        "PERSON": "Persona",
+        "INSERT_TOOLTIP": "Insersión de nuevo registro",
+        "UPDATE_TOOLTIP": "Actualización de registro existente",
+        "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña",
+        "USER": "Usuario"
+      },
+      "PERSON_DATA_TITLE": "Datos de la persona:",
+      "ANONYMIZE_USER_TOOLTIP": "Anonimizar usuario",
+      "PATIENT_ORGANIZATION": "Organización del paciente ",
+      "PATIENT_PERMISSIONS": "Permisos del paciente"
+    }
+  },
+  "PRIVATE_HEALTH": {
+    "TITLE": "Datos privados de salud",
+    "HEIGHT": "Altura",
+    "WEIGHT": "Peso",
+    "CENTIMETERS": "Centímetros",
+    "KILOGRAMS": "Kilogramos",
+    "DIABETES": "Diabetes",
+    "HYPERTENSION": "Hipertensión",
+    "EPOC": "EPOC",
+    "SMOKING": "Tabaquismo",
+    "MALNUTRITION": "Desnutrición",
+    "OBESITY": "Obesidad",
+    "ASTHMA": "Asma",
+    "PREGNANCY": "Embarazo",
+    "CLAUSTROPHOBIA": "Claustrofobia",
+    "RENAL_INSUFFICIENCY": "Insuficiencia renal",
+    "HEART_FAILURE": "Insuficiencia cardíaca",
+    "ISCHEMIC_HEART_DISEASE": "Cardiopatía isquémica",
+    "VALVULOPATHY": "Valvulopatía",
+    "ARRHYTHMIA": "Arritmia",
+    "HIV": "VIH",
+    "CANCER": "Cáncer",
+    "DEMENTIA": "Demencia",
+    "HYPERTHYROIDISM": "Hipertiroidismo",
+    "HYPOTHYROIDISM": "Hipotiroidismo",
+    "OTHER_PATOLOGY": "Otro antecedente/patología",
+    "OTHER_PATOLOGY_PLACEHOLDER": "Ingrese el o los antecedentes/patologías.",
+    "MEDICATION": "Medicación",
+    "ALLERGIES": "Alergias",
+    "ALLERGIES_PLACEHOLDER": "Indique si posee algúna alergia.",
+    "IMPLANTS": {
+      "TITLE": "Implantes",
+      "COCHLEAR_IMPLANT": "Implante coclear",
+      "CARDIAC_STENT": "Stent cardíaco",
+      "METAL_PROSTHESES": "Prótesis metálicas",
+      "METAL_SHARDS": "Esquirlas metálicas",
+      "PACEMAKER": "Marcapasos",
+      "OTHER_TYPE": "Otro tipo de implante",
+      "OTHER_PLACEHOLDER": "Ingrese el o los tipos de impantes."
+    },
+    "COVID19": {
+      "TITLE": "COVID-19",
+      "HAD_COVID": "Tuvo COVID-19",
+      "VACCINATED": "Vacunado",
+      "DETAILS": "Detalles",
+      "DETAILS_PLACEHOLDER": "Indique detalles"
+    }
+  },
   "COMMON": {
     "SAVE": "Guardar",
     "CANCEL": "Cancelar",
     "DELETE": "Eliminar",
     "EDIT": "Editar",
     "SEARCH": "Buscar",
-    "ERROR_EDITING_ELEMENT": "Error al intentar editar el elemento: "
+    "ERROR_EDITING_ELEMENT": "Error al intentar editar el elemento: ",
+    "ORGANIZATION_LABEL": "Organización",
+    "BRANCH_LABEL": "Sucursal",
+    "SERVICE_LABEL": "Servicio"
   },
   "THEME": {
     "LABEL": "Tema",
@@ -105,14 +417,12 @@
     "GENERATE_BATCH": "GENERAR LOTE",
     "VIEW_APPOINTMENTS_DRAFTS": "VER CITAS EN CURSO",
     "ADD_MACHINE_USER": "AÑADIR USUARIO MAQUINA",
-
     "SEARCH": "Buscar",
     "SEARCH_PLACEHOLDER": "Criterio de busqueda [RegEx]",
     "SELECT_DATE_RANGE": "Seleccione rango de fechas",
     "START_DATE": "Fecha inicio",
     "END_DATE": "Fecha fin",
     "SELECT_DATE": "Seleccione fecha",
-
     "FLOW_STATE": "Flujo del elemento",
     "MODALITY": "Modalidad",
     "STATUS": "Estado",
@@ -121,22 +431,18 @@
     "URGENCY": "Urgencia",
     "URGENCY_HIGH": "Urgente",
     "URGENCY_NORMAL": "Normal",
-
     "USER_ID": "ID Usuario",
     "USER_ID_PLACEHOLDER": "_id de usuario",
     "SHOW_ASSIGNED_STUDIES_ONLY": "VER SOLO ESTUDIOS ASIGNADOS",
-
     "EVENT": "Evento",
     "CLEAR_SEARCH": "LIMPIAR BÚSQUEDA",
     "DELETE_SELECTION": "BORRAR SELECCIÓN",
     "SEARCH_HELP": "Ayuda para búsquedas",
-
     "TOTAL": "Total",
     "SHOWN": "Mostrados",
     "PAGE": "Página",
     "OF": "de",
     "ITEMS_PER_PAGE": "Items por página",
-
     "KEYWORDS": "Buscar palabras clave:",
     "ANAMNESIS": "Anamnesis",
     "ANAMNESIS_HINT": "Buscar palabra sobre anamnesis",
@@ -150,27 +456,21 @@
     "SUMMARY": "En suma:",
     "SUMMARY_LABEL": "Palabra en el en suma",
     "REPORT": "INFORME",
-
     "PATHOLOGIES": "Patologías",
     "PATHOLOGIES_OF": "Patologías del",
     "NO_PATHOLOGIES_FILTERED": "Sin filtrar por patologías",
-
     "ORGANIZATION": "Organización",
     "SELECT_ORGANIZATION": "Seleccione la organización",
-
     "INVOLVED_DOCTORS": "Médicos involucrados:",
     "REQUESTING_PHYSICIAN": "Médico solicitante",
     "REQUEST_LABEL": "SOLICITUD",
     "REQUESTING_PHYSICIAN_LABEL": "Nombre/s o Apellido/s del médico solicitante",
-
     "SIGNED_BY": "Firmado por:",
     "SIGNING_USER": "Usuario firmante",
     "SELECT_SIGNING_USER": "Seleccione el usuario firmante",
-
     "AUTHENTICATED_BY": "Autenticado por:",
     "AUTHENTICATOR_USER": "Usuario autenticador",
     "SELECT_AUTHENTICATOR_USER": "Seleccione el usuario autenticador",
-
     "SEARCH_BUTTON": "BUSCAR",
     "CLEAN_BUTTON": "LIMPIAR BÚSQUEDA",
     "PATHOLOGIES_ADMIN_LABEL": "Administradora de patologías",

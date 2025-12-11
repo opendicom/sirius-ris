@@ -47,7 +47,7 @@ export class StatsPerformingComponent implements OnInit {
 
   //Set Chart colors and color schemes:
   public gender_colors = [
-    { name: "Macsulino", value: '#05a3ff87' },
+    { name: "Masculino", value: '#05a3ff87' },
     { name: "Femenino", value: '#d53a9d87' },
     { name: "Otros", value: 'var(--green-highlighted)' },
   ];

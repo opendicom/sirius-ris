@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                                      // PDF Service
+import { I18nService } from '@app/shared/services/i18n.service';                                // I18n Service
 import {                                                                                        // Enviroments
   regexObjectId,
   appointments_flow_states,
@@ -33,7 +34,7 @@ export class ListComponent implements OnInit {
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('citas', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('APPOINTMENTS.LIST.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -57,14 +58,15 @@ export class ListComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
-    public pdfService       : PdfService
+    public pdfService       : PdfService,
+    private i18n            : I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de citas',
+      content_title       : this.i18n.instant('APPOINTMENTS.LIST.TITLE'),
       content_icon        : 'event_available',
       add_button          : '/appointments/set_patient',
       manage_drafts       : '/appointments/list_drafts',

@@ -5,19 +5,19 @@
         <div *ngIf="sharedFunctions.response && sharedFunctions.response.data; then thenBlockDetails else elseBlockDetails"></div>
 
         <ng-template #thenBlockDetails>
-            <h3 class="form-title text-center underline-fail-alt">Detalles de la solicitud:</h3>
+            <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.DETAILS_TITLE' | i18n }}</h3>
             <br/>
     
             <!-- referring -->
             <div *ngIf="sharedFunctions.response.data[0].referring" class="current-info divider-alt">
                 <span *ngIf="sharedFunctions.response.data[0].referring.branch; then thenBlockReferring else elseBlockReferring"></span>
                 <ng-template #thenBlockReferring>
-                    <small>Institución solicitante:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_INSTITUTION' | i18n }}</small><br/>
                     <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name + ' ► ' + sharedFunctions.response.data[0].referring.branch.short_name }}</span>
                 </ng-template>
 
                 <ng-template #elseBlockReferring>
-                    <small>Institución solicitante:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_INSTITUTION' | i18n }}</small><br/>
                     <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name }}</span>
                 </ng-template>
             </div>
@@ -26,25 +26,25 @@
             <div *ngIf="sharedFunctions.response.data[0].imaging" class="current-info divider-alt">
                 <span *ngIf="sharedFunctions.response.data[0].imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
                 <ng-template #thenBlockImaging>
-                    <small>Institución realizadora:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PERFORMING_INSTITUTION' | i18n }}</small><br/>
                     <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name + ' ► ' + sharedFunctions.response.data[0].imaging.branch.short_name }}</span>
                 </ng-template>
 
                 <ng-template #elseBlockImaging>
-                    <small>Institución realizadora:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PERFORMING_INSTITUTION' | i18n }}</small><br/>
                     <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name }}</span>
                 </ng-template>
             </div>
 
             <!-- date -->
             <div class="current-info" *ngIf="sharedProp.mainSettings.appSettings != undefined">
-                <small>Fecha de solicitud:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUEST_DATE' | i18n }}</small><br/>
                 <span >{{ sharedFunctions.response.data[0].createdAt | date:'dd/MM/yyyy':sharedProp.mainSettings.appSettings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
             </div>
 
             <!-- procedure -->
             <div *ngIf="sharedFunctions.response.data[0].procedure" class="current-info text-center divider-alt">
-                <small>Procedimiento solicitado:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTED_PROCEDURE' | i18n }}</small><br/>
                 <span class="badge-alt">
                 <span>{{ sharedFunctions.response.data[0].procedure.name }}</span>
                 </span>
@@ -52,7 +52,7 @@
 
             <!-- modality -->
             <div *ngIf="sharedFunctions.response.data[0].modality" class="current-info text-center divider-alt">
-                <small>Modalidad:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.MODALITY' | i18n }}</small><br/>
                 <span class="badge" matTooltip="{{ sharedFunctions.response.data[0].modality.code_meaning }}">
                 <span>{{ sharedFunctions.response.data[0].modality.code_value }}</span>
                 </span>
@@ -60,10 +60,10 @@
 
             <!-- urgency -->
             <div class="current-info text-center">
-                <small>Urgencia:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.URGENCY' | i18n }}</small><br/>
                 <div *ngIf="sharedFunctions.response.data[0].urgency; then thenBlock else elseBlock"></div>
-                <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-                <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+                <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
             </div>
 
             <div class="clear"></div>
@@ -73,7 +73,7 @@
             <div *ngIf="sharedFunctions.response.data[0].patient">
                 <!-- document -->
                 <div class="current-info divider-alt">
-                    <small>Documento:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_DOCUMENT' | i18n }}</small><br/>
                     <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
                     <span matTooltip="{{ document_types[sharedFunctions.response.data[0].patient.doc_type] }}">
                         <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
@@ -82,7 +82,7 @@
 
                 <!-- names -->
                 <div class="current-info divider-alt">
-                    <small>Nombre completo:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_FULL_NAME' | i18n }}</small><br/>
                     <span >
                     <span>{{ sharedFunctions.response.data[0].patient.name_01 }}</span>
 
@@ -100,15 +100,15 @@
 
                 <!-- patient_age -->
                 <div class="current-info divider-alt">
-                    <small>Edad:</small><br/>
-                    <span  matTooltip="Edad al momento de realizar la solicitud del estudio">
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_AGE' | i18n }}</small><br/>
+                    <span  matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_AGE_TOOLTIP' | i18n }}">
                         {{ sharedFunctions.calculateAge(sharedFunctions.response.data[0].patient.birth_date, sharedFunctions.response.data[0].createdAt) }}
                     </span>
                 </div>
 
                 <!-- gender -->
                 <div class="current-info divider-alt">
-                    <small>Género:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_GENDER' | i18n }}</small><br/>
                     <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ gender_types[sharedFunctions.response.data[0].patient.gender] }}">
                         <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                         <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
@@ -118,13 +118,13 @@
 
                 <!-- email-->
                 <div *ngIf="sharedFunctions.response.data[0].patient.email" class="current-info divider-alt">
-                    <small>Correo:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_EMAIL' | i18n }}</small><br/>
                     <span><small>{{ sharedFunctions.response.data[0].patient.email }}</small></span>
                 </div>
 
                 <!-- phone_numbers-->
                 <div class="current-info">
-                    <small>Teléfonos:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_PHONES' | i18n }}</small><br/>
                     <span *ngFor="let current of sharedFunctions.response.data[0].patient.phone_numbers" >
                         <span class="badge-accent">
                             <span>{{ current + ' ' }}</span>
@@ -139,7 +139,7 @@
             <div class="details-wrap">
                 <!-- anamnesis -->
                 <span *ngIf="sharedFunctions.response.data[0].anamnesis">
-                    <h3><strong>Anamnesis:</strong></h3>
+                    <h3><strong>{{ 'ACTION.ANAMNESIS' | i18n }}:</strong></h3>
                     <span innerHTML="{{ sharedFunctions.response.data[0].anamnesis }}"></span>
                 </span>
 
@@ -147,7 +147,7 @@
                 <span *ngIf="sharedFunctions.response.data[0].indications">
                     <br/><br/><hr class="soft-alt" /><br/>
 
-                    <h3><strong>Indicaciones:</strong></h3>
+                    <h3><strong>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }}:</strong></h3>
                     <span innerHTML="{{ sharedFunctions.response.data[0].indications }}"></span>
                 </span>
             </div>
@@ -157,24 +157,24 @@
                 <hr class="dashed" /><br/>
 
                 <div class="current-info text-center divider-alt physician">
-                <span>Médico solicitante:</span>
+                <span>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_PHYSICIAN' | i18n }}</span>
                 </div>
 
                 <!-- physician_name -->
                 <div *ngIf="sharedFunctions.response.data[0].extra.physician_name" class="current-info text-center divider-alt">
-                <small>Nombre completo:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</small><br/>
                 {{ sharedFunctions.response.data[0].extra.physician_name }}
                 </div>
 
                 <!-- physician_prof_id -->
                 <div *ngIf="sharedFunctions.response.data[0].extra.physician_prof_id" class="current-info text-center divider-alt">
-                <small>Nro de caja:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_ID' | i18n }}</small><br/>
                 {{ sharedFunctions.response.data[0].extra.physician_prof_id }}
                 </div>
 
                 <!-- physician_contact -->
                 <div *ngIf="sharedFunctions.response.data[0].extra.physician_contact" class="current-info text-center divider-alt">
-                <small>Contacto:</small><br/>
+                <small>{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_CONTACT' | i18n }}</small><br/>
                 <span class="badge-accent">{{ sharedFunctions.response.data[0].extra.physician_contact }}</span>
                 </div>
             </span>
@@ -183,19 +183,19 @@
         </ng-template>
 
         <ng-template #elseBlockDetails>
-            Aguarde, aún no se cargaron los detalles de la solicitud.
+            {{ 'APPOINTMENTS.FORM_REQUEST.WAITING_FOR_DETAILS' | i18n }}
         </ng-template>
       </div> <!-- end fxLayout wrapper -->
 
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">Estado y anotaciones:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.STATUS_AND_ANNOTATIONS' | i18n }}</h3>
         <br/>
 
         <!-- flow_state -->
         <span *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].flow_state">
-            <h3>Flujo de trabajo:</h3>
+            <h3>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h3>
             <mat-form-field appearance="fill" class="full">
-                <mat-label>Flujo de trabajo</mat-label>
+                <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
                 <mat-select formControlName="flow_state">
                     <div *ngFor="let currentFS of availableFS | keyvalue">
                         <div *ngIf="currentFS.key == 'AR05' || currentFS.key == 'AR06'; then thenBlockFS else elseBlockFS"></div>
@@ -212,7 +212,7 @@
             <br/><br/>
         </span>
 
-        <h4>Anotaciones <span class="label-info">min: 10, max: 2000</span>:</h4>
+        <h4>{{ 'APPOINTMENTS.FORM_REQUEST.ANNOTATIONS' | i18n }} <span class="label-info">min: 10, max: 2000</span>:</h4>
         <ckeditor formControlName="annotations" #annotations [editor]="annotationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
   
         <br/><br/>
@@ -222,8 +222,8 @@
   
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="submit" color="primary">GUARDAR</button> <!-- [disabled]="form_data.invalid" -->
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
       </div> <!-- end fxLayout wrapper -->
     </div>
   </form>

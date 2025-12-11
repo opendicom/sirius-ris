@@ -6,18 +6,18 @@
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'APPOINTMENTS.LIST.TABLE.ACTIONS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" (click)="resumeAppointmentDraft(element._id)" matTooltip="Continuar cita en curso">
+          <button mat-icon-button color="accent" (click)="resumeAppointmentDraft(element._id)" matTooltip="{{ 'APPOINTMENTS.LIST_DRAFTS.TOOLTIPS.CONTINUE' | i18n }}">
             <mat-icon>published_with_changes</mat-icon>
           </button>
           
-          <button mat-icon-button color="accent" (click)="deleteAppointmentsDrafts(element)" matTooltip="Descartar cita en curso">
+          <button mat-icon-button color="accent" (click)="deleteAppointmentsDrafts(element)" matTooltip="{{ 'APPOINTMENTS.LIST_DRAFTS.TOOLTIPS.DISCARD' | i18n }}">
             <mat-icon>delete_forever</mat-icon>
           </button>
 
           <span *ngIf="element.appointment_request">
-            <button mat-icon-button color="accent" matTooltip="Solicitud de estudio" routerLink="/appointments/list_requests/{{ element.appointment_request._id }}">
+            <button mat-icon-button color="accent" matTooltip="{{ 'APPOINTMENTS.LIST.TOOLTIPS.REQUEST' | i18n }}" routerLink="/appointments/list_requests/{{ element.appointment_request._id }}">
               <mat-icon>move_to_inbox</mat-icon>
             </button>
           </span>
@@ -26,49 +26,49 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> Organización </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.ORGANIZATION_LABEL' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.imaging">
             <span *ngIf="element.imaging.organization; then thenBlockImagingOrganization else elseBlockImagingOnization"></span>
             <ng-template #thenBlockImagingOrganization>
               <span innerHTML="{{ element.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
             </ng-template>
-            <ng-template #elseBlockImagingOnization>(Sin dato)</ng-template>
+            <ng-template #elseBlockImagingOnization>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
           </span>
         </td>
       </ng-container>
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'COMMON.BRANCH_LABEL' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.imaging">
             <span *ngIf="element.imaging.branch; then thenBlockImagingBranch else elseBlockImagingBranch"></span>
             <ng-template #thenBlockImagingBranch>
               <span innerHTML="{{ element.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
             </ng-template>
-            <ng-template #elseBlockImagingBranch>(Sin dato)</ng-template>
+            <ng-template #elseBlockImagingBranch>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
           </span>
         </td>
       </ng-container>
 
       <!-- service -->
       <ng-container matColumnDef="service">
-        <th mat-header-cell *matHeaderCellDef> Servicio </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'SLOTS.LIST.TABLE.SERVICE' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.imaging">
             <span *ngIf="element.imaging.service; then thenBlockImagingService else elseBlockImagingService"></span>
             <ng-template #thenBlockImagingService>
               <span innerHTML="{{ element.imaging.service.name | highlighter : sharedProp.filter }}"></span>
             </ng-template>
-            <ng-template #elseBlockImagingService>(Sin dato)</ng-template>
+            <ng-template #elseBlockImagingService>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
           </span>
         </td>
       </ng-container>
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'APPOINTMENTS.LIST.TABLE.DATE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
         </td>
@@ -76,9 +76,9 @@
 
       <!-- schedule -->
       <ng-container matColumnDef="schedule">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Horario </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'APPOINTMENTS.LIST.TABLE.SCHEDULE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <span [class.overbooking]="element.overbooking===true" [matTooltip]="element.overbooking ? 'Esta cita en curso será sobreagendada.' : ''">
+          <span [class.overbooking]="element.overbooking===true" [matTooltip]="element.overbooking ? ('APPOINTMENTS.LIST_DRAFTS.TOOLTIPS.OVERBOOKING_DRAFT' | i18n) : ''">
             <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} a </span>
             <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} hs</span>
           </span>
@@ -87,7 +87,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'APPOINTMENTS.LIST.TABLE.DOCUMENTS' | i18n }} </th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -105,7 +105,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'APPOINTMENTS.LIST.TABLE.NAMES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -121,7 +121,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'APPOINTMENTS.LIST.TABLE.SURNAMES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -137,7 +137,7 @@
 
       <!-- patient_age -->
       <ng-container matColumnDef="patient_age">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'APPOINTMENTS.LIST.TOOLTIPS.AGE' | i18n }}" class="column-alt text-center"> {{ 'APPOINTMENTS.LIST.TABLE.AGE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -149,7 +149,7 @@
 
       <!-- details -->
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'APPOINTMENTS.LIST.TABLE.DETAILS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <!-- procedure -->
           <span *ngIf="element.procedure">
@@ -168,7 +168,7 @@
                 <span innerHTML="{{ element.slot.equipment.name | highlighter : sharedProp.filter }}"></span>
               </span>
             </ng-template>
-            <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+            <ng-template #elseBlockTableEquipment>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
           </span>
 
           <!-- modality -->
@@ -176,17 +176,17 @@
           <ng-template #thenBlockTableModality>
             <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
           </ng-template>
-          <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableModality>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- urgency -->
       <ng-container matColumnDef="urgency">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Urgencia </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'APPOINTMENTS.LIST.TABLE.URGENCY' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+          <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
         </td>
       </ng-container>
 
@@ -199,7 +199,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'BRANCHES.LIST.WAIT_NO_RESULTS' | i18n }}
   </div>
 </ng-template>
 
@@ -209,4 +209,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'BRANCHES.LIST.EXPORT_LIST' | i18n }}</button></div>

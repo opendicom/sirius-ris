@@ -7,18 +7,18 @@
       <!-- PROCEDURE TAB: ------------------------------------------------------------------------------------------------------------- -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">format_list_numbered</mat-icon> Servicio y procedimiento
+          <mat-icon class="tab-icon">format_list_numbered</mat-icon> {{ 'APPOINTMENTS.SELECT_PROCEDURE.TABS.SERVICE_AND_PROCEDURE' | i18n }}
         </ng-template>
 
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-            <h2 class="form-title text-center underline-fail-alt">Servicio y procedimiento:</h2>
+            <h2 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.SELECT_PROCEDURE.SERVICE_AND_PROCEDURE_TITLE' | i18n }}</h2>
             <br/>
       
-            <h4>Servicio:</h4>
+            <h4>{{ 'COMMON.SERVICE_LABEL' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Servicio</mat-label>
-              <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="Seleccione el servicio">
+              <mat-label>{{ 'COMMON.SERVICE_LABEL' | i18n }}</mat-label>
+              <mat-select formControlName="domain" (closed)="onChangeService()" placeholder="{{ 'APPOINTMENTS.SELECT_PROCEDURE.SERVICE_PLACEHOLDER' | i18n }}">
                 <div *ngFor="let currentService of availableServices">
                   <div *ngFor="let currentBranch of availableBranches">
                     <div *ngFor="let currentOrganization of availableOrganizations">
@@ -29,20 +29,20 @@
               </mat-select>
             </mat-form-field>
       
-            <h4>Categoría de procedimiento:</h4>
+            <h4>{{ 'APPOINTMENTS.SELECT_PROCEDURE.CATEGORY_LABEL' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Categoría de procedimiento</mat-label>
-              <mat-select formControlName="id_category" (closed)="onChangeCategory()" placeholder="Seleccione la categoría">
+              <mat-label>{{ 'APPOINTMENTS.SELECT_PROCEDURE.CATEGORY_LABEL' | i18n }}</mat-label>
+              <mat-select formControlName="id_category" (closed)="onChangeCategory()" placeholder="{{ 'APPOINTMENTS.SELECT_PROCEDURE.CATEGORY_PLACEHOLDER' | i18n }}">
                 <div *ngFor="let currentCategory of availableCategories">
                   <mat-option (click)="setProceduresIN(currentCategory.fk_procedures)" value="{{ currentCategory._id }}">{{ currentCategory.name }}</mat-option>
                 </div>
               </mat-select>
             </mat-form-field>
       
-            <h4>Procedimiento:</h4>
+            <h4>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.PROCEDURE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
-              <mat-label>Procedimiento</mat-label>
-              <mat-select formControlName="fk_procedure" placeholder="Seleccione el procedimiento">
+              <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.STUDY.PROCEDURE' | i18n }}</mat-label>
+              <mat-select formControlName="fk_procedure" placeholder="{{ 'APPOINTMENTS.SELECT_PROCEDURE.PROCEDURE_PLACEHOLDER' | i18n }}">
                 <div *ngFor="let currentProcedure of availableProcedures">
                   <mat-option value="{{ currentProcedure._id }}">{{ currentProcedure.name }}</mat-option>
                 </div>
@@ -52,7 +52,7 @@
           </div> <!-- end fxLayout wrapper -->
       
           <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-            <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2><br/>
+            <h2 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.TITLE' | i18n }}</h2><br/>
       
             <span *ngIf="this.sharedProp.current_patient">
               <span *ngIf="this.sharedProp.current_patient.person">
@@ -60,7 +60,7 @@
                 <div class="user-wrap">
                   <!-- documents -->
                   <div class="user-info">
-                    <small>Documento/s:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</small><br/>
                     <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
                       <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                       <span matTooltip="{{ document_types[current.doc_type] }}">{{ current.document }}</span>
@@ -70,7 +70,7 @@
       
                   <!-- names -->
                   <div class="user-info">
-                    <small>Nombre completo:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</small><br/>
                     <span class="user-first">
                       <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
       
@@ -94,13 +94,13 @@
                 <div class="user-wrap">
                   <!-- birth_date -->
                   <div class="user-info">
-                    <small>Fecha de nacimiento:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.BIRTH_DATE' | i18n }}</small><br/>
                     <span class="user-first">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
                   </div>
       
                   <!-- genre -->
                   <div class="user-info text-center">
-                    <small>Género:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.GENDER' | i18n }}</small><br/>
                     <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
                       <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                       <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
@@ -110,10 +110,10 @@
       
                   <!-- status -->
                   <div class="user-info text-center">
-                    <small>Estado:</small><br/>
+                    <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.STATUS' | i18n }}</small><br/>
                     <span *ngIf="this.sharedProp.current_patient.status; then thenBlock else elseBlock"></span>
-                    <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
-                    <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
+                    <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}">done</mat-icon></ng-template>
+                    <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
                   </div>
       
                   <div class="clear"></div>
@@ -121,17 +121,17 @@
       
                 <!-- friendly password -->
                 <div class="friendly-pass-wrap" *ngIf="sharedProp.current_friendly_pass !== ''">
-                  <div class="user-info">Contraseña aleatoria designada: </div>
+                  <div class="user-info">{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.RANDOM_PASSWORD' | i18n }}</div>
                   <div class="user-info">
                     <span class="friendly-pass">{{ sharedProp.current_friendly_pass }}</span>
                   </div>
                   <div class="clear"></div><hr class="dashed" />
-                  <small><strong>Nota: </strong>Una vez finalizado el ingreso de la cita la contraseña designada NO será accesible.</small>
+                  <small><strong>{{ 'APPOINTMENTS.FORM_INSERT.SUMMARY.PASSWORD_NOTE' | i18n }}</strong></small>
                 </div>
       
                 <!-- appointment_request -->
                 <div class="appointment_request" *ngIf="appointment_request !== undefined && sharedFunctions.stringToBoolean(appointment_request) && sharedProp.current_appointment_request !== undefined">
-                  <h4 class="study">Estudio indicado en la solicitud:</h4>
+                  <h4 class="study">{{ 'APPOINTMENTS.SELECT_PROCEDURE.REQUESTED_STUDY_TITLE' | i18n }}</h4>
       
                   <!-- procedure -->
                   <span *ngIf="sharedProp.current_appointment_request.procedure">
@@ -145,7 +145,7 @@
                   <ng-template #thenBlockTableModality>
                     <span class="badge" matTooltip="{{ sharedProp.current_appointment_request.modality.code_meaning }}">{{ sharedProp.current_appointment_request.modality.code_value }}</span>
                   </ng-template>
-                  <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+                  <ng-template #elseBlockTableModality>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
       
                   <div class="clear"></div>
                 </div>
@@ -160,7 +160,7 @@
       <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">history</mat-icon> Estudios previos
+          <mat-icon class="tab-icon">history</mat-icon> {{ 'APPOINTMENTS.FORM_UPDATE.TABS.PREVIOUS_STUDIES' | i18n }}
         </ng-template>
 
         <div *ngIf="previous; then thenBlockTable else elseBlockTable"></div>
@@ -170,11 +170,11 @@
             <table mat-table [dataSource]="previous">
               <!-- flow_state -->
               <ng-container matColumnDef="flow_state">
-                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Flujo de estudio</th>
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">{{ 'APPOINTMENTS.FORM_UPDATE.PREVIOUS_STUDIES.TABLE.WORKFLOW' | i18n }}</th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <!--See report-->
                   <span *ngIf="element.flow_state == 'P09'">
-                    <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                    <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'APPOINTMENTS.FORM_UPDATE.PREVIOUS_STUDIES.TABLE.VIEW_REPORT' | i18n }}" color="accent">
                       <mat-icon>playlist_add_check</mat-icon>
                     </button>
                     <br/>
@@ -187,7 +187,7 @@
 
               <!-- date -->
               <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Fecha </th>
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'APPOINTMENTS.LIST.TABLE.DATE' | i18n }} </th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
                 </td>
@@ -195,7 +195,7 @@
 
               <!-- checkin_time -->
               <ng-container matColumnDef="checkin_time">
-                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Hora<br/>recepción </th>
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'APPOINTMENTS.FORM_UPDATE.PREVIOUS_STUDIES.TABLE.CHECKIN_TIME' | i18n }} </th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
                 </td>
@@ -203,7 +203,7 @@
 
               <!-- patient_age -->
               <ng-container matColumnDef="patient_age">
-                <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="text-center column-alt"> Edad </th>
+                <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'APPOINTMENTS.LIST.TOOLTIPS.AGE' | i18n }}" class="text-center column-alt"> {{ 'APPOINTMENTS.LIST.TABLE.AGE' | i18n }} </th>
                 <td mat-cell *matCellDef="let element" class="text-center">
                   <span *ngIf="element.patient">
                     <span *ngIf="element.patient.person">
@@ -215,7 +215,7 @@
 
               <!-- details -->
               <ng-container matColumnDef="details">
-                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Detalle </th>
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'APPOINTMENTS.LIST.TABLE.DETAILS' | i18n }} </th>
                 <td mat-cell *matCellDef="let element">
                   <!-- procedure -->
                   <span *ngIf="element.procedure">
@@ -231,24 +231,24 @@
                       <span>{{ element.equipment.name }}</span>
                       </span>
                   </ng-template>
-                  <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+                  <ng-template #elseBlockTableEquipment>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
 
                   <!-- modality -->
                   <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
                   <ng-template #thenBlockTableModality>
                     <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
                   </ng-template>
-                  <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+                  <ng-template #elseBlockTableModality>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
                 </td>
               </ng-container>
 
               <!-- domain -->
               <ng-container matColumnDef="domain">
-                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Dominio</th>
+                <th mat-header-cell *matHeaderCellDef class="text-center column-alt">{{ 'APPOINTMENTS.LIST.TABLE.DOMAIN' | i18n }}</th>
                 <td mat-cell *matCellDef="let element">
                   <div *ngIf="element.appointment" class="domain-container">
                     <!--referring-->
-                    <small><strong>Solicitante: </strong></small>
+                    <small><strong>{{ 'APPOINTMENTS.LIST.DOMAIN.REQUESTING' | i18n }}</strong></small>
                     <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
                     <ng-template #thenBlockReferring>
                       <small>
@@ -257,12 +257,12 @@
                         <span *ngIf="element.appointment.referring.service"> ► {{ element.appointment.referring.service.name }}</span>
                       </small>
                     </ng-template>
-                    <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+                    <ng-template #elseBlockReferring>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
 
                     <hr class="dashed" />
 
                     <!--imaging-->
-                    <small><strong>Realizador: </strong></small>
+                    <small><strong>{{ 'APPOINTMENTS.LIST.DOMAIN.IMAGING' | i18n }}</strong></small>
                     <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
                     <ng-template #thenBlockImaging>
                       <small>
@@ -271,12 +271,12 @@
                         <span *ngIf="element.appointment.imaging.service"> ► {{ element.appointment.imaging.service.name }}</span>
                       </small>
                     </ng-template>
-                    <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+                    <ng-template #elseBlockImaging>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
 
                     <hr class="dashed" />
 
                     <!--reporting-->
-                    <small><strong>Informador: </strong></small>
+                    <small><strong>{{ 'APPOINTMENTS.LIST.DOMAIN.REPORTING' | i18n }}</strong></small>
                     <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
                     <ng-template #thenBlockReporting>
                       <small>
@@ -285,7 +285,7 @@
                         <span *ngIf="element.appointment.reporting.service"> ► {{ element.appointment.reporting.service.name }}</span>
                       </small>
                     </ng-template>
-                    <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+                    <ng-template #elseBlockReporting>{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</ng-template>
                   </div>
                 </td>
               </ng-container>
@@ -299,7 +299,7 @@
         <!-- Await previous or not previous -->
         <ng-template #elseBlockTable>
           <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-            No se encontraron estudios previos.
+            {{ 'APPOINTMENTS.FORM_UPDATE.PREVIOUS_STUDIES.NO_STUDIES_FOUND' | i18n }}
           </div>
         </ng-template>
       </mat-tab>
@@ -309,9 +309,9 @@
     
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
-        <button mat-flat-button type="button" color="accent" routerLink="/appointments/set_patient">◄&nbsp; ATRÁS</button>
-        <button mat-flat-button type="submit" color="primary">SIGUIENTE &nbsp;►</button> <!-- [disabled]="form_data.invalid" -->
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
+        <button mat-flat-button type="button" color="accent" routerLink="/appointments/set_patient">◄&nbsp; {{ 'APPOINTMENTS.SELECT_PROCEDURE.BACK_BUTTON' | i18n }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'APPOINTMENTS.SELECT_PROCEDURE.NEXT_BUTTON' | i18n }} &nbsp;►</button> <!-- [disabled]="form_data.invalid" -->
       </div> <!-- end fxLayout wrapper -->
     </div>
     
@@ -324,10 +324,10 @@
     <mat-icon class="person-icon">person_off</mat-icon>
 
     <br/><br/><hr class="dashed" /><br/>
-    <h4>No se hallaron los datos correspondientes al paciente, intente desde el formulario de chequeo de personas.</h4>
+    <h4>{{ 'APPOINTMENTS.SELECT_PROCEDURE.NO_PATIENT_DATA_ERROR' | i18n }}</h4>
 
-    <button mat-flat-button type="button" (click)="onCancel();">VOLVER AL LISTADO</button>
-    <button mat-flat-button type="button" routerLink="/appointments/set_patient/" color="primary">IR AL FORMULARIO DE CHEQUEO</button>
+    <button mat-flat-button type="button" (click)="onCancel();">{{ 'APPOINTMENTS.FORM_INSERT.ERROR.BACK_TO_LIST' | i18n }}</button>
+    <button mat-flat-button type="button" routerLink="/appointments/set_patient/" color="primary">{{ 'APPOINTMENTS.SELECT_PROCEDURE.GO_TO_CHECK_FORM_BUTTON' | i18n }}</button>
 
     <br/><br/>
   </form>

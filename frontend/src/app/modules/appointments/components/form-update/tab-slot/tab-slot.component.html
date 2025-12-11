@@ -4,7 +4,7 @@
     <div class="calendar-container divider-alt">
       <!-- FullCalendar Datepicker -->
       <mat-form-field appearance="fill" id="invisible-datepicker" class="invisible-datepicker large" (click)="picker.open()">
-        <mat-label>Seleccione fecha</mat-label>
+        <mat-label>{{ 'ACTION.SELECT_DATE' | i18n }}</mat-label>
         <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (keydown)="false" (dateChange)="onChangeDate($event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -15,7 +15,7 @@
 
       <br/>
 
-      <button mat-flat-button type="button" appearance="fill" (click)="setResources('ALL')">Todos los equipos</button>
+      <button mat-flat-button type="button" appearance="fill" (click)="setResources('ALL')">{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.ALL_EQUIPMENTS_BUTTON' | i18n }}</button>
       <span *ngFor="let currentResource of calendarResources">
         <button mat-flat-button type="button" appearance="fill" color="accent" (click)="setResources(currentResource.id)">{{ currentResource.title.split('|')[0] }}</button>
       </span>
@@ -24,14 +24,14 @@
 
     <!-- Slot info container -->
     <div class="slot-container">
-      <h4 class="underline-ok-alt">Datos del equipo:</h4>
+      <h4 class="underline-ok-alt">{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.EQUIPMENT_DATA_TITLE' | i18n }}</h4>
 
       <div class="current-wrap" [class.unselected]="selectedEquipment == undefined">
         <!-- selected equipment -->
         <div class="current-info">
-          <small>Equipo seleccionado:</small><br/>
+          <small>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.SELECTED_EQUIPMENT' | i18n }}</small><br/>
           <span *ngIf="selectedEquipment == undefined; then thenBlockEquipment else elseBlockEquipment"></span>
-          <ng-template #thenBlockEquipment><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #thenBlockEquipment><span class="current-firts">{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</span></ng-template>
           <ng-template #elseBlockEquipment><span class="current-firts">{{ selectedEquipment.details.name }}</span></ng-template>
         </div>
         <div class="clear"></div>
@@ -40,9 +40,9 @@
       <div class="current-wrap" [class.unselected]="selectedEquipment == undefined">
         <!-- selected equipment duration -->
         <div class="current-info">
-          <small>Duración del procedimiento:</small><br/>
+          <small>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.PROCEDURE_DURATION' | i18n }}</small><br/>
           <span *ngIf="selectedEquipment == undefined; then thenBlockEquipmentDuration else elseBlockEquipmentDuration"></span>
-          <ng-template #thenBlockEquipmentDuration><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #thenBlockEquipmentDuration><span class="current-firts">{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</span></ng-template>
           <ng-template #elseBlockEquipmentDuration><span class="current-firts">{{ selectedEquipment.duration }} <small>min.</small></span></ng-template>
         </div>
         <div class="clear"></div>
@@ -50,14 +50,14 @@
 
       <br/><hr class="dashed" /><br/>
 
-      <h4 class="underline-ok-alt">Datos de la cita:</h4>
+      <h4 class="underline-ok-alt">{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.APPOINTMENT_DATA_TITLE' | i18n }}</h4>
 
       <div class="current-wrap" [class.unselected]="selectedStart == undefined">
         <!-- selected date -->
         <div class="current-info">
-          <small>Fecha de la cita:</small><br/>
+          <small>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.APPOINTMENT_DATE' | i18n }}</small><br/>
           <span *ngIf="selectedStart == undefined; then thenBlockDate else elseBlockDate"></span>
-          <ng-template #thenBlockDate><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #thenBlockDate><span class="current-firts">{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</span></ng-template>
           <ng-template #elseBlockDate><span class="current-firts">{{ selectedStart | date:"dd/MM/yyyy":"UTC" }}</span></ng-template>
         </div>
         <div class="clear"></div>
@@ -66,9 +66,9 @@
       <!-- selected start -->
       <div class="current-wrap" [class.unselected]="selectedStart == undefined">
         <div class="current-info">
-          <small>Hora de inicio:</small><br/>
+          <small>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.START_TIME' | i18n }}</small><br/>
           <span *ngIf="selectedStart == undefined; then thenBlockStart else elseBlockStart"></span>
-          <ng-template #thenBlockStart><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #thenBlockStart><span class="current-firts">{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</span></ng-template>
           <ng-template #elseBlockStart><span class="current-firts">{{ selectedStart | date:"HH:mm":"UTC" }}</span></ng-template>
         </div>
         <div class="clear"></div>
@@ -77,9 +77,9 @@
       <!-- selected end -->
       <div class="current-wrap" [class.unselected]="selectedEnd == undefined">
         <div class="current-info">
-          <small>Hora de fin:</small><br/>
+          <small>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.END_TIME' | i18n }}</small><br/>
           <span *ngIf="selectedEnd == undefined; then thenBlockEnd else elseBlockEnd"></span>
-          <ng-template #thenBlockEnd><span class="current-firts">Sin dato</span></ng-template>
+          <ng-template #thenBlockEnd><span class="current-firts">{{ 'BRANCHES.LIST.NO_DATA' | i18n }}</span></ng-template>
           <ng-template #elseBlockEnd><span class="current-firts">{{ selectedEnd | date:"HH:mm":"UTC" }}</span></ng-template>
         </div>
 
@@ -89,23 +89,23 @@
       <br/><hr class="dashed" /><br/>
 
       <div class="text-center">
-        <h4>Urgencia</h4>
+        <h4>{{ 'ACTION.URGENCY' | i18n }}</h4>
         <mat-radio-group color="primary" formControlName="urgency" (change)="onCheckUrgency($event)">
-          <mat-radio-button value="true">Si</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+          <mat-radio-button value="true">{{ 'PROCEDURES.FORM.YES' | i18n }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'PROCEDURES.FORM.NO' | i18n }}</mat-radio-button>
         </mat-radio-group>
       </div>
 
       <br/><hr class="dashed" /><br/>
 
       <div *ngIf="selectedEquipment && selectedStart && selectedEnd && selectedSlot" class="text-center">
-        <button mat-flat-button type="button" color="accent" (click)="onDelete();"><mat-icon>delete_forever</mat-icon>&nbsp; BORRAR SELECCIÓN</button>
+        <button mat-flat-button type="button" color="accent" (click)="onDelete();"><mat-icon>delete_forever</mat-icon>&nbsp; {{ 'ACTION.DELETE_SELECTION' | i18n }}</button>
       </div>
 
       <!-- 1: Superusuario, 2: Administrador, Concesiones: [23: Sobreagenda] -->
       <div class="text-center" *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [23]))" >
         <br/><hr class="dashed" /><br/>
-        <mat-checkbox color="primary" (change)="onCheckOverbooking($event)">Permitir sobre agendar</mat-checkbox>
+        <mat-checkbox color="primary" (change)="onCheckOverbooking($event)">{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.ALLOW_OVERBOOKING' | i18n }}</mat-checkbox>
       </div>
 
       <br/>
@@ -121,7 +121,7 @@
     <br/>
     <mat-icon class="calendar-cancel-icon">event_busy</mat-icon><br/>
 
-    <h4>Para poder editar los detalles de la coordinación de la cita, la misma debe encontrarse <strong>Activa</strong> y en estado de flujo como <strong>Coordinada</strong>.</h4>
+    <h4>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_SLOT.EDIT_COORDINATION_DISABLED_MESSAGE' | i18n }}</h4>
     <br/><br/>
   </form>
 </span>

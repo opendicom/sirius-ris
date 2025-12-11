@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import {                                                                                // Enviroments
   ISO_3166, 
   document_types, 
@@ -50,14 +51,15 @@ export class FormRequestComponent implements OnInit {
     private router          : Router,
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de solicitudes',
+      content_title : this.i18n.instant('APPOINTMENTS.FORM_REQUEST.TITLE'),
       content_icon  : 'move_to_inbox',
       add_button    : false,
       filters_form  : false,
@@ -105,7 +107,7 @@ export class FormRequestComponent implements OnInit {
 
         } else {
           //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + res.message);
+          this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_REQUEST.EDIT_ERROR') + res.message);
           this.router.navigate(['/appointments/list_requests']);
         }
       });

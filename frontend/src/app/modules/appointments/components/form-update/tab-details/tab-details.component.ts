@@ -9,11 +9,11 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   inpatient_types,
   appointments_flow_states,
-  cancellation_reasons,
-  privateHealthLang
+  cancellation_reasons
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -28,7 +28,6 @@ export class TabDetailsComponent implements OnInit {
   public inpatient_types      : any = inpatient_types;
   public appointmentsFS       : any = appointments_flow_states;
   public cancellation_reasons : any = cancellation_reasons;
-  public privateHealthLang    : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -61,8 +60,8 @@ export class TabDetailsComponent implements OnInit {
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
     public appointmentsService  : AppointmentsService,
-    public fileManager          : FileManagerService
-
+    public fileManager          : FileManagerService,
+    public i18n                 : I18nService
   ){
     //Initialize selected file objects:
     this.fileManager.uploadProgress = 0;
@@ -299,7 +298,7 @@ export class TabDetailsComponent implements OnInit {
         this.form.markAllAsTouched();
 
         //Send Message:
-        this.sharedFunctions.sendMessage('Debe establecerce nuevamente una fecha para el campo "Informe requerido antes de" (No puede ser menor a la fecha de coordinación).')
+        this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_UPDATE.TAB_DETAILS.REPORT_DATE_ERROR'))
       }
     }
 

@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                          // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
@@ -87,7 +88,8 @@ export class SetPatientComponent implements OnInit {
     public  sharedProp      : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
     private sharedValidate  : ValidateDocumentsService,
-    public  userService     : UsersService
+    public  userService     : UsersService,
+    private i18n            : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -97,7 +99,7 @@ export class SetPatientComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Paso 01 - Chequeo de datos del paciente',
+      content_title : this.i18n.instant('APPOINTMENTS.SET_PATIENT.TITLE'),
       content_icon  : 'hotel',
       add_button    : false,
       filters_form  : false,
@@ -650,7 +652,7 @@ export class SetPatientComponent implements OnInit {
       this.userTabErrors = true;
 
       //Send message:
-      this.sharedFunctions.sendMessage('Las contraseñas ingresadas no coinciden entre si.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SET_PATIENT.PASSWORD_MISMATCH_ERROR'));
     }
   }
 
@@ -671,7 +673,7 @@ export class SetPatientComponent implements OnInit {
           //If user exist in DB preserve local data:
           if(Object.keys(res).length > 0){
             //Send snakbar message:
-            this.sharedFunctions.sendMessage('Datos cargados desde la base de datos local por coincidencia de documento.', { duration : 2000 });
+            this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SET_PATIENT.DATA_LOADED_MESSAGE'), { duration : 2000 });
 
           //If user doesn't exist, set appointment request patient data:
           } else {
@@ -727,8 +729,8 @@ export class SetPatientComponent implements OnInit {
     //On set document to enable save button:
     this.onSetDocument(true, () => {
       //Set anonymized name and surname:
-      this.form.get('person.name_01')?.setValue('ANÓNIMO');
-      this.form.get('person.surname_01')?.setValue('ANÓNIMO');
+      this.form.get('person.name_01')?.setValue(this.i18n.instant('APPOINTMENTS.SET_PATIENT.ANONYMOUS_NAME'));
+      this.form.get('person.surname_01')?.setValue(this.i18n.instant('APPOINTMENTS.SET_PATIENT.ANONYMOUS_NAME'));
 
       //Set gender:
       this.form.get('person.gender')?.setValue('3');

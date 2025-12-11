@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';                                       // Router and Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';           // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                    // I18n Service
 import {                                                                                        // Enviroments
   regexObjectId,
   ISO_3166,
@@ -28,7 +29,7 @@ export class ListDraftsComponent implements OnInit {
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('citas_en_curso', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('APPOINTMENTS.LIST_DRAFTS.XLSX_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -51,14 +52,15 @@ export class ListDraftsComponent implements OnInit {
     private router: Router,
     private objRoute: ActivatedRoute,
     public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedFunctions: SharedFunctionsService,
+    private i18n: I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de citas en curso',
+      content_title       : this.i18n.instant('APPOINTMENTS.LIST_DRAFTS.TITLE'),
       content_icon        : 'free_cancellation',
       add_button          : false,
       duplicated_surnames : false,    // Check duplicated surnames

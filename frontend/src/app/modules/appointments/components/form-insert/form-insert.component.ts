@@ -9,13 +9,13 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   regexObjectId,
   ISO_3166,
   document_types,
   gender_types,
-  inpatient_types,
-  privateHealthLang
+  inpatient_types
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -31,7 +31,6 @@ export class FormInsertComponent implements OnInit {
   public document_types     : any = document_types;
   public gender_types       : any = gender_types;
   public inpatient_types    : any = inpatient_types;
-  public privateHealthLang  : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -69,7 +68,8 @@ export class FormInsertComponent implements OnInit {
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
     public appointmentsService  : AppointmentsService,
-    public fileManager          : FileManagerService
+    public fileManager          : FileManagerService,
+    public i18n                 : I18nService
   ) {
     //Initialize selected file objects:
     this.fileManager.uploadProgress = 0;
@@ -102,7 +102,7 @@ export class FormInsertComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Paso 04 - Detalles de la cita',
+      content_title : this.i18n.instant('APPOINTMENTS.FORM_INSERT.TITLE'),
       content_icon  : 'privacy_tip',
       add_button    : false,
       filters_form  : false,
