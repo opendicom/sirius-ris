@@ -1,0 +1,9 @@
+{
+  "name": "dictionary-generator",
+  "version": "1.0.0",
+  "description": "Sirius RIS Data Dictionary Generator (Automatically generated from Mongoose schemas)",
+  "dependencies": {
+    "@babel/parser": "^7.28.5",
+    "@babel/traverse": "^7.28.5"
+  }
+}

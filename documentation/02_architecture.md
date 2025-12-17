@@ -135,6 +135,18 @@ ZDS|UI
 
 
 
+## Data dictionary
+
+The Sirius RIS data dictionary is generated dynamically using a script that iterates through the schemas of each module. This simplifies the maintenance and updating of the documentation.
+
+[Sirius RIS - Data dictionary](./resources/dictionary-generator/data_dictionary.md)
+
+
+
+---
+
+
+
 ## Global elements
 
 Throughout the entire **Sirius RIS** application, reference is made on many occasions to **indexes** of global elements which will be detailed below to improve the understanding of the code and maintenance of the application itself.
