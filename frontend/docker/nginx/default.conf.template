@@ -51,6 +51,9 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # Set max body size (Possibility of submitting multiple files in one submission):
+        client_max_body_size 50M;
     }
  
     # Redirect server error pages to the static page /50x.html
