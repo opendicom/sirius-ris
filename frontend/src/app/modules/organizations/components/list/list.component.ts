@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   public country_codes    : any = ISO_3166;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns: string[];
+  private excludedColumns = [this.i18n.instant('ORGANIZATIONS.LIST.ACTIONS'), this.i18n.instant('ORGANIZATIONS.LIST.COUNTRY')];
   @ViewChild('main_list') table!: ElementRef;
   tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('ORGANIZATIONS.LIST.SHEET_NAME'), this.table, this.excludedColumns) }
 
@@ -59,9 +59,6 @@ export class ListComponent implements OnInit {
       },
       advanced_search : false
     });
-
-    //Set excluded columns:
-    this.excludedColumns = [this.i18n.instant('ORGANIZATIONS.LIST.ACTIONS'), this.i18n.instant('ORGANIZATIONS.LIST.COUNTRY')];
 
     //Set element:
     sharedProp.elementSetter('organizations');

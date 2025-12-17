@@ -20,7 +20,7 @@ export class ListComponent implements OnInit {
   public displayedColumns: string[] = ['element_action', 'code_meaning', 'code_value', 'status'];
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns: string[];
+  private excludedColumns = [this.i18n.instant('MODALITIES.LIST.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
   tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('MODALITIES.LIST.SHEET_NAME'), this.table, this.excludedColumns) }
 
@@ -57,9 +57,6 @@ export class ListComponent implements OnInit {
       },
       advanced_search : false
     });
-
-    //Set excluded columns:
-    this.excludedColumns = [this.i18n.instant('MODALITIES.LIST.ACTIONS')];
 
     //Set element:
     sharedProp.elementSetter('modalities');
