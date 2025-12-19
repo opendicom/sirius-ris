@@ -5,11 +5,11 @@
     <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
       <!-- element action -->
       <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'ADVANCED_SEARCH.LIST.TABLE.ACTIONS' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-            <button mat-icon-button color="accent" matTooltip="Logs del elemento" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+            <button mat-icon-button color="accent" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.LOGS' | i18n }}" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
               <mat-icon>format_list_bulleted</mat-icon>
             </button>
           </span>
@@ -17,13 +17,13 @@
           <br/>
 
           <span *ngIf="element.appointment">
-            <button mat-icon-button color="accent" matTooltip="PDF de cita" (click)="pdfService.createPDF('appointment', element.appointment._id)">
+            <button mat-icon-button color="accent" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.PDF' | i18n }}" (click)="pdfService.createPDF('appointment', element.appointment._id)">
               <mat-icon>picture_as_pdf</mat-icon>
             </button>
           </span>
 
           <span *ngIf="element.appointment_request">
-            <button mat-icon-button color="accent" matTooltip="Solicitud de estudio" routerLink="/appointments/list_requests/{{ element.appointment_request._id }}">
+            <button mat-icon-button color="accent" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.REQUEST' | i18n }}" routerLink="/appointments/list_requests/{{ element.appointment_request._id }}">
               <mat-icon>move_to_inbox</mat-icon>
             </button>
           </span>
@@ -32,7 +32,7 @@
 
       <!-- flow_state -->
       <ng-container matColumnDef="flow_state">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Flujo de estudio</th>
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'ADVANCED_SEARCH.LIST.TABLE.FLOW_STATE' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.performing && element.performing.flow_state">
 
@@ -41,12 +41,12 @@
               <span *ngSwitchCase="'P07'">
                 <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
                 <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                  <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="Editar informe" routerLink="/reports/form/update/{{ element.fk_performing }}">
+                  <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.EDIT_REPORT' | i18n }}" routerLink="/reports/form/update/{{ element.fk_performing }}">
                     <mat-icon>edit_note</mat-icon>
                   </button>
                 </span>
   
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="Revisar informe" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
                 <br/>
@@ -56,12 +56,12 @@
               <span *ngSwitchCase="'P08'">
                 <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
                 <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                  <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)" routerLink="/reports/form/update/{{ element.fk_performing }}">
+                  <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.EDIT_REPORT_WARNING' | i18n }}" routerLink="/reports/form/update/{{ element.fk_performing }}">
                     <mat-icon>edit_note</mat-icon>
                   </button>
                 </span>
   
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="Revisar informe" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
                 <br/>
@@ -69,7 +69,7 @@
   
               <!--view_report and amend-->
               <span *ngSwitchCase="'P09'">
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="Ver informe" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element.fk_performing)" matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>playlist_add_check</mat-icon>
                 </button>
                 <br/>
@@ -84,7 +84,7 @@
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> Fecha </th>
+        <th mat-header-cell *matHeaderCellDef class="column-alt text-center">{{ 'ADVANCED_SEARCH.LIST.TABLE.DATE' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.performing">
             <span *ngIf="element.performing.date">{{ element.performing.date | date : "dd/MM/yyyy" : "UTC" }}</span>
@@ -94,7 +94,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> Documentos </th>
+        <th mat-header-cell *matHeaderCellDef class="documents">{{ 'ADVANCED_SEARCH.LIST.TABLE.DOCUMENTS' | i18n }}</th>
         <td class="documents" mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -112,7 +112,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'ADVANCED_SEARCH.LIST.TABLE.NAMES' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -128,7 +128,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'ADVANCED_SEARCH.LIST.TABLE.SURNAMES' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
@@ -144,7 +144,7 @@
 
       <!-- patient_age -->
       <ng-container matColumnDef="patient_age">
-        <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="column-alt text-center"> Edad </th>
+        <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'ADVANCED_SEARCH.LIST.TOOLTIPS.AGE' | i18n }}" class="column-alt text-center">{{ 'ADVANCED_SEARCH.LIST.TABLE.PATIENT_AGE' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.patient && element.performing">
             <span *ngIf="element.patient.person">
@@ -156,7 +156,7 @@
 
       <!-- details -->
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> Detalle </th>
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'ADVANCED_SEARCH.LIST.TABLE.DETAILS' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <!-- procedure -->
           <span *ngIf="element.procedure">
@@ -170,28 +170,28 @@
           <!-- equipment -->        
           <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
               <ng-template #thenBlockTableEquipment>
-              <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
+              <span class="badge-accent" matTooltip="{{ 'ADVANCED_SEARCH.LIST.AET_PREFIX' | i18n }}{{ element.equipment.AET }}">
               <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
               </span>
           </ng-template>
-          <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableEquipment>{{ 'ADVANCED_SEARCH.LIST.NO_DATA' | i18n }}</ng-template>
 
           <!-- modality -->
           <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
           <ng-template #thenBlockTableModality>
             <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
           </ng-template>
-          <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+          <ng-template #elseBlockTableModality>{{ 'ADVANCED_SEARCH.LIST.NO_DATA' | i18n }}</ng-template>
         </td>
       </ng-container>
 
       <!-- domain -->
       <ng-container matColumnDef="domain">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Dominio</th>
+        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'ADVANCED_SEARCH.LIST.TABLE.DOMAIN' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <div *ngIf="element.appointment" class="domain-container">
             <!--referring-->
-            <small><strong>Solicitante: </strong></small>
+            <small><strong>{{ 'ADVANCED_SEARCH.LIST.DOMAIN.REQUESTING' | i18n }}</strong></small>
             <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
             <ng-template #thenBlockReferring>
               <small>
@@ -200,12 +200,12 @@
                 <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
               </small>
             </ng-template>
-            <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+            <ng-template #elseBlockReferring>{{ 'ADVANCED_SEARCH.LIST.NO_DATA' | i18n }}</ng-template>
 
             <hr class="dashed" />
 
             <!--imaging-->
-            <small><strong>Realizador: </strong></small>
+            <small><strong>{{ 'ADVANCED_SEARCH.LIST.DOMAIN.IMAGING' | i18n }}</strong></small>
             <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
             <ng-template #thenBlockImaging>
               <small>
@@ -214,12 +214,12 @@
                 <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
               </small>
             </ng-template>
-            <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+            <ng-template #elseBlockImaging>{{ 'ADVANCED_SEARCH.LIST.NO_DATA' | i18n }}</ng-template>
 
             <hr class="dashed" />
 
             <!--reporting-->
-            <small><strong>Informador: </strong></small>
+            <small><strong>{{ 'ADVANCED_SEARCH.LIST.DOMAIN.REPORTING' | i18n }}</strong></small>
             <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
             <ng-template #thenBlockReporting>
               <small>
@@ -228,7 +228,7 @@
                 <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
               </small>
             </ng-template>
-            <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+            <ng-template #elseBlockReporting>{{ 'ADVANCED_SEARCH.LIST.NO_DATA' | i18n }}</ng-template>
           </div>
         </td>
       </ng-container>
@@ -242,7 +242,7 @@
 <!-- Await response or not response -->
 <ng-template #elseBlockTable>
   <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    Aguarde, aún no hay resultados.
+    {{ 'ADVANCED_SEARCH.LIST.WAIT_NO_RESULTS' | i18n }}
   </div>
 </ng-template>
 
@@ -252,4 +252,4 @@
 </div>
 
 <!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> EXPORTAR LISTADO</button></div>
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'ADVANCED_SEARCH.LIST.EXPORT_LIST' | i18n }}</button></div>

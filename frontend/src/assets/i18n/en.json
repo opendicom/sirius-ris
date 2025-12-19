@@ -3,6 +3,42 @@
     "TITLE": "Sirius RIS",
     "WELCOME": "Welcome to Sirius RIS"
   },
+  "ADVANCED_SEARCH": {
+    "LIST": {
+      "TITLE": "Advanced Search of Reports",
+      "EXCEL_SHEET_NAME": "studies",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "FLOW_STATE": "Study Flow",
+        "DATE": "Date",
+        "DOCUMENTS": "Documents",
+        "NAMES": "Names",
+        "SURNAMES": "Surnames",
+        "PATIENT_AGE": "Age",
+        "DETAILS": "Details",
+        "DOMAIN": "Domain"
+      },
+      "TOOLTIPS": {
+        "LOGS": "Element Logs",
+        "PDF": "Appointment PDF",
+        "REQUEST": "Study Request",
+        "EDIT_REPORT": "Edit Report",
+        "REVIEW_REPORT": "Review Report",
+        "VIEW_REPORT": "View Report",
+        "EDIT_REPORT_WARNING": "Edit Report (If you make changes to this report, current signatures will be destroyed)",
+        "AGE": "Age at the time of the study performance"
+      },
+      "DOMAIN": {
+        "REQUESTING": "Requesting: ",
+        "IMAGING": "Imaging: ",
+        "REPORTING": "Reporting: "
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "AET_PREFIX": "AET: "
+    }
+  },
   "APPOINTMENTS": {
     "LIST": {
       "TITLE": "Appointments List",
@@ -693,6 +729,11 @@
     "AUTHENTICATED_BY": "Authenticated by:",
     "AUTHENTICATOR_USER": "Authenticator user",
     "SELECT_AUTHENTICATOR_USER": "Select authenticator user",
+    "ABOUT_THE": "About the",
+    "SIGNATURE": "SIGNATURE",
+    "AND": "and",
+    "AUTHENTICATION": "AUTHENTICATION",
+    "OF_THE": "of the",
     "SEARCH_BUTTON": "SEARCH",
     "CLEAN_BUTTON": "CLEAN SEARCH",
     "PATHOLOGIES_ADMIN_LABEL": "Pathologies administrator",

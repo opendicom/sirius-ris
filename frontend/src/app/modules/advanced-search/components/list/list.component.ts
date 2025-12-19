@@ -5,6 +5,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';         // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 import { PdfService } from '@shared/services/pdf.service';                                    // PDF Service
 import {                                                                                      // Enviroments
   performing_flow_states,
@@ -29,9 +30,9 @@ export class ListComponent implements OnInit {
   public cancellation_reasons   : any = cancellation_reasons;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('ADVANCED_SEARCH.LIST.TABLE.ACTIONS')];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('estudios', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('ADVANCED_SEARCH.LIST.EXCEL_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -50,6 +51,7 @@ export class ListComponent implements OnInit {
   constructor(
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
+    public i18n             : I18nService,
     public pdfService       : PdfService
   ) {
     //Get Logged User Information:
@@ -57,7 +59,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Búsqueda avanzada de informes',
+      content_title       : this.i18n.instant('ADVANCED_SEARCH.LIST.TITLE'),
       content_icon        : 'search',
       add_button          : false,
       duplicated_surnames : false,                        // Check duplicated surnames

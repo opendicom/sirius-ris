@@ -3,6 +3,42 @@
     "TITLE": "Sirius RIS",
     "WELCOME": "Bienvenido a Sirius RIS"
   },
+  "ADVANCED_SEARCH": {
+    "LIST": {
+      "TITLE": "Búsqueda avanzada de informes",
+      "EXCEL_SHEET_NAME": "estudios",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "FLOW_STATE": "Flujo de estudio",
+        "DATE": "Fecha",
+        "DOCUMENTS": "Documentos",
+        "NAMES": "Nombres",
+        "SURNAMES": "Apellidos",
+        "PATIENT_AGE": "Edad",
+        "DETAILS": "Detalle",
+        "DOMAIN": "Dominio"
+      },
+      "TOOLTIPS": {
+        "LOGS": "Logs del elemento",
+        "PDF": "PDF de cita",
+        "REQUEST": "Solicitud de estudio",
+        "EDIT_REPORT": "Editar informe",
+        "REVIEW_REPORT": "Revisar informe",
+        "VIEW_REPORT": "Ver informe",
+        "EDIT_REPORT_WARNING": "Editar informe (Si realiza cambios sobre este informe se destruiran las firmas actuales)",
+        "AGE": "Edad al momento de la realización del estudio"
+      },
+      "DOMAIN": {
+        "REQUESTING": "Solicitante: ",
+        "IMAGING": "Realizador: ",
+        "REPORTING": "Informador: "
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "AET_PREFIX": "AET: "
+    }
+  },
   "APPOINTMENTS": {
     "LIST": {
       "TITLE": "Listado de citas",
@@ -683,6 +719,11 @@
     "AUTHENTICATED_BY": "Autenticado por:",
     "AUTHENTICATOR_USER": "Usuario autenticador",
     "SELECT_AUTHENTICATOR_USER": "Seleccione el usuario autenticador",
+    "ABOUT_THE": "Sobre la",
+    "SIGNATURE": "FIRMA",
+    "AND": "y",
+    "AUTHENTICATION": "AUTENTICACIÓN",
+    "OF_THE": "del",
     "SEARCH_BUTTON": "BUSCAR",
     "CLEAN_BUTTON": "LIMPIAR BÚSQUEDA",
     "PATHOLOGIES_ADMIN_LABEL": "Administradora de patologías",
