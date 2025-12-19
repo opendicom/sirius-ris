@@ -14,6 +14,7 @@ import {                                                                        
   gender_types,
   cancellation_reasons
 } from '@env/environment';
+import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -30,9 +31,9 @@ export class ListComponent implements OnInit {
   public cancellation_reasons   : any = cancellation_reasons;
 
   //Table to XLSX (SheetJS CE):
-  private excludedColumns = ['Acciones'];
+  private excludedColumns = [this.i18n.instant('PERFORMING.LIST.EXCLUDED_COLUMNS_XLSX').split(',')[0]];
   @ViewChild('main_list') table!: ElementRef;
-  tableToExcel(): void { this.sharedFunctions.tableToXLSX('estudios', this.table, this.excludedColumns) }
+  tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('PERFORMING.LIST.EXCEL_SHEET_NAME'), this.table, this.excludedColumns) }
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -57,7 +58,8 @@ export class ListComponent implements OnInit {
   constructor(
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ){
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
@@ -72,7 +74,7 @@ export class ListComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Listado de estudios',
+      content_title       : this.i18n.instant('PERFORMING.LIST.TITLE'),
       content_icon        : 'assignment_ind',
       add_button          : false,
       duplicated_surnames : true,     // Check duplicated surnames

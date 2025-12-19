@@ -2,13 +2,13 @@
     <div fxLayout="row" fxLayoutAlign="start start">
   
       <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">Solicitante:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.REQUESTING' | i18n }}</h3>
         <br/>
   
-        <h4>Organización solicitante:</h4>
+        <h4>{{ 'PERFORMING.TAB_DETAILS.REQUESTING_ORGANIZATION' | i18n }}</h4>
         <mat-form-field appearance="fill" class="large">
-          <mat-label>Organización solicitante</mat-label>
-          <mat-select formControlName="referring_organization" placeholder="Seleccione la organización solicitante">
+          <mat-label>{{ 'PERFORMING.TAB_DETAILS.REQUESTING_ORGANIZATION' | i18n }}</mat-label>
+          <mat-select formControlName="referring_organization" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REQUESTING_ORGANIZATION' | i18n }}">
             <span *ngIf="appointmentsService.referringOrganizations">
               <div *ngFor="let currentOrganization of appointmentsService.referringOrganizations">
                 <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
@@ -21,13 +21,13 @@
   
         <!-- No report cases: Hide reporting_domain, report_before and reporting_user fields -->
         <span [class.non-display]="reporting_delay_controller === false">
-          <h3 class="form-title text-center underline-fail-alt">Informador:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.REPORTING' | i18n }}</h3>
           <br/>
     
-          <h4>Servicio informador:</h4>
+          <h4>{{ 'PERFORMING.TAB_DETAILS.REPORTING_SERVICE' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
-            <mat-label>Servicio informador</mat-label>
-            <mat-select formControlName="reporting_domain" placeholder="Seleccione el servicio informador">
+            <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_SERVICE' | i18n }}</mat-label>
+            <mat-select formControlName="reporting_domain" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_SERVICE' | i18n }}">
               <div *ngFor="let currentService of appointmentsService.availableServices">
                 <div *ngFor="let currentBranch of appointmentsService.availableBranches">
                   <div *ngFor="let currentOrganization of appointmentsService.availableOrganizations">
@@ -38,10 +38,10 @@
             </mat-select>
           </mat-form-field>
     
-          <h4>Médico informador:</h4>
+          <h4>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
-            <mat-label>Médico informador</mat-label>
-            <mat-select formControlName="reporting_user" placeholder="Seleccione el médico informador">
+            <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</mat-label>
+            <mat-select formControlName="reporting_user" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_MEDIC' | i18n }}">
               <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
                 <mat-option value="{{ currentReporting._id }}">
                   <!--names-->
@@ -59,42 +59,42 @@
             </mat-select>
           </mat-form-field>
     
-          <h4>Informe requerido antes de:</h4>
+          <h4>{{ 'PERFORMING.TAB_DETAILS.REPORT_REQUIRED_BEFORE' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large" (click)="picker.open()">
-            <mat-label>Seleccione fecha</mat-label>
+            <mat-label>{{ 'PERFORMING.TAB_DETAILS.SELECT_DATE' | i18n }}</mat-label>
             <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="report_before" (keydown)="false">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+            <mat-hint align="end">{{ 'PERFORMING.TAB_DETAILS.CLICK_TO_SELECT_DATE' | i18n }}</mat-hint>
           </mat-form-field>
     
           <br/><hr class="dashed" /><br/>
         </span>
   
-        <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <h4>{{ 'PERFORMING.TAB_DETAILS.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
         <ckeditor formControlName="anamnesis"  #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
   
         <br/><hr class="dashed" /><br/>
   
-        <h4>Indicaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <h4>{{ 'PERFORMING.TAB_DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
         <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
   
         <br/><hr class="dashed" /><br/>
   
-        <h3 class="form-title text-center underline-fail-alt">Domicilio actual del paciente:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.CURRENT_PATIENT_ADDRESS' | i18n }}</h3>
         <br/>
   
         <!-- Current address start-->
         <div formGroupName="current_address">
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>País:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.COUNTRY' | i18n }}</h4>
               <span *ngIf="getKeys(appointmentsService.allCountries).length > 0; then thenBlockCountries else elseBlockCountries"></span>
   
               <ng-template #thenBlockCountries>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>País</mat-label>
-                  <mat-select formControlName="country" placeholder="Seleccione el país">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.COUNTRY' | i18n }}</mat-label>
+                  <mat-select formControlName="country" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_COUNTRY' | i18n }}">
                     <div *ngFor="let currentCountry of appointmentsService.allCountries">
                       <mat-option (click)="appointmentsService.setCurrentStates(currentCountry.isoCode, form)" value="{{ currentCountry.name }}">{{ currentCountry.flag }} &nbsp; {{ currentCountry.name }}</mat-option>
                     </div>
@@ -104,21 +104,21 @@
   
               <ng-template #elseBlockCountries>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>País</mat-label>
-                  <input matInput type="text" formControlName="country" placeholder="Ingrese el país">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.COUNTRY' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="country" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_COUNTRY' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
   
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Estado:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.STATE' | i18n }}</h4>
               <span *ngIf="getKeys(appointmentsService.currentStates).length > 0; then thenBlockStates else elseBlockStates"></span>
   
               <ng-template #thenBlockStates>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Estado | Provincia | Departamento</mat-label>
-                  <mat-select formControlName="state" placeholder="Seleccione el Estado | Provincia | Departamento">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.STATE' | i18n }}</mat-label>
+                  <mat-select formControlName="state" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_STATE' | i18n }}">
                     <div *ngFor="let currentState of appointmentsService.currentStates">
                       <mat-option (click)="appointmentsService.setCurrentCities(currentState.countryCode, currentState.isoCode, form)" value="{{ currentState.name.replace(' Department', '') }}">{{ currentState.name.replace(' Department', '') }}</mat-option>
                     </div>
@@ -128,8 +128,8 @@
   
               <ng-template #elseBlockStates>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Estado | Provincia | Departamento</mat-label>
-                  <input matInput type="text" formControlName="state" placeholder="Ingrese el Estado | Provincia | Departamento">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.STATE' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="state" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_STATE' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
@@ -138,13 +138,13 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Ciudad:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.CITY' | i18n }}</h4>
               <span *ngIf="getKeys(appointmentsService.currentCities).length > 0; then thenBlockCities else elseBlockCities"></span>
   
               <ng-template #thenBlockCities>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Ciudad</mat-label>
-                  <mat-select formControlName="city" placeholder="Seleccione la ciudad">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.CITY' | i18n }}</mat-label>
+                  <mat-select formControlName="city" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_CITY' | i18n }}">
                     <div *ngFor="let currentCity of appointmentsService.currentCities">
                       <mat-option value="{{ currentCity.name }}">{{ currentCity.name }}</mat-option>
                     </div>
@@ -154,59 +154,59 @@
   
               <ng-template #elseBlockCities>
                 <mat-form-field appearance="fill" class="full">
-                  <mat-label>Ciudad</mat-label>
-                  <input matInput type="text" formControlName="city" placeholder="Ingrese la ciudad">
+                  <mat-label>{{ 'PERFORMING.TAB_DETAILS.CITY' | i18n }}</mat-label>
+                  <input matInput type="text" formControlName="city" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_CITY' | i18n }}">
                 </mat-form-field>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Barrio | Zona:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.NEIGHBORHOOD' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Barrio | Zona</mat-label>
-                <input matInput type="text" formControlName="neighborhood" placeholder="Ingrese el Barrio | Zona del domicilio">
+                <mat-label>{{ 'PERFORMING.TAB_DETAILS.NEIGHBORHOOD' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="neighborhood" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_NEIGHBORHOOD' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
   
-          <h4>Dirección del domicilio:</h4>
+          <h4>{{ 'PERFORMING.TAB_DETAILS.ADDRESS' | i18n }}</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>Dirección</mat-label>
-            <input matInput type="text" formControlName="address" placeholder="Ingrese la dirección completa del domicilio">
+            <mat-label>{{ 'PERFORMING.TAB_DETAILS.ADDRESS_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="address" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_FULL_ADDRESS' | i18n }}">
           </mat-form-field>
         </div>
         <!-- Current address end -->
   
         <br/><hr class="dashed" /><br/>
   
-        <h4>Contacto:</h4>
+        <h4>{{ 'PERFORMING.TAB_DETAILS.CONTACT' | i18n }}</h4>
         <mat-form-field appearance="fill" class="large">
-          <mat-label>Contacto</mat-label>
-          <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+          <mat-label>{{ 'PERFORMING.TAB_DETAILS.CONTACT' | i18n }}</mat-label>
+          <input matInput type="text" formControlName="contact" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_CONTACT' | i18n }}">
         </mat-form-field>
   
         <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
         <div *ngIf="this.sharedProp.current_modality && this.sharedProp.current_modality.code_value !== 'PT'">
           <br/><hr class="dashed" />
   
-          <h3 class="form-title text-center underline-fail-alt">Medios de contraste:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.CONTRAST_MEDIA' | i18n }}</h3>
           <!-- Contrast start-->
           <div formGroupName="contrast">
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <h4>Solicita contraste:</h4>
+                <h4>{{ 'PERFORMING.TAB_DETAILS.REQUEST_CONTRAST' | i18n }}</h4>
                 <mat-radio-group color="primary" formControlName="use_contrast" (change)="appointmentsService.onChangeContrast($event, form)">
-                  <mat-radio-button value="true">Si</mat-radio-button>
-                  <mat-radio-button value="false">No</mat-radio-button>
+                  <mat-radio-button value="true">{{ 'PERFORMING.FORM.YES' | i18n }}</mat-radio-button>
+                  <mat-radio-button value="false">{{ 'PERFORMING.FORM.NO' | i18n }}</mat-radio-button>
                 </mat-radio-group>
               </div> <!-- end fxLayout wrapper -->
   
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                 <div [class.non-display]="appointmentsService.booleanContrast == false">
-                  <h4>Tipo de contraste:</h4>
+                  <h4>{{ 'PERFORMING.TAB_DETAILS.CONTRAST_TYPE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="full">
-                    <mat-label>Tipo de contraste</mat-label>
-                    <input matInput type="text" formControlName="description" placeholder="Ingrese el tipo de contraste solicitado.">
+                    <mat-label>{{ 'PERFORMING.TAB_DETAILS.CONTRAST_TYPE' | i18n }}</mat-label>
+                    <input matInput type="text" formControlName="description" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_CONTRAST_TYPE' | i18n }}">
                   </mat-form-field>
                 </div>
               </div> <!-- end fxLayout wrapper -->
@@ -218,24 +218,24 @@
       </div> <!-- end fxLayout wrapper -->
   
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.PATIENT_PRIVATE_DATA' | i18n }}</h3>
         <br/>
   
         <!-- Private health start --->
         <div formGroupName="private_health">
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Altura <span class="label-info">Centímetros</span>:</h4>
+              <h4>{{ 'PRIVATE_HEALTH.HEIGHT' | i18n }} <span class="label-info">{{ 'PRIVATE_HEALTH.CENTIMETERS' | i18n }}</span>:</h4>
               <mat-form-field appearance="fill" class="large">
-                <mat-label>Altura</mat-label>
+                <mat-label>{{ 'PRIVATE_HEALTH.HEIGHT' | i18n }}</mat-label>
                 <input type="text" icNumbers matInput formControlName="height" min="1" max="300">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Peso <span class="label-info">Kilogramos</span>:</h4>
+              <h4>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }} <span class="label-info">{{ 'PRIVATE_HEALTH.KILOGRAMS' | i18n }}</span>:</h4>
               <mat-form-field appearance="fill" class="large">
-                <mat-label>Peso</mat-label>
+                <mat-label>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }}</mat-label>
                 <input type="text" icNumbersWD (change)="setWeight($event)" matInput formControlName="weight" min="1" max="300">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
@@ -245,78 +245,78 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="diabetes" color="primary">{{ privateHealthLang.ES['diabetes'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypertension" color="primary">{{ privateHealthLang.ES['hypertension'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="epoc" color="primary">{{ privateHealthLang.ES['epoc'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="smoking" color="primary">{{ privateHealthLang.ES['smoking'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="malnutrition" color="primary">{{ privateHealthLang.ES['malnutrition'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="obesity" color="primary">{{ privateHealthLang.ES['obesity'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="asthma" color="primary">{{ privateHealthLang.ES['asthma'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="diabetes" color="primary">{{ 'PRIVATE_HEALTH.DIABETES' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypertension" color="primary">{{ 'PRIVATE_HEALTH.HYPERTENSION' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="epoc" color="primary">{{ 'PRIVATE_HEALTH.EPOC' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="smoking" color="primary">{{ 'PRIVATE_HEALTH.SMOKING' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="malnutrition" color="primary">{{ 'PRIVATE_HEALTH.MALNUTRITION' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="obesity" color="primary">{{ 'PRIVATE_HEALTH.OBESITY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="asthma" color="primary">{{ 'PRIVATE_HEALTH.ASTHMA' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="pregnancy" color="primary">{{ privateHealthLang.ES['pregnancy'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="claustrophobia" color="primary">{{ privateHealthLang.ES['claustrophobia'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="renal_insufficiency" color="primary">{{ privateHealthLang.ES['renal_insufficiency'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="heart_failure" color="primary">{{ privateHealthLang.ES['heart_failure'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">{{ privateHealthLang.ES['ischemic_heart_disease'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="valvulopathy" color="primary">{{ privateHealthLang.ES['valvulopathy'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="arrhythmia" color="primary">{{ privateHealthLang.ES['arrhythmia'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="pregnancy" color="primary">{{ 'PRIVATE_HEALTH.PREGNANCY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="claustrophobia" color="primary">{{ 'PRIVATE_HEALTH.CLAUSTROPHOBIA' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="renal_insufficiency" color="primary">{{ 'PRIVATE_HEALTH.RENAL_INSUFFICIENCY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="heart_failure" color="primary">{{ 'PRIVATE_HEALTH.HEART_FAILURE' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="ischemic_heart_disease" color="primary">{{ 'PRIVATE_HEALTH.ISCHEMIC_HEART_DISEASE' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="valvulopathy" color="primary">{{ 'PRIVATE_HEALTH.VALVULOPATHY' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="arrhythmia" color="primary">{{ 'PRIVATE_HEALTH.ARRHYTHMIA' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox formControlName="hiv" color="primary">{{ privateHealthLang.ES['hiv'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="cancer" color="primary">{{ privateHealthLang.ES['cancer'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="dementia" color="primary">{{ privateHealthLang.ES['dementia'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hyperthyroidism" color="primary">{{ privateHealthLang.ES['hyperthyroidism'] }}</mat-checkbox><br/>
-              <mat-checkbox formControlName="hypothyroidism" color="primary">{{ privateHealthLang.ES['hypothyroidism'] }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hiv" color="primary">{{ 'PRIVATE_HEALTH.HIV' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="cancer" color="primary">{{ 'PRIVATE_HEALTH.CANCER' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="dementia" color="primary">{{ 'PRIVATE_HEALTH.DEMENTIA' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hyperthyroidism" color="primary">{{ 'PRIVATE_HEALTH.HYPERTHYROIDISM' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox formControlName="hypothyroidism" color="primary">{{ 'PRIVATE_HEALTH.HYPOTHYROIDISM' | i18n }}</mat-checkbox><br/>
             </div> <!-- end fxLayout wrapper -->
           </div>
   
-          <mat-checkbox color="primary" formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherPatology($event, form)">Otro antecedente/patología</mat-checkbox><br/>
+          <mat-checkbox color="primary" formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherPatology($event, form)">{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-checkbox><br/>
   
           <div [class.non-display]="appointmentsService.booleanPatology == false">
             <mat-form-field appearance="fill" class="full">
-              <mat-label>{{ privateHealthLang.ES['other'] }}</mat-label>
-              <input matInput type="text" formControlName="other" placeholder="Ingrese el o los antecedentes/patologías.">
+              <mat-label>{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="other" placeholder="{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY_PLACEHOLDER' | i18n }}">
             </mat-form-field>
           </div>
   
           <br/><hr class="dashed" /><br/>
   
-          <h4>{{ privateHealthLang.ES['medication'] }} <span class="label-info">min: 2, max: 1000</span>:</h4>
+          <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="label-info">min: 2, max: 1000</span>:</h4>
           <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           
           <br/>
 
-          <h4>{{ privateHealthLang.ES['allergies'] }}:</h4>
+          <h4>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}:</h4>
           <mat-form-field appearance="fill" class="full">
-            <mat-label>{{ privateHealthLang.ES['allergies'] }}</mat-label>
-            <input matInput type="text" formControlName="allergies" placeholder="Indique si posee algúna alergia.">
+            <mat-label>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="allergies" placeholder="{{ 'PRIVATE_HEALTH.ALLERGIES_PLACEHOLDER' | i18n }}">
           </mat-form-field>
   
           <hr class="dashed" />
   
-          <h4 class="form-title text-center underline-fail">Implantes</h4>
+          <h4 class="form-title text-center underline-fail">{{ 'PRIVATE_HEALTH.IMPLANTS.TITLE' | i18n }}</h4>
           <br/>
   
           <div formGroupName="implants">
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox formControlName="cochlear_implant" color="primary">{{ privateHealthLang.ES.implants['cochlear_implant'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="cardiac_stent" color="primary">{{ privateHealthLang.ES.implants['cardiac_stent'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_prostheses" color="primary">{{ privateHealthLang.ES.implants['metal_prostheses'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="metal_shards" color="primary">{{ privateHealthLang.ES.implants['metal_shards'] }}</mat-checkbox><br/>
-                <mat-checkbox formControlName="pacemaker" color="primary">{{ privateHealthLang.ES.implants['pacemaker'] }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="cochlear_implant" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.COCHLEAR_IMPLANT' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="cardiac_stent" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.CARDIAC_STENT' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_prostheses" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.METAL_PROSTHESES' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="metal_shards" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.METAL_SHARDS' | i18n }}</mat-checkbox><br/>
+                <mat-checkbox formControlName="pacemaker" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.PACEMAKER' | i18n }}</mat-checkbox><br/>
               </div> <!-- end fxLayout wrapper -->
   
               <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-                <mat-checkbox formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">Otro tipo de implante</mat-checkbox><br/>
+                <mat-checkbox formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-checkbox><br/>
   
                 <div [class.non-display]="appointmentsService.booleanImplants == false">
                   <mat-form-field appearance="fill" class="full">
-                    <mat-label>{{ privateHealthLang.ES.implants['other'] }}</mat-label>
-                    <input matInput type="text" formControlName="other" placeholder="Ingrese el o los tipos de impantes.">
+                    <mat-label>{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-label>
+                    <input matInput type="text" formControlName="other" placeholder="{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_PLACEHOLDER' | i18n }}">
                   </mat-form-field>
                 </div>
               </div> <!-- end fxLayout wrapper -->
@@ -324,19 +324,19 @@
           </div>
           <hr class="dashed" />
   
-          <h4 class="form-title text-center underline-fail">COVID-19</h4>
+          <h4 class="form-title text-center underline-fail">{{ 'PRIVATE_HEALTH.COVID19.TITLE' | i18n }}</h4>
           <br/>
   
           <div formGroupName="covid19">
-            <mat-checkbox formControlName="had_covid" color="primary">{{ privateHealthLang.ES.covid19['had_covid'] }}</mat-checkbox><br/>
-            <mat-checkbox formControlName="vaccinated" color="primary">{{ privateHealthLang.ES.covid19['vaccinated'] }}</mat-checkbox><br/>
+            <mat-checkbox formControlName="had_covid" color="primary">{{ 'PRIVATE_HEALTH.COVID19.HAD_COVID' | i18n }}</mat-checkbox><br/>
+            <mat-checkbox formControlName="vaccinated" color="primary">{{ 'PRIVATE_HEALTH.COVID19.VACCINATED' | i18n }}</mat-checkbox><br/>
   
             <br/>
   
-            <h4>Detalles:</h4>
+            <h4>{{ 'PRIVATE_HEALTH.COVID19.DETAILS' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="full">
-              <mat-label>Detalles</mat-label>
-              <input matInput type="text" formControlName="details" placeholder="Indique {{ privateHealthLang.ES.covid19['details'] }}">
+              <mat-label>{{ 'PRIVATE_HEALTH.COVID19.DETAILS' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="details" placeholder="{{ 'PRIVATE_HEALTH.COVID19.DETAILS_PLACEHOLDER' | i18n }}">
             </mat-form-field>
           </div>
         </div>
@@ -344,12 +344,12 @@
   
         <hr class="dashed" />
   
-        <h3 class="form-title text-center underline-fail-alt">Hospitalización:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION' | i18n }}</h3>
         <br/>
   
         <mat-radio-group color="primary" formControlName="outpatient" (change)="appointmentsService.onChangeOutpatient($event, form)">
-          <mat-radio-button value="true">Ambulatorio</mat-radio-button>
-          <mat-radio-button value="false">Internado</mat-radio-button>
+          <mat-radio-button value="true">{{ 'PERFORMING.TAB_DETAILS.OUTPATIENT' | i18n }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'PERFORMING.TAB_DETAILS.INPATIENT' | i18n }}</mat-radio-button>
         </mat-radio-group>
   
         <br/>
@@ -360,10 +360,10 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Tipo de hospitalización:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_TYPE' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Tipo de hospitalización</mat-label>
-                <mat-select formControlName="type" placeholder="Seleccione el tipo de hospitalización">
+                <mat-label>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_TYPE' | i18n }}</mat-label>
+                <mat-select formControlName="type" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_HOSPITALIZATION_TYPE' | i18n }}">
                   <div *ngFor="let currentType of inpatient_types | keyvalue">
                     <mat-option value="{{ currentType.key }}">{{ currentType.value }}</mat-option>
                   </div>
@@ -372,28 +372,28 @@
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Donde:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.WHERE_HOSPITALIZED' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Donde</mat-label>
-                <input matInput type="text" formControlName="where" placeholder="Ingrese donde está hospitalizado el paciente (Institución).">
+                <mat-label>{{ 'PERFORMING.TAB_DETAILS.WHERE_HOSPITALIZED' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="where" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_INSTITUTION' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Sala | Habitación | Piso:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.ROOM_FLOOR' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Sala | Habitación | Piso</mat-label>
-                <input matInput type="text" formControlName="room" placeholder="Ingrese la sala, habitación, piso donde está hospitalizado el paciente.">
+                <mat-label>{{ 'PERFORMING.TAB_DETAILS.ROOM_FLOOR' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="room" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_ROOM' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>Contacto:</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_CONTACT' | i18n }}</h4>
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Contacto</mat-label>
-                <input matInput type="text" formControlName="contact" placeholder="Ingrese dato de contacto (teléfono, celular, correo)">
+                <mat-label>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_CONTACT' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="contact" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_CONTACT' | i18n }}">
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
           </div>
@@ -402,7 +402,7 @@
   
         <br/><hr class="dashed" />
   
-        <h3 class="form-title text-center underline-fail-alt">Consentimientos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.CONSENTS' | i18n }} <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
         <br/>
   
         <span *ngIf="getKeys(fileManager.controller.informed_consent.files).length > 0; then thenBlockInformedConsent else elseBlockInformedConsent"></span>
@@ -410,7 +410,7 @@
         <ng-template #thenBlockInformedConsent>
           <mat-chip-list>
             <mat-chip *ngFor="let informedConsentFile of fileManager.controller.informed_consent.files | keyvalue" class="primary-color">
-              <mat-icon (click)="fileManager.download(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.download(informedConsentFile.key)"> &nbsp; CONSENTIMIENTO INFORMADO</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(informedConsentFile.key, 'informed_consent', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.informed_consent.files) })">close</mat-icon>
+              <mat-icon (click)="fileManager.download(informedConsentFile.key)">description</mat-icon><span (click)="fileManager.download(informedConsentFile.key)"> &nbsp; {{ 'PERFORMING.TAB_DETAILS.INFORMED_CONSENT_LABEL' | i18n }}</span> &nbsp;<mat-icon matTooltip="{{ 'PERFORMING.TAB_DETAILS.DELETE_FILE' | i18n }}" (click)="fileManager.delete(informedConsentFile.key, 'informed_consent', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.informed_consent.files) })">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -420,8 +420,8 @@
           <input type="file" (change)="fileManager.upload($event, 'informed_consent', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.informed_consent.files), 'preserve': { 'key': 'clinical_trial', 'files': getKeys(this.fileManager.controller.clinical_trial.files) } })" #fileInputInformedConsent style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['informed_consent'].disabled" color="primary" (click)="fileInputInformedConsent.click()">
             <span *ngIf="fileManager.controller['informed_consent'].disabled; then thenBlockInformedConsentDisabled else elseBlockInformedConsentDisabled"></span>
-            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> SUBIR CONSENTIMIENTO INFORMADO</ng-template>
+            <ng-template #thenBlockInformedConsentDisabled><mat-icon>cloud_sync</mat-icon> {{ 'PERFORMING.TAB_DETAILS.UPLOADING_INFORMED_CONSENT' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockInformedConsentDisabled><mat-icon>draw</mat-icon> {{ 'PERFORMING.TAB_DETAILS.UPLOAD_INFORMED_CONSENT' | i18n }}</ng-template>
           </button>
           <br/><br/>
         </ng-template>
@@ -431,7 +431,7 @@
         <ng-template #thenBlockClinicalTrial>
           <mat-chip-list>
             <mat-chip *ngFor="let clinicalTrialFile of fileManager.controller.clinical_trial.files | keyvalue" class="default-color">
-              <mat-icon (click)="fileManager.download(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.download(clinicalTrialFile.key)"> &nbsp; CONSENTIMIENTO DE INVESTIGACIÓN</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(clinicalTrialFile.key, 'clinical_trial', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.clinical_trial.files) })">close</mat-icon>
+              <mat-icon (click)="fileManager.download(clinicalTrialFile.key)">description</mat-icon><span (click)="fileManager.download(clinicalTrialFile.key)"> &nbsp; {{ 'PERFORMING.TAB_DETAILS.CLINICAL_TRIAL_LABEL' | i18n }}</span> &nbsp;<mat-icon matTooltip="{{ 'PERFORMING.TAB_DETAILS.DELETE_FILE' | i18n }}" (click)="fileManager.delete(clinicalTrialFile.key, 'clinical_trial', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.clinical_trial.files) })">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -441,15 +441,15 @@
           <input type="file" (change)="fileManager.upload($event, 'clinical_trial', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.clinical_trial.files), 'preserve': { 'key': 'informed_consent', 'files': getKeys(this.fileManager.controller.informed_consent.files) } })" #fileInputClinicalTrial style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['clinical_trial'].disabled" (click)="fileInputClinicalTrial.click()">
             <span *ngIf="fileManager.controller['clinical_trial'].disabled; then thenBlockClinicalTrialDisabled else elseBlockClinicalTrialDisabled"></span>
-            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO CONSENTIMIENTO INFORMADO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> SUBIR CONSENTIMIENTO DE INVESTIGACIÓN</ng-template>
+            <ng-template #thenBlockClinicalTrialDisabled><mat-icon>cloud_sync</mat-icon> {{ 'PERFORMING.TAB_DETAILS.UPLOADING_CLINICAL_TRIAL' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockClinicalTrialDisabled><mat-icon>science</mat-icon> {{ 'PERFORMING.TAB_DETAILS.UPLOAD_CLINICAL_TRIAL' | i18n }}</ng-template>
           </button>
           <br/><br/>
         </ng-template>
   
         <hr class="dashed" />
   
-        <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
+        <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.ATTACHED_FILES_TITLE' | i18n }} <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
         <br/>
   
         <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
@@ -457,7 +457,7 @@
         <ng-template #thenBlockAttached>
           <mat-chip-list>
             <mat-chip *ngFor="let currentAtachedFile of fileManager.controller.attached_files.files | keyvalue">
-              <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="Eliminar archivo" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })">close</mat-icon>
+              <mat-icon (click)="fileManager.download(currentAtachedFile.key)">description</mat-icon><span (click)="fileManager.download(currentAtachedFile.key)"> &nbsp;{{ currentAtachedFile.value }}</span> &nbsp;<mat-icon matTooltip="{{ 'PERFORMING.TAB_DETAILS.DELETE_FILE' | i18n }}" (click)="fileManager.delete(currentAtachedFile.key, 'attached_files', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })">close</mat-icon>
             </mat-chip>
           </mat-chip-list>
           <br/>
@@ -465,7 +465,7 @@
   
         <ng-template #elseBlockAttached>
           <div class="text-center">
-            <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+            <mat-icon>folder_off</mat-icon> <h3>{{ 'PERFORMING.TAB_DETAILS.NO_ATTACHED_FILES' | i18n }}</h3>
           </div>
         </ng-template>
   
@@ -475,8 +475,8 @@
           <input type="file" (change)="fileManager.upload($event, 'attached_files', { 'element': 'appointments', '_id': this.sharedProp.current_appointment, 'current_files': getKeys(this.fileManager.controller.attached_files.files) })" #fileInputAttached style="display: none" />
           <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
             <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
-            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-            <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
+            <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> {{ 'PERFORMING.TAB_DETAILS.UPLOADING_FILE' | i18n }} (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
+            <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> {{ 'PERFORMING.TAB_DETAILS.ATTACH_FILE' | i18n }}</ng-template>
           </button>
         </div>
   

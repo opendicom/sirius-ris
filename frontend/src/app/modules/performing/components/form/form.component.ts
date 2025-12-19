@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';                       
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                        // Reactive form handling tools
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   ISO_3166, 
   document_types, 
@@ -120,7 +121,8 @@ export class FormComponent implements OnInit {
     private router              : Router,
     private objRoute            : ActivatedRoute,
     public sharedProp           : SharedPropertiesService,
-    public sharedFunctions      : SharedFunctionsService
+    public sharedFunctions      : SharedFunctionsService,
+    public i18n                 : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -130,7 +132,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Formulario de realización de estudio',
+      content_title : this.i18n.instant('PERFORMING.FORM.TITLE'),
       content_icon  : 'assignment_ind',
       add_button    : false,
       filters_form  : false,
@@ -403,7 +405,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resPerforming.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.ERROR_EDITING_ELEMENT') + resPerforming.message);
             this.router.navigate(['/' + this.origin + '/list']);
           }
         });
@@ -412,7 +414,7 @@ export class FormComponent implements OnInit {
 
       default:
         //Return to the list with request error message:
-        this.sharedFunctions.sendMessage('Error al intentar editar el elemento: La acción indicada sobre el formulario es incorrecta [insert | update].');
+        this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.ERROR_INVALID_FORM_ACTION'));
 
         //Redirect to the list:
         this.router.navigate(['/' + this.origin + '/list']);
@@ -594,7 +596,7 @@ export class FormComponent implements OnInit {
           });
         } else {
           //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar ' + message + ' el elemento: ' + resPerforming.message);
+          this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.ERROR_ACTION_ELEMENT') + message + ' el elemento: ' + resPerforming.message);
           this.router.navigate(['/' + this.origin + '/list']);
         }
       });
@@ -684,7 +686,7 @@ export class FormComponent implements OnInit {
         callback(res);
       } else {
         //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: No se encuentra ningún equipo cargado en la modalidad sobre la sucursal donde se realizó la coordinación.');
+        this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_NO_EQUIPMENT_LOADED'));
       }
     });
   }
@@ -712,7 +714,7 @@ export class FormComponent implements OnInit {
         callback(res);
       } else {
         //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: No se encuentra ningún procedimiento cargado en la modalidad del servicio coordinado.');
+        this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_NO_PROCEDURE_LOADED'));
       }
     });
   }
@@ -1113,7 +1115,7 @@ export class FormComponent implements OnInit {
 
       } else {
         //Return to the list with request error message:
-        this.sharedFunctions.sendMessage('Error al intentar editar el elemento: ' + resAppointments.message);
+        this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.ERROR_EDITING_APPOINTMENT') + resAppointments.message);
         this.router.navigate(['/' + this.origin + '/list']);
       }
     });
@@ -1151,7 +1153,7 @@ export class FormComponent implements OnInit {
       //Check if service users object is empty:
       if(this.technicianServiceUsers.length == 0 && this.injectionServiceUsers){
         //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado usuarios de servicio (técnicos y/o enfermeros).');
+        this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_NO_SERVICE_USERS'));
       }
     });
   }
@@ -1195,7 +1197,7 @@ export class FormComponent implements OnInit {
       this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(administredActivitymCI);
     } else {
       //Send warning message:
-      this.sharedFunctions.sendMessage('Advertencia: Para calcular la dosis administrada se requiere llenar correctamente los valores "Actividad jeringa llena" y "Actividad jeringa vacía"')
+      this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_CALCULATE_DOSE'))
     }
     
   }

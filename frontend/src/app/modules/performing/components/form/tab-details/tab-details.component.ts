@@ -9,10 +9,8 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
-import {                                                                                    // Enviroments
-  inpatient_types,
-  privateHealthLang
-} from '@env/environment';
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
+import { inpatient_types } from '@env/environment';                                         // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -24,7 +22,6 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 export class TabDetailsComponent implements OnInit {
   //Set component properties:
   public inpatient_types    : any = inpatient_types;
-  public privateHealthLang  : any = privateHealthLang;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -54,7 +51,8 @@ export class TabDetailsComponent implements OnInit {
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
     public appointmentsService  : AppointmentsService,
-    public fileManager          : FileManagerService
+    public fileManager          : FileManagerService,
+    public i18n                 : I18nService
 
   ){
     //Initialize selected file objects:
