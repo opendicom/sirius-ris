@@ -39,6 +39,45 @@
       "AET_PREFIX": "AET: "
     }
   },
+  "BILLING": {
+    "LIST": {
+      "TITLE": "Listado para facturación",
+      "EXCEL_SHEET_NAME": "facturacion",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "PERFORMED": "Realizado",
+        "PERFORMING_DATE": "Fecha realización",
+        "REPORT_DATE": "Fecha informe",
+        "DAYS_PASSED": "Días transcurridos",
+        "DOCUMENTS": "Documentos",
+        "NAMES": "Nombres",
+        "SURNAMES": "Apellidos",
+        "DETAILS": "Detalle",
+        "URGENCY": "Urgencia",
+        "REQUESTED": "Solicitada",
+        "PERFORMING": "Realización",
+        "CONTRAST": "Contraste",
+        "ANESTHESIA": "Anestesia",
+        "REFERRING": "Solicitante"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs del elemento"
+      },
+      "CHIPS": {
+        "YES": "SI",
+        "NO": "NO",
+        "NO_REPORT_REQUIRED": "NO REQUIERE INFORME",
+        "DAYS_WAIT": "día/s de espera",
+        "AUTHENTICATED_ON_DAY": "Autenticado en el día",
+        "NA": "N/A"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "EXPORT_LIST": "EXPORTAR LISTADO",
+      "AET_PREFIX": "AET: "
+    }
+  },
   "APPOINTMENTS": {
     "LIST": {
       "TITLE": "Listado de citas",

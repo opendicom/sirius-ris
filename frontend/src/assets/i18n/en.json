@@ -39,6 +39,45 @@
       "AET_PREFIX": "AET: "
     }
   },
+  "BILLING": {
+    "LIST": {
+      "TITLE": "Billing List",
+      "EXCEL_SHEET_NAME": "billing",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "PERFORMED": "Performed",
+        "PERFORMING_DATE": "Performing Date",
+        "REPORT_DATE": "Report Date",
+        "DAYS_PASSED": "Days Passed",
+        "DOCUMENTS": "Documents",
+        "NAMES": "Names",
+        "SURNAMES": "Surnames",
+        "DETAILS": "Details",
+        "URGENCY": "Urgency",
+        "REQUESTED": "Requested",
+        "PERFORMING": "Performing",
+        "CONTRAST": "Contrast",
+        "ANESTHESIA": "Anesthesia",
+        "REFERRING": "Referring"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element Logs"
+      },
+      "CHIPS": {
+        "YES": "YES",
+        "NO": "NO",
+        "NO_REPORT_REQUIRED": "NO REPORT REQUIRED",
+        "DAYS_WAIT": "day/s wait",
+        "AUTHENTICATED_ON_DAY": "Authenticated on the day",
+        "NA": "N/A"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "EXPORT_LIST": "EXPORT LIST",
+      "AET_PREFIX": "AET: "
+    }
+  },
   "APPOINTMENTS": {
     "LIST": {
       "TITLE": "Appointments List",
