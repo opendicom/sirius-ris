@@ -1,17 +1,17 @@
 <form class="form-element" [formGroup]="form" *ngIf="sharedProp.mainSettings != undefined && sharedProp.mainSettings.appSettings != undefined">
   <div fxLayout="row" fxLayoutAlign="start start">
     <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
-      <h3 class="details-title">Detalles de la realización:</h3>
+      <h3 class="details-title">{{ 'REPORTS.FORM.DETAILS_TITLE' | i18n }}</h3>
       <div *ngIf="performingData" class="current-wrap">
         <!-- performing_date -->
         <div class="current-info divider-alt">
-          <small>Fecha de estudio:</small><br/>
+          <small>{{ 'REPORTS.FORM.STUDY_DATE' | i18n }}</small><br/>
           <span *ngIf="performingFormattedDate" class="appointment-firts">{{ performingFormattedDate.dateDay + '/' + performingFormattedDate.dateMonth + '/' + performingFormattedDate.dateYear }}</span>
         </div>
         
         <!-- checkin_time -->
         <div class="current-info divider-alt">
-          <small>Hora de recepción:</small><br/>
+          <small>{{ 'REPORTS.FORM.CHECKIN_TIME' | i18n }}</small><br/>
           <span *ngIf="performingFormattedDate" class="appointment-firts">{{ performingFormattedDate.startHours + ':' + performingFormattedDate.startMinutes }}</span>
         </div>
         
@@ -20,7 +20,7 @@
           <span *ngIf="performingData.appointment.imaging">
             <span *ngIf="performingData.appointment.imaging.organization && performingData.appointment.imaging.branch && performingData.appointment.imaging.service">
               <div class="current-info">
-                <small>Organización ► Sucursal ► Servicio:</small><br/>
+                <small>{{ 'REPORTS.FORM.ORGANIZATION_BRANCH_SERVICE' | i18n }}</small><br/>
                 <span class="current-firts">{{ performingData.appointment.imaging.organization.short_name + ' ► ' + performingData.appointment.imaging.branch.short_name + ' ► ' + performingData.appointment.imaging.service.name }}</span>
               </div>
             </span>
@@ -33,11 +33,11 @@
       <!-- patient -->
       <span *ngIf="performingData.patient">
         <span *ngIf="performingData.patient.person">
-          <h3 class="details-title">Datos del paciente:</h3>
+          <h3 class="details-title">{{ 'REPORTS.FORM.PATIENT_DATA' | i18n }}</h3>
           <div class="current-wrap">
             <!-- documents -->
             <div class="current-info">
-              <small>Documento/s:</small><br/>
+              <small>{{ 'REPORTS.FORM.DOCUMENTS' | i18n }}</small><br/>
               <span *ngFor="let current of performingData.patient.person.documents" >
                 <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                 <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -49,7 +49,7 @@
             
             <!-- names -->
             <div class="current-info">
-              <small>Nombre completo:</small><br/>
+              <small>{{ 'REPORTS.FORM.FULL_NAME' | i18n }}</small><br/>
               <span class="current-firts">
                 <span>{{ performingData.patient.person.name_01 }}</span>
 
@@ -73,13 +73,13 @@
           <div class="current-wrap">
             <!-- birth_date -->
             <div class="current-info">
-              <small>Fecha de nacimiento:</small><br/>
+              <small>{{ 'REPORTS.FORM.BIRTH_DATE' | i18n }}</small><br/>
               <span class="current-firts">{{ performingData.patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
             </div>
             
             <!-- genre -->
             <div class="current-info text-center">
-              <small>Género:</small><br/>
+              <small>{{ 'REPORTS.FORM.GENDER' | i18n }}:</small><br/>
               <span [ngSwitch]="performingData.patient.person.gender" matTooltip="{{ gender_types[performingData.patient.person.gender] }}">
                 <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                 <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
@@ -89,7 +89,7 @@
             
             <!-- status -->
             <div class="current-info text-center">
-              <small>Estado:</small><br/>
+              <small>{{ 'REPORTS.FORM.STATUS' | i18n }}:</small><br/>
               <span *ngIf="performingData.patient.status; then thenBlock else elseBlock"></span>
               <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
               <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
@@ -104,16 +104,16 @@
       <hr class="dashed" />
 
       <div *ngIf="performingData.appointment" class="text-center">
-        <small>Study IUID</small><br/><span class="label-accent">{{ performingData.appointment.study_iuid }}</span>
+        <small>{{ 'REPORTS.FORM.STUDY_IUID' | i18n }}</small><br/><span class="label-accent">{{ performingData.appointment.study_iuid }}</span>
       </div>
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h3 class="details-title">Detalles del estudio:</h3>
+      <h3 class="details-title">{{ 'REPORTS.FORM.STUDY_DETAILS' | i18n }}</h3>
       <div class="current-wrap">
         <!-- procedure -->
         <div class="current-info text-center divider-alt">
-          <small>Procedimiento realizado:</small><br/>
+          <small>{{ 'REPORTS.FORM.PROCEDURE_PERFORMED' | i18n }}</small><br/>
           <span class="badge-alt">
             <span *ngIf="performingData.procedure">{{ performingData.procedure.name }}</span>
           </span>
@@ -121,7 +121,7 @@
 
         <!-- equipment -->
         <div class="current-info text-center divider-alt">
-          <small>Equipamiento:</small><br/>
+          <small>{{ 'REPORTS.FORM.EQUIPMENT' | i18n }}</small><br/>
           <span *ngIf="performingData.equipment" class="badge-accent" matTooltip="{{ 'AET: ' + performingData.equipment.AET }}">
             <span>{{ performingData.equipment.name }}</span>
           </span>
@@ -129,7 +129,7 @@
 
         <!-- modality -->
         <div class="current-info text-center">
-          <small>Modalidad:</small><br/>
+          <small>{{ 'REPORTS.FORM.MODALITY' | i18n }}</small><br/>
           <span *ngIf="performingData.modality" class="badge" matTooltip="{{ performingData.modality.code_meaning }}">
             <span>{{ performingData.modality.code_value }}</span>
           </span>
@@ -143,7 +143,7 @@
       <div class="current-wrap">
           <!-- urgency -->
           <div class="current-info text-center divider-alt">
-            <small>Urgencia:</small><br/>
+            <small>{{ 'REPORTS.FORM.URGENCY' | i18n }}</small><br/>
             <div *ngIf="performingData.urgency; then thenBlockUrgency else elseBlockUrgency"></div>
             <ng-template #thenBlockUrgency><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
             <ng-template #elseBlockUrgency><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
@@ -152,7 +152,7 @@
           <span *ngIf="performingData.appointment">
             <!-- outpatient -->
             <div class="current-info text-center divider-alt">
-              <small>Hospitalización:</small><br/>
+              <small>{{ 'REPORTS.FORM.HOSPITALIZATION' | i18n }}</small><br/>
               <div *ngIf="performingData.appointment.outpatient; then thenBlockOutpatient else elseBlockOutpatient"></div>
               <ng-template #thenBlockOutpatient><mat-icon color="accent" matTooltip="Ambulatorio">house</mat-icon></ng-template>
               <ng-template #elseBlockOutpatient><mat-icon class="color-fail" matTooltip="Internado">hotel</mat-icon></ng-template>
@@ -160,7 +160,7 @@
 
             <!--appointment_pdf-->
             <div class="current-info text-center">
-              <small>Comprobante de cita:</small><br/>
+              <small>{{ 'REPORTS.FORM.APPOINTMENT_RECEIPT' | i18n }}</small><br/>
               <mat-icon color="accent" matTooltip="PDF de cita" (click)="pdfService.createPDF('appointment', performingData.appointment._id)">picture_as_pdf</mat-icon>
             </div>
           </span>
@@ -171,11 +171,11 @@
       <!--medical_signatures-->
       <span *ngIf="reportData && reportData.medical_signatures !== undefined">
         <br/><hr class="dashed"/>
-        <h3>Firmas:</h3>
+        <h3>{{ 'REPORTS.FORM.SIGNATURES' | i18n }}</h3>
         <span *ngIf="reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
         <ng-template #thenBlockSignatures>
           <span *ngFor="let current_signature of reportData.medical_signatures">
-            <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
+            <span class="label-info" matTooltip="{{ 'REPORTS.FORM.SIGNED' | i18n }} {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
               {{ current_signature.user.person.name_01 }}
               <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 
@@ -185,7 +185,7 @@
           </span>
         </ng-template>
         <ng-template #elseBlockSignatures>
-          <span class="label-fail">SIN FIRMAR</span>
+          <span class="label-fail">{{ 'REPORTS.FORM.UNSIGNED' | i18n }}</span>
         </ng-template>
       </span>
 
@@ -199,28 +199,28 @@
     <!-- INFO TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">feed</mat-icon> Resumen
+        <mat-icon class="tab-icon">feed</mat-icon> {{ 'REPORTS.FORM.TAB_SUMMARY' | i18n }}
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div *ngIf="performingData.appointment && performingData.appointment.private_health && performingData.patient" class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-          <h3 class="form-title text-center underline-fail-alt">Datos del paciente <span class="label-alt">Información sensible</span>:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.PATIENT_DATA' | i18n }} <span class="label-alt">{{ 'REPORTS.FORM.PATIENT_SENSITIVE_DATA' | i18n }}</span>:</h3>
 
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
               <ul>
-                <li *ngIf="performingData.patient.person"><strong>Edad: </strong><span matTooltip="Edad al momento de la realización">{{ sharedFunctions.calculateAge(performingData.patient.person.birth_date, performingData.date) }}</span></li>
-                <li><strong>Altura:</strong> {{ performingData.appointment.private_health.height }} centímetros</li>
-                <li><strong>Peso:</strong> {{ performingData.appointment.private_health.weight }} kilogramos</li>
+                <li *ngIf="performingData.patient.person"><strong>{{ 'REPORTS.FORM.AGE' | i18n }}</strong> <span matTooltip="{{ 'REPORTS.FORM.AGE_AT_STUDY_TIME' | i18n }}"> {{ sharedFunctions.calculateAge(performingData.patient.person.birth_date, performingData.date) }}</span></li>
+                <li><strong>{{ 'REPORTS.FORM.HEIGHT' | i18n }}</strong> {{ performingData.appointment.private_health.height }} centímetros</li>
+                <li><strong>{{ 'REPORTS.FORM.WEIGHT' | i18n }}</strong> {{ performingData.appointment.private_health.weight }} kilogramos</li>
               </ul>
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper"> <!-- start fxLayout wrapper -->
               <ul>
-                <li><strong>Medicación:</strong>
+                <li><strong>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }}: </strong>
                   <span innerHTML="{{ performingData.appointment.private_health.medication }}"></span>
                 </li>
-                <li><strong>Alergias:</strong> {{ performingData.appointment.private_health.allergies }}</li>
+                <li><strong>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}:</strong> {{ performingData.appointment.private_health.allergies }}</li>
               </ul>
             </div> <!-- end fxLayout wrapper -->
           </div>
@@ -232,14 +232,16 @@
             <span *ngIf="privatehealthAllAreFalse; then thenBlockPrivateHealth else elseBlockPrivateHealth"></span>
             
             <ng-template #thenBlockPrivateHealth>
-              <li>Sin antecedentes médicos</li>
+              <li>{{ 'REPORTS.FORM.NO_MEDICAL_HISTORY' | i18n }}</li>
             </ng-template>
       
             <ng-template #elseBlockPrivateHealth>
-              <li>Antecedentes médicos:<br/>
+              <li>{{ 'REPORTS.FORM.MEDICAL_HISTORY' | i18n }}<br/>
                 <div class="extra-spacing">
-                  <span *ngFor="let currentHealth of performingData.appointment.private_health | keyvalue" >
-                    <span *ngIf="currentHealth.value == true" class="label-info">{{ privateHealthLang.ES['' + currentHealth.key] }}</span>
+                  <span *ngFor="let currentHealth of performingData.appointment.private_health | keyvalue" >  
+                    <span *ngIf="currentHealth.value == true" class="label-info">
+                      {{ 'PRIVATE_HEALTH.' + toUpperCase(currentHealth.key) | i18n }}
+                    </span>
                   </span>
                   <div class="clear"></div>
                 </div>
@@ -251,14 +253,16 @@
             <span *ngIf="implantsAllAreFalse; then thenBlockImplants else elseBlockImplants"></span>
       
             <ng-template #thenBlockImplants>
-              <li>Sin implantes</li>
+              <li>{{ 'REPORTS.FORM.NO_IMPLANTS' | i18n }}</li>
             </ng-template>
       
             <ng-template #elseBlockImplants>
-              <li>Implantes:<br/>
+              <li>{{ 'REPORTS.FORM.IMPLANTS' | i18n }}<br/>
                 <div class="extra-spacing">
                   <span *ngFor="let currentImplant of performingData.appointment.private_health.implants | keyvalue" >
-                    <span *ngIf="currentImplant.value == true" class="label-info">{{ privateHealthLang.ES.implants['' + currentImplant.key] }}</span>
+                    <span *ngIf="currentImplant.value == true" class="label-info">
+                      {{ 'PRIVATE_HEALTH.IMPLANTS.' + toUpperCase(currentImplant.key) | i18n }}
+                    </span>
                   </span>
                   <div class="clear"></div>
                 </div>
@@ -268,23 +272,23 @@
 
           <!-- COVID-19-->
           <span *ngIf="performingData.appointment.private_health.covid19">
-            <h3 class="form-title text-center underline-fail">COVID-19:</h3>
+            <h3 class="form-title text-center underline-fail">{{ 'REPORTS.FORM.COVID19' | i18n }}</h3>
             <br/>
             <ul>
               <span *ngIf="performingData.appointment.private_health.covid19.had_covid; then thenBlockHadCovid19 else elseBlockHadCovid19"></span>
               <ng-template #thenBlockHadCovid19>
-                <li>Tuvo COVID-19.</li>
+                <li>{{ 'REPORTS.FORM.HAD_COVID' | i18n }}</li>
               </ng-template>
               <ng-template #elseBlockHadCovid19>
-                <li><strong>NO</strong> tuvo COVID-19.</li>
+                <li><strong>{{ 'REPORTS.FORM.DID_NOT_HAVE_COVID' | i18n }}</strong></li>
               </ng-template>
 
               <span *ngIf="performingData.appointment.private_health.covid19.vaccinated; then thenBlockVaccinated else elseBlockVaccinated"></span>
               <ng-template #thenBlockVaccinated>
-                <li>Posee vacunación contra COVID-19.</li>
+                <li>{{ 'REPORTS.FORM.HAS_VACCINATION' | i18n }}</li>
               </ng-template>
               <ng-template #elseBlockVaccinated>
-                <li><strong>NO</strong> posee vacunación contra COVID-19.</li>
+                <li><strong>{{ 'REPORTS.FORM.DOES_NOT_HAVE_VACCINATION' | i18n }}</strong></li>
               </ng-template>
 
               <li *ngIf="performingData.appointment.private_health.covid19.details !== '' && performingData.appointment.private_health.covid19.details !== undefined && performingData.appointment.private_health.covid19.details !== null">
@@ -295,11 +299,11 @@
 
           <!-- PET-CT -->
           <span *ngIf="performingData && performingData.modality && performingData.modality.code_value == 'PT' && performingData.injection && performingData.injection.pet_ct" >
-            <h3 class="form-title text-center underline-fail-alt">PET-CT:</h3>
+            <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.PET_CT' | i18n }}</h3>
             <br/>
 
             <div class="dose">
-              <h4>ACTIVIDAD ADMINISTRADA:</h4>
+              <h4>{{ 'REPORTS.FORM.ADMINISTERED_ACTIVITY' | i18n }}</h4>
               <span class="badge-warn badge-dose MBq">{{ performingData.injection.pet_ct.administred_activity }} MBq</span>
               <span class="badge-warn badge-dose mCi">{{ sharedFunctions.MBqTomCi(performingData.injection.pet_ct.administred_activity) }} mCi</span>
               <div class="clear"></div><br/>
@@ -308,10 +312,10 @@
           
           <br/>
 
-          <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">Informe requerido antes de <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
+          <h3 *ngIf="performingData.appointment" class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.REPORT_REQUIRED_BEFORE' | i18n }} <span class="label-info">{{ performingData.appointment.report_before | date:"dd/MM/yyyy":"UTC" }}</span></h3>
           <br/>
 
-          <h4>Anamnesis:</h4>
+          <h4>{{ 'REPORTS.FORM.ANAMNESIS' | i18n }}</h4>
           <div class="current-wrap details-wrap">
             <!-- anamnesis -->
             <div class="current-info">
@@ -322,7 +326,7 @@
               </ng-template>
           
               <ng-template #elseBlockAnamnesis>
-                <span>El estudio NO posee anamnesis.</span>
+                <span>{{ 'REPORTS.FORM.NO_ANAMNESIS' | i18n }}</span>
               </ng-template>
             </div>
           
@@ -331,7 +335,7 @@
 
           <br/><hr class="dashed"/><br/>
 
-          <h4>Indicaciones:</h4>
+          <h4>{{ 'REPORTS.FORM.INDICATIONS' | i18n }}</h4>
           <div class="current-wrap details-wrap">
             <!-- indications -->
             <div class="current-info">
@@ -342,7 +346,7 @@
               </ng-template>
           
               <ng-template #elseBlockIndications>
-                <span>El estudio NO posee indicaciones.</span>
+                <span>{{ 'REPORTS.FORM.NO_INDICATIONS' | i18n }}</span>
               </ng-template>
             </div>
           
@@ -353,9 +357,9 @@
 
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           
-          <h3 class="form-title text-center underline-fail-alt">Preparación e inyección:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.PREPARATION_INJECTION' | i18n }}</h3>
           <br/>
-          <h4>Observaciones:</h4>
+          <h4>{{ 'REPORTS.FORM.OBSERVATIONS' | i18n }}</h4>
           <div class="current-wrap details-wrap">
             <!-- observations -->
             <div class="current-info">
@@ -366,7 +370,7 @@
               </ng-template>
           
               <ng-template #elseBlockObservations>
-                <span>NO se registraron observaciones durante la preparación e inyección del paciente.</span>
+                <span>{{ 'REPORTS.FORM.NO_PREPARATION_OBSERVATIONS' | i18n }}</span>
               </ng-template>
             </div>
 
@@ -374,25 +378,25 @@
           </div>
 
 
-          <h3 class="form-title text-center underline-fail-alt">Adquisición:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.ACQUISITION' | i18n }}</h3>
           <br/>
           <!-- contrast -->
           <span *ngIf="performingData.appointment && performingData.appointment.contrast">
             <ul>
               <span *ngIf="performingData.appointment.contrast.use_contrast == true; then thenBlockContrast else elseBlockContrast"></span>
               <ng-template #thenBlockContrast>
-                <li><strong>Estudio realizado:</strong> <span class="label-info">Con contraste</span></li>
-                <li *ngIf="performingData.modality.code_value != 'PT'" ><strong>Tipo de contraste:</strong> {{ performingData.appointment.contrast.description }}</li>
+                <li><strong>{{ 'REPORTS.FORM.STUDY_PERFORMED' | i18n }}</strong> <span class="label-info">{{ 'REPORTS.FORM.WITH_CONTRAST' | i18n }}</span></li>
+                <li *ngIf="performingData.modality.code_value != 'PT'" ><strong>{{ 'REPORTS.FORM.CONTRAST_TYPE' | i18n }}:</strong> {{ performingData.appointment.contrast.description }}</li>
               </ng-template>
               <ng-template #elseBlockContrast>
-                <li><strong>Estudio realizado:</strong> Sin contraste</li>
+                <li><strong>{{ 'REPORTS.FORM.STUDY_PERFORMED' | i18n }}</strong> {{ 'REPORTS.FORM.WITHOUT_CONTRAST' | i18n }}</li>
               </ng-template>
             </ul>
           </span>
           
           <br/><hr class="dashed"/><br/>
 
-          <h4>Observaciones:</h4>
+          <h4>{{ 'REPORTS.FORM.OBSERVATIONS' | i18n }}</h4>
           <div class="current-wrap details-wrap">
             <!-- acquisition -> observations -->
             <div class="current-info">
@@ -403,7 +407,7 @@
               </ng-template>
           
               <ng-template #elseBlockAcquisitionObservations>
-                <span>NO se registraron observaciones durante la adquisicón de imágenes.</span>
+                <span>{{ 'REPORTS.FORM.NO_ACQUISITION_OBSERVATIONS' | i18n }}</span>
               </ng-template>
             </div>
           
@@ -424,16 +428,16 @@
     <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">edit</mat-icon> Informe
-        <mat-icon *ngIf="reportTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
+        <mat-icon class="tab-icon">edit</mat-icon> {{ 'REPORTS.FORM.TAB_REPORT' | i18n }}
+        <mat-icon *ngIf="reportTabErrors" class="validate-error-tab" matTooltip="{{ 'REPORTS.FORM.TAB_VALIDATION_ERRORS' | i18n }}">priority_high</mat-icon>
       </ng-template>
 
       <div class="action-wrapper" fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> Patologías:</span></span>
+          <span><small><mat-icon>coronavirus</mat-icon></small><span class="pathologies-title"> {{ 'REPORTS.FORM.PATHOLOGIES' | i18n }}:</span></span>
           <br/>
           <mat-form-field class="full" appearance="fill">
-            <mat-label>Patologías</mat-label>
+            <mat-label>{{ 'REPORTS.FORM.PATHOLOGIES' | i18n }}</mat-label>
             <input type="text" matInput formControlName="pathologies_input" (keyup)="filterPathologies($event)" [matAutocomplete]="autoPathologies">
             <mat-autocomplete #autoPathologies="matAutocomplete">
               <mat-option (click)="addPathology(currentPathology)" *ngFor="let currentPathology of filteredPathologies" [value]="currentPathology.name">
@@ -450,73 +454,73 @@
               <mat-chip-list>
                 <mat-chip class="mat-pathology" *ngFor="let currentPathology of selectedPathologies; let i = index">
                   <small>{{ currentPathology.name }}</small> 
-                  <mat-icon matTooltip="Quitar patología" (click)="removePathology(currentPathology)">close</mat-icon>
+                  <mat-icon matTooltip="{{ 'REPORTS.FORM.REMOVE_PATHOLOGY' | i18n }}" (click)="removePathology(currentPathology)">close</mat-icon>
                 </mat-chip>
               </mat-chip-list>
             </small>
           </ng-template>
           <ng-template #elseBlockPathologies>
-            <div class="text-center"><span class="label-info">El informe no posee patologías asignadas</span></div>
+            <div class="text-center"><span class="label-info">{{ 'REPORTS.FORM.REPORT_HAS_NO_PATHOLOGIES' | i18n }}</span></div>
           </ng-template>
         </div> <!-- end fxLayout wrapper -->
 
         <div class="input-wrapper text-right" [class.signatures-warn]="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined"> <!-- start fxLayout wrapper -->
           <!--Report Draft PDF Preview-->
-          <button *ngIf="reportData.performing && (reportData.performing.flow_state === 'P07' || reportData.performing.flow_state === 'P08')" mat-mini-fab class="small_button pdf_preview" type="button" (click)="pdfService.createPDF('report_draft', fk_performing)" matTooltip="Vista previa del informe PDF"><mat-icon>plagiarism</mat-icon></button>
+          <button *ngIf="reportData.performing && (reportData.performing.flow_state === 'P07' || reportData.performing.flow_state === 'P08')" mat-mini-fab class="small_button pdf_preview" type="button" (click)="pdfService.createPDF('report_draft', fk_performing)" matTooltip="{{ 'REPORTS.FORM.REPORT_PDF_PREVIEW' | i18n }}"><mat-icon>plagiarism</mat-icon></button>
 
           <!--Save button-->
-          <button mat-mini-fab class="small_button" type="button" (click)="onSubmit('save')" matTooltip="Guardar" color="primary"><mat-icon>save</mat-icon></button>
+          <button mat-mini-fab class="small_button" type="button" (click)="onSubmit('save')" matTooltip="{{ 'REPORTS.FORM.SAVE' | i18n }}" color="primary"><mat-icon>save</mat-icon></button>
 
           <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes] -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7]))">
-            <button mat-mini-fab class="small_button sign-button"   (click)="passwordRequest('save-sign')" type="button" matTooltip="Guardar y firmar"><mat-icon>draw</mat-icon></button>
+            <button mat-mini-fab class="small_button sign-button"   (click)="passwordRequest('save-sign')" type="button" matTooltip="{{ 'REPORTS.FORM.SAVE_SIGN' | i18n }}"><mat-icon>draw</mat-icon></button>
           </span>
 
           <!-- Superusuario, Supervisor, (Concesiones: [7: Firmar informes] AND [8: Autenticar informes]) -->
           <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || ((sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7])) && (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8])))">
-            <button mat-mini-fab class="small_button" type="button" (click)="passwordRequest('save-sign-authenticate')" matTooltip="Guardar, firmar y autenticar" color="accent"><mat-icon>workspace_premium</mat-icon></button>
+            <button mat-mini-fab class="small_button" type="button" (click)="passwordRequest('save-sign-authenticate')" matTooltip="{{ 'REPORTS.FORM.SAVE_SIGN_AUTHENTICATE' | i18n }}" color="accent"><mat-icon>workspace_premium</mat-icon></button>
           </span>
           
-          <button mat-mini-fab class="small_button" type="button" matTooltip="Cerrar" routerLink="/performing/list" color="basic"><mat-icon>close</mat-icon></button>
+          <button mat-mini-fab class="small_button" type="button" matTooltip="{{ 'REPORTS.FORM.CLOSE' | i18n }}" routerLink="/performing/list" color="basic"><mat-icon>close</mat-icon></button>
 
           <!--signatures_warn-->
           <div class="text-left" *ngIf="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined">
-            <small><hr class="dashed" /><strong>ADVERTENCIA:</strong> Este informe <strong>se encuentra firmado</strong>, si lo guarda se tomará como una acción de edición y <strong>eliminará todas las firmas</strong> existentes en el mismo.</small>
+            <small><hr class="dashed" /><strong>{{ 'REPORTS.FORM.WARNING' | i18n }}:</strong> {{ 'REPORTS.FORM.SIGNED_WARNING' | i18n }}</small>
           </div>
         </div> <!-- end fxLayout wrapper -->
       </div>
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-          <h3 class="underline-ok">Dato clínico: <span class="label-template" matTooltip="Cargar dato clínico" (click)="insertClinicalInfo()"><mat-icon>auto_fix_high</mat-icon></span></h3>
+          <h3 class="underline-ok">{{ 'REPORTS.FORM.CLINICAL_INFO' | i18n }} <span class="label-template" matTooltip="{{ 'REPORTS.FORM.LOAD_CLINICAL_INFO' | i18n }}" (click)="insertClinicalInfo()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="clinicalInfoValidator == false">
-            <span class="label-editor">min: 10, max: 10000</span>
+            <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
             <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           </div>
 
           <br/><hr class="soft-alt" /><br/>
 
-          <h3 class="underline-ok">Procedimiento: <span class="label-template" matTooltip="Cargar plantilla de procedimiento" (click)="insertProcedureTemplate()"><mat-icon>auto_fix_high</mat-icon></span></h3>
+          <h3 class="underline-ok">{{ 'REPORTS.FORM.PROCEDURE' | i18n }} <span class="label-template" matTooltip="{{ 'REPORTS.FORM.LOAD_PROCEDURE_TEMPLATE' | i18n }}" (click)="insertProcedureTemplate()"><mat-icon>auto_fix_high</mat-icon></span></h3>
           <div [class.unselected]="procedureDescriptionValidator == false">
-            <span class="label-editor">min: 10, max: 10000</span>
+            <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
             <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           </div>
 
           <br/><hr class="soft-alt" /><br/>
         
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Título de hallazgos</mat-label>
-            <input matInput type="text" formControlName="findings_title" placeholder="Ingrese el título de hallazgos">
-            <mat-icon matPrefix matTooltip="Cargar plantilla de informe" (click)="insertReportTemplate()">auto_fix_high</mat-icon>
+            <mat-label>{{ 'REPORTS.FORM.FINDINGS_TITLE' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="findings_title" placeholder="{{ 'REPORTS.FORM.FINDINGS_TITLE_PLACEHOLDER' | i18n }}">
+            <mat-icon matPrefix matTooltip="{{ 'REPORTS.FORM.LOAD_REPORT_TEMPLATE' | i18n }}" (click)="insertReportTemplate()">auto_fix_high</mat-icon>
           </mat-form-field>
 
-          <span class="label-editor">min: 10, max: 10000</span>
+          <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
           <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
           <br/><hr class="soft-alt" /><br/>
 
-          <h3 class="underline-ok">En suma:</h3>
-          <span class="label-editor">min: 10, max: 10000</span>
+          <h3 class="underline-ok">{{ 'REPORTS.FORM.IN_SUMMARY' | i18n }}</h3>
+          <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
           <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
           
           <br/>
@@ -530,7 +534,7 @@
     <!-- DICOM TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">visibility</mat-icon> Imágenes
+        <mat-icon class="tab-icon">visibility</mat-icon> {{ 'REPORTS.FORM.TAB_IMAGES' | i18n }}
       </ng-template>
    
       <div *ngIf="requestedDICOMController == false">
@@ -540,7 +544,7 @@
             <mat-icon class="no-dicom">visibility_off</mat-icon>
 
             <br/><br/><hr class="dashed" /><br/>
-            <h3>No se encontraron imágenes asociadas al estudio</h3>
+            <h3>{{ 'REPORTS.FORM.NO_IMAGES_FOUND' | i18n }}</h3>
           </div> <!-- end fxLayout wrapper -->
         </div>
       </div>
@@ -554,11 +558,11 @@
     <!-- FILES TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">folder</mat-icon> Archivos
+        <mat-icon class="tab-icon">folder</mat-icon> {{ 'REPORTS.FORM.TAB_FILES' | i18n }}
       </ng-template>
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper">
-          <h3 class="form-title text-center underline-fail-alt">Archivos adjuntos <span class="label-info">Máx. {{ sharedProp.mainSettings.appSettings.file_max_size }} MB</span>:</h3>
+          <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.ATTACHED_FILES' | i18n }} <span class="label-info">{{ 'REPORTS.FORM.MAX_SIZE' | i18n }} {{ sharedProp.mainSettings.appSettings.file_max_size }} {{ 'REPORTS.FORM.MB' | i18n }}</span>:</h3>
           <br/>
               
           <span *ngIf="getKeys(fileManager.controller.attached_files.files).length > 0; then thenBlockAttached else elseBlockAttached"></span>
@@ -574,7 +578,7 @@
               
           <ng-template #elseBlockAttached>
             <div class="text-center">
-              <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+              <mat-icon>folder_off</mat-icon> <h3>{{ 'REPORTS.FORM.NO_ATTACHED_FILES' | i18n }}</h3>
             </div>
           </ng-template>
               
@@ -585,7 +589,7 @@
             <button mat-flat-button type="button" [disabled]="fileManager.controller['attached_files'].disabled" color="accent" (click)="fileInputAttached.click()">
               <span *ngIf="fileManager.controller['attached_files'].disabled; then thenBlockAttachedDisabled else elseBlockAttachedDisabled"></span>
               <ng-template #thenBlockAttachedDisabled><mat-icon>cloud_sync</mat-icon> SUBIENDO ARCHIVO (<small>{{ fileManager.uploadProgress }}%</small>)</ng-template>
-              <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> ADJUNTAR ARCHIVO</ng-template>
+              <ng-template #elseBlockAttachedDisabled><mat-icon>attach_file</mat-icon> {{ 'REPORTS.FORM.ATTACH_FILE' | i18n }}</ng-template>
             </button>
           </div>
 
@@ -599,7 +603,7 @@
     <!-- HISTORY TAB: ---------------------------------------------------------------------------------------------------------------- -->
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">history</mat-icon> Estudios previos
+        <mat-icon class="tab-icon">history</mat-icon> {{ 'REPORTS.FORM.TAB_PREVIOUS_STUDIES' | i18n }}
       </ng-template>
 
       <div *ngIf="previous; then thenBlockTable else elseBlockTable"></div>
@@ -611,17 +615,17 @@
             <ng-container matColumnDef="current">
               <th mat-header-cell *matHeaderCellDef class="text-center column-alt"></th>
               <td mat-cell *matCellDef="let element" class="text-center">
-                <span *ngIf="element._id == fk_performing"><mat-icon class="current_item" matTooltip="Actual">arrow_forward</mat-icon></span>
+                <span *ngIf="element._id == fk_performing"><mat-icon class="current_item" matTooltip="{{ 'REPORTS.FORM.CURRENT' | i18n }}">arrow_forward</mat-icon></span>
               </td>
             </ng-container>
 
             <!-- flow_state -->
             <ng-container matColumnDef="flow_state">
-              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Flujo de estudio</th>
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">{{ 'REPORTS.FORM.STUDY_FLOW' | i18n }}</th>
               <td mat-cell *matCellDef="let element" class="text-center">
                 <!--See report-->
                 <span *ngIf="element.flow_state == 'P09'">
-                  <button mat-mini-fab class="history_small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="Ver informe" color="accent">
+                  <button mat-mini-fab class="history_small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'REPORTS.FORM.VIEW_REPORT' | i18n }}" color="accent">
                     <mat-icon>playlist_add_check</mat-icon>
                   </button>
                   <br/>
@@ -634,7 +638,7 @@
 
             <!-- date -->
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Fecha </th>
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'REPORTS.FORM.DATE' | i18n }} </th>
               <td mat-cell *matCellDef="let element" class="text-center">
                 <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
               </td>
@@ -642,7 +646,7 @@
 
             <!-- checkin_time -->
             <ng-container matColumnDef="checkin_time">
-              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Hora<br/>recepción </th>
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'REPORTS.FORM.CHECKIN_TIME_SHORT' | i18n }} </th>
               <td mat-cell *matCellDef="let element" class="text-center">
                 <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
               </td>
@@ -650,7 +654,7 @@
 
             <!-- patient_age -->
             <ng-container matColumnDef="patient_age">
-              <th mat-header-cell *matHeaderCellDef matTooltip="Edad al momento de la realización del estudio" class="text-center column-alt"> Edad </th>
+              <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'REPORTS.FORM.AGE_AT_STUDY_TIME_LONG' | i18n }}" class="text-center column-alt"> {{ 'REPORTS.FORM.AGE_SHORT' | i18n }} </th>
               <td mat-cell *matCellDef="let element" class="text-center">
                 <span *ngIf="element.patient">
                   <span *ngIf="element.patient.person">
@@ -662,7 +666,7 @@
 
             <!-- details -->
             <ng-container matColumnDef="details">
-              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> Detalle </th>
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt"> {{ 'REPORTS.FORM.DETAIL' | i18n }} </th>
               <td mat-cell *matCellDef="let element">
                 <!-- procedure -->
                 <span *ngIf="element.procedure">
@@ -678,24 +682,24 @@
                     <span>{{ element.equipment.name }}</span>
                     </span>
                 </ng-template>
-                <ng-template #elseBlockTableEquipment>(Sin dato)</ng-template>
+                <ng-template #elseBlockTableEquipment>({{ 'REPORTS.FORM.NO_DATA' | i18n }})</ng-template>
 
                 <!-- modality -->
                 <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
                 <ng-template #thenBlockTableModality>
                   <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
                 </ng-template>
-                <ng-template #elseBlockTableModality>(Sin dato)</ng-template>
+                <ng-template #elseBlockTableModality>({{ 'REPORTS.FORM.NO_DATA' | i18n }})</ng-template>
               </td>
             </ng-container>
 
             <!-- domain -->
             <ng-container matColumnDef="domain">
-              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">Dominio</th>
+              <th mat-header-cell *matHeaderCellDef class="text-center column-alt">{{ 'REPORTS.FORM.DOMAIN' | i18n }}</th>
               <td mat-cell *matCellDef="let element">
                 <div *ngIf="element.appointment" class="domain-container">
                   <!--referring-->
-                  <small><strong>Solicitante: </strong></small>
+                  <small><strong>{{ 'REPORTS.FORM.REQUESTING' | i18n }}</strong></small>
                   <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
                   <ng-template #thenBlockReferring>
                     <small>
@@ -704,12 +708,12 @@
                       <span *ngIf="element.appointment.referring.service"> ► {{ element.appointment.referring.service.name }}</span>
                     </small>
                   </ng-template>
-                  <ng-template #elseBlockReferring>(Sin dato)</ng-template>
+                  <ng-template #elseBlockReferring>({{ 'REPORTS.FORM.NO_DATA' | i18n }})</ng-template>
 
                   <hr class="dashed" />
 
                   <!--imaging-->
-                  <small><strong>Realizador: </strong></small>
+                  <small><strong>{{ 'REPORTS.FORM.IMAGING' | i18n }}</strong></small>
                   <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
                   <ng-template #thenBlockImaging>
                     <small>
@@ -718,12 +722,12 @@
                       <span *ngIf="element.appointment.imaging.service"> ► {{ element.appointment.imaging.service.name }}</span>
                     </small>
                   </ng-template>
-                  <ng-template #elseBlockImaging>(Sin dato)</ng-template>
+                  <ng-template #elseBlockImaging>({{ 'REPORTS.FORM.NO_DATA' | i18n }})</ng-template>
 
                   <hr class="dashed" />
 
                   <!--reporting-->
-                  <small><strong>Informador: </strong></small>
+                  <small><strong>{{ 'REPORTS.FORM.REPORTING' | i18n }}</strong></small>
                   <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
                   <ng-template #thenBlockReporting>
                     <small>
@@ -732,7 +736,7 @@
                       <span *ngIf="element.appointment.reporting.service"> ► {{ element.appointment.reporting.service.name }}</span>
                     </small>
                   </ng-template>
-                  <ng-template #elseBlockReporting>(Sin dato)</ng-template>
+                  <ng-template #elseBlockReporting>({{ 'REPORTS.FORM.NO_DATA' | i18n }})</ng-template>
                 </div>
               </td>
             </ng-container>
@@ -746,7 +750,7 @@
       <!-- Await previous or not previous -->
       <ng-template #elseBlockTable>
         <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-          No se encontraron estudios previos.
+          {{ 'REPORTS.FORM.NO_PREVIOUS_STUDIES' | i18n }}
         </div>
       </ng-template>
     </mat-tab>
@@ -756,23 +760,23 @@
     <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
     <mat-tab *ngIf="amendmentsData !== false">
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">rule</mat-icon> Enmiendas
+        <mat-icon class="tab-icon">rule</mat-icon> {{ 'REPORTS.FORM.TAB_AMENDMENTS' | i18n }}
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
           <span *ngFor="let current_report of amendmentsData; let i = index">
-            <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ amendmentsData.length - i  + ' de ' + amendmentsData.length }}</h3>
+            <h3 class="form-title text-center underline-fail-alt">{{ 'REPORTS.FORM.HISTORICAL_REPORT' | i18n }} {{ amendmentsData.length - i  + ' ' + ('REPORTS.FORM.OF' | i18n) + ' ' + amendmentsData.length }}</h3>
 
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title">
-                  Fecha de creación: 
+                  {{ 'REPORTS.FORM.CREATION_DATE' | i18n }} 
                   <span class="label-accent">{{ current_report.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}</span><br/>
 
-                  Autenticado por: 
-                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
+                  {{ 'REPORTS.FORM.AUTHENTICATED_BY' | i18n }} 
+                  <span class="label-alt" matTooltip="{{ 'REPORTS.FORM.AUTHENTICATED_ON' | i18n }} {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
                     {{ current_report.authenticated.user.person.name_01 }}
                     <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
 
@@ -780,9 +784,9 @@
                     <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
                   </span><br/>
 
-                  Firmado por:
+                  {{ 'REPORTS.FORM.SIGNED_BY' | i18n }}
                   <span *ngFor="let current_signature of current_report.medical_signatures">
-                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
+                    <span class="label-info" matTooltip="{{ 'REPORTS.FORM.SIGNED_ON' | i18n }} {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
                       {{ current_signature.user.person.name_01 }}
                       <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 
@@ -806,7 +810,7 @@
                   </small>
                 </ng-template>
                 <ng-template #elseBlockCurrentPathologies>
-                  <span class="label-accent">El informe no posee patologías asignadas</span>
+                  <span class="label-accent">{{ 'REPORTS.FORM.REPORT_HAS_NO_PATHOLOGIES' | i18n }}</span>
                 </ng-template>
               </div> <!-- end fxLayout wrapper -->
             </div>
@@ -815,7 +819,7 @@
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    Haga click aquí para mostrar u ocultar el contenido del informe Nº {{ amendmentsData.length - i }}
+                    {{ 'REPORTS.FORM.CLICK_TO_SHOW_HIDE' | i18n }} {{ amendmentsData.length - i }}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 
@@ -823,14 +827,14 @@
 
                 <div class="report-wrap">
                   <span *ngIf="current_report.clinical_info">
-                    <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'REPORTS.FORM.CLINICAL_INFO_SHORT' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.clinical_info }}"></span>
                   </span>
 
                   <span *ngIf="current_report.procedure_description">
                     <br/><hr class="soft-alt" /><br/>
       
-                    <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'REPORTS.FORM.PROCEDURE_SHORT' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.procedure_description }}"></span>
                   </span>
                   
@@ -844,7 +848,7 @@
                   <span *ngIf="current_report.summary">
                     <br/><hr class="soft-alt" /><br/>
         
-                    <h3 class="report-underline"><strong>En suma:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'REPORTS.FORM.IN_SUMMARY_SHORT' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.summary }}"></span>
                   </span>
                   <br/>

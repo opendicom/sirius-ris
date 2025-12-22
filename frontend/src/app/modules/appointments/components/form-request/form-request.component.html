@@ -222,8 +222,8 @@
   
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n }}</button>
-        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n | uppercase }}</button> <!-- [disabled]="form_data.invalid" -->
       </div> <!-- end fxLayout wrapper -->
     </div>
   </form>

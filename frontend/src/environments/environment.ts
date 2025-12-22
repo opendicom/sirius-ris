@@ -168,53 +168,6 @@ export const elementTypesLang = {
   }
 };
 
-// Private health Lang:
-export const privateHealthLang = {
-  'ES' : {
-    'diabetes'                : 'Diabetes',
-    'hypertension'            : 'Hipertensión',
-    'epoc'                    : 'EPOC',
-    'smoking'                 : 'Tabaquismo',
-    'malnutrition'            : 'Desnutrición',
-    'obesity'                 : 'Obesidad',
-    'asthma'                  : 'Asma',
-    'pregnancy'               : 'Embarazo',
-    'claustrophobia'          : 'Claustrofobia',
-    'renal_insufficiency'     : 'Insuficiencia renal',
-    'heart_failure'           : 'Insuficiencia cardíaca',
-    'ischemic_heart_disease'  : 'Cardiopatía isquémica',
-    'valvulopathy'            : 'Valvulopatía',
-    'arrhythmia'              : 'Arritmia',
-    'hiv'                     : 'HIV',
-    'cancer'                  : 'Cáncer',
-    'dementia'                : 'Demencia',
-    'hyperthyroidism'         : 'Hipertiroidismo',
-    'hypothyroidism'          : 'Hipotiroidismo',
-    'other'                   : 'Otro antecedente/patología',
-
-    //Medication and allergies:
-    'medication'              : 'Medicación',
-    'allergies'               : 'Alergias',
-
-    //Implants:
-    'implants': {
-      'cochlear_implant'      : 'Implante coclear',
-      'cardiac_stent'         : 'Stent cardíaco',
-      'metal_prostheses'      : 'Prótesis metálicas',
-      'metal_shards'          : 'Esquirlas metálicas',
-      'pacemaker'             : 'Marcapasos',
-      'other'                 : 'Otro tipo de implante'
-    },
-
-    //COVID-19:
-    'covid19': {
-      'had_covid'             : 'Tuvo COVID-19',
-      'vaccinated'            : 'Posee vacunación contra COVID-19',
-      'details'               : 'Detalles (Ej. tipo de dosis Sinovac, Phizer).',
-    }
-  }
-};
-
 // Inpatient types:
 export const inpatient_types = {
   1 :'Cuidados intensivos',

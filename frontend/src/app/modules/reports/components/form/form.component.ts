@@ -10,11 +10,11 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { ReportsService } from '@modules/reports/services/reports.service';                 // Reports Services
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   ISO_3166, 
   document_types, 
   gender_types, 
-  privateHealthLang,
   cancellation_reasons,
   performing_flow_states
 } from '@env/environment';
@@ -31,7 +31,6 @@ export class FormComponent implements OnInit {
   public country_codes                  : any = ISO_3166;
   public document_types                 : any = document_types;
   public gender_types                   : any = gender_types;
-  public privateHealthLang              : any = privateHealthLang;
   public performing_flow_states         : any = performing_flow_states;
   public cancellation_reasons           : any = cancellation_reasons;
 
@@ -109,7 +108,8 @@ export class FormComponent implements OnInit {
     public sharedFunctions  : SharedFunctionsService,
     public fileManager      : FileManagerService,
     public reportsService   : ReportsService,
-    public pdfService       : PdfService
+    public pdfService       : PdfService,
+    public i18n             : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -136,7 +136,7 @@ export class FormComponent implements OnInit {
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Edición de informe',
+      content_title : this.i18n.instant('REPORTS.FORM.TITLE'),
       content_icon  : 'edit_note',
       add_button    : false,
       filters_form  : false,
@@ -659,5 +659,9 @@ export class FormComponent implements OnInit {
     if(event.index == 2){
       this.getStudyDICOM();
     }
+  }
+
+  toUpperCase(value: unknown): string {
+    return typeof value === 'string' ? value.toUpperCase() : '';
   }
 }
