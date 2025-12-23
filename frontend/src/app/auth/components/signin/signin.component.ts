@@ -10,6 +10,7 @@ import { document_types, ISO_3166 } from '@env/environment';                    
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -37,7 +38,8 @@ export class SigninComponent implements OnInit {
     public  sharedProp      : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
     private objRoute        : ActivatedRoute,
-    public  themesService   : ThemesService
+    public  themesService   : ThemesService,
+    public  i18n            : I18nService
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;

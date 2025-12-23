@@ -4,7 +4,7 @@
   <br/><br/><hr class="dashed" /><br/>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Dominio</mat-label>
+    <mat-label>{{ 'AUTH.DOMAIN' | i18n }}</mat-label>
     <mat-select name="domain" (selectionChange)="onChangeDomain($event)" ngModel required>
       <div *ngFor="let currentDomain of availableDomains | keyvalue">
         <mat-option value="{{ currentDomain.key }}">{{ currentDomain.value }}</mat-option>
@@ -13,7 +13,7 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Rol</mat-label>
+    <mat-label>{{ 'AUTH.ROLE' | i18n }}</mat-label>
     <mat-select name="role" [disabled]="RoleDisabled" ngModel required>
       <div *ngFor="let currentRole of availableRoles | keyvalue">
         <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
@@ -23,7 +23,7 @@
 
   <br/>
 
-  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">SELECCIONAR</button>
+  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">{{ 'AUTH.SELECT' | i18n }}</button>
   <br/><br/>
-  <button mat-flat-button color="accent" class="sub-element submit-button" type="button" (click)="onCancel()">CANCELAR</button>
+  <button mat-flat-button color="accent" class="sub-element submit-button" type="button" (click)="onCancel()">{{ 'AUTH.CANCEL' | i18n }}</button>
 </form>

@@ -8,6 +8,7 @@ import { AuthorizeComponent } from '@app/auth/components/authorize/authorize.com
 import { ChangePassComponent } from '@auth/components/change-pass/change-pass.component';
 
 import { SharedMaterialModule } from '@shared/shared-material.module';
+import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Required for bidirectional binding (ngModule).
 
 @NgModule({
@@ -20,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';        //Requ
     CommonModule,
     AuthRoutingModule,
 
+    SharedModule,
     SharedMaterialModule,
     FormsModule,
     ReactiveFormsModule

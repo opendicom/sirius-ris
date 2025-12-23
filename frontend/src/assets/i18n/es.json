@@ -778,6 +778,20 @@
     "FINISHED_WITHOUT_REPORT": "Terminado (sin informe)",
     "CANCELLED": "Cancelado"
   },
+  "AUTH": {
+    "DOCUMENT": "Documento",
+    "ENTER_DOCUMENT": "Ingrese su documento",
+    "PASSWORD": "Contraseña",
+    "ENTER_PASSWORD": "Ingrese su contraseña",
+    "SIGN_IN": "INICIAR SESIÓN",
+    "DOCUMENT_COUNTRY": "País del documento",
+    "DOCUMENT_TYPE": "Tipo de documento",
+    "MAIN_SETTINGS": "AJUSTES PRINCIPALES",
+    "DOMAIN": "Dominio",
+    "ROLE": "Rol",
+    "SELECT": "SELECCIONAR",
+    "CANCEL": "CANCELAR"
+  },
   "THEME": {
     "LABEL": "Tema",
     "DARK": "Oscuro",

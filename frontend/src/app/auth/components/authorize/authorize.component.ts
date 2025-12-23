@@ -9,6 +9,7 @@ import { user_roles } from '@env/environment';                                  
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { Router } from '@angular/router';                                               // Router
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -28,7 +29,8 @@ export class AuthorizeComponent implements OnInit {
     private router          : Router,
     private userAuth        : UsersAuthService,
     public  sharedProp      : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService
+    private sharedFunctions : SharedFunctionsService,
+    public  i18n            : I18nService
   ) { }
 
   ngOnInit(): void {

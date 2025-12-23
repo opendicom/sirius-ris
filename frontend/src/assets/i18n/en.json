@@ -788,6 +788,20 @@
     "FINISHED_WITHOUT_REPORT": "Finished (without report)",
     "CANCELLED": "Cancelled"
   },
+  "AUTH": {
+    "DOCUMENT": "Document",
+    "ENTER_DOCUMENT": "Enter your document",
+    "PASSWORD": "Password",
+    "ENTER_PASSWORD": "Enter your password",
+    "SIGN_IN": "SIGN IN",
+    "DOCUMENT_COUNTRY": "Document country",
+    "DOCUMENT_TYPE": "Document type",
+    "MAIN_SETTINGS": "MAIN SETTINGS",
+    "DOMAIN": "Domain",
+    "ROLE": "Role",
+    "SELECT": "SELECT",
+    "CANCEL": "CANCEL"
+  },
   "THEME": {
     "LABEL": "Theme",
     "DARK": "Dark",

@@ -4,26 +4,26 @@
   <br/><br/><hr class="dashed" /><br/>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Documento</mat-label>
-    <input matInput type="text" name="document" ngModel required placeholder="Ingrese su documento">
+    <mat-label>{{ 'AUTH.DOCUMENT' | i18n }}</mat-label>
+    <input matInput type="text" name="document" ngModel required placeholder="{{ 'AUTH.ENTER_DOCUMENT' | i18n }}">
   </mat-form-field>
 
   <br/>
 
   <mat-form-field appearance="fill" class="sub-element">
-    <mat-label>Contraseña</mat-label>
-    <input matInput type="password" name="password" ngModel required placeholder="Ingrese su contraseña">
+    <mat-label>{{ 'AUTH.PASSWORD' | i18n }}</mat-label>
+    <input matInput type="password" name="password" ngModel required placeholder="{{ 'AUTH.ENTER_PASSWORD' | i18n }}">
   </mat-form-field>
 
   <br/>
 
-  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">INICIAR SESIÓN</button>
+  <button mat-flat-button color="primary" class="sub-element submit-button" type="submit">{{ 'AUTH.SIGN_IN' | i18n }}</button>
 
   <br/><br/>
 
   <div class="document-section" *ngIf="sharedProp.mainSettings.appSettings != undefined">
     <mat-form-field appearance="fill" class="medium">
-      <mat-label>País del documento</mat-label>
+      <mat-label>{{ 'AUTH.DOCUMENT_COUNTRY' | i18n }}</mat-label>
       <mat-select name="doc_country_code" [(ngModel)]="sharedProp.mainSettings.appSettings.default_country" required >
         <div *ngFor="let currentCode of getKeys(country_codes, true)">
           <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
@@ -32,7 +32,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="medium">
-      <mat-label>Tipo de documento</mat-label>
+      <mat-label>{{ 'AUTH.DOCUMENT_TYPE' | i18n }}</mat-label>
       <mat-select name="doc_type" [(ngModel)]="sharedProp.mainSettings.appSettings.default_doc_type" required >
         <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
           <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
@@ -43,7 +43,7 @@
 
   <div *ngIf="GET_full_status && sharedProp.mainSettings.appSettings != undefined"><!--Full status information-->
     <br/><hr class="dashed" />
-    <strong>AJUSTES PRINCIPALES</strong>
+    <strong>{{ 'AUTH.MAIN_SETTINGS' | i18n }}</strong>
     <hr class="dashed" />
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper text-left divider-alt"> <!-- start fxLayout wrapper -->
