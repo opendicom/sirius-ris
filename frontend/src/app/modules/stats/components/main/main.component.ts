@@ -5,7 +5,8 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { StatsService } from '@modules/stats/services/stats.service';                       // Stats Serice
+import { StatsService } from '@modules/stats/services/stats.service';                   // Stats Serice
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,14 +19,15 @@ export class MainComponent implements OnInit {
   constructor(
     public sharedProp         : SharedPropertiesService,
     public sharedFunctions    : SharedFunctionsService,
-    public statsService     : StatsService
+    public statsService       : StatsService,
+    public i18n               : I18nService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Estadística',
+      content_title : this.i18n.instant('STATS.TITLE'),
       content_icon  : 'query_stats',
       add_button    : false,
       filters_form  : false,

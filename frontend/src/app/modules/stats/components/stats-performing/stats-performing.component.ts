@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { StatsService } from '@modules/stats/services/stats.service';                       // Stats Serice
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { Color, ScaleType } from '@swimlane/ngx-charts';                                    // NGX Color Scheme
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -47,28 +48,28 @@ export class StatsPerformingComponent implements OnInit {
 
   //Set Chart colors and color schemes:
   public gender_colors = [
-    { name: "Masculino", value: '#05a3ff87' },
-    { name: "Femenino", value: '#d53a9d87' },
-    { name: "Otros", value: 'var(--green-highlighted)' },
+    { name: this.i18n.instant('STATS.MALE'), value: '#05a3ff87' },
+    { name: this.i18n.instant('STATS.FEMALE'), value: '#d53a9d87' },
+    { name: this.i18n.instant('STATS.OTHERS'), value: 'var(--green-highlighted)' },
   ];
 
   public flow_states_colors = [
-    { name: "Recepción", value: '#607d8b87' },
-    { name: "Entrevista", value: '#607d8b87' },
-    { name: "Preparación/Inyección", value: '#607d8b87' },
-    { name: "Adquisición", value: '#607d8b87' },
-    { name: "Verificación de imágenes", value: '#607d8b87' },
-    { name: "Para informar", value: '#607d8b87' },
-    { name: "Informe borrador", value: '#d53a9cc9' },
-    { name: "Informe firmado", value: '#733ad5a9' },
-    { name: "Terminado (con informe)", value: 'var(--green-opaque)' },
-    { name: "Terminado (sin informe)", value: 'var(--green-opaque)' },
-    { name: "Cancelado", value: '#ff6e69d3' },
+    { name: this.i18n.instant('STATS.RECEPTION'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.INTERVIEW'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.PREPARATION_INJECTION'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.ACQUISITION'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.IMAGE_VERIFICATION'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.TO_REPORT'), value: '#607d8b87' },
+    { name: this.i18n.instant('STATS.DRAFT_REPORT'), value: '#d53a9cc9' },
+    { name: this.i18n.instant('STATS.SIGNED_REPORT'), value: '#733ad5a9' },
+    { name: this.i18n.instant('STATS.FINISHED_WITH_REPORT'), value: 'var(--green-opaque)' },
+    { name: this.i18n.instant('STATS.FINISHED_WITHOUT_REPORT'), value: 'var(--green-opaque)' },
+    { name: this.i18n.instant('STATS.CANCELLED'), value: '#ff6e69d3' },
   ];
 
   public urgency_colors = [
-    { name: "Urgente", value: '#ff6f69' },
-    { name: "Común", value: '#607d8b' }
+    { name: this.i18n.instant('STATS.URGENT'), value: '#ff6f69' },
+    { name: this.i18n.instant('STATS.COMMON'), value: '#607d8b' }
   ];
 
   public proceduresColorScheme: Color = { 
@@ -93,7 +94,8 @@ export class StatsPerformingComponent implements OnInit {
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
-    public statsService     : StatsService
+    public statsService     : StatsService,
+    public i18n             : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;

@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { StatsService } from '@modules/stats/services/stats.service';                       // Stats Serice
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { Color, ScaleType } from '@swimlane/ngx-charts';                                    // NGX Color Scheme
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -45,24 +46,24 @@ export class StatsAppointmentsComponent implements OnInit {
 
   //Set Chart colors and color schemes:
   public gender_colors = [
-    { name: "Masculino", value: '#05a3ff87' },
-    { name: "Femenino", value: '#d53a9d87' },
-    { name: "Otros", value: 'var(--green-highlighted)' },
+    { name: this.i18n.instant('STATS.MALE'), value: '#05a3ff87' },
+    { name: this.i18n.instant('STATS.FEMALE'), value: '#d53a9d87' },
+    { name: this.i18n.instant('STATS.OTHERS'), value: 'var(--green-highlighted)' },
   ];
 
   public flow_states_colors = [
-    { name: "Coordinada", value: 'var(--green-opaque)' },
-    { name: "Cancelada-suspendida", value: '#ff6e69d3' }
+    { name: this.i18n.instant('STATS.COORDINATED'), value: 'var(--green-opaque)' },
+    { name: this.i18n.instant('STATS.CANCELLED_SUSPENDED'), value: '#ff6e69d3' }
   ];
 
   public urgency_colors = [
-    { name: "Urgente", value: '#ff6f69' },
-    { name: "Común", value: '#607d8b' }
+    { name: this.i18n.instant('STATS.URGENT'), value: '#ff6f69' },
+    { name: this.i18n.instant('STATS.COMMON'), value: '#607d8b' }
   ];
 
   public outpatient_colors = [
-    { name: "Internado", value: '#ff6f69' },
-    { name: "Ambulatorio", value: '#607d8b' }
+    { name: this.i18n.instant('STATS.INPATIENT'), value: '#ff6f69' },
+    { name: this.i18n.instant('STATS.OUTPATIENT'), value: '#607d8b' }
   ];
 
   public proceduresColorScheme: Color = { 
@@ -87,7 +88,8 @@ export class StatsAppointmentsComponent implements OnInit {
     public formBuilder      : FormBuilder,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
-    public statsService     : StatsService
+    public statsService     : StatsService,
+    public i18n             : I18nService
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
