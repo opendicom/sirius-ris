@@ -8,6 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';                        
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ISO_3166, document_types, gender_types } from '@env/environment';              // Enviroments
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -34,7 +35,8 @@ export class DicomAccessComponent implements OnInit {
     public current_dialog   : MatDialog,
     private dialogRef       : MatDialogRef<any>,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ) { }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title id="IDdialogTitle" class="underline-ok"><mat-icon>visibility</mat-icon>&nbsp; Imágenes del estudio</h1>
+<h1 mat-dialog-title id="IDdialogTitle" class="underline-ok"><mat-icon>visibility</mat-icon>&nbsp; {{ 'DIALOGS.DICOM_ACCESS.TITLE' | i18n }}</h1>
 <div mat-dialog-content [class.adjust-mat-dialog-content-ohif]="ohifPath !== undefined && ohifPath !== null && ohifPath !== ''">
   <div *ngIf="ohifPath !== undefined && ohifPath !== null && ohifPath !== ''; then thenBlockViewer else elseBlockViewer"></div>
 
@@ -6,7 +6,7 @@
   <ng-template #thenBlockViewer>
     <!-- documents -->
     <div class="current-info divider-alt">
-      <small>Documento/s:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.DOCUMENTS' | i18n }}</small><br/>
       <span *ngFor="let current of data.patient.person.documents" >
         <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
         <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -18,7 +18,7 @@
       
     <!-- names -->
     <div class="current-info divider-alt">
-      <small>Nombre completo:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.FULL_NAME' | i18n }}</small><br/>
       <span class="current-firts">
         <span>{{ data.patient.person.name_01 }}</span>
 
@@ -36,7 +36,7 @@
 
     <!-- date -->
     <div class="current-info">
-      <small>Fecha:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.DATE' | i18n }}</small><br/>
       <span>{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
     </div>
 
@@ -51,29 +51,29 @@
   <!-- DIALOG -->
   <ng-template #elseBlockViewer>
     
-    <h3 class="details-title">Datos de la realización:</h3>
+    <h3 class="details-title">{{ 'DIALOGS.DICOM_ACCESS.PERFORMING_DETAILS' | i18n }}</h3>
       
     <!-- imaging -->
     <div class="current-info divider-alt">
-      <small>Organización ► Sucursal ► Servicio:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.ORGANIZATION_BRANCH_SERVICE' | i18n }}</small><br/>
       <span class="current-firts">{{ data.appointment.imaging.organization.short_name + ' ► ' + data.appointment.imaging.branch.short_name + ' ► ' + data.appointment.imaging.service.name }}</span>
     </div>
 
     <!-- date -->
     <div class="current-info divider-alt">
-      <small>Fecha:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.DATE' | i18n }}</small><br/>
       <span class="performing-firts">{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
     </div>
 
     <!-- time -->
     <div class="current-info divider-alt">
-      <small>Hora:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.TIME' | i18n }}</small><br/>
       <span class="performing-firts">{{ data.date | date : "HH:mm" : "UTC" }}</span>
     </div>
 
     <!-- procedure -->
     <div class="current-info text-center divider-alt">
-      <small>Procedimiento a realizar:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.PROCEDURE_TO_PERFORM' | i18n }}</small><br/>
       <span class="badge-alt">
         <span>{{ data.procedure.name }}</span>
       </span>
@@ -81,7 +81,7 @@
 
     <!-- modality -->
     <div class="current-info text-center">
-      <small>Modalidad:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.MODALITY' | i18n }}</small><br/>
       <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
         <span>{{ data.modality.code_value }}</span>
       </span>
@@ -92,7 +92,7 @@
 
     <!-- documents -->
     <div class="current-info divider-alt">
-      <small>Documento/s:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.DOCUMENTS' | i18n }}</small><br/>
       <span *ngFor="let current of data.patient.person.documents" >
         <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
         <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -104,7 +104,7 @@
       
     <!-- names -->
     <div class="current-info">
-      <small>Nombre completo:</small><br/>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.FULL_NAME' | i18n }}</small><br/>
       <span class="current-firts">
         <span>{{ data.patient.person.name_01 }}</span>
 
@@ -124,7 +124,7 @@
     <hr class="dashed" /><br/>
 
     <div class="text-center">
-      <small>Study IUID</small><br/><span class="label-accent">{{ data.appointment.study_iuid }}</span>
+      <small>{{ 'DIALOGS.DICOM_ACCESS.STUDY_IUID' | i18n }}</small><br/><span class="label-accent">{{ data.appointment.study_iuid }}</span>
     </div>
 
     <div class="clear"></div><br/>
@@ -136,42 +136,42 @@
     <ng-template #thenBlockDICOM>
       <div class="text-center">
         <button mat-flat-button (click)="getStudyDICOM(data._id, 'ohif')" class="view-button">
-          <mat-icon>visibility</mat-icon>&nbsp;OHIF
+          <mat-icon>visibility</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.OHIF' | i18n }}
         </button> &nbsp;
 
         <button mat-flat-button color="accent" (click)="getStudyDICOM(data._id, 'weasis')">
-          <mat-icon>preview</mat-icon>&nbsp;WEASIS
+          <mat-icon>preview</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.WEASIS' | i18n }}
         </button> &nbsp;
         
         <span *ngIf="isMac">
           <button mat-flat-button color="accent" (click)="getStudyDICOM(data._id, 'osirix')">
-            <mat-icon>preview</mat-icon>&nbsp;OSIRIX | HOROS
+            <mat-icon>preview</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.OSIRIX_HOROS' | i18n }}
           </button> &nbsp;
         </span>
 
         <a mat-flat-button href="{{ dicomZipURL }}" (click)="current_dialog.closeAll()" class="download-button">
-          <mat-icon>download</mat-icon>&nbsp;DESCARGAR
+          <mat-icon>download</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.DOWNLOAD' | i18n }}
         </a>
 
         <div class="clear"></div><br/>
         <hr class="dashed" />
 
         <small class="text-center">  
-          <strong>Download Weasis DICOM Medical Viewer</strong><br/>
+          <strong>{{ 'DIALOGS.DICOM_ACCESS.DOWNLOAD_WEASIS' | i18n }}</strong><br/>
           <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=windows" (click)="current_dialog.closeAll()" class="small_button">
-            <mat-icon>download</mat-icon>&nbsp;Windows
+            <mat-icon>download</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.WINDOWS' | i18n }}
           </a> &nbsp;
 
           <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=macos" (click)="current_dialog.closeAll()" class="small_button" target="_blank">
-            <mat-icon>download</mat-icon>&nbsp;MacOS
+            <mat-icon>download</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.MACOS' | i18n }}
           </a> &nbsp;
 
           <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=linux.deb" (click)="current_dialog.closeAll()" class="small_button">
-            <mat-icon>download</mat-icon>&nbsp;Linux DEB
+            <mat-icon>download</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.LINUX_DEB' | i18n }}
           </a> &nbsp;
 
           <a mat-flat-button href="{{sharedProp.mainSettings.appSettings.backend_url}}downloads/weasis/?platform=linux.rpm" (click)="current_dialog.closeAll()" class="small_button">
-            <mat-icon>download</mat-icon>&nbsp;Linux RPM
+            <mat-icon>download</mat-icon>&nbsp;{{ 'DIALOGS.DICOM_ACCESS.LINUX_RPM' | i18n }}
           </a> &nbsp;
         </small>
       </div>
@@ -180,7 +180,7 @@
     <ng-template #elseBlockDICOM>
       <div class="text-center">
         <mat-icon class="no-dicom">visibility_off</mat-icon>
-        <h3>No se encontraron imágenes asociadas al estudio</h3>
+        <h3>{{ 'DIALOGS.DICOM_ACCESS.NO_IMAGES_FOUND' | i18n }}</h3>
       </div>
     </ng-template>
 
@@ -190,5 +190,5 @@
 
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.DICOM_ACCESS.CLOSE' | i18n }}</button>
 </div>

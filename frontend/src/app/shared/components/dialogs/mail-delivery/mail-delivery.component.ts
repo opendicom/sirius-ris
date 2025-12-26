@@ -6,6 +6,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                    // Reactive form handling tools
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';                             // MatDialog Data
 import { PdfService } from '@shared/services/pdf.service';                              // PDF Service
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -31,7 +32,8 @@ export class MailDeliveryComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data         : any,        //Inject MAT_DIALOG_DATA to pass data
     public pdfService   : PdfService,
-    public formBuilder  : FormBuilder
+    public formBuilder  : FormBuilder,
+    public i18n         : I18nService
   ) {
     //Set Reactive Form (First time):
     this.setReactiveForm({

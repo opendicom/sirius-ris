@@ -1,15 +1,15 @@
-<h1 mat-dialog-title class="underline-fail"><mat-icon>delete_forever</mat-icon>&nbsp; Borrar elementos seleccionados</h1>
+<h1 mat-dialog-title class="underline-fail"><mat-icon>delete_forever</mat-icon>&nbsp; {{ 'DIALOGS.DELETE_ITEMS.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
-  <h3>¿Confirma que desea eliminar los elementos seleccionados?</h3>
-  Tenga en cuenta que si confirma, la eliminación será física sobre la base de datos y los elementos no serán recuperables.
+  <h3>{{ 'DIALOGS.DELETE_ITEMS.CONFIRM_DELETE' | i18n }}</h3>
+  {{ 'DIALOGS.DELETE_ITEMS.WARNING' | i18n }}
 
   <br/><br/><hr class="dashed" /><br/>
 
   <div class="form-element text-center delete-dialog">
-    <h4>Ingrese el código de eliminación:</h4>
+    <h4>{{ 'DIALOGS.DELETE_ITEMS.ENTER_DELETE_CODE' | i18n }}</h4>
     <mat-form-field appearance="fill" class="medium">
-      <mat-label>Código de eliminación</mat-label>
-      <input matInput type="password" [(ngModel)]="sharedFunctions.delete_code" class="text-center" placeholder="Ingrese el código de eliminación">
+      <mat-label>{{ 'DIALOGS.DELETE_ITEMS.DELETE_CODE' | i18n }}</mat-label>
+      <input matInput type="password" [(ngModel)]="sharedFunctions.delete_code" class="text-center" placeholder="{{ 'DIALOGS.DELETE_ITEMS.ENTER_CODE' | i18n }}">
     </mat-form-field>
   </div>
 
@@ -17,6 +17,6 @@
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-button mat-dialog-close [mat-dialog-close]="false">CANCELAR</button>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, ELIMINAR</button>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.DELETE_ITEMS.CANCEL' | i18n }}</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.DELETE_ITEMS.YES_DELETE' | i18n }}</button>
 </div>

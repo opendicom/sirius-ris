@@ -1,27 +1,27 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>help</mat-icon>&nbsp; Ayuda para búsquedas</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>help</mat-icon>&nbsp; {{ 'DIALOGS.SEARCH_INFO.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
     <ul>
-        <li>Las búsquedas son <strong>insensibles a las mayúsculas y minúsculas</strong> para todos los campos tipo <strong>texto</strong>.</li><br/>
-        <li>Se admite el uso de <strong>expresiones regulares</strong> para todos los campos de búsqueda de tipo <strong>texto</strong>.</li>
+        <li>{{ 'DIALOGS.SEARCH_INFO.CASE_INSENSITIVE_START' | i18n }} <strong>{{ 'DIALOGS.SEARCH_INFO.CASE_INSENSITIVE_BOLD1' | i18n }}</strong> {{ 'DIALOGS.SEARCH_INFO.CASE_INSENSITIVE_MIDDLE' | i18n }} <strong>{{ 'DIALOGS.SEARCH_INFO.CASE_INSENSITIVE_BOLD2' | i18n }}</strong>{{ 'DIALOGS.SEARCH_INFO.CASE_INSENSITIVE_END' | i18n }}</li><br/>
+        <li>{{ 'DIALOGS.SEARCH_INFO.REGEX_ALLOWED_START' | i18n }} <strong>{{ 'DIALOGS.SEARCH_INFO.REGEX_ALLOWED_BOLD1' | i18n }}</strong> {{ 'DIALOGS.SEARCH_INFO.REGEX_ALLOWED_MIDDLE' | i18n }} <strong>{{ 'DIALOGS.SEARCH_INFO.REGEX_ALLOWED_BOLD2' | i18n }}</strong>{{ 'DIALOGS.SEARCH_INFO.REGEX_ALLOWED_END' | i18n }}</li>
     </ul>
 
     <br/><hr class="dashed" />
-    <div class="text-center"><strong>Metacaracteres básicos</strong> para la búsqueda con <strong>expresiones regulares</strong></div>
+    <div class="text-center"><strong>{{ 'DIALOGS.SEARCH_INFO.BASIC_METACHARS_BOLD1' | i18n }}</strong> {{ 'DIALOGS.SEARCH_INFO.BASIC_METACHARS_MIDDLE' | i18n }} <strong>{{ 'DIALOGS.SEARCH_INFO.BASIC_METACHARS_BOLD2' | i18n }}</strong></div>
     <hr class="dashed" /><br/>
 
-    <span class="label-info">.</span> Cualquier carácter excepto salto de linea.<br/>
+    <span class="label-info">.</span> {{ 'DIALOGS.SEARCH_INFO.DOT_DESC' | i18n }}<br/>
     <span class="label-light">A<strong>.</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark>N</mark>A</span>
     <br/><br/>
 
-    <span class="label-info">*</span> Indica que el carácter precedente puede ocurrir 0 o más veces.<br/>
+    <span class="label-info">*</span> {{ 'DIALOGS.SEARCH_INFO.STAR_DESC' | i18n }}<br/>
     <span class="label-light">A<strong>.*</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark></mark>A | A<mark>N</mark>A | A<mark>NN</mark>A</span>
     <br/><br/>
 
-    <span class="label-info">+</span> Indica que el carácter precedente puede ocurrir 1 o más veces.<br/>
+    <span class="label-info">+</span> {{ 'DIALOGS.SEARCH_INFO.PLUS_DESC' | i18n }}<br/>
     <span class="label-light">A<strong>.+</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark>N</mark>A</span>
     <br/><br/>
     
-    <span class="label-info">?</span> Indica que el carácter precedente puede ocurrir 0 o 1 vez.<br/>
+    <span class="label-info">?</span> {{ 'DIALOGS.SEARCH_INFO.QUESTION_DESC' | i18n }}<br/>
     <span class="label-light">A<strong>.?</strong>A &nbsp;<mat-icon>arrow_forward</mat-icon>&nbsp; A<mark></mark>A | A<mark>N</mark>A</span>
     <br/><br/>
 
@@ -29,5 +29,5 @@
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>OK</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.SEARCH_INFO.OK' | i18n }}</button>
 </div>

@@ -1,19 +1,19 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>fast_forward</mat-icon>&nbsp; Reenviar paciente a la MWL</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>fast_forward</mat-icon>&nbsp; {{ 'DIALOGS.MWL_RESEND.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
   <br/>
-  El paciente seleccionado ya fué enviado de forma previa a la lista de trabajo del PACS.
+  {{ 'DIALOGS.MWL_RESEND.PATIENT_ALREADY_SENT' | i18n }}
 
   <br/><br/>
 
-  <strong>Fecha y hora de envío:</strong> {{ data.accession_date | accno_date }}.
+  <strong>{{ 'DIALOGS.MWL_RESEND.SEND_DATE_TIME' | i18n }}</strong> {{ data.accession_date | accno_date }}.
 
   <br/><br/>
 
-  <h3>¿Desea reenviar dicho paciente a la MWL de PACS?</h3>
+  <h3>{{ 'DIALOGS.MWL_RESEND.CONFIRM_RESEND' | i18n }}</h3>
 
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-button mat-dialog-close [mat-dialog-close]="false">NO</button>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, REENVIAR</button>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.MWL_RESEND.NO' | i18n }}</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.MWL_RESEND.YES_RESEND' | i18n }}</button>
 </div>

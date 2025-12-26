@@ -1,18 +1,18 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>move_to_inbox</mat-icon>&nbsp; Solicitud de estudio</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>move_to_inbox</mat-icon>&nbsp; {{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
   
-  <h3 class="details-title">Detalles de la solicitud:</h3>
+  <h3 class="details-title">{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.DETAILS_TITLE' | i18n }}</h3>
   
   <!-- referring -->
   <div *ngIf="data.referring" class="current-info divider-alt">
     <span *ngIf="data.referring.branch; then thenBlockReferring else elseBlockReferring"></span>
     <ng-template #thenBlockReferring>
-        <small>Institución solicitante:</small><br/>
+        <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.REFERRING_INSTITUTION' | i18n }}</small><br/>
         <span class="current-firts">{{ data.referring.organization.short_name + ' ► ' + data.referring.branch.short_name }}</span>
     </ng-template>
 
     <ng-template #elseBlockReferring>
-        <small>Institución solicitante:</small><br/>
+        <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.REFERRING_INSTITUTION' | i18n }}</small><br/>
         <span class="current-firts">{{ data.referring.organization.short_name }}</span>
     </ng-template>
   </div>
@@ -21,25 +21,25 @@
   <div *ngIf="data.imaging" class="current-info divider-alt">
     <span *ngIf="data.imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
     <ng-template #thenBlockImaging>
-        <small>Institución realizadora:</small><br/>
+        <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.IMAGING_INSTITUTION' | i18n }}</small><br/>
         <span class="current-firts">{{ data.imaging.organization.short_name + ' ► ' + data.imaging.branch.short_name }}</span>
     </ng-template>
 
     <ng-template #elseBlockImaging>
-        <small>Institución realizadora:</small><br/>
+        <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.IMAGING_INSTITUTION' | i18n }}</small><br/>
         <span class="current-firts">{{ data.imaging.organization.short_name }}</span>
     </ng-template>
   </div>
 
   <!-- date -->
   <div class="current-info divider-alt">
-    <small>Fecha de solicitud:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.REQUEST_DATE' | i18n }}</small><br/>
     <span *ngIf="sharedProp.mainSettings.appSettings != undefined" class="current-firts">{{ data.createdAt | date:'dd/MM/yyyy':sharedProp.mainSettings.appSettings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
   </div>
 
   <!-- procedure -->
   <div *ngIf="data.procedure" class="current-info text-center divider-alt">
-    <small>Procedimiento solicitado:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.REQUESTED_PROCEDURE' | i18n }}</small><br/>
     <span class="badge-alt">
       <span>{{ data.procedure.name }}</span>
     </span>
@@ -47,7 +47,7 @@
 
   <!-- modality -->
   <div class="current-info text-center divider-alt">
-    <small>Modalidad:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.MODALITY' | i18n }}</small><br/>
     <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
       <span>{{ data.modality.code_value }}</span>
     </span>
@@ -55,10 +55,10 @@
 
   <!-- urgency -->
   <div class="current-info text-center">
-    <small>Urgencia:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.URGENCY' | i18n }}</small><br/>
     <div *ngIf="data.urgency; then thenBlock else elseBlock"></div>
-    <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="Urgente">directions_run</mat-icon></ng-template>
-    <ng-template #elseBlock><mat-icon color="accent" matTooltip="Normal">man</mat-icon></ng-template>
+    <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
+    <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.NORMAL' | i18n }}">man</mat-icon></ng-template>
   </div>
 
   <div class="clear"></div>
@@ -66,7 +66,7 @@
 
   <!-- document -->
   <div *ngIf="data.patient" class="current-info divider-alt">
-    <small>Documento:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.DOCUMENT' | i18n }}</small><br/>
     <span *ngIf="data.patient.doc_country_code"><span matTooltip="{{ country_codes[data.patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[data.patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
     <span matTooltip="{{ document_types[data.patient.doc_type] }}">
         <span>{{ data.patient.document }}</span>
@@ -75,7 +75,7 @@
 
   <!-- names -->
   <div class="current-info divider-alt">
-    <small>Nombre completo:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.FULL_NAME' | i18n }}</small><br/>
     <span class="current-firts">
       <span>{{ data.patient.name_01 }}</span>
 
@@ -93,15 +93,15 @@
 
   <!-- patient_age -->
   <div class="current-info divider-alt">
-    <small>Edad:</small><br/>
-    <span class="current-firts" matTooltip="Edad al momento de realizar la solicitud del estudio">
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.AGE' | i18n }}</small><br/>
+    <span class="current-firts" matTooltip="{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.AGE_TOOLTIP' | i18n }}">
         {{ sharedFunctions.calculateAge(data.patient.birth_date, data.createdAt) }}
     </span>
   </div>
 
   <!-- gender -->
   <div class="current-info divider-alt">
-    <small>Género:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.GENDER' | i18n }}</small><br/>
     <span *ngIf="data.patient">
         <div [ngSwitch]="data.patient.gender" matTooltip="{{ gender_types[data.patient.gender] }}">
           <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
@@ -113,13 +113,13 @@
 
   <!-- email-->
   <div *ngIf="data.patient.email" class="current-info divider-alt">
-    <small>Correo:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.EMAIL' | i18n }}</small><br/>
     <span><small>{{ data.patient.email }}</small></span>
   </div>
 
   <!-- phone_numbers-->
   <div class="current-info">
-    <small>Teléfonos:</small><br/>
+    <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.PHONES' | i18n }}</small><br/>
     <span *ngIf="data.patient">
         <span *ngFor="let current of data.patient.phone_numbers" >
           <span class="badge-accent">
@@ -135,7 +135,7 @@
   <div class="details-wrap">
     <!-- anamnesis -->
     <span *ngIf="data.anamnesis">
-        <h3><strong>Anamnesis:</strong></h3>
+        <h3><strong>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.ANAMNESIS' | i18n }}</strong></h3>
         <span innerHTML="{{ data.anamnesis }}"></span>
     </span>
 
@@ -143,7 +143,7 @@
     <span *ngIf="data.indications">
         <br/><br/><hr class="soft-alt" /><br/>
 
-        <h3><strong>Indicaciones:</strong></h3>
+        <h3><strong>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.INDICATIONS' | i18n }}</strong></h3>
         <span innerHTML="{{ data.indications }}"></span>
     </span>
   </div>
@@ -153,7 +153,7 @@
 
     <div class="annotations-wrap">
         <!-- annotations -->
-        <h3><strong>Anotaciones:</strong></h3>
+        <h3><strong>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.ANNOTATIONS' | i18n }}</strong></h3>
         <span innerHTML="{{ data.annotations }}"></span>
     </div>
   </span>
@@ -163,24 +163,24 @@
     <hr class="dashed" /><br/>
 
     <div class="current-info text-center divider-alt physician">
-      <span>Médico solicitante:</span>
+      <span>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.REQUESTING_PHYSICIAN' | i18n }}</span>
     </div>
 
     <!-- physician_name -->
     <div *ngIf="data.extra.physician_name" class="current-info text-center divider-alt">
-      <small>Nombre completo:</small><br/>
+      <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.PHYSICIAN_FULL_NAME' | i18n }}</small><br/>
       {{ data.extra.physician_name }}
     </div>
 
     <!-- physician_prof_id -->
     <div *ngIf="data.extra.physician_prof_id" class="current-info text-center divider-alt">
-      <small>Nro de caja:</small><br/>
+      <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.PHYSICIAN_BOX_NUMBER' | i18n }}</small><br/>
       {{ data.extra.physician_prof_id }}
     </div>
 
     <!-- physician_contact -->
     <div *ngIf="data.extra.physician_contact" class="current-info text-center divider-alt">
-      <small>Contacto:</small><br/>
+      <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.PHYSICIAN_CONTACT' | i18n }}</small><br/>
       <span class="badge-accent">{{ data.extra.physician_contact }}</span>
     </div>
   </span>
@@ -192,5 +192,5 @@
 
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.CLOSE' | i18n }}</button>
 </div>

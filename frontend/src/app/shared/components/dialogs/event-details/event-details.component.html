@@ -1,7 +1,7 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>today</mat-icon>&nbsp; Detalles de la cita</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>today</mat-icon>&nbsp; {{ 'DIALOGS.EVENT_DETAILS.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
 
-  <strong>DOCUMENTO/S:</strong><br/>
+  <strong>{{ 'DIALOGS.EVENT_DETAILS.DOCUMENTS' | i18n }}</strong><br/>
   <span *ngFor="let current of data.patient.documents" class="dialog-documents">
     <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
     <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -11,22 +11,22 @@
   </span>
 
   <br/>
-  <strong>NOMBRE/S:</strong> {{ data.patient.name_01 }} <span *ngIf="data.patient.name_02">{{ data.patient.name_02 }}</span><br/>
-  <strong>APELLIDO/S:</strong> {{ data.patient.surname_01 }} <span *ngIf="data.patient.surname_02">{{ data.patient.surname_02 }}</span><br/>
+  <strong>{{ 'DIALOGS.EVENT_DETAILS.NAMES' | i18n }}</strong> {{ data.patient.name_01 }} <span *ngIf="data.patient.name_02">{{ data.patient.name_02 }}</span><br/>
+  <strong>{{ 'DIALOGS.EVENT_DETAILS.SURNAMES' | i18n }}</strong> {{ data.patient.surname_01 }} <span *ngIf="data.patient.surname_02">{{ data.patient.surname_02 }}</span><br/>
 
   <div *ngIf="data.coordinator">
     <br/><hr class="dashed" />
 
-    <h2 class="underline-fail-alt">Coordinador a cargo:</h2>
-    <strong>NOMBRE/S:</strong> {{ data.coordinator.name_01 }} <span *ngIf="data.coordinator.name_02">{{ data.coordinator.name_02 }}</span><br/>
-    <strong>APELLIDO/S:</strong> {{ data.coordinator.surname_01 }} <span *ngIf="data.coordinator.surname_02">{{ data.coordinator.surname_02 }}</span><br/>
+    <h2 class="underline-fail-alt">{{ 'DIALOGS.EVENT_DETAILS.COORDINATOR_IN_CHARGE' | i18n }}</h2>
+    <strong>{{ 'DIALOGS.EVENT_DETAILS.NAMES' | i18n }}</strong> {{ data.coordinator.name_01 }} <span *ngIf="data.coordinator.name_02">{{ data.coordinator.name_02 }}</span><br/>
+    <strong>{{ 'DIALOGS.EVENT_DETAILS.SURNAMES' | i18n }}</strong> {{ data.coordinator.surname_01 }} <span *ngIf="data.coordinator.surname_02">{{ data.coordinator.surname_02 }}</span><br/>
   </div>
 
-  <div *ngIf="data.overbooking" class="text-center overbooking"><small>Esta cita fué sobreagendada</small></div>
+  <div *ngIf="data.overbooking" class="text-center overbooking"><small>{{ 'DIALOGS.EVENT_DETAILS.OVERBOOKED' | i18n }}</small></div>
 
   <br/><hr class="dashed" />
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>OK</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.EVENT_DETAILS.OK' | i18n }}</button>
 </div>

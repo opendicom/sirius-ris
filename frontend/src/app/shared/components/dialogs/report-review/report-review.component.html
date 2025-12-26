@@ -1,4 +1,4 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>manage_search</mat-icon>&nbsp; Detalles del informe</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>manage_search</mat-icon>&nbsp; {{ 'DIALOGS.REPORT_REVIEW.TITLE' | i18n }}</h1>
 <div mat-dialog-content *ngIf="sharedProp.mainSettings.appSettings != undefined">
 
   <mat-tab-group>
@@ -6,7 +6,7 @@
     <!-- REPORT TAB: ------------------------------------------------------------------------------------------------------------------ -->
     <mat-tab *ngIf="data.last_report">
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">description</mat-icon> Informe
+        <mat-icon class="tab-icon">description</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.REPORT_TAB' | i18n }}
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
@@ -15,13 +15,13 @@
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper"> <!-- start fxLayout wrapper -->
               <h3 class="form-title">
-                Fecha de creación: 
+                {{ 'DIALOGS.REPORT_REVIEW.CREATION_DATE' | i18n }} 
                 <span class="label-accent">{{ data.last_report.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}</span><br/><!-- Fix Mongoose Timestamps -->
     
                 <span *ngIf="data.last_report.authenticated.user !== undefined && data.last_report.authenticated.user.person !== undefined; then thenBlockAuthenticate else elseBlockAuthenticate"></span>
                 <ng-template #thenBlockAuthenticate>
-                  Autenticado por: 
-                  <span class="label-alt" matTooltip="Autenticado: {{ data.last_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
+                  {{ 'DIALOGS.REPORT_REVIEW.AUTHENTICATED_BY' | i18n }} 
+                  <span class="label-alt" matTooltip="{{ 'DIALOGS.REPORT_REVIEW.AUTHENTICATED' | i18n }} {{ data.last_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
                     {{ data.last_report.authenticated.user.person.name_01 }}
                     <span *ngIf="data.last_report.authenticated.user.person.name_02">{{ ' ' + data.last_report.authenticated.user.person.name_02 }}</span>
     
@@ -30,14 +30,14 @@
                   </span><br/>
                 </ng-template>
                 <ng-template #elseBlockAuthenticate>
-                  <span class="label-fail">SIN AUTENTICAR</span><br/>
+                  <span class="label-fail">{{ 'DIALOGS.REPORT_REVIEW.NOT_AUTHENTICATED' | i18n }}</span><br/>
                 </ng-template>
     
                 <span *ngIf="data.last_report.medical_signatures[0].user !== undefined && data.last_report.medical_signatures[0].user.person !== undefined; then thenBlockSignatures else elseBlockSignatures"></span>
                 <ng-template #thenBlockSignatures>
-                  Firmado por:
+                  {{ 'DIALOGS.REPORT_REVIEW.SIGNED_BY' | i18n }}
                   <span *ngFor="let current_signature of data.last_report.medical_signatures">
-                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}"><!-- Fix Mongoose Timestamps -->
+                    <span class="label-info" matTooltip="{{ 'DIALOGS.REPORT_REVIEW.SIGNED' | i18n }} {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}"><!-- Fix Mongoose Timestamps -->
                       {{ current_signature.user.person.name_01 }}
                       <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
     
@@ -47,7 +47,7 @@
                   </span>
                 </ng-template>
                 <ng-template #elseBlockSignatures>
-                  <span class="label-fail">SIN FIRMAR</span>
+                  <span class="label-fail">{{ 'DIALOGS.REPORT_REVIEW.NOT_SIGNED' | i18n }}</span>
                 </ng-template>
               </h3>
             </div> <!-- end fxLayout wrapper -->
@@ -64,21 +64,21 @@
                 </small>
               </ng-template>
               <ng-template #elseBlockPathologies>
-                <span class="label-accent">El informe no posee patologías asignadas</span>
+                <span class="label-accent">{{ 'DIALOGS.REPORT_REVIEW.NO_PATHOLOGIES' | i18n }}</span>
               </ng-template>
             </div> <!-- end fxLayout wrapper -->
           </div>
 
           <div class="report-wrap">
             <span *ngIf="data.last_report.clinical_info">
-              <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
+              <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.CLINICAL_DATA' | i18n }}</strong></h3>
               <span innerHTML="{{ data.last_report.clinical_info }}"></span>
             </span>
             
             <span *ngIf="data.last_report.procedure_description">
               <br/><hr class="soft-alt" /><br/>
 
-              <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
+              <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.PROCEDURE' | i18n }}</strong></h3>
               <span innerHTML="{{ data.last_report.procedure_description }}"></span>
             </span>
 
@@ -92,7 +92,7 @@
             <span *ngIf="data.last_report.summary">
               <br/><hr class="soft-alt" /><br/>
 
-              <h3 class="report-underline"><strong>En suma:</strong></h3>
+              <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.IN_SUMMARY' | i18n }}</strong></h3>
               <span innerHTML="{{ data.last_report.summary }}"></span>
             </span>
             
@@ -108,17 +108,17 @@
         <!-- Superusuario, Supervisor, Concesiones: [9: Enmendar informes] -->
         <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [9]))">
           <div class="settings-card">
-            <mat-icon>info</mat-icon><strong class="amend-title"> Recuerde que al enmendar un informe:</strong>
+            <mat-icon>info</mat-icon><strong class="amend-title"> {{ 'DIALOGS.REPORT_REVIEW.AMEND_WARNING' | i18n }}</strong>
             <ul>
-              <li>Se creará un <strong>nuevo informe</strong> asociado a la realización actual.</li>
-              <li>Dicha realización volverá al estado de flujo de <strong>Informe borrador</strong> con el contenido del último informe autenticado para comenzar a editar una enmienda.</li>
-              <li>Todos los infomes previos firmados y autenticados permaneceran en la base de datos por reglamentación legal.</li>
+              <li>{{ 'DIALOGS.REPORT_REVIEW.AMEND_POINT1' | i18n }}</li>
+              <li>{{ 'DIALOGS.REPORT_REVIEW.AMEND_POINT2' | i18n }}</li>
+              <li>{{ 'DIALOGS.REPORT_REVIEW.AMEND_POINT3' | i18n }}</li>
             </ul>
 
             <hr class="soft-alt"/><br/>
 
             <div class="text-right">
-              <button mat-flat-button type="button" (click)="onSubmit('amend')" color="warn"><mat-icon>rule</mat-icon> ENMENDAR INFORME</button>
+              <button mat-flat-button type="button" (click)="onSubmit('amend')" color="warn"><mat-icon>rule</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.AMEND_REPORT' | i18n }}</button>
             </div>
           </div>
         </span>
@@ -130,24 +130,24 @@
           <div class="form-element" fxLayout="row" fxLayoutAlign="end center" style="background: var(--report-rewiew-bg-color);">
             <div class="text-right"> <!-- start fxLayout wrapper -->
               <mat-form-field appearance="fill" class="full">
-                <mat-label>Contraseña</mat-label>
-                <input matInput type="password" formControlName="password" placeholder="Ingrese su contraseña">
+                <mat-label>{{ 'DIALOGS.REPORT_REVIEW.PASSWORD' | i18n }}</mat-label>
+                <input matInput type="password" formControlName="password" placeholder="{{ 'DIALOGS.REPORT_REVIEW.ENTER_PASSWORD' | i18n }}">
               </mat-form-field>
               <br/>
 
               <!-- Superusuario, Supervisor, Concesiones: [7: Firmar informes] -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7]))">
-                <button mat-flat-button type="button" (click)="onSubmit('sign')" class="sign-button"><mat-icon>draw</mat-icon> FIRMAR</button>
+                <button mat-flat-button type="button" (click)="onSubmit('sign')" class="sign-button"><mat-icon>draw</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.SIGN' | i18n }}</button>
               </span>
 
               <!-- Superusuario, Supervisor, Concesiones: [8: Autenticar informes] -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8]))">
-                <button mat-flat-button type="button" (click)="onSubmit('authenticate')" color="primary"><mat-icon>workspace_premium</mat-icon> AUTENTICAR</button>
+                <button mat-flat-button type="button" (click)="onSubmit('authenticate')" color="primary"><mat-icon>workspace_premium</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.AUTHENTICATE' | i18n }}</button>
               </span>
 
               <!-- Superusuario, Supervisor, (Concesiones: [7: Firmar informes] AND [8: Autenticar informes]) -->
               <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || ((sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [7])) && (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [8])))">
-                <button mat-flat-button type="button" (click)="onSubmit('sign-authenticate')" color="accent"><mat-icon>draw</mat-icon> FIRMAR Y AUTENTICAR <mat-icon>workspace_premium</mat-icon></button>
+                <button mat-flat-button type="button" (click)="onSubmit('sign-authenticate')" color="accent"><mat-icon>draw</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.SIGN_AND_AUTHENTICATE' | i18n }} <mat-icon>workspace_premium</mat-icon></button>
               </span>
             </div> <!-- end fxLayout wrapper -->
           </div>
@@ -160,23 +160,23 @@
     <!-- AMEND TAB: ------------------------------------------------------------------------------------------------------------------- -->
     <mat-tab *ngIf="data.amendments_data !== false">
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">rule</mat-icon> Enmiendas
+        <mat-icon class="tab-icon">rule</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.AMENDMENTS_TAB' | i18n }}
       </ng-template>
 
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
 
           <span *ngFor="let current_report of data.amendments_data; let i = index">
-            <h3 class="form-title text-center underline-fail-alt">Informe histórico {{ data.amendments_data.length - i  + ' de ' + data.amendments_data.length }}</h3>
+            <h3 class="form-title text-center underline-fail-alt">{{ 'DIALOGS.REPORT_REVIEW.HISTORICAL_REPORT' | i18n }} {{ data.amendments_data.length - i  + ' ' + ('DIALOGS.REPORT_REVIEW.OF' | i18n) + ' ' + data.amendments_data.length }}</h3>
 
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title">
-                  Fecha de creación: 
+                  {{ 'DIALOGS.REPORT_REVIEW.CREATION_DATE' | i18n }} 
                   <span class="label-accent">{{ current_report.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}</span><br/>
 
-                  Autenticado por: 
-                  <span class="label-alt" matTooltip="Autenticado: {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
+                  {{ 'DIALOGS.REPORT_REVIEW.AUTHENTICATED_BY' | i18n }} 
+                  <span class="label-alt" matTooltip="{{ 'DIALOGS.REPORT_REVIEW.AUTHENTICATED' | i18n }} {{ current_report.authenticated.datetime | date:'dd/MM/yyyy HH:mm':'UTC' }}">
                     {{ current_report.authenticated.user.person.name_01 }}
                     <span *ngIf="current_report.authenticated.user.person.name_02">{{ ' ' + current_report.authenticated.user.person.name_02 }}</span>
 
@@ -184,9 +184,9 @@
                     <span *ngIf="current_report.authenticated.user.person.surname_02">{{ ' ' + current_report.authenticated.user.person.surname_02 }}</span>
                   </span><br/>
 
-                  Firmado por:
+                  {{ 'DIALOGS.REPORT_REVIEW.SIGNED_BY' | i18n }}
                   <span *ngFor="let current_signature of current_report.medical_signatures">
-                    <span class="label-info" matTooltip="Firmado: {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
+                    <span class="label-info" matTooltip="{{ 'DIALOGS.REPORT_REVIEW.SIGNED' | i18n }} {{ current_signature.createdAt | date:'dd/MM/yyyy HH:mm':sharedProp.mainSettings.appSettings.default_utc }}">
                       {{ current_signature.user.person.name_01 }}
                       <span *ngIf="current_signature.user.person.name_02">{{ ' ' + current_signature.user.person.name_02 }}</span>
 
@@ -209,7 +209,7 @@
                   </small>
                 </ng-template>
                 <ng-template #elseBlockCurrentPathologies>
-                  <span class="label-accent">El informe no posee patologías asignadas</span>
+                  <span class="label-accent">{{ 'DIALOGS.REPORT_REVIEW.NO_PATHOLOGIES' | i18n }}</span>
                 </ng-template>
               </div> <!-- end fxLayout wrapper -->
             </div>
@@ -218,7 +218,7 @@
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    Haga click aquí para mostrar u ocultar el contenido del informe Nº {{ data.amendments_data.length - i }}
+                    {{ 'DIALOGS.REPORT_REVIEW.CLICK_TO_SHOW_HIDE' | i18n }} {{ data.amendments_data.length - i }}
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 
@@ -226,14 +226,14 @@
 
                 <div class="report-wrap">
                   <span *ngIf="current_report.clinical_info">
-                    <h3 class="report-underline"><strong>Dato clínico:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.CLINICAL_DATA' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.clinical_info }}"></span>
                   </span>
 
                   <span *ngIf="current_report.procedure_description">
                     <br/><hr class="soft-alt" /><br/>
         
-                    <h3 class="report-underline"><strong>Procedimiento:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.PROCEDURE' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.procedure_description }}"></span>
                   </span>
       
@@ -247,7 +247,7 @@
                   <span *ngIf="current_report.summary">
                     <br/><hr class="soft-alt" /><br/>
         
-                    <h3 class="report-underline"><strong>En suma:</strong></h3>
+                    <h3 class="report-underline"><strong>{{ 'DIALOGS.REPORT_REVIEW.IN_SUMMARY' | i18n }}</strong></h3>
                     <span innerHTML="{{ current_report.summary }}"></span>
                   </span>
 
@@ -271,5 +271,5 @@
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="basic" cdkFocusInitial><mat-icon>close</mat-icon> CERRAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="basic" cdkFocusInitial><mat-icon>close</mat-icon> {{ 'DIALOGS.REPORT_REVIEW.CLOSE' | i18n }}</button>
 </div>

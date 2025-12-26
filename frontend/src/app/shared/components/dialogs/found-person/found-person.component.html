@@ -1,10 +1,10 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>unsubscribe</mat-icon>&nbsp; Dirección de correo ya registrada</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>unsubscribe</mat-icon>&nbsp; {{ 'DIALOGS.FOUND_PERSON.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
   <br/>
-  La dirección de correo ingresada ya se encuentra registrada en la base de datos con el siguiente usuario:
+  {{ 'DIALOGS.FOUND_PERSON.MESSAGE' | i18n }}
   <br/><br/>
 
-  <strong>DOCUMENTO/S:</strong><br/>
+  <strong>{{ 'DIALOGS.FOUND_PERSON.DOCUMENTS' | i18n }}</strong><br/>
   <span *ngFor="let current of data.person.documents" class="dialog-documents">
     <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
     <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -14,16 +14,16 @@
   </span>
 
   <br/>
-  <strong>NOMBRE/S:</strong> {{ data.person.name_01 }} <span *ngIf="data.person.name_02">{{ data.person.name_02 }}</span><br/>
-  <strong>APELLIDO/S:</strong> {{ data.person.surname_01 }} <span *ngIf="data.person.surname_02">{{ data.person.surname_02 }}</span><br/>
+  <strong>{{ 'DIALOGS.FOUND_PERSON.NAMES' | i18n }}</strong> {{ data.person.name_01 }} <span *ngIf="data.person.name_02">{{ data.person.name_02 }}</span><br/>
+  <strong>{{ 'DIALOGS.FOUND_PERSON.SURNAMES' | i18n }}</strong> {{ data.person.surname_01 }} <span *ngIf="data.person.surname_02">{{ data.person.surname_02 }}</span><br/>
 
   <br/>
 
-  <h3>¿Desea cargar los datos del usuario ya registrado en el formulario?</h3>
+  <h3>{{ 'DIALOGS.FOUND_PERSON.CONFIRM_LOAD' | i18n }}</h3>
 
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-button mat-dialog-close [mat-dialog-close]="false">NO, USAR OTRO CORREO</button>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>SI, EDITAR USUARIO ENCONTRADO</button>
+  <button mat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.FOUND_PERSON.NO_USE_ANOTHER_EMAIL' | i18n }}</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.FOUND_PERSON.YES_EDIT_FOUND_USER' | i18n }}</button>
 </div>

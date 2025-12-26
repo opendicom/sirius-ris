@@ -706,8 +706,8 @@
 
     <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
       <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n }}</button>
-        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n }}</button>
+        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
+        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n | uppercase }}</button>
       </div> <!-- end fxLayout wrapper -->
     </div>
 

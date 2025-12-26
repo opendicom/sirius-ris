@@ -8,6 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { PdfService } from '@shared/services/pdf.service';                                        // PDF Service
 import { FileManagerService } from '@shared/services/file-manager.service';                       // File manager service
 import { ISO_3166, document_types, gender_types } from '@env/environment';                        // Enviroments
+import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -27,7 +28,8 @@ export class PerformingDownloadsComponent implements OnInit {
     public data         : any,        //Inject MAT_DIALOG_DATA to pass data
     public sharedProp   : SharedPropertiesService,
     public pdfService   : PdfService,
-    public fileManager  : FileManagerService
+    public fileManager  : FileManagerService,
+    private i18n        : I18nService
   ) { }
 
   ngOnInit(): void {

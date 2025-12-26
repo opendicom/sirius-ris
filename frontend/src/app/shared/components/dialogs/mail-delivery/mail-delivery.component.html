@@ -1,13 +1,13 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>forward_to_inbox</mat-icon>&nbsp; Reenvío de correos</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>forward_to_inbox</mat-icon>&nbsp; {{ 'DIALOGS.MAIL_DELIVERY.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
     <br/>
-    <p>Por favor, chequeé y/o especifíque la dirección de <strong>correo electrónico</strong> de <strong>destino</strong> a la cual se enviarán dichos correos.</p>
+    <p>{{ 'DIALOGS.MAIL_DELIVERY.CHECK_EMAIL' | i18n }}</p>
     <br/>
 
     <form class="form-element text-center" [formGroup]="form">
         <mat-form-field appearance="fill" class="large">
-            <mat-label>E-mail</mat-label>
-            <input matInput type="text" formControlName="email" placeholder="Ej: nombre@casilla.com">
+            <mat-label>{{ 'DIALOGS.MAIL_DELIVERY.EMAIL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="email" placeholder="{{ 'DIALOGS.MAIL_DELIVERY.EMAIL_PLACEHOLDER' | i18n }}">
             <mat-icon matSuffix>mail</mat-icon>
         </mat-form-field>
         
@@ -17,19 +17,19 @@
 
         <ng-template #thenBlockPerforming>
             <button mat-flat-button type="button" [disabled]="appointmentButtonDisabled" class="appointment-button" (click)="resendEmail('appointment', data.fk_appointment)">
-                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE CITA</small>
+                <mat-icon>send</mat-icon>&nbsp;<small>{{ 'DIALOGS.MAIL_DELIVERY.RESEND_APPOINTMENT_EMAIL' | i18n }}</small>
             </button>
 
             &nbsp;
 
             <button mat-flat-button type="button" [disabled]="reportButtonDisabled" class="report-button" (click)="resendEmail('report', data._id)">
-                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE INFORME</small>
+                <mat-icon>send</mat-icon>&nbsp;<small>{{ 'DIALOGS.MAIL_DELIVERY.RESEND_REPORT_EMAIL' | i18n }}</small>
             </button>
         </ng-template>
 
         <ng-template #elseBlockAppointment>
             <button mat-flat-button type="button" [disabled]="appointmentButtonDisabled" class="appointment-button" (click)="resendEmail('appointment', data._id)">
-                <mat-icon>send</mat-icon>&nbsp;<small>REENVIAR CORREO DE CITA</small>
+                <mat-icon>send</mat-icon>&nbsp;<small>{{ 'DIALOGS.MAIL_DELIVERY.RESEND_APPOINTMENT_EMAIL' | i18n }}</small>
             </button>
         </ng-template>
     </form>
@@ -39,5 +39,5 @@
 
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.MAIL_DELIVERY.CLOSE' | i18n }}</button>
 </div>

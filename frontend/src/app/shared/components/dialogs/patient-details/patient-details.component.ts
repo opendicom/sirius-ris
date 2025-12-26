@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';                     
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { document_types, ISO_3166, gender_types } from '@env/environment';                  // Enviroment
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -23,7 +24,8 @@ export class PatientDetailsComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,  //Inject MAT_DIALOG_DATA to pass data:
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public i18n             : I18nService
   ) { }
 
   ngOnInit(): void {

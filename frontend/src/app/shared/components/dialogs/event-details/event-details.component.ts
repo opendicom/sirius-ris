@@ -6,6 +6,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';                                       // MatDialog Data
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { document_types, ISO_3166 } from '@env/environment';                                      // Enviroment
+import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -20,7 +21,8 @@ export class EventDetailsComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,  //Inject MAT_DIALOG_DATA to pass data:
-    public sharedProp: SharedPropertiesService
+    public sharedProp: SharedPropertiesService,
+    public i18n: I18nService
   ) { }
 
   ngOnInit(): void {

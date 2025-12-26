@@ -1,9 +1,9 @@
-<h1 mat-dialog-title class="underline-fail"><mat-icon>event_busy</mat-icon>&nbsp; Selección existente</h1>
+<h1 mat-dialog-title class="underline-fail"><mat-icon>event_busy</mat-icon>&nbsp; {{ 'DIALOGS.TENTATIVE_EXIST.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
-  <h3>Ya se seleccionó una fecha y hora válida para el procedimiento a coordinar.</h3>
-  Si desea cambiar la misma, deberá borrar la selección previa.
+  <h3>{{ 'DIALOGS.TENTATIVE_EXIST.DATE_TIME_SELECTED' | i18n }}</h3>
+  {{ 'DIALOGS.TENTATIVE_EXIST.CHANGE_INSTRUCTION' | i18n }}
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>OK</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="primary" cdkFocusInitial>{{ 'DIALOGS.TENTATIVE_EXIST.OK' | i18n }}</button>
 </div>

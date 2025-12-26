@@ -8,6 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
 import { ReportsService } from '@modules/reports/services/reports.service';                     // Reports Services
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';                            // Reactive form handling tools
+import { I18nService } from '@shared/services/i18n.service';                                    // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -35,7 +36,8 @@ export class ReportReviewComponent implements OnInit {
     public  reportsService  : ReportsService,
     public  formBuilder     : FormBuilder,
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public i18n             : I18nService
   ){
     //Set Reactive Form (First time):
     this.setReactiveForm({

@@ -6,6 +6,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';                                       // MatDialog Data
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 import { ISO_3166, document_types, gender_types } from '@env/environment';                        // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -25,7 +26,8 @@ export class AppointmentRequestDetailsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data             : any,        //Inject MAT_DIALOG_DATA to pass data
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public i18n             : I18nService
   ) { }
 
   ngOnInit(): void {

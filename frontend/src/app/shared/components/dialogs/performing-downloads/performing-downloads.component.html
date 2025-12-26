@@ -1,29 +1,29 @@
-<h1 mat-dialog-title class="underline-ok"><mat-icon>cloud_download</mat-icon>&nbsp; Archivos asociados</h1>
+<h1 mat-dialog-title class="underline-ok"><mat-icon>cloud_download</mat-icon>&nbsp; {{ 'DIALOGS.PERFORMING_DOWNLOADS.TITLE' | i18n }}</h1>
 <div mat-dialog-content>
   
-  <h3 class="details-title">Datos de la realización:</h3>
+  <h3 class="details-title">{{ 'DIALOGS.PERFORMING_DOWNLOADS.PERFORMING_DETAILS' | i18n }}</h3>
   
   <!-- imaging -->
   <div class="current-info divider-alt">
-    <small>Organización ► Sucursal ► Servicio:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.ORGANIZATION_BRANCH_SERVICE' | i18n }}</small><br/>
     <span class="current-firts">{{ data.appointment.imaging.organization.short_name + ' ► ' + data.appointment.imaging.branch.short_name + ' ► ' + data.appointment.imaging.service.name }}</span>
   </div>
 
   <!-- date -->
   <div class="current-info divider-alt">
-    <small>Fecha:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.DATE' | i18n }}</small><br/>
     <span class="performing-firts">{{ data.date | date : "dd/MM/yyyy" : "UTC" }}</span>
   </div>
 
   <!-- time -->
   <div class="current-info divider-alt">
-    <small>Hora:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.TIME' | i18n }}</small><br/>
     <span class="performing-firts">{{ data.date | date : "HH:mm" : "UTC" }}</span>
   </div>
 
   <!-- procedure -->
   <div class="current-info text-center divider-alt">
-    <small>Procedimiento a realizar:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.PROCEDURE_TO_PERFORM' | i18n }}</small><br/>
     <span class="badge-alt">
       <span>{{ data.procedure.name }}</span>
     </span>
@@ -31,7 +31,7 @@
 
   <!-- modality -->
   <div class="current-info text-center">
-    <small>Modalidad:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.MODALITY' | i18n }}</small><br/>
     <span class="badge" matTooltip="{{ data.modality.code_meaning }}">
       <span>{{ data.modality.code_value }}</span>
     </span>
@@ -42,7 +42,7 @@
 
   <!-- documents -->
   <div class="current-info divider-alt">
-    <small>Documento/s:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.DOCUMENTS' | i18n }}</small><br/>
     <span *ngFor="let current of data.patient.person.documents" >
       <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
       <span matTooltip="{{ document_types[current.doc_type] }}">
@@ -54,7 +54,7 @@
   
   <!-- names -->
   <div class="current-info">
-    <small>Nombre completo:</small><br/>
+    <small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.FULL_NAME' | i18n }}</small><br/>
     <span class="current-firts">
       <span>{{ data.patient.person.name_01 }}</span>
 
@@ -74,19 +74,19 @@
   <hr class="dashed" /><br/>
 
   <button mat-flat-button type="button" class="download-button" (click)="pdfService.createPDF('appointment', data.fk_appointment)">
-    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>PDF DE CITA</small>
+    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.PDF_APPOINTMENT' | i18n }}</small>
   </button>
 
   &nbsp;
 
   <button *ngIf="data.flow_state === 'P09'" mat-flat-button type="button" class="download-report" (click)="pdfService.createPDF('report', data._id)">
-    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>PDF DE INFORME</small>
+    <mat-icon>picture_as_pdf</mat-icon>&nbsp;<small>{{ 'DIALOGS.PERFORMING_DOWNLOADS.PDF_REPORT' | i18n }}</small>
   </button>
 
   <div class="clear"></div>
   <br/><hr class="soft-alt" /><br/>
 
-  <h3 class="details-title underline-fail-alt">Archivos adjuntos:</h3>
+  <h3 class="details-title underline-fail-alt">{{ 'DIALOGS.PERFORMING_DOWNLOADS.ATTACHED_FILES' | i18n }}</h3>
   <br/>
 
   <span *ngIf="data.appointment.attached_files.length > 0; then thenBlockAttached else elseBlockAttached"></span>
@@ -101,12 +101,12 @@
               
   <ng-template #elseBlockAttached>
     <div class="text-center">
-      <mat-icon>folder_off</mat-icon> <h3>No se encontraron archivos adjuntos.</h3>
+      <mat-icon>folder_off</mat-icon> <h3>{{ 'DIALOGS.PERFORMING_DOWNLOADS.NO_ATTACHED_FILES' | i18n }}</h3>
     </div>
   </ng-template>
 </div>
 
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">CERRAR</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.PERFORMING_DOWNLOADS.CLOSE' | i18n }}</button>
 </div>
