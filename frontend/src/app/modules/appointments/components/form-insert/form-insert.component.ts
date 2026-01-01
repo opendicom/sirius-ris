@@ -12,10 +12,7 @@ import { FileManagerService } from '@shared/services/file-manager.service';     
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   regexObjectId,
-  ISO_3166,
-  document_types,
-  gender_types,
-  inpatient_types
+  ISO_3166
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -27,10 +24,9 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class FormInsertComponent implements OnInit {
   //Set component properties:
-  public country_codes      : any = ISO_3166;
-  public document_types     : any = document_types;
-  public gender_types       : any = gender_types;
-  public inpatient_types    : any = inpatient_types;
+  public country_codes           : any = ISO_3166;
+  public documentTypesKeys       : string[] = ['1','2','3','4','5','6','7','100'];
+  public inpatient_types_keys    : string[] = ['1', '2', '3'];
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;

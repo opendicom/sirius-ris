@@ -360,19 +360,19 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_TYPE' | i18n }}</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_TYPE' | i18n }}:</h4>
               <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_TYPE' | i18n }}</mat-label>
                 <mat-select formControlName="type" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_HOSPITALIZATION_TYPE' | i18n }}">
-                  <div *ngFor="let currentType of inpatient_types | keyvalue">
-                    <mat-option value="{{ currentType.key }}">{{ currentType.value }}</mat-option>
+                  <div *ngFor="let key of inpatient_types_keys">
+                    <mat-option value="{{ key }}">{{ ('INPATIENT_TYPES.' + key) | i18n }}</mat-option>
                   </div>
                 </mat-select>
               </mat-form-field>
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ 'PERFORMING.TAB_DETAILS.WHERE_HOSPITALIZED' | i18n }}</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.WHERE_HOSPITALIZED' | i18n }}:</h4>
               <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'PERFORMING.TAB_DETAILS.WHERE_HOSPITALIZED' | i18n }}</mat-label>
                 <input matInput type="text" formControlName="where" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_INSTITUTION' | i18n }}">
@@ -382,7 +382,7 @@
   
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ 'PERFORMING.TAB_DETAILS.ROOM_FLOOR' | i18n }}</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.ROOM_FLOOR' | i18n }}:</h4>
               <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'PERFORMING.TAB_DETAILS.ROOM_FLOOR' | i18n }}</mat-label>
                 <input matInput type="text" formControlName="room" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_ROOM' | i18n }}">
@@ -390,7 +390,7 @@
             </div> <!-- end fxLayout wrapper -->
   
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_CONTACT' | i18n }}</h4>
+              <h4>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_CONTACT' | i18n }}:</h4>
               <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION_CONTACT' | i18n }}</mat-label>
                 <input matInput type="text" formControlName="contact" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_HOSPITALIZATION_CONTACT' | i18n }}">

@@ -184,13 +184,13 @@
       },
       "HOSPITALIZATION": {
         "TITLE": "Hospitalización:",
-        "TYPE": "Tipo de hospitalización:",
+        "TYPE": "Tipo de hospitalización",
         "TYPE_PLACEHOLDER": "Seleccione el tipo de hospitalización",
-        "WHERE": "Donde:",
+        "WHERE": "Donde",
         "WHERE_PLACEHOLDER": "Ingrese donde está hospitalizado el paciente (Institución).",
-        "ROOM": "Sala | Habitación | Piso:",
+        "ROOM": "Sala | Habitación | Piso",
         "ROOM_PLACEHOLDER": "Ingrese la sala, habitación, piso donde está hospitalizado el paciente.",
-        "CONTACT": "Contacto:",
+        "CONTACT": "Contacto",
         "CONTACT_PLACEHOLDER": "Ingrese dato de contacto (teléfono, celular, correo)"
       },
       "CONSENTS": {
@@ -585,13 +585,13 @@
       "ENTER_PATOLOGIES": "Ingrese el o los antecedentes/patologías.",
       "INDICATE_ALLERGIES": "Indique si posee algúna alergia.",
       "IMPLANTS": "Implantes",
-      "HOSPITALIZATION_TYPE": "Tipo de hospitalización:",
+      "HOSPITALIZATION_TYPE": "Tipo de hospitalización",
       "SELECT_HOSPITALIZATION_TYPE": "Seleccione el tipo de hospitalización",
-      "WHERE_HOSPITALIZED": "Dónde está hospitalizado:",
+      "WHERE_HOSPITALIZED": "Dónde está hospitalizado",
       "ENTER_HOSPITALIZATION_INSTITUTION": "Ingrese donde está hospitalizado el paciente (Institución).",
-      "ROOM_FLOOR": "Sala | Habitación | Piso:",
+      "ROOM_FLOOR": "Sala | Habitación | Piso",
       "ENTER_HOSPITALIZATION_ROOM": "Ingrese la sala, habitación, piso donde está hospitalizado el paciente.",
-      "HOSPITALIZATION_CONTACT": "Contacto hospitalización:",
+      "HOSPITALIZATION_CONTACT": "Contacto hospitalización",
       "ENTER_HOSPITALIZATION_CONTACT": "Ingrese dato de contacto (teléfono, celular, correo)",
       "CONSENTS": "Consentimientos",
       "HOSPITALIZATION": "Hospitalización",
@@ -1480,12 +1480,12 @@
         "AMEND": "Enmienda",
         "DETAILS": "Detalles: ",
         "USER": "Usuario",
-        "MACHINE_TOOLTIP": "Maquina",
+        "MACHINE_TOOLTIP": "Máquina",
         "ORGANIZATION": "Organización",
         "IP_CLIENT": "IP Cliente"
       },
       "TOOLTIPS": {
-        "MACHINE": "Maquina"
+        "MACHINE": "Máquina"
       },
       "NO_DATA": "(Sin dato)",
       "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
@@ -1936,5 +1936,154 @@
     "BOARD": {
       "IN-PROGRESS": "Listado de atención en curso en proceso..."
     }
+  },
+  "EVENTS_LOG" : {
+    "1" : "Inicio de sesión",
+    "2" : "Creación",
+    "3" : "Edición",
+    "4" : "Eliminación",
+    "5" : "Firma",
+    "6" : "Autenticación",
+    "7" : "Envío de correo"
+  },
+  "DOCUMENT_TYPES": {
+    "1": "ID Nacional (DNI, CI, CURP, RUT)",
+    "2": "Pasaporte",
+    "3": "Credencial cívica",
+    "4": "Licencia de conducir",
+    "5": "Permiso de residencia",
+    "6": "Visa",
+    "7": "Documento transitorio",
+    "100": "Documento anónimo"
+  },
+  "USER_ROLES": {
+    "1": "Superusuario",
+    "2": "Administrador",
+    "3": "Supervisor",
+    "4": "Médico",
+    "5": "Técnico",
+    "6": "Enfermero",
+    "7": "Coordinador",
+    "8": "Recepcionista",
+    "9": "Paciente",
+    "10": "Funcional"
+  },
+  "USER_CONCESSIONS": {
+    "1": "Gestión de turnos",
+    "2": "Gestión de citas",
+    "3": "Calendario de citas",
+    "4": "Gestión de recepciones",
+    "5": "Gestión de estudios",
+    "6": "Gestión de informes",
+    "7": "Firmar informes",
+    "8": "Autenticar informes",
+    "9": "Enmendar informes",
+    "10": "Acceso a logs del usuario",
+    "11": "Acceso a logs de elementos",
+    "12": "Reenvío de correos",
+    "13": "Gestión de solicitudes",
+    "14": "Búsquedas avanzadas",
+    "16": "Estadísticas sobre citas",
+    "17": "Estadísticas sobre estudios",
+    "20": "Acceso al módulo de exportación",
+    "21": "Acceso al servicio de imágenes del PACS",
+    "22": "Edición de identificación de pacientes",
+    "23": "Sobreagenda (overbooking)",
+    "24": "Listados de facturación"
+  },
+  "GENDER_TYPES": {
+    "1": "Masculino",
+    "2": "Femenino",
+    "3": "Otros"
+  },
+  "APPOINTMENT_FLOW_STATES": {
+    "A01": "Coordinada",
+    "A02": "Cancelada-suspendida"
+  },
+  "APPOINTMENTS_REQUESTS_FLOW_STATES": {
+    "AR01": "Administración",
+    "AR02": "Retenida en administración",
+    "AR03": "Área médica",
+    "AR04": "Retenida en área médica",
+    "AR05": "Cita en curso creada",
+    "AR06": "Cita creada",
+    "AR07": "Cancelada"
+  },
+  "PERFORMING_FLOW_STATES": {
+    "P01": "Recepción",
+    "P02": "Entrevista",
+    "P03": "Preparación/Inyección",
+    "P04": "Adquisición",
+    "P05": "Verificación de imágenes",
+    "P06": "Para informar",
+    "P07": "Informe borrador",
+    "P08": "Informe firmado",
+    "P09": "Terminado (con informe)",
+    "P10": "Terminado (sin informe)",
+    "P11": "Cancelado"
+  },
+  "PATIENTS": {
+    "LIST": {
+      "TITLE": "Resultado de estudios",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "DATE": "Fecha",
+        "CHECKIN_TIME": "Hora recepción",
+        "DOCUMENTS": "Documentos",
+        "NAMES": "Nombres",
+        "SURNAMES": "Apellidos",
+        "DETAILS": "Detalle"
+      },
+      "TOOLTIPS": {
+        "VIEW_REPORT": "Ver informe",
+        "VIEW_IMAGES": "Ver imágenes asociadas",
+        "DOWNLOAD_IMAGES": "Descargar imágenes asociadas"
+      },
+      "NO_DATA": "(Sin dato)",
+      "WAIT_NO_RESULTS": "Aguarde, aún no hay resultados.",
+      "CLOSE_VIEWER": "CERRAR VISOR",
+      "AET_PREFIX": "AET: ",
+      "ERROR_DICOM": "Error al intentar buscar las imágenes DICOM del elemento: "
+    }
+  },
+  "CANCELLATION_REASONS": {
+    "1": "Falla en equipo",
+    "2": "Falta consentimiento",
+    "3": "Indicacion incorrecta",
+    "4": "No se presentó",
+    "5": "Sin preparacion o preparación incorrecta",
+	  "6": "Claustrofóbia",
+    "7": "Embarazo",
+    "8": "Hiperglicemia",
+    "9": "Hipoglicemia",
+    "10": "Cursando infección",
+    "11": "Fallecimiento",
+    "12": "Otro"
+  },
+  "ELEMENTS_TYPES": {
+    "appointments": "cita",
+    "appointments_drafts": "cita en curso",
+    "appointment_requests": "solicitud",
+    "branches": "sucursal",
+    "equipments": "equipo",
+    "files": "archivo",
+    "modalities": "modalidad",
+    "mwl": "MWL",
+    "organizations": "organización",
+    "pathologies": "patología",
+    "people": "persona",
+    "performing": "estudio",
+    "procedure_categories": "categoría de procedimiento",
+    "procedures": "procedimiento",
+    "reports": "informe",
+    "services": "servicio",
+    "signatures": "firma",
+    "slots": "turno",
+    "users": "usuario"
+  },
+  "INPATIENT_TYPES": {
+    "1": "Cuidados intensivos",
+    "2": "Emergencia",
+    "3": "Internación"
   }
 }

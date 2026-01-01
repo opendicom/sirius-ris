@@ -75,7 +75,7 @@
                 <div class="current-info divider-alt">
                     <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_DOCUMENT' | i18n }}</small><br/>
                     <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
-                    <span matTooltip="{{ document_types[sharedFunctions.response.data[0].patient.doc_type] }}">
+                    <span matTooltip="{{ ('DOCUMENT_TYPES.' + sharedFunctions.response.data[0].patient.doc_type) | i18n }}">
                         <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
                     </span>
                 </div>
@@ -109,7 +109,7 @@
                 <!-- gender -->
                 <div class="current-info divider-alt">
                     <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_GENDER' | i18n }}</small><br/>
-                    <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ gender_types[sharedFunctions.response.data[0].patient.gender] }}">
+                    <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ ('GENDER_TYPES.' + sharedFunctions.response.data[0].patient.gender) | i18n }}">
                         <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                         <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
                         <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
@@ -197,13 +197,13 @@
             <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
                 <mat-select formControlName="flow_state">
-                    <div *ngFor="let currentFS of availableFS | keyvalue">
-                        <div *ngIf="currentFS.key == 'AR05' || currentFS.key == 'AR06'; then thenBlockFS else elseBlockFS"></div>
+                    <div *ngFor="let currentFSKey of appointmentRequestsFlowStateKeys">
+                        <div *ngIf="currentFSKey == 'AR05' || currentFSKey == 'AR06'; then thenBlockFS else elseBlockFS"></div>
                         <ng-template #thenBlockFS>
-                            <mat-option *ngIf="currentFS.key == sharedFunctions.response.data[0].flow_state" value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                            <mat-option *ngIf="currentFSKey == sharedFunctions.response.data[0].flow_state" value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
                         </ng-template>
                         <ng-template #elseBlockFS>
-                            <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+                            <mat-option value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
                         </ng-template>
                     </div>
                 </mat-select>

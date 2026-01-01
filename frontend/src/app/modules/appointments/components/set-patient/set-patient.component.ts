@@ -12,10 +12,8 @@ import { ValidateDocumentsService } from '@shared/services/validate-documents.se
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
 import {                                                                                      // Enviroment
-  document_types,
   ISO_3166,
-  regexObjectId,
-  gender_types
+  regexObjectId
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -26,8 +24,8 @@ import {                                                                        
 })
 export class SetPatientComponent implements OnInit {
   public country_codes    : any = ISO_3166;
-  public document_types   : any = document_types;
-  public genderTypes      : any = gender_types;
+  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
+  public genderTypesKeys  : string[] = ['1','2','3'];
 
   //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
   unsorted = () => { return 0 }

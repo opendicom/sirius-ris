@@ -10,7 +10,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
-import { inpatient_types } from '@env/environment';                                         // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -21,7 +20,7 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 })
 export class TabDetailsComponent implements OnInit {
   //Set component properties:
-  public inpatient_types    : any = inpatient_types;
+  public inpatient_types_keys : string[] = ['1', '2', '3'];
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;

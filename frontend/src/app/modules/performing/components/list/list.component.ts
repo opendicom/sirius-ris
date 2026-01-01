@@ -8,11 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
 import {                                                                                        // Enviroments
   regexObjectId,
-  performing_flow_states,
-  ISO_3166,
-  document_types,
-  gender_types,
-  cancellation_reasons
+  ISO_3166
 } from '@env/environment';
 import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
@@ -25,10 +21,7 @@ import { I18nService } from '@shared/services/i18n.service';                    
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public gender_types           : any = gender_types;
-  public performing_flow_states : any = performing_flow_states;
-  public cancellation_reasons   : any = cancellation_reasons;
+  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('PERFORMING.LIST.EXCLUDED_COLUMNS_XLSX').split(',')[0]];

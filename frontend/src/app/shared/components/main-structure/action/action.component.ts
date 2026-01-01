@@ -7,12 +7,8 @@ import { Router } from '@angular/router';                                       
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
-import {                                                                                    // Enviroment
-  appointments_flow_states,
-  appointment_requests_flow_states,
-  performing_flow_states,
-  events_log
-} from '@env/environment';
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
+import { objectKeys } from '@env/environment';                                              // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -21,14 +17,15 @@ import {                                                                        
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-  public page_sizes           : any = this.sharedProp.mainSettings.appSettings.default_page_sizes;
-  public eventsLog            : any = events_log;
-  public number_of_pages      : any = [1];
-  public flow_states          : any = {
-    appointments          : appointments_flow_states,
-    appointment_requests  : appointment_requests_flow_states,
-    performing            : performing_flow_states,
-    reports               : performing_flow_states //Advanced search case.
+  public page_sizes               : any = this.sharedProp.mainSettings.appSettings.default_page_sizes;
+  public eventsLogKeys            : string[] = objectKeys.eventsLogKeys;
+  public performingFlowStateKeys  : string[] = ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09', 'P10', 'P11'];
+  public number_of_pages          : any = [1];
+  public flow_states              : any = {
+    appointments          : { 'A01': '', 'A02': '' },
+    appointment_requests  : { 'AR01': '', 'AR02': '', 'AR03': '', 'AR04': '', 'AR05': '', 'AR06': '', 'AR07': '' },
+    performing            : {},
+    reports               : {} //Advanced search case.
   };
 
   //Set DB action properties:
@@ -43,7 +40,8 @@ export class ActionComponent implements OnInit {
     private router              : Router,
     public sharedProp           : SharedPropertiesService,
     public sharedFunctions      : SharedFunctionsService,
-    public appointmentsService  : AppointmentsService
+    public appointmentsService  : AppointmentsService,
+    public i18n                 : I18nService
   ) {
     //Set action properties:
     sharedProp.actionSetter({
@@ -53,6 +51,9 @@ export class ActionComponent implements OnInit {
 
     //Initialize filter param (empty):
     this.sharedProp.filter = '';
+
+    //Initialize flow_states with i18n translations:
+    this.setAvailableFlowStates();
   }
 
   ngOnInit(): void {
@@ -76,6 +77,18 @@ export class ActionComponent implements OnInit {
       });
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET AVAILABLE FLOW STATES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  setAvailableFlowStates(): void {
+    //Set performing flow states with i18n translations:
+    for (let key of this.performingFlowStateKeys) {
+      this.flow_states.performing[key] = this.i18n.instant('PERFORMING_FLOW_STATES.' + key);
+      this.flow_states.reports[key] = this.i18n.instant('PERFORMING_FLOW_STATES.' + key); //Advanced search case
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   //--------------------------------------------------------------------------------------------------------------------//
   // ON SEARCH:

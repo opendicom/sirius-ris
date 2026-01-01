@@ -13,12 +13,8 @@ import { ValidateDocumentsService } from '@shared/services/validate-documents.se
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
 import {                                                                                      // Enviroment
-  document_types,
   ISO_3166,
-  user_roles,
-  user_concessions,
-  regexObjectId,
-  gender_types
+  regexObjectId
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -29,10 +25,10 @@ import {                                                                        
 })
 export class FormComponent implements OnInit {
   public country_codes    : any = ISO_3166;
-  public document_types   : any = document_types;
-  public userRoles        : any = user_roles;
-  public userConcessions  : any = user_concessions;
-  public genderTypes      : any = gender_types;
+  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
+  public userRolesKeys    : string[] = ['1','2','3','4','5','6','7','8','9','10'];
+  public userConcessionsKeys: string[] = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24'];
+  public genderTypesKeys  : string[] = ['1','2','3'];
 
   //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
   unsorted = () => { return 0 }

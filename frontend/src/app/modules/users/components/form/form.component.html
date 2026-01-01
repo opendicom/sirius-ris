@@ -40,8 +40,8 @@
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
                 <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
-                  <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
-                    <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+                  <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+                    <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
                   </div>
                 </mat-select>
               </mat-form-field>
@@ -59,7 +59,7 @@
               <small>{{ 'USERS.FORM.PERSON_TAB.PERSON_DOCUMENTS' | i18n }}</small><br/>
               <span *ngFor="let currentDoc of documents" >
                 <span matTooltip="{{ country_codes[currentDoc.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[currentDoc.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                <span matTooltip="{{ document_types[currentDoc.doc_type] }}">
+                <span matTooltip="{{ ('DOCUMENT_TYPES.' + currentDoc.doc_type) | i18n }}">
                   <span>{{ currentDoc.document }}</span>
                 </span>
                 <br/>
@@ -104,7 +104,7 @@
 
             <h4>{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="gender">
-              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGenderKey of genderTypesKeys" value="{{ currentGenderKey }}">{{ ('GENDER_TYPES.' + currentGenderKey) | i18n }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>
@@ -276,15 +276,15 @@
             <mat-form-field appearance="fill" class="medium">
               <mat-label>{{ 'USERS.FORM.PERMISSIONS_TAB.ROLE_PLACEHOLDER' | i18n }}</mat-label>
               <mat-select formControlName="role" (selectionChange)="userService.onSetRole($event, form)">
-                <div *ngFor="let currentRole of userRoles | keyvalue">
-                  <div *ngIf="currentRole.key == 1; then thenBlockRole else elseBlockRole"></div>
+                <div *ngFor="let currentRole of userRolesKeys">
+                  <div *ngIf="currentRole == '1'; then thenBlockRole else elseBlockRole"></div>
                   <ng-template #thenBlockRole>
                     <!--Only superuser can add Superuser role -->
-                    <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                    <mat-option *ngIf="sharedProp.userLogged.permissions[0].role == 1" value="{{ currentRole }}">{{ ('USER_ROLES.' + currentRole) | i18n }}</mat-option>
                   </ng-template>
 
                   <ng-template #elseBlockRole>
-                    <mat-option value="{{ currentRole.key }}">{{ currentRole.value }}</mat-option>
+                    <mat-option value="{{ currentRole }}">{{ ('USER_ROLES.' + currentRole) | i18n }}</mat-option>
                   </ng-template>
                 </div>
               </mat-select>
@@ -353,17 +353,17 @@
             <h4>{{ 'USERS.FORM.PERMISSIONS_TAB.CONCESSIONS_TITLE' | i18n }}</h4>
             <div fxLayout="row" fxLayoutAlign="start start" class="item-container" formArrayName="concessions">
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-                <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue: unsorted; ; let i = index;">
-                  <span *ngIf="i + 1 <= getMath.ceil(getKeys(userConcessions).length / 2)">
-                    <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
+                <ng-container *ngFor="let currentConcessionKey of userConcessionsKeys; let i = index;">
+                     <span *ngIf="i + 1 <= getMath.ceil(userConcessionsKeys.length / 2)">
+                       <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessionKey)">{{ (('USER_CONCESSIONS.' + currentConcessionKey) | i18n) }}</mat-checkbox><br/>
                   </span>
                 </ng-container>
               </div> <!-- end fxLayout wrapper -->
 
               <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-                <ng-container *ngFor="let currentConcessions of userConcessions | keyvalue: unsorted; ; let i = index;">
-                  <span *ngIf="i + 1 > getMath.ceil(getKeys(userConcessions).length / 2)">
-                    <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessions.key)">{{ currentConcessions.value }}</mat-checkbox><br/>
+                <ng-container *ngFor="let currentConcessionKey of userConcessionsKeys; let i = index;">
+                  <span *ngIf="i + 1 > getMath.ceil(userConcessionsKeys.length / 2)">
+                    <mat-checkbox color="primary" (change)="onCheckConcession($event, currentConcessionKey)">{{ (('USER_CONCESSIONS.' + currentConcessionKey) | i18n) }}</mat-checkbox><br/>
                   </span>
                 </ng-container>
               </div> <!-- end fxLayout wrapper -->
@@ -393,7 +393,7 @@
                       <div *ngFor="let currentOrganization of availableOrganizations">
                         <div *ngIf="currentOrganization._id == currentPermission.organization" class="permission-table">
                           <div class="permission-header">
-                            <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                            <div class="permission-title">{{ ('USER_ROLES.' + currentPermission.role) | i18n }}</div>
                             <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                             <div class="clear"></div>
                           </div>
@@ -403,7 +403,7 @@
 
                             <ng-template #thenBlockConcession>
                               <ng-container *ngFor="let currentConcession of currentPermission.concession;">
-                                {{ userConcessions[currentConcession] + ', ' }}
+                                {{ (('USER_CONCESSIONS.' + currentConcession) | i18n) + ', ' }}
                               </ng-container>
                             </ng-template>
 
@@ -419,7 +419,7 @@
                         <div *ngFor="let currentOrganization of availableOrganizations">
                           <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentBranch._id == currentPermission['branch']" class="permission-table">
                             <div class="permission-header">
-                              <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                              <div class="permission-title">{{ ('USER_ROLES.' + currentPermission.role) | i18n }}</div>
                               <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                               <div class="clear"></div>
                             </div>
@@ -429,7 +429,7 @@
 
                               <ng-template #thenBlockConcession>
                                 <ng-container *ngFor="let currentConcession of currentPermission.concession;">
-                                  {{ userConcessions[currentConcession] + ', ' }}
+                                  {{ (('USER_CONCESSIONS.' + currentConcession) | i18n) + ', ' }}
                                 </ng-container>
                               </ng-template>
 
@@ -447,7 +447,7 @@
                           <div *ngFor="let currentOrganization of availableOrganizations">
                             <div *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id && currentService._id == currentPermission['service']" class="permission-table">
                               <div class="permission-header">
-                                <div class="permission-title">{{ userRoles[currentPermission.role] }}</div>
+                                <div class="permission-title">{{ ('USER_ROLES.' + currentPermission.role) | i18n }}</div>
                                 <div class="permission-button"><mat-icon matTooltip="{{ 'USERS.FORM.PERMISSIONS_TAB.REMOVE_PERMISSION_TOOLTIP' | i18n }}" (click)="userService.removePermission(permissionIndex, permissions)">close</mat-icon></div>
                                 <div class="clear"></div>
                               </div>
@@ -457,7 +457,7 @@
 
                                 <ng-template #thenBlockConcession>
                                   <ng-container *ngFor="let currentConcession of currentPermission.concession;">
-                                    {{ userConcessions[currentConcession] + ', ' }}
+                                    {{ (('USER_CONCESSIONS.' + currentConcession) | i18n) + ', ' }}
                                   </ng-container>
                                 </ng-template>
 

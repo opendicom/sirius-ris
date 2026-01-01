@@ -13,7 +13,7 @@
   <span class="user_info">
     <small matTooltip="{{ 'USER.TOOLTIP' | i18n }}">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
     &nbsp; ► &nbsp;
-    <small matTooltip="{{ 'USER.ROLE' | i18n }}">{{ userRoles[sharedProp.userLogged.permissions[0].role] }}</small>
+    <small matTooltip="{{ 'USER.ROLE' | i18n }}">{{ ('USER_ROLES.' + sharedProp.userLogged.permissions[0].role) | i18n }}</small>
     &nbsp; ► &nbsp;
     <span [ngSwitch]="sharedProp.userLogged.permissions[0].type">
       <span *ngSwitchCase="'organization'">

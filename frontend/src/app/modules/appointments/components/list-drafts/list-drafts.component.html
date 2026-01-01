@@ -93,7 +93,7 @@
             <span *ngIf="element.patient.person">
               <span *ngFor="let current of element.patient.person.documents" >
                 <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                <span matTooltip="{{ document_types[current.doc_type] }}">
+                <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
                   <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
                 </span>
                 <br/>

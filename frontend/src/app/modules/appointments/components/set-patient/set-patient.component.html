@@ -39,8 +39,8 @@
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
                 <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
-                  <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
-                    <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+                  <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+                    <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
                   </div>
                 </mat-select>
               </mat-form-field>
@@ -58,7 +58,7 @@
               <small>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}/s persona:</small><br/>
               <span *ngFor="let currentDoc of documents" >
                 <span matTooltip="{{ country_codes[currentDoc.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[currentDoc.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                <span matTooltip="{{ document_types[currentDoc.doc_type] }}">
+                <span matTooltip="{{ ('DOCUMENT_TYPES.' + currentDoc.doc_type) | i18n }}">
                   <span>{{ currentDoc.document }}</span>
                 </span>
                 <br/>
@@ -103,7 +103,7 @@
 
             <h4>{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="gender">
-              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+              <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGenderKey of genderTypesKeys" value="{{ currentGenderKey }}">{{ ('GENDER_TYPES.' + currentGenderKey) | i18n }}</mat-radio-button>
             </mat-radio-group>
 
             <br/><br/>

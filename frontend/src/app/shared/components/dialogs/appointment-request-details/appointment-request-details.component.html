@@ -68,7 +68,7 @@
   <div *ngIf="data.patient" class="current-info divider-alt">
     <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.DOCUMENT' | i18n }}</small><br/>
     <span *ngIf="data.patient.doc_country_code"><span matTooltip="{{ country_codes[data.patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[data.patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
-    <span matTooltip="{{ document_types[data.patient.doc_type] }}">
+    <span matTooltip="{{ ('DOCUMENT_TYPES.' + data.patient.doc_type) | i18n }}">
         <span>{{ data.patient.document }}</span>
     </span>
   </div>
@@ -103,7 +103,7 @@
   <div class="current-info divider-alt">
     <small>{{ 'DIALOGS.APPOINTMENT_REQUEST_DETAILS.GENDER' | i18n }}</small><br/>
     <span *ngIf="data.patient">
-        <div [ngSwitch]="data.patient.gender" matTooltip="{{ gender_types[data.patient.gender] }}">
+        <div [ngSwitch]="data.patient.gender" matTooltip="{{ ('GENDER_TYPES.' + data.patient.gender) | i18n }}">
           <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
           <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
           <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>

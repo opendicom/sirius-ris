@@ -14,9 +14,7 @@ import { EventApi } from '@fullcalendar/core';                                  
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import {                                                                                    // Enviroments
   regexObjectId,
-  ISO_3166,
-  document_types,
-  gender_types
+  ISO_3166
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -28,8 +26,7 @@ import {                                                                        
 export class SelectSlotComponent implements OnInit {
   //Set component properties:
   public country_codes  : any = ISO_3166;
-  public document_types : any = document_types;
-  public gender_types   : any = gender_types;
+  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
 
   //Min and max dates:
   public minDate: Date = new Date();

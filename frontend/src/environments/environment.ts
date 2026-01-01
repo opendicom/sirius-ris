@@ -3,183 +3,25 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // Set Enviroment:
 export const environment = {
-  production: false
+  production: false,
+  version: '1.5.0'
 };
 
 // Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
-// Event logs:
-export const events_log = {
-  1 : 'Inicio de sesión',
-  2 : 'Creación',
-  3 : 'Edición',
-  4 : 'Eliminación',
-  5 : 'Firma',            // Only for report element.
-  6 : 'Autenticación',    // Only for report element.
-  7 : 'Envío de correo'   // For appointments and reports.
-};
-
-// Document types:
-export const document_types = {
-  1: 'ID Nacional (DNI, CI, CURP, RUT)',
-  2: 'Pasaporte',
-  3: 'Credencial cívica',
-  4: 'Licencia de conducir',
-  5: 'Permiso de residencia',
-  6: 'Visa',
-  7: 'Documento transitorio',
-  100: 'Documento anónimo'
-};
-
-// User Roles:
-export const user_roles = {
-  1:  'Superusuario',
-  2:  'Administrador',
-  3:  'Supervisor',
-  4:  'Médico',
-  5:  'Técnico',
-  6:  'Enfermero',
-  7:  'Coordinador',
-  8:  'Recepcionista',
-  9:  'Paciente',
-  10: 'Funcional'  // Empty role for concessions (Generic user)
-};
-
-// User Concessions:
-export const user_concessions = {
-  1   : 'Gestión de turnos',
-  2   : 'Gestión de citas',
-  3   : 'Calendario de citas',
-  4   : 'Gestión de recepciones',
-  5   : 'Gestión de estudios',
-  6   : 'Gestión de informes',
-  7   : 'Firmar informes',
-  8   : 'Autenticar informes',
-  9   : 'Enmendar informes',    // This concession depends on being a Supervisor, Médico or higher user or having the '6' concession [Gestión de informes].
-  10  : 'Acceso a logs del usuario',
-  11  : 'Acceso a logs de elementos',
-  12  : 'Reenvío de correos',
-  13  : 'Gestión de solicitudes',
-  14  : 'Búsquedas avanzadas',
-  //15  : 'Estadísticas sobre solicitudes',
-  16  : 'Estadísticas sobre citas',
-  17  : 'Estadísticas sobre estudios',
-  //18  : 'Estadísticas sobre informes',
-  //19  : 'Estadísticas sobre la organización',
-  20  : 'Acceso al módulo de exportación',          // Backend access only
-  21  : 'Acceso al servicio de imágenes del PACS',
-  22  : 'Edición de identificación de pacientes',
-  23  : 'Sobreagenda (overbooking)',
-  24  : 'Listados de facturación',
-};
-
-// User Types:
-export const user_types = {
-  1: 'Humano',
-  2: 'Maquina'
-};
-
-// Gender types:
-export const gender_types = {
-  1: 'Masculino',
-  2: 'Femenino',
-  3: 'Otros',
-};
-
-// Appointments flow states:
-export const appointments_flow_states = {
-  'A01': 'Coordinada',                // Correspond with AR05 -> appointment_requests_flow_states.
-  'A02': 'Cancelada-suspendida'
-};
-
-// Appointment requests flow states:
-export const appointment_requests_flow_states = {
-  'AR01': 'Administración', 
-  'AR02': 'Retenida en administración',
-  'AR03': 'Área médica',
-  'AR04': 'Retenida en área médica',
-
-  // Flow states controlled from backend:
-  // appointment_drafts and appointments save handlers.
-  'AR05': 'Cita en curso creada',      // Correspond with appointment_draft creation.
-  'AR06': 'Cita creada',               // Correspond with A01 -> appointments_flow_states.
-
-  'AR07': 'Cancelada'
-};
-
-// Performing flow states:
-export const performing_flow_states = {
-  'P01': 'Recepción',
-  'P02': 'Entrevista',
-  'P03': 'Preparación/Inyección',
-  'P04': 'Adquisición',
-  'P05': 'Verificación de imágenes',  // Algoritmo y pantallas de corrección/asociación de imágenes.
-  'P06': 'Para informar',
-
-  // Flow states controlled from backend:
-  // Report and signature save handlers.
-  'P07': 'Informe borrador',          // Al momento que exista un report con fk_performing = _id | insert report.
-  'P08': 'Informe firmado',           // Condición anterior + Que exista una firma al menos con fk_report = _id (report) | insert signature.
-  'P09': 'Terminado (con informe)',   // Condiciones anteriores + autenticated object exist (Estado sin remoción, solo enmiendas).
-
-  'P10': 'Terminado (sin informe)',
-  'P11': 'Cancelado'
-};
-
-// Cancellation reasons (Appointment and performing):
-export const cancellation_reasons = {
-  1   : "Falla en equipo",
-  2   : "Falta consentimiento",
-  3   : "Indicacion incorrecta",
-  4   : "No se presentó",
-  5   : "Sin preparacion o preparación incorrecta",
-	6   : "Claustrofóbia",
-  7   : "Embarazo",
-  8   : "Hiperglicemia",
-	9   : "Hipoglicemia",
-  10  : "Cursando infección",
-  11  : "Fallecimiento",
-  12  : "Otro"
-};
-
-// Logs element types Lang:
-export const elementTypesLang = {
-  'ES' : {
-    'appointments'          : 'cita',
-    'appointments_drafts'   : 'cita en curso',
-    'appointment_requests'  : 'solicitud',
-    'branches'              : 'sucursal',
-    'equipments'            : 'equipo',
-    'files'                 : 'archivo',
-    'modalities'            : 'modalidad',
-    'mwl'                   : 'MWL',
-    'organizations'         : 'organización',
-    'pathologies'           : 'patología',
-    'people'                : 'persona',
-    'performing'            : 'estudio',
-    'procedure_categories'  : 'categoría de procedimiento',
-    'procedures'            : 'procedimiento',
-    'reports'               : 'informe',
-    'services'              : 'servicio',
-    'signatures'            : 'firma',
-    'slots'                 : 'turno',
-    'users'                 : 'usuario'
-  }
-};
-
-// Inpatient types:
-export const inpatient_types = {
-  1 :'Cuidados intensivos',
-  2 :'Emergencia',
-  3 :'Internación'
-};
-
-// Anonymous patient document case:
-export const anonymous_doc = {
-  doc_country_code: '001',  // Available in ISO-3166.
-  document_types: 100,      // Reserved in document_types for this case.
-  description: 'Anónimo'
+// Set Object Keys:
+export const objectKeys = {
+  eventsLogKeys                     : ['1','2','3','4','5','6','7'],
+  documentTypesKeys                 : ['1','2','3','4','5','6','7','100'],
+  userRolesKeys                     : ['1','2','3','4','5','6','7','8','9','10'],
+  userConcessionsKeys               : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24'],
+  genderTypesKeys                   : ['1','2','3'],
+  appointmentsFlowStateKeys         : ['A01','A02'],
+  appointmentRequestsFlowStateKeys  : ['AR01','AR02','AR03','AR04','AR05','AR06','AR07'],
+  performingFlowStateKeys           : ['P01','P02','P03','P04','P05','P06','P07','P08','P09','P10','P11'],
+  currentReasonKey                  : ['1','2','3','4','5','6','7','8','9','10','11','12'],
+  inpatientTypesKeys                : ['1','2','3']
 };
 
 // Country codes (ISO-3166):

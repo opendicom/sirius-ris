@@ -15,7 +15,7 @@
                 <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</small><br/>
                 <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
                   <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
                     <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
                   </span>
                   <br/>
@@ -55,7 +55,7 @@
               <!-- genre -->
               <div class="current-info text-center">
                 <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.GENDER' | i18n }}</small><br/>
-                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ ('GENDER_TYPES.' + this.sharedProp.current_patient.person.gender) | i18n }}">
                   <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                   <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
                   <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>

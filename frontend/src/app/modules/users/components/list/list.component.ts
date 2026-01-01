@@ -9,9 +9,6 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
   ISO_3166, 
-  user_roles, 
-  document_types, 
-  gender_types, 
   regexObjectId
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
@@ -24,9 +21,8 @@ import {                                                                        
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes  : any = ISO_3166;
-  public document_types : any = document_types;
-  public gender_types   : any = gender_types;
-  public user_roles     : any = user_roles;
+  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
+  public userRolesKeys  : string[] = ['1','2','3','4','5','6','7','8','9','10'];
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('USERS.LIST.ACTIONS')];

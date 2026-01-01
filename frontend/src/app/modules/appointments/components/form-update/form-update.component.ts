@@ -8,11 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
-  ISO_3166, 
-  document_types, 
-  gender_types,
-  cancellation_reasons,
-  performing_flow_states
+  ISO_3166
 } from '@env/environment';
 
 // Child components:
@@ -32,10 +28,7 @@ export class FormUpdateComponent implements OnInit {
 
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public gender_types           : any = gender_types;
-  public performing_flow_states : any = performing_flow_states;
-  public cancellation_reasons   : any = cancellation_reasons;
+  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
 
   //Initializate validation tab errors:
   public detailsTabErrors       : boolean = false;

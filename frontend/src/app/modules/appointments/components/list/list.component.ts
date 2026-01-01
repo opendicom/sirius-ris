@@ -10,11 +10,7 @@ import { PdfService } from '@shared/services/pdf.service';                      
 import { I18nService } from '@app/shared/services/i18n.service';                                // I18n Service
 import {                                                                                        // Enviroments
   regexObjectId,
-  appointments_flow_states,
-  ISO_3166,
-  document_types,
-  gender_types,
-  cancellation_reasons
+  ISO_3166
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -26,10 +22,7 @@ import {                                                                        
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public gender_types           : any = gender_types;
-  public appointmentsFlowStates : any = appointments_flow_states;
-  public cancellation_reasons   : any = cancellation_reasons;
+  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];

@@ -25,9 +25,9 @@
         <th mat-header-cell *matHeaderCellDef class="events-col"> {{ 'LOGS.LIST_BY_USER.TABLE.EVENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="events-col">
           <span *ngIf="element.event">
-            <span class="event e{{ element.event }}">{{ eventsLog[element.event] }}</span>
+            <span class="event e{{ element.event }}">{{ ('EVENTS_LOG.' + element.event) | i18n }}</span>
             <span *ngIf="element.element">
-              {{ 'LOGS.LIST_BY_USER.TABLE.OF' | i18n }} <strong matTooltip="{{ element.element._id }}">{{ elementTypesLang['ES'][element.element.type] }}</strong>
+              {{ 'LOGS.LIST_BY_USER.TABLE.OF' | i18n }} <strong matTooltip="{{ element.element._id }}">{{ ('ELEMENTS_TYPES.' + element.element.type) | i18n }}</strong>
               <span *ngIf="element.element.details">
                 <hr class="dashed" />
                 <div [ngSwitch]="element.element.details">

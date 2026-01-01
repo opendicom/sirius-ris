@@ -5,23 +5,13 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
-import {                                                                                    // Enviroments
-  appointments_flow_states,
-  performing_flow_states,
-  gender_types,
-  cancellation_reasons
-} from '@env/environment';
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatsService {
-  //Set service properties:
-  public appointmentsFS       : any = appointments_flow_states;
-  public performingFS         : any = performing_flow_states;
-  public gender_types         : any = gender_types;
-  public cancellation_reasons : any = cancellation_reasons;
 
   //Set references objects:
   public availableOrganizations : any;
@@ -31,7 +21,8 @@ export class StatsService {
   //Inject services to the constructor:
   constructor(  
     public sharedProp       : SharedPropertiesService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    private i18n            : I18nService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -86,11 +77,11 @@ export class StatsService {
               //Check current stats element:
               switch(stats_element){ 
                 case 'appointments':
-                  key_name = this.appointmentsFS[element_key];
+                  key_name = this.i18n.instant('APPOINTMENT_FLOW_STATES.' + element_key);
                   break;
 
                 case 'performing':
-                  key_name = this.performingFS[element_key];
+                  key_name = this.i18n.instant('PERFORMING_FLOW_STATES.' + element_key);
                   break;
               }
               break;
@@ -104,11 +95,11 @@ export class StatsService {
               break;
 
             case 'gender':
-              key_name = this.gender_types[element_key];
+              key_name = this.i18n.instant('GENDER_TYPES.' + element_key);
               break;
             
             case 'cancellation_reasons':
-              key_name = this.cancellation_reasons[element_key];
+              key_name = this.i18n.instant('CANCELLATION_REASONS.' + element_key);
               break;
 
             case 'injection_user':

@@ -9,7 +9,7 @@
       <small>{{ 'DIALOGS.DICOM_ACCESS.DOCUMENTS' | i18n }}</small><br/>
       <span *ngFor="let current of data.patient.person.documents" >
         <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-        <span matTooltip="{{ document_types[current.doc_type] }}">
+        <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
           <span>{{ current.document }}</span>
         </span>
         <br/>
@@ -95,7 +95,7 @@
       <small>{{ 'DIALOGS.DICOM_ACCESS.DOCUMENTS' | i18n }}</small><br/>
       <span *ngFor="let current of data.patient.person.documents" >
         <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-        <span matTooltip="{{ document_types[current.doc_type] }}">
+        <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
           <span>{{ current.document }}</span>
         </span>
         <br/>

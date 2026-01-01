@@ -34,8 +34,8 @@
     <mat-form-field appearance="fill" class="medium">
       <mat-label>{{ 'AUTH.DOCUMENT_TYPE' | i18n }}</mat-label>
       <mat-select name="doc_type" [(ngModel)]="sharedProp.mainSettings.appSettings.default_doc_type" required >
-        <div *ngFor="let currentDocType of document_types | keyvalue: unsorted">
-          <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+        <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+          <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
         </div>
       </mat-select>
     </mat-form-field>

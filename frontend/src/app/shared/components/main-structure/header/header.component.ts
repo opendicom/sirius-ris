@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
-import { user_roles } from '@env/environment';                                          // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -15,7 +14,7 @@ import { user_roles } from '@env/environment';                                  
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public userRoles: any = user_roles;
+  public userRolesKeys: string[] = ['1','2','3','4','5','6','7','8','9','10'];
 
   //Inject services to the constructor:
   constructor(

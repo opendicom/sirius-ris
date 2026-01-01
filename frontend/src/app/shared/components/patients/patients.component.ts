@@ -7,12 +7,10 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                              // PDF Service
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import {                                                                                // Enviroments
   regexObjectId,
-  ISO_3166,
-  document_types,
-  performing_flow_states,
-  cancellation_reasons
+  ISO_3166
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -26,9 +24,7 @@ export class PatientsComponent implements OnInit {
 
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public performing_flow_states : any = performing_flow_states;
-  public cancellation_reasons   : any = cancellation_reasons;
+  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
 
   //Initializate ohifPath:
   public ohifPath               : string = '';
@@ -50,14 +46,15 @@ export class PatientsComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
-    public pdfService       : PdfService
+    public pdfService       : PdfService,
+    private i18n            : I18nService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title       : 'Resultado de estudios',
+      content_title       : this.i18n.instant('PATIENTS.LIST.TITLE'),
       content_icon        : 'fact_check',
       add_button          : false,
       duplicated_surnames : false,                          // Check duplicated surnames
@@ -171,7 +168,7 @@ export class PatientsComponent implements OnInit {
         }
       } else {
         //Send Console Warn Message:
-        console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
+        console.warn(this.i18n.instant('PATIENTS.LIST.ERROR_DICOM') + wezenStudyTokenRes.message);
       }
     });
   }

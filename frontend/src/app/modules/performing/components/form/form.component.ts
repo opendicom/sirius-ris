@@ -9,11 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import {                                                                                    // Enviroments
-  ISO_3166, 
-  document_types, 
-  gender_types, 
-  performing_flow_states,
-  cancellation_reasons
+  ISO_3166
 } from '@env/environment';
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 
@@ -31,11 +27,9 @@ export class FormComponent implements OnInit {
   @ViewChild(TabDetailsComponent) tabDetails!:TabDetailsComponent;
 
   //Set component properties:
-  public country_codes        : any = ISO_3166;
-  public document_types       : any = document_types;
-  public gender_types         : any = gender_types;
-  public performingFS         : any = performing_flow_states;
-  public cancellation_reasons : any = cancellation_reasons;
+  public country_codes            : any = ISO_3166;
+  public documentTypesKeys        : string[] = ['1','2','3','4','5','6','7','100'];
+  public performingFlowStateKeys  : string[] = ['P01','P02','P03','P04','P05','P06','P07','P08','P09','P10','P11'];
 
   //Create CKEditor component and configure them:
   public procedureEditor                = customBuildEditor;
@@ -1007,30 +1001,24 @@ export class FormComponent implements OnInit {
     //Initialize found flag:
     let foundFlag = false;
 
-    //Loop in enviroment flow states list (await foreach):
-    await Promise.all(Object.keys(this.performingFS).map((key) => {
-      //Check that currentFS is equal to key or that currentFS has already been entered/found:
+    //Loop in performing flow state keys (ordered) and build availableFS using i18n
+    await Promise.all(this.performingFlowStateKeys.map((key) => {
       if(currentFS === key || foundFlag){
-        //Do not allow P07, P08 and P09 flow_states on insert case (flow_states controlled from backend):
         if(this.form_action == 'insert' && (key == 'P07' || key == 'P08' || key == 'P09')){
-          //Don't add currentFS into availableFS.
+          // skip
         } else {
           if((currentFS !== 'P07' && key == 'P07') || (currentFS !== 'P08' && key == 'P08') || (currentFS !== 'P09' && key == 'P09')){
-            //Don't add currentFS into availableFS.
+            // skip
           } else {
-            //Add current flow state into available flow states:
-            this.availableFS[key] = this.performingFS[key];
+            this.availableFS[key] = this.i18n.instant('PERFORMING_FLOW_STATES.' + key);
           }
         }
 
-        //Check if the procedure has an interview or not
         if(has_interview !== undefined && has_interview === false){
-          //Remove interview from availableFS:
           delete this.availableFS['P02'];
-        } 
+        }
 
-        //Set found flag as true:
-        foundFlag= true;
+        foundFlag = true;
       }
     }));
   }

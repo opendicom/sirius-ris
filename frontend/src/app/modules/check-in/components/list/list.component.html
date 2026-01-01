@@ -42,7 +42,7 @@
                       <br/>
 
                       <!-- performing flow_state -->
-                      <small class="badge badge-mini {{ currentNested.flow_state }}" matTooltip="{{ cancellation_reasons[currentNested.cancellation_reasons] }}" *ngIf="currentNested.flow_state">{{ performing_flow_states[currentNested.flow_state] }}</small>
+                      <small class="badge badge-mini {{ currentNested.flow_state }}" matTooltip="{{ currentNested.cancellation_reasons ? (('CANCELLATION_REASONS.' + currentNested.cancellation_reasons) | i18n) : '' }}" *ngIf="currentNested.flow_state">{{ ('PERFORMING_FLOW_STATES.' + currentNested.flow_state) | i18n }}</small>
 
                       <!-- MWL -->
                       <span *ngIf="element.accession_date; then thenBlockMWL else elseBlockMWL;"></span>
@@ -109,7 +109,7 @@
             <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : 'check-in' })">
               <span *ngFor="let current of element.patient.person.documents" >
                 <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                <span matTooltip="{{ document_types[current.doc_type] }}">
+                <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
                   <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
                 </span>
                 <br/>
@@ -177,7 +177,7 @@
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.patient">
             <span *ngIf="element.patient.person">
-              <div [ngSwitch]="element.patient.person.gender" matTooltip="{{ gender_types[element.patient.person.gender] }}">
+                  <div [ngSwitch]="element.patient.person.gender" matTooltip="{{ ('GENDER_TYPES.' + element.patient.person.gender) | i18n }}">
                 <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                 <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
                 <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>

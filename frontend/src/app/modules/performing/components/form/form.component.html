@@ -48,7 +48,7 @@
                 <small>{{ 'PERFORMING.FORM.DOCUMENTS' | i18n }}</small><br/>
                 <span *ngFor="let current of this.sharedProp.current_patient.person.documents" >
                   <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                  <span matTooltip="{{ document_types[current.doc_type] }}">
+                  <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
                     <span>{{ current.document }}</span>
                   </span>
                   <br/>
@@ -88,7 +88,7 @@
               <!-- genre -->
               <div class="current-info text-center">
                 <small>{{ 'PERFORMING.FORM.GENDER' | i18n }}:</small><br/>
-                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ gender_types[this.sharedProp.current_patient.person.gender] }}">
+                <span [ngSwitch]="this.sharedProp.current_patient.person.gender" matTooltip="{{ ('GENDER_TYPES.' + this.sharedProp.current_patient.person.gender) | i18n }}">
                   <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
                   <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
                   <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
@@ -137,8 +137,8 @@
               <mat-form-field appearance="fill" class="full">
                 <mat-label>{{ 'PERFORMING.FORM.CANCELLATION_REASONS_LABEL' | i18n }}</mat-label>
                 <mat-select formControlName="cancellation_reasons">-->
-                  <div *ngFor="let currentReason of cancellation_reasons | keyvalue">
-                    <mat-option value="{{ currentReason.key }}">{{ currentReason.value }}</mat-option>
+                  <div *ngFor="let currentReasonKey of ['1','2','3','4','5','6','7','8','9','10','11','12']">
+                    <mat-option value="{{ currentReasonKey }}">{{ ('CANCELLATION_REASONS.' + currentReasonKey) | i18n }}</mat-option>
                   </div>
                 </mat-select>
               </mat-form-field>
@@ -597,7 +597,7 @@
                   </span>
 
                   <!--flow_state-->
-                  <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ cancellation_reasons[element.cancellation_reasons] }}" *ngIf="element.flow_state">{{ performingFS[element.flow_state] }}</span>
+                  <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span>
                 </td>
               </ng-container>
 

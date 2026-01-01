@@ -9,11 +9,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import {                                                                                // Enviroments
   regexObjectId,
-  appointment_requests_flow_states,
-  cancellation_reasons,
-  ISO_3166,
-  document_types,
-  gender_types
+  ISO_3166
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -25,10 +21,8 @@ import {                                                                        
 export class ListRequestsComponent implements OnInit {
   //Set component properties:
   public country_codes                  : any = ISO_3166;
-  public document_types                 : any = document_types;
-  public gender_types                   : any = gender_types;
-  public appointmentRequestsFlowStates  : any = appointment_requests_flow_states;
-  public cancellation_reasons           : any = cancellation_reasons;
+  public documentTypesKeys              : string[] = ['1','2','3','4','5','6','7','100'];
+  public appointmentRequestsFlowStateKeys: string[] = ['AR01','AR02','AR03','AR04','AR05','AR06','AR07'];
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [

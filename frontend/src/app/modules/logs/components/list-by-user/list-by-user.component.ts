@@ -7,9 +7,7 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import {                                                                                // Enviroments
-  regexObjectId, 
-  events_log, 
-  elementTypesLang
+  regexObjectId
 } from '@env/environment';
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
@@ -20,10 +18,6 @@ import { I18nService } from '@shared/services/i18n.service';                    
   styleUrls: ['./list-by-user.component.css']
 })
 export class ListByUserComponent implements OnInit {
-  //Set component properties:
-  public eventsLog: any = events_log;
-  public elementTypesLang : any = elementTypesLang;
-
   //Table to XLSX (SheetJS CE):
   @ViewChild('main_list') table!: ElementRef;
   tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('LOGS.LIST_BY_USER.EXCEL_SHEET_NAME'), this.table) }

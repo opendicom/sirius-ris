@@ -9,7 +9,6 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                  // I18n Service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
-import { user_roles, user_concessions } from '@env/environment';                              // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,8 +17,8 @@ import { user_roles, user_concessions } from '@env/environment';                
   styleUrls: ['./form-machine.component.css']
 })
 export class FormMachineComponent implements OnInit {
-  public userRoles        : any = user_roles;
-  public userConcessions  : any = user_concessions;
+  public userRolesKeys    : string[] = ['1','2','3','4','5','6','7','8','9','10'];
+  public userConcessionsKeys: string[] = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24'];
 
   //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
   unsorted = () => { return 0 }

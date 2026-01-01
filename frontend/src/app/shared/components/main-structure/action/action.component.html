@@ -61,9 +61,21 @@
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.flow_state">
         <mat-label>{{ 'ACTION.FLOW_STATE' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.flow_state" (selectionChange)="onSearch();">
-          <div *ngFor="let currentFS of flow_states[sharedProp.element] | keyvalue">
-            <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
-          </div>
+          <ng-container *ngIf="sharedProp.element === 'appointments'">
+            <div *ngFor="let currentFSKey of ['A01', 'A02']">
+              <mat-option value="{{ currentFSKey }}">{{ ('APPOINTMENT_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="sharedProp.element === 'appointment_requests'">
+            <div *ngFor="let currentFSKey of ['AR01', 'AR02', 'AR03', 'AR04', 'AR05', 'AR06', 'AR07']">
+              <mat-option value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="sharedProp.element !== 'appointments' && sharedProp.element !== 'appointment_requests'">
+            <div *ngFor="let currentFS of flow_states[sharedProp.element] | keyvalue">
+              <mat-option value="{{ currentFS.key }}">{{ currentFS.value }}</mat-option>
+            </div>
+          </ng-container>
         </mat-select>
       </mat-form-field>
       
@@ -118,8 +130,8 @@
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.log_event">
         <mat-label>{{ 'ACTION.EVENT' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.log_event" (selectionChange)="onSearch();">
-          <div *ngFor="let currentEvent of eventsLog | keyvalue">
-            <mat-option value="{{ currentEvent.key}}">{{ currentEvent.value }}</mat-option>
+          <div *ngFor="let eventKey of eventsLogKeys">
+            <mat-option value="{{ eventKey }}">{{ ('EVENTS_LOG.' + eventKey) | i18n }}</mat-option>
           </div>
         </mat-select>
       </mat-form-field>

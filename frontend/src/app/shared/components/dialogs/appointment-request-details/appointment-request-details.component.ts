@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';                     
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
-import { ISO_3166, document_types, gender_types } from '@env/environment';                        // Enviroments
+import { ISO_3166 } from '@env/environment';                                                      // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,8 +18,7 @@ import { ISO_3166, document_types, gender_types } from '@env/environment';      
 export class AppointmentRequestDetailsComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public document_types         : any = document_types;
-  public gender_types           : any = gender_types;
+  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
 
   //Inject services to the constructor:
   constructor(

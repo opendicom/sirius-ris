@@ -184,13 +184,13 @@
       },
       "HOSPITALIZATION": {
         "TITLE": "Hospitalization:",
-        "TYPE": "Type of hospitalization:",
+        "TYPE": "Type of hospitalization",
         "TYPE_PLACEHOLDER": "Select the type of hospitalization",
-        "WHERE": "Where:",
+        "WHERE": "Where",
         "WHERE_PLACEHOLDER": "Enter where the patient is hospitalized (Institution).",
-        "ROOM": "Ward | Room | Floor:",
+        "ROOM": "Ward | Room | Floor",
         "ROOM_PLACEHOLDER": "Enter the ward, room, floor where the patient is hospitalized.",
-        "CONTACT": "Contact:",
+        "CONTACT": "Contact",
         "CONTACT_PLACEHOLDER": "Enter contact information (phone, cell phone, email)"
       },
       "CONSENTS": {
@@ -595,13 +595,13 @@
       "ENTER_PATOLOGIES": "Enter Antecedents/Pathologies.",
       "INDICATE_ALLERGIES": "Indicate if you have any allergies.",
       "IMPLANTS": "Implants",
-      "HOSPITALIZATION_TYPE": "Hospitalization Type:",
+      "HOSPITALIZATION_TYPE": "Hospitalization Type",
       "SELECT_HOSPITALIZATION_TYPE": "Select hospitalization type",
-      "WHERE_HOSPITALIZED": "Where hospitalized:",
+      "WHERE_HOSPITALIZED": "Where hospitalized",
       "ENTER_HOSPITALIZATION_INSTITUTION": "Enter where the patient is hospitalized (Institution).",
-      "ROOM_FLOOR": "Ward | Room | Floor:",
+      "ROOM_FLOOR": "Ward | Room | Floor",
       "ENTER_HOSPITALIZATION_ROOM": "Enter the ward, room, floor where the patient is hospitalized.",
-      "HOSPITALIZATION_CONTACT": "Hospitalization Contact:",
+      "HOSPITALIZATION_CONTACT": "Hospitalization Contact",
       "ENTER_HOSPITALIZATION_CONTACT": "Enter contact information (phone, cell, email)",
       "CONSENTS": "Consents",
       "HOSPITALIZATION": "Hospitalization",
@@ -1946,5 +1946,154 @@
     "BOARD": {
       "IN-PROGRESS": "In-progress care list in process..."
     }
+  },
+  "EVENTS_LOG": {
+    "1": "Login",
+    "2": "Creation",
+    "3": "Edition",
+    "4": "Deletion",
+    "5": "Signature",
+    "6": "Authentication",
+    "7": "Email sending"
+  },
+  "DOCUMENT_TYPES": {
+    "1": "National ID (DNI, CI, CURP, RUT)",
+    "2": "Passport",
+    "3": "Civic ID",
+    "4": "Driver's license",
+    "5": "Residence permit",
+    "6": "Visa",
+    "7": "Temporary document",
+    "100": "Anonymous document"
+  },
+  "USER_ROLES": {
+    "1": "Superuser",
+    "2": "Administrator",
+    "3": "Supervisor",
+    "4": "Physician",
+    "5": "Technician",
+    "6": "Nurse",
+    "7": "Coordinator",
+    "8": "Receptionist",
+    "9": "Patient",
+    "10": "Functional"
+  },
+  "USER_CONCESSIONS": {
+    "1": "Shift management",
+    "2": "Appointment management",
+    "3": "Appointment calendar",
+    "4": "Reception management",
+    "5": "Study management",
+    "6": "Report management",
+    "7": "Sign reports",
+    "8": "Authenticate reports",
+    "9": "Amend reports",
+    "10": "Access to user logs",
+    "11": "Access to element logs",
+    "12": "Email resending",
+    "13": "Request management",
+    "14": "Advanced searches",
+    "16": "Appointment statistics",
+    "17": "Study statistics",
+    "20": "Access to export module",
+    "21": "Access to PACS image service",
+    "22": "Patient identification editing",
+    "23": "Overbooking",
+    "24": "Billing lists"
+  },
+  "GENDER_TYPES": {
+    "1": "Male",
+    "2": "Female",
+    "3": "Other"
+  },
+  "APPOINTMENT_FLOW_STATES": {
+    "A01": "Scheduled",
+    "A02": "Canceled–suspended"
+  },
+  "APPOINTMENTS_REQUESTS_FLOW_STATES": {
+    "AR01": "Administration",
+    "AR02": "Held in administration",
+    "AR03": "Medical area",
+    "AR04": "Held in medical area",
+    "AR05": "Appointment draft created",
+    "AR06": "Appointment created",
+    "AR07": "Canceled"
+  },
+  "PERFORMING_FLOW_STATES": {
+    "P01": "Reception",
+    "P02": "Interview",
+    "P03": "Preparation/Injection",
+    "P04": "Acquisition",
+    "P05": "Image verification",
+    "P06": "Pending report",
+    "P07": "Draft report",
+    "P08": "Signed report",
+    "P09": "Completed (with report)",
+    "P10": "Completed (without report)",
+    "P11": "Canceled"
+  },
+  "PATIENTS": {
+    "LIST": {
+      "TITLE": "Study Results",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "DATE": "Date",
+        "CHECKIN_TIME": "Check-in Time",
+        "DOCUMENTS": "Documents",
+        "NAMES": "Names",
+        "SURNAMES": "Surnames",
+        "DETAILS": "Details"
+      },
+      "TOOLTIPS": {
+        "VIEW_REPORT": "View report",
+        "VIEW_IMAGES": "View associated images",
+        "DOWNLOAD_IMAGES": "Download associated images"
+      },
+      "NO_DATA": "(No data)",
+      "WAIT_NO_RESULTS": "Please wait, no results yet.",
+      "CLOSE_VIEWER": "CLOSE VIEWER",
+      "AET_PREFIX": "AET: ",
+      "ERROR_DICOM": "Error trying to search for DICOM images of the element: "
+    }
+  },
+  "CANCELLATION_REASONS": {
+    "1": "Equipment failure",
+    "2": "Missing consent",
+    "3": "Incorrect indication",
+    "4": "No-show",
+    "5": "No preparation or incorrect preparation",
+    "6": "Claustrophobia",
+    "7": "Pregnancy",
+    "8": "Hyperglycemia",
+    "9": "Hypoglycemia",
+    "10": "Ongoing infection",
+    "11": "Deceased",
+    "12": "Other"
+  },
+  "ELEMENTS_TYPES": {
+    "appointments": "appointment",
+    "appointments_drafts": "appointment draft",
+    "appointment_requests": "request",
+    "branches": "branch",
+    "equipments": "equipment",
+    "files": "file",
+    "modalities": "modality",
+    "mwl": "MWL",
+    "organizations": "organization",
+    "pathologies": "pathology",
+    "people": "person",
+    "performing": "study",
+    "procedure_categories": "procedure category",
+    "procedures": "procedure",
+    "reports": "report",
+    "services": "service",
+    "signatures": "signature",
+    "slots": "shift",
+    "users": "user"
+  },
+  "INPATIENT_TYPES": {
+    "1": "Intensive care",
+    "2": "Emergency",
+    "3": "Hospitalization"
   }
 }

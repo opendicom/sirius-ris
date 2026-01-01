@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
-import { user_roles } from '@env/environment';                                          // Enviroment
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { Router } from '@angular/router';                                               // Router
@@ -20,7 +19,7 @@ import { I18nService } from '@shared/services/i18n.service';                    
 export class AuthorizeComponent implements OnInit {
   public userInfo: any;
   public availableDomains: any = {};
-  public userRoles: any = user_roles;
+  public userRolesKeys: string[] = ['1','2','3','4','5','6','7','8','9','10'];
   public availableRoles: any = {};
   public RoleDisabled: boolean = true;
 
@@ -73,7 +72,7 @@ export class AuthorizeComponent implements OnInit {
     //Set available roles:
     Object.keys(this.userInfo.permissions).forEach((key) => {
       if(event.value == this.userInfo.permissions[key].domain){
-        this.availableRoles[this.userInfo.permissions[key].role] = this.userRoles[this.userInfo.permissions[key].role];
+        this.availableRoles[this.userInfo.permissions[key].role] = this.i18n.instant('USER_ROLES.' + this.userInfo.permissions[key].role);
       }
     });
 
