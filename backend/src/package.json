@@ -1,6 +1,6 @@
 {
   "name": "sirius-ris",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Sirius RIS is an open source Radiology Information System",
   "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
   "maintainer": "opendicom <info@opendicom.com>",

@@ -179,12 +179,20 @@ module.exports = async function() {
     let cnxMongoDBStatus = false;
     let cnXMongoDBMessage = '';
 
+    //MongoDB server version (runtime discovery):
+    let mongoServerVersion = 'unknown';
+
     //Establish connection with MongoDB:
     try {
         await mongoose.connect(mongodbURI);
 
         //Set status conexion:
         cnxMongoDBStatus = true;
+
+        //Get MongoDB server version (low cost, once at startup):
+        const admin = mongoose.connection.db.admin();
+        const serverInfo = await admin.serverInfo();
+        mongoServerVersion = serverInfo.version;
 
         //Set MongoDB Message:
         cnXMongoDBMessage = currentLang.server.db_cnx_success + publicURI;
@@ -238,6 +246,7 @@ module.exports = async function() {
                 sirius_backend,
                 sirius_db: {
                     status: cnxMongoDBStatus,
+                    version: mongoServerVersion,
                     message: cnXMongoDBMessage
                 },
                 mail_server: mainSettings.mailserver,
