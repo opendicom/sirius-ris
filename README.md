@@ -18,7 +18,7 @@
 
 * System of **scalable privileges** for users.
 
-* Backend **multilanguage** ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH-CN`).
+* **Multilanguage** ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH-CN`).
 
   
 

@@ -7,10 +7,7 @@ import { ActivatedRoute } from '@angular/router';                               
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
-import {                                                                                    // Enviroments
-  ISO_3166, 
-  regexObjectId
-} from '@env/environment';
+import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                     // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -21,8 +18,8 @@ import {                                                                        
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes  : any = ISO_3166;
-  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
-  public userRolesKeys  : string[] = ['1','2','3','4','5','6','7','8','9','10'];
+  public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
+  public userRolesKeys  : string[] = objectKeys.userRolesKeys;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('USERS.LIST.ACTIONS')];

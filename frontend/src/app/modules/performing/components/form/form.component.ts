@@ -8,9 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
-import {                                                                                    // Enviroments
-  ISO_3166
-} from '@env/environment';
+import { ISO_3166, objectKeys } from '@env/environment';                                    // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 
 // Child components:
@@ -28,8 +26,8 @@ export class FormComponent implements OnInit {
 
   //Set component properties:
   public country_codes            : any = ISO_3166;
-  public documentTypesKeys        : string[] = ['1','2','3','4','5','6','7','100'];
-  public performingFlowStateKeys  : string[] = ['P01','P02','P03','P04','P05','P06','P07','P08','P09','P10','P11'];
+  public documentTypesKeys        : string[] = objectKeys.documentTypesKeys;
+  public performingFlowStateKeys  : string[] = objectKeys.performingFlowStateKeys;
 
   //Create CKEditor component and configure them:
   public procedureEditor                = customBuildEditor;

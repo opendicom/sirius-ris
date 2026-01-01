@@ -20,7 +20,7 @@ export const objectKeys = {
   appointmentsFlowStateKeys         : ['A01','A02'],
   appointmentRequestsFlowStateKeys  : ['AR01','AR02','AR03','AR04','AR05','AR06','AR07'],
   performingFlowStateKeys           : ['P01','P02','P03','P04','P05','P06','P07','P08','P09','P10','P11'],
-  currentReasonKey                  : ['1','2','3','4','5','6','7','8','9','10','11','12'],
+  cancellationReasonKeys            : ['1','2','3','4','5','6','7','8','9','10','11','12'],
   inpatientTypesKeys                : ['1','2','3']
 };
 

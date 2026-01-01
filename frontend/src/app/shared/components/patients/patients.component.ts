@@ -8,10 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                              // PDF Service
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
-import {                                                                                // Enviroments
-  regexObjectId,
-  ISO_3166
-} from '@env/environment';
+import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                 // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -24,7 +21,7 @@ export class PatientsComponent implements OnInit {
 
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
+  public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
 
   //Initializate ohifPath:
   public ohifPath               : string = '';

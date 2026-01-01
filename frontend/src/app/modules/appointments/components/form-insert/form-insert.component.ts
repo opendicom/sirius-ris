@@ -10,10 +10,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { AppointmentsService } from '@modules/appointments/services/appointments.service';  // Appointments service
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
-import {                                                                                    // Enviroments
-  regexObjectId,
-  ISO_3166
-} from '@env/environment';
+import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                     // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -25,8 +22,8 @@ import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';   
 export class FormInsertComponent implements OnInit {
   //Set component properties:
   public country_codes           : any = ISO_3166;
-  public documentTypesKeys       : string[] = ['1','2','3','4','5','6','7','100'];
-  public inpatient_types_keys    : string[] = ['1', '2', '3'];
+  public documentTypesKeys       : string[] = objectKeys.documentTypesKeys;
+  public inpatient_types_keys    : string[] = objectKeys.inpatientTypesKeys;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;

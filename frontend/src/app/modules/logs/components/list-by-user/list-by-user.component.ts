@@ -6,9 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import {                                                                                // Enviroments
-  regexObjectId
-} from '@env/environment';
+import { regexObjectId } from '@env/environment';                                       // Enviroments
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 

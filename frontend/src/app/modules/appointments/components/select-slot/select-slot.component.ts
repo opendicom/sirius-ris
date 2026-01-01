@@ -12,10 +12,7 @@ import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular'; 
 import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
 import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
-import {                                                                                    // Enviroments
-  regexObjectId,
-  ISO_3166
-} from '@env/environment';
+import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                     // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -26,7 +23,7 @@ import {                                                                        
 export class SelectSlotComponent implements OnInit {
   //Set component properties:
   public country_codes  : any = ISO_3166;
-  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
+  public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
 
   //Min and max dates:
   public minDate: Date = new Date();

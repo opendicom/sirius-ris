@@ -19,7 +19,7 @@ import { objectKeys } from '@env/environment';                                  
 export class ActionComponent implements OnInit {
   public page_sizes               : any = this.sharedProp.mainSettings.appSettings.default_page_sizes;
   public eventsLogKeys            : string[] = objectKeys.eventsLogKeys;
-  public performingFlowStateKeys  : string[] = ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09', 'P10', 'P11'];
+  public performingFlowStateKeys  : string[] = objectKeys.performingFlowStateKeys;
   public number_of_pages          : any = [1];
   public flow_states              : any = {
     appointments          : { 'A01': '', 'A02': '' },

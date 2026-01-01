@@ -12,10 +12,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
-import {                                                                                      // Enviroment
-  ISO_3166,
-  regexObjectId
-} from '@env/environment';
+import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -25,10 +22,10 @@ import {                                                                        
 })
 export class FormComponent implements OnInit {
   public country_codes    : any = ISO_3166;
-  public documentTypesKeys: string[] = ['1','2','3','4','5','6','7','100'];
-  public userRolesKeys    : string[] = ['1','2','3','4','5','6','7','8','9','10'];
-  public userConcessionsKeys: string[] = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24'];
-  public genderTypesKeys  : string[] = ['1','2','3'];
+  public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
+  public userRolesKeys    : string[] = objectKeys.userRolesKeys;
+  public userConcessionsKeys: string[] = objectKeys.userConcessionsKeys;
+  public genderTypesKeys  : string[] = objectKeys.genderTypesKeys;
 
   //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
   unsorted = () => { return 0 }

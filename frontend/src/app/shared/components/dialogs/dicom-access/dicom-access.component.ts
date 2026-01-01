@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';          
 import { MatDialogRef } from '@angular/material/dialog';                                // MatDialog Ref
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
-import { ISO_3166 } from '@env/environment';                                            // Enviroments
+import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -19,7 +19,7 @@ import { I18nService } from '@shared/services/i18n.service';                    
 export class DicomAccessComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
+  public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
 
   //Initializate Paths:
   public ohifPath               : string = '';

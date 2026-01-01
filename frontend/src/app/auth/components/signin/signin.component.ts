@@ -6,12 +6,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
-import { ISO_3166 } from '@env/environment';                            // Enviroment
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
-import { objectKeys } from '@env/environment';                                          // Enviroments
+import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({

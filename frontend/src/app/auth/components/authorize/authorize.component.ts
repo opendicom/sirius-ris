@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { Router } from '@angular/router';                                               // Router
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
+import { objectKeys } from '@env/environment';                                          // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -19,7 +20,7 @@ import { I18nService } from '@shared/services/i18n.service';                    
 export class AuthorizeComponent implements OnInit {
   public userInfo: any;
   public availableDomains: any = {};
-  public userRolesKeys: string[] = ['1','2','3','4','5','6','7','8','9','10'];
+  public userRolesKeys: string[] = objectKeys.userRolesKeys;
   public availableRoles: any = {};
   public RoleDisabled: boolean = true;
 

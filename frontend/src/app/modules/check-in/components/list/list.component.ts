@@ -6,9 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';             // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
-import {                                                                                          // Enviroments
-  ISO_3166
-} from '@env/environment';
+import { ISO_3166, objectKeys } from '@env/environment';                                          // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -19,7 +17,7 @@ import {                                                                        
 export class ListComponent implements OnInit {
   //Set component properties:
   public country_codes          : any = ISO_3166;
-  public documentTypesKeys      : string[] = ['1','2','3','4','5','6','7','100'];
+  public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('CHECK-IN.LIST.ACTIONS')];
