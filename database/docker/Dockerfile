@@ -3,16 +3,16 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'database'.
 # Example:
-# docker build -t opendicom/sirius-database:1.2.0 -f docker/Dockerfile .
+# docker build -t opendicom/sirius-database:8.2.3 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
 # ------------------------------------------------------------------------------------- #
 # SIRIUS DATABASE STAGE:
 # ------------------------------------------------------------------------------------- #
-FROM mongo:latest
+FROM mongo:8.2.3
 
-LABEL version="1.2.0"
+LABEL version="8.2.3"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"
