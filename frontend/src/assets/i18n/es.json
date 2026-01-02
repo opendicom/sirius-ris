@@ -283,6 +283,16 @@
         "EDIT_COORDINATION_DISABLED_MESSAGE": "Para poder editar los detalles de la coordinación de la cita, la misma debe encontrarse Activa y en estado de flujo como Coordinada."
       }
     },
+    "LIST_DRAFTS": {
+      "TITLE": "Listado de citas en curso",
+      "XLSX_SHEET_NAME": "citas_en_curso",
+      "EDIT_ERROR": "Error al intentar editar el elemento con _id: ",
+      "TOOLTIPS": {
+        "CONTINUE": "Continuar con cita en curso",
+        "DISCARD": "Descartar cita en curso",
+        "OVERBOOKING_DRAFT": "Esta cita en curso será sobreagendada."
+      }
+    },
     "LIST_REQUESTS": {
       "TITLE": "Listado de solicitudes",
       "XLSX_SHEET_NAME": "solicitudes",
