@@ -115,7 +115,7 @@ networks:
 TZ='America/Argentina/Buenos_Aires'
 
 # LANGUAGE:
-# BR, DE, EN, ES, FR, IT, JA, RU, ZH-CN
+# BR, DE, EN, ES, FR, IT, JA, RU, ZH
 SIRIUS_LANGUAJE='ES'
 
 # IP SERVER:

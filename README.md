@@ -16,9 +16,9 @@
 
 * Unambiguous identification of people [ [**ISO-3166**](https://www.iso.org/iso-3166-country-codes.html) | **[UNAOID/ICAO v1.0](https://www.unaoid.gub.uy/descargas/especificaciones-identifican-personas.pdf)** ].
 
-* System of **scalable privileges** for users.
+* Scalable privileges for users.
 
-* **Multilanguage** ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH-CN`).
+* Multilanguage ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH`).
 
   
 
