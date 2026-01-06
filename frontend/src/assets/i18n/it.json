@@ -1113,6 +1113,7 @@
     "IMG_ALT": "Pagina non trovata"
   },
   "SETTINGS": {
+    "TITLE": "Impostazioni di sistema",
     "DESCRIPTION_PRE": "Le seguenti impostazioni influenzano le registrazioni in tutto il flusso di dati e il modo di funzionamento dell'applicazione",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "Se non si è sicuri della manovra da eseguire, si consiglia di consultare il personale qualificato per tale compito.",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "ANNULLA",
       "SAVE_BUTTON": "SALVA"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "È necessario caricare i dati necessari per aggiungere l'autorizzazione all'utente."
     }
   },
   "PROCEDURES": {

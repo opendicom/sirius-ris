@@ -19,6 +19,7 @@
     "passKeywords": ${SIRIUS_FRONTEND_PASS_KEYWORDS},
     
     "FullCalendarOptions": {
+        "locale": "${SIRIUS_LANGUAJE}",
         "schedulerLicenseKey": "GPL-My-Project-Is-Open-Source",
         "timeZone": "local",
         "allDaySlot": false,
@@ -73,8 +74,8 @@
             "shouldNotGroupWhenFull": true
         },
         "language": {
-            "ui": "es",
-            "content": "es"
+            "ui": "${SIRIUS_LANGUAJE}",
+            "content": "${SIRIUS_LANGUAJE}"
         }
     }
 }

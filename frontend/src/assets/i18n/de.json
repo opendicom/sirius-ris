@@ -1113,6 +1113,7 @@
     "IMG_ALT": "Seite nicht gefunden"
   },
   "SETTINGS": {
+    "TITLE": "Systemeinstellungen",
     "DESCRIPTION_PRE": "Die folgenden Einstellungen wirken sich auf Datensätze im gesamten Datenfluss und das Verhalten der Anwendung aus",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "Wenn Sie sich bei einer Operation nicht sicher sind, empfehlen wir, qualifiziertes Personal zu konsultieren.",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "ABBRECHEN",
       "SAVE_BUTTON": "SPEICHERN"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "Sie müssen die erforderlichen Daten laden, um die Berechtigung dem Benutzer hinzuzufügen."
     }
   },
   "PROCEDURES": {

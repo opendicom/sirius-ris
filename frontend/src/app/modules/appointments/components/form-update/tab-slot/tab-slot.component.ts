@@ -9,7 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
-import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
+import allLocales from '@fullcalendar/core/locales-all';                                    // FullCalendar Locale LANG
 import { EventApi } from '@fullcalendar/core';                                              // To manipulate events (overbooking)
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { regexObjectId } from '@env/environment';                                           // Enviroments
@@ -106,7 +106,8 @@ export class TabSlotComponent implements OnInit {
     this.initialSlot       = this.sharedProp.current_slot;
 
     //Set FullCalendar Languaje:
-    this.calendarOptions['locale'] = esLocale;
+    this.calendarOptions['locales'] = allLocales;
+    this.calendarOptions['locale'] = this.calendarOptions.locale;
 
     //Set FullCalendar min and max date:
     this.calendarOptions['validRange'] = {

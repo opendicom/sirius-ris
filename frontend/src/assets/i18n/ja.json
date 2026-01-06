@@ -1113,6 +1113,7 @@
     "IMG_ALT": "ページが見つかりません"
   },
   "SETTINGS": {
+    "TITLE": "システム設定",
     "DESCRIPTION_PRE": "以下の設定は、データフロー全体のレコードとアプリケーションの動作モードに影響します",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "実行する操作が不明な場合は、そのタスクの資格を持つ担当者に相談することをお勧めします。",
@@ -1157,7 +1158,7 @@
     "SHOWN": "表示中",
     "PAGE": "ページ",
     "OF": "の",
-    "ITEMS_PER_PAGE": "ページあたりのアイテム数",
+    "ITEMS_PER_PAGE": "表示件数",
     "KEYWORDS": "キーワードを検索：",
     "ANAMNESIS": "病歴",
     "ANAMNESIS_HINT": "病歴に関する単語を検索",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "キャンセル",
       "SAVE_BUTTON": "保存"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "ユーザーに権限を追加するには、必要なデータをアップロードする必要があります。"
     }
   },
   "PROCEDURES": {

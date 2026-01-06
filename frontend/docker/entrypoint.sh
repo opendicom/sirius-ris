@@ -8,7 +8,7 @@ set -e
 export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
 # SIRIUS LANGUAJE:
-export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'ES'}
+export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'es'}
 
 # IP SERVER:
 export IP_SERVER=${IP_SERVER:-'localhost'}

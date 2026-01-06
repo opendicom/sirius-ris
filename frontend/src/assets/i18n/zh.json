@@ -1113,6 +1113,7 @@
     "IMG_ALT": "找不到页面"
   },
   "SETTINGS": {
+    "TITLE": "系统设置",
     "DESCRIPTION_PRE": "以下配置会影响整个数据流中的记录以及应用程序的操作模式",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "如果您不确定要执行的操作，我们建议您咨询有资格执行该任务的人员。",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "取消",
       "SAVE_BUTTON": "保存"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "您必须上传必要数据才能为用户添加权限。"
     }
   },
   "PROCEDURES": {

@@ -18,7 +18,7 @@
 
 * Scalable privileges for users.
 
-* Multilanguage ( `BR`, `DE`, `EN`, `ES`, `FR`, `IT`, `JA`, `RU`, `ZH`).
+* Multilanguage ( `br`, `de`, `en`, `es`, `fr`, `it`, `ja`, `ru`, `zh`).
 
   
 

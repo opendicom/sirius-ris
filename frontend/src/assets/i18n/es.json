@@ -1113,6 +1113,7 @@
     "IMG_ALT": "Página no encontrada"
   },
   "SETTINGS": {
+    "TITLE": "Configuración del sistema",
     "DESCRIPTION_PRE": "Las siguientes configuraciones afectan los registros a lo largo de todo el flujo de datos y el modo de funcionamiento de la aplicación",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "En caso de no estar seguro de la maniobra a realizar, le recomendamos que consulte con el personal calificado para dicha tarea.",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "CANCELAR",
       "SAVE_BUTTON": "GUARDAR"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "Debe cargar los datos necesarios para agregar el permiso al usuario."
     }
   },
   "PROCEDURES": {

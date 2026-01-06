@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
-import { FormGroup } from '@angular/forms';                                                   // Reactive form handling tools
+import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { FormGroup } from '@angular/forms';                                             // Reactive form handling tools
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -18,7 +19,8 @@ export class UsersService {
 
   //Inject services to the constructor:
   constructor(
-    private sharedFunctions: SharedFunctionsService
+    private sharedFunctions : SharedFunctionsService,
+    public i18n             : I18nService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -47,7 +49,7 @@ export class UsersService {
       permissions.push(currentPermission);
     } else {
       //Send message:
-      this.sharedFunctions.sendMessage('Debe cargar los datos necesarios para agregar el permiso al usuario.');
+      this.sharedFunctions.sendMessage(this.i18n.instant('USERS.SERVICE.PERMISSION_VALIDATION_ERROR'));
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//

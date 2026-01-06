@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -16,17 +17,18 @@ export class SettingsComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    public sharedProp: SharedPropertiesService,
-    public sharedFunctions: SharedFunctionsService
+    public sharedProp       : SharedPropertiesService,
+    public sharedFunctions  : SharedFunctionsService,
+    public i18n             : I18nService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
 
     //Set action properties:
     sharedProp.actionSetter({
-      content_title : 'Configuración del sistema',
+      content_title : this.i18n.instant('SETTINGS.TITLE'),
       content_icon  : 'settings',
-      filters_form    : false,
+      filters_form  : false,
     });
   }
 

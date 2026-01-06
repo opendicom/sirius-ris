@@ -1113,6 +1113,7 @@
     "IMG_ALT": "Page non trouvée"
   },
   "SETTINGS": {
+    "TITLE": "Paramètres du système",
     "DESCRIPTION_PRE": "Les paramètres ci-dessous affectent les enregistrements tout au long du flux de données et le comportement de l'application",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "Si vous n'êtes pas sûr d'une opération, nous vous recommandons de consulter du personnel qualifié.",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "ANNULER",
       "SAVE_BUTTON": "ENREGISTRER"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "Vous devez télécharger les données nécessaires pour ajouter l'autorisation à l'utilisateur."
     }
   },
   "PROCEDURES": {

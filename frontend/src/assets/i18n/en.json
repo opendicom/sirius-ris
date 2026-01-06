@@ -1113,6 +1113,7 @@
     "IMG_ALT": "Page not found"
   },
   "SETTINGS": {
+    "TITLE": "System settings",
     "DESCRIPTION_PRE": "The settings below affect records throughout the data flow and the application's behaviour",
     "DESCRIPTION_BRAND": "Sirius RIS",
     "DESCRIPTION_ADVICE": "If you are not sure about an operation, we recommend consulting qualified personnel.",
@@ -1778,6 +1779,9 @@
       },
       "CANCEL_BUTTON": "CANCEL",
       "SAVE_BUTTON": "SAVE"
+    },
+    "SERVICE" : {
+      "PERMISSION_VALIDATION_ERROR": "You must upload the necessary data to add the permission to the user."
     }
   },
   "PROCEDURES": {

@@ -9,7 +9,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { map, mergeMap, filter } from 'rxjs/operators';                                     // Reactive Extensions (RxJS)
 import { FullCalendarComponent, CalendarOptions } from '@fullcalendar/angular';             // FullCalendar Options
-import esLocale from '@fullcalendar/core/locales/es';                                       // FullCalendar ES Locale
+import allLocales from '@fullcalendar/core/locales-all';                                    // FullCalendar Locale LANG
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -110,7 +110,8 @@ export class SlotsAppointmentsComponent implements OnInit {
     this.maxDate = dateRangeLimit.maxDate;
 
     //Set FullCalendar Languaje:
-    this.calendarOptions['locale'] = esLocale;
+    this.calendarOptions['locales'] = allLocales;
+    this.calendarOptions['locale'] = this.calendarOptions.locale;
 
     //Set FullCalendar min and max date:
     this.calendarOptions['validRange'] = {
