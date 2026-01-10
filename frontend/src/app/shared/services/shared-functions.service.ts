@@ -614,7 +614,7 @@ export class SharedFunctionsService {
           url = element + '/batch/delete';
           break;
         default:
-          this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
+          this.sendMessage('Error: Operación no permitida; tipo de eliminación.');
           break;
       }
 
@@ -652,7 +652,7 @@ export class SharedFunctionsService {
         });
       }
     } else {
-      this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+      this.sendMessage('Error: Debe determinar la operación; tipo de eliminación.');
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -791,7 +791,7 @@ export class SharedFunctionsService {
             url = element + '/batch/delete';
             break;
           default:
-            this.sendMessage('Error: Operación no permitida, "tipo de eliminación".');
+            this.sendMessage('Error: Operación no permitida; tipo de eliminación.');
             observer.next(false);
             break;
         }
@@ -831,7 +831,7 @@ export class SharedFunctionsService {
           });
         }
       } else {
-        this.sendMessage('Error: Debe determinar la operación "tipo de eliminación".');
+        this.sendMessage('Error: Debe determinar la operación; tipo de eliminación.');
         observer.next(false);
       }
     });
