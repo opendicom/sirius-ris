@@ -7,6 +7,7 @@ import { Router } from '@angular/router';                                       
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
 //--------------------------------------------------------------------------------------------------------------------//
@@ -40,7 +41,8 @@ export class AppointmentsService {
     private router          : Router,
     public sharedProp       : SharedPropertiesService,
     private sharedFunctions : SharedFunctionsService,
-    public pdfService       : PdfService
+    public pdfService       : PdfService,
+    public i18n             : I18nService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -182,7 +184,7 @@ export class AppointmentsService {
         form.controls['reporting_user'].setValue('');
 
         //Send message:
-        this.sharedFunctions.sendMessage('Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.');
+        this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
       }
     }, false, 'findByService');
   }

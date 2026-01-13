@@ -428,7 +428,7 @@ export class SetPatientComponent implements OnInit {
                 });
               } else {
                 //Send message, clear email input and focus on this:
-                this.sharedFunctions.sendMessage('El correo indicado NO puede utilizarse, el mismo se encuentra asociado a un usuario de tipo máquina.')
+                this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SET_PATIENT.MACHINE_USER_EMAIL_ERROR'))
                 this.form.get('user.email')?.setValue('');
                 inputEmail?.focus();
               }

@@ -287,6 +287,7 @@
       "TITLE": "List of appointments in progress",
       "XLSX_SHEET_NAME": "appointments_in_progress",
       "EDIT_ERROR": "Error trying to edit the element with _id: ",
+      "EDIT_ERROR_CONTACT": " Please contact your administrator for more details.",
       "TOOLTIPS": {
         "CONTINUE": "Continue with appointment in progress",
         "DISCARD": "Discard appointment in progress",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Warning: No procedure category found for the selected service.",
       "NO_PROCEDURE_WARNING": "Warning: No procedure found for the modality of the selected service.",
       "INVALID_PROCEDURE_ID_WARNING": "Warning: The indicated procedure does NOT have a valid _id (ObjectId).",
+      "NO_REPORTER_ASSIGNED_WARNING": "Warning: The selected service does NOT have any assigned reporter physician.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Service and procedure"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Data loaded from the local database by document match.",
       "ANONYMOUS_NAME": "ANONYMOUS",
       "PASSWORD_MISMATCH_ERROR": "The entered passwords do not match each other.",
+      "MACHINE_USER_EMAIL_ERROR": "The indicated email cannot be used, it is associated with a machine type user.",
       "TABS": {
         "PERSON": "Person",
         "INSERT_TOOLTIP": "New record insertion",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Signed:",
       "FINDINGS_TITLE_PLACEHOLDER": "Enter the findings title",
       "AGE_AT_STUDY_TIME": "Age at the time of the study",
-      "AGE_AT_STUDY_TIME_LONG": "Age at the time of the study performance"
+      "AGE_AT_STUDY_TIME_LONG": "Age at the time of the study performance",
+      "INSERT_ERROR": "Error trying to insert the element: ",
+      "INVALID_ACTION_ERROR": "Error trying to edit the element: The indicated action on the form is incorrect [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Error trying to insert the element: ",
+      "CLINICAL_DATA_LOADED": "Clinical data loaded",
+      "PROCEDURE_TEMPLATE_LOADED": "Procedure template loaded",
+      "REPORT_TEMPLATE_LOADED": "Report template loaded"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Signed report",
     "FINISHED_WITH_REPORT": "Finished (with report)",
     "FINISHED_WITHOUT_REPORT": "Finished (without report)",
-    "CANCELLED": "Cancelled"
+    "CANCELLED": "Cancelled",
+    "FIND_STATS_ERROR": "Error trying to get information: ",
+    "FIND_USERS_ERROR": "Error trying to get users involved in the statistics."
   },
   "AUTH": {
     "DOCUMENT": "Document",
@@ -2099,5 +2110,20 @@
     "1": "Intensive care",
     "2": "Emergency",
     "3": "Hospitalization"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Error: No response received from the backend server.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Error: You must determine the element type.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Error: Operation not allowed; deletion type.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Error: You must determine the operation; deletion type.",
+    "FILE_SIZE_EXCEEDED_ERROR": "The file you selected exceeds the maximum allowed size limit (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
+    "MWL_SENT_SUCCESS": "Successfully sent to MWL ",
+    "REPORT_REVIEW_ERROR": "Error trying to review the report: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error trying to review the report authentication: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "File uploaded successfully",
+    "FILE_NOT_FOUND_ERROR": "File not found [_id: "
   }
 }

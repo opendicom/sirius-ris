@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
+import { I18nService } from '@shared/services/i18n.service';                  // I18n Service
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
@@ -44,7 +45,8 @@ export class SharedFunctionsService {
   constructor(
     private apiClient       : ApiClientService,
     private snackBar        : MatSnackBar,
-    private dialog          : MatDialog
+    private dialog          : MatDialog,
+    public i18n             : I18nService
   ) { }
 
   //--------------------------------------------------------------------------------------------------------------------//
@@ -530,12 +532,12 @@ export class SharedFunctionsService {
           if(res.error.message){
             this.sendMessage(res.error.message);
           } else {
-            this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+            this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
           }
         }
       });
     } else {
-      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+      this.sendMessage(this.i18n.instant('SHARED.ELEMENT_TYPE_REQUIRED_ERROR'));
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -584,13 +586,13 @@ export class SharedFunctionsService {
                 this.sendMessage(res.error.message);
               }
             } else {
-              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
             }
           }
         });
       }
     } else {
-      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+      this.sendMessage(this.i18n.instant('SHARED.ELEMENT_TYPE_REQUIRED_ERROR'));
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -614,7 +616,7 @@ export class SharedFunctionsService {
           url = element + '/batch/delete';
           break;
         default:
-          this.sendMessage('Error: Operación no permitida; tipo de eliminación.');
+          this.sendMessage(this.i18n.instant('SHARED.DELETE_OPERATION_NOT_ALLOWED_ERROR'));
           break;
       }
 
@@ -646,13 +648,13 @@ export class SharedFunctionsService {
               this.sendMessage(res.error.message);
 
             } else {
-              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
             }
           }
         });
       }
     } else {
-      this.sendMessage('Error: Debe determinar la operación; tipo de eliminación.');
+      this.sendMessage(this.i18n.instant('SHARED.DELETE_OPERATION_TYPE_REQUIRED_ERROR'));
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -695,13 +697,13 @@ export class SharedFunctionsService {
             if(res.error.message){
               this.sendMessage(res.error.message);
             } else {
-              this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+              this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
             }
             observer.next(false);
           }
         });
       } else {
-        this.sendMessage('Error: Debe determinar el tipo de elemento.');
+        this.sendMessage(this.i18n.instant('SHARED.ELEMENT_TYPE_REQUIRED_ERROR'));
         observer.next(false);
       }
     });
@@ -755,14 +757,14 @@ export class SharedFunctionsService {
                   this.sendMessage(res.error.message);
                 }
               } else {
-                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+                this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
               }
               observer.next(false);
             }
           });
         }
       } else {
-        this.sendMessage('Error: Debe determinar el tipo de elemento.');
+        this.sendMessage(this.i18n.instant('SHARED.ELEMENT_TYPE_REQUIRED_ERROR'));
         observer.next(false);
       }
     });
@@ -791,7 +793,7 @@ export class SharedFunctionsService {
             url = element + '/batch/delete';
             break;
           default:
-            this.sendMessage('Error: Operación no permitida; tipo de eliminación.');
+            this.sendMessage(this.i18n.instant('SHARED.DELETE_OPERATION_NOT_ALLOWED_ERROR'));
             observer.next(false);
             break;
         }
@@ -824,14 +826,14 @@ export class SharedFunctionsService {
                 this.sendMessage(res.error.message);
 
               } else {
-                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+                this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
               }
               observer.next(false);
             }
           });
         }
       } else {
-        this.sendMessage('Error: Debe determinar la operación; tipo de eliminación.');
+        this.sendMessage(this.i18n.instant('SHARED.DELETE_OPERATION_TYPE_REQUIRED_ERROR'));
         observer.next(false);
       }
     });
@@ -903,7 +905,7 @@ export class SharedFunctionsService {
                   this.sendMessage(res.error.message);
                 }
               } else {
-                this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+                this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
               }
             }
           });
@@ -914,11 +916,15 @@ export class SharedFunctionsService {
           }));
   
           //Send cancelation message:
-          this.sendMessage('El archivo que seleccióno excede el límite de tamaño máximo permitido (' + this.mainSettings.appSettings.file_max_size + ' MB).');
+          this.sendMessage(
+            this.i18n.instant('SHARED.FILE_SIZE_EXCEEDED_ERROR') +
+            this.mainSettings.appSettings.file_max_size +
+            this.i18n.instant('SHARED.FILE_SIZE_EXCEEDED_ERROR_MB')
+          );
         }
       }
     } else {
-      this.sendMessage('Error: Debe determinar el tipo de elemento.');
+      this.sendMessage(this.i18n.instant('SHARED.ELEMENT_TYPE_REQUIRED_ERROR'));
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -941,7 +947,16 @@ export class SharedFunctionsService {
           const formatted_date = this.accessionDateFormat(res.accession_date);
 
           //Send message:
-          this.sendMessage('Enviado exitosamente a MWL ' + formatted_date.day + '/' + formatted_date.month + '/' + formatted_date.year + ' ' + formatted_date.hour + ':' + formatted_date.minute + ':' + formatted_date.second, { duration: 2000 });
+          this.sendMessage(
+            this.i18n.instant('SHARED.MWL_SENT_SUCCESS') +
+            formatted_date.day + '/' +
+            formatted_date.month + '/' +
+            formatted_date.year + ' ' +
+            formatted_date.hour + ':' +
+            formatted_date.minute + ':' +
+            formatted_date.second,
+            { duration: 2000 }
+          );
 
           //Check if refresh current find:
           if(refresh_list){
@@ -964,7 +979,7 @@ export class SharedFunctionsService {
             this.sendMessage(res.error.message);
           }
         } else {
-          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });
@@ -990,7 +1005,7 @@ export class SharedFunctionsService {
         if(res.error.message){
           this.sendMessage(res.error.message);
         } else {
-          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });
@@ -1462,7 +1477,7 @@ export class SharedFunctionsService {
           //Send other errors:
           this.sendMessage(res.error.message);
         } else {
-          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });
@@ -1743,7 +1758,7 @@ export class SharedFunctionsService {
             this.sendMessage(res.error.message);
           }
         } else {
-          this.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });
@@ -1816,7 +1831,7 @@ export class SharedFunctionsService {
 
       } else {
         //Return to the list with request error message:
-        this.sendMessage('Error al intentar revisar el informe: ' + reportsRes.message);
+        this.sendMessage(this.i18n.instant('SHARED.REPORT_REVIEW_ERROR') + reportsRes.message);
       }
     }, false, false, false);
   }
@@ -1915,7 +1930,7 @@ export class SharedFunctionsService {
           callback(reportsRes.data);
         } else {
           //Return to the list with request error message:
-          this.sendMessage('Error al intentar revisar la autenticación del informe: ' + reportsRes.message);
+          this.sendMessage(this.i18n.instant('SHARED.REPORT_AUTHENTICATION_REVIEW_ERROR') + reportsRes.message);
         }
       }, false, false, false);
     }

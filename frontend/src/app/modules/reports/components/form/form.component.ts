@@ -263,7 +263,7 @@ export class FormComponent implements OnInit {
 
           } else {
             //Return to the list with request error message:
-            this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + reportsRes.message);
+            this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.INSERT_ERROR') + reportsRes.message);
             this.router.navigate(['/performing/list']);
           }
         });
@@ -272,7 +272,7 @@ export class FormComponent implements OnInit {
 
       default:
         //Return to the list with request error message:
-        this.sharedFunctions.sendMessage('Error al intentar editar el elemento: La acción indicada sobre el formulario es incorrecta [insert | update].');
+        this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.INVALID_ACTION_ERROR'));
   
         //Redirect to the list:
         this.sharedFunctions.gotoList('performing', this.router);
@@ -482,7 +482,7 @@ export class FormComponent implements OnInit {
           callback(performingRes);
         } else {
           //Return to the list with request error message:
-          this.sharedFunctions.sendMessage('Error al intentar insertar el elemento: ' + performingRes.message);
+          this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.PERFORMING_INSERT_ERROR') + performingRes.message);
           this.router.navigate(['/performing/list']);
         }
       });
@@ -591,7 +591,7 @@ export class FormComponent implements OnInit {
     this.form.controls['clinical_info'].setValue(clinical_template);
 
     //Send message:
-    this.sharedFunctions.sendMessage('Dato clínico cargado', { duration: 2000 });
+    this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.CLINICAL_DATA_LOADED'), { duration: 2000 });
   }
 
   insertProcedureTemplate(){
@@ -611,7 +611,7 @@ export class FormComponent implements OnInit {
     this.form.controls['procedure_description'].setValue(procedure_template);
 
     //Send message:
-    this.sharedFunctions.sendMessage('Plantilla de procedimiento cargada', { duration: 2000 });
+    this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.PROCEDURE_TEMPLATE_LOADED'), { duration: 2000 });
   }
 
   insertReportTemplate(){
@@ -622,7 +622,7 @@ export class FormComponent implements OnInit {
     this.form.controls['procedure_findings'].setValue(report_template);
 
     //Send message:
-    this.sharedFunctions.sendMessage('Plantilla de informe cargada', { duration: 2000 });
+    this.sharedFunctions.sendMessage(this.i18n.instant('REPORTS.FORM.REPORT_TEMPLATE_LOADED'), { duration: 2000 });
   }
 
   getStudyDICOM(){

@@ -287,6 +287,7 @@
       "TITLE": "Listado de citas en curso",
       "XLSX_SHEET_NAME": "citas_en_curso",
       "EDIT_ERROR": "Error al intentar editar el elemento con _id: ",
+      "EDIT_ERROR_CONTACT": " Contactese con su administrador para ver más detalles.",
       "TOOLTIPS": {
         "CONTINUE": "Continuar con cita en curso",
         "DISCARD": "Descartar cita en curso",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Advertencia: No se encuentra ninguna categoría de procedimiento cargada en el servicio seleccionado.",
       "NO_PROCEDURE_WARNING": "Advertencia: No se encuentra ningún procedimiento cargado en la modalidad del servicio seleccionado.",
       "INVALID_PROCEDURE_ID_WARNING": "Advertencia: El procedimiento indicado NO posee un _id válido (ObjectId).",
+      "NO_REPORTER_ASSIGNED_WARNING": "Advertencia: El servicio seleccionado NO tiene asignado ningún médico informador.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Servicio y procedimiento"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Datos cargados desde la base de datos local por coincidencia de documento.",
       "ANONYMOUS_NAME": "ANÓNIMO",
       "PASSWORD_MISMATCH_ERROR": "Las contraseñas ingresadas no coinciden entre si.",
+      "MACHINE_USER_EMAIL_ERROR": "El correo indicado NO puede utilizarse, el mismo se encuentra asociado a un usuario de tipo máquina.",
       "TABS": {
         "PERSON": "Persona",
         "INSERT_TOOLTIP": "Insersión de nuevo registro",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Firmado:",
       "FINDINGS_TITLE_PLACEHOLDER": "Ingrese el título de hallazgos",
       "AGE_AT_STUDY_TIME": "Edad al momento de la realización",
-      "AGE_AT_STUDY_TIME_LONG": "Edad al momento de la realización del estudio"
+      "AGE_AT_STUDY_TIME_LONG": "Edad al momento de la realización del estudio",
+      "INSERT_ERROR": "Error al intentar insertar el elemento: ",
+      "INVALID_ACTION_ERROR": "Error al intentar editar el elemento: La acción indicada sobre el formulario es incorrecta [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Error al intentar insertar el elemento: ",
+      "CLINICAL_DATA_LOADED": "Dato clínico cargado",
+      "PROCEDURE_TEMPLATE_LOADED": "Plantilla de procedimiento cargada",
+      "REPORT_TEMPLATE_LOADED": "Plantilla de informe cargada"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Informe firmado",
     "FINISHED_WITH_REPORT": "Terminado (con informe)",
     "FINISHED_WITHOUT_REPORT": "Terminado (sin informe)",
-    "CANCELLED": "Cancelado"
+    "CANCELLED": "Cancelado",
+    "FIND_STATS_ERROR": "Error al intentar obtener información: ",
+    "FIND_USERS_ERROR": "Error al intentar obtener los usuarios involucrados en la estadística."
   },
   "AUTH": {
     "DOCUMENT": "Documento",
@@ -2099,5 +2110,20 @@
     "1": "Cuidados intensivos",
     "2": "Emergencia",
     "3": "Internación"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Error: No se obtuvo respuesta del servidor backend.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Error: Debe determinar el tipo de elemento.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Error: Operación no permitida; tipo de eliminación.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Error: Debe determinar la operación; tipo de eliminación.",
+    "FILE_SIZE_EXCEEDED_ERROR": "El archivo que seleccióno excede el límite de tamaño máximo permitido (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
+    "MWL_SENT_SUCCESS": "Enviado exitosamente a MWL ",
+    "REPORT_REVIEW_ERROR": "Error al intentar revisar el informe: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error al intentar revisar la autenticación del informe: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "Archivo subido exitosamente",
+    "FILE_NOT_FOUND_ERROR": "No se encontró el archivo [_id: "
   }
 }

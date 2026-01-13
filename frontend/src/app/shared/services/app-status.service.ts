@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';                         // API Client Service
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';             // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                    // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -15,7 +16,8 @@ export class AppStatusService {
   //Inject services to the constructor:
   constructor(
     private apiClient : ApiClientService,
-    public sharedFunctions  : SharedFunctionsService
+    public sharedFunctions  : SharedFunctionsService,
+    public i18n : I18nService
   ) { }
 
   getAppStatus(callback = (res: any) => {}) {
@@ -33,7 +35,7 @@ export class AppStatusService {
         if(res.error.message){
           this.sharedFunctions.sendMessage(res.error.message);
         } else {
-          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sharedFunctions.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });

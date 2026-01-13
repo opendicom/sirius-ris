@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { ApiClientService } from '@shared/services/api-client.service';                     // API Client Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Injectable({
@@ -20,7 +21,8 @@ export class FileManagerService {
   constructor(
     private apiClient           : ApiClientService,
     public sharedProp           : SharedPropertiesService,
-    public sharedFunctions      : SharedFunctionsService
+    public sharedFunctions      : SharedFunctionsService,
+    public i18n                 : I18nService
   ) { }
 
 
@@ -87,7 +89,7 @@ export class FileManagerService {
               this.controller[type].files[res.server_response.body.data._id] = res.server_response.body.data.name;
 
               //Send snakbar message:
-              this.sharedFunctions.sendMessage('Archivo subido exitosamente', { duration: 2000 });
+              this.sharedFunctions.sendMessage(this.i18n.instant('FILE_MANAGER.FILE_UPLOADED_SUCCESS'), { duration: 2000 });
             } else {
               //Send snakbar message:
               this.sharedFunctions.sendMessage(res.error.message);
@@ -110,7 +112,7 @@ export class FileManagerService {
         if(res.error.message){
           this.sharedFunctions.sendMessage(res.error.message);
         } else {
-          this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+          this.sharedFunctions.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
         }
       }
     });
@@ -187,7 +189,7 @@ export class FileManagerService {
         downloadLink.click();
       } else {
         //Send snakbar message:
-        this.sharedFunctions.sendMessage('No se encontró el archivo [_id: ' + _id + ']: ' + res.message);
+        this.sharedFunctions.sendMessage(this.i18n.instant('FILE_MANAGER.FILE_NOT_FOUND_ERROR') + _id + ']: ' + res.message);
       }
     }, false, false, false);
   }

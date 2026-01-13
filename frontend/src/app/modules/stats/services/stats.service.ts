@@ -48,7 +48,7 @@ export class StatsService {
         statsCallback(statsResponse, statsDatasets);
       } else {
         //Return to the list with request error message:
-        this.sharedFunctions.sendMessage('Error al intentar obtener información: ' + res.message);
+        this.sharedFunctions.sendMessage(this.i18n.instant('STATS.FIND_STATS_ERROR') + res.message);
       }
     }, false, stats_element, false);
   }
@@ -190,7 +190,7 @@ export class StatsService {
         callback(res);
       } else {
         //Send message:
-        this.sharedFunctions.sendMessage('Error al intentar obtener los usuarios involucrados en la estadística.');
+        this.sharedFunctions.sendMessage(this.i18n.instant('STATS.FIND_USERS_ERROR'));
       }
     }, false, false, false);
   }

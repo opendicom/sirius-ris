@@ -310,7 +310,11 @@ export class ListDraftsComponent implements OnInit {
 
         } else {
           //Send error message:
-          this.sharedFunctions.sendMessage('Error al intentar editar el elemento con _id: ' + _id  + ' Contactese con su administrador para ver más detalles.');
+          this.sharedFunctions.sendMessage(
+            this.i18n.instant('APPOINTMENTS.LIST_DRAFTS.EDIT_ERROR') +
+            _id +
+            this.i18n.instant('APPOINTMENTS.LIST_DRAFTS.EDIT_ERROR_CONTACT')
+          );
         }
       }, true);
     }
