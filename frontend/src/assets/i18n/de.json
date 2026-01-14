@@ -287,6 +287,7 @@
       "TITLE": "Liste der laufenden Termine",
       "XLSX_SHEET_NAME": "laufende_termine",
       "EDIT_ERROR": "Fehler beim Versuch, das Element mit der ID zu bearbeiten: ",
+      "EDIT_ERROR_CONTACT": " Wenden Sie sich an Ihren Administrator, um weitere Details zu erfahren.",
       "TOOLTIPS": {
         "CONTINUE": "Mit laufendem Termin fortfahren",
         "DISCARD": "Laufenden Termin verwerfen",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Warnung: Für den ausgewählten Dienst wurde keine Prozedurkategorie gefunden.",
       "NO_PROCEDURE_WARNING": "Warnung: Für die Modalität des ausgewählten Dienstes wurde keine Prozedur gefunden.",
       "INVALID_PROCEDURE_ID_WARNING": "Warnung: Die angegebene Prozedur hat keine gültige _id (ObjectId).",
+      "NO_REPORTER_ASSIGNED_WARNING": "Warnung: Dem ausgewählten Dienst ist kein Berichtsmediziner zugewiesen.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Dienst und Prozedur"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Daten wurden aus der lokalen Datenbank durch Dokumentenübereinstimmung geladen.",
       "ANONYMOUS_NAME": "ANONYM",
       "PASSWORD_MISMATCH_ERROR": "Die eingegebenen Passwörter stimmen nicht überein.",
+      "MACHINE_USER_EMAIL_ERROR": "Die angegebene E-Mail kann NICHT verwendet werden, sie ist einem Maschinentyp-Benutzer zugeordnet.",
       "TABS": {
         "PERSON": "Person",
         "INSERT_TOOLTIP": "Einfügen eines neuen Datensatzes",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Unterzeichnet:",
       "FINDINGS_TITLE_PLACEHOLDER": "Geben Sie den Befundtitel ein",
       "AGE_AT_STUDY_TIME": "Alter zum Zeitpunkt der Studie",
-      "AGE_AT_STUDY_TIME_LONG": "Alter zum Zeitpunkt der Durchführung der Studie"
+      "AGE_AT_STUDY_TIME_LONG": "Alter zum Zeitpunkt der Durchführung der Studie",
+      "INSERT_ERROR": "Fehler beim Versuch, das Element einzufügen: ",
+      "INVALID_ACTION_ERROR": "Fehler beim Versuch, das Element zu bearbeiten: Die angegebene Aktion im Formular ist falsch [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Fehler beim Versuch, das Element einzufügen: ",
+      "CLINICAL_DATA_LOADED": "Klinische Daten geladen",
+      "PROCEDURE_TEMPLATE_LOADED": "Prozedurvorschlag geladen",
+      "REPORT_TEMPLATE_LOADED": "Berichtsvorlage geladen"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Unterzeichneter Bericht",
     "FINISHED_WITH_REPORT": "Beendet (mit Bericht)",
     "FINISHED_WITHOUT_REPORT": "Beendet (ohne Bericht)",
-    "CANCELLED": "Abgesagt"
+    "CANCELLED": "Abgesagt",
+    "FIND_STATS_ERROR": "Fehler beim Versuch, Informationen zu erhalten: ",
+    "FIND_USERS_ERROR": "Fehler beim Versuch, die an der Statistik beteiligten Benutzer zu erhalten."
   },
   "AUTH": {
     "DOCUMENT": "Dokument",
@@ -2099,5 +2110,20 @@
     "1": "Intensivpflege",
     "2": "Notfall",
     "3": "Krankenhausaufenthalt"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Fehler: Keine Antwort vom Backend-Server erhalten.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Fehler: Sie müssen den Elementtyp bestimmen.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Fehler: Operation nicht erlaubt; Löschtyp.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Fehler: Sie müssen die Operation bestimmen; Löschtyp.",
+    "FILE_SIZE_EXCEEDED_ERROR": "Die ausgewählte Datei überschreitet die maximal zulässige Größe (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
+    "MWL_SENT_SUCCESS": "Erfolgreich an MWL gesendet ",
+    "REPORT_REVIEW_ERROR": "Fehler beim Versuch, den Bericht zu überprüfen: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Fehler beim Versuch, die Berichtsauthentifizierung zu überprüfen: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "Datei erfolgreich hochgeladen",
+    "FILE_NOT_FOUND_ERROR": "Datei nicht gefunden [_id: "
   }
 }

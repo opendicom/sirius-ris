@@ -287,6 +287,7 @@
       "TITLE": "Lista de agendamentos em andamento",
       "XLSX_SHEET_NAME": "agendamentos_em_andamento",
       "EDIT_ERROR": "Erro ao tentar editar o elemento com _id: ",
+      "EDIT_ERROR_CONTACT": " Contate seu administrador para ver mais detalhes.",
       "TOOLTIPS": {
         "CONTINUE": "Continuar com o agendamento em andamento",
         "DISCARD": "Descartar agendamento em andamento",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Aviso: Nenhuma categoria de procedimento encontrada para o serviço selecionado.",
       "NO_PROCEDURE_WARNING": "Aviso: Nenhum procedimento encontrado para a modalidade do serviço selecionado.",
       "INVALID_PROCEDURE_ID_WARNING": "Aviso: O procedimento indicado NÃO possui um _id (ObjectId) válido.",
+      "NO_REPORTER_ASSIGNED_WARNING": "Aviso: O serviço selecionado NÃO tem nenhum médico relator atribuído.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Serviço e procedimento"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Dados carregados do banco de dados local por correspondência de documento.",
       "ANONYMOUS_NAME": "ANÔNIMO",
       "PASSWORD_MISMATCH_ERROR": "As senhas inseridas não correspondem.",
+      "MACHINE_USER_EMAIL_ERROR": "O e-mail indicado NÃO pode ser usado, o mesmo está associado a um usuário do tipo máquina.",
       "TABS": {
         "PERSON": "Pessoa",
         "INSERT_TOOLTIP": "Inserção de novo registro",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Assinado:",
       "FINDINGS_TITLE_PLACEHOLDER": "Insira o título dos achados",
       "AGE_AT_STUDY_TIME": "Idade no momento do estudo",
-      "AGE_AT_STUDY_TIME_LONG": "Idade no momento da realização do estudo"
+      "AGE_AT_STUDY_TIME_LONG": "Idade no momento da realização do estudo",
+      "INSERT_ERROR": "Erro ao tentar inserir o elemento: ",
+      "INVALID_ACTION_ERROR": "Erro ao tentar editar o elemento: A ação indicada no formulário é incorreta [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Erro ao tentar inserir o elemento: ",
+      "CLINICAL_DATA_LOADED": "Dados clínicos carregados",
+      "PROCEDURE_TEMPLATE_LOADED": "Modelo de procedimento carregado",
+      "REPORT_TEMPLATE_LOADED": "Modelo de laudo carregado"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Laudo assinado",
     "FINISHED_WITH_REPORT": "Finalizado (com laudo)",
     "FINISHED_WITHOUT_REPORT": "Finalizado (sem laudo)",
-    "CANCELLED": "Cancelado"
+    "CANCELLED": "Cancelado",
+    "FIND_STATS_ERROR": "Erro ao tentar obter informações: ",
+    "FIND_USERS_ERROR": "Erro ao tentar obter os usuários envolvidos na estatística."
   },
   "AUTH": {
     "DOCUMENT": "Documento",
@@ -2099,5 +2110,20 @@
     "1": "Terapia intensiva",
     "2": "Emergência",
     "3": "Internação"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Erro: Nenhuma resposta recebida do servidor backend.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Erro: Você deve determinar o tipo de elemento.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Erro: Operação não permitida; tipo de exclusão.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Erro: Você deve determinar a operação; tipo de exclusão.",
+    "FILE_SIZE_EXCEEDED_ERROR": "O arquivo selecionado excede o limite de tamanho máximo permitido (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
+    "MWL_SENT_SUCCESS": "Enviado com sucesso para MWL ",
+    "REPORT_REVIEW_ERROR": "Erro ao tentar revisar o laudo: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erro ao tentar revisar a autenticação do laudo: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "Arquivo enviado com sucesso",
+    "FILE_NOT_FOUND_ERROR": "Arquivo não encontrado [_id: "
   }
 }

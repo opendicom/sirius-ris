@@ -287,6 +287,7 @@
       "TITLE": "正在进行的预约列表",
       "XLSX_SHEET_NAME": "正在进行的预约",
       "EDIT_ERROR": "尝试编辑_id为以下的项目时出错: ",
+      "EDIT_ERROR_CONTACT": " 请联系您的管理员以获取更多详细信息。",
       "TOOLTIPS": {
         "CONTINUE": "继续进行中的预约",
         "DISCARD": "放弃进行中的预约",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "警告：在所选服务中未加载任何程序类别。",
       "NO_PROCEDURE_WARNING": "警告：在所选服务的模态中未加载任何程序。",
       "INVALID_PROCEDURE_ID_WARNING": "警告：指定的程序没有有效的 _id (ObjectId)。",
+      "NO_REPORTER_ASSIGNED_WARNING": "警告：所选服务未分配任何报告医师。",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "服务和程序"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "数据已通过文档匹配从本地数据库加载。",
       "ANONYMOUS_NAME": "匿名",
       "PASSWORD_MISMATCH_ERROR": "输入的密码不匹配。",
+      "MACHINE_USER_EMAIL_ERROR": "指定的电子邮件无法使用，它与机器类型的用户相关联。",
       "TABS": {
         "PERSON": "个人",
         "INSERT_TOOLTIP": "插入新记录",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "已签名:",
       "FINDINGS_TITLE_PLACEHOLDER": "输入发现标题",
       "AGE_AT_STUDY_TIME": "执行时的年龄",
-      "AGE_AT_STUDY_TIME_LONG": "进行研究时的年龄"
+      "AGE_AT_STUDY_TIME_LONG": "进行研究时的年龄",
+      "INSERT_ERROR": "尝试插入项目时出错: ",
+      "INVALID_ACTION_ERROR": "尝试编辑项目时出错: 表单上指定的操作不正确 [insert | update]。",
+      "PERFORMING_INSERT_ERROR": "尝试插入项目时出错: ",
+      "CLINICAL_DATA_LOADED": "临床数据已加载",
+      "PROCEDURE_TEMPLATE_LOADED": "程序模板已加载",
+      "REPORT_TEMPLATE_LOADED": "报告模板已加载"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "已签名报告",
     "FINISHED_WITH_REPORT": "已完成（有报告）",
     "FINISHED_WITHOUT_REPORT": "已完成（无报告）",
-    "CANCELLED": "已取消"
+    "CANCELLED": "已取消",
+    "FIND_STATS_ERROR": "尝试获取信息时出错: ",
+    "FIND_USERS_ERROR": "尝试获取参与统计的用户时出错。"
   },
   "AUTH": {
     "DOCUMENT": "文件",
@@ -2099,5 +2110,20 @@
     "1": "重症监护",
     "2": "急诊",
     "3": "住院"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "错误：未收到后端服务器的响应。",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "错误：必须确定元素类型。",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "错误：操作不允许；删除类型。",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "错误：必须确定操作；删除类型。",
+    "FILE_SIZE_EXCEEDED_ERROR": "所选文件超过最大允许大小（",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB）。",
+    "MWL_SENT_SUCCESS": "成功发送到 MWL ",
+    "REPORT_REVIEW_ERROR": "尝试审查报告时出错: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "尝试审查报告认证时出错: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "文件上传成功",
+    "FILE_NOT_FOUND_ERROR": "文件未找到 [_id: "
   }
 }

@@ -287,6 +287,7 @@
       "TITLE": "進行中の予約リスト",
       "XLSX_SHEET_NAME": "進行中の予約",
       "EDIT_ERROR": "_id: でアイテムの編集試行中にエラーが発生しました：",
+      "EDIT_ERROR_CONTACT": " 詳細については管理者にお問い合わせください。",
       "TOOLTIPS": {
         "CONTINUE": "進行中の予約を続ける",
         "DISCARD": "進行中の予約を破棄",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "警告：選択されたサービスに手技カテゴリが読み込まれていません。",
       "NO_PROCEDURE_WARNING": "警告：選択されたサービスのモダリティに手技が読み込まれていません。",
       "INVALID_PROCEDURE_ID_WARNING": "警告：指定された手技は有効な_id（ObjectId）を持っていません。",
+      "NO_REPORTER_ASSIGNED_WARNING": "警告：選択されたサービスにはレポート医師が割り当てられていません。",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "サービスと手技"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "ドキュメントの一致により、ローカルデータベースからデータが読み込まれました。",
       "ANONYMOUS_NAME": "匿名",
       "PASSWORD_MISMATCH_ERROR": "入力されたパスワードが一致しません。",
+      "MACHINE_USER_EMAIL_ERROR": "指定されたメールアドレスは使用できません。マシンタイプのユーザーに関連付けられています。",
       "TABS": {
         "PERSON": "人物",
         "INSERT_TOOLTIP": "新規レコードの挿入",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "署名日：",
       "FINDINGS_TITLE_PLACEHOLDER": "所見のタイトルを入力してください",
       "AGE_AT_STUDY_TIME": "実施時の年齢",
-      "AGE_AT_STUDY_TIME_LONG": "検査実施時の年齢"
+      "AGE_AT_STUDY_TIME_LONG": "検査実施時の年齢",
+      "INSERT_ERROR": "アイテムの挿入試行中にエラーが発生しました：",
+      "INVALID_ACTION_ERROR": "アイテムの編集試行中にエラーが発生しました：フォームで指定されたアクションが正しくありません [insert | update]。",
+      "PERFORMING_INSERT_ERROR": "アイテムの挿入試行中にエラーが発生しました：",
+      "CLINICAL_DATA_LOADED": "臨床データが読み込まれました",
+      "PROCEDURE_TEMPLATE_LOADED": "手技テンプレートが読み込まれました",
+      "REPORT_TEMPLATE_LOADED": "レポートテンプレートが読み込まれました"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "署名済みレポート",
     "FINISHED_WITH_REPORT": "完了（レポートあり）",
     "FINISHED_WITHOUT_REPORT": "完了（レポートなし）",
-    "CANCELLED": "キャンセル"
+    "CANCELLED": "キャンセル",
+    "FIND_STATS_ERROR": "情報の取得試行中にエラーが発生しました：",
+    "FIND_USERS_ERROR": "統計に関与するユーザーの取得試行中にエラーが発生しました。"
   },
   "AUTH": {
     "DOCUMENT": "ドキュメント",
@@ -2099,5 +2110,20 @@
     "1": "集中治療",
     "2": "緊急",
     "3": "入院"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "エラー：バックエンドサーバーから応答が受信されませんでした。",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "エラー：要素タイプを決定する必要があります。",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "エラー：操作が許可されていません；削除タイプ。",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "エラー：操作を決定する必要があります；削除タイプ。",
+    "FILE_SIZE_EXCEEDED_ERROR": "選択されたファイルが許可された最大サイズを超えています（",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB）。",
+    "MWL_SENT_SUCCESS": "MWL に正常に送信されました ",
+    "REPORT_REVIEW_ERROR": "レポートのレビュー試行中にエラーが発生しました：",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "レポート認証のレビュー試行中にエラーが発生しました："
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "ファイルが正常にアップロードされました",
+    "FILE_NOT_FOUND_ERROR": "ファイルが見つかりません [_id: "
   }
 }

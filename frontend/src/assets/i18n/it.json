@@ -287,6 +287,7 @@
       "TITLE": "Elenco appuntamenti in corso",
       "XLSX_SHEET_NAME": "appuntamenti_in_corso",
       "EDIT_ERROR": "Errore durante il tentativo di modifica dell'elemento con _id: ",
+      "EDIT_ERROR_CONTACT": " Contatta il tuo amministratore per ulteriori dettagli.",
       "TOOLTIPS": {
         "CONTINUE": "Continua con l'appuntamento in corso",
         "DISCARD": "Scarta l'appuntamento in corso",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Attenzione: Non è presente alcuna categoria di procedura caricata nel servizio selezionato.",
       "NO_PROCEDURE_WARNING": "Attenzione: Non è presente alcuna procedura caricata nella modalità del servizio selezionato.",
       "INVALID_PROCEDURE_ID_WARNING": "Attenzione: La procedura indicata NON possiede un _id valido (ObjectId).",
+      "NO_REPORTER_ASSIGNED_WARNING": "Attenzione: Il servizio selezionato NON ha assegnato alcun medico refertatore.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Servizio e procedura"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Dati caricati dal database locale per corrispondenza del documento.",
       "ANONYMOUS_NAME": "ANONIMO",
       "PASSWORD_MISMATCH_ERROR": "Le password inserite non coincidono tra loro.",
+      "MACHINE_USER_EMAIL_ERROR": "L'indirizzo email indicato NON PUÒ essere utilizzato, è associato a un utente di tipo macchina.",
       "TABS": {
         "PERSON": "Persona",
         "INSERT_TOOLTIP": "Inserimento di un nuovo record",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Firmato:",
       "FINDINGS_TITLE_PLACEHOLDER": "Inserisci il titolo dei reperti",
       "AGE_AT_STUDY_TIME": "Età al momento dell'esecuzione",
-      "AGE_AT_STUDY_TIME_LONG": "Età al momento dell'esecuzione dello studio"
+      "AGE_AT_STUDY_TIME_LONG": "Età al momento dell'esecuzione dello studio",
+      "INSERT_ERROR": "Errore durante il tentativo di inserimento dell'elemento: ",
+      "INVALID_ACTION_ERROR": "Errore durante il tentativo di modifica dell'elemento: L'azione indicata sul modulo è errata [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Errore durante il tentativo di inserimento dell'elemento: ",
+      "CLINICAL_DATA_LOADED": "Dati clinici caricati",
+      "PROCEDURE_TEMPLATE_LOADED": "Modello di procedura caricato",
+      "REPORT_TEMPLATE_LOADED": "Modello di referto caricato"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Referto firmato",
     "FINISHED_WITH_REPORT": "Terminato (con referto)",
     "FINISHED_WITHOUT_REPORT": "Terminato (senza referto)",
-    "CANCELLED": "Annullato"
+    "CANCELLED": "Annullato",
+    "FIND_STATS_ERROR": "Errore durante il tentativo di ottenere informazioni: ",
+    "FIND_USERS_ERROR": "Errore durante il tentativo di ottenere gli utenti coinvolti nella statistica."
   },
   "AUTH": {
     "DOCUMENT": "Documento",
@@ -2099,5 +2110,20 @@
     "1": "Terapia intensiva",
     "2": "Emergenza",
     "3": "Ricovero"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Errore: Nessuna risposta ricevuta dal server backend.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Errore: È necessario determinare il tipo di elemento.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Errore: Operazione non consentita; tipo di eliminazione.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Errore: È necessario determinare l'operazione; tipo di eliminazione.",
+    "FILE_SIZE_EXCEEDED_ERROR": "Il file selezionato supera la dimensione massima consentita (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
+    "MWL_SENT_SUCCESS": "Inviato con successo a MWL ",
+    "REPORT_REVIEW_ERROR": "Errore durante il tentativo di revisione del referto: ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Errore durante il tentativo di revisione dell'autenticazione del referto: "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "File caricato con successo",
+    "FILE_NOT_FOUND_ERROR": "File non trovato [_id: "
   }
 }

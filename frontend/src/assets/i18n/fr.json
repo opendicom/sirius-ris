@@ -287,6 +287,7 @@
       "TITLE": "Liste des rendez-vous en cours",
       "XLSX_SHEET_NAME": "rendez-vous_en_cours",
       "EDIT_ERROR": "Erreur lors de la tentative de modification de l'élément avec l'ID : ",
+      "EDIT_ERROR_CONTACT": " Contactez votre administrateur pour plus de détails.",
       "TOOLTIPS": {
         "CONTINUE": "Continuer avec le rendez-vous en cours",
         "DISCARD": "Annuler le rendez-vous en cours",
@@ -311,6 +312,7 @@
       "NO_CATEGORY_WARNING": "Avertissement : Aucune catégorie de procédure trouvée pour le service sélectionné.",
       "NO_PROCEDURE_WARNING": "Avertissement : Aucune procédure trouvée pour la modalité du service sélectionné.",
       "INVALID_PROCEDURE_ID_WARNING": "Avertissement : La procédure indiquée n'a PAS d'ID valide (ObjectId).",
+      "NO_REPORTER_ASSIGNED_WARNING": "Avertissement : Le service sélectionné n'a PAS de médecin rapporteur assigné.",
       "TABS": {
         "SERVICE_AND_PROCEDURE": "Service et procédure"
       },
@@ -336,6 +338,7 @@
       "DATA_LOADED_MESSAGE": "Données chargées depuis la base de données locale par correspondance de document.",
       "ANONYMOUS_NAME": "ANONYME",
       "PASSWORD_MISMATCH_ERROR": "Les mots de passe saisis ne correspondent pas.",
+      "MACHINE_USER_EMAIL_ERROR": "L'e-mail indiqué NE peut PAS être utilisé, il est associé à un utilisateur de type machine.",
       "TABS": {
         "PERSON": "Personne",
         "INSERT_TOOLTIP": "Insertion d'un nouvel enregistrement",
@@ -730,7 +733,13 @@
       "SIGNED_ON": "Signé le :",
       "FINDINGS_TITLE_PLACEHOLDER": "Entrez le titre des résultats",
       "AGE_AT_STUDY_TIME": "Âge au moment de l'étude",
-      "AGE_AT_STUDY_TIME_LONG": "Âge au moment de la réalisation de l'étude"
+      "AGE_AT_STUDY_TIME_LONG": "Âge au moment de la réalisation de l'étude",
+      "INSERT_ERROR": "Erreur lors de la tentative d'insertion de l'élément : ",
+      "INVALID_ACTION_ERROR": "Erreur lors de la tentative de modification de l'élément : L'action indiquée sur le formulaire est incorrecte [insert | update].",
+      "PERFORMING_INSERT_ERROR": "Erreur lors de la tentative d'insertion de l'élément : ",
+      "CLINICAL_DATA_LOADED": "Données cliniques chargées",
+      "PROCEDURE_TEMPLATE_LOADED": "Modèle de procédure chargé",
+      "REPORT_TEMPLATE_LOADED": "Modèle de rapport chargé"
     }
   },
   "STATS": {
@@ -786,7 +795,9 @@
     "SIGNED_REPORT": "Rapport signé",
     "FINISHED_WITH_REPORT": "Terminé (avec rapport)",
     "FINISHED_WITHOUT_REPORT": "Terminé (sans rapport)",
-    "CANCELLED": "Annulé"
+    "CANCELLED": "Annulé",
+    "FIND_STATS_ERROR": "Erreur lors de la tentative d'obtention d'informations : ",
+    "FIND_USERS_ERROR": "Erreur lors de la tentative d'obtention des utilisateurs impliqués dans la statistique."
   },
   "AUTH": {
     "DOCUMENT": "Document",
@@ -2099,5 +2110,20 @@
     "1": "Soins intensifs",
     "2": "Urgence",
     "3": "Hospitalisation"
+  },
+  "SHARED": {
+    "BACKEND_NO_RESPONSE_ERROR": "Erreur : Aucune réponse reçue du serveur backend.",
+    "ELEMENT_TYPE_REQUIRED_ERROR": "Erreur : Vous devez déterminer le type d'élément.",
+    "DELETE_OPERATION_NOT_ALLOWED_ERROR": "Erreur : Opération non autorisée ; type de suppression.",
+    "DELETE_OPERATION_TYPE_REQUIRED_ERROR": "Erreur : Vous devez déterminer l'opération ; type de suppression.",
+    "FILE_SIZE_EXCEEDED_ERROR": "Le fichier sélectionné dépasse la taille maximale autorisée (",
+    "FILE_SIZE_EXCEEDED_ERROR_MB": " Mo).",
+    "MWL_SENT_SUCCESS": "Envoyé avec succès à MWL ",
+    "REPORT_REVIEW_ERROR": "Erreur lors de la tentative de révision du rapport : ",
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erreur lors de la tentative de révision de l'authentification du rapport : "
+  },
+  "FILE_MANAGER": {
+    "FILE_UPLOADED_SUCCESS": "Fichier téléchargé avec succès",
+    "FILE_NOT_FOUND_ERROR": "Fichier non trouvé [_id: "
   }
 }
