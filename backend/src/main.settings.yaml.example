@@ -83,4 +83,4 @@ AC_PENALTY_TIME: 15   # Seconds
 signature_length: 4628
 
 # Set the language of the responses:
-language: 'es'
+language: 'en'

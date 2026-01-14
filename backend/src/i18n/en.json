@@ -123,6 +123,19 @@
       "isArray": "The entered parameter must be an array.",
       "isIP": "The entered parameter must be a valid IP.",
       "isPassword": "The entered password is too short (minimum length: 8 characters)."
+    },
+    "reports": {
+      "authenticatedBy": "Digitally authenticated by {0} on date {1} acting for the institution {2} with OID {3}",
+      "signedByDoctors": "Signed by doctor/s: {0} | {1}",
+      "noClinicalData": "The report has <strong>NO clinical data.</strong>",
+      "noProcedureData": "The report has <strong>NO procedure data.</strong>",
+      "noFindings": "The report has <strong>NO findings.</strong>",
+      "noSummary": "The report has <strong>NO summary.</strong>",
+      "clinicalData": "Clinical data:",
+      "procedure": "Procedure:",
+      "summary": "In summary:",
+      "pageOf": "Page: {0} of {1}",
+      "hoursAbbrev": "h"
     }
   }
 }

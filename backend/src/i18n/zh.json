@@ -123,6 +123,19 @@
       "isArray": "输入的参数必须为数组。",
       "isIP": "输入的参数必须是有效的 IP 地址。",
       "isPassword": "输入的密码过短（最小长度：8 个字符）。"
+    },
+    "reports": {
+      "authenticatedBy": "由 {0} 于 {1} 数字认证，为机构 {2} 行动，OID {3}",
+      "signedByDoctors": "由医生签署: {0} | {1}",
+      "noClinicalData": "报告<strong>没有</strong>临床数据。",
+      "noProcedureData": "报告<strong>没有</strong>程序数据。",
+      "noFindings": "报告<strong>没有</strong>发现。",
+      "noSummary": "报告<strong>没有</strong>总结。",
+      "clinicalData": "临床数据:",
+      "procedure": "程序:",
+      "summary": "总之:",
+      "pageOf": "页: {0} / {1}",
+      "hoursAbbrev": "时"
     }
   }
 }

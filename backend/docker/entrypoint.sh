@@ -8,7 +8,7 @@ set -e
 export TZ=${TZ:-'America/Argentina/Buenos_Aires'}
 
 # SIRIUS LANGUAJE:
-export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'es'}
+export SIRIUS_LANGUAJE=${SIRIUS_LANGUAJE:-'en'}
 
 # JWT SECRET:
 export AUTH_JWT_SECRET=${AUTH_JWT_SECRET:-'top_secret'}

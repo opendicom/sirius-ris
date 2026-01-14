@@ -123,6 +123,19 @@
       "isArray": "Le paramètre fourni doit être un tableau.",
       "isIP": "Le paramètre fourni doit être une adresse IP valide.",
       "isPassword": "Le mot de passe fourni est trop court (minimum 8 caractères)."
+    },
+    "reports": {
+      "authenticatedBy": "Authentifié numériquement par {0} à la date du {1} agissant pour l'institution {2} avec OID {3}",
+      "signedByDoctors": "Signé par médecin(s) : {0} | {1}",
+      "noClinicalData": "Le rapport n'a <strong>PAS</strong> de données cliniques.",
+      "noProcedureData": "Le rapport n'a <strong>PAS</strong> de données de procédure.",
+      "noFindings": "Le rapport n'a <strong>PAS</strong> de conclusions.",
+      "noSummary": "Le rapport n'a <strong>PAS</strong> de résumé.",
+      "clinicalData": "Données cliniques :",
+      "procedure": "Procédure :",
+      "summary": "En résumé :",
+      "pageOf": "Page : {0} de {1}",
+      "hoursAbbrev": "h"
     }
   }
 }

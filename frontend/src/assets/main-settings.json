@@ -1,6 +1,6 @@
 {
     "appSettings": {
-        "language": "es",
+        "language": "en",
         "backend_url": "/sirius-api/",
         "rabc_exclude_code": "exclude_code",
         "file_max_size": 10,
@@ -19,7 +19,7 @@
     "passKeywords": ["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"],
     
     "FullCalendarOptions": {
-        "locale": "es",
+        "locale": "en",
         "schedulerLicenseKey": "GPL-My-Project-Is-Open-Source",
         "timeZone": "local",
         "allDaySlot": false,
@@ -74,8 +74,8 @@
             "shouldNotGroupWhenFull": true
         },
         "language": {
-            "ui": "es",
-            "content": "es"
+            "ui": "en",
+            "content": "en"
         }
     }
 }

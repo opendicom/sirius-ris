@@ -776,7 +776,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
 
     //Datetime:
     const datetime = mainServices.datetimeFulCalendarFormater(new Date(report_data.performing.date), new Date(report_data.performing.date));
-    const performing_datetime = datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + ' ' + datetime.startHours + ':' + datetime.startMinutes + ' hs';
+    const performing_datetime = datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + ' ' + datetime.startHours + ':' + datetime.startMinutes + ' ' + currentLang.ris.reports.hoursAbbrev;
 
     //Get auth user complete name:
     const auth_user = await findAuthPerson(req, res, auth_fk_person);
@@ -784,7 +784,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
     auth_complete_name = auth_complete_name.names + ' ' + auth_complete_name.surnames;
 
     //Authenticate message:
-    const authMessage = 'Autenticado digitalmente por ' + auth_complete_name + ' en fecha del ' + auth_datetime + ' actuando para la institución ' + report_data.appointment.imaging.organization.name + ' con OID ' + report_data.appointment.imaging.organization.OID;
+    const authMessage = currentLang.ris.reports.authenticatedBy.replace('{0}', auth_complete_name).replace('{1}', auth_datetime).replace('{2}', report_data.appointment.imaging.organization.name).replace('{3}', report_data.appointment.imaging.organization.OID);
 
     //Medical signatures (await foreach):
     let signatures_users = '';
@@ -798,28 +798,28 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
     }));
 
     //Signatures message:
-    const signMessage = 'Firmado por médico/s: ' + signatures_users.substring(0, signatures_users.length - 2) + ' | ' + report_data.appointment.imaging.organization.short_name;
+    const signMessage = currentLang.ris.reports.signedByDoctors.replace('{0}', signatures_users.substring(0, signatures_users.length - 2)).replace('{1}', report_data.appointment.imaging.organization.short_name);
 
     //Convert HTML to PDF Make syntax:
-    let htmlClinicalInfo = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>', { window : window });
+    let htmlClinicalInfo = htmlToPdfmake('<p>' + currentLang.ris.reports.noClinicalData + '</p>', { window : window });
     if(report_data.clinical_info !== undefined && report_data.clinical_info !== null && report_data.clinical_info !== ''){
         htmlClinicalInfo = htmlToPdfmake(report_data.clinical_info, { window : window });
     }
     await removeMargin(htmlClinicalInfo);
 
-    let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee dato procedimiento.</strong><p>', { window : window });
+    let htmlProcedureDescription = htmlToPdfmake('<p>' + currentLang.ris.reports.noProcedureData + '</p>', { window : window });
     if(report_data.procedure_description !== undefined && report_data.procedure_description !== null && report_data.procedure_description !== ''){
         htmlProcedureDescription = htmlToPdfmake(report_data.procedure_description, { window : window });
     }
     await removeMargin(htmlProcedureDescription);
             
-    let htmlFindings = htmlToPdfmake('<p>El informe <strong>NO posee hallazgos.</strong><p>', { window : window });
+    let htmlFindings = htmlToPdfmake('<p>' + currentLang.ris.reports.noFindings + '</p>', { window : window });
     if(report_data.findings[0].procedure_findings !== undefined && report_data.findings[0].procedure_findings !== null && report_data.findings[0].procedure_findings !== ''){
         htmlFindings = htmlToPdfmake(report_data.findings[0].procedure_findings, { window : window });
     }
     await removeMargin(htmlFindings);
 
-    let htmlSummary = htmlToPdfmake('<p>El informe <strong>NO posee en suma.</strong><p>', { window : window });
+    let htmlSummary = htmlToPdfmake('<p>' + currentLang.ris.reports.noSummary + '</p>', { window : window });
     if(report_data.summary !== undefined && report_data.summary !== null && report_data.summary !== ''){
         htmlSummary = htmlToPdfmake(report_data.summary, { window : window });
     }
@@ -838,7 +838,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
 
         //FOOTER:
         footer: (currentPage, pageCount) => { return { table: { widths: [ "*"], body: [[ {
-            text: 'Página: ' + currentPage.toString() + ' de ' + pageCount,
+            text: currentLang.ris.reports.pageOf.replace('{0}', currentPage.toString()).replace('{1}', pageCount),
             alignment: 'right',
             fontSize: 8,
             margin: [0, 10, 20, 0]
@@ -865,7 +865,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                         
             // CLINICAL INFO:
             {
-                text: 'Dato clínico:',
+                text: currentLang.ris.reports.clinicalData,
                 style: 'subheader',
                 margin: [0, 10, 0, 0]
             },
@@ -875,7 +875,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                     
             // PROCEDURE:
             {
-                text: 'Procedimiento:',
+                text: currentLang.ris.reports.procedure,
                 style: 'subheader'
             },
             htmlProcedureDescription,
@@ -893,7 +893,7 @@ async function setReportStructure(req, res, report_data, auth_fk_person, auth_da
                     
             // SUMMARY:
             {
-                text: 'En suma:',
+                text: currentLang.ris.reports.summary,
                 style: 'subheader'
             },
             htmlSummary,

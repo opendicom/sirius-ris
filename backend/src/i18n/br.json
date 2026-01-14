@@ -123,6 +123,19 @@
       "isArray": "O parâmetro informado deve ser um array.",
       "isIP": "O parâmetro informado deve ser um IP válido.",
       "isPassword": "A senha informada é muito curta (mínimo de 8 caracteres)."
+    },
+    "reports": {
+      "authenticatedBy": "Autenticado digitalmente por {0} na data {1} atuando para a instituição {2} com OID {3}",
+      "signedByDoctors": "Assinado por médico(s): {0} | {1}",
+      "noClinicalData": "O relatório <strong>NÃO</strong> possui dados clínicos.",
+      "noProcedureData": "O relatório <strong>NÃO</strong> possui dados de procedimento.",
+      "noFindings": "O relatório <strong>NÃO</strong> possui achados.",
+      "noSummary": "O relatório <strong>NÃO</strong> possui resumo.",
+      "clinicalData": "Dados clínicos:",
+      "procedure": "Procedimento:",
+      "summary": "Em suma:",
+      "pageOf": "Página: {0} de {1}",
+      "hoursAbbrev": "h"
     }
   }
 }

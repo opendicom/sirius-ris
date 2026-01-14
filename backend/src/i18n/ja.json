@@ -123,6 +123,19 @@
             "isArray": "入力されたパラメータは配列である必要があります。",
             "isIP": "入力されたパラメータは有効な IP アドレスである必要があります。",
             "isPassword": "入力されたパスワードは短すぎます (最小 8 文字)。"
+        },
+        "reports": {
+            "authenticatedBy": "{1} に {0} によってデジタル認証され、機関 {2} の OID {3} で行動",
+            "signedByDoctors": "医師によって署名: {0} | {1}",
+            "noClinicalData": "レポートに臨床データが<strong>ありません</strong>。",
+            "noProcedureData": "レポートに手順データが<strong>ありません</strong>。",
+            "noFindings": "レポートに所見が<strong>ありません</strong>。",
+            "noSummary": "レポートに要約が<strong>ありません</strong>。",
+            "clinicalData": "臨床データ:",
+            "procedure": "手順:",
+            "summary": "要約:",
+            "pageOf": "ページ: {0} / {1}",
+            "hoursAbbrev": "時"
         }
     }
 }
