@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Error al intentar revisar el informe: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error al intentar revisar la autenticación del informe: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Comprobante de cita:",
+      "PASSWORD_NOT_ACCESSIBLE": "La contraseña ya no es accesible.",
+      "PERFORMANCE_SECTION": "REALIZACIÓN",
+      "ORGANIZATION": "Organización",
+      "APPOINTMENT_DATE": "Fecha de cita",
+      "BRANCH": "Sucursal",
+      "APPOINTMENT_TIME": "Horario de cita",
+      "SERVICE": "Servicio",
+      "PROCEDURE": "Procedimiento",
+      "PATIENT_SECTION": "PACIENTE",
+      "DOCUMENT": "Documento",
+      "NAMES": "Nombre/s",
+      "SURNAMES": "Apellido/s",
+      "ACCESS_PASSWORD": "Contraseña de acceso",
+      "PREPARATION_SECTION": "PREPARACIÓN PREVIA",
+      "NO_PREPARATION": "El procedimiento a realizar <strong>NO posee preparación previa.</strong>",
+      "PAGE_FOOTER": "Página: ",
+      "PAGE_SEPARATOR": " de ",
+      "ERROR_PDF_GENERATION": "Hubo un problema al intentar generar el PDF con el _id especificado. ",
+      "ERROR_INVALID_ID": "El _id especificado no es válido (No es ObjectId).",
+      "EMAIL_SUBJECT": "Comprobante de cita (Sirius RIS)",
+      "EMAIL_SALUTATION": "Estimado/a ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Su cita ha sido reservada correctamente.",
+      "EMAIL_APPOINTMENT_DATA": "Datos de la reserva:",
+      "EMAIL_DATE_LABEL": "Fecha:",
+      "EMAIL_TIME_LABEL": "Hora:",
+      "EMAIL_TIME_SUFFIX": " hs",
+      "EMAIL_PREPARATION_LABEL": "Preparación previa:",
+      "EMAIL_AUTO_MESSAGE": "Este es un correo automático, por favor no responda a esta dirección."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Comprobante de cita (Sirius RIS)",
+      "EMAIL_SALUTATION": "Estimado/a ",
+      "EMAIL_REPORT_SENT": "Le enviamos <strong>adjunto</strong> a este correo electrónico el <strong>informé médico</strong> del estudio realizado sobre la fecha <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "Este es un correo automático, por favor no responda a esta dirección.",
+      "EMAIL_FILENAME": "Informe_medico.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Página: ",
+      "PAGE_SEPARATOR": " de ",
+      "NO_CLINICAL_DATA": "El informe <strong>NO posee dato clínico.</strong>",
+      "NO_PROCEDURE": "El informe <strong>NO posee procedimiento.</strong>",
+      "NO_FINDINGS": "El informe <strong>NO posee hallazgos.</strong>",
+      "NO_SUMMARY": "El informe <strong>NO posee en suma.</strong>",
+      "CLINICAL_DATA_LABEL": "Dato clínico:",
+      "PROCEDURE_LABEL": "Procedimiento:",
+      "SUMMARY_LABEL": "En suma:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Archivo subido exitosamente",
     "FILE_NOT_FOUND_ERROR": "No se encontró el archivo [_id: "

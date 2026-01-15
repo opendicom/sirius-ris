@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Fehler beim Versuch, den Bericht zu überprüfen: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Fehler beim Versuch, die Berichtsauthentifizierung zu überprüfen: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Terminbestätigung:",
+      "PASSWORD_NOT_ACCESSIBLE": "Das Passwort ist nicht mehr zugänglich.",
+      "PERFORMANCE_SECTION": "DURCHFÜHRUNG",
+      "ORGANIZATION": "Organisation",
+      "APPOINTMENT_DATE": "Termin Datum",
+      "BRANCH": "Filiale",
+      "APPOINTMENT_TIME": "Termin Uhrzeit",
+      "SERVICE": "Service",
+      "PROCEDURE": "Verfahren",
+      "PATIENT_SECTION": "PATIENT",
+      "DOCUMENT": "Dokument",
+      "NAMES": "Name/n",
+      "SURNAMES": "Nachname/n",
+      "ACCESS_PASSWORD": "Zugangspasswort",
+      "PREPARATION_SECTION": "VORBEREITUNG",
+      "NO_PREPARATION": "Das durchzuführende Verfahren <strong>ERFORDERT KEINE Vorbereitung.</strong>",
+      "PAGE_FOOTER": "Seite: ",
+      "PAGE_SEPARATOR": " von ",
+      "ERROR_PDF_GENERATION": "Es gab ein Problem beim Versuch, das PDF mit der angegebenen _id zu generieren. ",
+      "ERROR_INVALID_ID": "Die angegebene _id ist ungültig (es ist keine ObjectId).",
+      "EMAIL_SUBJECT": "Terminbestätigung (Sirius RIS)",
+      "EMAIL_SALUTATION": "Sehr geehrte/r ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Ihr Termin wurde erfolgreich gebucht.",
+      "EMAIL_APPOINTMENT_DATA": "Buchungsdaten:",
+      "EMAIL_DATE_LABEL": "Datum:",
+      "EMAIL_TIME_LABEL": "Uhrzeit:",
+      "EMAIL_TIME_SUFFIX": " Uhr",
+      "EMAIL_PREPARATION_LABEL": "Vorbereitung:",
+      "EMAIL_AUTO_MESSAGE": "Dies ist eine automatische E-Mail, bitte antworten Sie nicht auf diese Adresse."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Terminbestätigung (Sirius RIS)",
+      "EMAIL_SALUTATION": "Sehr geehrte/r ",
+      "EMAIL_REPORT_SENT": "Anbei erhalten Sie den <strong>ärztlichen Bericht</strong> der durchgeführten Untersuchung vom <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "Dies ist eine automatische E-Mail, bitte antworten Sie nicht auf diese Adresse.",
+      "EMAIL_FILENAME": "Arztbericht.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Seite: ",
+      "PAGE_SEPARATOR": " von ",
+      "NO_CLINICAL_DATA": "Der Bericht <strong>ENTHÄLT KEINE klinischen Daten.</strong>",
+      "NO_PROCEDURE": "Der Bericht <strong>ENTHÄLT KEIN Verfahren.</strong>",
+      "NO_FINDINGS": "Der Bericht <strong>ENTHÄLT KEINE Befunde.</strong>",
+      "NO_SUMMARY": "Der Bericht <strong>ENTHÄLT KEINE Zusammenfassung.</strong>",
+      "CLINICAL_DATA_LABEL": "Klinische Daten:",
+      "PROCEDURE_LABEL": "Verfahren:",
+      "SUMMARY_LABEL": "Zusammenfassung:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Datei erfolgreich hochgeladen",
     "FILE_NOT_FOUND_ERROR": "Datei nicht gefunden [_id: "

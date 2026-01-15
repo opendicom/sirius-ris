@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Error trying to review the report: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error trying to review the report authentication: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Appointment Confirmation:",
+      "PASSWORD_NOT_ACCESSIBLE": "The password is no longer accessible.",
+      "PERFORMANCE_SECTION": "PERFORMANCE",
+      "ORGANIZATION": "Organization",
+      "APPOINTMENT_DATE": "Appointment Date",
+      "BRANCH": "Branch",
+      "APPOINTMENT_TIME": "Appointment Time",
+      "SERVICE": "Service",
+      "PROCEDURE": "Procedure",
+      "PATIENT_SECTION": "PATIENT",
+      "DOCUMENT": "Document",
+      "NAMES": "Name/s",
+      "SURNAMES": "Surname/s",
+      "ACCESS_PASSWORD": "Access Password",
+      "PREPARATION_SECTION": "PRIOR PREPARATION",
+      "NO_PREPARATION": "The procedure to be performed <strong>DOES NOT have prior preparation.</strong>",
+      "PAGE_FOOTER": "Page: ",
+      "PAGE_SEPARATOR": " of ",
+      "ERROR_PDF_GENERATION": "There was a problem trying to generate the PDF with the specified _id. ",
+      "ERROR_INVALID_ID": "The specified _id is not valid (It is not an ObjectId).",
+      "EMAIL_SUBJECT": "Appointment Confirmation (Sirius RIS)",
+      "EMAIL_SALUTATION": "Dear ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Your appointment has been successfully booked.",
+      "EMAIL_APPOINTMENT_DATA": "Booking details:",
+      "EMAIL_DATE_LABEL": "Date:",
+      "EMAIL_TIME_LABEL": "Time:",
+      "EMAIL_TIME_SUFFIX": " hrs",
+      "EMAIL_PREPARATION_LABEL": "Prior preparation:",
+      "EMAIL_AUTO_MESSAGE": "This is an automated email, please do not reply to this address."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Appointment Confirmation (Sirius RIS)",
+      "EMAIL_SALUTATION": "Dear ",
+      "EMAIL_REPORT_SENT": "We are sending you <strong>attached</strong> to this email the <strong>medical report</strong> of the study performed on the date <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "This is an automated email, please do not reply to this address.",
+      "EMAIL_FILENAME": "Medical_Report.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Page: ",
+      "PAGE_SEPARATOR": " of ",
+      "NO_CLINICAL_DATA": "The report <strong>DOES NOT have clinical data.</strong>",
+      "NO_PROCEDURE": "The report <strong>DOES NOT have a procedure.</strong>",
+      "NO_FINDINGS": "The report <strong>DOES NOT have findings.</strong>",
+      "NO_SUMMARY": "The report <strong>DOES NOT have a summary.</strong>",
+      "CLINICAL_DATA_LABEL": "Clinical data:",
+      "PROCEDURE_LABEL": "Procedure:",
+      "SUMMARY_LABEL": "Summary:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "File uploaded successfully",
     "FILE_NOT_FOUND_ERROR": "File not found [_id: "

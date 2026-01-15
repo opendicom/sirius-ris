@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Errore durante il tentativo di revisione del referto: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Errore durante il tentativo di revisione dell'autenticazione del referto: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Conferma dell'Appuntamento:",
+      "PASSWORD_NOT_ACCESSIBLE": "La password non è più accessibile.",
+      "PERFORMANCE_SECTION": "REALIZZAZIONE",
+      "ORGANIZATION": "Organizzazione",
+      "APPOINTMENT_DATE": "Data dell'Appuntamento",
+      "BRANCH": "Filiale",
+      "APPOINTMENT_TIME": "Orario dell'Appuntamento",
+      "SERVICE": "Servizio",
+      "PROCEDURE": "Procedura",
+      "PATIENT_SECTION": "PAZIENTE",
+      "DOCUMENT": "Documento",
+      "NAMES": "Nome/i",
+      "SURNAMES": "Cognome/i",
+      "ACCESS_PASSWORD": "Password di Accesso",
+      "PREPARATION_SECTION": "PREPARAZIONE PRELIMINARE",
+      "NO_PREPARATION": "La procedura da eseguire <strong>NON ha preparazione preliminare.</strong>",
+      "PAGE_FOOTER": "Pagina: ",
+      "PAGE_SEPARATOR": " di ",
+      "ERROR_PDF_GENERATION": "C'è stato un problema nel tentare di generare il PDF con l'_id specificato. ",
+      "ERROR_INVALID_ID": "L'_id specificato non è valido (Non è un ObjectId).",
+      "EMAIL_SUBJECT": "Conferma dell'Appuntamento (Sirius RIS)",
+      "EMAIL_SALUTATION": "Caro/a ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Il vostro appuntamento è stato prenotato con successo.",
+      "EMAIL_APPOINTMENT_DATA": "Dati della prenotazione:",
+      "EMAIL_DATE_LABEL": "Data:",
+      "EMAIL_TIME_LABEL": "Ora:",
+      "EMAIL_TIME_SUFFIX": " ore",
+      "EMAIL_PREPARATION_LABEL": "Preparazione preliminare:",
+      "EMAIL_AUTO_MESSAGE": "Questo è un messaggio di posta elettronica automatico, si prega di non rispondere a questo indirizzo."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Conferma dell'Appuntamento (Sirius RIS)",
+      "EMAIL_SALUTATION": "Caro/a ",
+      "EMAIL_REPORT_SENT": "Le inviamo <strong>allegato</strong> a questa email il <strong>rapporto medico</strong> dello studio eseguito in data <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "Questo è un messaggio di posta elettronica automatico, si prega di non rispondere a questo indirizzo.",
+      "EMAIL_FILENAME": "Rapporto_Medico.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Pagina: ",
+      "PAGE_SEPARATOR": " di ",
+      "NO_CLINICAL_DATA": "Il rapporto <strong>NON ha dati clinici.</strong>",
+      "NO_PROCEDURE": "Il rapporto <strong>NON ha procedura.</strong>",
+      "NO_FINDINGS": "Il rapporto <strong>NON ha risultati.</strong>",
+      "NO_SUMMARY": "Il rapporto <strong>NON ha riassunto.</strong>",
+      "CLINICAL_DATA_LABEL": "Dato clinico:",
+      "PROCEDURE_LABEL": "Procedura:",
+      "SUMMARY_LABEL": "Riassunto:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "File caricato con successo",
     "FILE_NOT_FOUND_ERROR": "File non trovato [_id: "

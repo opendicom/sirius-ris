@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { ApiClientService } from '@shared/services/api-client.service';                 // API Client Service
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
+import { I18nService } from '@shared/services/i18n.service';                            // i18n Service
 import { map } from 'rxjs/operators';                                                   // Reactive Extensions (RxJS)
 import { regexObjectId } from '@env/environment';                                       // Enviroments
 
@@ -40,6 +41,7 @@ export class PdfService {
   constructor(
     public sharedFunctions  : SharedFunctionsService,
     private apiClient       : ApiClientService,
+    private i18n            : I18nService
   ) { }
 
   createPDF(type: string, _id: string, friendly_pass: string | undefined = undefined, send_mail: boolean = false, open_document: boolean = true, email_destination: string | undefined = undefined){
@@ -49,7 +51,7 @@ export class PdfService {
 
     //Check if friendly pass is accessible:
     if(friendly_pass === undefined){
-      friendly_pass = 'La contraseña ya no es accesible.';
+      friendly_pass = this.i18n.instant('PDF.APPOINTMENT.PASSWORD_NOT_ACCESSIBLE');
     }
 
     //Check _id:
@@ -62,7 +64,7 @@ export class PdfService {
           //Initializate patient complete name, appointment datetime and appointment preparation:
           let patient_complete_name: any = undefined;
           let datetime: any = undefined;
-          let appointment_preparation: string = '<p>El procedimiento a realizar <strong>NO posee preparación previa.</strong><p>';
+          let appointment_preparation: string = '<p>' + this.i18n.instant('PDF.APPOINTMENT.NO_PREPARATION') + '<p>';
 
           //Set params:
           const appointmentsParams = {
@@ -121,7 +123,7 @@ export class PdfService {
 
                   //FOOTER:
                   footer: (currentPage: any, pageCount: any) => { return { table: { widths: [ "*"], body: [[ {
-                      text: 'Página: ' + currentPage.toString() + ' de ' + pageCount,
+                      text: this.i18n.instant('PDF.APPOINTMENT.PAGE_FOOTER') + currentPage.toString() + this.i18n.instant('PDF.APPOINTMENT.PAGE_SEPARATOR') + pageCount,
                       alignment: 'right',
                       fontSize: 8,
                       margin: [0, 10, 20, 0]
@@ -132,7 +134,7 @@ export class PdfService {
                   //CONTENT:
                   content: [
                     // TITLE:
-                    { text: 'Comprobante de cita:', style: 'header'},
+                    { text: this.i18n.instant('PDF.APPOINTMENT.TITLE'), style: 'header'},
 
                     // DATOS DE REALIZACIÓN:
                     {
@@ -140,10 +142,10 @@ export class PdfService {
                       table: {
                         widths: ['*', '*', '*', '*'],
                         body: [
-                          [{ text: 'REALIZACIÓN', colSpan: 4, style: 'header_table' }, {}, {}, {}],
-                          [{ text: 'Organización', style: 'label_table' }, res.data[0].imaging.organization.short_name, { text: 'Fecha de cita', style: 'label_table' }, datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear ],
-                          [{ text: 'Sucursal', style: 'label_table' }, res.data[0].imaging.branch.short_name, { text: 'Horario de cita', style: 'label_table' }, datetime.startHours + ':' + datetime.startMinutes + ' hs'],
-                          [{ text: 'Servicio', style: 'label_table' }, res.data[0].imaging.service.name, { text: 'Procedimiento', style: 'label_table' }, res.data[0].procedure.name]
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.PERFORMANCE_SECTION'), colSpan: 4, style: 'header_table' }, {}, {}, {}],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.ORGANIZATION'), style: 'label_table' }, res.data[0].imaging.organization.short_name, { text: this.i18n.instant('PDF.APPOINTMENT.APPOINTMENT_DATE'), style: 'label_table' }, datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear ],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.BRANCH'), style: 'label_table' }, res.data[0].imaging.branch.short_name, { text: this.i18n.instant('PDF.APPOINTMENT.APPOINTMENT_TIME'), style: 'label_table' }, datetime.startHours + ':' + datetime.startMinutes + ' hs'],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.SERVICE'), style: 'label_table' }, res.data[0].imaging.service.name, { text: this.i18n.instant('PDF.APPOINTMENT.PROCEDURE'), style: 'label_table' }, res.data[0].procedure.name]
                         ]
                       }
                     },
@@ -154,11 +156,11 @@ export class PdfService {
                       table: {
                         widths: ['*', '*'],
                         body: [
-                          [{ text: 'PACIENTE', colSpan: 2, style: 'header_table' }, {}],
-                          [{ text: 'Documento', style: 'label_table' }, res.data[0].patient.person.documents[0].document],
-                          [{ text: 'Nombre/s', style: 'label_table' }, patient_complete_name.names],
-                          [{ text: 'Apellido/s', style: 'label_table' }, patient_complete_name.surnames],
-                          [{ text: 'Contraseña de acceso', style: 'label_table' }, friendly_pass]
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.PATIENT_SECTION'), colSpan: 2, style: 'header_table' }, {}],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.DOCUMENT'), style: 'label_table' }, res.data[0].patient.person.documents[0].document],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.NAMES'), style: 'label_table' }, patient_complete_name.names],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.SURNAMES'), style: 'label_table' }, patient_complete_name.surnames],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.ACCESS_PASSWORD'), style: 'label_table' }, friendly_pass]
                         ]
                       }
                     },
@@ -169,7 +171,7 @@ export class PdfService {
                       table: {
                         widths: ['*'],
                         body: [
-                          [{ text: 'PREPARACIÓN PREVIA', style: 'header_table' }],
+                          [{ text: this.i18n.instant('PDF.APPOINTMENT.PREPARATION_SECTION'), style: 'header_table' }],
                           [ htmlPreparation ]
                         ]
                       }
@@ -246,24 +248,24 @@ export class PdfService {
             next: (res: any) => {
               //Check operation status:
               if(res.success === false){
-                this.sharedFunctions.sendMessage('Hubo un problema al intentar generar el PDF con el _id especificado. ' + res.message);
+                this.sharedFunctions.sendMessage(this.i18n.instant('PDF.APPOINTMENT.ERROR_PDF_GENERATION') + res.message);
               
               //Check if mail is required:
               } else if(send_mail){
                 //Build mail body (message):
                 const body_message = this.logoEmailContent + 
                 '<p>' + 
-                  '<strong>Estimado/a ' + patient_complete_name.names + ' ' + patient_complete_name.surnames + ',</strong><br/>' +
-                  '<br/>Su cita ha sido reservada correctamente.<br/>' + 
-                  '<strong>Datos de la reserva:</strong>' +
+                  '<strong>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_SALUTATION') + patient_complete_name.names + ' ' + patient_complete_name.surnames + ',</strong><br/>' +
+                  '<br/>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_APPOINTMENT_CONFIRMED') + '<br/>' + 
+                  '<strong>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_APPOINTMENT_DATA') + '</strong>' +
                   '<ul>' + 
-                    '<li><strong>Fecha:</strong> ' + datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + '</li>' + 
-                    '<li><strong>Hora:</strong> ' + datetime.startHours + ':' + datetime.startMinutes + ' hs' + '</li>' + 
+                    '<li><strong>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_DATE_LABEL') + '</strong> ' + datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + '</li>' + 
+                    '<li><strong>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_TIME_LABEL') + '</strong> ' + datetime.startHours + ':' + datetime.startMinutes + this.i18n.instant('PDF.APPOINTMENT.EMAIL_TIME_SUFFIX') + '</li>' + 
                   '</ul>' + 
                   '<br/>' + 
-                  '<strong>Preparación previa:</strong>' + appointment_preparation + 
+                  '<strong>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_PREPARATION_LABEL') + '</strong>' + appointment_preparation + 
                   '<br/>' + 
-                  '<small><i>Este es un correo automático, por favor no responda a esta dirección.</i></small>' + 
+                  '<small><i>' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_AUTO_MESSAGE') + '</i></small>' + 
                   '<br/><br/>' + 
                 '</p>';
 
@@ -277,7 +279,7 @@ export class PdfService {
                   //Set mail options:
                   const mailOptions = {
                     to        : email_destination,
-                    subject   : res.data[0].imaging.organization.name + ' - Comprobante de cita (Sirius RIS)',
+                    subject   : res.data[0].imaging.organization.name + ' - ' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_SUBJECT'),
                     message   : body_message,
                     filename  : 'Comprobante_de_cita.pdf',
                     base64    : base64Document,
@@ -303,7 +305,7 @@ export class PdfService {
                   this.sharedFunctions.sendMessage(res.error.message);
                 }
               } else {
-                this.sharedFunctions.sendMessage('Error: No se obtuvo respuesta del servidor backend.');
+                this.sharedFunctions.sendMessage(this.i18n.instant('SHARED.BACKEND_NO_RESPONSE_ERROR'));
               }
             }
           });
@@ -371,10 +373,10 @@ export class PdfService {
                     //Build mail body (message):
                     const body_message = this.logoEmailContent + 
                     '<p>' + 
-                        '<strong>Estimado/a ' + patient_complete_name.names + ' ' + patient_complete_name.surnames + ',</strong><br/>' +
-                        '<br/>Le enviamos <strong>adjunto</strong> a este correo electrónico el <strong>informé médico</strong> del estudio realizado sobre la fecha <strong>' + datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + '</strong>.<br/>' + 
+                        '<strong>' + this.i18n.instant('PDF.REPORT.EMAIL_SALUTATION') + patient_complete_name.names + ' ' + patient_complete_name.surnames + ',</strong><br/>' +
+                        '<br/>' + this.i18n.instant('PDF.REPORT.EMAIL_REPORT_SENT') + datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + this.i18n.instant('PDF.REPORT.EMAIL_DATE_SUFFIX') + '<br/>' + 
                         '<br/>' + 
-                        '<small><i>Este es un correo automático, por favor no responda a esta dirección.</i></small>' + 
+                        '<small><i>' + this.i18n.instant('PDF.REPORT.EMAIL_AUTO_MESSAGE') + '</i></small>' + 
                         '<br/><br/>' + 
                     '</p>';
 
@@ -386,9 +388,9 @@ export class PdfService {
                     //Set mail options:
                     const mailOptions = {
                       to            : email_destination,
-                      subject       : res.data[0].appointment.imaging.organization.name + ' - Comprobante de cita (Sirius RIS)',
+                      subject       : res.data[0].appointment.imaging.organization.name + ' - ' + this.i18n.instant('PDF.REPORT.EMAIL_SUBJECT'),
                       message       : body_message,
-                      filename      : 'Informe_medico.pdf',
+                      filename      : this.i18n.instant('PDF.REPORT.EMAIL_FILENAME'),
                       base64        : res.data[0].authenticated.base64_report,
 
                       //Log info (Not deductible from backend):
@@ -470,26 +472,26 @@ export class PdfService {
                 const signMessage = 'Firmado por médico/s: NOMBRE COMPLETO MÉDICOS FIRMANTES | ' + res.data[0].appointment.imaging.organization.short_name;
 
                 //Convert HTML to PDF Make syntax:
-                let htmlClinicalInfo: any = htmlToPdfmake('<p>El informe <strong>NO posee dato clínico.</strong><p>');
+                let htmlClinicalInfo: any = htmlToPdfmake('<p>' + this.i18n.instant('PDF.REPORT_DRAFT.NO_CLINICAL_DATA') + '<p>');
                 if(res.data[0].clinical_info !== undefined && res.data[0].clinical_info !== null && res.data[0].clinical_info !== ''){
                   htmlClinicalInfo = htmlToPdfmake(res.data[0].clinical_info);
                 }
                 await this.removeMargin(htmlClinicalInfo);
 
-                let htmlProcedureDescription = htmlToPdfmake('<p>El informe <strong>NO posee procedimiento.</strong><p>');
+                let htmlProcedureDescription = htmlToPdfmake('<p>' + this.i18n.instant('PDF.REPORT_DRAFT.NO_PROCEDURE') + '<p>');
                 if(res.data[0].procedure_description !== undefined && res.data[0].procedure_description !== null && res.data[0].procedure_description !== ''){
                   htmlProcedureDescription = htmlToPdfmake(res.data[0].procedure_description);
                 }
                 await this.removeMargin(htmlProcedureDescription);
 
                 
-                let htmlFindings = htmlToPdfmake('<p>El informe <strong>NO posee hallazgos.</strong><p>');
+                let htmlFindings = htmlToPdfmake('<p>' + this.i18n.instant('PDF.REPORT_DRAFT.NO_FINDINGS') + '<p>');
                 if(res.data[0].findings[0].procedure_findings !== undefined && res.data[0].findings[0].procedure_findings !== null && res.data[0].findings[0].procedure_findings !== ''){
                   htmlFindings = htmlToPdfmake(res.data[0].findings[0].procedure_findings);
                 }
                 await this.removeMargin(htmlFindings);
 
-                let htmlSummary = htmlToPdfmake('<p>El informe <strong>NO posee en suma.</strong><p>');
+                let htmlSummary = htmlToPdfmake('<p>' + this.i18n.instant('PDF.REPORT_DRAFT.NO_SUMMARY') + '<p>');
                 if(res.data[0].summary !== undefined && res.data[0].summary !== null && res.data[0].summary !== ''){
                   htmlSummary = htmlToPdfmake(res.data[0].summary);
                 }
@@ -508,7 +510,7 @@ export class PdfService {
 
                   //FOOTER:
                   footer: (currentPage: any, pageCount: any) => { return { table: { widths: [ "*"], body: [[ {
-                      text: 'Página: ' + currentPage.toString() + ' de ' + pageCount,
+                      text: this.i18n.instant('PDF.REPORT_DRAFT.PAGE_FOOTER') + currentPage.toString() + this.i18n.instant('PDF.REPORT_DRAFT.PAGE_SEPARATOR') + pageCount,
                       alignment: 'right',
                       fontSize: 8,
                       margin: [0, 10, 20, 0]
@@ -535,7 +537,7 @@ export class PdfService {
                         
                     // CLINICAL INFO:
                     {
-                      text: 'Dato clínico:',
+                      text: this.i18n.instant('PDF.REPORT_DRAFT.CLINICAL_DATA_LABEL'),
                       style: 'subheader',
                       margin: [0, 10, 0, 0]
                     },
@@ -545,7 +547,7 @@ export class PdfService {
                     
                     // PROCEDURE:
                     {
-                      text: 'Procedimiento:',
+                      text: this.i18n.instant('PDF.REPORT_DRAFT.PROCEDURE_LABEL'),
                       style: 'subheader'
                     },
                     htmlProcedureDescription,
@@ -563,7 +565,7 @@ export class PdfService {
                     
                     // SUMMARY:
                     {
-                      text: 'En suma:',
+                      text: this.i18n.instant('PDF.REPORT_DRAFT.SUMMARY_LABEL'),
                       style: 'subheader'
                     },
                     htmlSummary,
@@ -650,7 +652,7 @@ export class PdfService {
 
     } else {
       //Send message:
-      this.sharedFunctions.sendMessage('El _id especificado no es válido (No es ObjectId).');
+      this.sharedFunctions.sendMessage(this.i18n.instant('PDF.APPOINTMENT.ERROR_INVALID_ID'));
     }
   }
 

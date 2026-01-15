@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Ошибка при попытке просмотра отчета: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Ошибка при попытке просмотра аутентификации отчета: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Подтверждение приема:",
+      "PASSWORD_NOT_ACCESSIBLE": "Пароль больше недоступен.",
+      "PERFORMANCE_SECTION": "ВЫПОЛНЕНИЕ",
+      "ORGANIZATION": "Организация",
+      "APPOINTMENT_DATE": "Дата приема",
+      "BRANCH": "Отделение",
+      "APPOINTMENT_TIME": "Время приема",
+      "SERVICE": "Услуга",
+      "PROCEDURE": "Процедура",
+      "PATIENT_SECTION": "ПАЦИЕНТ",
+      "DOCUMENT": "Документ",
+      "NAMES": "Имя/имена",
+      "SURNAMES": "Фамилия/фамилии",
+      "ACCESS_PASSWORD": "Пароль доступа",
+      "PREPARATION_SECTION": "ПРЕДВАРИТЕЛЬНАЯ ПОДГОТОВКА",
+      "NO_PREPARATION": "Процедура, которая будет проведена, <strong>НЕ требует предварительной подготовки.</strong>",
+      "PAGE_FOOTER": "Страница: ",
+      "PAGE_SEPARATOR": " из ",
+      "ERROR_PDF_GENERATION": "Возникла проблема при попытке создать PDF с указанным _id. ",
+      "ERROR_INVALID_ID": "Указанный _id не является действительным (не является ObjectId).",
+      "EMAIL_SUBJECT": "Подтверждение приема (Sirius RIS)",
+      "EMAIL_SALUTATION": "Уважаемый/ая ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Ваш прием успешно забронирован.",
+      "EMAIL_APPOINTMENT_DATA": "Данные бронирования:",
+      "EMAIL_DATE_LABEL": "Дата:",
+      "EMAIL_TIME_LABEL": "Время:",
+      "EMAIL_TIME_SUFFIX": " ч",
+      "EMAIL_PREPARATION_LABEL": "Предварительная подготовка:",
+      "EMAIL_AUTO_MESSAGE": "Это автоматическое письмо, пожалуйста, не отвечайте на этот адрес."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Подтверждение приема (Sirius RIS)",
+      "EMAIL_SALUTATION": "Уважаемый/ая ",
+      "EMAIL_REPORT_SENT": "Мы отправляем вам <strong>в приложении</strong> к этому письму <strong>медицинский отчет</strong> об исследовании, проведенном <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "Это автоматическое письмо, пожалуйста, не отвечайте на этот адрес.",
+      "EMAIL_FILENAME": "Meditsinskiy_otchet.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Страница: ",
+      "PAGE_SEPARATOR": " из ",
+      "NO_CLINICAL_DATA": "Отчет <strong>НЕ содержит клинических данных.</strong>",
+      "NO_PROCEDURE": "Отчет <strong>НЕ содержит процедуры.</strong>",
+      "NO_FINDINGS": "Отчет <strong>НЕ содержит результатов.</strong>",
+      "NO_SUMMARY": "Отчет <strong>НЕ содержит резюме.</strong>",
+      "CLINICAL_DATA_LABEL": "Клинические данные:",
+      "PROCEDURE_LABEL": "Процедура:",
+      "SUMMARY_LABEL": "Резюме:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Файл успешно загружен",
     "FILE_NOT_FOUND_ERROR": "Файл не найден [_id: "

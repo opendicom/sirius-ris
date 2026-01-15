@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "Erreur lors de la tentative de révision du rapport : ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erreur lors de la tentative de révision de l'authentification du rapport : "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "Confirmation de Rendez-vous :",
+      "PASSWORD_NOT_ACCESSIBLE": "Le mot de passe n'est plus accessible.",
+      "PERFORMANCE_SECTION": "RÉALISATION",
+      "ORGANIZATION": "Organisation",
+      "APPOINTMENT_DATE": "Date du Rendez-vous",
+      "BRANCH": "Succursale",
+      "APPOINTMENT_TIME": "Heure du Rendez-vous",
+      "SERVICE": "Service",
+      "PROCEDURE": "Procédure",
+      "PATIENT_SECTION": "PATIENT",
+      "DOCUMENT": "Document",
+      "NAMES": "Nom/s",
+      "SURNAMES": "Prénom/s",
+      "ACCESS_PASSWORD": "Mot de Passe d'Accès",
+      "PREPARATION_SECTION": "PRÉPARATION PRÉALABLE",
+      "NO_PREPARATION": "La procédure à effectuer <strong>N'A PAS de préparation préalable.</strong>",
+      "PAGE_FOOTER": "Page : ",
+      "PAGE_SEPARATOR": " de ",
+      "ERROR_PDF_GENERATION": "Il y a eu un problème lors de la génération du PDF avec l'_id spécifié. ",
+      "ERROR_INVALID_ID": "L'_id spécifié n'est pas valide (ce n'est pas un ObjectId).",
+      "EMAIL_SUBJECT": "Confirmation de Rendez-vous (Sirius RIS)",
+      "EMAIL_SALUTATION": "Cher/Chère ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "Votre rendez-vous a été réservé avec succès.",
+      "EMAIL_APPOINTMENT_DATA": "Données de la réservation :",
+      "EMAIL_DATE_LABEL": "Date :",
+      "EMAIL_TIME_LABEL": "Heure :",
+      "EMAIL_TIME_SUFFIX": " h",
+      "EMAIL_PREPARATION_LABEL": "Préparation préalable :",
+      "EMAIL_AUTO_MESSAGE": "Ceci est un e-mail automatique, veuillez ne pas répondre à cette adresse."
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "Confirmation de Rendez-vous (Sirius RIS)",
+      "EMAIL_SALUTATION": "Cher/Chère ",
+      "EMAIL_REPORT_SENT": "Nous vous envoyons <strong>en pièce jointe</strong> à cet e-mail le <strong>rapport médical</strong> de l'étude réalisée le <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>.",
+      "EMAIL_AUTO_MESSAGE": "Ceci est un e-mail automatique, veuillez ne pas répondre à cette adresse.",
+      "EMAIL_FILENAME": "Rapport_Medical.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "Page : ",
+      "PAGE_SEPARATOR": " de ",
+      "NO_CLINICAL_DATA": "Le rapport <strong>N'A PAS de données cliniques.</strong>",
+      "NO_PROCEDURE": "Le rapport <strong>N'A PAS de procédure.</strong>",
+      "NO_FINDINGS": "Le rapport <strong>N'A PAS de résultats.</strong>",
+      "NO_SUMMARY": "Le rapport <strong>N'A PAS de résumé.</strong>",
+      "CLINICAL_DATA_LABEL": "Données cliniques :",
+      "PROCEDURE_LABEL": "Procédure :",
+      "SUMMARY_LABEL": "Résumé :"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Fichier téléchargé avec succès",
     "FILE_NOT_FOUND_ERROR": "Fichier non trouvé [_id: "

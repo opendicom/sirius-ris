@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "レポートのレビュー試行中にエラーが発生しました：",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "レポート認証のレビュー試行中にエラーが発生しました："
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "予約確認書:",
+      "PASSWORD_NOT_ACCESSIBLE": "パスワードにアクセスできなくなっています。",
+      "PERFORMANCE_SECTION": "実施",
+      "ORGANIZATION": "組織",
+      "APPOINTMENT_DATE": "予約日",
+      "BRANCH": "支店",
+      "APPOINTMENT_TIME": "予約時間",
+      "SERVICE": "サービス",
+      "PROCEDURE": "手順",
+      "PATIENT_SECTION": "患者",
+      "DOCUMENT": "ドキュメント",
+      "NAMES": "名前",
+      "SURNAMES": "姓",
+      "ACCESS_PASSWORD": "アクセスパスワード",
+      "PREPARATION_SECTION": "事前準備",
+      "NO_PREPARATION": "実施予定の手順は <strong>事前準備が不要です。</strong>",
+      "PAGE_FOOTER": "ページ: ",
+      "PAGE_SEPARATOR": " / ",
+      "ERROR_PDF_GENERATION": "指定された _id で PDF を生成しようとした際に問題が発生しました。 ",
+      "ERROR_INVALID_ID": "指定された _id が無効です (ObjectId ではありません)。",
+      "EMAIL_SUBJECT": "予約確認書 (Sirius RIS)",
+      "EMAIL_SALUTATION": "お客様へ ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "ご予約が正常に確定されました。",
+      "EMAIL_APPOINTMENT_DATA": "予約詳細:",
+      "EMAIL_DATE_LABEL": "日付:",
+      "EMAIL_TIME_LABEL": "時間:",
+      "EMAIL_TIME_SUFFIX": " 時",
+      "EMAIL_PREPARATION_LABEL": "事前準備:",
+      "EMAIL_AUTO_MESSAGE": "これは自動配信メールです。このアドレスへのご返信はご遠慮ください。"
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "予約確認書 (Sirius RIS)",
+      "EMAIL_SALUTATION": "お客様へ ",
+      "EMAIL_REPORT_SENT": "本メールに <strong>添付</strong> して、<strong>医学報告書</strong> を送信いたします。当検査は <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong> に実施されました。",
+      "EMAIL_AUTO_MESSAGE": "これは自動配信メールです。このアドレスへのご返信はご遠慮ください。",
+      "EMAIL_FILENAME": "Igaku_Hokoku.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "ページ: ",
+      "PAGE_SEPARATOR": " / ",
+      "NO_CLINICAL_DATA": "報告書は <strong>臨床データを含みません。</strong>",
+      "NO_PROCEDURE": "報告書は <strong>手順を含みません。</strong>",
+      "NO_FINDINGS": "報告書は <strong>所見を含みません。</strong>",
+      "NO_SUMMARY": "報告書は <strong>要約を含みません。</strong>",
+      "CLINICAL_DATA_LABEL": "臨床データ:",
+      "PROCEDURE_LABEL": "手順:",
+      "SUMMARY_LABEL": "要約:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "ファイルが正常にアップロードされました",
     "FILE_NOT_FOUND_ERROR": "ファイルが見つかりません [_id: "

@@ -2122,6 +2122,58 @@
     "REPORT_REVIEW_ERROR": "尝试审查报告时出错: ",
     "REPORT_AUTHENTICATION_REVIEW_ERROR": "尝试审查报告认证时出错: "
   },
+  "PDF": {
+    "APPOINTMENT": {
+      "TITLE": "预约确认书:",
+      "PASSWORD_NOT_ACCESSIBLE": "密码不再可访问。",
+      "PERFORMANCE_SECTION": "执行",
+      "ORGANIZATION": "组织",
+      "APPOINTMENT_DATE": "预约日期",
+      "BRANCH": "分支机构",
+      "APPOINTMENT_TIME": "预约时间",
+      "SERVICE": "服务",
+      "PROCEDURE": "程序",
+      "PATIENT_SECTION": "患者",
+      "DOCUMENT": "文件",
+      "NAMES": "名字",
+      "SURNAMES": "姓氏",
+      "ACCESS_PASSWORD": "访问密码",
+      "PREPARATION_SECTION": "预先准备",
+      "NO_PREPARATION": "将要进行的程序 <strong>不需要预先准备。</strong>",
+      "PAGE_FOOTER": "第 页: ",
+      "PAGE_SEPARATOR": " 共 ",
+      "ERROR_PDF_GENERATION": "尝试生成具有指定的 _id 的 PDF 时出现问题。 ",
+      "ERROR_INVALID_ID": "指定的 _id 无效（不是 ObjectId）。",
+      "EMAIL_SUBJECT": "预约确认书（Sirius RIS）",
+      "EMAIL_SALUTATION": "尊敬的 ",
+      "EMAIL_APPOINTMENT_CONFIRMED": "您的预约已成功确认。",
+      "EMAIL_APPOINTMENT_DATA": "预约详情:",
+      "EMAIL_DATE_LABEL": "日期:",
+      "EMAIL_TIME_LABEL": "时间:",
+      "EMAIL_TIME_SUFFIX": " 小时",
+      "EMAIL_PREPARATION_LABEL": "预先准备:",
+      "EMAIL_AUTO_MESSAGE": "这是一封自动电子邮件，请不要回复此地址。"
+    },
+    "REPORT": {
+      "EMAIL_SUBJECT": "预约确认书（Sirius RIS）",
+      "EMAIL_SALUTATION": "尊敬的 ",
+      "EMAIL_REPORT_SENT": "我们将 <strong>附件</strong> 形式发送给您本封电子邮件中的 <strong>医学报告</strong>，检查时间为 <strong>",
+      "EMAIL_DATE_SUFFIX": "</strong>。",
+      "EMAIL_AUTO_MESSAGE": "这是一封自动电子邮件，请不要回复此地址。",
+      "EMAIL_FILENAME": "医学报告.pdf"
+    },
+    "REPORT_DRAFT": {
+      "PAGE_FOOTER": "第 页: ",
+      "PAGE_SEPARATOR": " 共 ",
+      "NO_CLINICAL_DATA": "报告 <strong>不包含临床数据。</strong>",
+      "NO_PROCEDURE": "报告 <strong>不包含程序。</strong>",
+      "NO_FINDINGS": "报告 <strong>不包含发现。</strong>",
+      "NO_SUMMARY": "报告 <strong>不包含总结。</strong>",
+      "CLINICAL_DATA_LABEL": "临床数据:",
+      "PROCEDURE_LABEL": "程序:",
+      "SUMMARY_LABEL": "总结:"
+    }
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "文件上传成功",
     "FILE_NOT_FOUND_ERROR": "文件未找到 [_id: "
