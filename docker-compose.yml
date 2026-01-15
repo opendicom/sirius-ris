@@ -1,7 +1,7 @@
 services:
   opendicom_sirius_database:
     container_name: opendicom_sirius_database
-    image: opendicom/sirius-database:1.2.0
+    image: opendicom/sirius-database:8.2.3
     env_file: ./docker-compose.env
     volumes:
       - ./database/dumps:/dumps
@@ -16,7 +16,7 @@ services:
 
   opendicom_sirius_backend:
     container_name: opendicom_sirius_backend
-    image: opendicom/sirius-backend:1.5.0
+    image: opendicom/sirius-backend:1.5.1
     env_file: ./docker-compose.env
     ports:
       - 2000:2000
@@ -28,7 +28,7 @@ services:
 
   opendicom_sirius_frontend:
     container_name: opendicom_sirius_frontend
-    image: opendicom/sirius-frontend:1.4.3
+    image: opendicom/sirius-frontend:1.5.0
     env_file: ./docker-compose.env
     ports:
       - 4000:80
