@@ -2174,6 +2174,10 @@
       "SUMMARY_LABEL": "Résumé :"
     }
   },
+  "API_CLIENT": {
+    "FILE_SIZE_EXCEEDED": "Le fichier que vous avez sélectionné dépasse la limite de taille maximale autorisée (",
+    "FILE_SIZE_EXCEEDED_SUFFIX": " MB)."
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Fichier téléchargé avec succès",
     "FILE_NOT_FOUND_ERROR": "Fichier non trouvé [_id: "

@@ -2174,6 +2174,10 @@
       "SUMMARY_LABEL": "总结:"
     }
   },
+  "API_CLIENT": {
+    "FILE_SIZE_EXCEEDED": "您选择的文件超过了允许的最大文件大小限制 (",
+    "FILE_SIZE_EXCEEDED_SUFFIX": " MB)。"
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "文件上传成功",
     "FILE_NOT_FOUND_ERROR": "文件未找到 [_id: "

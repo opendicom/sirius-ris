@@ -2174,6 +2174,10 @@
       "SUMMARY_LABEL": "Резюме:"
     }
   },
+  "API_CLIENT": {
+    "FILE_SIZE_EXCEEDED": "Выбранный вами файл превышает максимально разрешенное ограничение размера файла (",
+    "FILE_SIZE_EXCEEDED_SUFFIX": " МБ)."
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Файл успешно загружен",
     "FILE_NOT_FOUND_ERROR": "Файл не найден [_id: "

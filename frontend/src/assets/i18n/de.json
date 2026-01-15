@@ -2174,6 +2174,10 @@
       "SUMMARY_LABEL": "Zusammenfassung:"
     }
   },
+  "API_CLIENT": {
+    "FILE_SIZE_EXCEEDED": "Die von Ihnen ausgewählte Datei überschreitet das maximal zulässige Dateigröße nlimit (",
+    "FILE_SIZE_EXCEEDED_SUFFIX": " MB)."
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Datei erfolgreich hochgeladen",
     "FILE_NOT_FOUND_ERROR": "Datei nicht gefunden [_id: "

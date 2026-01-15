@@ -2174,6 +2174,10 @@
       "SUMMARY_LABEL": "要約:"
     }
   },
+  "API_CLIENT": {
+    "FILE_SIZE_EXCEEDED": "選択したファイルは許可されている最大ファイルサイズ制限を超えています (",
+    "FILE_SIZE_EXCEEDED_SUFFIX": " MB)。"
+  },
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "ファイルが正常にアップロードされました",
     "FILE_NOT_FOUND_ERROR": "ファイルが見つかりません [_id: "
