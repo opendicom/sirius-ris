@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "時間:",
       "EMAIL_TIME_SUFFIX": " 時",
       "EMAIL_PREPARATION_LABEL": "事前準備:",
-      "EMAIL_AUTO_MESSAGE": "これは自動配信メールです。このアドレスへのご返信はご遠慮ください。"
+      "EMAIL_AUTO_MESSAGE": "これは自動配信メールです。このアドレスへのご返信はご遠慮ください。",
+      "DOWNLOAD_FILE_PREFIX": "_YOYAKU_",
+      "DOWNLOAD_FILENAME": "Yoyaku_Kakunin.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "予約確認書 (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "報告書は <strong>要約を含みません。</strong>",
       "CLINICAL_DATA_LABEL": "臨床データ:",
       "PROCEDURE_LABEL": "手順:",
-      "SUMMARY_LABEL": "要約:"
+      "SUMMARY_LABEL": "要約:",
+      "AUTH_MESSAGE_PREFIX": "デジタル認証された者:",
+      "AUTH_MESSAGE_DATE_PREFIX": "日時:",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "所属機関:",
+      "AUTH_MESSAGE_OID_PREFIX": "OID:",
+      "SIGN_MESSAGE_PREFIX": "署名医:",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_HOKOKU_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " 認証者の氏名 ",
+      "AUTH_DATETIME_PLACEHOLDER": " 日付と時刻 ",
+      "SIGN_DOCTORS_PLACEHOLDER": " 署名医の氏名 "
     }
   },
   "API_CLIENT": {

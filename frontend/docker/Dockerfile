@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'frontend'.
 # Example:
-# docker build -t opendicom/sirius-frontend:1.5.0 -f docker/Dockerfile .
+# docker build --no-cache -t opendicom/sirius-frontend:1.5.0 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 

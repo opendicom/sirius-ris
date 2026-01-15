@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "Время:",
       "EMAIL_TIME_SUFFIX": " ч",
       "EMAIL_PREPARATION_LABEL": "Предварительная подготовка:",
-      "EMAIL_AUTO_MESSAGE": "Это автоматическое письмо, пожалуйста, не отвечайте на этот адрес."
+      "EMAIL_AUTO_MESSAGE": "Это автоматическое письмо, пожалуйста, не отвечайте на этот адрес.",
+      "DOWNLOAD_FILE_PREFIX": "_PRIEM_",
+      "DOWNLOAD_FILENAME": "Podtverzhdenie_Priema.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "Подтверждение приема (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "Отчет <strong>НЕ содержит резюме.</strong>",
       "CLINICAL_DATA_LABEL": "Клинические данные:",
       "PROCEDURE_LABEL": "Процедура:",
-      "SUMMARY_LABEL": "Резюме:"
+      "SUMMARY_LABEL": "Резюме:",
+      "AUTH_MESSAGE_PREFIX": "Цифровая подпись получена от",
+      "AUTH_MESSAGE_DATE_PREFIX": "в дату",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "действующ для учреждения",
+      "AUTH_MESSAGE_OID_PREFIX": "с OID",
+      "SIGN_MESSAGE_PREFIX": "Подписано врачом(ami):",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_OTCHET_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " ПОЛНОЕ ИМЯ АУТЕНТИФИКАТОРА ",
+      "AUTH_DATETIME_PLACEHOLDER": " ДАТА И ВРЕМЯ ",
+      "SIGN_DOCTORS_PLACEHOLDER": " ПОЛНЫЕ ИМЕНА ВРАЧЕЙ "
     }
   },
   "API_CLIENT": {

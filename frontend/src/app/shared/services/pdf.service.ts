@@ -229,7 +229,7 @@ export class PdfService {
                 //Open PDF Document in browser:
                 if(open_document){
                   pdfDocument.download(
-                    timestamp + '_CITA_' +
+                    timestamp + this.i18n.instant('PDF.APPOINTMENT.DOWNLOAD_FILE_PREFIX') +
                     res.data[0].patient.person.documents[0].document + '_' +
                     res.data[0].patient.person.name_01 + '_' +
                     res.data[0].patient.person.surname_01 +
@@ -281,7 +281,7 @@ export class PdfService {
                     to        : email_destination,
                     subject   : res.data[0].imaging.organization.name + ' - ' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_SUBJECT'),
                     message   : body_message,
-                    filename  : 'Comprobante_de_cita.pdf',
+                    filename  : this.i18n.instant('PDF.APPOINTMENT.DOWNLOAD_FILENAME'),
                     base64    : base64Document,
 
                     //Log info (Not deductible from backend):
@@ -352,7 +352,7 @@ export class PdfService {
                     const timestamp = this.sharedFunctions.getTimeStamp();
 
                     //Set name of the file to download:
-                    downloadLink.download = timestamp + '_INFORME_' + 
+                    downloadLink.download = timestamp + this.i18n.instant('PDF.REPORT_DRAFT.DOWNLOAD_FILE_PREFIX') + 
                     res.data[0].patient.person.documents[0].document + '_' +
                     res.data[0].patient.person.name_01 + '_' + 
                     res.data[0].patient.person.surname_01 + 
@@ -466,10 +466,10 @@ export class PdfService {
                 const performing_datetime = datetime.dateDay + '/' + datetime.dateMonth + '/' + datetime.dateYear + ' ' + datetime.startHours + ':' + datetime.startMinutes + ' hs';
 
                 //Authenticate message:
-                const authMessage = 'Autenticado digitalmente por NOMBRE COMPLETO AUTENTICADOR en fecha del FECHA Y HORA actuando para la institución ' + res.data[0].appointment.imaging.organization.name + ' con OID ' + res.data[0].appointment.imaging.organization.OID;
+                const authMessage = this.i18n.instant('PDF.REPORT_DRAFT.AUTH_MESSAGE_PREFIX') + this.i18n.instant('PDF.REPORT_DRAFT.AUTH_AUTHENTICATOR_PLACEHOLDER') + this.i18n.instant('PDF.REPORT_DRAFT.AUTH_MESSAGE_DATE_PREFIX') + this.i18n.instant('PDF.REPORT_DRAFT.AUTH_DATETIME_PLACEHOLDER') + this.i18n.instant('PDF.REPORT_DRAFT.AUTH_MESSAGE_ORGANIZATION_PREFIX') + ' ' + res.data[0].appointment.imaging.organization.name + ' ' + this.i18n.instant('PDF.REPORT_DRAFT.AUTH_MESSAGE_OID_PREFIX') + ' ' + res.data[0].appointment.imaging.organization.OID;
 
                 //Signatures message:
-                const signMessage = 'Firmado por médico/s: NOMBRE COMPLETO MÉDICOS FIRMANTES | ' + res.data[0].appointment.imaging.organization.short_name;
+                const signMessage = this.i18n.instant('PDF.REPORT_DRAFT.SIGN_MESSAGE_PREFIX') + this.i18n.instant('PDF.REPORT_DRAFT.SIGN_DOCTORS_PLACEHOLDER') + this.i18n.instant('PDF.REPORT_DRAFT.SIGN_MESSAGE_SEPARATOR') + res.data[0].appointment.imaging.organization.short_name;
 
                 //Convert HTML to PDF Make syntax:
                 let htmlClinicalInfo: any = htmlToPdfmake('<p>' + this.i18n.instant('PDF.REPORT_DRAFT.NO_CLINICAL_DATA') + '<p>');
@@ -633,7 +633,7 @@ export class PdfService {
 
               //Open PDF Document in browser:
               pdfDocument.download(
-                timestamp + '_INFORME_' +
+                timestamp + this.i18n.instant('PDF.REPORT_DRAFT.DOWNLOAD_FILE_PREFIX') +
                 res.data[0].patient.person.documents[0].document + '_' +
                 res.data[0].patient.person.name_01 + '_' +
                 res.data[0].patient.person.surname_01 +

@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "Uhrzeit:",
       "EMAIL_TIME_SUFFIX": " Uhr",
       "EMAIL_PREPARATION_LABEL": "Vorbereitung:",
-      "EMAIL_AUTO_MESSAGE": "Dies ist eine automatische E-Mail, bitte antworten Sie nicht auf diese Adresse."
+      "EMAIL_AUTO_MESSAGE": "Dies ist eine automatische E-Mail, bitte antworten Sie nicht auf diese Adresse.",
+      "DOWNLOAD_FILE_PREFIX": "_TERMIN_",
+      "DOWNLOAD_FILENAME": "Terminbestaetigung.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "Terminbestätigung (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "Der Bericht <strong>ENTHÄLT KEINE Zusammenfassung.</strong>",
       "CLINICAL_DATA_LABEL": "Klinische Daten:",
       "PROCEDURE_LABEL": "Verfahren:",
-      "SUMMARY_LABEL": "Zusammenfassung:"
+      "SUMMARY_LABEL": "Zusammenfassung:",
+      "AUTH_MESSAGE_PREFIX": "Digital authentifiziert durch",
+      "AUTH_MESSAGE_DATE_PREFIX": "am",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "für die Institution tätig",
+      "AUTH_MESSAGE_OID_PREFIX": "mit OID",
+      "SIGN_MESSAGE_PREFIX": "Unterzeichnet von Arzt(en):",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_BERICHT_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " VOLLSTÄNDIGER NAME DES AUTHENTIFIZIERERS ",
+      "AUTH_DATETIME_PLACEHOLDER": " DATUM UND UHRZEIT ",
+      "SIGN_DOCTORS_PLACEHOLDER": " VOLLSTÄNDIGE ARZTNAMEN "
     }
   },
   "API_CLIENT": {

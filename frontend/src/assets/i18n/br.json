@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "Hora:",
       "EMAIL_TIME_SUFFIX": " hs",
       "EMAIL_PREPARATION_LABEL": "Preparação prévia:",
-      "EMAIL_AUTO_MESSAGE": "Este é um e-mail automático, por favor não responda a este endereço."
+      "EMAIL_AUTO_MESSAGE": "Este é um e-mail automático, por favor não responda a este endereço.",
+      "DOWNLOAD_FILE_PREFIX": "_CONSULTA_",
+      "DOWNLOAD_FILENAME": "Comprovante_Consulta.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "Comprovante de Consulta (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "O relatório <strong>NÃO possui resumo.</strong>",
       "CLINICAL_DATA_LABEL": "Dado clínico:",
       "PROCEDURE_LABEL": "Procedimento:",
-      "SUMMARY_LABEL": "Resumo:"
+      "SUMMARY_LABEL": "Resumo:",
+      "AUTH_MESSAGE_PREFIX": "Autenticado digitalmente por",
+      "AUTH_MESSAGE_DATE_PREFIX": "na data de",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "atuando para a instituição",
+      "AUTH_MESSAGE_OID_PREFIX": "com OID",
+      "SIGN_MESSAGE_PREFIX": "Assinado por médico(s):",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_RELATORIO_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " NOME COMPLETO AUTENTICADOR ",
+      "AUTH_DATETIME_PLACEHOLDER": " DATA E HORA ",
+      "SIGN_DOCTORS_PLACEHOLDER": " NOME COMPLETO MÉDICOS ASSINANTES "
     }
   },
   "API_CLIENT": {

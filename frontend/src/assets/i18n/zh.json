@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "时间:",
       "EMAIL_TIME_SUFFIX": " 小时",
       "EMAIL_PREPARATION_LABEL": "预先准备:",
-      "EMAIL_AUTO_MESSAGE": "这是一封自动电子邮件，请不要回复此地址。"
+      "EMAIL_AUTO_MESSAGE": "这是一封自动电子邮件，请不要回复此地址。",
+      "DOWNLOAD_FILE_PREFIX": "_YUYUE_",
+      "DOWNLOAD_FILENAME": "Yuyue_Queren.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "预约确认书（Sirius RIS）",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "报告 <strong>不包含总结。</strong>",
       "CLINICAL_DATA_LABEL": "临床数据:",
       "PROCEDURE_LABEL": "程序:",
-      "SUMMARY_LABEL": "总结:"
+      "SUMMARY_LABEL": "总结:",
+      "AUTH_MESSAGE_PREFIX": "数字签名认证人:",
+      "AUTH_MESSAGE_DATE_PREFIX": "于",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "接处理机构:",
+      "AUTH_MESSAGE_OID_PREFIX": "OID:",
+      "SIGN_MESSAGE_PREFIX": "签名释医生:",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_BAOGAO_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " 认证者全名 ",
+      "AUTH_DATETIME_PLACEHOLDER": " 日期和时间 ",
+      "SIGN_DOCTORS_PLACEHOLDER": " 医生全名 "
     }
   },
   "API_CLIENT": {

@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "Hora:",
       "EMAIL_TIME_SUFFIX": " hs",
       "EMAIL_PREPARATION_LABEL": "Preparación previa:",
-      "EMAIL_AUTO_MESSAGE": "Este es un correo automático, por favor no responda a esta dirección."
+      "EMAIL_AUTO_MESSAGE": "Este es un correo automático, por favor no responda a esta dirección.",
+      "DOWNLOAD_FILE_PREFIX": "_CITA_",
+      "DOWNLOAD_FILENAME": "Comprobante_de_cita.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "Comprobante de cita (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "El informe <strong>NO posee en suma.</strong>",
       "CLINICAL_DATA_LABEL": "Dato clínico:",
       "PROCEDURE_LABEL": "Procedimiento:",
-      "SUMMARY_LABEL": "En suma:"
+      "SUMMARY_LABEL": "En suma:",
+      "AUTH_MESSAGE_PREFIX": "Autenticado digitalmente por",
+      "AUTH_MESSAGE_DATE_PREFIX": "en fecha del",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "actuando para la institución",
+      "AUTH_MESSAGE_OID_PREFIX": "con OID",
+      "SIGN_MESSAGE_PREFIX": "Firmado por médico/s:",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_INFORME_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " NOMBRE COMPLETO AUTENTICADOR ",
+      "AUTH_DATETIME_PLACEHOLDER": " FECHA Y HORA ",
+      "SIGN_DOCTORS_PLACEHOLDER": " NOMBRE COMPLETO MÉDICOS FIRMANTES "
     }
   },
   "API_CLIENT": {

@@ -2152,7 +2152,9 @@
       "EMAIL_TIME_LABEL": "Ora:",
       "EMAIL_TIME_SUFFIX": " ore",
       "EMAIL_PREPARATION_LABEL": "Preparazione preliminare:",
-      "EMAIL_AUTO_MESSAGE": "Questo è un messaggio di posta elettronica automatico, si prega di non rispondere a questo indirizzo."
+      "EMAIL_AUTO_MESSAGE": "Questo è un messaggio di posta elettronica automatico, si prega di non rispondere a questo indirizzo.",
+      "DOWNLOAD_FILE_PREFIX": "_APPUNTAMENTO_",
+      "DOWNLOAD_FILENAME": "Conferma_Appuntamento.pdf"
     },
     "REPORT": {
       "EMAIL_SUBJECT": "Conferma dell'Appuntamento (Sirius RIS)",
@@ -2171,7 +2173,17 @@
       "NO_SUMMARY": "Il rapporto <strong>NON ha riassunto.</strong>",
       "CLINICAL_DATA_LABEL": "Dato clinico:",
       "PROCEDURE_LABEL": "Procedura:",
-      "SUMMARY_LABEL": "Riassunto:"
+      "SUMMARY_LABEL": "Riassunto:",
+      "AUTH_MESSAGE_PREFIX": "Autenticato digitalmente da",
+      "AUTH_MESSAGE_DATE_PREFIX": "in data di",
+      "AUTH_MESSAGE_ORGANIZATION_PREFIX": "agendo per l'istituzione",
+      "AUTH_MESSAGE_OID_PREFIX": "con OID",
+      "SIGN_MESSAGE_PREFIX": "Firmato da medico(i):",
+      "SIGN_MESSAGE_SEPARATOR": " | ",
+      "DOWNLOAD_FILE_PREFIX": "_RELAZIONE_",
+      "AUTH_AUTHENTICATOR_PLACEHOLDER": " NOME COMPLETO AUTENTICATORE ",
+      "AUTH_DATETIME_PLACEHOLDER": " DATA E ORA ",
+      "SIGN_DOCTORS_PLACEHOLDER": " NOME COMPLETO MEDICI FIRMATARI "
     }
   },
   "API_CLIENT": {
