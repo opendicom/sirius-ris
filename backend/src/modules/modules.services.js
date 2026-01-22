@@ -551,10 +551,10 @@ async function findAggregation(req, res, currentSchema, stats = false){
 
     //Add operations to the main aggregation (skip and limit bad count):
     if(formatted_proj != ''){ aggregate.push({ $project: formatted_proj }); }
-    aggregate.push({ $sort: { '_id': -1 } }); //Add default first sort (last records first).
+    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); } //Prioritize user sort over default.
+    if(formatted_sort == undefined || formatted_sort == null || formatted_sort == ''){ aggregate.push({ $sort: { '_id': -1 } }); } //Add default first sort (last records first).
     if(!isNaN(req.query.skip)){ aggregate.push({ $skip: req.query.skip }); }
     if(!isNaN(req.query.limit)){ aggregate.push({ $limit: req.query.limit }); }
-    if(formatted_sort != ''){ aggregate.push({ $sort: formatted_sort }); }
 
     //Send DEBUG Message:
     mainServices.sendConsoleMessage('DEBUG', '\nfind aggregation [processed condition]: ' + JSON.stringify(aggregate));
