@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -15,11 +15,17 @@ import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';         
   templateUrl: './list-requests.component.html',
   styleUrls: ['./list-requests.component.css']
 })
-export class ListRequestsComponent implements OnInit {
+export class ListRequestsComponent implements OnInit, DoCheck {
   //Set component properties:
   public country_codes                  : any = ISO_3166;
   public documentTypesKeys              : string[] = objectKeys.documentTypesKeys;
   public appointmentRequestsFlowStateKeys: string[] = objectKeys.appointmentRequestsFlowStateKeys;
+
+  //Loading state management:
+  public loading: boolean = false;
+  private initialLoad: boolean = true;
+  private previousParams: any;
+  private previousResponse: any;
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -155,7 +161,32 @@ export class ListRequestsComponent implements OnInit {
     }
 
     //First search (List):
-    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+    this.loading = true;
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resRequests => {
+      this.loading = false;
+      this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
+      this.previousResponse = this.sharedFunctions.response;
+      this.initialLoad = false;
+    });
+  }
+
+  ngDoCheck(): void {
+    if(this.initialLoad){
+      return;
+    }
+    const currentParamsStr = JSON.stringify(this.sharedProp.params);
+    const previousParamsStr = JSON.stringify(this.previousParams);
+    if(currentParamsStr !== previousParamsStr){
+      this.loading = true;
+      this.previousParams = JSON.parse(currentParamsStr);
+      return;
+    }
+    if(this.sharedFunctions.response !== this.previousResponse){
+      this.previousResponse = this.sharedFunctions.response;
+      if(this.sharedFunctions.response){
+        this.loading = false;
+      }
+    }
   }
 
   addAppointment(current: any){

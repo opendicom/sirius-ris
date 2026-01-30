@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -8,16 +8,21 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 import { ISO_3166, objectKeys } from '@env/environment';                                          // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
-
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, DoCheck {
   //Set component properties:
   public country_codes          : any = ISO_3166;
   public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
+
+  //Loading state management:
+  public loading: boolean = false;
+  private initialLoad: boolean = true;
+  private previousParams: any;
+  private previousResponse: any;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('CHECK-IN.LIST.ACTIONS')];
@@ -136,6 +141,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.setDefaultModality();
   }
 
@@ -187,6 +193,10 @@ export class ListComponent implements OnInit {
 
             //Find nested elements (Inverse reference | No aggregation cases):
             if(this.sharedProp.action.nested_element){ this.sharedFunctions.findNestedElements(res, this.sharedProp.action.nested_element); }
+            this.loading = false;
+            this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
+            this.previousResponse = this.sharedFunctions.response;
+            this.initialLoad = false;
           }
         });
 
@@ -195,6 +205,25 @@ export class ListComponent implements OnInit {
         this.sharedFunctions.sendMessage(this.i18n.instant('CHECK-IN.LIST.DEFAULT-MODALITY-ERROR'));
       }
     }, findOne);
+  }
+
+  ngDoCheck(): void {
+    if(this.initialLoad){
+      return;
+    }
+    const currentParamsStr = JSON.stringify(this.sharedProp.params);
+    const previousParamsStr = JSON.stringify(this.previousParams);
+    if(currentParamsStr !== previousParamsStr){
+      this.loading = true;
+      this.previousParams = JSON.parse(currentParamsStr);
+      return;
+    }
+    if(this.sharedFunctions.response !== this.previousResponse){
+      this.previousResponse = this.sharedFunctions.response;
+      if(this.sharedFunctions.response){
+        this.loading = false;
+      }
+    }
   }
 
   mwlResend(fk_appointment: string, accession_date: string){

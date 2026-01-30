@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -15,10 +15,14 @@ import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';         
   templateUrl: './list-drafts.component.html',
   styleUrls: ['./list-drafts.component.css']
 })
-export class ListDraftsComponent implements OnInit {
+export class ListDraftsComponent implements OnInit, DoCheck {
   //Set component properties:
   public country_codes: any = ISO_3166;
   public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
+  public loading                : boolean = false;
+  private initialLoad           : boolean = true;
+  private previousParams        : any = null;
+  private previousResponse      : any = null;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = ['Acciones'];
@@ -160,8 +164,51 @@ export class ListDraftsComponent implements OnInit {
       this.sharedProp.params['filter[_id]'] = id;
     }
 
+    //Set loading state:
+    this.loading = true;
+
     //First search (List):
-    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resDrafts => {
+      //Set loading to false when data is received:
+      this.loading = false;
+      
+      //Initialize base state for change detection after initial load:
+      this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
+      this.previousResponse = this.sharedFunctions.response;
+      
+      //Mark initial load as complete:
+      this.initialLoad = false;
+    });
+  }
+
+  ngDoCheck(): void {
+    //Only execute detection logic after initial load is complete:
+    if(this.initialLoad){
+      return;
+    }
+
+    //Detect changes in request params from action component (indicates new search):
+    const currentParamsStr = JSON.stringify(this.sharedProp.params);
+    const previousParamsStr = JSON.stringify(this.previousParams);
+    
+    if(currentParamsStr !== previousParamsStr){
+      //Params changed - set loading to true:
+      this.loading = true;
+      //Update previous params to current state:
+      this.previousParams = JSON.parse(currentParamsStr);
+      return; //Exit to avoid checking response in same cycle
+    }
+
+    //Detect changes in response (indicates data received):
+    if(this.sharedFunctions.response !== this.previousResponse){
+      //Update previous response reference:
+      this.previousResponse = this.sharedFunctions.response;
+      
+      //If response is not null/false, data has arrived - disable loading:
+      if(this.sharedFunctions.response){
+        this.loading = false;
+      }
+    }
   }
 
   deleteAppointmentsDrafts(appointment_draft: any){

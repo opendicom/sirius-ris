@@ -1,4 +1,13 @@
-<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" style="height: 400px;">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #contentBlock>
+  <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
 
 <ng-template #thenBlockTable>
   <div #main_list>
@@ -141,10 +150,11 @@
   </div>
 </ng-template>
 
-<!-- No Data -->
-<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
-  {{ sharedFunctions.response.message }}
-</div>
+  <!-- No Data -->
+  <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    {{ sharedFunctions.response.message }}
+  </div>
 
-<!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'SLOTS.LIST.EXPORT_LIST' | i18n }}</button></div>
+  <!-- Export to XSLX -->
+  <div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'SLOTS.LIST.EXPORT_LIST' | i18n }}</button></div>
+</ng-template>
