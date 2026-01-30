@@ -121,30 +121,44 @@ export class ListComponent implements OnInit, DoCheck {
       this.sharedProp.params['filter[_id]'] = id;
     }
 
-    //First search (List):
+    //Set loading state:
     this.loading = true;
+
+    //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resSlots => {
+      //Set loading to false when data is received:
       this.loading = false;
+
+      //Initialize base state for change detection after initial load:
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
       this.previousResponse = this.sharedFunctions.response;
+
+      //Mark initial load as complete:
       this.initialLoad = false;
     });
   }
 
   ngDoCheck(): void {
+    //Only execute detection logic after initial load is complete:
     if(this.initialLoad){
       return;
     }
+
+    //Detect changes in request params from action component (indicates new search):
     const currentParamsStr = JSON.stringify(this.sharedProp.params);
     const previousParamsStr = JSON.stringify(this.previousParams);
+
     if(currentParamsStr !== previousParamsStr){
+      //Params changed - set loading to true:
       this.loading = true;
+      //Update previous params to current state:
       this.previousParams = JSON.parse(currentParamsStr);
       return;
     }
     if(this.sharedFunctions.response !== this.previousResponse){
       this.previousResponse = this.sharedFunctions.response;
       if(this.sharedFunctions.response){
+        //Response received - mark loading as complete:
         this.loading = false;
       }
     }

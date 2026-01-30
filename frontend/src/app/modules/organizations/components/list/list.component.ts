@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -15,8 +15,14 @@ import { ISO_3166, regexObjectId } from '@env/environment';                     
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, DoCheck {
   public country_codes    : any = ISO_3166;
+
+  //Loading state management:
+  public loading: boolean = false;
+  private initialLoad: boolean = true;
+  private previousParams: any;
+  private previousResponse: any;
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('ORGANIZATIONS.LIST.ACTIONS'), this.i18n.instant('ORGANIZATIONS.LIST.COUNTRY')];
@@ -103,7 +109,46 @@ export class ListComponent implements OnInit {
       this.sharedProp.params['filter[_id]'] = id;
     }
 
+    //Set loading state:
+    this.loading = true;
+
     //First search (List):
-    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+    this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resOrgs => {
+      //Set loading to false when data is received:
+      this.loading = false;
+
+      //Initialize base state for change detection after initial load:
+      this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
+      this.previousResponse = this.sharedFunctions.response;
+
+      //Mark initial load as complete:
+      this.initialLoad = false;
+    });
+  }
+
+  ngDoCheck(): void {
+    //Only execute detection logic after initial load is complete:
+    if(this.initialLoad){
+      return;
+    }
+
+    //Detect changes in request params from action component (indicates new search):
+    const currentParamsStr = JSON.stringify(this.sharedProp.params);
+    const previousParamsStr = JSON.stringify(this.previousParams);
+
+    if(currentParamsStr !== previousParamsStr){
+      //Params changed - set loading to true:
+      this.loading = true;
+      //Update previous params to current state:
+      this.previousParams = JSON.parse(currentParamsStr);
+      return;
+    }
+    if(this.sharedFunctions.response !== this.previousResponse){
+      this.previousResponse = this.sharedFunctions.response;
+      if(this.sharedFunctions.response){
+        //Response received - mark loading as complete:
+        this.loading = false;
+      }
+    }
   }
 }
