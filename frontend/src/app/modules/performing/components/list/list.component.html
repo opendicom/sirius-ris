@@ -1,415 +1,427 @@
-<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
 
-<ng-template #thenBlockTable>
-  <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
-      <!-- report_indicator -->
-      <ng-container matColumnDef="report_indicator">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <!-- reporting indicator -->
-          <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-            <span *ngIf="element.appointment && element.appointment.reporting && element.appointment.reporting.fk_reporting; then thenBlockUserAssigned else elseBlockUserNotAssigned"></span>
+<!-- Loading indicator -->
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner" style="height: 400px;">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
 
-            <!-- Report user assigned -->
-            <ng-template #thenBlockUserAssigned>
-              <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
-              <ng-template #thenBlockReporting>
-                <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_ASSIGNED_TO_USER' | i18n }}" color="primary">circle</mat-icon>
+<!-- Content -->
+<ng-template #contentBlock>
+  <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+  <ng-template #thenBlockTable>
+    <div #main_list>
+      <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+        <!-- report_indicator -->
+        <ng-container matColumnDef="report_indicator">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <!-- reporting indicator -->
+            <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+              <span *ngIf="element.appointment && element.appointment.reporting && element.appointment.reporting.fk_reporting; then thenBlockUserAssigned else elseBlockUserNotAssigned"></span>
+
+              <!-- Report user assigned -->
+              <ng-template #thenBlockUserAssigned>
+                <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
+                <ng-template #thenBlockReporting>
+                  <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_ASSIGNED_TO_USER' | i18n }}" color="primary">circle</mat-icon>
+                </ng-template>
+                <ng-template #elseBlockReporting>
+                  <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_NOT_ASSIGNED_TO_USER' | i18n }}" color="accent">circle</mat-icon>
+                </ng-template>
               </ng-template>
-              <ng-template #elseBlockReporting>
-                <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_NOT_ASSIGNED_TO_USER' | i18n }}" color="accent">circle</mat-icon>
+
+              <!-- No report cases -->
+              <ng-template #elseBlockUserNotAssigned>
+                <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_NO_REPORTER_ASSIGNED' | i18n }}" color="warn">circle</mat-icon>
               </ng-template>
-            </ng-template>
 
-            <!-- No report cases -->
-            <ng-template #elseBlockUserNotAssigned>
-              <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_NO_REPORTER_ASSIGNED' | i18n }}" color="warn">circle</mat-icon>
-            </ng-template>
-
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- element action -->
-      <ng-container matColumnDef="element_action">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.ACTIONS' | i18n }} </th>
-        <td mat-cell *matCellDef="let element">
-
-          <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
-          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
-            <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.EDIT' | i18n }}" routerLink="/performing/form/update/{{ element._id }}/performing">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </span>
-
-          <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
-          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
-            <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.LOGS' | i18n }}" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
-              <mat-icon>format_list_bulleted</mat-icon>
-            </button>
-          </span>
-
-          <br/>
-
-          <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.ARCHIVE' | i18n }}" (click)="performingDownloads(element)">
-            <mat-icon>cloud_download</mat-icon>
-          </button>
-
-          <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
-          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
-            <button mat-icon-button color="accent" class="smaller-icons" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.MAIL' | i18n }}" (click)="mailDelivery(element)">
-              <mat-icon>forward_to_inbox</mat-icon>
-            </button>
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- flow_state -->
-      <ng-container matColumnDef="flow_state">
-        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'PERFORMING.LIST.TABLE.FLOW_STATE' | i18n }}</th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-          
-          <span [ngSwitch]="element.flow_state">
-            <!-- insert_report -->
-            <span *ngSwitchCase="'P06'">
-              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.CREATE_REPORT' | i18n }}" routerLink="/reports/form/insert/{{ element._id }}">
-                  <mat-icon>playlist_add</mat-icon>
-                </button>
-              </span>
             </span>
+          </td>
+        </ng-container>
 
-            <!-- update_report and sign_report -->
-            <span *ngSwitchCase="'P07'">
-              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.UPDATE_REPORT' | i18n }}" routerLink="/reports/form/update/{{ element._id }}">
-                  <mat-icon>edit_note</mat-icon>
-                </button>
-              </span>
+        <!-- element action -->
+        <ng-container matColumnDef="element_action">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.ACTIONS' | i18n }} </th>
+          <td mat-cell *matCellDef="let element">
 
-              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
-                <mat-icon>manage_search</mat-icon>
+            <!-- Superusuario, Administrador, Concesiones: [5: Gestión de estudios] -->
+            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [5]))" >
+              <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.EDIT' | i18n }}" routerLink="/performing/form/update/{{ element._id }}/performing">
+                <mat-icon>edit</mat-icon>
               </button>
             </span>
 
-            <!-- sign_report and authenticate_report -->
-            <span *ngSwitchCase="'P08'">
-              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
-              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-                <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.EDIT_REPORT_WARNING' | i18n }}" routerLink="/reports/form/update/{{ element._id }}">
-                  <mat-icon>edit_note</mat-icon>
-                </button>
-              </span>
-
-              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
-                <mat-icon>manage_search</mat-icon>
+            <!-- Superusuario, Administrador, Concesiones: [11: Acceso a logs de elementos] -->
+            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [11]))" >
+              <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.LOGS' | i18n }}" routerLink="/logs/element/{{ sharedProp.element }}/{{ element._id }}">
+                <mat-icon>format_list_bulleted</mat-icon>
               </button>
             </span>
 
-            <!--view_report and amend-->
-            <span *ngSwitchCase="'P09'">
-              <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
-                <mat-icon>playlist_add_check</mat-icon>
-              </button>
-            </span>
-          </span>
-
-          <!-- DICOM ACCESS -->
-          <span *ngIf="element.flow_state == 'P06' || element.flow_state == 'P07' || element.flow_state == 'P08' || element.flow_state == 'P09'">
-            <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [21: Acceso al servicio de imágenes del PACS] -->
-            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [21]))">
-              <button mat-mini-fab class="small_button" type="button" (click)="dicomAccess(element)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.DICOM' | i18n }}" color="accent">
-                <mat-icon>visibility</mat-icon>
-              </button>
-            </span>
             <br/>
-          </span>
 
-          <!-- flow_state -->
-          <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span>
-        </td>
-      </ng-container>
+            <button mat-icon-button color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.ARCHIVE' | i18n }}" (click)="performingDownloads(element)">
+              <mat-icon>cloud_download</mat-icon>
+            </button>
 
-      <!-- date -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.DATE' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
-        </td>
-      </ng-container>
+            <!-- Superusuario, Administrador, Concesiones: [12: Reenvío de correos] -->
+            <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [12]))">
+              <button mat-icon-button color="accent" class="smaller-icons" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.MAIL' | i18n }}" (click)="mailDelivery(element)">
+                <mat-icon>forward_to_inbox</mat-icon>
+              </button>
+            </span>
+          </td>
+        </ng-container>
 
-      <!-- report control -->
-      <ng-container matColumnDef="report_control">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.REPORT_CONTROL' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <!-- Check if current performing is cancelled or not -->
-          <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled else elseBlockCancelled"></span>
-          <ng-template #thenBlockNotCancelled>
+        <!-- flow_state -->
+        <ng-container matColumnDef="flow_state">
+          <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'PERFORMING.LIST.TABLE.FLOW_STATE' | i18n }}</th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            
+            <span [ngSwitch]="element.flow_state">
+              <!-- insert_report -->
+              <span *ngSwitchCase="'P06'">
+                <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+                <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                  <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.CREATE_REPORT' | i18n }}" routerLink="/reports/form/insert/{{ element._id }}">
+                    <mat-icon>playlist_add</mat-icon>
+                  </button>
+                </span>
+              </span>
 
-            <!-- Check if procedure requires or not report -->
-            <span *ngIf="element.date && element.procedure && element.procedure.reporting_delay !== undefined && element.procedure.reporting_delay !== null && element.procedure.reporting_delay !== ''; then thenBlocklReportControl else elseBlocklReportControl"></span>
+              <!-- update_report and sign_report -->
+              <span *ngSwitchCase="'P07'">
+                <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+                <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                  <button mat-mini-fab class="small_button" type="button" color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.UPDATE_REPORT' | i18n }}" routerLink="/reports/form/update/{{ element._id }}">
+                    <mat-icon>edit_note</mat-icon>
+                  </button>
+                </span>
 
-            <ng-template #thenBlocklReportControl>
-              <span class="badge report-control-badge">
-              <!-- Authenticate control -->
-              <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated else elseBlockNotAuthenticated"></span>
-              <ng-template #thenBlockAuthenticated>  
-                <small>
-                  <!-- Create authDaysPassed to prevent multiple function exectution: -->
-                  <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
-                    <!-- Days passed count: -->
-                    <ng-container *ngIf="authDaysPassed != 'zero'; else noDaysPassed">
-                      {{ 'PERFORMING.LIST.REPORT_CONTROL.AUTHENTICATED' | i18n }} {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
-                      <span class="report-control-finished">{{ authDaysPassed }} {{ 'PERFORMING.LIST.REPORT_CONTROL.DAYS_WAIT' | i18n }}</span>
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                  <mat-icon>manage_search</mat-icon>
+                </button>
+              </span>
+
+              <!-- sign_report and authenticate_report -->
+              <span *ngSwitchCase="'P08'">
+                <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
+                <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
+                  <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.EDIT_REPORT_WARNING' | i18n }}" routerLink="/reports/form/update/{{ element._id }}">
+                    <mat-icon>edit_note</mat-icon>
+                  </button>
+                </span>
+
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                  <mat-icon>manage_search</mat-icon>
+                </button>
+              </span>
+
+              <!--view_report and amend-->
+              <span *ngSwitchCase="'P09'">
+                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
+                  <mat-icon>playlist_add_check</mat-icon>
+                </button>
+              </span>
+            </span>
+
+            <!-- DICOM ACCESS -->
+            <span *ngIf="element.flow_state == 'P06' || element.flow_state == 'P07' || element.flow_state == 'P08' || element.flow_state == 'P09'">
+              <!-- Superusuario, Administrador, Supervisor, Médico, Concesiones: [21: Acceso al servicio de imágenes del PACS] -->
+              <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [21]))">
+                <button mat-mini-fab class="small_button" type="button" (click)="dicomAccess(element)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.DICOM' | i18n }}" color="accent">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </span>
+              <br/>
+            </span>
+
+            <!-- flow_state -->
+            <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span>
+          </td>
+        </ng-container>
+
+        <!-- date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.DATE' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="column-alt text-center">
+            <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy" : "UTC" }}</span>
+          </td>
+        </ng-container>
+
+        <!-- report control -->
+        <ng-container matColumnDef="report_control">
+          <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.REPORT_CONTROL' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="column-alt text-center">
+            <!-- Check if current performing is cancelled or not -->
+            <span *ngIf="element.flow_state !== 'P11'; then thenBlockNotCancelled else elseBlockCancelled"></span>
+            <ng-template #thenBlockNotCancelled>
+
+              <!-- Check if procedure requires or not report -->
+              <span *ngIf="element.date && element.procedure && element.procedure.reporting_delay !== undefined && element.procedure.reporting_delay !== null && element.procedure.reporting_delay !== ''; then thenBlocklReportControl else elseBlocklReportControl"></span>
+
+              <ng-template #thenBlocklReportControl>
+                <span class="badge report-control-badge">
+                <!-- Authenticate control -->
+                <span *ngIf="element.flow_state == 'P09'; then thenBlockAuthenticated else elseBlockNotAuthenticated"></span>
+                <ng-template #thenBlockAuthenticated>  
+                  <small>
+                    <!-- Create authDaysPassed to prevent multiple function exectution: -->
+                    <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, sharedFunctions.authenticated_performing[element._id]) as authDaysPassed">
+                      <!-- Days passed count: -->
+                      <ng-container *ngIf="authDaysPassed != 'zero'; else noDaysPassed">
+                        {{ 'PERFORMING.LIST.REPORT_CONTROL.AUTHENTICATED' | i18n }} {{ sharedFunctions.authenticated_performing[element._id] | date:'dd/MM/yyyy':'UTC' }}&nbsp;<br/>
+                        <span class="report-control-finished">{{ authDaysPassed }} {{ 'PERFORMING.LIST.REPORT_CONTROL.DAYS_WAIT' | i18n }}</span>
+                      </ng-container>
+
+                      <!-- Authenticated on the day: -->
+                      <ng-template #noDaysPassed>
+                        {{ 'PERFORMING.LIST.REPORT_CONTROL.AUTHENTICATED_ON_DAY' | i18n }}
+                      </ng-template>
                     </ng-container>
+                  </small>          
+                </ng-template>
 
-                    <!-- Authenticated on the day: -->
-                    <ng-template #noDaysPassed>
-                      {{ 'PERFORMING.LIST.REPORT_CONTROL.AUTHENTICATED_ON_DAY' | i18n }}
-                    </ng-template>
-                  </ng-container>
-                </small>          
+                <ng-template #elseBlockNotAuthenticated>
+                  <small>
+                    <span *ngIf="element.appointment && element.appointment.report_before">
+                      {{ 'PERFORMING.LIST.REPORT_CONTROL.REQUIRED_BEFORE' | i18n }}<br/>{{ element.appointment.report_before | date : "dd/MM/yyyy" : "UTC" }}&nbsp;<br/>
+                      <!-- Create reportBeforeDays to prevent multiple function exectution: -->
+                      <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, element.appointment.report_before) as reportBeforeDays">    
+
+                        <!-- Define ng-template 'temp' that accepts a context with the daysPassed variable (prevent multiple function exectutio): -->
+                        <ng-template #temp let-daysPassed="daysPassed">
+                          <span [ngClass]="{
+                            'report-control-pristine': daysPassed < 1,
+                            'report-control-good': daysPassed < reportBeforeDays,
+                            'report-control-warn': daysPassed >= reportBeforeDays
+                          }">
+                            {{ daysPassed == 'zero' ? 0 : daysPassed  }} {{ 'PERFORMING.LIST.REPORT_CONTROL.DAYS_WAIT' | i18n }}
+                          </span>
+                        </ng-template>
+
+                        <!-- Use ng-container with *ngTemplateOutlet to pass the result of getDaysPassed(date) to the ng-template context: -->
+                        <ng-container *ngTemplateOutlet="temp; context: { daysPassed: sharedFunctions.getDaysPassed(element.date) }"></ng-container>
+                      </ng-container>
+                    </span>
+                  </small>
+                </ng-template>
+                </span>
               </ng-template>
 
-              <ng-template #elseBlockNotAuthenticated>
-                <small>
-                  <span *ngIf="element.appointment && element.appointment.report_before">
-                    {{ 'PERFORMING.LIST.REPORT_CONTROL.REQUIRED_BEFORE' | i18n }}<br/>{{ element.appointment.report_before | date : "dd/MM/yyyy" : "UTC" }}&nbsp;<br/>
-                    <!-- Create reportBeforeDays to prevent multiple function exectution: -->
-                    <ng-container *ngIf="sharedFunctions.getDaysPassed(element.date, element.appointment.report_before) as reportBeforeDays">    
+              <ng-template #elseBlocklReportControl>
+                <mat-icon matTooltip="{{ 'PERFORMING.LIST.REPORT_CONTROL.PROCEDURE_NO_REPORT' | i18n }}">info</mat-icon>
+              </ng-template>
+            </ng-template>
 
-                      <!-- Define ng-template 'temp' that accepts a context with the daysPassed variable (prevent multiple function exectutio): -->
-                      <ng-template #temp let-daysPassed="daysPassed">
-                        <span [ngClass]="{
-                          'report-control-pristine': daysPassed < 1,
-                          'report-control-good': daysPassed < reportBeforeDays,
-                          'report-control-warn': daysPassed >= reportBeforeDays
-                        }">
-                          {{ daysPassed == 'zero' ? 0 : daysPassed  }} {{ 'PERFORMING.LIST.REPORT_CONTROL.DAYS_WAIT' | i18n }}
-                        </span>
-                      </ng-template>
+            <!--Cancelled (disable control)-->
+            <ng-template #elseBlockCancelled></ng-template>
+          </td>
+        </ng-container>
+        
+        <!-- checkin_time -->
+        <ng-container matColumnDef="checkin_time">
+          <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.CHECKIN_TIME' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="column-alt text-center">
+            <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
+          </td>
+        </ng-container>
 
-                      <!-- Use ng-container with *ngTemplateOutlet to pass the result of getDaysPassed(date) to the ng-template context: -->
-                      <ng-container *ngTemplateOutlet="temp; context: { daysPassed: sharedFunctions.getDaysPassed(element.date) }"></ng-container>
-                    </ng-container>
+        <!-- documents -->
+        <ng-container matColumnDef="documents">
+          <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'PERFORMING.LIST.TABLE.DOCUMENTS' | i18n }} </th>
+          <td class="documents" mat-cell *matCellDef="let element">
+            <span *ngIf="element.patient">
+              <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : sharedProp.element })">
+                <span *ngFor="let current of element.patient.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
+                    <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
                   </span>
+                  <br/>
+                </span>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- names -->
+        <ng-container matColumnDef="names">
+          <th mat-header-cell *matHeaderCellDef> {{ 'PERFORMING.LIST.TABLE.NAMES' | i18n }} </th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.patient">
+              <span *ngIf="element.patient.person">
+                <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+
+                <span *ngIf="element.patient.person.name_02">
+                  <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+                </span>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- surnames -->
+        <ng-container matColumnDef="surnames">
+          <th mat-header-cell *matHeaderCellDef> {{ 'PERFORMING.LIST.TABLE.SURNAMES' | i18n }} </th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.patient">
+              <span *ngIf="element.patient.person">
+                <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+
+                <span *ngIf="element.patient.person.surname_02">
+                  <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+                </span>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- patient_age -->
+        <ng-container matColumnDef="patient_age">
+          <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.AGE' | i18n }}" class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.PATIENT_AGE' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="column-alt text-center">
+            <span *ngIf="element.patient">
+              <span *ngIf="element.patient.person">
+                <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- details -->
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.DETAILS' | i18n }} </th>
+          <td mat-cell *matCellDef="let element">
+            <!-- procedure -->
+            <span *ngIf="element.procedure">
+              <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
+                <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
+              </span>
+            </span>
+
+            <div class="clear"></div><hr class="dashed" />
+
+            <!-- equipment -->        
+            <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
+                <ng-template #thenBlockTableEquipment>
+                <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
+                <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
+                </span>
+            </ng-template>
+            <ng-template #elseBlockTableEquipment>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
+
+            <!-- modality -->
+            <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
+            <ng-template #thenBlockTableModality>
+              <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
+            </ng-template>
+            <ng-template #elseBlockTableModality>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
+          </td>
+        </ng-container>
+
+        <!-- outpatient_inpatient -->
+        <ng-container matColumnDef="outpatient_inpatient">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.HOSPITALIZATION' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <span *ngIf="element.appointment">
+                <div *ngIf="element.appointment.outpatient; then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock><mat-icon color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.OUTPATIENT' | i18n }}">house</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.INPATIENT' | i18n }}">hotel</mat-icon></ng-template>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- urgency -->
+        <ng-container matColumnDef="urgency">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.URGENCY' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+              <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
+              <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
+          </td>
+        </ng-container>
+
+        <!-- status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="divider-alt"> {{ 'PERFORMING.LIST.TABLE.STATUS' | i18n }} </th>
+          <td mat-cell *matCellDef="let element" class="divider-alt">
+            <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'PERFORMING.LIST.STATUS.ACTIVE' | i18n }}">done</mat-icon></ng-template>
+            <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.STATUS.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
+          </td>
+        </ng-container>
+
+        <!-- domain -->
+        <ng-container matColumnDef="domain">
+          <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'PERFORMING.LIST.TABLE.DOMAIN' | i18n }}</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.appointment" class="domain-container">
+              <!--referring-->
+              <small><strong>{{ 'PERFORMING.LIST.DOMAIN.REQUESTING' | i18n }}</strong></small>
+              <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
+              <ng-template #thenBlockReferring>
+                <small>
+                  <span *ngIf="element.appointment.referring.organization" innerHTML="{{ element.appointment.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.referring.branch" innerHTML=" ► {{ element.appointment.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
                 </small>
               </ng-template>
-              </span>
-            </ng-template>
+              <ng-template #elseBlockReferring>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
 
-            <ng-template #elseBlocklReportControl>
-              <mat-icon matTooltip="{{ 'PERFORMING.LIST.REPORT_CONTROL.PROCEDURE_NO_REPORT' | i18n }}">info</mat-icon>
-            </ng-template>
-          </ng-template>
+              <hr class="dashed" />
 
-          <!--Cancelled (disable control)-->
-          <ng-template #elseBlockCancelled></ng-template>
-        </td>
-      </ng-container>
-      
-      <!-- checkin_time -->
-      <ng-container matColumnDef="checkin_time">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.CHECKIN_TIME' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <span *ngIf="element.date">{{ element.date | date : "HH:mm" : "UTC" }}</span>
-        </td>
-      </ng-container>
+              <!--imaging-->
+              <small><strong>{{ 'PERFORMING.LIST.DOMAIN.IMAGING' | i18n }}</strong></small>
+              <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
+              <ng-template #thenBlockImaging>
+                <small>
+                  <span *ngIf="element.appointment.imaging.organization" innerHTML="{{ element.appointment.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.imaging.branch" innerHTML=" ► {{ element.appointment.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
+                </small>
+              </ng-template>
+              <ng-template #elseBlockImaging>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
 
-      <!-- documents -->
-      <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef class="documents"> {{ 'PERFORMING.LIST.TABLE.DOCUMENTS' | i18n }} </th>
-        <td class="documents" mat-cell *matCellDef="let element">
-          <span *ngIf="element.patient">
-            <span *ngIf="element.patient.person" class="patient-details" (click)="sharedFunctions.openDialog('patient_details', { 'patient' : element.patient, 'destiny' : sharedProp.element })">
-              <span *ngFor="let current of element.patient.person.documents" >
-                <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
-                <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
-                  <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
-                </span>
-                <br/>
-              </span>
-            </span>
-          </span>
-        </td>
-      </ng-container>
+              <hr class="dashed" />
 
-      <!-- names -->
-      <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> {{ 'PERFORMING.LIST.TABLE.NAMES' | i18n }} </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.patient">
-            <span *ngIf="element.patient.person">
-              <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+              <!--reporting-->
+              <small><strong>{{ 'PERFORMING.LIST.DOMAIN.REPORTING' | i18n }}</strong></small>
+              <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
+              <ng-template #thenBlockReporting>
+                <small>
+                  <span *ngIf="element.appointment.reporting.organization" innerHTML="{{ element.appointment.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.reporting.branch" innerHTML=" ► {{ element.appointment.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
+                  <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
+                </small>
+              </ng-template>
+              <ng-template #elseBlockReporting>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
+            </div>
+          </td>
+        </ng-container>
 
-              <span *ngIf="element.patient.person.name_02">
-                <span innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
-              </span>
-            </span>
-          </span>
-        </td>
-      </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </ng-template>
 
-      <!-- surnames -->
-      <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> {{ 'PERFORMING.LIST.TABLE.SURNAMES' | i18n }} </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.patient">
-            <span *ngIf="element.patient.person">
-              <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+  <!-- Await response or not response -->
+  <ng-template #elseBlockTable>
+    <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+      {{ 'PERFORMING.LIST.WAIT_NO_RESULTS' | i18n }}
+    </div>
+  </ng-template>
 
-              <span *ngIf="element.patient.person.surname_02">
-                <span innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
-              </span>
-            </span>
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- patient_age -->
-      <ng-container matColumnDef="patient_age">
-        <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.AGE' | i18n }}" class="column-alt text-center"> {{ 'PERFORMING.LIST.TABLE.PATIENT_AGE' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="column-alt text-center">
-          <span *ngIf="element.patient">
-            <span *ngIf="element.patient.person">
-              <span>{{ sharedFunctions.calculateAge(element.patient.person.birth_date, element.date) }}</span>
-            </span>
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- details -->
-      <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.DETAILS' | i18n }} </th>
-        <td mat-cell *matCellDef="let element">
-          <!-- procedure -->
-          <span *ngIf="element.procedure">
-            <span class="badge-alt" matTooltip="{{ element.procedure.code }}">
-              <span innerHTML="{{ element.procedure.name | highlighter : sharedProp.filter }}"></span>
-            </span>
-          </span>
-
-          <div class="clear"></div><hr class="dashed" />
-
-          <!-- equipment -->        
-          <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
-              <ng-template #thenBlockTableEquipment>
-              <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
-              <span innerHTML="{{ element.equipment.name | highlighter : sharedProp.filter }}"></span>
-              </span>
-          </ng-template>
-          <ng-template #elseBlockTableEquipment>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
-
-          <!-- modality -->
-          <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
-          <ng-template #thenBlockTableModality>
-            <span class="badge" matTooltip="{{ element.modality.code_meaning }}">{{ element.modality.code_value }}</span>
-          </ng-template>
-          <ng-template #elseBlockTableModality>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
-        </td>
-      </ng-container>
-
-      <!-- outpatient_inpatient -->
-      <ng-container matColumnDef="outpatient_inpatient">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.HOSPITALIZATION' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-          <span *ngIf="element.appointment">
-              <div *ngIf="element.appointment.outpatient; then thenBlock else elseBlock"></div>
-              <ng-template #thenBlock><mat-icon color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.OUTPATIENT' | i18n }}">house</mat-icon></ng-template>
-              <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.INPATIENT' | i18n }}">hotel</mat-icon></ng-template>
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- urgency -->
-      <ng-container matColumnDef="urgency">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PERFORMING.LIST.TABLE.URGENCY' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="text-center">
-            <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
-            <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
-        </td>
-      </ng-container>
-
-      <!-- status -->
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef class="divider-alt"> {{ 'PERFORMING.LIST.TABLE.STATUS' | i18n }} </th>
-        <td mat-cell *matCellDef="let element" class="divider-alt">
-          <div *ngIf="element.status; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'PERFORMING.LIST.STATUS.ACTIVE' | i18n }}">done</mat-icon></ng-template>
-          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'PERFORMING.LIST.STATUS.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
-        </td>
-      </ng-container>
-
-      <!-- domain -->
-      <ng-container matColumnDef="domain">
-        <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'PERFORMING.LIST.TABLE.DOMAIN' | i18n }}</th>
-        <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.appointment" class="domain-container">
-            <!--referring-->
-            <small><strong>{{ 'PERFORMING.LIST.DOMAIN.REQUESTING' | i18n }}</strong></small>
-            <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>
-            <ng-template #thenBlockReferring>
-              <small>
-                <span *ngIf="element.appointment.referring.organization" innerHTML="{{ element.appointment.referring.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.referring.branch" innerHTML=" ► {{ element.appointment.referring.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.referring.service" innerHTML=" ► {{ element.appointment.referring.service.name | highlighter : sharedProp.filter }}"></span>
-              </small>
-            </ng-template>
-            <ng-template #elseBlockReferring>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
-
-            <hr class="dashed" />
-
-            <!--imaging-->
-            <small><strong>{{ 'PERFORMING.LIST.DOMAIN.IMAGING' | i18n }}</strong></small>
-            <span *ngIf="element.appointment.imaging; then thenBlockImaging else elseBlockImaging"></span>
-            <ng-template #thenBlockImaging>
-              <small>
-                <span *ngIf="element.appointment.imaging.organization" innerHTML="{{ element.appointment.imaging.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.imaging.branch" innerHTML=" ► {{ element.appointment.imaging.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.imaging.service" innerHTML=" ► {{ element.appointment.imaging.service.name | highlighter : sharedProp.filter }}"></span>
-              </small>
-            </ng-template>
-            <ng-template #elseBlockImaging>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
-
-            <hr class="dashed" />
-
-            <!--reporting-->
-            <small><strong>{{ 'PERFORMING.LIST.DOMAIN.REPORTING' | i18n }}</strong></small>
-            <span *ngIf="element.appointment.reporting; then thenBlockReporting else elseBlockReporting"></span>
-            <ng-template #thenBlockReporting>
-              <small>
-                <span *ngIf="element.appointment.reporting.organization" innerHTML="{{ element.appointment.reporting.organization.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.reporting.branch" innerHTML=" ► {{ element.appointment.reporting.branch.short_name | highlighter : sharedProp.filter }}"></span>
-                <span *ngIf="element.appointment.reporting.service" innerHTML=" ► {{ element.appointment.reporting.service.name | highlighter : sharedProp.filter }}"></span>
-              </small>
-            </ng-template>
-            <ng-template #elseBlockReporting>{{ 'PERFORMING.LIST.NO_DATA' | i18n }}</ng-template>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+  <!-- No Data -->
+  <div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    {{ sharedFunctions.response.message }}
   </div>
+
+  <!-- Export to XSLX -->
+  <div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'PERFORMING.LIST.EXPORT_LIST' | i18n }}</button></div>
 </ng-template>
-
-<!-- Await response or not response -->
-<ng-template #elseBlockTable>
-  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
-    {{ 'PERFORMING.LIST.WAIT_NO_RESULTS' | i18n }}
-  </div>
-</ng-template>
-
-<!-- No Data -->
-<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
-  {{ sharedFunctions.response.message }}
-</div>
-
-<!-- Export to XSLX -->
-<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'PERFORMING.LIST.EXPORT_LIST' | i18n }}</button></div>
