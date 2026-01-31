@@ -1,8 +1,19 @@
-<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
 
-<ng-template #thenBlockTable>
-  <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+<!-- Loading indicator -->
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner" style="height: 400px;">
+    <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+  </div>
+</ng-template>
+
+<!-- Content -->
+<ng-template #contentBlock>
+  <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+  <ng-template #thenBlockTable>
+    <div #main_list>
+      <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
       <!-- element action -->
       <ng-container matColumnDef="element_action">
         <th mat-header-cell *matHeaderCellDef>{{ 'ADVANCED_SEARCH.LIST.TABLE.ACTIONS' | i18n }}</th>

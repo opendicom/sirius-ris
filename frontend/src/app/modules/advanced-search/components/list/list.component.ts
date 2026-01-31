@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -16,6 +16,12 @@ import { ISO_3166, objectKeys } from '@env/environment';                        
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  //Loader control:
+  public loading: boolean = false;
+  private initialLoad: boolean = true;
+  private previousParams: any = null;
+  private previousResponse: any = null;
+
   //Set component properties:
   public country_codes          : any = ISO_3166;
   public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
@@ -178,6 +184,14 @@ export class ListComponent implements OnInit {
 
     //Clear previous responses:
     this.sharedFunctions.response = false;
+
+    // Do NOT perform an initial search on component entry. Initialize base state so
+    // subsequent searches triggered by the shared `action` component will use the
+    // same loader logic as `performing`:
+    this.loading = false;
+    this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
+    this.previousResponse = this.sharedFunctions.response;
+    this.initialLoad = false;
   }
 
   findActiveUsers(roleInReport: string){
@@ -207,6 +221,42 @@ export class ListComponent implements OnInit {
           }
         }
       }, false, 'findByRoleInReport', false);
+    }
+  }
+
+  ngDoCheck(): void {
+    //Only execute detection logic after initial load is complete:
+    if(this.initialLoad){
+      return;
+    }
+
+    // Handle case where response is false (e.g., after clearing advanced search):
+    if(this.sharedFunctions.response == false){
+      this.loading = false;
+      return;
+    }
+
+    //Detect changes in request params from action component (indicates new search):
+    const currentParamsStr = JSON.stringify(this.sharedProp.params);
+    const previousParamsStr = JSON.stringify(this.previousParams);
+
+    if(currentParamsStr !== previousParamsStr){
+      //Params changed - set loading to true:
+      this.loading = true;
+      //Update previous params to current state:
+      this.previousParams = JSON.parse(currentParamsStr);
+      return; //Exit to avoid checking response in same cycle
+    }
+
+    //Detect changes in response (indicates data received):
+    if(this.sharedFunctions.response !== this.previousResponse){
+      //Update previous response reference:
+      this.previousResponse = this.sharedFunctions.response;
+
+      //If response is not null/false, data has arrived - disable loading:
+      if(this.sharedFunctions.response){
+        this.loading = false;
+      }
     }
   }
 }

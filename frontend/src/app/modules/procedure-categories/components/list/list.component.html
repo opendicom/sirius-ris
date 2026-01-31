@@ -1,4 +1,15 @@
-<div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+
+<!-- Loading indicator -->
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner" style="height: 400px;">
+    <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+  </div>
+</ng-template>
+
+<!-- Content -->
+<ng-template #contentBlock>
+  <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
 
 <ng-template #thenBlockTable>
   <div #main_list>
@@ -91,3 +102,4 @@
 
 <!-- Export to XSLX -->
 <div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'PROCEDURE_CATEGORIES.LIST.EXPORT' | i18n }}</button></div>
+</ng-template>
