@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
     "MWL_SENT_SUCCESS": "Erfolgreich an MWL gesendet ",
     "REPORT_REVIEW_ERROR": "Fehler beim Versuch, den Bericht zu überprüfen: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Fehler beim Versuch, die Berichtsauthentifizierung zu überprüfen: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Fehler beim Versuch, die Berichtsauthentifizierung zu überprüfen: ",
+    "SAVE_SUCCESS_MESSAGE": "Erfolgreich gespeichert!",
+    "BLOCKED_ATTRIBUTES": " - Gesperrte Attribute: ",
+    "BLOCKED_UNSET": " - Blockierte Löschungen: ",
+    "MWL_ERROR_DETAIL": "Fehlerdetails: ",
+    "ERROR_LABEL": "Fehler: "
   },
   "PDF": {
     "APPOINTMENT": {

@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " МБ).",
     "MWL_SENT_SUCCESS": "Успешно отправлено в MWL ",
     "REPORT_REVIEW_ERROR": "Ошибка при попытке просмотра отчета: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Ошибка при попытке просмотра аутентификации отчета: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Ошибка при попытке просмотра аутентификации отчета: ",
+    "SAVE_SUCCESS_MESSAGE": "Сохранено успешно!",
+    "BLOCKED_ATTRIBUTES": " - Заблокированные атрибуты: ",
+    "BLOCKED_UNSET": " - Блокированные удаления: ",
+    "MWL_ERROR_DETAIL": "Детали ошибки: ",
+    "ERROR_LABEL": "Ошибка: "
   },
   "PDF": {
     "APPOINTMENT": {

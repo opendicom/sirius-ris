@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
     "MWL_SENT_SUCCESS": "Enviado com sucesso para MWL ",
     "REPORT_REVIEW_ERROR": "Erro ao tentar revisar o laudo: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erro ao tentar revisar a autenticação do laudo: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erro ao tentar revisar a autenticação do laudo: ",
+    "SAVE_SUCCESS_MESSAGE": "Salvo com sucesso!",
+    "BLOCKED_ATTRIBUTES": " - Atributos bloqueados: ",
+    "BLOCKED_UNSET": " - Exclusões bloqueadas: ",
+    "MWL_ERROR_DETAIL": "Detalhe do erro: ",
+    "ERROR_LABEL": "Erro: "
   },
   "PDF": {
     "APPOINTMENT": {

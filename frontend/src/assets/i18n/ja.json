@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB）。",
     "MWL_SENT_SUCCESS": "MWL に正常に送信されました ",
     "REPORT_REVIEW_ERROR": "レポートのレビュー試行中にエラーが発生しました：",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "レポート認証のレビュー試行中にエラーが発生しました："
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "レポート認証のレビュー試行中にエラーが発生しました：",
+    "SAVE_SUCCESS_MESSAGE": "正常に保存されました！",
+    "BLOCKED_ATTRIBUTES": " - ブロックされた属性: ",
+    "BLOCKED_UNSET": " - ブロックされた削除: ",
+    "MWL_ERROR_DETAIL": "エラーの詳細: ",
+    "ERROR_LABEL": "エラー: "
   },
   "PDF": {
     "APPOINTMENT": {

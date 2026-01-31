@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB）。",
     "MWL_SENT_SUCCESS": "成功发送到 MWL ",
     "REPORT_REVIEW_ERROR": "尝试审查报告时出错: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "尝试审查报告认证时出错: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "尝试审查报告认证时出错: ",
+    "SAVE_SUCCESS_MESSAGE": "保存成功！",
+    "BLOCKED_ATTRIBUTES": " - 被锁定的属性: ",
+    "BLOCKED_UNSET": " - 被阻止的删除: ",
+    "MWL_ERROR_DETAIL": "错误详情：",
+    "ERROR_LABEL": "错误: "
   },
   "PDF": {
     "APPOINTMENT": {

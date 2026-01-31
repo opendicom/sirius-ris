@@ -233,7 +233,7 @@ export class SharedFunctionsService {
   // SEND MESSAGE:
   //--------------------------------------------------------------------------------------------------------------------//
   sendMessage(message: string, duration: any | undefined = undefined): void {
-    this.snackBar.open(message, 'ACEPTAR', duration);
+    this.snackBar.open(message, this.i18n.instant('PASSWORD_REQUEST.ACCEPT'), duration);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -965,7 +965,7 @@ export class SharedFunctionsService {
           }
         } else {
           //Send message:
-          this.sendMessage(res.message + ' Detalle del error: ' + res.error);
+          this.sendMessage(res.message + ' ' + this.i18n.instant('SHARED.MWL_ERROR_DETAIL') + res.error);
         }
       },
       error: res => {
@@ -973,7 +973,7 @@ export class SharedFunctionsService {
         if(res.error.message){
           //Check if have details error:
           if(res.error.error){
-            this.sendMessage(res.error.message + ' Error: ' + res.error.error);
+            this.sendMessage(res.error.message + ' ' + this.i18n.instant('SHARED.ERROR_LABEL') + ' ' + res.error.error);
           } else {
             //Send other errors:
             this.sendMessage(res.error.message);
@@ -1107,7 +1107,7 @@ export class SharedFunctionsService {
   formResponder(res: any, element: any, router: any, redirectToList: boolean = true, custom_message: string = ''){
     //Check and set custom message:
     if(custom_message === ''){
-      custom_message = '¡Guardado existoso!';
+      custom_message = this.i18n.instant('SHARED.SAVE_SUCCESS_MESSAGE');
     }
 
     //Check operation status:
@@ -1115,15 +1115,15 @@ export class SharedFunctionsService {
       //Send snakbar message:
       //Success with blocked_attributes & blocked_unset:
       if(res.blocked_attributes && res.blocked_unset){
-        this.sendMessage(custom_message + ' - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes) + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+        this.sendMessage(custom_message + this.i18n.instant('SHARED.BLOCKED_ATTRIBUTES') + JSON.stringify(res.blocked_attributes) + this.i18n.instant('SHARED.BLOCKED_UNSET') + JSON.stringify(res.blocked_unset));
 
       //Success with blocked_attributes:
       } else if(res.blocked_attributes){
-        this.sendMessage(custom_message + ' - Atributos bloqueados: ' + JSON.stringify(res.blocked_attributes));
+        this.sendMessage(custom_message + this.i18n.instant('SHARED.BLOCKED_ATTRIBUTES') + JSON.stringify(res.blocked_attributes));
 
       //Success with blocked_unset:
       } else if(res.blocked_unset){
-        this.sendMessage(custom_message + ' - Eliminaciones bloqueadas: ' + JSON.stringify(res.blocked_unset));
+        this.sendMessage(custom_message + this.i18n.instant('SHARED.BLOCKED_UNSET') + JSON.stringify(res.blocked_unset));
 
       //Success without blocked elements:
       } else {

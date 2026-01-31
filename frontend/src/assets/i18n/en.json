@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
     "MWL_SENT_SUCCESS": "Successfully sent to MWL ",
     "REPORT_REVIEW_ERROR": "Error trying to review the report: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error trying to review the report authentication: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error trying to review the report authentication: ",
+    "SAVE_SUCCESS_MESSAGE": "Saved successfully!",
+    "BLOCKED_ATTRIBUTES": " - Blocked attributes: ",
+    "BLOCKED_UNSET": " - Blocked deletions: ",
+    "MWL_ERROR_DETAIL": "Error detail: ",
+    "ERROR_LABEL": "Error: "
   },
   "PDF": {
     "APPOINTMENT": {

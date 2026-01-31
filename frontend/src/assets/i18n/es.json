@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " MB).",
     "MWL_SENT_SUCCESS": "Enviado exitosamente a MWL ",
     "REPORT_REVIEW_ERROR": "Error al intentar revisar el informe: ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error al intentar revisar la autenticación del informe: "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Error al intentar revisar la autenticación del informe: ",
+    "SAVE_SUCCESS_MESSAGE": "¡Guardado existoso!",
+    "BLOCKED_ATTRIBUTES": " - Atributos bloqueados: ",
+    "BLOCKED_UNSET": " - Eliminaciones bloqueadas: ",
+    "MWL_ERROR_DETAIL": "Detalle del error: ",
+    "ERROR_LABEL": "Error: "
   },
   "PDF": {
     "APPOINTMENT": {

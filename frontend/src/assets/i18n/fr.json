@@ -2120,7 +2120,12 @@
     "FILE_SIZE_EXCEEDED_ERROR_MB": " Mo).",
     "MWL_SENT_SUCCESS": "Envoyé avec succès à MWL ",
     "REPORT_REVIEW_ERROR": "Erreur lors de la tentative de révision du rapport : ",
-    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erreur lors de la tentative de révision de l'authentification du rapport : "
+    "REPORT_AUTHENTICATION_REVIEW_ERROR": "Erreur lors de la tentative de révision de l'authentification du rapport : ",
+    "SAVE_SUCCESS_MESSAGE": "Enregistrement réussi !",
+    "BLOCKED_ATTRIBUTES": " - Attributs bloqués : ",
+    "BLOCKED_UNSET": " - Suppressions bloquées : ",
+    "MWL_ERROR_DETAIL": "Détail de l'erreur : ",
+    "ERROR_LABEL": "Erreur : "
   },
   "PDF": {
     "APPOINTMENT": {
