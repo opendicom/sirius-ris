@@ -129,6 +129,8 @@ function resolveReference(field) {
         return '_id.users';
       case 'appointment_requestss':
         return '_id.appointment_requests';
+      case '_id.performings':
+        return '_id.performing';
       default:
         return `_id.${schema.endsWith('s') ? schema : `${schema}s`}`;
     }

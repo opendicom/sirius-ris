@@ -47,20 +47,6 @@ The numbers in the diagram represents the steps in the communication sequence.
 
 
 
-## UML
-
-Inside the resources directory of this repository you can find the **UML** diagram of the **Sirius RIS** data collections.
-
-
-
-![UML](./resources/img/UML.png)
-
-
-
----
-
-
-
 ## Modality Worklist HL7 `ORM | MLLP`
 
 The modality work list (**MWL**), is built from **Sirius RIS** at the time of check-in for a patient who attends their appointment.
@@ -140,6 +126,18 @@ ZDS|UI
 The Sirius RIS data dictionary is generated dynamically using a script that iterates through the schemas of each module. This simplifies the maintenance and updating of the documentation.
 
 [Sirius RIS - Data dictionary](./resources/dictionary-generator/data_dictionary.md)
+
+
+
+---
+
+
+
+## Class diagram
+
+The Sirius RIS class diagram is generated from a script that reads the data dictionary from the documentation and creates a class diagram based on the mermaid format.
+
+[Sirius RIS - Class diagram](./resources/diagram-generator/class_diagram.md)
 
 
 
