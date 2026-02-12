@@ -233,7 +233,7 @@ export class SharedFunctionsService {
   // SEND MESSAGE:
   //--------------------------------------------------------------------------------------------------------------------//
   sendMessage(message: string, duration: any | undefined = undefined): void {
-    this.snackBar.open(message, this.i18n.instant('PASSWORD_REQUEST.ACCEPT'), duration);
+    this.snackBar.open(message, this.i18n.instant('DIALOGS.PASSWORD_REQUEST.ACCEPT'), duration);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
