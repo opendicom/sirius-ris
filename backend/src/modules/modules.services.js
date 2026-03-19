@@ -1529,7 +1529,7 @@ async function checkSlot(req, res){
     };
 
     //Check overbooking in request and if the user has a overbooking concession:
-    if(mainServices.stringToBoolean(req.body.overbooking) === true && ( userAuth.role == 1 || userAuth.role == 2 || userAuth.concession.includes(parseInt(currentConcession, 23)) ) ){
+    if(mainServices.stringToBoolean(req.body.overbooking) === true && ( userAuth.role == 1 || userAuth.role == 2 || userAuth.concession.includes(23))){
         //Dont check slot (Force insert, overbooking):
         result = true;
     } else {
