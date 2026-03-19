@@ -30,11 +30,14 @@ EXPOSE 3000
 # Set wordir:
 WORKDIR /app
 
-# Copy source code:
-COPY ../src .
+# Copy only package.json (prevent copying node_modules if it exists in the build context):
+COPY ../src/package*.json ./
 
 # Install dependencies (only production dependencies):
 RUN npm install --omit=dev
+
+# Copy source code:
+COPY ../src .
 
 # Copy entrypoint:
 COPY ./docker/entrypoint.sh .
