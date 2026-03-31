@@ -320,8 +320,16 @@ module.exports = async (req, res) => {
                     // max=1 : to stop at the first instance found.
                     const checkPath = 'http://' + mainSettings.wezen.host + ':' + mainSettings.wezen.port + '/studyToken?accessType=weasis.xml&token=' + token + '&StudyInstanceUID=' + performingData[0].appointment.study_iuid + '&max=1';
                     
+                    //Set headers:
+                    const options = {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    };
+
                     //Send Check HTTP Request:
-                    await mainServices.httpClientGETRequest(checkPath, async (wezenResponse) => {
+                    await mainServices.httpClientGETRequest(checkPath, options, async (wezenResponse) => {
                         //Parse XML String response to JSON:
                         await mainServices.XMLStringToJSON(wezenResponse, (objResponse) => {
 

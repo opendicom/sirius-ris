@@ -402,9 +402,9 @@ function setStorage(){
 //--------------------------------------------------------------------------------------------------------------------//
 // HTTP CLIENT GET REQUEST:
 //--------------------------------------------------------------------------------------------------------------------//
-async function httpClientGETRequest(path = '', callback = () => {}){
+async function httpClientGETRequest(path = '', options = {}, callback = () => {}){
     //Create HTTP request:
-    const request = http.get(path, (externalResponse) => {
+    const request = http.get(path, options, (externalResponse) => {
 
         //Check status code:
         if (externalResponse.statusCode !== 200) {
