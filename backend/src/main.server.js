@@ -62,7 +62,53 @@ module.exports = async function() {
     //Create express object (app webServer):
     const app = express();
 
-    //Check if CORS is enabled or disabled:
+
+    //----------------------------------------------------------------------------------------------------------------//
+    // Graceful shutdown handlers:
+    //----------------------------------------------------------------------------------------------------------------//
+    // Close MongoDB connection on process termination signals (SIGINT, SIGTERM) and uncaught exceptions:
+    async function closeConnection(signal) {
+        console.log(`\n • Received ${signal}. Closing MongoDB connection...`);
+
+        try {
+            if (mongoose.connection.readyState === 1) {
+                await mongoose.connection.close(false);
+                console.log(' • MongoDB connection closed gracefully');
+            }
+        } catch (err) {
+            console.error(' • Error closing MongoDB connection:', err);
+        }
+    }
+
+    // Handle SIGINT for graceful shutdown (e.g., Ctrl+C in terminal):
+    process.on('SIGINT', async () => {
+        await closeConnection('SIGINT');
+        process.exit(0);
+    });
+
+    // Handle SIGTERM for graceful shutdown (e.g., when running in Docker):
+    process.on('SIGTERM', async () => {
+        await closeConnection('SIGTERM');
+        process.exit(0);
+    });
+
+    // Handle uncaught exceptions:
+    process.on('uncaughtException', async (err) => {
+        console.error(' • Uncaught Exception:', err);
+        await closeConnection('uncaughtException');
+        process.exit(1);
+    });
+
+    // Handle unhandled promise rejections:
+    process.on('unhandledRejection', async (reason) => {
+        console.error(' • Unhandled Rejection:', reason);
+    });
+    //----------------------------------------------------------------------------------------------------------------//
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+    // Check if CORS is enabled or disabled:
+    //----------------------------------------------------------------------------------------------------------------//
     if(mainSettings.cors_enabled === true){
         //Set whitelist (CORS):
         let whiteList = [
@@ -92,6 +138,7 @@ module.exports = async function() {
         //Enable All CORS Requests:
         app.use(cors());
     }
+    //----------------------------------------------------------------------------------------------------------------//
 
     //Configure express Middleware (ex bodyParser):
     //Limits were set to allow base64 files on the body (Prevent payload too large).
@@ -182,7 +229,9 @@ module.exports = async function() {
     //MongoDB server version (runtime discovery):
     let mongoServerVersion = 'unknown';
 
-    //Establish connection with MongoDB:
+    //----------------------------------------------------------------------------------------------------------------//
+    // Establish connection with MongoDB:
+    //----------------------------------------------------------------------------------------------------------------//
     try {
         await mongoose.connect(mongodbURI);
 
@@ -214,8 +263,12 @@ module.exports = async function() {
         console.error('| ' + cnXMongoDBMessage);
         console.log(consoleLn + '\n');
     }
+    //----------------------------------------------------------------------------------------------------------------//
 
-    //Set default server path:
+
+    //----------------------------------------------------------------------------------------------------------------//
+    // Set default server path:
+    //----------------------------------------------------------------------------------------------------------------//
     app.get('/', (req, res) => {
         //Initialize webSerberOptions:
         let sirius_backend = {
@@ -257,6 +310,7 @@ module.exports = async function() {
             res.status(200).send({ message: startMessage });
         }
     });
+    //----------------------------------------------------------------------------------------------------------------//
 
     //Export WebServer:
     return app;
