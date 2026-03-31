@@ -16,6 +16,7 @@ const mainMiddlewares = require('../main.middlewares');
 
 //Import Handlers:
 const studyTokenHandler  = require('./handlers/studyToken');
+const quidoHandler       = require('./handlers/quido');
 
 //Create Router.
 const router = express.Router();
@@ -31,6 +32,17 @@ router.get(
         studyTokenHandler(req, res);
     }
 );
+
+//QUIDO:
+// router.get(
+//    '/quido',
+//    mainMiddlewares.checkJWT,
+//    mainMiddlewares.checkDBConnection,
+//    mainMiddlewares.roleAccessBasedControl,
+//    async (req, res) => {
+//        quidoHandler(req, res);
+//    }
+//);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
