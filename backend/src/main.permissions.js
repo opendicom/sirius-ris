@@ -24,7 +24,7 @@ const rolePermissions = {
         appointment_requests    : ['find', 'findOne', 'insert', 'update', 'delete'],
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update', 'delete'],
-        performing              : ['find', 'findOne', 'insert', 'update', 'delete'],
+        performing              : ['find', 'findOne', 'insert', 'update', 'delete', 'findLockers'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert', 'delete'],
         mail                    : ['send'],
@@ -53,7 +53,7 @@ const rolePermissions = {
         appointment_requests    : ['find', 'findOne', 'update', 'delete'],
         mwl                     : ['insert'],
         pathologies             : ['find', 'findOne', 'insert', 'update'],
-        performing              : ['find', 'findOne', 'insert', 'update'],
+        performing              : ['find', 'findOne', 'insert', 'update', 'findLockers'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'setPathologies'],
         signatures              : ['find', 'findOne'],
         mail                    : ['send'],
@@ -82,7 +82,7 @@ const rolePermissions = {
         appointment_requests    : ['find', 'findOne'],
         mwl                     : [],
         pathologies             : ['find', 'findOne'],
-        performing              : ['find', 'findOne'],
+        performing              : ['find', 'findOne', 'findLockers'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert'],
         mail                    : [],
@@ -457,6 +457,11 @@ const concessionPermissions = {
         performing              : ['find', 'findOne', 'insert', 'update'],
         reports                 : ['find', 'findOne'],
         signatures              : ['find', 'findOne']
+    },
+
+    // 25 : Acceso a casilleros de informes:
+    25: {
+        performing              : ['findLockers']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//

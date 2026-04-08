@@ -2916,6 +2916,7 @@ async function addDomainCondition(req, res, domainType, completeDomain){
             case 'findByService':       // Only the users module uses this case.
             case 'findByRoleInReport':  // Only the users module uses this case.
             case 'studyToken':          // Wezen paths.
+            case 'findLockers':         // Find Lockers by branch (performing module case).
                 //If filter has no operator, add domain condition with no operator:
                 let haveOperator = false;
                 

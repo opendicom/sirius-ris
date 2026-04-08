@@ -16,7 +16,7 @@ const mainMiddlewares = require('../../main.middlewares');
 //Import Handlers:
 const findHandler   = require('./handlers/find');
 const saveHandler   = require('./handlers/save');
-const fastHandler   = require('./handlers/fast.insert');
+const findLockers   = require('./handlers/findLockers');
 
 //Import Module Services:
 const moduleServices = require('../modules.services');
@@ -74,19 +74,6 @@ router.post(
     }
 );
 
-//FAST INSERT:
-router.post(
-    '/fast-insert',
-    //mainMiddlewares.checkJWT,
-    //mainMiddlewares.checkDBConnection,
-    //mainMiddlewares.roleAccessBasedControl,
-    //performing.Validator,
-    (req, res) => {
-        //Send to handler:
-        fastHandler(req, res);
-    }
-);
-
 //UPDATE:
 router.post(
     '/update',
@@ -111,6 +98,18 @@ router.post(
     (req, res) => { 
         //Send to module service:
         moduleServices._delete(req, res, performing);
+    }
+);
+
+//FIND LOCKERS:
+router.get(
+    '/findLockers',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
+    mainMiddlewares.roleAccessBasedControl,
+    (req, res) => {
+        //Send to handler:
+        findLockers(req, res, performing);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//
