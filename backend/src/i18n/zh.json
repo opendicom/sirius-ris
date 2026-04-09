@@ -106,6 +106,7 @@
       "pet_coef_required": "PET-CT 程序需要提供系数以计算剂量。",
       "pet_coef_NaN": "输入的系数必须为数值。",
       "service_invalid_ObjectId": "service 参数不是有效的 ObjectId。",
+      "branch_invalid_ObjectId": "branch 参数不是有效的 ObjectId。",
       "role_NaN": "role 参数不是数值或不在有效角色范围内。",
       "invalid_role_in_report": "role_in_report 仅允许以下值：[ signer | authenticator ]。"
     },

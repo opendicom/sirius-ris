@@ -106,6 +106,7 @@
             "pet_coef_required": "PET-CT 手技では線量計算のため係数が必要です。",
             "pet_coef_NaN": "入力された係数は数値である必要があります。",
             "service_invalid_ObjectId": "service パラメータは有効な ObjectId ではありません。",
+            "branch_invalid_ObjectId": "branch パラメータは有効な ObjectId ではありません。",
             "role_NaN": "role パラメータは数値でないか、または有効なロール値の範囲外です。",
             "invalid_role_in_report": "role_in_report パラメータは次の値のみを受け付けます: [ signer | authenticator ]"
         },

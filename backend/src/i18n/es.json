@@ -106,6 +106,7 @@
       "pet_coef_required": "Los procedimientos PET-CT requieren coeficiente para el cálculo de la dosis.",
       "pet_coef_NaN": "El coeficiente ingresado debe ser numérico.",
       "service_invalid_ObjectId": "El parámetro service no es un ObjectId válido.",
+      "branch_invalid_ObjectId": "El parámetro branch no es un ObjectId válido.",
       "role_NaN": "El parámetro role NO es un valor numerico o NO esta comprendido dentro de los numeros de roles válidos.",
       "invalid_role_in_report": "El parámetro role_in_report solo admite los siguietes valores: [ signer | authenticator ]."
     },

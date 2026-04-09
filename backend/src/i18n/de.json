@@ -106,6 +106,7 @@
       "pet_coef_required": "PET-CT-Verfahren benötigen einen Koeffizienten zur Dosisberechnung.",
       "pet_coef_NaN": "Der angegebene Koeffizient muss numerisch sein.",
       "service_invalid_ObjectId": "Der Parameter 'service' ist keine gültige ObjectId.",
+      "branch_invalid_ObjectId": "Der Parameter 'branch' ist keine gültige ObjectId.",
       "role_NaN": "Der Parameter 'role' ist NICHT numerisch oder nicht in der Liste gültiger Rollen.",
       "invalid_role_in_report": "Der Parameter role_in_report erlaubt nur folgende Werte: [ signer | authenticator ]."
     },

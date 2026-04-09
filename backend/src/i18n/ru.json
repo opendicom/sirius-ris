@@ -106,6 +106,7 @@
       "pet_coef_required": "Процедуры PET-CT требуют коэффициент для расчёта дозы.",
       "pet_coef_NaN": "Введенный коэффициент должен быть числовым.",
       "service_invalid_ObjectId": "Параметр service не является действительным ObjectId.",
+      "branch_invalid_ObjectId": "Параметр branch не является действительным ObjectId.",
       "role_NaN": "Параметр role НЕ является числом или не входит в диапазон допустимых ролей.",
       "invalid_role_in_report": "Параметр role_in_report допускает только следующие значения: [ signer | authenticator ]."
     },

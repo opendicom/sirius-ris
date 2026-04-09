@@ -7,7 +7,7 @@ const rolePermissions = {
     // Superusuario:
     1: {
         people                  : ['find', 'findOne', 'insert', 'update', 'delete'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'delete', 'updateSettings'],            
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'insert', 'update', 'delete', 'updateSettings'],            
         logs                    : ['find', 'findOne'],
         sessions                : ['find', 'findOne', 'delete'],
         modalities              : ['find', 'findOne', 'insert', 'update', 'delete'],
@@ -36,7 +36,7 @@ const rolePermissions = {
     // Administrador:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
         logs                    : ['find', 'findOne'],
         sessions                : ['find', 'findOne'],
         modalities              : ['find', 'findOne'],
@@ -65,7 +65,7 @@ const rolePermissions = {
     // Supervisor:
     3: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -94,7 +94,7 @@ const rolePermissions = {
     // Médico:
     4: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -123,7 +123,7 @@ const rolePermissions = {
     // Técnico:
     5: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -152,7 +152,7 @@ const rolePermissions = {
     // Enfermero:
     6: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -181,7 +181,7 @@ const rolePermissions = {
     // Coordinador:
     7: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'insert', 'update', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -210,7 +210,7 @@ const rolePermissions = {
     // Recepcionista:
     8: {
         people                  : ['find', 'findOne'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'updateSettings'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'updateSettings'],
         logs                    : [],
         sessions                : [],
         modalities              : ['find', 'findOne'],
@@ -304,7 +304,7 @@ const concessionPermissions = {
     // 2 : Gestión de citas:
     2: {
         people                  : ['find', 'findOne', 'insert', 'update'],
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport', 'insert', 'update'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport', 'insert', 'update'],
         slots                   : ['find', 'findOne'],
         appointments            : ['find', 'findOne', 'insert', 'update'],
         appointments_drafts     : ['find', 'findOne', 'insert', 'delete'],
@@ -329,7 +329,7 @@ const concessionPermissions = {
 
     // 5 : Gestión de estudios:
     5: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'update'],
         pathologies             : ['find', 'findOne'],
@@ -340,7 +340,7 @@ const concessionPermissions = {
 
     // 6 : Gestión de informes:
     6: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne'],
         pathologies             : ['find', 'findOne'],
@@ -351,7 +351,7 @@ const concessionPermissions = {
 
     // 7 : Firmar informes:
     7: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         appointments            : ['find', 'findOne'],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
@@ -361,7 +361,7 @@ const concessionPermissions = {
 
     // 8 : Autenticar informes:
     8: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         appointments            : ['find', 'findOne'],
         pathologies             : ['find', 'findOne'],
         performing              : ['find', 'findOne'],
@@ -397,7 +397,7 @@ const concessionPermissions = {
 
     // 14 : Búsquedas avanzadas:
     14: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         reports                 : ['find', 'findOne']
     },
     
@@ -450,7 +450,7 @@ const concessionPermissions = {
     
     // 24 : Listados de facturación (Performing -> 5 : Gestión de estudios):
     24: {
-        users                   : ['find', 'findOne', 'findByService', 'findByRoleInReport'],
+        users                   : ['find', 'findOne', 'findByService', 'findByBranch', 'findByRoleInReport'],
         files                   : ['find', 'findOne', 'insert', 'delete', 'batch/delete'],
         appointments            : ['find', 'findOne', 'update'],
         pathologies             : ['find', 'findOne'],
@@ -461,7 +461,8 @@ const concessionPermissions = {
 
     // 25 : Acceso a casilleros de informes:
     25: {
-        performing              : ['findLockers']
+        performing              : ['findLockers'],
+        users                   : ['findByBranch']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
