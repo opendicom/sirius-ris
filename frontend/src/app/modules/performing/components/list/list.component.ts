@@ -180,6 +180,31 @@ export class ListComponent implements OnInit, DoCheck {
     //If have an _id and this is valid ObjectId, change params to findById:
     if(id !== undefined && regexObjectId.test(id)){
       this.sharedProp.params['filter[_id]'] = id;
+
+    // Else you receive information from the Locker:
+    // Format data: |fk_reporting_id|flow_state|urgency|
+    } else if(id !== undefined){
+      console.log('Received Data:', id);
+
+      //Create array with id (tab separated values):
+      const lockerArrayData = id.split('|');
+      console.log('\nLocker Array Data:');
+      console.log(lockerArrayData);
+
+      //Check and set FK Reporting:
+      if(lockerArrayData[1] !== undefined && lockerArrayData[1] !== null && lockerArrayData[1] !== "" && regexObjectId.test(lockerArrayData[1])){
+        this.sharedProp.params['filter[appointment.reporting.fk_reporting._id]'] = lockerArrayData[1];
+      }
+
+      //Check and set Performing Flow State:
+      if(lockerArrayData[2] !== undefined && lockerArrayData[2] !== null && lockerArrayData[2] !== ""){
+        this.sharedProp.params['filter[flow_state]'] = lockerArrayData[2];
+      }
+
+      //Check and set Performing Flow State:
+      if(lockerArrayData[3] !== undefined && lockerArrayData[3] !== null && lockerArrayData[3] !== ""){
+        this.sharedProp.params['filter[urgency]'] = lockerArrayData[3];
+      }
     }
 
     //Set loading state:

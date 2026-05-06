@@ -2014,7 +2014,8 @@
     "21": "Accès au service d'images PACS",
     "22": "Modification de l'identification du patient",
     "23": "Sur-réservation",
-    "24": "Listes de facturation"
+    "24": "Listes de facturation",
+    "25": "Gestion des casiers médicaux"
   },
   "GENDER_TYPES": {
     "1": "Masculin",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Fichier téléchargé avec succès",
     "FILE_NOT_FOUND_ERROR": "Fichier non trouvé [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Casier Médical",
+    "BRANCH": "Succursale",
+    "SELECT_BRANCH": "Sélectionner la Succursale",
+    "SEARCH": "RECHERCHER",
+    "ASSIGNED_REPORTS": "Rapports Assignés à Informer",
+    "NO_RESULTS": "Aucun Résultat",
+    "REPORTS": "INFORMES",
+    "URGENCY": "Urgence",
+    "TOTAL": "TOTAL"
   }
 }

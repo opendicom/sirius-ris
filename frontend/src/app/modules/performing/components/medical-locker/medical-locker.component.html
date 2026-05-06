@@ -1,0 +1,89 @@
+<div class="form-element">
+    <form class="form-locker" [formGroup]="form">
+        <mat-form-field appearance="outline">
+            <mat-label>{{ 'MEDICAL_LOCKER.BRANCH' | i18n }}</mat-label>
+            <mat-select formControlName="fk_branch" placeholder="{{ 'MEDICAL_LOCKER.SELECT_BRANCH' | i18n }}" class="auto-width">
+            <span *ngIf="availableOrganizations.length > 0 && availableBranches.length > 0">
+                <div *ngFor="let currentBranch of availableBranches">
+                    <div *ngFor="let currentOrganization of availableOrganizations">
+                    <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+                    </div>
+                </div>
+            </span>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
+            <mat-icon>search</mat-icon>&nbsp; {{ 'MEDICAL_LOCKER.SEARCH' | i18n }}
+        </button>
+    </form>
+
+    <hr class="dashed" />
+
+    <mat-tab-group>
+        <!-- MEDICAL LOCKER TAB: ----------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">how_to_reg</mat-icon> {{ 'MEDICAL_LOCKER.ASSIGNED_REPORTS' | i18n }}
+            </ng-template>
+            <div class="tab-content">
+
+                <div *ngIf="getKeys(performingLocalResponse).length > 0; then thenLockerResult else elseLockerResult"></div>
+
+                <ng-template #thenLockerResult>
+                    <div *ngFor="let currentReportingUser of performingLocalResponse" class="locker">
+                        <h3 class="link underline-ok" routerLink="/performing/list/|{{ currentReportingUser._id }}|">
+                            <mat-icon>person</mat-icon>
+                            <span class="username">
+                                &nbsp;|&nbsp;
+                                {{ currentReportingUser.complete_name }}
+                            </span>
+                        </h3>
+                        <table mat-table [dataSource]="availableFlowStates" class="mat-elevation-z1">
+                            <!-- reports -->
+                            <ng-container matColumnDef="reports">
+                                <th mat-header-cell *matHeaderCellDef> {{ 'MEDICAL_LOCKER.REPORTS' | i18n }} </th>
+                                <td mat-cell *matCellDef="let currentFlowState">
+                                    <mat-chip-list>
+                                        {{ ('PERFORMING_FLOW_STATES.' + currentFlowState) | i18n }}&nbsp;
+                                        <mat-chip
+                                            *ngIf="countUrgencies(currentReportingUser.assigned_reports[currentFlowState]) > 0"
+                                            routerLink="/performing/list/|{{ currentReportingUser._id }}|{{ currentFlowState }}|true|"
+                                            class="link bg-color-fail" matTooltip="{{ 'MEDICAL_LOCKER.URGENCY' | i18n }}"
+                                        >
+                                            {{ countUrgencies(currentReportingUser.assigned_reports[currentFlowState]) }}
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </td>
+                            </ng-container>
+
+                            <!-- total -->
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'MEDICAL_LOCKER.TOTAL' | i18n }} </th>
+                                <td mat-cell *matCellDef="let currentFlowState" class="column-alt text-center">
+                                    <span class="link" routerLink="/performing/list/|{{ currentReportingUser._id }}|{{ currentFlowState }}|">
+                                        {{ currentReportingUser.assigned_reports[currentFlowState].length }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                </ng-template>
+
+                <ng-template #elseLockerResult>
+                    <div class="text-center">
+                        <br/>
+                        <mat-icon class="no-result-icon">search_activity</mat-icon><br/>
+                        <span class="no-result-text">{{ 'MEDICAL_LOCKER.NO_RESULTS' | i18n }}</span><br/>
+                        <br/>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-tab>
+        <!-- MEDICAL LOCKER TAB: ----------------------------------------------------------------------------------------------------------------------- -->
+    </mat-tab-group>
+    <br/>
+</div>

@@ -2014,7 +2014,8 @@
     "21": "Acceso al servicio de imágenes del PACS",
     "22": "Edición de identificación de pacientes",
     "23": "Sobreagenda (overbooking)",
-    "24": "Listados de facturación"
+    "24": "Listados de facturación",
+    "25": "Gestión de casillero médico"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Archivo subido exitosamente",
     "FILE_NOT_FOUND_ERROR": "No se encontró el archivo [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Casillero médico",
+    "BRANCH": "Sucursal",
+    "SELECT_BRANCH": "Seleccione la sucursal",
+    "SEARCH": "BUSCAR",
+    "ASSIGNED_REPORTS": "Estudios asignados para informar",
+    "NO_RESULTS": "Sin resultados",
+    "REPORTS": "INFORMES",
+    "URGENCY": "Urgencia",
+    "TOTAL": "TOTAL"
   }
 }

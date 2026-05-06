@@ -85,11 +85,11 @@
       </mat-list-item>
     </div>
     
-    <!-- 1: Superusuario (En desarrollo) -->
-    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1">
+    <!-- 1: Superusuario, 2: Administrador, 3: Supervisor, Concesiones: [25: Acceso a casilleros de informes] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 3 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [25]))" >
       <mat-divider></mat-divider>
 
-        <mat-list-item>
+      <mat-list-item routerLink="/performing/locker">
         <mat-icon>all_inbox</mat-icon><span>{{ 'SIDENAV.ADVANCED_MEDICAL_LOCKER' | i18n }}</span>
       </mat-list-item>
     </div>

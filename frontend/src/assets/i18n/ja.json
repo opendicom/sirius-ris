@@ -2014,7 +2014,8 @@
     "21": "PACS画像サービスへのアクセス",
     "22": "患者識別情報の編集",
     "23": "過剰予約（オーバーブッキング）",
-    "24": "請求リスト"
+    "24": "請求リスト",
+    "25": "医療用ロッカーの管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "ファイルが正常にアップロードされました",
     "FILE_NOT_FOUND_ERROR": "ファイルが見つかりません [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "医療ロッカー",
+    "BRANCH": "支店",
+    "SELECT_BRANCH": "支店を選択",
+    "SEARCH": "検索",
+    "ASSIGNED_REPORTS": "割り当てられたレポート",
+    "NO_RESULTS": "結果がありません",
+    "REPORTS": "レポート",
+    "URGENCY": "緊急",
+    "TOTAL": "合計"
   }
 }

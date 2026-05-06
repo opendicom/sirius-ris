@@ -2014,7 +2014,8 @@
     "21": "Zugriff auf den PACS-Bilddienst",
     "22": "Bearbeitung der Patientenidentifikation",
     "23": "Überbuchung",
-    "24": "Abrechnungslisten"
+    "24": "Abrechnungslisten",
+    "25": "Verwaltung von medizinischen Schließfächern"
   },
   "GENDER_TYPES": {
     "1": "Männlich",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Datei erfolgreich hochgeladen",
     "FILE_NOT_FOUND_ERROR": "Datei nicht gefunden [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Medizinisches Schließfach",
+    "BRANCH": "Filiale",
+    "SELECT_BRANCH": "Filiale auswählen",
+    "SEARCH": "SUCHE",
+    "ASSIGNED_REPORTS": "Zugewiesene Berichte",
+    "NO_RESULTS": "Keine Ergebnisse",
+    "REPORTS": "BERICHTE",
+    "URGENCY": "Unterdrückung",
+    "TOTAL": "GESAMT"
   }
 }

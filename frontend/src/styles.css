@@ -810,11 +810,11 @@ mark {
 }
 
 .form-element .mat-form-field-flex {
-  background-color: var(--form-field-bg-color);
+  background-color: var(--form-field-bg-color) !important;
 }
 
 .form-element .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-flex {
-  background-color: var(--form-field-disabled-bg-color);
+  background-color: var(--form-field-disabled-bg-color) !important;
 }
 
 .mat-form-field-underline, .mat-form-field-ripple {

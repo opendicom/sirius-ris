@@ -2014,7 +2014,8 @@
     "21": "Acesso ao serviço de imagem PACS",
     "22": "Edição de identificação do paciente",
     "23": "Encaixe",
-    "24": "Listas de faturamento"
+    "24": "Listas de faturamento",
+    "25": "Gerenciamiento de armário médico"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "Arquivo enviado com sucesso",
     "FILE_NOT_FOUND_ERROR": "Arquivo não encontrado [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Armário Médico",
+    "BRANCH": "Filial",
+    "SELECT_BRANCH": "Selecionar Filial",
+    "SEARCH": "BUSCAR",
+    "ASSIGNED_REPORTS": "Estudos Atribuídos para Informar",
+    "NO_RESULTS": "Sem Resultados",
+    "REPORTS": "INFORMES",
+    "URGENCY": "Urgência",
+    "TOTAL": "TOTAL"
   }
 }

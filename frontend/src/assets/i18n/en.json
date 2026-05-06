@@ -2014,7 +2014,8 @@
     "21": "Access to PACS image service",
     "22": "Patient identification editing",
     "23": "Overbooking",
-    "24": "Billing lists"
+    "24": "Billing lists",
+    "25": "Medical locker management"
   },
   "GENDER_TYPES": {
     "1": "Male",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "File uploaded successfully",
     "FILE_NOT_FOUND_ERROR": "File not found [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Medical Locker",
+    "BRANCH": "Branch",
+    "SELECT_BRANCH": "Select Branch",
+    "SEARCH": "SEARCH",
+    "ASSIGNED_REPORTS": "Assigned Reports",
+    "NO_RESULTS": "No Results",
+    "REPORTS": "REPORTS",
+    "URGENCY": "Urgency",
+    "TOTAL": "TOTAL"
   }
 }

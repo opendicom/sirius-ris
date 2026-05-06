@@ -1,0 +1,77 @@
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* FORM: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+.form-element ::ng-deep .mat-form-field-outline {
+    background-color: var(--base-color-02);
+}
+.form-locker {
+    padding-top: 8px !important;
+    padding-left: 10px !important;
+}
+
+.button_filters {
+    top: -4px;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+.no-result-text {
+    font-size: 15px !important;
+    opacity: 0.7 !important;
+}
+
+.no-result-icon {
+    margin-left: -80px;
+    font-size: 90px !important;
+    opacity: 0.7 !important;
+}
+
+::ng-deep .mat-form-field-flex {
+  background-color: #ffffff00 !important;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------*/
+/* AUTO WITH SELECT: */
+/*----------------------------------------------------------------------------------------------------------------------*/
+::ng-deep .mat-select-value:has(>.auto-width)  {
+    max-width: 100%;
+    min-width: 100%;
+    width: auto;
+}
+
+::ng-deep .mat-form-field-infix:has(>.auto-width) {
+    width: auto !important;
+    min-width: 180px !important;
+    padding-right: 13px !important;
+}
+/*----------------------------------------------------------------------------------------------------------------------*/
+
+.bg-color-fail{
+  background-color: var(--orange) !important;
+}
+
+.tab-content {
+  padding: 8px !important;
+}
+
+.locker {
+    background-color: var(--base-color-01) !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+    width: 30% !important;
+    float: left;
+    margin-right: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+.username {
+    position: relative;
+    top: -6px !important;
+}
+
+.link {
+    cursor: pointer;
+}

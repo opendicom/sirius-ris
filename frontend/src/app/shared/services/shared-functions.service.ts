@@ -506,9 +506,11 @@ export class SharedFunctionsService {
     //Only the users and stats modules uses this case [findByService or findByRoleInReport, Stat cases (appointments)]):
     if(AditionalRequest !== false && (
       AditionalRequest === 'findByService' || 
+      AditionalRequest === 'findByBranch' || 
       AditionalRequest === 'findByRoleInReport' || 
       AditionalRequest === 'appointments' ||        // Stats case
-      AditionalRequest === 'performing'             // Stats case
+      AditionalRequest === 'performing' ||          // Stats case
+      AditionalRequest === 'findLockers'
     )){ operation = AditionalRequest; }
 
     //Check if element is not empty:
@@ -663,15 +665,17 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND RXJS - (FIND, FIND ONE & FIND BY ID):
   //--------------------------------------------------------------------------------------------------------------------//
-  findRxJS(element: string, params: any, findOne: boolean = false, findByService: boolean = false, saveResponse: boolean = true): Observable<any>{
+  findRxJS(element: string, params: any, findOne: boolean = false, findByBranchOrService: boolean | string = false, saveResponse: boolean = true): Observable<any>{
     //Initialize operation type:
     let operation = 'find';
 
     //Check if findOne is true:
     if(findOne){ operation = 'findOne'; }
 
-    //Check if findByService is true (Only the users module uses this case):
-    if(findByService){ operation = 'findByService'; }
+    //Check if findByBranchOrService is string (Only the users module uses this case):
+    if(findByBranchOrService !== false && typeof findByBranchOrService === 'string'){
+      operation = findByBranchOrService;  // findByBranch or findByService
+    }
 
     //Return Observable:
     return new Observable<any>((observer) => {

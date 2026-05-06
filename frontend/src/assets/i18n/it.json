@@ -2014,7 +2014,8 @@
     "21": "Accesso al servizio di immagini del PACS",
     "22": "Modifica dell'identificazione dei pazienti",
     "23": "Sovraprenotazione (overbooking)",
-    "24": "Elenchi di fatturazione"
+    "24": "Elenchi di fatturazione",
+    "25": "Gestione dei caselli medici"
   },
   "GENDER_TYPES": {
     "1": "Maschile",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "File caricato con successo",
     "FILE_NOT_FOUND_ERROR": "File non trovato [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "Armadio Medico",
+    "BRANCH": "Filiale",
+    "SELECT_BRANCH": "Seleziona Filiale",
+    "SEARCH": "CERCA",
+    "ASSIGNED_REPORTS": "Rapporti Assegnati",
+    "NO_RESULTS": "Nessun Risultato",
+    "REPORTS": "RAPPORTI",
+    "URGENCY": "Urgenza",
+    "TOTAL": "TOTALE"
   }
 }

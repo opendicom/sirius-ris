@@ -2014,7 +2014,8 @@
     "21": "访问 PACS 图像服务",
     "22": "编辑患者身份信息",
     "23": "超额预订",
-    "24": "计费清单"
+    "24": "计费清单",
+    "25": "医疗储物柜管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2198,5 +2199,16 @@
   "FILE_MANAGER": {
     "FILE_UPLOADED_SUCCESS": "文件上传成功",
     "FILE_NOT_FOUND_ERROR": "文件未找到 [_id: "
+  },
+  "MEDICAL_LOCKER": {
+    "CONTENT_TITLE": "医疗柜",
+    "BRANCH": "分支",
+    "SELECT_BRANCH": "选择分支",
+    "SEARCH": "搜索",
+    "ASSIGNED_REPORTS": "分配的报告",
+    "NO_RESULTS": "无结果",
+    "REPORTS": "报告",
+    "URGENCY": "紧急",
+    "TOTAL": "总计"
   }
 }

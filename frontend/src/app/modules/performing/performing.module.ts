@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from '@modules/performing/components/list/list.component';
 import { FormComponent } from '@modules/performing/components/form/form.component';
 import { TabDetailsComponent } from '@modules/performing/components/form/tab-details/tab-details.component';
+import { MedicalLockerComponent } from '@modules/performing/components/medical-locker/medical-locker.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -19,7 +20,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     declarations: [
         ListComponent,
         FormComponent,
-        TabDetailsComponent
+        TabDetailsComponent,
+        MedicalLockerComponent
     ],
     imports: [
         CommonModule,
