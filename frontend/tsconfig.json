@@ -3,8 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    //Silence the deprecation warning:
-    "ignoreDeprecations": "6.0",
     //Path aliases definitions:
     "paths": {
       "@app/*"      : ["src/app/*"],

@@ -192,7 +192,7 @@ export class SetPatientComponent implements OnInit {
 
       //Set people params:
       const people_params = {
-        'filter[elemMatch][documents][document]' : this.form.value.person.document,
+        'filter[elemMatch][documents][document]' : this.form.value.person.document.toUpperCase(),
         'filter[elemMatch][documents][doc_country_code]' : this.form.value.person.doc_country_code,
         'filter[elemMatch][documents][doc_type]' : this.form.value.person.doc_type
       };
