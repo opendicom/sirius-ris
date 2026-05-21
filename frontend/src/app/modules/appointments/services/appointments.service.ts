@@ -359,8 +359,6 @@ export class AppointmentsService {
     this.sharedFunctions.save(operation, 'appointments', _id, mergedValues, keysWithValues, (res) => {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
-        this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
-
         //Create appointment PDF with pain password:
         if(this.sharedProp.current_friendly_pass !== ''){
           this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass, true);
