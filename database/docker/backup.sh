@@ -4,23 +4,27 @@
 # Description:
 # This script performs opendicom/sirius-ris backups.
 #
-# Version: 1.0.0
+# Version: 1.1.0
 # Maintainer: opendicom
 # ##################################################################################################### #
 
 function check_envvar() {
   # Capture parameters:
   local FILE_LOG=$1
-  local ENV=$2
+  local ENV_NAME=$2
 
-  echo "["`date +%Y/%m/%d_%H:%M:%S`"] COMPROBACIÓN DE VARIABLE DE ENTORNO ($ENV):" >> $FILE_LOG
+  echo "["`date +%Y/%m/%d_%H:%M:%S`"] COMPROBACIÓN DE VARIABLE DE ENTORNO ($ENV_NAME):" >> $FILE_LOG
 
-  # Check env var  existence:
-  if [ "$(echo $ENV)" == "" ]; then
-    echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: Variable de entorno $ENV no definida." >> $FILE_LOG
+  # Capture environment variable value:
+  local ENV_VALUE="${!ENV_NAME}"
+
+  # Check env var existence:
+  if [ -z "$ENV_VALUE" ]; then
+    echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: Variable de entorno $ENV_NAME no definida." >> $FILE_LOG
     exit 1
   fi
-  echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Variable de entorno $ENV definida." >> $FILE_LOG
+
+  echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Variable de entorno $ENV_NAME definida." >> $FILE_LOG
 }
 
 function check_directory() {
@@ -32,9 +36,10 @@ function check_directory() {
 
   # Check directory existence:
   if [ ! -d "$DIR" ]; then
-  	echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: El directorio $DIR no existe." >> $1
+    echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: El directorio $DIR no existe." >> $1
     exit 1
   fi
+
   echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Comprobación de directorio exitosa." >> $1
 }
 
@@ -45,7 +50,7 @@ function retain_policy(){
   local FILE_PREFIX=$3
   local RETAIN=$4
 
-  #Set currend working directory
+  # Set current working directory:
   local WORKDIR=$(pwd)
 
   # Go to the directory:
@@ -59,7 +64,10 @@ function retain_policy(){
      rm -f $FILE_TO_DELETE
      echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Borrado archivo $DIR$FILE_TO_DELETE" >> $FILE_LOG
   fi
+
   echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Politica de retención aplicada exitosamente." >> $FILE_LOG
+
+  # Return to previous working directory:
   cd $WORKDIR
 }
 
@@ -68,15 +76,17 @@ function database_backup(){
   local FILE_LOG=$1
   local BACKUP_FILENAME=$2
 
-  echo "["`date +%Y/%m/%d_%H:%M:%S`"] CREANDO DUMP DE BASE DE DATOS: $DBNAME" >> $FILE_LOG
+  echo "["`date +%Y/%m/%d_%H:%M:%S`"] CREANDO DUMP DE BASE DE DATOS: $MONGO_INITDB_DATABASE" >> $FILE_LOG
 
-  #Backup database:
-  mongodump --authenticationDatabase admin -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --db ${MONGO_INITDB_DATABASE} --archive > $BACKUP_FILENAME
+  # Backup database compressed using MongoDB native gzip support:
+  mongodump --authenticationDatabase admin -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --db ${MONGO_INITDB_DATABASE} --archive=$BACKUP_FILENAME --gzip
 
+  # Check backup result:
   if [ $? != 0 ]; then
-  	echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: Hubo algun problema en el dump de la base de datos." >> $FILE_LOG
-  	exit 1
+    echo "["`date +%Y/%m/%d_%H:%M:%S`"] ERROR: Hubo algun problema en el dump de la base de datos." >> $FILE_LOG
+    exit 1
   fi
+
   echo "["`date +%Y/%m/%d_%H:%M:%S`"] OK: Dump exitoso." >> $FILE_LOG
 }
 
@@ -84,7 +94,9 @@ function run_backup(){
     local BACKUP_DST_PATH=$1
     local BACKUP_RETENTION=$2
     local PREFIX="sirius_db_backup"
-    local BACKUP_FILENAME=`date +%Y-%m-%d_%H-%M-%S`"_"$PREFIX".dump"
+
+    # Backup filename compressed with gzip:
+    local BACKUP_FILENAME=`date +%Y-%m-%d_%H-%M-%S`"_"$PREFIX".dump.gz"
 
     local LOG_PATH=$BACKUP_DST_PATH"log/"
     local FILE_LOG=$LOG_PATH`date +%Y-%m-%d_%H-%M-%S`".log"
@@ -107,5 +119,5 @@ function run_backup(){
     database_backup $FILE_LOG $BACKUP_DST_PATH$BACKUP_FILENAME
 }
 
-#Run backup script:
+# Run backup script:
 run_backup $1 $2
