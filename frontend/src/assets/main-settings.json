@@ -20,7 +20,7 @@
 
     "documentsParsers": {
         "858.1": {
-            "pattern": "[\\s.-]",
+            "pattern": "[^0-9]",
             "flags": "g",
             "replace": ""
         }

@@ -45,7 +45,7 @@ export SIRIUS_FRONTEND_FC_SLOTDURATION=${SIRIUS_FRONTEND_FC_SLOTDURATION:-'00:10
 export SIRIUS_FRONTEND_PASS_KEYWORDS=${SIRIUS_FRONTEND_PASS_KEYWORDS:-'["eucalipto", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"]'}
 
 # Documents parsers:
-export SIRIUS_FRONTEND_DOC_PARSERS=${SIRIUS_FRONTEND_DOC_PARSERS:-'{"858.1":{"pattern":"[\\\\s.-]","flags":"g","replace":""}}'}
+export SIRIUS_FRONTEND_DOC_PARSERS=${SIRIUS_FRONTEND_DOC_PARSERS:-'{"858.1":{"pattern":"[^0-9]","flags":"g","replace":""}}'}
 # ------------------------------------------------------------------------------------- #
 
 # Create main.settings file based on template with environment variables:

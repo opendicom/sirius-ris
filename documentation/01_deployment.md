@@ -236,5 +236,8 @@ SIRIUS_FRONTEND_FC_SLOTDURATION='00:10:00'
 
 # Patient password keywords:
 SIRIUS_FRONTEND_PASS_KEYWORDS='["cat", "dog", "bird", "pig", "lion", "cow", "chicken", "fish", "monkey"]'
+
+# Documents parsers (regex pattern, flags and replace string):
+SIRIUS_FRONTEND_DOC_PARSERS='{"858.1":{"pattern":"[^0-9]","flags":"g","replace":""}}'
 # ------------------------------------------------------------------------------------- #
 ```
