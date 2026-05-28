@@ -17,6 +17,8 @@
     },
 
     "passKeywords": ${SIRIUS_FRONTEND_PASS_KEYWORDS},
+
+    "documentsParsers": ${SIRIUS_FRONTEND_DOC_PARSERS},
     
     "FullCalendarOptions": {
         "locale": "${SIRIUS_LANGUAJE}",

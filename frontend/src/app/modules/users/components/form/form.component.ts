@@ -305,6 +305,11 @@ export class FormComponent implements OnInit {
     if(result.registered_doc_type === true){
       this.validation_result = result.validation_result;
 
+      //Check if the document requires parsing:
+      if(result.doc_parser.is_parsed === true){
+        this.form.get('person.document')?.setValue(result.doc_parser.parser_result);
+      }
+
       //Enable and disable save button:
       if(result.validation_result === true){
         this.disabled_save_button = false;

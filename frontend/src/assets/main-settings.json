@@ -17,6 +17,14 @@
     },
 
     "passKeywords": ["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"],
+
+    "documentsParsers": {
+        "858.1": {
+            "pattern": "[\\s.-]",
+            "flags": "g",
+            "replace": ""
+        }
+    },
     
     "FullCalendarOptions": {
         "locale": "en",

@@ -1,11 +1,22 @@
 import { Injectable } from '@angular/core';
 
+//--------------------------------------------------------------------------------------------------------------------//
+// IMPORTS:
+//--------------------------------------------------------------------------------------------------------------------//
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
+//--------------------------------------------------------------------------------------------------------------------//
+
 @Injectable({
   providedIn: 'root'
 })
 export class ValidateDocumentsService {
+  //Get documents parsers from main settings:
+  public docParser: any = this.sharedProp.mainSettings.documentsParsers || {};
 
-  constructor() { }
+  //Inject services to the constructor:
+  constructor(
+    public sharedProp: SharedPropertiesService
+  ){ }
 
   //--------------------------------------------------------------------------------------------------------------------//
   // VALIDATE:
@@ -17,7 +28,11 @@ export class ValidateDocumentsService {
     //Initialize result:
     let result = {
       registered_doc_type: false,
-      validation_result: false
+      validation_result: false,
+      doc_parser: {
+        is_parsed: false,
+        parser_result: document
+      }
     };
 
     //Check document:
@@ -28,7 +43,8 @@ export class ValidateDocumentsService {
         case '858.1':
           result = {
             registered_doc_type: true,
-            validation_result: this.validate_858_1(document)
+            validation_result: this.validate_858_1(document),
+            doc_parser: this.parseDocument(simplified_type, document)
           };
 
           break;
@@ -83,4 +99,35 @@ export class ValidateDocumentsService {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // PARSE DOCUMENT (DOCUMENT PARSER):
+  //--------------------------------------------------------------------------------------------------------------------//
+  parseDocument(simplified_type: string, document: string): any{
+    //Initialize result:
+    let result = {
+      is_parsed: false,
+      parser_result: document
+    };
+
+    //Check document:
+    if (document !== undefined && document !== '') {
+
+      //Check if parser exists:
+      if(this.docParser[simplified_type] !== undefined){
+        //Create regex dynamically:
+        const regex = new RegExp(this.docParser[simplified_type].pattern, this.docParser[simplified_type].flags);
+
+        //Parse document:
+        result = {
+          is_parsed: true,
+          parser_result: document.replace(regex, this.docParser[simplified_type].replace)
+        };
+      }
+    }
+
+    //Return result:
+    return result;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//  
 }
