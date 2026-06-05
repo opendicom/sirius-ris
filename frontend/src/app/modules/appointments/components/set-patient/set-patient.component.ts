@@ -557,7 +557,6 @@ export class SetPatientComponent implements OnInit {
         }));
 
         //Add patient permission if it doesn't already exist:
-
         if(patientAlreadyExist === false){
           this.permissions.push({ "role": 9, "organization": this.sharedProp.current_organization });
         }
