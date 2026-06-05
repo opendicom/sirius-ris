@@ -62,6 +62,10 @@ module.exports = async function() {
     //Create express object (app webServer):
     const app = express();
 
+    // Sirius RIS is deployed behind a frontend Nginx reverse proxy.
+    // Trust the first proxy so Express can resolve the original client IP
+    // from X-Forwarded-For and expose it through req.ip / req.ips.
+    app.set('trust proxy', 1);
 
     //----------------------------------------------------------------------------------------------------------------//
     // Graceful shutdown handlers:

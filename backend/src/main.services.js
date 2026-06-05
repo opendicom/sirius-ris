@@ -149,24 +149,33 @@ function sendConsoleMessage(level, message, details = false){
 // GET IP CLIENT:
 //--------------------------------------------------------------------------------------------------------------------//
 function getIPClient(req) {
-    // X-Forwarded-For can contain a list of IPs, the first being the original:
-    const xForwardedFor = req.headers['x-forwarded-for'];
-    let ip = null;
-    if (xForwardedFor) {
-        ip = xForwardedFor.split(',')[0].trim();
-    // Other possible headers:
-    } else if (req.headers['x-real-ip']) {
-        ip = req.headers['x-real-ip'];
-    } else {
-        ip = req.connection.remoteAddress || req.socket.remoteAddress;
+    // Express resolves the client IP using the trusted proxy chain:
+    let ip = req.ip || req.socket?.remoteAddress || req.connection?.remoteAddress || null;
+
+    // Optional diagnostics for troubleshooting proxy/network issues:
+    if(process.env.SIRIUS_DEBUG_IP_CLIENT === 'true' || mainSettings.log_level === 'DEBUG'){
+        //Send DEBUG Message:
+        sendConsoleMessage('DEBUG', 'IP client diagnostics: ', {
+            reqIp: req.ip,
+            reqIps: req.ips,
+            connectionRemoteAddress: req.connection?.remoteAddress || null,
+            socketRemoteAddress: req.socket?.remoteAddress || null,
+            xRealIp: req.headers['x-real-ip'] || null,
+            xForwardedFor: req.headers['x-forwarded-for'] || null
+        });
     }
 
-    // Normalize IPv4-mapped IPv6 ("::ffff:192.168.0.1" -> "192.168.0.1"):
-    if (typeof ip === 'string' && ip.startsWith('::ffff:')) {
-        ip = ip.substring(7);
+    // Normalize IPv4-mapped IPv6 addresses:
+    if(typeof ip === 'string'){
+        ip = ip.replace(/^::ffff:/, '');
+
+        // Normalize localhost IPv6.
+        if(ip === '::1'){
+            ip = '127.0.0.1';
+        }
     }
 
-    //Return the IP:
+    // Return the determined client IP address:
     return ip;
 }
 //--------------------------------------------------------------------------------------------------------------------//
