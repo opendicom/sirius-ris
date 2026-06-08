@@ -52,6 +52,7 @@ export class FormComponent implements OnInit {
   public performingData                 : any = {};
   public performingFormattedDate        : any = {};
   public reportData                     : any = {};
+  public reportRevision                 : number = 1;
   public amendmentsData                 : any = false;
 
   //Define Formgroup (Reactive form handling):
@@ -184,6 +185,7 @@ export class FormComponent implements OnInit {
           'proj[findings]'                : 1,
           'proj[summary]'                 : 1,
           'proj[medical_signatures]'      : 1,
+          'proj[revision]'                : 1,
           'proj[authenticated.datetime]'  : 1,
           'proj[authenticated.user]'      : 1,
           'proj[pathologies]'             : 1,
@@ -211,6 +213,7 @@ export class FormComponent implements OnInit {
 
             //Set report data with the last report (amend cases):
             this.reportData = reportsRes.data[0];
+            this.reportRevision = this.reportData.revision;
 
             //Set report _id:
             this._id = this.reportData._id;
@@ -331,6 +334,7 @@ export class FormComponent implements OnInit {
 
       //Set fk_performing in save object:
       reportSaveData['fk_performing'] = this.fk_performing;
+      reportSaveData['revision'] = this.reportRevision;
 
       //Data normalization - Pathologies:
       if(this.selectedPathologies.length > 0){

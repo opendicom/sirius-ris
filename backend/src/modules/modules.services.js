@@ -2530,6 +2530,7 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 //Schema:
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_performing'] != undefined){ filter[asPrefix + 'fk_performing'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_performing']); };
+                if(filter[asPrefix + 'revision'] != undefined){ filter[asPrefix + 'revision'] = parseInt(filter[asPrefix + 'revision'], 10); }
                 if(filter[asPrefix + 'findings.fk_procedure'] != undefined){ filter[asPrefix + 'findings.fk_procedure'] = filter[asPrefix + 'findings.fk_procedure'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'findings.fk_procedure']); }
                 if(filter[asPrefix + 'medical_signatures'] != undefined){ filter[asPrefix + 'medical_signatures'] = filter[asPrefix + 'medical_signatures'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'medical_signatures']); }
                 if(filter[asPrefix + 'fk_pathologies'] != undefined){ filter[asPrefix + 'fk_pathologies'] = filter[asPrefix + 'fk_pathologies'][0] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_pathologies']); }

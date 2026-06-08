@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Erreur lors de la tentative d'insertion de l'élément : ",
       "CLINICAL_DATA_LOADED": "Données cliniques chargées",
       "PROCEDURE_TEMPLATE_LOADED": "Modèle de procédure chargé",
-      "REPORT_TEMPLATE_LOADED": "Modèle de rapport chargé"
+      "REPORT_TEMPLATE_LOADED": "Modèle de rapport chargé",
+      "REVISION": "Rév.",
+      "REVISION_TOOLTIP": "Numéro de révision des modifications apportées au rapport (Contrôle de la concurrence)."
     }
   },
   "STATS": {

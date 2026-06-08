@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "尝试插入项目时出错: ",
       "CLINICAL_DATA_LOADED": "临床数据已加载",
       "PROCEDURE_TEMPLATE_LOADED": "程序模板已加载",
-      "REPORT_TEMPLATE_LOADED": "报告模板已加载"
+      "REPORT_TEMPLATE_LOADED": "报告模板已加载",
+      "REVISION": "牧师",
+      "REVISION_TOOLTIP": "报告修改的修订号（并发控制）。"
     }
   },
   "STATS": {

@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Error al intentar insertar el elemento: ",
       "CLINICAL_DATA_LOADED": "Dato clínico cargado",
       "PROCEDURE_TEMPLATE_LOADED": "Plantilla de procedimiento cargada",
-      "REPORT_TEMPLATE_LOADED": "Plantilla de informe cargada"
+      "REPORT_TEMPLATE_LOADED": "Plantilla de informe cargada",
+      "REVISION": "Rev.",
+      "REVISION_TOOLTIP": "Número de revisión de cambios realizados sobre el informe (Control de concurrencia)."
     }
   },
   "STATS": {

@@ -136,7 +136,8 @@
       "procedure": "Verfahren:",
       "summary": "Zusammenfassend:",
       "pageOf": "Seite: {0} von {1}",
-      "hoursAbbrev": "Std"
+      "hoursAbbrev": "Std",
+      "modifiedByAnotherUser": "Der Bericht wurde nach dem Öffnen durch Sie geändert. Laden Sie den Bericht neu, bevor Sie fortfahren."
     }
   }
 }

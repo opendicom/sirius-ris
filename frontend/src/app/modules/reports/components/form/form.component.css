@@ -185,3 +185,12 @@ li {
 .mat-expansion-panel-header-title {
     color: var(--oposite-color-02) !important;
 }
+
+.revision-container {
+  padding-top: 10px;
+  padding-right: 7px;
+}
+
+.revision {
+  cursor: pointer;
+}

@@ -136,7 +136,8 @@
       "procedure": "Procedimiento:",
       "summary": "En suma:",
       "pageOf": "Página: {0} de {1}",
-      "hoursAbbrev": "hs"
+      "hoursAbbrev": "hs",
+      "modifiedByAnotherUser": "El informe fue modificado luego de haber sido abierto por usted. Recargue el informe antes de continuar."
     }
   }
 }

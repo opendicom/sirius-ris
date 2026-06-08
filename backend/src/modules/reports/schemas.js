@@ -29,6 +29,7 @@ const subSchemaAuthenticated = new mongoose.Schema({
 //Define Schema:
 const Schema = new mongoose.Schema({
     fk_performing:          { type: mongoose.ObjectId, required: true },
+    revision:               { type: Number, required: true, default: 1 }, //Control of saved data on the same report, update with optimistic locking.
     clinical_info:          { type: String, required: true },
     procedure_description:  { type: String, required: true },
     findings:               { type: [subSchemaFindings] },
@@ -61,6 +62,11 @@ const Validator = [
         .trim()
         .isMongoId()
         .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "fk_performing" (ObjectId).'),
+
+    body('revision')
+        .trim()
+        .isInt()
+        .withMessage(currentLang.ris.schema_validator.isRequiredInt + ' | "revision".'),
 
     body('clinical_info')
         .trim()

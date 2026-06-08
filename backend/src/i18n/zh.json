@@ -136,7 +136,8 @@
       "procedure": "程序:",
       "summary": "总之:",
       "pageOf": "页: {0} / {1}",
-      "hoursAbbrev": "时"
+      "hoursAbbrev": "时",
+      "modifiedByAnotherUser": "报告在您打开后已被修改。请重新加载报告后再继续。"
     }
   }
 }

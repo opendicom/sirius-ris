@@ -56,14 +56,41 @@ module.exports = async (req, res, currentSchema, operation) => {
             break;
 
         case 'update':
-            //Find current report by _id:
-            await currentSchema.Model.findById(req.body._id, { fk_performing: 1, medical_signatures: 1 })
+            //Validate report revision in request:
+            if(req.body.revision === undefined || req.body.revision === null){
+                return res.status(422).send({
+                    success: false,
+                    message: 'Missing report revision'
+                });
+            }
+
+            //Parse revision to number and validate:
+            const requestRevision = Number(req.body.revision);
+            if(Number.isNaN(requestRevision)){
+                return res.status(422).send({
+                    success: false,
+                    message: 'Invalid report revision'
+                });
+            }
+
+            //Find current report by _id and get current revision with signatures and performing reference:
+            await currentSchema.Model.findById(req.body._id, { fk_performing: 1, medical_signatures: 1, revision: 1 })
             .exec()
             .then(async (reportData) => {
                 //Check for results (not empty):
                 if(reportData){
                     //Convert Mongoose object to Javascript object:
                     reportData = reportData.toObject();
+
+                    //Validate revision conflict before applying updates:
+                    if(reportData.revision !== requestRevision){
+                        return res.status(409).send({
+                            success: false,
+                            conflict: true,
+                            current_revision: reportData.revision,
+                            message: 'El informe fue modificado por otro usuario. Recargue el informe antes de continuar.'
+                        });
+                    }
 
                     //Create handler object (insert_report):
                     const handlerObjUpdate = {
@@ -76,15 +103,73 @@ module.exports = async (req, res, currentSchema, operation) => {
 
                     //Check result:
                     if(updateResult.success){
+                        //Check if the report has signatures to remove:
+                        const hasSignatures = reportData.medical_signatures.length > 0;
 
-                        //Check if the report is signed:
-                        if(reportData.medical_signatures.length > 0){
-                            //Remove and delete all previous signatures from the report:
-                            await moduleServices.removeAllSignaturesFromReport(reportData);
-                        }
+                        //Build atomic update object without allowing client to override revision:
+                        const setData = req.validatedResult.set ? { ...req.validatedResult.set } : {};
+                        const unsetData = req.validatedResult.unset ? { ...req.validatedResult.unset } : {};
 
-                        //Update report data:
-                        await moduleServices.update(req, res, currentSchema, referencedElements);
+                        delete setData.revision;
+                        if(unsetData.revision !== undefined) { delete unsetData.revision; }
+
+                        const updateObj = {};
+                        if(Object.keys(setData).length > 0){ updateObj.$set = setData; }
+                        if(Object.keys(unsetData).length > 0){ updateObj.$unset = unsetData; }
+                        updateObj.$inc = { revision: 1 };
+
+                        //Atomic update with optimistic locking using revision filter:
+                        await currentSchema.Model.findOneAndUpdate({ _id: req.body._id, revision: requestRevision }, updateObj, { new: true })
+                        .then(async (data) => {
+                            if(data){
+                                //Check if the report has signatures to remove:
+                                if(hasSignatures){
+                                    //Remove and delete all previous signatures from the report:
+                                    await moduleServices.removeAllSignaturesFromReport(reportData);
+                                    data.medical_signatures = [];
+                                }
+
+                                //Delete _id of blocked items for message:
+                                delete req.validatedResult.blocked._id;
+
+                                //Set empty blocked format:
+                                if(Object.keys(req.validatedResult.blocked).length === 0){ req.validatedResult.blocked = false; }
+
+                                //Set log element:
+                                const element = {
+                                    type: currentSchema.Model.modelName,
+                                    _id: data._id
+                                };
+
+                                //Save registry in Log DB:
+                                const logResult = await moduleServices.insertLog(req, res, 3, element);
+
+                                //Check log registry result:
+                                if(logResult){
+                                    //Send successfully response:
+                                    res.status(200).send({
+                                        success: true,
+                                        data: data,
+                                        blocked_attributes: req.validatedResult.blocked,
+                                        blocked_unset: req.validatedResult.blocked_unset
+                                    });
+                                } else {
+                                    //Send log error response:
+                                    res.status(500).send({ success: false, message: currentLang.db.insert_error_log });
+                                }
+                            } else {
+                                //Conflict detected (report was modified by another user):
+                                res.status(409).send({
+                                    success: false,
+                                    conflict: true,
+                                    message: currentLang.ris.modified_by_another_user
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            //Dont match (empty result findOneAndUpdate):
+                            mainServices.sendError(res, currentLang.db.update_error, err);
+                        });
 
                     } else {
                         //Send error message:

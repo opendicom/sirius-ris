@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Ошибка при попытке вставки элемента: ",
       "CLINICAL_DATA_LOADED": "Клинические данные загружены",
       "PROCEDURE_TEMPLATE_LOADED": "Шаблон процедуры загружен",
-      "REPORT_TEMPLATE_LOADED": "Шаблон отчета загружен"
+      "REPORT_TEMPLATE_LOADED": "Шаблон отчета загружен",
+      "REVISION": "Ред.",
+      "REVISION_TOOLTIP": "Номер редакции изменений, внесенных в отчет (Контроль параллелизма)."
     }
   },
   "STATS": {

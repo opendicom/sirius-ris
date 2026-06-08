@@ -487,6 +487,16 @@
           <div class="text-left" *ngIf="reportData && reportData.medical_signatures !== undefined && reportData.medical_signatures[0].user !== undefined && reportData.medical_signatures[0].user.person !== undefined">
             <small><hr class="dashed" /><strong>{{ 'REPORTS.FORM.WARNING' | i18n }}:</strong> {{ 'REPORTS.FORM.SIGNED_WARNING' | i18n }}</small>
           </div>
+
+          <!--report_revision-->
+          <div class="clearfix"></div>
+          <div class="text-right revision-container">
+            <small>
+              <span *ngIf="reportData.revision;" class="label-accent revision" matTooltip="{{ 'REPORTS.FORM.REVISION_TOOLTIP' | i18n }}">
+                {{ 'REPORTS.FORM.REVISION' | i18n }}{{ reportRevision }}
+              </span>
+            </small>
+          </div>
         </div> <!-- end fxLayout wrapper -->
       </div>
 

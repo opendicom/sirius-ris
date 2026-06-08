@@ -352,6 +352,7 @@ _Automatically generated from Mongoose schemas._
 |------|------|----------|--------|---------|------------|
 | _id | ObjectId | Yes | Yes | Auto | PK |
 | fk_performing | ObjectId | Yes | No |  | _id.performing |
+| revision | Number | Yes | No | 1 |  |
 | clinical_info | String | Yes | No |  |  |
 | procedure_description | String | Yes | No |  |  |
 | findings[x].fk_procedure | ObjectId | Yes | No |  | _id.procedures |

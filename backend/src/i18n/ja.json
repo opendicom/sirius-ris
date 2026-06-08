@@ -136,7 +136,8 @@
             "procedure": "手順:",
             "summary": "要約:",
             "pageOf": "ページ: {0} / {1}",
-            "hoursAbbrev": "時"
+            "hoursAbbrev": "時",
+            "modifiedByAnotherUser": "レポートは、お客様が開いた後に変更されました。続行する前に、レポートを再読み込みしてください。"
         }
     }
 }

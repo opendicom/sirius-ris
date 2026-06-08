@@ -281,6 +281,7 @@ class procedures {
 
 class reports {
   fk_performing : ObjectId
+  revision : Number
   clinical_info : String
   procedure_description : String
   findings[x].fk_procedure : ObjectId

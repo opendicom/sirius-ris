@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Errore durante il tentativo di inserimento dell'elemento: ",
       "CLINICAL_DATA_LOADED": "Dati clinici caricati",
       "PROCEDURE_TEMPLATE_LOADED": "Modello di procedura caricato",
-      "REPORT_TEMPLATE_LOADED": "Modello di referto caricato"
+      "REPORT_TEMPLATE_LOADED": "Modello di referto caricato",
+      "REVISION": "Rev.",
+      "REVISION_TOOLTIP": "Numero di revisione delle modifiche apportate al report (Controllo della concorrenza)."
     }
   },
   "STATS": {

@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "アイテムの挿入試行中にエラーが発生しました：",
       "CLINICAL_DATA_LOADED": "臨床データが読み込まれました",
       "PROCEDURE_TEMPLATE_LOADED": "手技テンプレートが読み込まれました",
-      "REPORT_TEMPLATE_LOADED": "レポートテンプレートが読み込まれました"
+      "REPORT_TEMPLATE_LOADED": "レポートテンプレートが読み込まれました",
+      "REVISION": "改訂",
+      "REVISION_TOOLTIP": "レポートに加えられた変更の改訂番号（同時実行制御）。"
     }
   },
   "STATS": {

@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Erro ao tentar inserir o elemento: ",
       "CLINICAL_DATA_LOADED": "Dados clínicos carregados",
       "PROCEDURE_TEMPLATE_LOADED": "Modelo de procedimento carregado",
-      "REPORT_TEMPLATE_LOADED": "Modelo de laudo carregado"
+      "REPORT_TEMPLATE_LOADED": "Modelo de laudo carregado",
+      "REVISION": "Rev.",
+      "REVISION_TOOLTIP": "Número da revisão das alterações feitas no relatório (Controle de concorrência)."
     }
   },
   "STATS": {

@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Error trying to insert the element: ",
       "CLINICAL_DATA_LOADED": "Clinical data loaded",
       "PROCEDURE_TEMPLATE_LOADED": "Procedure template loaded",
-      "REPORT_TEMPLATE_LOADED": "Report template loaded"
+      "REPORT_TEMPLATE_LOADED": "Report template loaded",
+      "REVISION": "Rev.",
+      "REVISION_TOOLTIP": "Revision number of changes made to the report (Concurrency control)."
     }
   },
   "STATS": {

@@ -739,7 +739,9 @@
       "PERFORMING_INSERT_ERROR": "Fehler beim Versuch, das Element einzufügen: ",
       "CLINICAL_DATA_LOADED": "Klinische Daten geladen",
       "PROCEDURE_TEMPLATE_LOADED": "Prozedurvorschlag geladen",
-      "REPORT_TEMPLATE_LOADED": "Berichtsvorlage geladen"
+      "REPORT_TEMPLATE_LOADED": "Berichtsvorlage geladen",
+      "REVISION": "Rev.",
+      "REVISION_TOOLTIP": "Revisionsnummer der am Bericht vorgenommenen Änderungen (Parallelitätskontrolle)."
     }
   },
   "STATS": {
