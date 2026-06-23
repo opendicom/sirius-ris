@@ -874,6 +874,7 @@
       "EMAIL": "Email:",
       "PHONES": "Telefoni:",
       "EDIT": "MODIFICA",
+      "EDIT_DOCUMENTS": "DOCUMENTI",
       "CLOSE": "CHIUDI"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "ANNULLA",
       "SAVE_BUTTON": "SALVA"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "È necessario caricare i dati necessari per aggiungere l'autorizzazione all'utente."
     }
   },
@@ -1964,14 +1965,14 @@
       "IN-PROGRESS": "Elenco di assistenza in corso in elaborazione..."
     }
   },
-  "EVENTS_LOG" : {
-    "1" : "Accesso",
-    "2" : "Creazione",
-    "3" : "Modifica",
-    "4" : "Eliminazione",
-    "5" : "Firma",
-    "6" : "Autenticazione",
-    "7" : "Invio email"
+  "EVENTS_LOG": {
+    "1": "Accesso",
+    "2": "Creazione",
+    "3": "Modifica",
+    "4": "Eliminazione",
+    "5": "Firma",
+    "6": "Autenticazione",
+    "7": "Invio email"
   },
   "DOCUMENT_TYPES": {
     "1": "ID Nazionale (DNI, CI, CURP, RUT)",
@@ -2212,5 +2213,32 @@
     "REPORTS": "RAPPORTI",
     "URGENCY": "Urgenza",
     "TOTAL": "TOTALE"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Titolo del contenuto",
+      "DOCUMENTS_TITLE": "Documenti",
+      "PERSON_INFO_TITLE": "Informazioni sulla persona",
+      "DOC_COUNTRY_PLACEHOLDER": "Inserisci il paese del documento",
+      "DOC_TYPE_PLACEHOLDER": "Inserisci il tipo di documento",
+      "DOCUMENT_PLACEHOLDER": "Inserisci il documento",
+      "DOCUMENT_INPUT": "Documento",
+      "REMOVE_TOOLTIP": "Rimuovi documento",
+      "ADD_DOCUMENT": "Aggiungi documento",
+      "MIN_ONE_DOCUMENT_WARNING": "È richiesto almeno un documento",
+      "DUPLICATE_WARNING": "I documenti duplicati non sono consentiti",
+      "ACCEPT_WARNING": "Accetta i termini prima di continuare",
+      "EDIT_ERROR": "Errore durante la modifica dell’elemento: ",
+      "CANCEL_BUTTON": "ANNULLA",
+      "SAVE_BUTTON": "SALVA",
+      "FULL_NAME": "Nome completo",
+      "BIRTH_DATE": "Data di nascita",
+      "GENDER": "Sesso",
+      "EMAIL": "Email",
+      "PHONES": "Telefoni",
+      "STATUS": "Stato",
+      "ACTIVE": "Attivo",
+      "INACTIVE": "Inattivo"
+    }
   }
 }

@@ -874,6 +874,7 @@
       "EMAIL": "E-Mail:",
       "PHONES": "Telefone:",
       "EDIT": "BEARBEITEN",
+      "EDIT_DOCUMENTS": "DOKUMENTE",
       "CLOSE": "SCHLIESSEN"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "ABBRECHEN",
       "SAVE_BUTTON": "SPEICHERN"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "Sie müssen die erforderlichen Daten laden, um die Berechtigung dem Benutzer hinzuzufügen."
     }
   },
@@ -2212,5 +2213,32 @@
     "REPORTS": "BERICHTE",
     "URGENCY": "Unterdrückung",
     "TOTAL": "GESAMT"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Inhaltstitel",
+      "DOCUMENTS_TITLE": "Dokumente",
+      "PERSON_INFO_TITLE": "Personeninformationen",
+      "DOC_COUNTRY_PLACEHOLDER": "Geben Sie das Herkunftsland des Dokuments ein",
+      "DOC_TYPE_PLACEHOLDER": "Geben Sie den Dokumenttyp ein",
+      "DOCUMENT_PLACEHOLDER": "Geben Sie das Dokument ein",
+      "DOCUMENT_INPUT": "Dokument",
+      "REMOVE_TOOLTIP": "Dokument entfernen",
+      "ADD_DOCUMENT": "Dokument hinzufügen",
+      "MIN_ONE_DOCUMENT_WARNING": "Mindestens ein Dokument ist erforderlich",
+      "DUPLICATE_WARNING": "Doppelte Dokumente sind nicht erlaubt",
+      "ACCEPT_WARNING": "Bitte akzeptieren Sie die Bedingungen, bevor Sie fortfahren",
+      "EDIT_ERROR": "Fehler beim Bearbeiten des Elements: ",
+      "CANCEL_BUTTON": "ABBRECHEN",
+      "SAVE_BUTTON": "SPEICHERN",
+      "FULL_NAME": "Vollständiger Name",
+      "BIRTH_DATE": "Geburtsdatum",
+      "GENDER": "Geschlecht",
+      "EMAIL": "E-Mail",
+      "PHONES": "Telefone",
+      "STATUS": "Status",
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    }
   }
 }

@@ -874,6 +874,7 @@
       "EMAIL": "Email:",
       "PHONES": "Phones:",
       "EDIT": "EDIT",
+      "EDIT_DOCUMENTS": "DOCUMENTS",
       "CLOSE": "CLOSE"
     },
     "OVERLAP_EVENTS": {
@@ -2212,5 +2213,32 @@
     "REPORTS": "REPORTS",
     "URGENCY": "Urgency",
     "TOTAL": "TOTAL"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Identity documents form",
+      "DOCUMENTS_TITLE": "Identity documents:",
+      "PERSON_INFO_TITLE": "Person data:",
+      "DOC_COUNTRY_PLACEHOLDER": "Document country",
+      "DOC_TYPE_PLACEHOLDER": "Document type",
+      "DOCUMENT_PLACEHOLDER": "Document",
+      "DOCUMENT_INPUT": "Enter the document",
+      "REMOVE_TOOLTIP": "Remove this document",
+      "ADD_DOCUMENT": "ADD DOCUMENT",
+      "MIN_ONE_DOCUMENT_WARNING": "You must keep at least one identity document.",
+      "DUPLICATE_WARNING": "This document is already registered to:",
+      "ACCEPT_WARNING": "ACCEPT",
+      "EDIT_ERROR": "Error trying to edit element: ",
+      "CANCEL_BUTTON": "CANCEL",
+      "SAVE_BUTTON": "SAVE",
+      "FULL_NAME": "Full name:",
+      "BIRTH_DATE": "Birth date:",
+      "GENDER": "Gender:",
+      "EMAIL": "Email:",
+      "PHONES": "Phones:",
+      "STATUS": "Status:",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
   }
 }

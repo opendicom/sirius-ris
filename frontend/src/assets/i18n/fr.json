@@ -874,6 +874,7 @@
       "EMAIL": "E-mail :",
       "PHONES": "Téléphones :",
       "EDIT": "MODIFIER",
+      "EDIT_DOCUMENTS": "DOCUMENTS",
       "CLOSE": "FERMER"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "ANNULER",
       "SAVE_BUTTON": "ENREGISTRER"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "Vous devez télécharger les données nécessaires pour ajouter l'autorisation à l'utilisateur."
     }
   },
@@ -2212,5 +2213,32 @@
     "REPORTS": "INFORMES",
     "URGENCY": "Urgence",
     "TOTAL": "TOTAL"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Titre du contenu",
+      "DOCUMENTS_TITLE": "Documents",
+      "PERSON_INFO_TITLE": "Informations sur la personne",
+      "DOC_COUNTRY_PLACEHOLDER": "Entrez le pays du document",
+      "DOC_TYPE_PLACEHOLDER": "Entrez le type de document",
+      "DOCUMENT_PLACEHOLDER": "Entrez le document",
+      "DOCUMENT_INPUT": "Document",
+      "REMOVE_TOOLTIP": "Supprimer le document",
+      "ADD_DOCUMENT": "Ajouter un document",
+      "MIN_ONE_DOCUMENT_WARNING": "Au moins un document est requis",
+      "DUPLICATE_WARNING": "Les documents en double ne sont pas autorisés",
+      "ACCEPT_WARNING": "Veuillez accepter les conditions avant de continuer",
+      "EDIT_ERROR": "Erreur lors de la modification de l’élément : ",
+      "CANCEL_BUTTON": "ANNULER",
+      "SAVE_BUTTON": "ENREGISTRER",
+      "FULL_NAME": "Nom complet",
+      "BIRTH_DATE": "Date de naissance",
+      "GENDER": "Sexe",
+      "EMAIL": "E-mail",
+      "PHONES": "Téléphones",
+      "STATUS": "Statut",
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif"
+    }
   }
 }

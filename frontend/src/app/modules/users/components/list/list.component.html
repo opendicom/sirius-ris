@@ -48,7 +48,7 @@
         <td class="documents" mat-cell *matCellDef="let element">
 
             <!-- Human case -->
-            <span *ngIf="element.person">
+            <span *ngIf="element.person" class="patient-details" (click)="openPatientDetails(element)">
               <span *ngFor="let current of element.person.documents" >
                 <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
                 <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">

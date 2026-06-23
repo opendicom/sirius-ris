@@ -874,6 +874,7 @@
       "EMAIL": "电子邮件:",
       "PHONES": "电话:",
       "EDIT": "编辑",
+      "EDIT_DOCUMENTS": "文档",
       "CLOSE": "关闭"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "取消",
       "SAVE_BUTTON": "保存"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "您必须上传必要数据才能为用户添加权限。"
     }
   },
@@ -2212,5 +2213,32 @@
     "REPORTS": "报告",
     "URGENCY": "紧急",
     "TOTAL": "总计"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "内容标题",
+      "DOCUMENTS_TITLE": "文档",
+      "PERSON_INFO_TITLE": "个人信息",
+      "DOC_COUNTRY_PLACEHOLDER": "请输入文档国家",
+      "DOC_TYPE_PLACEHOLDER": "请输入文档类型",
+      "DOCUMENT_PLACEHOLDER": "请输入文档",
+      "DOCUMENT_INPUT": "文档",
+      "REMOVE_TOOLTIP": "删除文档",
+      "ADD_DOCUMENT": "添加文档",
+      "MIN_ONE_DOCUMENT_WARNING": "需要至少一个文档",
+      "DUPLICATE_WARNING": "不允许重复文档",
+      "ACCEPT_WARNING": "继续之前请接受条款",
+      "EDIT_ERROR": "尝试编辑元素时出错：",
+      "CANCEL_BUTTON": "取消",
+      "SAVE_BUTTON": "保存",
+      "FULL_NAME": "全名",
+      "BIRTH_DATE": "出生日期",
+      "GENDER": "性别",
+      "EMAIL": "电子邮件",
+      "PHONES": "电话",
+      "STATUS": "状态",
+      "ACTIVE": "激活",
+      "INACTIVE": "未激活"
+    }
   }
 }

@@ -1,0 +1,91 @@
+.male {
+  color: var(--light-blue);
+}
+
+.female {
+  color: var(--pink);
+}
+
+.other {
+  color: var(--green-highlighted);
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}
+
+.details-title {
+  margin-bottom: 5px !important;
+}
+
+.doc-row mat-form-field {
+  margin-right: 8px;
+}
+
+.doc-row-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.doc-row-main mat-form-field {
+  margin-right: 0;
+}
+
+.doc-row-main button[mat-icon-button] {
+  margin-top: 9px;
+}
+
+.doc-row .validate-info {
+  margin-top: 10px;
+}
+
+.doc-row .doc-validate-inline {
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.validate-icon {
+  position: relative;
+  top: 7px !important;
+}
+
+.person-info small {
+  opacity: 0.7;
+}
+
+.duplicate-doc-warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  border-left: 4px solid var(--orange-intense);
+  background-color: rgba(244, 67, 54, 0.08);
+  border-radius: 0 4px 4px 0;
+}
+
+.duplicate-doc-warning-icon {
+  color: var(--orange-intense);
+  flex-shrink: 0;
+}
+
+.duplicate-doc-warning-text {
+  flex: 1;
+  font-size: 0.9em;
+  color: inherit;
+}
+
+.duplicate-doc-warning-btn {
+  flex-shrink: 0;
+  border-color: var(--orange-intense) !important;
+  color: var(--orange-intense) !important;
+}
+
+.info-value {
+  font-weight: 500;
+}

@@ -98,7 +98,8 @@
   <span class="mat-spacer"></span>
   <!-- 1: Superusuario, 2: Administrador, Concesiones: [22: Edición de identificación de pacientes] -->
   <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [22]))" >
-    <button mat-flat-button [mat-dialog-close]="true" color="primary" routerLink="/users/form/update/{{ data.patient._id }}/{{ data.destiny }}" ><mat-icon>edit</mat-icon> {{ 'DIALOGS.PATIENT_DETAILS.EDIT' | i18n }}</button>&nbsp;
+    <button mat-flat-button [mat-dialog-close]="true" color="primary" routerLink="/users/form/update/{{ data.patient._id }}/{{ data.destiny }}" ><mat-icon>edit</mat-icon> {{ 'DIALOGS.PATIENT_DETAILS.EDIT' | i18n }}</button>
+    <button mat-flat-button [mat-dialog-close]="true" color="primary" routerLink="/users/form-documents/update/{{ data.patient._id }}/{{ data.destiny }}" ><mat-icon>badge</mat-icon> {{ 'DIALOGS.PATIENT_DETAILS.EDIT_DOCUMENTS' | i18n }}</button>&nbsp;&nbsp;
   </span>
   <button mat-flat-button mat-dialog-close [mat-dialog-close]="true" color="basic" cdkFocusInitial><mat-icon>close</mat-icon> {{ 'DIALOGS.PATIENT_DETAILS.CLOSE' | i18n }}</button>
 </div>

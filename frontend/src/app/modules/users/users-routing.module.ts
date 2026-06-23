@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListComponent } from '@modules/users/components/list/list.component';
 import { FormComponent } from '@modules/users/components/form/form.component';
 import { FormMachineComponent } from '@modules/users/components/form-machine/form-machine.component';
+import { FormDocumentsComponent } from '@modules/users/components/form-documents/form-documents.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,8 @@ const routes: Routes = [
       { path: 'form/:action/:_id', component: FormComponent },
       { path: 'form/:action/:_id/:destiny', component: FormComponent },
       { path: 'form_machine/:action/:_id', component: FormMachineComponent },
+      { path: 'form-documents/:action/:_id', component: FormDocumentsComponent },
+      { path: 'form-documents/:action/:_id/:destiny', component: FormDocumentsComponent },
       { path: '**', redirectTo: 'list' },
     ]
   }

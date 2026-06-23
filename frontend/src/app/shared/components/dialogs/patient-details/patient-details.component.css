@@ -24,3 +24,18 @@
     margin-left: 0px !important;
     margin-right: 4px !important;
 }
+
+.patient-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.patient-actions-group {
+  display: contents;
+}
+
+/* Neutralize the margin that Material automatically adds to buttons in mat-dialog-actions */
+.patient-actions button {
+  margin: 0 !important;
+}

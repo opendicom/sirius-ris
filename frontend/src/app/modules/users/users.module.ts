@@ -11,12 +11,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from '@modules/users/components/list/list.component';
 import { FormComponent } from '@modules/users/components/form/form.component';
 import { FormMachineComponent } from '@modules/users/components/form-machine/form-machine.component';
+import { FormDocumentsComponent } from '@modules/users/components/form-documents/form-documents.component';
 
 @NgModule({
   declarations: [
     FormComponent,
     ListComponent,
-    FormMachineComponent
+    FormMachineComponent,
+    FormDocumentsComponent
   ],
   imports: [
     CommonModule,

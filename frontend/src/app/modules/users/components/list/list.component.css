@@ -31,3 +31,8 @@ mat-chip {
 .roles {
   padding-left: 10px !important;
 }
+
+.patient-details {
+  cursor: pointer;
+  color: var(--gold-highlighted);
+}

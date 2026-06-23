@@ -1,0 +1,176 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <!-- Left column: documents management -->
+    <div class="input-wrapper divider-alt">
+      <h4>{{ 'USERS.FORM.PERSON_TAB.DOCUMENTS_TITLE' | i18n }}</h4>
+      <div formArrayName="documents">
+        <div *ngFor="let doc of documentsArray.controls; let i = index" class="doc-row" [formGroupName]="i">
+          <div class="doc-row-main">
+            
+            <!-- Country -->
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'DOCUMENTS_ADMINISTRATION.FORM.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="doc_country_code" (selectionChange)="onDocumentChange(i, true)">
+                <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                  <mat-option [value]="currentCode">
+                    <span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}
+                  </mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Document type -->
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'DOCUMENTS_ADMINISTRATION.FORM.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="doc_type" (selectionChange)="onDocumentChange(i, true)">
+                <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+                  <mat-option [value]="currentDocTypeKey">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Document number -->
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'DOCUMENTS_ADMINISTRATION.FORM.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="document" placeholder="{{ 'DOCUMENTS_ADMINISTRATION.FORM.DOCUMENT_INPUT' | i18n }}" (input)="onDocumentChange(i)" (keyup)="onDocumentChange(i)" (blur)="onDocumentChange(i, true)">
+            </mat-form-field>
+
+            <!-- Remove row -->
+            <button *ngIf="canRemoveDocuments()" mat-icon-button color="warn" type="button" matTooltip="{{ 'DOCUMENTS_ADMINISTRATION.FORM.REMOVE_TOOLTIP' | i18n }}" (click)="removeDocument(i)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+
+            <!-- Per-row validation status -->
+            <div *ngIf="documentsValidation[i] && documentsValidation[i].registered_doc_type === true" class="validate-info doc-validate-inline text-right">
+              <span *ngIf="documentsValidation[i].validation_result" class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_OK' | i18n }}">
+                {{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }}
+                <mat-icon class="validate-icon color-ok">done</mat-icon>
+              </span>
+              <span *ngIf="!documentsValidation[i].validation_result" class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_FAIL' | i18n }}">
+                {{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }}
+                <mat-icon class="validate-icon color-fail">clear</mat-icon>
+              </span>
+            </div>
+          </div>
+
+          <!-- Duplicate document warning -->
+          <div *ngIf="duplicateWarnings[i] && !dismissedDuplicateWarnings[i]" class="duplicate-doc-warning">
+            <mat-icon class="duplicate-doc-warning-icon">warning</mat-icon>
+            <span class="duplicate-doc-warning-text">
+              {{ 'DOCUMENTS_ADMINISTRATION.FORM.DUPLICATE_WARNING' | i18n }}
+              <strong>{{ duplicateWarnings[i].name_01 }}<span *ngIf="duplicateWarnings[i].name_02"> {{ duplicateWarnings[i].name_02 }}</span> {{ duplicateWarnings[i].surname_01 }}<span *ngIf="duplicateWarnings[i].surname_02"> {{ duplicateWarnings[i].surname_02 }}</span></strong>
+            </span>
+            <button mat-stroked-button type="button" class="duplicate-doc-warning-btn" (click)="clearWarning(i)">
+              {{ 'DOCUMENTS_ADMINISTRATION.FORM.ACCEPT_WARNING' | i18n }}
+            </button>
+          </div>
+
+          <hr class="dashed" /><br/>
+        </div>
+      </div>
+
+      <br/>
+
+      <!-- Add a new document row -->
+      <button mat-stroked-button color="accent" type="button" (click)="addDocument()">
+        <mat-icon>add_circle</mat-icon>&nbsp;{{ 'DOCUMENTS_ADMINISTRATION.FORM.ADD_DOCUMENT' | i18n }}
+      </button>
+      <br/><br/>
+    </div> <!-- end left column -->
+
+    <!-- Right column: person info -->
+   <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <span *ngIf="this.user_data">
+          <span *ngIf="this.user_data.person">
+            <h3 class="details-title">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.TITLE' | i18n }}</h3>
+            <div class="current-wrap">
+              <!-- documents -->
+              <div class="current-info">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</small><br/>
+                <span *ngFor="let current of this.user_data.person.documents" >
+                  <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                  <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
+                    <span>{{ current.document }}</span>
+                  </span>
+                  <br/>
+                </span>
+              </div>
+
+              <!-- names -->
+              <div class="current-info">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</small><br/>
+                <span class="current-firts">
+                  <span>{{ this.user_data.person.name_01 }}</span>
+
+                  <span *ngIf="this.user_data.person.name_02">
+                    <span> {{ this.user_data.person.name_02 }}</span>
+                  </span>
+
+                  <span> {{ this.user_data.person.surname_01 }}</span>
+
+                  <span *ngIf="this.user_data.person.surname_02">
+                    <span> {{ this.user_data.person.surname_02 }}</span>
+                  </span>
+                </span>
+              </div>
+              <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="current-wrap">
+              <!-- birth_date -->
+              <div class="current-info">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.BIRTH_DATE' | i18n }}</small><br/>
+                <span class="current-firts">{{ this.user_data.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
+              </div>
+
+              <!-- genre -->
+              <div class="current-info text-center">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.GENDER' | i18n }}</small><br/>
+                <span [ngSwitch]="this.user_data.person.gender" matTooltip="{{ ('GENDER_TYPES.' + this.user_data.person.gender) | i18n }}">
+                  <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
+                  <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
+                  <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
+                </span>
+              </div>
+
+              <!-- status -->
+              <div class="current-info text-center">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.STATUS' | i18n }}</small><br/>
+                <span *ngIf="this.user_data.status; then thenBlock else elseBlock"></span>
+                <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}">done</mat-icon></ng-template>
+                <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}">clear</mat-icon></ng-template>
+              </div>
+              <div class="clear"></div>
+            </div>
+            
+            <div class="current-wrap">
+              <!-- phones -->
+              <div class="current-info">
+                <small>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.CONTACT' | i18n }}:</small><br/>
+                <span *ngIf="this.user_data.person.phone_numbers && this.user_data.person.phone_numbers.length > 0; else noPhones">
+                  <span *ngFor="let phone of this.user_data.person.phone_numbers;">
+                    <span class="badge-alt">{{ phone }}</span>
+                  </span>
+                </span>
+                <ng-template #noPhones>-</ng-template>
+              </div>
+
+              <div class="clear"></div>
+            </div>
+
+          </span>
+        </span>
+      </div> <!-- end fxLayout wrapper -->
+  </div>
+
+  <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
+    <div>
+      <button mat-flat-button type="button" (click)="onCancel()">{{ 'DOCUMENTS_ADMINISTRATION.FORM.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid || hasDuplicateWarnings() || hasInvalidDocuments()">{{ 'DOCUMENTS_ADMINISTRATION.FORM.SAVE_BUTTON' | i18n }}</button>
+    </div>
+  </div>
+</form>
+

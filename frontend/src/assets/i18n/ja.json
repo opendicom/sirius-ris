@@ -874,6 +874,7 @@
       "EMAIL": "メール：",
       "PHONES": "電話番号：",
       "EDIT": "編集",
+      "EDIT_DOCUMENTS": "書類",
       "CLOSE": "閉じる"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "キャンセル",
       "SAVE_BUTTON": "保存"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "ユーザーに権限を追加するには、必要なデータをアップロードする必要があります。"
     }
   },
@@ -2212,5 +2213,32 @@
     "REPORTS": "レポート",
     "URGENCY": "緊急",
     "TOTAL": "合計"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "ドキュメントの内容",
+      "DOCUMENTS_TITLE": "ドキュメント",
+      "PERSON_INFO_TITLE": "個人情報",
+      "DOC_COUNTRY_PLACEHOLDER": "文書の国を入力してください",
+      "DOC_TYPE_PLACEHOLDER": "書類の種類を入力してください",
+      "DOCUMENT_PLACEHOLDER": "ドキュメントを入力してください",
+      "DOCUMENT_INPUT": "ドキュメント",
+      "REMOVE_TOOLTIP": "ドキュメントを削除",
+      "ADD_DOCUMENT": "ドキュメントを追加",
+      "MIN_ONE_DOCUMENT_WARNING": "少なくとも1つのドキュメントが必要です",
+      "DUPLICATE_WARNING": "重複したドキュメントは許可されていません",
+      "ACCEPT_WARNING": "続行する前に条件を受け入れてください",
+      "EDIT_ERROR": "要素の編集中にエラーが発生しました: ",
+      "CANCEL_BUTTON": "キャンセル",
+      "SAVE_BUTTON": "保存",
+      "FULL_NAME": "氏名",
+      "BIRTH_DATE": "生年月日",
+      "GENDER": "性別",
+      "EMAIL": "メール",
+      "PHONES": "電話番号",
+      "STATUS": "ステータス",
+      "ACTIVE": "アクティブ",
+      "INACTIVE": "非アクティブ"
+    }
   }
 }

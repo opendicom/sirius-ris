@@ -186,4 +186,8 @@ export class ListComponent implements OnInit, DoCheck {
       }
     }
   }
+
+  openPatientDetails(element: any): void {
+    this.sharedFunctions.openDialog('patient_details', { 'patient': element, 'destiny': this.sharedProp.element });
+  }
 }

@@ -874,6 +874,7 @@
       "EMAIL": "Correo:",
       "PHONES": "Telefonos:",
       "EDIT": "EDITAR",
+      "EDIT_DOCUMENTS": "DOCUMENTOS",
       "CLOSE": "CERRAR"
     },
     "OVERLAP_EVENTS": {
@@ -2212,5 +2213,32 @@
     "REPORTS": "INFORMES",
     "URGENCY": "Urgencia",
     "TOTAL": "TOTAL"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Formulario de documentos de identidad",
+      "DOCUMENTS_TITLE": "Documentos de identidad:",
+      "PERSON_INFO_TITLE": "Datos de la persona:",
+      "DOC_COUNTRY_PLACEHOLDER": "País del documento",
+      "DOC_TYPE_PLACEHOLDER": "Tipo de documento",
+      "DOCUMENT_PLACEHOLDER": "Documento",
+      "DOCUMENT_INPUT": "Ingrese el documento",
+      "REMOVE_TOOLTIP": "Eliminar este documento",
+      "ADD_DOCUMENT": "AÑADIR DOCUMENTO",
+      "MIN_ONE_DOCUMENT_WARNING": "Debe mantener al menos un documento de identidad.",
+      "DUPLICATE_WARNING": "Este documento ya está registrado a nombre de:",
+      "ACCEPT_WARNING": "ACEPTAR",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "GUARDAR",
+      "FULL_NAME": "Nombre completo:",
+      "BIRTH_DATE": "Fecha de nacimiento:",
+      "GENDER": "Género:",
+      "EMAIL": "Correo:",
+      "PHONES": "Teléfonos:",
+      "STATUS": "Estado:",
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    }
   }
 }

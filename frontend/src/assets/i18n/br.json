@@ -874,6 +874,7 @@
       "EMAIL": "E-mail:",
       "PHONES": "Telefones:",
       "EDIT": "EDITAR",
+      "EDIT_DOCUMENTS": "DOCUMENTOS",
       "CLOSE": "FECHAR"
     },
     "OVERLAP_EVENTS": {
@@ -1793,7 +1794,7 @@
       "CANCEL_BUTTON": "CANCELAR",
       "SAVE_BUTTON": "SALVAR"
     },
-    "SERVICE" : {
+    "SERVICE": {
       "PERMISSION_VALIDATION_ERROR": "Você precisa enviar os dados necessários para adicionar a permissão ao usuário."
     }
   },
@@ -2212,5 +2213,32 @@
     "REPORTS": "INFORMES",
     "URGENCY": "Urgência",
     "TOTAL": "TOTAL"
+  },
+  "DOCUMENTS_ADMINISTRATION": {
+    "FORM": {
+      "CONTENT_TITLE": "Conteúdo do documento",
+      "DOCUMENTS_TITLE": "Documentos",
+      "PERSON_INFO_TITLE": "Informações da pessoa",
+      "DOC_COUNTRY_PLACEHOLDER": "Digite o país do documento",
+      "DOC_TYPE_PLACEHOLDER": "Digite o tipo de documento",
+      "DOCUMENT_PLACEHOLDER": "Digite o documento",
+      "DOCUMENT_INPUT": "Documento",
+      "REMOVE_TOOLTIP": "Remover documento",
+      "ADD_DOCUMENT": "Adicionar documento",
+      "MIN_ONE_DOCUMENT_WARNING": "É necessário pelo menos um documento",
+      "DUPLICATE_WARNING": "Documento duplicado não é permitido",
+      "ACCEPT_WARNING": "Aceite os termos antes de continuar",
+      "EDIT_ERROR": "Erro ao tentar editar o elemento: ",
+      "CANCEL_BUTTON": "CANCELAR",
+      "SAVE_BUTTON": "SALVAR",
+      "FULL_NAME": "Nome completo",
+      "BIRTH_DATE": "Data de nascimento",
+      "GENDER": "Gênero",
+      "EMAIL": "E-mail",
+      "PHONES": "Telefones",
+      "STATUS": "Status",
+      "ACTIVE": "Ativo",
+      "INACTIVE": "Inativo"
+    }
   }
 }
