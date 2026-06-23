@@ -238,6 +238,6 @@ SIRIUS_FRONTEND_FC_SLOTDURATION='00:10:00'
 SIRIUS_FRONTEND_PASS_KEYWORDS='["cat", "dog", "bird", "pig", "lion", "cow", "chicken", "fish", "monkey"]'
 
 # Documents parsers (regex pattern, flags and replace string):
-SIRIUS_FRONTEND_DOC_PARSERS='{"858.1":{"pattern":"[^0-9]","flags":"g","replace":""}}'
+SIRIUS_FRONTEND_DOC_PARSERS='{"858.1":{"pattern":"[^0-9]","flags":"g","replace":""},"032.1":{"pattern":"[^0-9]","flags":"g","replace":""},"076.1":{"pattern":"[^0-9]","flags":"g","replace":""},"862.1":{"pattern":"[^0-9]","flags":"g","replace":""},"170.1":{"pattern":"[^0-9]","flags":"g","replace":""}}'
 # ------------------------------------------------------------------------------------- #
 ```

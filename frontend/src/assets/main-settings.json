@@ -23,6 +23,26 @@
             "pattern": "[^0-9]",
             "flags": "g",
             "replace": ""
+        },
+        "032.1": {
+            "pattern": "[^0-9]",
+            "flags": "g",
+            "replace": ""
+        },
+        "076.1": {
+            "pattern": "[^0-9]",
+            "flags": "g",
+            "replace": ""
+        },
+        "862.1": {
+            "pattern": "[^0-9]",
+            "flags": "g",
+            "replace": ""
+        },
+        "170.1": {
+            "pattern": "[^0-9]",
+            "flags": "g",
+            "replace": ""
         }
     },
     
