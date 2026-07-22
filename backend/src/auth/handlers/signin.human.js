@@ -97,15 +97,19 @@ module.exports = async (req, res) => {
                                     concession: []
                                 };
 
+                                //Store white_labeling separately, since userPermission is embedded in the JWT:
+                                let white_labeling = null;
+
                                 //ORGANIZATIONS:
                                 //If contain organizations permissions:
                                 if (Object.keys(peopleData.user.permissions[0]).includes('organization')){
                                     userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].organization);
                                     userPermission.type = 'organization';
 
-                                    //Find organization short_name (userPermission description):
-                                    const resultObj = await simplifiedFindById(res, organizations, userPermission.domain, { 'short_name': 1 });
+                                    //Find organization short_name (description) and white_labeling:
+                                    const resultObj = await simplifiedFindById(res, organizations, userPermission.domain, { 'short_name': 1, 'white_labeling': 1 });
                                     userPermission.description = resultObj.short_name;
+                                    if(resultObj.white_labeling) white_labeling = resultObj.white_labeling;
 
                                 //BRANCHES:
                                 //If contain branches permissions:
@@ -113,9 +117,14 @@ module.exports = async (req, res) => {
                                     userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].branch);
                                     userPermission.type = 'branch';
 
-                                    //Find branch short_name (userPermission description):
-                                    const resultObj = await simplifiedFindById(res, branches, userPermission.domain, { 'short_name': 1 });
+                                    //Find branch short_name (description) and its parent organization:
+                                    const resultObj = await simplifiedFindById(res, branches, userPermission.domain, { 'short_name': 1, 'fk_organization': 1 });
                                     userPermission.description = resultObj.short_name;
+                                    if(resultObj.fk_organization){
+                                        //Read white_labeling from the parent organization:
+                                        const orgObj = await simplifiedFindById(res, organizations, resultObj.fk_organization, { 'white_labeling': 1 });
+                                        if(orgObj && orgObj.white_labeling) white_labeling = orgObj.white_labeling;
+                                    }
 
                                 //SERVICES:
                                 //If contain services permissions:
@@ -123,14 +132,28 @@ module.exports = async (req, res) => {
                                     userPermission.domain = new mongoose.Types.ObjectId(peopleData.user.permissions[0].service);
                                     userPermission.type = 'service';
 
-                                    //Find service name (userPermission description):
-                                    const resultObj = await simplifiedFindById(res, services, userPermission.domain, { 'name': 1 });
+                                    //Find service name (description) and its parent branch:
+                                    const resultObj = await simplifiedFindById(res, services, userPermission.domain, { 'name': 1, 'fk_branch': 1 });
                                     userPermission.description = resultObj.name;
+                                    if(resultObj.fk_branch){
+                                        //Walk up to the branch's parent organization to read white_labeling:
+                                        const branchObj = await simplifiedFindById(res, branches, resultObj.fk_branch, { 'fk_organization': 1 });
+                                        if(branchObj && branchObj.fk_organization){
+                                            const orgObj = await simplifiedFindById(res, organizations, branchObj.fk_organization, { 'white_labeling': 1 });
+                                            if(orgObj && orgObj.white_labeling) white_labeling = orgObj.white_labeling;
+                                        }
+                                    }
                                 }
 
                                 //Set role & concession in userPermission:
                                 userPermission.role = parseInt(peopleData.user.permissions[0].role, 10);
                                 userPermission.concession = peopleData.user.permissions[0].concession;
+
+                                //Build the permission entry sent to the frontend, including white_labeling:
+                                const permissionForResponse = {
+                                    ...userPermission,
+                                    ...(white_labeling && { white_labeling })
+                                };
 
                                 //Set response data object:
                                 const response_data = {
@@ -138,11 +161,11 @@ module.exports = async (req, res) => {
                                     user_id: peopleData.user._id,
                                     name: peopleData.name_01,
                                     surname: peopleData.surname_01,
-                                    permissions: [ userPermission ],
+                                    permissions: [ permissionForResponse ],
                                     settings: userSettings
                                 }
 
-                                //Create session:
+                                //Create session using the JWT-safe userPermission (white_labeling excluded):
                                 await authServices.createSession(peopleData.user._id, userPermission, req, res, response_data);
 
                             //Multiple permissions:
@@ -178,7 +201,7 @@ module.exports = async (req, res) => {
                                         if (Object.keys(value).includes('organization')){
                                             //Create MongoDB arguments:
                                             const orgFilter = { _id: value['organization'] };
-                                            const orgProj = { status: 1, short_name: 1 };
+                                            const orgProj = { status: 1, short_name: 1, white_labeling: 1 };
 
                                             //Execute query:
                                             await organizations.Model.findOne(orgFilter, orgProj)
@@ -189,7 +212,7 @@ module.exports = async (req, res) => {
                                                     //Convert Mongoose object to Javascript object:
                                                     orgData = orgData.toObject();
 
-                                                    //Check values projected (strictCheck): 
+                                                    //Check values projected (strictCheck):
                                                     //mainServices.strictCheck(orgProj, orgData);
 
                                                     //Check organization status:
@@ -200,7 +223,8 @@ module.exports = async (req, res) => {
                                                             type: 'organization',
                                                             description: orgData.short_name,
                                                             role: value['role'],
-                                                            concession: peopleData.user.permissions[key].concession
+                                                            concession: peopleData.user.permissions[key].concession,
+                                                            ...(orgData.white_labeling && { white_labeling: orgData.white_labeling })
                                                         };
                                                     }
                                                 }
@@ -221,7 +245,8 @@ module.exports = async (req, res) => {
                                                 'fk_organization': 1,
                                                 'organization._id': 1,
                                                 'organization.short_name': 1,
-                                                'organization.status': 1
+                                                'organization.status': 1,
+                                                'organization.white_labeling': 1
                                             };
 
                                             //Execute query:
@@ -254,7 +279,8 @@ module.exports = async (req, res) => {
                                                         type: 'branch',
                                                         description: branchData.organization.short_name + ' - ' + branchData.short_name,
                                                         role: value['role'],
-                                                        concession: peopleData.user.permissions[key].concession
+                                                        concession: peopleData.user.permissions[key].concession,
+                                                        ...(branchData.organization.white_labeling && { white_labeling: branchData.organization.white_labeling })
                                                     };
                                                 }
                                             })
@@ -278,7 +304,8 @@ module.exports = async (req, res) => {
                                                 'branch.fk_organization': 1,
                                                 'organization._id': 1,
                                                 'organization.short_name': 1,
-                                                'organization.status': 1
+                                                'organization.status': 1,
+                                                'organization.white_labeling': 1
                                             };
 
                                             //Execute query:
@@ -323,7 +350,8 @@ module.exports = async (req, res) => {
                                                         type: 'service',
                                                         description: servData.organization.short_name + ' - ' + servData.branch.short_name + ' - ' + servData.name,
                                                         role: value['role'],
-                                                        concession: peopleData.user.permissions[key].concession
+                                                        concession: peopleData.user.permissions[key].concession,
+                                                        ...(servData.organization.white_labeling && { white_labeling: servData.organization.white_labeling })
                                                     };
                                                 }
                                             })

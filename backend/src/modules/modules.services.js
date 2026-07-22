@@ -5132,6 +5132,51 @@ async function setBase64Files(req, operation){
                             break;
                     }
                     break;
+
+                //White labeling logo shown in the navbar/toolbar:
+                case 'uploaded_base64_logo_horizontal':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            if(!req.body.white_labeling) req.body.white_labeling = {};
+                            req.body.white_labeling.base64_logo_horizontal = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['white_labeling.base64_logo_horizontal'] = fileBase64;
+                            break;
+                    }
+                    break;
+
+                //White labeling logo shown on the login/authorize pages:
+                case 'uploaded_base64_logo_vertical':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            if(!req.body.white_labeling) req.body.white_labeling = {};
+                            req.body.white_labeling.base64_logo_vertical = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['white_labeling.base64_logo_vertical'] = fileBase64;
+                            break;
+                    }
+                    break;
+
+                //White labeling logo shown on the welcome/start page:
+                case 'uploaded_base64_logo_welcome':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            if(!req.body.white_labeling) req.body.white_labeling = {};
+                            req.body.white_labeling.base64_logo_welcome = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['white_labeling.base64_logo_welcome'] = fileBase64;
+                            break;
+                    }
+                    break;
             }
         }));
 
