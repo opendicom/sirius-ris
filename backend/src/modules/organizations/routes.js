@@ -55,8 +55,8 @@ router.get(
         }
 
         //Remove base64 and timestamps from default projection:
-        //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
-        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
+        //Also exclude white_labeling logos (base64 images) from the default projection, keeping only the label:
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'white_labeling.base64_logo_horizontal': 0, 'white_labeling.base64_logo_vertical': 0, 'white_labeling.base64_logo_welcome': 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
 
         //Switch operation type:
         switch(operation_type){
@@ -88,8 +88,7 @@ router.get(
         }
 
         //Remove base64 and timestamps from default projection:
-        //Important note: Request project replaces the aggregation projection (This prevent mix content proj error).
-        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
+        if(!req.query.proj){ req.query['proj'] = { base64_logo: 0, base64_cert: 0, 'white_labeling.base64_logo_horizontal': 0, 'white_labeling.base64_logo_vertical': 0, 'white_labeling.base64_logo_welcome': 0, 'createdAt': 0, 'updatedAt': 0, '__v': 0 }; }
 
         //Switch operation type:
         switch(operation_type){
