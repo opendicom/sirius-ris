@@ -18,6 +18,15 @@
   margin-right: 10px;
   cursor: pointer;
 }
+.nav-brand-label {
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: white;
+  margin-right: 10px;
+  cursor: pointer;
+  user-select: none;
+}
 
 .main-container{
   width: 100%;
