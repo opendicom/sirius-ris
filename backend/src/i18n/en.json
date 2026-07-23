@@ -123,7 +123,8 @@
       "isEmail": "The entered parameter is not a valid email address.",
       "isArray": "The entered parameter must be an array.",
       "isIP": "The entered parameter must be a valid IP.",
-      "isPassword": "The entered password is too short (minimum length: 8 characters)."
+      "isPassword": "The entered password is too short (minimum length: 8 characters).",
+      "isString": "The entered parameter must be a string."
     },
     "reports": {
       "authenticatedBy": "Digitally authenticated by {0} on date {1} acting for the institution {2} with OID {3}",

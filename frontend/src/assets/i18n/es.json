@@ -1094,6 +1094,7 @@
   },
   "START_PAGE": {
     "WELCOME": "Bienvenidos a Sirius RIS",
+    "WELCOME_TO": "Bienvenidos a",
     "ABOUT_TITLE": "Acerca de",
     "ABOUT_BRAND": "Sirius RIS",
     "ABOUT_TEXT": "es un sistema de información radiológica de código abierto que fué desarrollado gracias a las siguientes tecnologías.",
@@ -1264,8 +1265,23 @@
       "SUFFIX_PLACEHOLDER": "Ingrese el Sufijo",
       "LOGO_BUTTON_LABEL": "LOGO DE LA ORGANIZACIÓN",
       "DELETE_LOGO_TOOLTIP": "Eliminar logo de la organización",
-      "LOGO_SELECT": "SELECCIONAR LOGO DE LA ORGANIZACIÓN",
-      "FILE_DELETED_SUCCESS": "Archivo eliminado exitosamente"
+      "LOGO_SELECT": "SELECCIONAR LOGO PARA REPORTES PDF",
+      "FILE_DELETED_SUCCESS": "Archivo eliminado exitosamente",
+      "BRANDING_TITLE": "Branding / White Labeling",
+      "BRANDING_CONFIGURED": "Configurado",
+      "BRANDING_LABEL_TITLE": "Nombre del producto",
+      "BRANDING_LABEL_PLACEHOLDER": "Ej: MiSistema RIS",
+      "BRANDING_LABEL_HINT": "Reemplaza \"Sirius RIS\" como nombre del producto en la interfaz",
+      "BRANDING_LOGOS_TITLE": "Logos personalizados",
+      "BRANDING_LOGO_HORIZONTAL": "Logo Horizontal",
+      "BRANDING_LOGO_HORIZONTAL_USAGE": "Navbar / Toolbar",
+      "BRANDING_LOGO_VERTICAL": "Logo Vertical",
+      "BRANDING_LOGO_VERTICAL_USAGE": "Login / Authorize",
+      "BRANDING_LOGO_WELCOME": "Logo Bienvenida",
+      "BRANDING_LOGO_WELCOME_USAGE": "Pantalla de bienvenida",
+      "BRANDING_SELECT": "SELECCIONAR",
+      "BRANDING_CHANGE": "CAMBIAR",
+      "BRANDING_DELETE_TOOLTIP": "Eliminar logo"
     }
   },
   "BRANCHES": {
