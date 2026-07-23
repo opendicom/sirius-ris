@@ -1,5 +1,11 @@
 <form class="form-element" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
-  <img src="../../../../assets/img/logo_vertical.png" alt="Signin">
+  <ng-container *ngIf="sharedFunctions.getLogoDataURI(lastWhiteLabeling?.base64_logo_vertical) as customLogo; else defaultAuthorizeLogo">
+    <img [src]="customLogo" alt="Authorize">
+  </ng-container>
+  <ng-template #defaultAuthorizeLogo>
+    <img src="../../../../assets/img/logo_vertical.png" alt="Authorize">
+  </ng-template>
+  <div *ngIf="lastWhiteLabeling?.label" class="authorize-org-label">{{ lastWhiteLabeling.label }}</div>
 
   <br/><br/><hr class="dashed" /><br/>
 

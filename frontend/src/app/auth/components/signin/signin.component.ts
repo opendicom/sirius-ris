@@ -29,6 +29,9 @@ export class SigninComponent implements OnInit {
   public GET_full_status: any = false;
   public GET_initial_forced_theme: any = undefined;
 
+  //Last white labeling used (read from sirius_settings on init):
+  public lastWhiteLabeling: any = null;
+
   //Create unsorted function to prevent Angular from sorting 'wrong' ngFor keyvalue:
   unsorted = () => { return 0 }
 
@@ -36,7 +39,7 @@ export class SigninComponent implements OnInit {
   constructor(
     private userAuth        : UsersAuthService,
     public  sharedProp      : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService,
+    public  sharedFunctions : SharedFunctionsService,
     private objRoute        : ActivatedRoute,
     public  themesService   : ThemesService,
     public  i18n            : I18nService
@@ -68,6 +71,13 @@ export class SigninComponent implements OnInit {
     } else {
       // Initializate CSS theme:
       this.themesService.initializeTheme();
+    }
+
+    // Read last white labeling from sirius_settings:
+    const stored = localStorage.getItem('sirius_settings');
+    if(stored){
+      const objSettings = JSON.parse(stored);
+      this.lastWhiteLabeling = objSettings['last_white_labeling'] || null;
     }
   }
 
