@@ -9,6 +9,9 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
+//Services:
+import { SharedPropertiesService } from '@shared/services/shared-properties.service';
+
 const routes: Routes = [
   // Main Page and Signin:
   { path: 'signin', loadChildren: () => import('@auth/auth.module').then( m => m.AuthModule ) },
