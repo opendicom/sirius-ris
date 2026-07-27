@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';                    //
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
 import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
+import { regexObjectId } from '@env/environment';                             // Enviroments
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -391,6 +392,19 @@ export class SharedFunctionsService {
             //Check if result is true:
             if(result){
               this.delete('single', operationHandler.element, operationHandler.appointment_draft._id, (res) => {
+                //Check appointment_draft to confirm if you have an appointment_request:
+                if(res.success === true && 
+                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') && 
+                  operationHandler.appointment_draft.appointment_request._id !== undefined && 
+                  operationHandler.appointment_draft.appointment_request._id !== null && 
+                  operationHandler.appointment_draft.appointment_request._id !== '' && 
+                  regexObjectId.test(operationHandler.appointment_draft.appointment_request._id) &&
+                  operationHandler.appointment_draft.appointment_request.flow_state == "AR05"
+                ){
+                  //Return the appointment_request to its original first flow state (Only in case of manual appointment_draft deletion):
+                  this.save('update', 'appointment_requests', operationHandler.appointment_draft.appointment_request._id, { flow_state: 'AR01' }, [], (res) => {}, false);
+                }
+
                 //Response the deletion according to the result:
                 const result = this.deleteResponder(res, operationHandler.element, false, true);
 
