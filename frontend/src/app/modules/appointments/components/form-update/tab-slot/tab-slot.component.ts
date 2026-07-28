@@ -46,7 +46,11 @@ export class TabSlotComponent implements OnInit {
   public initialSlot         : any  | undefined;
 
   //Initializate overbooking input:
-  public overbooking         : Boolean = false;
+  public overbooking: boolean = false;
+
+  setOverbooking(value: boolean) {
+    this.overbooking = !!value;
+  }
 
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
@@ -253,7 +257,8 @@ export class TabSlotComponent implements OnInit {
         'proj[patient.person.name_01]': 1,
         'proj[patient.person.name_02]': 1,
         'proj[patient.person.surname_01]': 1,
-        'proj[patient.person.surname_02]': 1
+        'proj[patient.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Set appointments drafts params (In progress events)
@@ -279,7 +284,8 @@ export class TabSlotComponent implements OnInit {
         'proj[coordinator.person.name_01]': 1,
         'proj[coordinator.person.name_02]': 1,
         'proj[coordinator.person.surname_01]': 1,
-        'proj[coordinator.person.surname_02]': 1
+        'proj[coordinator.person.surname_02]': 1,
+        'proj[overbooking]': 1
       };
 
       //Create slots observable slots:
