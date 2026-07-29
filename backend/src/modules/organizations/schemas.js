@@ -17,6 +17,7 @@ const subSchemaWhiteLabeling = new mongoose.Schema({
     base64_logo_vertical:   { type: String }, // Login/Authorize pages logo (base64).
     base64_logo_welcome:    { type: String }, // Welcome/start page logo (base64).
 }, { _id: false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     name:           { type: String, required: true },
