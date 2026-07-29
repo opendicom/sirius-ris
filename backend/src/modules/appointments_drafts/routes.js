@@ -111,13 +111,7 @@ router.post(
     //mainMiddlewares.checkDeleteCode,      
     (req, res) => {
         //Send to module service:
-        moduleServices._delete(req, res, appointments_drafts, true, async (data) => {
-            //Check appointment_draft to confirm if you have an appointment_request:
-            if(data.fk_appointment_request !== undefined && data.fk_appointment_request !== null && regexObjectId.test(data.fk_appointment_request)){
-                //Return the appointment_request to its original first flow state:
-                await moduleServices.setFlowState(data.fk_appointment_request, 'AR01', 'appointment_requests');
-            }
-        });
+        moduleServices._delete(req, res, appointments_drafts);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//
