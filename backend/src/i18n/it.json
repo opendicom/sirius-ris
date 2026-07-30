@@ -123,7 +123,8 @@
       "isEmail": "Il parametro inserito non è un indirizzo e-mail valido.",
       "isArray": "Il parametro inserito deve essere un array.",
       "isIP": "Il parametro inserito deve essere un indirizzo IP valido.",
-      "isPassword": "La password inserita è troppo corta (lunghezza minima: 8 caratteri)."
+      "isPassword": "La password inserita è troppo corta (lunghezza minima: 8 caratteri).",
+      "isString": "Il parametro inserito deve essere una stringa."
     },
     "reports": {
       "authenticatedBy": "Autenticato digitalmente da {0} in data {1} agendo per l'istituzione {2} con OID {3}",
