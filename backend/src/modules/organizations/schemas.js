@@ -10,6 +10,14 @@ const mainServices  = require('../../main.services');                           
 const mainSettings  = mainServices.getFileSettings();                           // File settings (YAML)
 const currentLang   = require('../../main.languages')(mainSettings.language);   // Language Module
 
+//Define white labeling sub-schema (custom branding per organization):
+const subSchemaWhiteLabeling = new mongoose.Schema({
+    label:                  { type: String }, // Custom product name shown instead of "Sirius RIS".
+    base64_logo_horizontal: { type: String }, // Navbar/toolbar logo (base64).
+    base64_logo_vertical:   { type: String }, // Login/Authorize pages logo (base64).
+    base64_logo_welcome:    { type: String }, // Welcome/start page logo (base64).
+}, { _id: false });
+
 //Define Schema:
 const Schema = new mongoose.Schema({
     name:           { type: String, required: true },
@@ -21,7 +29,8 @@ const Schema = new mongoose.Schema({
     status:         { type: Boolean, required: true, default: false },
     base64_logo:    { type: String }, //This parameter is created in backend server (not validate).
     base64_cert:    { type: String }, //This parameter is created in backend server (not validate).
-    password_cert:  { type: String }  //This parameter is not validated since it has different characteristics.
+    password_cert:  { type: String },  //This parameter is not validated since it has different characteristics.
+    white_labeling: { type: subSchemaWhiteLabeling, required: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -40,7 +49,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert', 'password_cert'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert', 'password_cert', 'white_labeling', 'white_labeling.label', 'white_labeling.base64_logo_horizontal', 'white_labeling.base64_logo_vertical', 'white_labeling.base64_logo_welcome'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -96,6 +105,27 @@ const Validator = [
     body('password_cert')
         .optional()
         .trim(),
+
+    body('white_labeling.label')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 64 })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "white_labeling.label" (min: 1, max: 64 [chars]).'),
+
+    body('white_labeling.base64_logo_horizontal')
+        .optional()
+        .isString()
+        .withMessage(currentLang.ris.schema_validator.isString + ' | "white_labeling.base64_logo_horizontal".'),
+
+    body('white_labeling.base64_logo_vertical')
+        .optional()
+        .isString()
+        .withMessage(currentLang.ris.schema_validator.isString + ' | "white_labeling.base64_logo_vertical".'),
+
+    body('white_labeling.base64_logo_welcome')
+        .optional()
+        .isString()
+        .withMessage(currentLang.ris.schema_validator.isString + ' | "white_labeling.base64_logo_welcome".'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

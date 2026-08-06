@@ -54,6 +54,10 @@ export class UsersAuthService {
           //Stringify final authentication object:
           const final_siriusAuth = JSON.stringify(siriusAuth);
 
+          //Preserve last_white_labeling before settings block overwrites/clears sirius_settings:
+          const prevSettings = localStorage.getItem('sirius_settings');
+          const prevLastWL = prevSettings ? (JSON.parse(prevSettings)['last_white_labeling'] || null) : null;
+
           //Check settings:
           if(siriusAuth.settings !== undefined && siriusAuth.settings !== null && siriusAuth.settings !== ''){
             //Set settings:
@@ -68,7 +72,7 @@ export class UsersAuthService {
               // Initializate CSS theme:
               this.themesService.initializeTheme();
             }
-            
+
           } else {
             //Delete settings from previous users:
             if(localStorage.getItem('sirius_settings')){
@@ -78,6 +82,9 @@ export class UsersAuthService {
 
           //If user signin with only one permission:
           if(Object.keys(res.data.permissions).length == 1){
+            //Save last white labeling for login page branding:
+            this._saveLastWhiteLabeling(res.data.permissions[0]?.white_labeling || null);
+
             //Crypt stringify object and create local file (1 day token):
             localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
 
@@ -91,6 +98,9 @@ export class UsersAuthService {
 
           //Multiple permissions:
           } else {
+            //Restore last_white_labeling so authorize page can display it:
+            if(prevLastWL){ this._saveLastWhiteLabeling(prevLastWL); }
+
             //Crypt stringify object and create local file (1 minute token):
             localStorage.setItem('sirius_temp', this.sharedFunctions.simpleCrypt(final_siriusAuth));
 
@@ -133,8 +143,9 @@ export class UsersAuthService {
           let domainType = '';
           let domainDescription = '';
           let concession : any = [];
+          let white_labeling: any = null;
 
-          //Preserve domain type and description:
+          //Preserve domain type, description and white_labeling:
           await Promise.all(Object.keys(siriusAuth.permissions).map((key) => {
             //If domain and role indicated in form is the same in the permissions object:
             if(siriusAuth.permissions[key].domain == form_data.value.domain && parseInt(siriusAuth.permissions[key].role, 10) == parseInt(form_data.value.role, 10)){
@@ -142,8 +153,12 @@ export class UsersAuthService {
               domainType = siriusAuth.permissions[key].type;
               domainDescription = siriusAuth.permissions[key].description;
               concession = siriusAuth.permissions[key].concession;
+              white_labeling = siriusAuth.permissions[key].white_labeling || null;
             }
           }));
+
+          //Authorize response white_labeling takes precedence (resolved from org ancestor in backend):
+          if(res.data?.white_labeling) white_labeling = res.data.white_labeling;
 
           //Delete permissions array:
           delete siriusAuth.permissions;
@@ -154,7 +169,8 @@ export class UsersAuthService {
             type: domainType,
             description: domainDescription,
             role: parseInt(form_data.value.role, 10),
-            concession: concession
+            concession: concession,
+            ...(white_labeling && { white_labeling })
           }];
 
           //Add token into authentication object:
@@ -162,6 +178,9 @@ export class UsersAuthService {
 
           //Stringify final authentication object:
           const final_siriusAuth = JSON.stringify(siriusAuth);
+
+          //Save last white labeling for login page branding:
+          this._saveLastWhiteLabeling(white_labeling);
 
           //Crypt stringify object and create local file (1 day token):
           localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(final_siriusAuth));
@@ -260,6 +279,50 @@ export class UsersAuthService {
   private userSigninError(message: string): void{
     this.snackBar.open(message, 'ACEPTAR');
     this.removeToken();
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SAVE LAST WHITE LABELING:
+  // Persists the last used organization branding, so the login page can display it.
+  //--------------------------------------------------------------------------------------------------------------------//
+  private _saveLastWhiteLabeling(white_labeling: any): void {
+    let objSettings: any = {};
+    const stored = localStorage.getItem('sirius_settings');
+    if(stored){ objSettings = JSON.parse(stored); }
+
+    if(white_labeling?.base64_logo_vertical || white_labeling?.label){
+      objSettings['last_white_labeling'] = {
+        base64_logo_vertical : white_labeling.base64_logo_vertical || null,
+        label                : white_labeling.label || null
+      };
+    } else {
+      delete objSettings['last_white_labeling'];
+    }
+
+    localStorage.setItem('sirius_settings', JSON.stringify(objSettings));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // REFRESH SESSION WHITE LABELING:
+  // Updates the active session's branding after an edit, without requiring the user to log in again.
+  //--------------------------------------------------------------------------------------------------------------------//
+  refreshSessionWhiteLabeling(editedDomainId: string, white_labeling: any): boolean {
+    const siriusAuth = this.sharedFunctions.getUserInfo();
+    const userDomain = siriusAuth?.permissions?.[0]?.domain;
+    if(!userDomain || editedDomainId !== userDomain.toString()) return false;
+
+    if(white_labeling){ siriusAuth.permissions[0].white_labeling = white_labeling; }
+    else { delete siriusAuth.permissions[0].white_labeling; }
+
+    siriusAuth.token = this.sharedFunctions.readToken();
+    localStorage.setItem('sirius_auth', this.sharedFunctions.simpleCrypt(JSON.stringify(siriusAuth)));
+
+    this._saveLastWhiteLabeling(white_labeling);
+    return true;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }

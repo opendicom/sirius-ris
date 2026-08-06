@@ -1748,6 +1748,21 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // GET LOGO DATA URI:
+  // Returns a valid data URI for a white labeling logo base64 string, detecting its MIME type.
+  //--------------------------------------------------------------------------------------------------------------------//
+  getLogoDataURI(base64: string | null | undefined): string | null {
+    if(!base64) return null;
+    if(base64.startsWith('/9j/'))  return `data:image/jpeg;base64,${base64}`;
+    if(base64.startsWith('iVBOR')) return `data:image/png;base64,${base64}`;
+    if(base64.startsWith('UklGR')) return `data:image/webp;base64,${base64}`;
+    if(base64.startsWith('R0lGO')) return `data:image/gif;base64,${base64}`;
+    return `data:image/png;base64,${base64}`;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // DELETE FILE REF:
   // Delete file ref is only an update with unset file reference field.
   //--------------------------------------------------------------------------------------------------------------------//

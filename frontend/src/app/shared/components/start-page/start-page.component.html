@@ -10,16 +10,22 @@
   <br/><br/>
 
   <div class="welcome_header">
-    <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
+    <ng-container *ngIf="sharedFunctions.getLogoDataURI(sharedProp.userLogged?.permissions?.[0]?.white_labeling?.base64_logo_welcome) as customLogo; else defaultWelcomeLogo">
+      <img class="welcome_logo" [src]="customLogo" alt="Logo">
+    </ng-container>
+    <ng-template #defaultWelcomeLogo>
+      <img class="welcome_logo" src="../../../../assets/img/logo.png" alt="Sirius RIS">
+    </ng-template>
     <br/><br/>
-    <h1>{{ 'START_PAGE.WELCOME' | i18n }}</h1>
+    <h1 *ngIf="sharedProp.userLogged?.permissions?.[0]?.white_labeling?.label">{{ 'START_PAGE.WELCOME_TO' | i18n }} {{ sharedProp.userLogged.permissions[0].white_labeling.label }}</h1>
+    <h1 *ngIf="!sharedProp.userLogged?.permissions?.[0]?.white_labeling?.label">{{ 'START_PAGE.WELCOME' | i18n }}</h1>
   </div>
 
   <br/>
 
   <div class="welcome_card">
     <h2 class="underline-fail-alt">{{ 'START_PAGE.ABOUT_TITLE' | i18n }}</h2>
-    <strong>{{ 'START_PAGE.ABOUT_BRAND' | i18n }}</strong> {{ 'START_PAGE.ABOUT_TEXT' | i18n }}<br/>
+    <strong>{{ sharedProp.userLogged?.permissions?.[0]?.white_labeling?.label || ('START_PAGE.ABOUT_BRAND' | i18n) }}</strong> {{ 'START_PAGE.ABOUT_TEXT' | i18n }}<br/>
     <br/>
     <mat-chip-list>
       <mat-chip>{{ 'START_PAGE.TECH_ANGULAR' | i18n }}</mat-chip>

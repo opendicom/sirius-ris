@@ -1094,6 +1094,7 @@
   },
   "START_PAGE": {
     "WELCOME": "Добро пожаловать в Sirius RIS",
+    "WELCOME_TO": "Добро пожаловать в",
     "ABOUT_TITLE": "О программе",
     "ABOUT_BRAND": "Sirius RIS",
     "ABOUT_TEXT": "это радиологическая информационная система с открытым исходным кодом, разработанная с использованием следующих технологий.",
@@ -1265,7 +1266,22 @@
       "LOGO_BUTTON_LABEL": "ЛОГОТИП ОРГАНИЗАЦИИ",
       "DELETE_LOGO_TOOLTIP": "Удалить логотип организации",
       "LOGO_SELECT": "ВЫБРАТЬ ЛОГОТИП ОРГАНИЗАЦИИ",
-      "FILE_DELETED_SUCCESS": "Файл успешно удален"
+      "FILE_DELETED_SUCCESS": "Файл успешно удален",
+      "BRANDING_TITLE": "Branding / White Labeling",
+      "BRANDING_CONFIGURED": "Настроено",
+      "BRANDING_LABEL_TITLE": "Название продукта",
+      "BRANDING_LABEL_PLACEHOLDER": "Например: MySystem RIS",
+      "BRANDING_LABEL_HINT": "Заменяет \"Sirius RIS\" в качестве названия продукта в интерфейсе",
+      "BRANDING_LOGOS_TITLE": "Пользовательские логотипы",
+      "BRANDING_LOGO_HORIZONTAL": "Горизонтальный логотип",
+      "BRANDING_LOGO_HORIZONTAL_USAGE": "Navbar / Toolbar",
+      "BRANDING_LOGO_VERTICAL": "Вертикальный логотип",
+      "BRANDING_LOGO_VERTICAL_USAGE": "Login / Authorize",
+      "BRANDING_LOGO_WELCOME": "Логотип приветствия",
+      "BRANDING_LOGO_WELCOME_USAGE": "Экран приветствия",
+      "BRANDING_SELECT": "ВЫБРАТЬ",
+      "BRANDING_CHANGE": "ИЗМЕНИТЬ",
+      "BRANDING_DELETE_TOOLTIP": "Удалить логотип"
     }
   },
   "BRANCHES": {

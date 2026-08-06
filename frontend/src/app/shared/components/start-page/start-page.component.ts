@@ -16,7 +16,7 @@ export class StartPageComponent implements OnInit {
   //Inject services to the constructor:
   constructor(
     public sharedProp: SharedPropertiesService,
-    private sharedFunctions: SharedFunctionsService
+    public  sharedFunctions: SharedFunctionsService
   ) {
     //Get Logged User Information:
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();

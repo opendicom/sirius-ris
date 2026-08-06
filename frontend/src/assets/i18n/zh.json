@@ -1094,6 +1094,7 @@
   },
   "START_PAGE": {
     "WELCOME": "欢迎使用 Sirius RIS",
+    "WELCOME_TO": "欢迎使用",
     "ABOUT_TITLE": "关于",
     "ABOUT_BRAND": "Sirius RIS",
     "ABOUT_TEXT": "是一个开源的放射学信息系统，它是借助以下技术开发的。",
@@ -1265,7 +1266,22 @@
       "LOGO_BUTTON_LABEL": "组织徽标",
       "DELETE_LOGO_TOOLTIP": "删除组织徽标",
       "LOGO_SELECT": "选择组织徽标",
-      "FILE_DELETED_SUCCESS": "文件已成功删除"
+      "FILE_DELETED_SUCCESS": "文件已成功删除",
+      "BRANDING_TITLE": "Branding / White Labeling",
+      "BRANDING_CONFIGURED": "已配置",
+      "BRANDING_LABEL_TITLE": "产品名称",
+      "BRANDING_LABEL_PLACEHOLDER": "例如：MySystem RIS",
+      "BRANDING_LABEL_HINT": "在界面中将\"Sirius RIS\"替换为产品名称",
+      "BRANDING_LOGOS_TITLE": "自定义徽标",
+      "BRANDING_LOGO_HORIZONTAL": "水平徽标",
+      "BRANDING_LOGO_HORIZONTAL_USAGE": "Navbar / Toolbar",
+      "BRANDING_LOGO_VERTICAL": "垂直徽标",
+      "BRANDING_LOGO_VERTICAL_USAGE": "Login / Authorize",
+      "BRANDING_LOGO_WELCOME": "欢迎徽标",
+      "BRANDING_LOGO_WELCOME_USAGE": "欢迎屏幕",
+      "BRANDING_SELECT": "选择",
+      "BRANDING_CHANGE": "更改",
+      "BRANDING_DELETE_TOOLTIP": "删除徽标"
     }
   },
   "BRANCHES": {

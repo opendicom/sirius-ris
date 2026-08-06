@@ -29,3 +29,11 @@
 mat-form-field {
   text-align: center;
 }
+
+.signin-org-label {
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+  opacity: 0.9;
+}

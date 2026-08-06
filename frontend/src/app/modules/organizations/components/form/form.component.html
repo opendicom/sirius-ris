@@ -39,12 +39,12 @@
         <button mat-flat-button type="button" color="primary">
           <mat-icon>workspace_premium</mat-icon> {{ 'ORGANIZATIONS.FORM.CERT_BUTTON_LABEL' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedCertFile === null" [matTooltip]="'ORGANIZATIONS.FORM.DELETE_CERT_TOOLTIP' | i18n" class="delete-file" (click)="onDeleteFileRef('base64_cert')">close</mat-icon>
         </button>
-        
+
       </ng-template>
 
       <ng-template #elseBlockCert>
-        <input type="file" (change)="onFileSelected($event, 'cert')" #fileInput style="display: none" />
-        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
+        <input type="file" (change)="onFileSelected($event, 'cert')" #fileInputCert style="display: none" />
+        <button mat-flat-button type="button" color="accent" (click)="fileInputCert.click()">
         <mat-icon>workspace_premium</mat-icon> {{ 'ORGANIZATIONS.FORM.CERT_SELECT' | i18n }}</button>
       </ng-template>
       <!-- End cert file -->
@@ -93,12 +93,12 @@
         <button mat-flat-button type="button" class="file-button">
           <mat-icon>image</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_BUTTON_LABEL' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" [matTooltip]="'ORGANIZATIONS.FORM.DELETE_LOGO_TOOLTIP' | i18n" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
         </button>
-        
+
       </ng-template>
 
       <ng-template #elseBlockLogo>
-        <input type="file" (change)="onFileSelected($event, 'logo')" #fileInput style="display: none" />
-        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
+        <input type="file" (change)="onFileSelected($event, 'logo')" #fileInputLogo style="display: none" />
+        <button mat-flat-button type="button" color="accent" (click)="fileInputLogo.click()">
         <mat-icon>add_photo_alternate</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_SELECT' | i18n }}</button>
       </ng-template>
       <!-- End logo file -->
@@ -107,10 +107,104 @@
 
   </div>
 
-  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
-    <div> <!-- start fxLayout wrapper -->
+  <!-- ==================== Branding / White Labeling ==================== -->
+  <div class="branding-section">
+    <hr class="dashed" /><br/>
+    <h3 class="form-title underline-fail-alt">{{ 'ORGANIZATIONS.FORM.BRANDING_TITLE' | i18n }}:</h3>
+
+    <!-- Label (product name) -->
+    <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}:</h4>
+    <mat-form-field appearance="fill" class="large">
+      <mat-label>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}</mat-label>
+      <input matInput type="text" formControlName="white_labeling_label" [placeholder]="'ORGANIZATIONS.FORM.BRANDING_LABEL_PLACEHOLDER' | i18n">
+      <mat-hint>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_HINT' | i18n }}</mat-hint>
+    </mat-form-field>
+
+    <br/><br/>
+    <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LOGOS_TITLE' | i18n }}:</h4>
+    <br/>
+
+    <!-- Logo cards grid -->
+    <div class="branding-logo-grid">
+
+      <!-- Logo Horizontal -->
+      <div class="branding-logo-card">
+        <div class="branding-logo-preview">
+          <img *ngIf="previewLogoHorizontal" [src]="previewLogoHorizontal" class="branding-logo-img" />
+          <mat-icon *ngIf="!previewLogoHorizontal" class="branding-logo-placeholder">image</mat-icon>
+        </div>
+        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL' | i18n }}</p>
+        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL_USAGE' | i18n }}</p>
+        <div class="branding-logo-actions">
+          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_horizontal')" #fileInputH style="display:none" />
+          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoHorizontalController" (click)="fileInputH.click()">
+            <mat-icon>{{ selectedLogoHorizontalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+            {{ (selectedLogoHorizontalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+          </button>
+          <button *ngIf="form_action == 'update' && selectedLogoHorizontalController && selectedLogoHorizontalFile === null"
+            mat-icon-button type="button" color="warn"
+            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+            (click)="onDeleteFileRef('white_labeling.base64_logo_horizontal')">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Logo Vertical -->
+      <div class="branding-logo-card">
+        <div class="branding-logo-preview">
+          <img *ngIf="previewLogoVertical" [src]="previewLogoVertical" class="branding-logo-img" />
+          <mat-icon *ngIf="!previewLogoVertical" class="branding-logo-placeholder">image</mat-icon>
+        </div>
+        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL' | i18n }}</p>
+        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL_USAGE' | i18n }}</p>
+        <div class="branding-logo-actions">
+          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_vertical')" #fileInputV style="display:none" />
+          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoVerticalController" (click)="fileInputV.click()">
+            <mat-icon>{{ selectedLogoVerticalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+            {{ (selectedLogoVerticalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+          </button>
+          <button *ngIf="form_action == 'update' && selectedLogoVerticalController && selectedLogoVerticalFile === null"
+            mat-icon-button type="button" color="warn"
+            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+            (click)="onDeleteFileRef('white_labeling.base64_logo_vertical')">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Logo Welcome -->
+      <div class="branding-logo-card">
+        <div class="branding-logo-preview">
+          <img *ngIf="previewLogoWelcome" [src]="previewLogoWelcome" class="branding-logo-img" />
+          <mat-icon *ngIf="!previewLogoWelcome" class="branding-logo-placeholder">image</mat-icon>
+        </div>
+        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME' | i18n }}</p>
+        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME_USAGE' | i18n }}</p>
+        <div class="branding-logo-actions">
+          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_welcome')" #fileInputW style="display:none" />
+          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoWelcomeController" (click)="fileInputW.click()">
+            <mat-icon>{{ selectedLogoWelcomeController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+            {{ (selectedLogoWelcomeController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+          </button>
+          <button *ngIf="form_action == 'update' && selectedLogoWelcomeController && selectedLogoWelcomeFile === null"
+            mat-icon-button type="button" color="warn"
+            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+            (click)="onDeleteFileRef('white_labeling.base64_logo_welcome')">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- end branding-logo-grid -->
+    <br/>
+  </div>
+  <!-- ==================== End Branding section ==================== -->
+
+  <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
+    <div>
       <button mat-flat-button type="button" (click)="onCancel();">{{ 'ACTION.CANCEL_BUTTON' | i18n }}</button>
-      <button mat-flat-button type="submit" color="primary">{{ 'ACTION.SAVE_BUTTON' | i18n }}</button> <!-- [disabled]="form_data.invalid" -->
-    </div> <!-- end fxLayout wrapper -->
+      <button mat-flat-button type="submit" color="primary">{{ 'ACTION.SAVE_BUTTON' | i18n }}</button>
+    </div>
   </div>
 </form>

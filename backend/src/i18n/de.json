@@ -123,7 +123,8 @@
       "isEmail": "Der angegebene Parameter ist keine gültige E-Mail-Adresse.",
       "isArray": "Der angegebene Parameter muss ein Array sein.",
       "isIP": "Der angegebene Parameter muss eine gültige IP-Adresse sein.",
-      "isPassword": "Das Passwort ist zu kurz (mindestens 8 Zeichen)."
+      "isPassword": "Das Passwort ist zu kurz (mindestens 8 Zeichen).",
+      "isString": "Der angegebene Parameter muss eine Zeichenkette sein."
     },
     "reports": {
       "authenticatedBy": "Digital authentifiziert von {0} am Datum {1} handelnd für die Institution {2} mit OID {3}",
