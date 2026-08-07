@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';                    //
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
 import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
+import { regexObjectId } from '@env/environment';                             // Enviroments
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -391,6 +392,19 @@ export class SharedFunctionsService {
             //Check if result is true:
             if(result){
               this.delete('single', operationHandler.element, operationHandler.appointment_draft._id, (res) => {
+                //Check appointment_draft to confirm if you have an appointment_request:
+                if(res.success === true && 
+                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') && 
+                  operationHandler.appointment_draft.appointment_request._id !== undefined && 
+                  operationHandler.appointment_draft.appointment_request._id !== null && 
+                  operationHandler.appointment_draft.appointment_request._id !== '' && 
+                  regexObjectId.test(operationHandler.appointment_draft.appointment_request._id) &&
+                  operationHandler.appointment_draft.appointment_request.flow_state == "AR05"
+                ){
+                  //Return the appointment_request to its original first flow state (Only in case of manual appointment_draft deletion):
+                  this.save('update', 'appointment_requests', operationHandler.appointment_draft.appointment_request._id, { flow_state: 'AR01' }, [], (res) => {}, false);
+                }
+
                 //Response the deletion according to the result:
                 const result = this.deleteResponder(res, operationHandler.element, false, true);
 
@@ -1729,6 +1743,21 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   bytesToMegaBytes(bytes: any): any {
     return bytes / (1024*1024);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET LOGO DATA URI:
+  // Returns a valid data URI for a white labeling logo base64 string, detecting its MIME type.
+  //--------------------------------------------------------------------------------------------------------------------//
+  getLogoDataURI(base64: string | null | undefined): string | null {
+    if(!base64) return null;
+    if(base64.startsWith('/9j/'))  return `data:image/jpeg;base64,${base64}`;
+    if(base64.startsWith('iVBOR')) return `data:image/png;base64,${base64}`;
+    if(base64.startsWith('UklGR')) return `data:image/webp;base64,${base64}`;
+    if(base64.startsWith('R0lGO')) return `data:image/gif;base64,${base64}`;
+    return `data:image/png;base64,${base64}`;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

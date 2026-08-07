@@ -23,13 +23,14 @@ export class AuthorizeComponent implements OnInit {
   public userRolesKeys: string[] = objectKeys.userRolesKeys;
   public availableRoles: any = {};
   public RoleDisabled: boolean = true;
+  public lastWhiteLabeling: any = null;
 
   //Inject services to the constructor:
   constructor(
     private router          : Router,
     private userAuth        : UsersAuthService,
     public  sharedProp      : SharedPropertiesService,
-    private sharedFunctions : SharedFunctionsService,
+    public  sharedFunctions : SharedFunctionsService,
     public  i18n            : I18nService
   ) { }
 
@@ -52,6 +53,13 @@ export class AuthorizeComponent implements OnInit {
       Object.keys(this.userInfo.permissions).forEach((key) => {
         this.availableDomains[this.userInfo.permissions[key].domain] = this.userInfo.permissions[key].description;
       });
+
+      //Read last white labeling from sirius_settings:
+      const stored = localStorage.getItem('sirius_settings');
+      if(stored){
+        const objSettings = JSON.parse(stored);
+        this.lastWhiteLabeling = objSettings['last_white_labeling'] || null;
+      }
     } else {
       //Redirect to signin:
       this.onCancel();

@@ -123,7 +123,8 @@
       "isEmail": "Le paramètre fourni n'est pas une adresse e-mail valide.",
       "isArray": "Le paramètre fourni doit être un tableau.",
       "isIP": "Le paramètre fourni doit être une adresse IP valide.",
-      "isPassword": "Le mot de passe fourni est trop court (minimum 8 caractères)."
+      "isPassword": "Le mot de passe fourni est trop court (minimum 8 caractères).",
+      "isString": "Le paramètre fourni doit être une chaîne de caractères."
     },
     "reports": {
       "authenticatedBy": "Authentifié numériquement par {0} à la date du {1} agissant pour l'institution {2} avec OID {3}",

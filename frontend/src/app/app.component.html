@@ -11,7 +11,18 @@
 
   <span>&nbsp;|&nbsp;&nbsp;</span>
 
-  <img class="logo" src="../assets/img/logo_horizontal.png" routerLink="/start" />
+  <!-- Custom horizontal logo (when configured) -->
+  <ng-container *ngIf="sharedFunctions.getLogoDataURI(sharedProp.userLogged?.permissions?.[0]?.white_labeling?.base64_logo_horizontal) as customLogo">
+    <img class="logo" [src]="customLogo" routerLink="/start" />
+  </ng-container>
+  <!-- Default Sirius RIS logo (when no custom horizontal logo uploaded) -->
+  <ng-container *ngIf="!sharedProp.userLogged?.permissions?.[0]?.white_labeling?.base64_logo_horizontal">
+    <img class="logo" src="../assets/img/logo_horizontal.png" routerLink="/start" />
+  </ng-container>
+  <!-- Brand label text: shown alongside logo when both are set, or alone when only label is set -->
+  <ng-container *ngIf="sharedProp.userLogged?.permissions?.[0]?.white_labeling?.label">
+    <span class="nav-brand-label" routerLink="/start">{{ sharedProp.userLogged.permissions[0].white_labeling.label }}</span>
+  </ng-container>
 
   <span class="mat-spacer"></span>
 

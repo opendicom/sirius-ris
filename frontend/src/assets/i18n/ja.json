@@ -1094,6 +1094,7 @@
   },
   "START_PAGE": {
     "WELCOME": "Sirius RISへようこそ",
+    "WELCOME_TO": "ようこそ",
     "ABOUT_TITLE": "概要",
     "ABOUT_BRAND": "Sirius RIS",
     "ABOUT_TEXT": "は、以下の技術のおかげで開発されたオープンソースの放射線情報システムです。",
@@ -1265,7 +1266,22 @@
       "LOGO_BUTTON_LABEL": "組織のロゴ",
       "DELETE_LOGO_TOOLTIP": "組織のロゴを削除",
       "LOGO_SELECT": "組織のロゴを選択",
-      "FILE_DELETED_SUCCESS": "ファイルが正常に削除されました"
+      "FILE_DELETED_SUCCESS": "ファイルが正常に削除されました",
+      "BRANDING_TITLE": "Branding / White Labeling",
+      "BRANDING_CONFIGURED": "設定済み",
+      "BRANDING_LABEL_TITLE": "製品名",
+      "BRANDING_LABEL_PLACEHOLDER": "例: MySystem RIS",
+      "BRANDING_LABEL_HINT": "インターフェース上の製品名として「Sirius RIS」を置き換えます",
+      "BRANDING_LOGOS_TITLE": "カスタムロゴ",
+      "BRANDING_LOGO_HORIZONTAL": "横向きロゴ",
+      "BRANDING_LOGO_HORIZONTAL_USAGE": "Navbar / Toolbar",
+      "BRANDING_LOGO_VERTICAL": "縦向きロゴ",
+      "BRANDING_LOGO_VERTICAL_USAGE": "Login / Authorize",
+      "BRANDING_LOGO_WELCOME": "ウェルカムロゴ",
+      "BRANDING_LOGO_WELCOME_USAGE": "ウェルカム画面",
+      "BRANDING_SELECT": "選択",
+      "BRANDING_CHANGE": "変更",
+      "BRANDING_DELETE_TOOLTIP": "ロゴを削除"
     }
   },
   "BRANCHES": {

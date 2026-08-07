@@ -123,7 +123,8 @@
       "isEmail": "El parámetro ingresado no es una dirección de correo electrónico válida.",
       "isArray": "El parámetro ingresado debe ser un array.",
       "isIP": "El parámetro ingresado debe ser una IP válida.",
-      "isPassword": "La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres)."
+      "isPassword": "La contraseña ingresada es demasiado corta (largo mínimo: 8 caracteres).",
+      "isString": "El parámetro ingresado debe ser un string."
     },
     "reports": {
       "authenticatedBy": "Autenticado digitalmente por {0} en fecha del {1} actuando para la institución {2} con OID {3}",

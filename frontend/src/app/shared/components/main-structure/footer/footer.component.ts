@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { AppStatusService } from '@shared/services/app-status.service';   // App Status Service (versions and status)
-import { environment } from '@env/environment';                           // Enviroments
+import { AppStatusService } from '@shared/services/app-status.service';           // App Status Service (versions and status)
+import { SharedPropertiesService } from '@shared/services/shared-properties.service'; // Shared Properties
+import { environment } from '@env/environment';                                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -20,7 +21,8 @@ export class FooterComponent implements OnInit {
 
   //Inject services to the constructor:
   constructor(
-    public appStatus: AppStatusService
+    public appStatus    : AppStatusService,
+    public sharedProp   : SharedPropertiesService
   ){
     //Set Frontend Version from environment:
     this.sirius_frontend_version = environment.version;
@@ -34,5 +36,20 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  get brandName(): string {
+    // Logged-in session white_labeling takes priority:
+    const label = this.sharedProp.userLogged?.permissions?.[0]?.white_labeling?.label;
+    if(label) return label;
+
+    // Login page fallback: read last saved white_labeling from sirius_settings:
+    const stored = localStorage.getItem('sirius_settings');
+    if(stored){
+      const lastWL = JSON.parse(stored)['last_white_labeling'];
+      if(lastWL?.label) return lastWL.label;
+    }
+
+    return 'Sirius RIS';
+  }
 
 }

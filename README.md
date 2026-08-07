@@ -76,6 +76,14 @@ Through the following contact you can request a demo, commercial proposal, or su
 **Jacques Fauquex**
 jacquesfauquex@opendicom.com
 
+---
+
+
+
+## Contributing
+
+If you would like to contribute to our project, please read our contribution guidelines document [here](./CONTRIBUTING.md).
+
 
 
 ---

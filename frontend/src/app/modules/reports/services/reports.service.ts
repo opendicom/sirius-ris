@@ -81,6 +81,9 @@ export class ReportsService {
         //Add amend field:
         amendmentReport['amend'] = 'true';
 
+        //Initialize report revision field:
+        amendmentReport['revision'] = 1;
+        
         //Remove _id (last report):
         delete amendmentReport._id;
 

@@ -205,6 +205,9 @@ export class FormUpdateComponent implements OnInit {
     //Current Status:
     this.sharedProp.current_status = res.data[0].status;
 
+    //Sync overbooking state in slot tab from backend data:
+    this.tabSlot.setOverbooking(res.data[0].overbooking);
+
     //Execute callback (Control sync exec):
     callback();
   }

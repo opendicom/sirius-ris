@@ -5,3 +5,83 @@
 .delete-file {
     cursor: pointer;
 }
+
+.branding-section {
+    padding: 0 16px;
+}
+
+.branding-logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.branding-logo-card {
+    border: 1px solid var(--mat-divider-color);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.branding-logo-preview {
+    width: 180px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--form-field-bg-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.branding-logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.branding-logo-placeholder {
+    font-size: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    opacity: 0.2;
+}
+
+.branding-logo-name {
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    margin: 0;
+    color: var(--opposite-color-01);
+}
+
+.branding-logo-usage {
+    color: var(--opposite-color-03);
+    margin: 0;
+    font-size: 11px;
+}
+
+.branding-logo-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+}
+
+/* Change button: larger and more prominent regardless of theme */
+.branding-change-mode {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--opposite-color-01) !important;
+}
+.branding-change-mode mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    color: var(--opposite-color-01) !important;
+}

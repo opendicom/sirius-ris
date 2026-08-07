@@ -123,7 +123,8 @@
       "isEmail": "O parâmetro informado não é um e-mail válido.",
       "isArray": "O parâmetro informado deve ser um array.",
       "isIP": "O parâmetro informado deve ser um IP válido.",
-      "isPassword": "A senha informada é muito curta (mínimo de 8 caracteres)."
+      "isPassword": "A senha informada é muito curta (mínimo de 8 caracteres).",
+      "isString": "O parâmetro informado deve ser uma string."
     },
     "reports": {
       "authenticatedBy": "Autenticado digitalmente por {0} na data {1} atuando para a instituição {2} com OID {3}",
