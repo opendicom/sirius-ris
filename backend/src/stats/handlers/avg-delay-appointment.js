@@ -83,11 +83,30 @@ module.exports = async (req, res) => {
                     }},
                     { $unwind: { path: "$appointment_request", preserveNullAndEmptyArrays: false } },
 
-                    //Project only the dates needed to calculate the delay:
+                    //Imaging -> Service (Lookup & Unwind):
+                    { $lookup: {
+                        from: 'services',
+                        localField: 'imaging.service',
+                        foreignField: '_id',
+                        as: 'imaging.service',
+                    }},
+                    { $unwind: { path: "$imaging.service", preserveNullAndEmptyArrays: true } },
+
+                    //Imaging -> Service -> Modality (Lookup & Unwind):
+                    { $lookup: {
+                        from: 'modalities',
+                        localField: 'imaging.service.fk_modality',
+                        foreignField: '_id',
+                        as: 'modality',
+                    }},
+                    { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
+
+                    //Project only the fields needed to calculate the delay per modality:
                     { $project: {
                         _id: 0,
                         request_created: "$appointment_request.createdAt",
-                        appointment_created: "$createdAt"
+                        appointment_created: "$createdAt",
+                        modality_code_value: "$modality.code_value"
                     }}
                 ];
 
@@ -95,19 +114,35 @@ module.exports = async (req, res) => {
                 await appointments.Model.aggregate(aggregate)
                 .exec()
                 .then((data) => {
-                    //Sum days passed between the request and the appointment coordination (per document):
-                    let totalDaysPassed = 0;
+                    //Sum days passed per modality :
+                    const modalityTotals = {};
                     data.forEach((element) => {
-                        totalDaysPassed += mainServices.getDaysPassed(element.request_created, element.appointment_created);
+                        const daysPassed = mainServices.getDaysPassed(element.request_created, element.appointment_created);
+                        const modalityKey = element.modality_code_value;
+
+                        if(!modalityTotals.hasOwnProperty(modalityKey)){
+                            modalityTotals[modalityKey] = { totalDaysPassed: 0, count: 0 };
+                        }
+
+                        modalityTotals[modalityKey].totalDaysPassed += daysPassed;
+                        modalityTotals[modalityKey].count += 1;
                     });
 
-                    //Calculate average (Prevent division by zero):
-                    const total_avg_days_passed = data.length > 0 ? Math.round((totalDaysPassed / data.length) * 100) / 100 : 0;
+                    //Calculate average delay per modality:
+                    const modalities = {};
+                    Object.keys(modalityTotals).forEach((modalityKey) => {
+                        const { totalDaysPassed, count } = modalityTotals[modalityKey];
+                        modalities[modalityKey] = Math.round((totalDaysPassed / count) * 100) / 100;
+                    });
+
+                    //Calculate total average as the average of the per-modality averages:
+                    const modalityAverages = Object.values(modalities);
+                    const total_avg_days_passed = modalityAverages.length > 0 ? Math.round((modalityAverages.reduce((acc, avg) => acc + avg, 0) / modalityAverages.length) * 100) / 100 : 0;
 
                     //Send successfully response:
                     res.status(200).send({
                         success: true,
-                        data: { total_avg_days_passed }
+                        data: { modalities, 'total-avg-days-passed': total_avg_days_passed }
                     });
                 })
                 .catch((err) => {
