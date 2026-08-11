@@ -4,7 +4,7 @@
 // Set Enviroment:
 export const environment = {
   production: true,
-  version: '1.6.2'
+  version: '1.7.0'
 };
 
 // Set ObjectId regular expression to validate ObjectIds:
