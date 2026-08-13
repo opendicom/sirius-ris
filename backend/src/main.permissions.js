@@ -30,7 +30,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : ['reports'],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports']
     },
 
     // Administrador:
@@ -59,7 +59,7 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports']
     },
 
     // Supervisor:
@@ -468,6 +468,11 @@ const concessionPermissions = {
     // 26 : Estadísticas sobre demora de citas coordinadas:
     26: {
         stats                   : ['avg-delay-appointment']
+    },
+
+    // 27 : Estadísticas sobre demora de entrega de informes:
+    27: {
+        stats                   : ['avg-delay-reports']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
