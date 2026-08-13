@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { Router, CanActivate, CanLoad, Route, UrlSegment, Data } from '@angular/router'; // Router and guard interfaces
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
-import { SharedFunctionsService } from '@shared/services/shared-functions.service';      // Shared Functions
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -18,7 +17,6 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(
     private userAuth: UsersAuthService,
     private router: Router,
-    private sharedFunctions: SharedFunctionsService,
     public sharedProp: SharedPropertiesService,
   ) { }
 
@@ -45,29 +43,30 @@ export class AuthGuard implements CanActivate, CanLoad {
       return false;
     }
 
-    //Refresh current authenticated user info:
+    //Refresh isLoged (current authenticated user info):
+    //Necesary for display or not the toolbar and sidebar.
     try {
-      this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+      this.sharedProp.checkIsLogged();
     } catch (_error) {
-      this.sharedProp.userLogged = null;
+      this.sharedProp.userLogged = false;
     }
 
-    //Refresh isLoged value for display or not the toolbar and sidebar:
-    this.sharedProp.checkIsLogged();
-
+    // Get the permissions of the logged-in user:
     const permissions = Array.isArray(this.sharedProp.userLogged?.permissions)
       ? this.sharedProp.userLogged.permissions
       : (this.sharedProp.userLogged?.permissions ? Object.values(this.sharedProp.userLogged.permissions) : []);
 
+    // Get current role and concessions of the logged-in user:
     const currentRole = Number(permissions?.[0]?.role ?? this.sharedProp.userLogged?.role ?? 0);
     const currentConcessions = Array.isArray(permissions?.[0]?.concession)
       ? permissions[0].concession.map((value: any) => Number(value))
       : [];
 
+    // Check if the current role or concessions match the required roles or concessions for the route:
     const roleMatch = !array_roles.length || array_roles.includes(currentRole);
     const concessionMatch = !array_concessions.length || currentConcessions.some((value: number) => array_concessions.includes(value));
 
-    // A route is accessible if role matches OR concession matches.
+    // A route is accessible if role matches OR concession matches:
     if (!roleMatch && !concessionMatch) {
       this.router.navigate(['/start']);
       return false;
