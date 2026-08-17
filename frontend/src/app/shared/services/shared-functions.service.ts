@@ -34,7 +34,7 @@ import { PatientDetailsComponent } from '@shared/components/dialogs/patient-deta
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  // mainSettings property is duplicated in the most important services to avoid 
+  // mainSettings property is duplicated in the most important services to avoid
   // circular dependencies and the content is set in the app.component constructor.
   public mainSettings       : any = {};
   public response           : any = {};
@@ -393,11 +393,11 @@ export class SharedFunctionsService {
             if(result){
               this.delete('single', operationHandler.element, operationHandler.appointment_draft._id, (res) => {
                 //Check appointment_draft to confirm if you have an appointment_request:
-                if(res.success === true && 
-                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') && 
-                  operationHandler.appointment_draft.appointment_request._id !== undefined && 
-                  operationHandler.appointment_draft.appointment_request._id !== null && 
-                  operationHandler.appointment_draft.appointment_request._id !== '' && 
+                if(res.success === true &&
+                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') &&
+                  operationHandler.appointment_draft.appointment_request._id !== undefined &&
+                  operationHandler.appointment_draft.appointment_request._id !== null &&
+                  operationHandler.appointment_draft.appointment_request._id !== '' &&
                   regexObjectId.test(operationHandler.appointment_draft.appointment_request._id) &&
                   operationHandler.appointment_draft.appointment_request.flow_state == "AR05"
                 ){
@@ -519,11 +519,12 @@ export class SharedFunctionsService {
     //Check if AditionalRequest is true:
     //Only the users and stats modules uses this case [findByService or findByRoleInReport, Stat cases (appointments)]):
     if(AditionalRequest !== false && (
-      AditionalRequest === 'findByService' || 
-      AditionalRequest === 'findByBranch' || 
-      AditionalRequest === 'findByRoleInReport' || 
+      AditionalRequest === 'findByService' ||
+      AditionalRequest === 'findByBranch' ||
+      AditionalRequest === 'findByRoleInReport' ||
       AditionalRequest === 'appointments' ||        // Stats case
       AditionalRequest === 'performing' ||          // Stats case
+      AditionalRequest === 'avg-delay-appointment' ||  // Stats case
       AditionalRequest === 'findLockers'
     )){ operation = AditionalRequest; }
 
@@ -565,7 +566,7 @@ export class SharedFunctionsService {
   save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}, saveResponse: boolean = true): void {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
-    
+
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){
       data._id = _id;
@@ -868,7 +869,7 @@ export class SharedFunctionsService {
 
     //Initializate File Max Size Controller:
     let fileMaxSizeError = false;
-    
+
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){
       data._id = _id;
@@ -932,7 +933,7 @@ export class SharedFunctionsService {
           await Promise.all(Object.keys(data).map((key) => {
             multipartForm.delete(key);
           }));
-  
+
           //Send cancelation message:
           this.sendMessage(
             this.i18n.instant('SHARED.FILE_SIZE_EXCEEDED_ERROR') +
@@ -1462,7 +1463,7 @@ export class SharedFunctionsService {
     } else if(nestedIN.length > 1){
       params['filter[in][fk_appointment]'] = nestedIN;
     }
-    
+
     //Search only if there are results in the previous search:
     if(nestedIN.length > 0){
       //Find nested elements:
@@ -1513,7 +1514,7 @@ export class SharedFunctionsService {
 
     //Calculate dose:
 		const numberDose: number = numberWeight * numberCoefficient;
-		
+
     //Return calculated dose:
     return numberDose.toFixed(2)
   }
@@ -1545,7 +1546,7 @@ export class SharedFunctionsService {
     if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)){
       age--;
     }
-    
+
     //Return calculated age:
     //In case the calculated age is less than one year:
     if(age <= 0){
@@ -1563,7 +1564,7 @@ export class SharedFunctionsService {
       } else {
         return months_age + ' meses';
       }
-      
+
     } else if(age == 1) {
       return age + ' año';
 
@@ -1626,7 +1627,7 @@ export class SharedFunctionsService {
 
     //Get element table:
     const element_table = tableChild.nativeElement.getElementsByTagName("TABLE")[0];
-    
+
     //Create workbook:
     // raw = If true, every cell will hold raw strings (Prevent Datetime format errors):
     const workbook = utils.table_to_book(element_table, { sheet: sheetName, raw: true });
@@ -1680,7 +1681,7 @@ export class SharedFunctionsService {
           //Await foreach of alphabet array:
           await Promise.all(Object.keys(alphabetArray).map(async (keyAlphabet: any) => {
             const compareValue = columnLetter.localeCompare(alphabetArray[keyAlphabet]);
-            
+
             //Prevent undefined values for delete duplicates:
             if(workbook.Sheets[sheetName][key] !== undefined){
 
@@ -1915,7 +1916,7 @@ export class SharedFunctionsService {
 
     //Reset authenticated_performing (sharedFunctions Property):
     this.authenticated_performing = {};
-    
+
     //Preserve performing _id to find authenticated reports (Await foreach):
     await Promise.all(Object.keys(performingData).map((key) => {
       if(performingData[key].flow_state === 'P09'){
@@ -1957,7 +1958,7 @@ export class SharedFunctionsService {
               this.authenticated_performing[reportsRes.data[key].fk_performing] = reportsRes.data[key].authenticated.datetime;
             }
           }));
-          
+
 
           //Execute callback:
           callback(reportsRes.data);
@@ -2004,7 +2005,7 @@ export class SharedFunctionsService {
   getDaysPassed(date: string, second_date: any = undefined): any {
     //Convert the input date to a Date object and prevent TZ errors using the same time (T00:00:00.000Z):
     const startDate: Date = new Date(date.split('T')[0].slice(0) + 'T00:00:00.000Z');
-    
+
     //Set second date:
     if(second_date === undefined || second_date === null || second_date === ''){
       //Get the current date:
@@ -2014,19 +2015,19 @@ export class SharedFunctionsService {
       second_date = second_date.split('T')[0].slice(0) + 'T00:00:00.000Z';
       second_date = new Date(second_date);
     }
-    
+
     //Calculate the difference in milliseconds:
     const millisecondsDiff: number = second_date.getTime() - startDate.getTime();
-    
+
     //Convert the difference from milliseconds to days:
     const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
     let daysPassed: any = Math.floor(millisecondsDiff / millisecondsPerDay);
-    
+
     //Check if daysPassed is zero (0 = false for IF):
     if(daysPassed == 0){
       daysPassed = 'zero';
     }
-    
+
     return daysPassed;
   }
   //--------------------------------------------------------------------------------------------------------------------//
