@@ -38,6 +38,18 @@
         </mat-tab>
         <!-- PERFORMING TAB: --------------------------------------------------------------------------------------------------------------------------- -->
 
+        <!-- AVG DELAY APPOINTMENT TAB: ---------------------------------------------------------------------------------------------------------------- -->
+        <!-- 1: Superusuario, 2: Administrador, Concesiones: [26: Estadísticas sobre demora de citas coordinadas] -->
+        <mat-tab *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [26]))">
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">hourglass_bottom</mat-icon> {{ 'STATS.AVG_DELAY_APPOINTMENT' | i18n }}
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-avg-delay-appointment></app-stats-avg-delay-appointment>
+            </div>
+        </mat-tab>
+        <!-- AVG DELAY APPOINTMENT TAB: ---------------------------------------------------------------------------------------------------------------- -->
+
         <!-- REPORTS TAB: ------------------------------------------------------------------------------------------------------------------------------ -->
         <!-- 1: Superusuario, 2: Administrador, Concesiones: [18: Estadísticas sobre informes] -->
         <!--
