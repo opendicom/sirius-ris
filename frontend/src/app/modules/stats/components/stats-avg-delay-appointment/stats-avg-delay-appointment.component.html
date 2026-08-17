@@ -1,0 +1,70 @@
+<form class="form-element" [formGroup]="form">
+    <mat-form-field appearance="outline">
+        <mat-label>{{ 'STATS.BRANCH' | i18n }}</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="{{ 'STATS.SELECT_BRANCH' | i18n }}" class="auto-width">
+          <div *ngFor="let currentBranch of statsService.availableBranches">
+            <div *ngFor="let currentOrganization of statsService.availableOrganizations">
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+            </div>
+          </div>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>{{ 'STATS.SELECT_DATE_RANGE' | i18n }}</mat-label>
+        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+        <input matStartDate formControlName="range_start" readonly placeholder="{{ 'STATS.START_DATE' | i18n }}">
+        <input matEndDate formControlName="range_end" readonly placeholder="{{ 'STATS.END_DATE' | i18n }}">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
+        <mat-icon>search</mat-icon>&nbsp; {{ 'STATS.SEARCH' | i18n }}
+    </button>
+</form>
+
+<hr class="dashed"/>
+
+<div *ngIf="getKeys(avgDelayAppointmentStatsResponse).length > 0; then thenStatsResult else elseStatsResult"></div>
+
+<ng-template #thenStatsResult>
+    <!-- summary -->
+    <div class="summary">
+        {{ 'STATS.TOTAL_AVG_DELAY' | i18n }} <strong>{{ avgDelayAppointmentStatsResponse['total-avg-days-passed'] }}</strong>
+    </div>
+
+    <!-- modalities -->
+    <div class="chart-responsive chart-col-100">
+        <h2 class="text-center">{{ 'STATS.AVG_DELAY_BY_MODALITY' | i18n }}</h2>
+        <div #modalitiesContainerRef class="chart-wrapper">
+            <ngx-charts-bar-vertical
+                [view]="[modalitiesContainerRef.offsetWidth, 400]"
+                [results]="datasets.modalities"
+                [gradient]="true"
+                [xAxis]="true"
+                [yAxis]="true">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    <br/><hr class="dashed"/><br/>
+
+    <!-- Export to XSLX -->
+    <div class="text-right">
+        <button mat-flat-button class="button_filters" (click)="sharedFunctions.jsonToXLSX(datasets, 'stats_result');">
+            <mat-icon class="export-icon">get_app</mat-icon> {{ 'STATS.EXPORT' | i18n }}
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #elseStatsResult>
+    <div class="text-center">
+        <br/>
+        <mat-icon class="no-result-icon">query_stats</mat-icon><br/>
+        <span class="no-result-text">{{ 'STATS.NO_RESULTS' | i18n }}</span><br/>
+        <br/>
+    </div>
+</ng-template>
