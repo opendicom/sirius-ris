@@ -153,10 +153,10 @@ module.exports = async (req, res) => {
                     const modalityAverages = Object.values(modalities);
                     const total_avg_days_passed = modalityAverages.length > 0 ? Math.round((modalityAverages.reduce((acc, avg) => acc + avg, 0) / modalityAverages.length) * 100) / 100 : 0;
 
-                    //Send successfully response:
+                    //Send successfully response (Empty data when there are no matches, same as the other stats):
                     res.status(200).send({
                         success: true,
-                        data: { modalities, 'total-avg-days-passed': total_avg_days_passed }
+                        data: data.length > 0 ? { modalities, 'total-avg-days-passed': total_avg_days_passed } : {}
                     });
                 })
                 .catch((err) => {
