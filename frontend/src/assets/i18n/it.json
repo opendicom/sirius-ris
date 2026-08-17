@@ -798,6 +798,9 @@
     "FINISHED_WITH_REPORT": "Terminato (con referto)",
     "FINISHED_WITHOUT_REPORT": "Terminato (senza referto)",
     "CANCELLED": "Annullato",
+    "AVG_DELAY_APPOINTMENT": "Ritardo nel coordinamento degli appuntamenti",
+    "AVG_DELAY_BY_MODALITY": "Ritardo medio per modalità (giorni)",
+    "TOTAL_AVG_DELAY": "Ritardo medio complessivo (giorni):",
     "FIND_STATS_ERROR": "Errore durante il tentativo di ottenere informazioni: ",
     "FIND_USERS_ERROR": "Errore durante il tentativo di ottenere gli utenti coinvolti nella statistica."
   },

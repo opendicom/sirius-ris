@@ -798,6 +798,9 @@
     "FINISHED_WITH_REPORT": "Beendet (mit Bericht)",
     "FINISHED_WITHOUT_REPORT": "Beendet (ohne Bericht)",
     "CANCELLED": "Abgesagt",
+    "AVG_DELAY_APPOINTMENT": "Verzögerung bei der Terminkoordination",
+    "AVG_DELAY_BY_MODALITY": "Durchschnittliche Verzögerung nach Modalität (Tage)",
+    "TOTAL_AVG_DELAY": "Durchschnittliche Gesamtverzögerung (Tage):",
     "FIND_STATS_ERROR": "Fehler beim Versuch, Informationen zu erhalten: ",
     "FIND_USERS_ERROR": "Fehler beim Versuch, die an der Statistik beteiligten Benutzer zu erhalten."
   },
