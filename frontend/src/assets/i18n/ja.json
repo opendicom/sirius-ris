@@ -799,6 +799,7 @@
     "FINISHED_WITHOUT_REPORT": "完了（レポートなし）",
     "CANCELLED": "キャンセル",
     "AVG_DELAY_APPOINTMENT": "予約調整の遅延",
+    "AVG_DELAY_REPORTS": "レポート提出の遅延",
     "AVG_DELAY_BY_MODALITY": "モダリティ別平均遅延（日数）",
     "TOTAL_AVG_DELAY": "全体の平均遅延（日数）：",
     "FIND_STATS_ERROR": "情報の取得試行中にエラーが発生しました：",

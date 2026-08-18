@@ -799,6 +799,7 @@
     "FINISHED_WITHOUT_REPORT": "已完成（无报告）",
     "CANCELLED": "已取消",
     "AVG_DELAY_APPOINTMENT": "预约协调延迟",
+    "AVG_DELAY_REPORTS": "报告提交延迟",
     "AVG_DELAY_BY_MODALITY": "按模态划分的平均延迟（天）",
     "TOTAL_AVG_DELAY": "总体平均延迟（天）:",
     "FIND_STATS_ERROR": "尝试获取信息时出错: ",

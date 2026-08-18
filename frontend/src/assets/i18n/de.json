@@ -799,6 +799,7 @@
     "FINISHED_WITHOUT_REPORT": "Beendet (ohne Bericht)",
     "CANCELLED": "Abgesagt",
     "AVG_DELAY_APPOINTMENT": "Verzögerung bei der Terminkoordination",
+    "AVG_DELAY_REPORTS": "Verzögerung bei der Befundübermittlung",
     "AVG_DELAY_BY_MODALITY": "Durchschnittliche Verzögerung nach Modalität (Tage)",
     "TOTAL_AVG_DELAY": "Durchschnittliche Gesamtverzögerung (Tage):",
     "FIND_STATS_ERROR": "Fehler beim Versuch, Informationen zu erhalten: ",

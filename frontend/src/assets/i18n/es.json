@@ -799,6 +799,7 @@
     "FINISHED_WITHOUT_REPORT": "Terminado (sin informe)",
     "CANCELLED": "Cancelado",
     "AVG_DELAY_APPOINTMENT": "Demora en la coordinación de citas",
+    "AVG_DELAY_REPORTS": "Demora en la entrega de informes",
     "AVG_DELAY_BY_MODALITY": "Demora promedio por modalidad (días)",
     "TOTAL_AVG_DELAY": "Promedio general de demora (días):",
     "FIND_STATS_ERROR": "Error al intentar obtener información: ",
