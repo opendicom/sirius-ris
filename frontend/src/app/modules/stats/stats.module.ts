@@ -14,6 +14,7 @@ import { StatsAppointmentsComponent } from '@modules/stats/components/stats-appo
 import { StatsPerformingComponent } from '@modules/stats/components/stats-performing/stats-performing.component';
 import { StatsReportsComponent } from '@modules/stats/components/stats-reports/stats-reports.component';
 import { StatsAvgDelayAppointmentComponent } from '@modules/stats/components/stats-avg-delay-appointment/stats-avg-delay-appointment.component';
+import { StatsAvgDelayReportsComponent } from '@modules/stats/components/stats-avg-delay-reports/stats-avg-delay-reports.component';
 
 // NgxCharts:
 import { NgxChartsModule }from '@swimlane/ngx-charts';
@@ -25,7 +26,8 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     StatsAppointmentsComponent,
     StatsPerformingComponent,
     StatsReportsComponent,
-    StatsAvgDelayAppointmentComponent
+    StatsAvgDelayAppointmentComponent,
+    StatsAvgDelayReportsComponent
   ],
   imports: [
     CommonModule,

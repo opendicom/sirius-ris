@@ -525,6 +525,7 @@ export class SharedFunctionsService {
       AditionalRequest === 'appointments' ||        // Stats case
       AditionalRequest === 'performing' ||          // Stats case
       AditionalRequest === 'avg-delay-appointment' ||  // Stats case
+      AditionalRequest === 'avg-delay-reports' ||       // Stats case
       AditionalRequest === 'findLockers'
     )){ operation = AditionalRequest; }
 

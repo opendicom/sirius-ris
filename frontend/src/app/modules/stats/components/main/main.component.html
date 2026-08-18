@@ -21,7 +21,7 @@
               <mat-icon class="tab-icon">event_available</mat-icon> {{ 'STATS.APPOINTMENTS' | i18n }}
             </ng-template>
             <div class="stat-container">
-                <app-stats-appointments></app-stats-appointments>    
+                <app-stats-appointments></app-stats-appointments>
             </div>
         </mat-tab>
         <!-- APPOINTMENT TAB: -------------------------------------------------------------------------------------------------------------------------- -->
@@ -49,6 +49,18 @@
             </div>
         </mat-tab>
         <!-- AVG DELAY APPOINTMENT TAB: ---------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- AVG DELAY REPORTS TAB: -------------------------------------------------------------------------------------------------------------------- -->
+        <!-- 1: Superusuario, 2: Administrador, Concesiones: [27: Estadísticas sobre demora de entrega de informes] -->
+        <mat-tab *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [27]))">
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">hourglass_bottom</mat-icon> {{ 'STATS.AVG_DELAY_REPORTS' | i18n }}
+            </ng-template>
+            <div class="stat-container">
+                <app-stats-avg-delay-reports></app-stats-avg-delay-reports>
+            </div>
+        </mat-tab>
+        <!-- AVG DELAY REPORTS TAB: -------------------------------------------------------------------------------------------------------------------- -->
 
         <!-- REPORTS TAB: ------------------------------------------------------------------------------------------------------------------------------ -->
         <!-- 1: Superusuario, 2: Administrador, Concesiones: [18: Estadísticas sobre informes] -->
