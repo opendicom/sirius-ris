@@ -162,6 +162,8 @@ Throughout the entire **Sirius RIS** application, reference is made on many occa
 | 5    | Permiso de residencia            |
 | 6    | Visa                             |
 | 7    | Documento transitorio            |
+| 8    | Nro de Registro interno          |
+| 100  | Documento anónimo                |
 
 
 
