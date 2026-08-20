@@ -798,6 +798,10 @@
     "FINISHED_WITH_REPORT": "Terminé (avec rapport)",
     "FINISHED_WITHOUT_REPORT": "Terminé (sans rapport)",
     "CANCELLED": "Annulé",
+    "AVG_DELAY_APPOINTMENT": "Délai de coordination des rendez-vous",
+    "AVG_DELAY_REPORTS": "Délai de remise des rapports",
+    "AVG_DELAY_BY_MODALITY": "Délai moyen par modalité (jours)",
+    "TOTAL_AVG_DELAY": "Délai moyen global (jours) :",
     "FIND_STATS_ERROR": "Erreur lors de la tentative d'obtention d'informations : ",
     "FIND_USERS_ERROR": "Erreur lors de la tentative d'obtention des utilisateurs impliqués dans la statistique."
   },

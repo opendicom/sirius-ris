@@ -798,6 +798,10 @@
     "FINISHED_WITH_REPORT": "Finished (with report)",
     "FINISHED_WITHOUT_REPORT": "Finished (without report)",
     "CANCELLED": "Cancelled",
+    "AVG_DELAY_APPOINTMENT": "Appointment Coordination Delay",
+    "AVG_DELAY_REPORTS": "Report Delivery Delay",
+    "AVG_DELAY_BY_MODALITY": "Average delay by modality (days)",
+    "TOTAL_AVG_DELAY": "Overall average delay (days):",
     "FIND_STATS_ERROR": "Error trying to get information: ",
     "FIND_USERS_ERROR": "Error trying to get users involved in the statistics."
   },

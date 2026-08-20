@@ -798,6 +798,10 @@
     "FINISHED_WITH_REPORT": "Finalizado (com laudo)",
     "FINISHED_WITHOUT_REPORT": "Finalizado (sem laudo)",
     "CANCELLED": "Cancelado",
+    "AVG_DELAY_APPOINTMENT": "Atraso na Coordenação de Agendamentos",
+    "AVG_DELAY_REPORTS": "Atraso na Entrega de Laudos",
+    "AVG_DELAY_BY_MODALITY": "Atraso médio por modalidade (dias)",
+    "TOTAL_AVG_DELAY": "Atraso médio geral (dias):",
     "FIND_STATS_ERROR": "Erro ao tentar obter informações: ",
     "FIND_USERS_ERROR": "Erro ao tentar obter os usuários envolvidos na estatística."
   },
