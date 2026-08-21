@@ -148,6 +148,7 @@ export class TabDetailsComponent implements OnInit {
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
+        referring_organization_input : [ this.appointmentsService.getReferringOrganizationName(res.data[0].referring.organization._id) ],
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ '', [Validators.required]],
 
@@ -224,7 +225,7 @@ export class TabDetailsComponent implements OnInit {
           contact                 : inpatient.contact
         })
       });
-      
+
       //Add files into file manager controller:
       if(res.data[0].attached_files.length > 0){
         Promise.all(Object.keys(res.data[0].attached_files).map((key) => {
@@ -275,6 +276,7 @@ export class TabDetailsComponent implements OnInit {
   initializateForm(){
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
+      referring_organization_input : [ '' ],
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
 
@@ -358,7 +360,7 @@ export class TabDetailsComponent implements OnInit {
     this.sharedProp.current_weight = event.target.value;
 
     //Calculate recomended dose if modality is PT:
-    if(this.sharedProp.current_modality_code_value == 'PT'){    
+    if(this.sharedProp.current_modality_code_value == 'PT'){
       //Calculate recomended dose:
       this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
     }

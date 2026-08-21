@@ -159,6 +159,7 @@ export class TabDetailsComponent implements OnInit {
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
+        referring_organization_input : [ this.appointmentsService.getReferringOrganizationName(res.data[0].referring.organization._id) ],
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ '', [Validators.required]],
 
@@ -322,7 +323,7 @@ export class TabDetailsComponent implements OnInit {
         //Refresh current_flow_state in sharedProp for enable slot tab:
         this.sharedProp.current_flow_state = 'A01';
 
-        break;  
+        break;
       case 'A02':
         this.booleanCancelation = true;
 
@@ -335,6 +336,7 @@ export class TabDetailsComponent implements OnInit {
   initializateForm(){
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
+      referring_organization_input : [ '' ],
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
 

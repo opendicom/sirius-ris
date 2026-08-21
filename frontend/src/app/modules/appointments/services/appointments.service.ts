@@ -27,8 +27,9 @@ export class AppointmentsService {
   public availableServices      : any;
 
   //Set referring and reporting objects:
-  public referringOrganizations   : any;
-  public reportingUsers           : any;
+  public referringOrganizations         : any;
+  public filteredReferringOrganizations : any;
+  public reportingUsers                 : any;
 
   //Boolean class binding objects:
   public booleanContrast  : Boolean = false;
@@ -146,7 +147,33 @@ export class AppointmentsService {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.referringOrganizations = res.data;
+      this.filteredReferringOrganizations = res.data;
     });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REFERRING ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReferringOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter referring organizations:
+    this.filteredReferringOrganizations = this.referringOrganizations.filter((currentOrganization: any) => currentOrganization.short_name.toUpperCase().includes(filterValue) || currentOrganization.name.toUpperCase().includes(filterValue));
+  }
+
+  getReferringOrganizationName(_id: string){
+    //Find referring organization by _id and return display name:
+    const currentOrganization = (this.referringOrganizations || []).find((organization: any) => organization._id === _id);
+    return currentOrganization ? `${currentOrganization.short_name} (${currentOrganization.name})` : '';
+  }
+
+  selectReferringOrganization(currentOrganization: any, form: FormGroup){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    form.controls['referring_organization'].setValue(currentOrganization._id);
+    form.controls['referring_organization_input'].setValue(`${currentOrganization.short_name} (${currentOrganization.name})`);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -352,6 +379,7 @@ export class AppointmentsService {
 
     //Delete temp values:
     delete mergedValues.referring_organization;
+    delete mergedValues.referring_organization_input;
     delete mergedValues.reporting_domain;
     delete mergedValues.reporting_user;
 
@@ -360,7 +388,7 @@ export class AppointmentsService {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
         this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
-        
+
         //Create appointment PDF with pain password:
         if(this.sharedProp.current_friendly_pass !== ''){
           this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass, true);
