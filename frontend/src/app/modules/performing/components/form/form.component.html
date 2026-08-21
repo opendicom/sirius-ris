@@ -526,24 +526,21 @@
                   <h4>{{ 'PERFORMING.FORM.TECHNICIAN_CONSOLE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.TECHNICIAN_CONSOLE' | i18n }}</mat-label>
-                    <mat-select formControlName="console_technician" placeholder="{{ 'PERFORMING.FORM.SELECT_TECHNICIAN_CONSOLE' | i18n }}">
-                      <span *ngIf="this.technicianServiceUsers">
-                        <div *ngFor="let currentConsoleTechnician of this.technicianServiceUsers"><!-- 5 Técnicos-->
-                          <mat-option value="{{ currentConsoleTechnician._id }}">
-                            <!--names-->
-                            {{ currentConsoleTechnician.person.name_01 }}
-                            <span *ngIf="currentConsoleTechnician.person.name_02">
-                              {{ ' ' + currentConsoleTechnician.person.name_02 }}
-                            </span>
-                            <!--surnames-->
-                            {{ ' ' + currentConsoleTechnician.person.surname_01 }}
-                            <span *ngIf="currentConsoleTechnician.person.surname_02">
-                              {{ ' ' + currentConsoleTechnician.person.surname_02 }}
-                            </span>
-                          </mat-option>
-                        </div>
-                      </span>
-                    </mat-select>
+                    <input type="text" matInput formControlName="console_technician_input" (keyup)="filterTechnicianServiceUsers($event)" [matAutocomplete]="autoConsoleTechnician" placeholder="{{ 'PERFORMING.FORM.SELECT_TECHNICIAN_CONSOLE' | i18n }}">
+                    <mat-autocomplete #autoConsoleTechnician="matAutocomplete">
+                      <mat-option (onSelectionChange)="selectTechnicianServiceUser(currentConsoleTechnician)" *ngFor="let currentConsoleTechnician of filteredTechnicianServiceUsers" [value]="getInjectionUserFullName(currentConsoleTechnician)">
+                        <!--names-->
+                        {{ currentConsoleTechnician.person.name_01 }}
+                        <span *ngIf="currentConsoleTechnician.person.name_02">
+                          {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                        </span>
+                        <!--surnames-->
+                        {{ ' ' + currentConsoleTechnician.person.surname_01 }}
+                        <span *ngIf="currentConsoleTechnician.person.surname_02">
+                          {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                        </span>
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                 </div>
 

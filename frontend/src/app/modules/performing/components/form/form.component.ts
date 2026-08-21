@@ -47,6 +47,7 @@ export class FormComponent implements OnInit {
   public technicianServiceUsers          : any[] = [];
   public injectionServiceUsers           : any[] = []; // In this case injections user includes lab users (who prepares the injection).
   public filteredInjectionServiceUsers   : any[] = []; // Filtered list used by the injection_user matAutocomplete.
+  public filteredTechnicianServiceUsers  : any[] = []; // Filtered list used by the console_technician matAutocomplete.
 
   //Boolean class binding objects:
   public booleanAnesthesia      : Boolean = false;
@@ -180,9 +181,10 @@ export class FormComponent implements OnInit {
 
       //Acquisition fields:
       acquisition: this.formBuilder.group({
-        'time'                  : [ '' ],
-        'console_technician'    : [ '' ],
-        'observations'          : [ '' ]
+        'time'                     : [ '' ],
+        'console_technician'       : [ '' ],
+        'console_technician_input' : [ '' ], //Visible text input for console_technician matAutocomplete.
+        'observations'             : [ '' ]
       }),
     });
   }
@@ -319,9 +321,10 @@ export class FormComponent implements OnInit {
 
               //Acquisition fields (They need to exist in advance):
               acquisition: this.formBuilder.group({
-                'time'                  : [ '' ],
-                'console_technician'    : [ '' ],
-                'observations'          : [ '' ]
+                'time'                     : [ '' ],
+                'console_technician'       : [ '' ],
+                'console_technician_input' : [ '' ], //Visible text input for console_technician matAutocomplete.
+                'observations'             : [ '' ]
               }),
             });
 
@@ -392,6 +395,7 @@ export class FormComponent implements OnInit {
               //Set acquisition fields in form:
               this.form.get('acquisition.time')?.setValue(resPerforming.data[0].acquisition.time);
               this.form.get('acquisition.console_technician')?.setValue(resPerforming.data[0].acquisition.console_technician._id);
+              this.form.get('acquisition.console_technician_input')?.setValue(this.getInjectionUserFullName(resPerforming.data[0].acquisition.console_technician));
               this.form.get('acquisition.observations')?.setValue(resPerforming.data[0].acquisition.observations);
 
               //Get nested property keys with values:
@@ -986,6 +990,7 @@ export class FormComponent implements OnInit {
             //Enable acquisition inputs:
             this.form.get('acquisition.time')?.enable();
             this.form.get('acquisition.console_technician')?.enable();
+            this.form.get('acquisition.console_technician_input')?.enable();
             this.form.get('acquisition.observations')?.enable();
             break;
 
@@ -999,6 +1004,7 @@ export class FormComponent implements OnInit {
             //Disable acquisition inputs:
             this.form.get('acquisition.time')?.disable();
             this.form.get('acquisition.console_technician')?.disable();
+            this.form.get('acquisition.console_technician_input')?.disable();
             this.form.get('acquisition.observations')?.disable();
             break;
         }
@@ -1153,8 +1159,9 @@ export class FormComponent implements OnInit {
         this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_NO_SERVICE_USERS'));
       }
 
-      //Keep filtered list in sync with the full injection service users list:
+      //Keep filtered lists in sync with the full service users lists:
       this.filteredInjectionServiceUsers = this.injectionServiceUsers;
+      this.filteredTechnicianServiceUsers = this.technicianServiceUsers;
     });
   }
 
@@ -1188,6 +1195,24 @@ export class FormComponent implements OnInit {
     //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
     this.form.get('injection.pet_ct.laboratory_user')?.setValue(currentUser._id);
     this.form.get('injection.pet_ct.laboratory_user_input')?.setValue(this.getInjectionUserFullName(currentUser));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER TECHNICIAN USERS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterTechnicianServiceUsers(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter technician service users by full name:
+    this.filteredTechnicianServiceUsers = (this.technicianServiceUsers || []).filter((currentUser: any) => this.getInjectionUserFullName(currentUser).toUpperCase().includes(filterValue));
+  }
+
+  selectTechnicianServiceUser(currentUser: any){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    this.form.get('acquisition.console_technician')?.setValue(currentUser._id);
+    this.form.get('acquisition.console_technician_input')?.setValue(this.getInjectionUserFullName(currentUser));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
