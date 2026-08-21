@@ -8,13 +8,13 @@
             <small>{{ 'PERFORMING.FORM.APPOINTMENT_DATE' | i18n }}</small><br/>
             <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ this.sharedProp.current_datetime.dateDay + '/' + this.sharedProp.current_datetime.dateMonth + '/' + this.sharedProp.current_datetime.dateYear }}</span>
           </div>
-          
+
           <!-- checkin_time -->
           <div class="current-info divider-alt">
             <small>{{ 'PERFORMING.FORM.CHECKIN_TIME' | i18n }}</small><br/>
             <span *ngIf="this.sharedProp.current_datetime" class="appointment-firts">{{ checkin_time }}</span>
           </div>
-          
+
           <!-- imaging -->
           <span *ngIf="this.sharedProp.current_imaging">
             <span *ngIf="this.sharedProp.current_imaging.organization && this.sharedProp.current_imaging.branch && this.sharedProp.current_imaging.service && this.sharedProp.current_modality">
@@ -54,37 +54,37 @@
                   <br/>
                 </span>
               </div>
-              
+
               <!-- names -->
               <div class="current-info">
                 <small>{{ 'PERFORMING.FORM.FULL_NAME' | i18n }}</small><br/>
                 <span class="current-firts">
                   <span>{{ this.sharedProp.current_patient.person.name_01 }}</span>
-  
+
                   <span *ngIf="this.sharedProp.current_patient.person.name_02">
                     <span> {{ this.sharedProp.current_patient.person.name_02 }}</span>
                   </span>
-  
+
                   <span> {{ this.sharedProp.current_patient.person.surname_01 }}</span>
-  
+
                   <span *ngIf="this.sharedProp.current_patient.person.surname_02">
                     <span> {{ this.sharedProp.current_patient.person.surname_02 }}</span>
                   </span>
                 </span>
               </div>
-              
+
               <div class="clear"></div>
             </div>
-  
+
             <div class="clear"></div>
-  
+
             <div class="current-wrap">
               <!-- birth_date -->
               <div class="current-info">
                 <small>{{ 'PERFORMING.FORM.BIRTH_DATE' | i18n }}</small><br/>
                 <span class="current-firts">{{ this.sharedProp.current_patient.person.birth_date | date:"dd/MM/yyyy":"UTC" }}</span>
               </div>
-              
+
               <!-- genre -->
               <div class="current-info text-center">
                 <small>{{ 'PERFORMING.FORM.GENDER' | i18n }}:</small><br/>
@@ -94,7 +94,7 @@
                   <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
                 </span>
               </div>
-              
+
               <!-- status -->
               <div class="current-info text-center">
                 <small>{{ 'PERFORMING.FORM.STATUS' | i18n }}:</small><br/>
@@ -102,10 +102,10 @@
                 <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="Activo">done</mat-icon></ng-template>
                 <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="Inactivo">clear</mat-icon></ng-template>
               </div>
-              
+
               <div class="clear"></div>
             </div>
-  
+
           </span>
         </span>
 
@@ -115,7 +115,7 @@
           <small>{{ 'PERFORMING.FORM.STUDY_IUID' | i18n }}</small><br/><span class="label-accent">{{ this.sharedProp.current_study_iuid }}</span>
         </div>
       </div> <!-- end fxLayout wrapper -->
-  
+
       <div class="input-wrapper"> <!-- start fxLayout wrapper -->
         <!-- flow_state -->
         <h3 class="details-title">{{ 'PERFORMING.FORM.WORKFLOW' | i18n }}</h3>
@@ -162,7 +162,7 @@
 
       </div> <!-- end fxLayout wrapper -->
     </div>
-  
+
     <hr class="dashed"/>
 
     <mat-tab-group [selectedIndex]="tabIndex">
@@ -184,7 +184,7 @@
               <mat-icon class="tab-icon">vaccines</mat-icon> {{ 'PERFORMING.FORM.PROCEDURE_TAB' | i18n }}
               <mat-icon *ngIf="injectionTabErrors" class="validate-error-tab" matTooltip="{{ 'PERFORMING.FORM.TAB_VALIDATION_ERRORS' | i18n }}">priority_high</mat-icon>
             </ng-template>
-            
+
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.PREPARATION_DATA' | i18n }}</h3>
@@ -201,7 +201,7 @@
                 </mat-form-field>
 
                 <hr class="dashed" /><br/>
-                  
+
                 <div formGroupName="injection" [class.non-display]="booleanContrast == false">
                   <div fxLayout="row" fxLayoutAlign="start start">
                     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
@@ -236,38 +236,35 @@
 
                 <h4>{{ 'PERFORMING.FORM.OBSERVATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
                 <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-                
+
                 <br/><hr class="dashed" /><br/>
 
                 <div formGroupName="injection" [class.non-display]="booleanContrast == false">
                   <h4>{{ 'PERFORMING.FORM.INJECTION_RESPONSIBLE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.INJECTION_RESPONSIBLE' | i18n }}</mat-label>
-                    <mat-select formControlName="injection_user" placeholder="{{ 'PERFORMING.FORM.SELECT_INJECTION_RESPONSIBLE' | i18n }}">
-                      <span *ngIf="this.injectionServiceUsers">
-                        <div *ngFor="let currentInjectionUser of this.injectionServiceUsers">
-                          <mat-option value="{{ currentInjectionUser._id }}">
-                            <!--names-->
-                            {{ currentInjectionUser.person.name_01 }}
-                            <span *ngIf="currentInjectionUser.person.name_02">
-                              {{ ' ' + currentInjectionUser.person.name_02 }}
-                            </span>
-                            <!--surnames-->
-                            {{ ' ' + currentInjectionUser.person.surname_01 }}
-                            <span *ngIf="currentInjectionUser.person.surname_02">
-                              {{ ' ' + currentInjectionUser.person.surname_02 }}
-                            </span>
-                          </mat-option>
-                        </div>
-                      </span>
-                    </mat-select>
+                    <input type="text" matInput formControlName="injection_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoInjectionUser" placeholder="{{ 'PERFORMING.FORM.SELECT_INJECTION_RESPONSIBLE' | i18n }}">
+                    <mat-autocomplete #autoInjectionUser="matAutocomplete">
+                      <mat-option (onSelectionChange)="selectInjectionServiceUser(currentInjectionUser)" *ngFor="let currentInjectionUser of filteredInjectionServiceUsers" [value]="getInjectionUserFullName(currentInjectionUser)">
+                        <!--names-->
+                        {{ currentInjectionUser.person.name_01 }}
+                        <span *ngIf="currentInjectionUser.person.name_02">
+                          {{ ' ' + currentInjectionUser.person.name_02 }}
+                        </span>
+                        <!--surnames-->
+                        {{ ' ' + currentInjectionUser.person.surname_01 }}
+                        <span *ngIf="currentInjectionUser.person.surname_02">
+                          {{ ' ' + currentInjectionUser.person.surname_02 }}
+                        </span>
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                 </div>
 
                 <br/>
 
               </div> <!-- end fxLayout wrapper -->
-      
+
               <div class="input-wrapper text-center" [class.non-display]="sharedProp.current_modality_code_value == 'PT'"> <!-- start fxLayout wrapper -->
                 <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
               </div> <!-- end fxLayout wrapper -->
@@ -276,7 +273,7 @@
                 <div formGroupName="injection">
                   <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.PET_CT_INJECTION_DATA' | i18n }}</h3>
                   <br/>
-                  
+
                   <div formGroupName="pet_ct">
                     <div fxLayout="row" fxLayoutAlign="start start">
                       <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
@@ -308,7 +305,7 @@
                           <button matSuffix mat-icon-button type="button" matTooltip="{{ 'PERFORMING.FORM.NOW' | i18n }}" (click)="setTimeNow('injection.pet_ct.syringe_full_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
-            
+
                       <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                         <h4>{{ 'PERFORMING.FORM.SYRINGE_FULL_ACTIVITY' | i18n }} <span class="label-info MBq">MBq</span>:</h4>
                         <mat-form-field appearance="fill" class="full">
@@ -337,7 +334,7 @@
                           <button matSuffix mat-icon-button type="button" matTooltip="{{ 'PERFORMING.FORM.NOW' | i18n }}" (click)="setTimeNow('injection.pet_ct.syringe_empty_time');"><mat-icon>timer</mat-icon></button>
                         </mat-form-field>
                       </div> <!-- end fxLayout wrapper -->
-            
+
                       <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
                         <h4>{{ 'PERFORMING.FORM.SYRINGE_EMPTY_ACTIVITY' | i18n }} <span class="label-info MBq">MBq</span>:</h4>
                         <mat-form-field appearance="fill" class="full">
@@ -382,7 +379,7 @@
                     </div>
 
                     <hr class="dashed" /><br/>
-                    
+
                     <h4>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</h4>
                     <mat-form-field appearance="fill" class="large">
                       <mat-label>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</mat-label>
@@ -405,11 +402,11 @@
                         </span>
                       </mat-select>
                     </mat-form-field>
-                    
+
                   </div>
                 </div>
               </div> <!-- end fxLayout wrapper -->
-              
+
               <div class="clear"></div>
           </div>
         </mat-tab>
@@ -432,12 +429,12 @@
                 <mat-radio-button value="false">{{ 'PERFORMING.FORM.NO' | i18n }}</mat-radio-button>
               </mat-radio-group>
             </div>
-            
+
             <br/>
-            
+
             <div [class.non-display]="booleanAnesthesia == false">
               <hr class="dashed" />
-        
+
               <div fxLayout="row" fxLayoutAlign="start start">
                 <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
                   <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.ANESTHESIOLOGIST_DATA' | i18n }}</h3>
@@ -448,43 +445,43 @@
                     <mat-label>{{ 'PERFORMING.FORM.PROFESSIONAL_ID' | i18n }}</mat-label>
                     <input matInput type="text" formControlName="professional_id" placeholder="{{ 'PERFORMING.FORM.ENTER_PROFESSIONAL_ID' | i18n }}">
                   </mat-form-field>
-          
+
                   <br/>
-          
+
                   <h4>{{ 'PERFORMING.FORM.DOCUMENT' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="medium">
                     <mat-label>{{ 'PERFORMING.FORM.DOCUMENT' | i18n }}</mat-label>
                     <input matInput type="text" formControlName="document" placeholder="{{ 'PERFORMING.FORM.ENTER_DOCUMENT' | i18n }}">
                   </mat-form-field>
-        
+
                   <br/>
-          
+
                   <h4>{{ 'PERFORMING.FORM.NAME' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.NAME' | i18n }}</mat-label>
                     <input matInput icSpecialCharsWS type="text" formControlName="name" placeholder="{{ 'PERFORMING.FORM.ENTER_NAME' | i18n }}">
                   </mat-form-field>
-          
+
                   <br/>
-          
+
                   <h4>{{ 'PERFORMING.FORM.SURNAME' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.SURNAME' | i18n }}</mat-label>
                     <input matInput icSpecialCharsWS type="text" formControlName="surname" placeholder="{{ 'PERFORMING.FORM.ENTER_SURNAME' | i18n }}">
                   </mat-form-field>
                 </div> <!-- end fxLayout wrapper -->
-          
+
                 <div class="input-wrapper"> <!-- start fxLayout wrapper -->
                   <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.ANESTHESIA_PROCEDURE' | i18n }}</h3>
                   <br/>
-                  
+
                   <h4>{{ 'PERFORMING.FORM.PERFORMED_PROCEDURE' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
                   <div [class.unselected]="anesthesiaValidator == false">
                     <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
                   </div>
                 </div> <!-- end fxLayout wrapper -->
               </div>
-        
+
               <div class="clear"></div>
             </div>
           </div>
@@ -498,12 +495,12 @@
             <mat-icon class="tab-icon">airline_seat_flat</mat-icon> {{ 'PERFORMING.FORM.ACQUISITION_TAB' | i18n }}
             <mat-icon *ngIf="acquisitionTabErrors" class="validate-error-tab" matTooltip="Existen errores de validación bajo esta pestaña">priority_high</mat-icon>
           </ng-template>
-                
+
             <div fxLayout="row" fxLayoutAlign="start start">
               <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
                 <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.ACQUISITION_DATA' | i18n }}</h3>
                 <br/>
-                
+
                 <h4>{{ 'PERFORMING.FORM.EQUIPMENT' | i18n }}</h4>
                 <mat-form-field appearance="fill" class="large">
                   <mat-label>{{ 'PERFORMING.FORM.EQUIPMENT' | i18n }}</mat-label>
@@ -555,12 +552,12 @@
 
                 <br/>
               </div> <!-- end fxLayout wrapper -->
-    
+
               <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
                 <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
               </div> <!-- end fxLayout wrapper -->
             </div>
-    
+
             <div class="clear"></div>
         </mat-tab>
         <!-- ACQUISITION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
@@ -640,7 +637,7 @@
 
                   <div class="clear"></div><hr class="dashed" />
 
-                  <!-- equipment -->        
+                  <!-- equipment -->
                   <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
                       <ng-template #thenBlockTableEquipment>
                       <span class="badge-accent" matTooltip="{{ 'AET: ' + element.equipment.AET }}">
@@ -711,7 +708,7 @@
             </table>
           </div>
         </ng-template>
-                
+
         <!-- Await previous or not previous -->
         <ng-template #elseBlockTable>
           <div fxLayout="row" fxLayoutAlign="center center" class="response-info">

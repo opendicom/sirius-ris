@@ -44,8 +44,9 @@ export class FormComponent implements OnInit {
   public availableFS            : any = {};
 
   //Initialize Service Users:
-  public technicianServiceUsers : any[] = [];
-  public injectionServiceUsers  : any[] = []; // In this case injections user includes lab users (who prepares the injection).
+  public technicianServiceUsers          : any[] = [];
+  public injectionServiceUsers           : any[] = []; // In this case injections user includes lab users (who prepares the injection).
+  public filteredInjectionServiceUsers   : any[] = []; // Filtered list used by the injection_user matAutocomplete.
 
   //Boolean class binding objects:
   public booleanAnesthesia      : Boolean = false;
@@ -78,7 +79,7 @@ export class FormComponent implements OnInit {
   public form_action      : any;
   public tabIndex         : number = 0;
   public origin           : string = 'performing';  //Set default destination.
-  
+
   //Initialize previous:
   public previous : any = undefined;
 
@@ -148,6 +149,7 @@ export class FormComponent implements OnInit {
         'administered_volume'       : [ '' ],
         'administration_time'       : [ '' ],
         'injection_user'            : [ '' ],
+        'injection_user_input'      : [ '' ], //Visible text input for injection_user matAutocomplete.
         'sync_contrast_description' : [ '' ], //Sync contrast description from tab details.
 
         //PET-CT fields:
@@ -174,7 +176,7 @@ export class FormComponent implements OnInit {
         'surname'               : [ '' ],
         'procedure'             : [ '' ],
       }),
-      
+
       //Acquisition fields:
       acquisition: this.formBuilder.group({
         'time'                  : [ '' ],
@@ -203,7 +205,7 @@ export class FormComponent implements OnInit {
       //Add sourceEditing to the toolbar:
       if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
     }
-    
+
     //Switch by form action:
     switch(this.form_action){
       case 'insert':
@@ -234,7 +236,7 @@ export class FormComponent implements OnInit {
         const performing_params = {
           'filter[_id]': this._id
         };
-        
+
         //Find element to update (findById):
         this.sharedFunctions.find('performing', performing_params, (resPerforming) => {
           //Check operation status and data:
@@ -285,6 +287,7 @@ export class FormComponent implements OnInit {
                 'administered_volume'       : [ '' ],
                 'administration_time'       : [ '' ],
                 'injection_user'            : [ '' ],
+                'injection_user_input'      : [ '' ], //Visible text input for injection_user matAutocomplete.
                 'sync_contrast_description' : [ '' ],
 
                 //PET-CT fields:
@@ -329,6 +332,7 @@ export class FormComponent implements OnInit {
               this.form.get('injection.administered_volume')?.setValue(resPerforming.data[0].injection.administered_volume);
               this.form.get('injection.administration_time')?.setValue(resPerforming.data[0].injection.administration_time);
               this.form.get('injection.injection_user')?.setValue(resPerforming.data[0].injection.injection_user._id);
+              this.form.get('injection.injection_user_input')?.setValue(this.getInjectionUserFullName(resPerforming.data[0].injection.injection_user));
 
               //Get nested property keys with values:
               const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.injection, false, true);
@@ -390,7 +394,7 @@ export class FormComponent implements OnInit {
               //Get nested property keys with values:
               const nestedkeysWithValues = this.sharedFunctions.getKeys(this.form.value.acquisition, false, true);
               nestedkeysWithValues.forEach(current => { this.keysWithValues.push('acquisition.' + current); });
-            }              
+            }
 
             //Set flow state (Enable validators):
             this.setFlowState(resPerforming.data[0].flow_state);
@@ -461,7 +465,7 @@ export class FormComponent implements OnInit {
     } else {
       this.acquisitionTabErrors = false;
     }
-    
+
     //Validate fields:
     if(this.form.valid){
       //Create save object to preserve data types in form.value (Clone objects with spread operator):
@@ -514,7 +518,7 @@ export class FormComponent implements OnInit {
       if(performingSaveData.hasOwnProperty('injection') && performingSaveData.injection.hasOwnProperty('sync_contrast_description')){
         delete performingSaveData.injection.sync_contrast_description;
       }
-     
+
       //Check acquisition values (Prevent validation errors):
       //Update case allow empty observations field (unset value case).
       if(performingSaveData.hasOwnProperty('acquisition') && this.form_action == 'insert'){
@@ -581,7 +585,7 @@ export class FormComponent implements OnInit {
             if(this.form_action == 'insert'){
               this.sharedFunctions.sendToMWL(this.sharedProp.current_appointment, false, { element: 'appointments' });
             }
-            
+
             //Response the form according to the result:
             this.sharedFunctions.formResponder(resAppointments, this.origin, this.router);
 
@@ -650,7 +654,7 @@ export class FormComponent implements OnInit {
     //Extract hours and minutes:
     const hours    = this.sharedFunctions.addZero(now.getHours());
     const minutes  = this.sharedFunctions.addZero(now.getMinutes());
-    
+
     //Return result (string):
     return hours + ':' + minutes;
   }
@@ -694,7 +698,7 @@ export class FormComponent implements OnInit {
     if(this.form_action == 'insert'){
       params['filter[status]'] = true;
     }
-    
+
     //Set available procedures:
     this.sharedFunctions.find('procedures', params, (res) => {
       //Check data:
@@ -736,7 +740,7 @@ export class FormComponent implements OnInit {
         //Set current coefficient:
         this.sharedProp.current_coefficient = coefficient;
       }
-    
+
       //Calculate recomended dose:
       this.sharedProp.recomended_dose = this.sharedFunctions.calculateDose(this.sharedProp.current_weight, this.sharedProp.current_coefficient);
     }
@@ -788,7 +792,7 @@ export class FormComponent implements OnInit {
 
   setFlowState(flow_state: any){
     //Set current flow state:
-    this.current_flow_state = flow_state.toString(); 
+    this.current_flow_state = flow_state.toString();
 
     //Set validators according current flow state:
     switch(this.current_flow_state){
@@ -869,6 +873,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.administered_volume')?.enable();
             this.form.get('injection.administration_time')?.enable();
             this.form.get('injection.injection_user')?.enable();
+            this.form.get('injection.injection_user_input')?.enable();
             break;
 
           case 'remove':
@@ -887,6 +892,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.administered_volume')?.disable();
             this.form.get('injection.administration_time')?.disable();
             this.form.get('injection.injection_user')?.disable();
+            this.form.get('injection.injection_user_input')?.disable();
             break;
         }
         break;
@@ -1070,7 +1076,7 @@ export class FormComponent implements OnInit {
 
         //Set whether to use contrast:
         this.booleanContrast = resAppointments.data[0].contrast.use_contrast;
-        
+
         //Find available equipments and available procedures for selected equipment (insert case only):
         if(this.form_action == 'insert'){
           this.setEquipment(resAppointments.data[0].slot.fk_equipment);
@@ -1141,8 +1147,38 @@ export class FormComponent implements OnInit {
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_NO_SERVICE_USERS'));
       }
+
+      //Keep filtered list in sync with the full injection service users list:
+      this.filteredInjectionServiceUsers = this.injectionServiceUsers;
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER INJECTION USERS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterInjectionServiceUsers(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter injection service users by full name:
+    this.filteredInjectionServiceUsers = (this.injectionServiceUsers || []).filter((currentUser: any) => this.getInjectionUserFullName(currentUser).toUpperCase().includes(filterValue));
+  }
+
+  getInjectionUserFullName(currentUser: any){
+    //Build full name (names and surnames):
+    let fullName = currentUser.person.name_01;
+    if(currentUser.person.name_02){ fullName += ` ${currentUser.person.name_02}`; }
+    fullName += ` ${currentUser.person.surname_01}`;
+    if(currentUser.person.surname_02){ fullName += ` ${currentUser.person.surname_02}`; }
+    return fullName;
+  }
+
+  selectInjectionServiceUser(currentUser: any){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    this.form.get('injection.injection_user')?.setValue(currentUser._id);
+    this.form.get('injection.injection_user_input')?.setValue(this.getInjectionUserFullName(currentUser));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   convertActivity(event: any, destinationFieldName: string, destinationUnit: string){
     //Get activity (input):
@@ -1169,7 +1205,7 @@ export class FormComponent implements OnInit {
     //Get activity values:
     const syringeActivityFullMBq = this.form.get('injection.pet_ct.syringe_activity_full')?.value;
     const syringeActivityEmptyMBq = this.form.get('injection.pet_ct.syringe_activity_empty')?.value;
-    
+
     //Check activity values:
     if(syringeActivityFullMBq !== undefined && syringeActivityFullMBq !== null && syringeActivityFullMBq !== '' && syringeActivityFullMBq !== 'NaN' && syringeActivityEmptyMBq !== undefined && syringeActivityEmptyMBq !== null && syringeActivityEmptyMBq !== '' && syringeActivityEmptyMBq !== 'NaN'){
       //Calculate Administred activity in MBq:
@@ -1185,7 +1221,7 @@ export class FormComponent implements OnInit {
       //Send warning message:
       this.sharedFunctions.sendMessage(this.i18n.instant('PERFORMING.FORM.WARNING_CALCULATE_DOSE'))
     }
-    
+
   }
 
   onNextStep(){
