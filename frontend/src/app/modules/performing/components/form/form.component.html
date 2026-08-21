@@ -383,24 +383,21 @@
                     <h4>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</h4>
                     <mat-form-field appearance="fill" class="large">
                       <mat-label>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</mat-label>
-                      <mat-select formControlName="laboratory_user" placeholder="{{ 'PERFORMING.FORM.SELECT_LABORATORY_RESPONSIBLE' | i18n }}">
-                        <span *ngIf="this.injectionServiceUsers">
-                          <div *ngFor="let currentLaboratoryUser of this.injectionServiceUsers">
-                            <mat-option value="{{ currentLaboratoryUser._id }}">
-                              <!--names-->
-                              {{ currentLaboratoryUser.person.name_01 }}
-                              <span *ngIf="currentLaboratoryUser.person.name_02">
-                                {{ ' ' + currentLaboratoryUser.person.name_02 }}
-                              </span>
-                              <!--surnames-->
-                              {{ ' ' + currentLaboratoryUser.person.surname_01 }}
-                              <span *ngIf="currentLaboratoryUser.person.surname_02">
-                                {{ ' ' + currentLaboratoryUser.person.surname_02 }}
-                              </span>
-                            </mat-option>
-                          </div>
-                        </span>
-                      </mat-select>
+                      <input type="text" matInput formControlName="laboratory_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoLaboratoryUser" placeholder="{{ 'PERFORMING.FORM.SELECT_LABORATORY_RESPONSIBLE' | i18n }}">
+                      <mat-autocomplete #autoLaboratoryUser="matAutocomplete">
+                        <mat-option (onSelectionChange)="selectLaboratoryUser(currentLaboratoryUser)" *ngFor="let currentLaboratoryUser of filteredInjectionServiceUsers" [value]="getInjectionUserFullName(currentLaboratoryUser)">
+                          <!--names-->
+                          {{ currentLaboratoryUser.person.name_01 }}
+                          <span *ngIf="currentLaboratoryUser.person.name_02">
+                            {{ ' ' + currentLaboratoryUser.person.name_02 }}
+                          </span>
+                          <!--surnames-->
+                          {{ ' ' + currentLaboratoryUser.person.surname_01 }}
+                          <span *ngIf="currentLaboratoryUser.person.surname_02">
+                            {{ ' ' + currentLaboratoryUser.person.surname_02 }}
+                          </span>
+                        </mat-option>
+                      </mat-autocomplete>
                     </mat-form-field>
 
                   </div>

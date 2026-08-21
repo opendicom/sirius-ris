@@ -163,7 +163,8 @@ export class FormComponent implements OnInit {
           'administred_activity_mCi'  : [ '' ],
           'syringe_full_time'         : [ '' ],
           'syringe_empty_time'        : [ '' ],
-          'laboratory_user'           : [ '' ]
+          'laboratory_user'           : [ '' ],
+          'laboratory_user_input'     : [ '' ] //Visible text input for laboratory_user matAutocomplete.
         })
       }),
 
@@ -301,7 +302,8 @@ export class FormComponent implements OnInit {
                   'administred_activity_mCi'  : [ '' ],
                   'syringe_full_time'         : [ '' ],
                   'syringe_empty_time'        : [ '' ],
-                  'laboratory_user'           : [ '' ]
+                  'laboratory_user'           : [ '' ],
+                  'laboratory_user_input'     : [ '' ] //Visible text input for laboratory_user matAutocomplete.
                 })
               }),
 
@@ -348,6 +350,7 @@ export class FormComponent implements OnInit {
                 this.form.get('injection.pet_ct.syringe_full_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_full_time);
                 this.form.get('injection.pet_ct.syringe_empty_time')?.setValue(resPerforming.data[0].injection.pet_ct.syringe_empty_time);
                 this.form.get('injection.pet_ct.laboratory_user')?.setValue(resPerforming.data[0].injection.pet_ct.laboratory_user._id);
+                this.form.get('injection.pet_ct.laboratory_user_input')?.setValue(this.getInjectionUserFullName(resPerforming.data[0].injection.pet_ct.laboratory_user));
 
                 //Convert MBq to mCi and set mCi into fields values:
                 this.form.get('injection.pet_ct.administred_activity_mCi')?.setValue(this.sharedFunctions.MBqTomCi(resPerforming.data[0].injection.pet_ct.administred_activity));
@@ -931,6 +934,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.syringe_full_time')?.enable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.enable();
             this.form.get('injection.pet_ct.laboratory_user')?.enable();
+            this.form.get('injection.pet_ct.laboratory_user_input')?.enable();
             break;
 
           case 'remove':
@@ -965,6 +969,7 @@ export class FormComponent implements OnInit {
             this.form.get('injection.pet_ct.syringe_full_time')?.disable();
             this.form.get('injection.pet_ct.syringe_empty_time')?.disable();
             this.form.get('injection.pet_ct.laboratory_user')?.disable();
+            this.form.get('injection.pet_ct.laboratory_user_input')?.disable();
             break;
         }
         break;
@@ -1177,6 +1182,12 @@ export class FormComponent implements OnInit {
     //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
     this.form.get('injection.injection_user')?.setValue(currentUser._id);
     this.form.get('injection.injection_user_input')?.setValue(this.getInjectionUserFullName(currentUser));
+  }
+
+  selectLaboratoryUser(currentUser: any){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    this.form.get('injection.pet_ct.laboratory_user')?.setValue(currentUser._id);
+    this.form.get('injection.pet_ct.laboratory_user_input')?.setValue(this.getInjectionUserFullName(currentUser));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
