@@ -30,6 +30,7 @@ export class AppointmentsService {
   public referringOrganizations         : any;
   public filteredReferringOrganizations : any;
   public reportingUsers                 : any;
+  public filteredReportingUsers         : any;
 
   //Boolean class binding objects:
   public booleanContrast  : Boolean = false;
@@ -205,15 +206,52 @@ export class AppointmentsService {
       if(res.data.length > 0){
         //Set reporting users:
         this.reportingUsers = res.data;
+        this.filteredReportingUsers = res.data;
       } else {
         //Clear previous values:
         this.reportingUsers = [];
+        this.filteredReportingUsers = [];
         form.controls['reporting_user'].setValue('');
+        form.controls['reporting_user_input'].setValue('');
 
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
       }
     }, false, 'findByService');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REPORTING USERS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReportingUsers(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter reporting users by full name:
+    this.filteredReportingUsers = (this.reportingUsers || []).filter((currentReporting: any) => this.getReportingUserFullName(currentReporting).toUpperCase().includes(filterValue));
+  }
+
+  getReportingUserFullName(currentReporting: any){
+    //Build full name (names and surnames):
+    let fullName = currentReporting.person.name_01;
+    if(currentReporting.person.name_02){ fullName += ` ${currentReporting.person.name_02}`; }
+    fullName += ` ${currentReporting.person.surname_01}`;
+    if(currentReporting.person.surname_02){ fullName += ` ${currentReporting.person.surname_02}`; }
+    return fullName;
+  }
+
+  getReportingUserName(_id: string){
+    //Find reporting user by _id and return display name:
+    const currentReporting = (this.reportingUsers || []).find((reporting: any) => reporting._id === _id);
+    return currentReporting ? this.getReportingUserFullName(currentReporting) : '';
+  }
+
+  selectReportingUser(currentReporting: any, form: FormGroup){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    form.controls['reporting_user'].setValue(currentReporting._id);
+    form.controls['reporting_user_input'].setValue(this.getReportingUserFullName(currentReporting));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -382,6 +420,7 @@ export class AppointmentsService {
     delete mergedValues.referring_organization_input;
     delete mergedValues.reporting_domain;
     delete mergedValues.reporting_user;
+    delete mergedValues.reporting_user_input;
 
     //Save data:
     this.sharedFunctions.save(operation, 'appointments', _id, mergedValues, keysWithValues, (res) => {

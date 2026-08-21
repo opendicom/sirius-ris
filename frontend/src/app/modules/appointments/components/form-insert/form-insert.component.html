@@ -245,22 +245,21 @@
           <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
             <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</mat-label>
-            <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}">
-              <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
-                <mat-option value="{{ currentReporting._id }}">
-                  <!--names-->
-                  {{ currentReporting.person.name_01 }}
-                  <span *ngIf="currentReporting.person.name_02">
-                    {{ ' ' + currentReporting.person.name_02 }}
-                  </span>
-                  <!--surnames-->
-                  {{ ' ' + currentReporting.person.surname_01 }}
-                  <span *ngIf="currentReporting.person.surname_02">
-                    {{ ' ' + currentReporting.person.surname_02 }}
-                  </span>
-                </mat-option>
-              </div>
-            </mat-select>
+            <input type="text" matInput formControlName="reporting_user_input" (keyup)="appointmentsService.filterReportingUsers($event)" [matAutocomplete]="autoReportingUser" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}">
+            <mat-autocomplete #autoReportingUser="matAutocomplete">
+              <mat-option (onSelectionChange)="appointmentsService.selectReportingUser(currentReporting, form)" *ngFor="let currentReporting of appointmentsService.filteredReportingUsers" [value]="appointmentsService.getReportingUserFullName(currentReporting)">
+                <!--names-->
+                {{ currentReporting.person.name_01 }}
+                <span *ngIf="currentReporting.person.name_02">
+                  {{ ' ' + currentReporting.person.name_02 }}
+                </span>
+                <!--surnames-->
+                {{ ' ' + currentReporting.person.surname_01 }}
+                <span *ngIf="currentReporting.person.surname_02">
+                  {{ ' ' + currentReporting.person.surname_02 }}
+                </span>
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
 
           <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.REPORT_DUE_DATE' | i18n }}</h4>

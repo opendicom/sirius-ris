@@ -162,6 +162,7 @@ export class TabDetailsComponent implements OnInit {
         referring_organization_input : [ this.appointmentsService.getReferringOrganizationName(res.data[0].referring.organization._id) ],
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ '', [Validators.required]],
+        reporting_user_input      : [ '' ],
 
         anamnesis                 : res.data[0].anamnesis,
         indications               : res.data[0].indications,
@@ -244,11 +245,13 @@ export class TabDetailsComponent implements OnInit {
       //Check current procedure reporting_delay:
       if(res.data[0].procedure.reporting_delay !== undefined && res.data[0].procedure.reporting_delay !== null && res.data[0].procedure.reporting_delay !== ''){
         this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting._id);
+        this.form.controls['reporting_user_input'].setValue(this.appointmentsService.getReportingUserName(res.data[0].reporting.fk_reporting._id));
         this.reporting_delay_controller = true;
       } else {
         //Remove reporting_user validators:
         this.form.controls['reporting_user'].clearValidators();
         this.form.controls['reporting_user'].updateValueAndValidity();
+        this.form.controls['reporting_user_input'].setValue('');
         this.reporting_delay_controller = false;
       }
 
@@ -339,6 +342,7 @@ export class TabDetailsComponent implements OnInit {
       referring_organization_input : [ '' ],
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
+      reporting_user_input      : [ '' ],
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

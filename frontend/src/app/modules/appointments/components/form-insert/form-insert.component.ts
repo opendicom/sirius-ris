@@ -121,6 +121,7 @@ export class FormInsertComponent implements OnInit {
       referring_organization_input : [ '' ],
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
+      reporting_user_input      : [ '' ],
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],
@@ -234,6 +235,7 @@ export class FormInsertComponent implements OnInit {
       //Remove reporting_user validators:
       this.form.controls['reporting_user'].clearValidators();
       this.form.controls['reporting_user'].updateValueAndValidity();
+      this.form.controls['reporting_user_input'].setValue('');
     }
 
     //Enable source editing CKEditor for Superuser:
