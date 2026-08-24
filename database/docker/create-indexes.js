@@ -78,3 +78,8 @@ try { db.pathologies.createIndex({ fk_organization: 1 }); print("Índice creado:
 try { db.signatures.createIndex({ fk_organization: 1 }); print("Índice creado: signatures.fk_organization"); } catch (e) { print("Error en signatures.fk_organization: " + e); }
 try { db.signatures.createIndex({ fk_user: 1 }); print("Índice creado: signatures.fk_user"); } catch (e) { print("Error en signatures.fk_user: " + e); }
 
+try { db.boards.createIndex({ fk_branch: 1 }); print("Índice creado: boards.fk_branch"); } catch (e) { print("Error en boards.fk_branch: " + e); }
+
+try { db.check_in_boards.createIndex({ fk_patient: 1 }); print("Índice creado: check_in_boards.fk_patient"); } catch (e) { print("Error en check_in_boards.fk_patient: " + e); }
+try { db.check_in_boards.createIndex({ fk_board: 1 }); print("Índice creado: check_in_boards.fk_board"); } catch (e) { print("Error en check_in_boards.fk_board: " + e); }
+

@@ -27,6 +27,8 @@ const rolePermissions = {
         performing              : ['find', 'findOne', 'insert', 'update', 'delete', 'findLockers'],
         reports                 : ['find', 'findOne', 'insert', 'update', 'delete', 'authenticate', 'setPathologies'],
         signatures              : ['find', 'findOne', 'insert', 'delete'],
+        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete'],
         mail                    : ['send'],
         exporter                : ['reports'],
         wezen                   : ['studyToken'],
@@ -463,6 +465,12 @@ const concessionPermissions = {
     25: {
         performing              : ['findLockers'],
         users                   : ['findByBranch']
+    },
+
+    // 26 : Gestión de salas de esperas:
+    26: {
+        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
