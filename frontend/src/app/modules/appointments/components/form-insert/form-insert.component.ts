@@ -119,7 +119,7 @@ export class FormInsertComponent implements OnInit {
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
-      reporting_user            : [ '', [Validators.required] ],
+      reporting_user            : [ [], [Validators.required] ],
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

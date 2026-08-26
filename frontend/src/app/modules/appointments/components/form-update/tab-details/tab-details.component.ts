@@ -160,7 +160,7 @@ export class TabDetailsComponent implements OnInit {
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
         reporting_domain          : [ selectedReporting, [Validators.required]],
-        reporting_user            : [ '', [Validators.required]],
+        reporting_user            : [ [], [Validators.required]],
 
         anamnesis                 : res.data[0].anamnesis,
         indications               : res.data[0].indications,
@@ -242,7 +242,8 @@ export class TabDetailsComponent implements OnInit {
 
       //Check current procedure reporting_delay:
       if(res.data[0].procedure.reporting_delay !== undefined && res.data[0].procedure.reporting_delay !== null && res.data[0].procedure.reporting_delay !== ''){
-        this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting._id);
+        //Set selected reporting users (Array of ObjectId - Multiple selection):
+        this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting.map((currentReporting: any) => currentReporting._id));
         this.reporting_delay_controller = true;
       } else {
         //Remove reporting_user validators:
@@ -336,7 +337,7 @@ export class TabDetailsComponent implements OnInit {
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
       reporting_domain          : [ '', [Validators.required] ],
-      reporting_user            : [ '', [Validators.required] ],
+      reporting_user            : [ [], [Validators.required] ],
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

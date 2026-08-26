@@ -41,7 +41,7 @@
         <h4>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</h4>
         <mat-form-field appearance="fill" class="large">
           <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</mat-label>
-          <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}">
+          <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" multiple>
             <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
               <mat-option value="{{ currentReporting._id }}">
                 <!--names-->
