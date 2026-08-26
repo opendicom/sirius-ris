@@ -243,18 +243,18 @@
                   <h4>{{ 'PERFORMING.FORM.INJECTION_RESPONSIBLE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.INJECTION_RESPONSIBLE' | i18n }}</mat-label>
-                    <input type="text" matInput formControlName="injection_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoInjectionUser" placeholder="{{ 'PERFORMING.FORM.SELECT_INJECTION_RESPONSIBLE' | i18n }}">
+                    <input #inputInjectionUser type="text" matInput formControlName="injection_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoInjectionUser" placeholder="{{ 'PERFORMING.FORM.SELECT_INJECTION_RESPONSIBLE' | i18n }}">
                     <mat-autocomplete #autoInjectionUser="matAutocomplete">
                       <mat-option (onSelectionChange)="selectInjectionServiceUser(currentInjectionUser)" *ngFor="let currentInjectionUser of filteredInjectionServiceUsers" [value]="getInjectionUserFullName(currentInjectionUser)">
                         <!--names-->
-                        {{ currentInjectionUser.person.name_01 }}
+                        <span [innerHTML]="currentInjectionUser.person.name_01 | highlighter : inputInjectionUser.value"></span>
                         <span *ngIf="currentInjectionUser.person.name_02">
-                          {{ ' ' + currentInjectionUser.person.name_02 }}
+                          {{ ' ' }}<span [innerHTML]="currentInjectionUser.person.name_02 | highlighter : inputInjectionUser.value"></span>
                         </span>
                         <!--surnames-->
-                        {{ ' ' + currentInjectionUser.person.surname_01 }}
+                        {{ ' ' }}<span [innerHTML]="currentInjectionUser.person.surname_01 | highlighter : inputInjectionUser.value"></span>
                         <span *ngIf="currentInjectionUser.person.surname_02">
-                          {{ ' ' + currentInjectionUser.person.surname_02 }}
+                          {{ ' ' }}<span [innerHTML]="currentInjectionUser.person.surname_02 | highlighter : inputInjectionUser.value"></span>
                         </span>
                       </mat-option>
                     </mat-autocomplete>
@@ -383,18 +383,18 @@
                     <h4>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</h4>
                     <mat-form-field appearance="fill" class="large">
                       <mat-label>{{ 'PERFORMING.FORM.LABORATORY_RESPONSIBLE' | i18n }}</mat-label>
-                      <input type="text" matInput formControlName="laboratory_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoLaboratoryUser" placeholder="{{ 'PERFORMING.FORM.SELECT_LABORATORY_RESPONSIBLE' | i18n }}">
+                      <input #inputLaboratoryUser type="text" matInput formControlName="laboratory_user_input" (keyup)="filterInjectionServiceUsers($event)" [matAutocomplete]="autoLaboratoryUser" placeholder="{{ 'PERFORMING.FORM.SELECT_LABORATORY_RESPONSIBLE' | i18n }}">
                       <mat-autocomplete #autoLaboratoryUser="matAutocomplete">
                         <mat-option (onSelectionChange)="selectLaboratoryUser(currentLaboratoryUser)" *ngFor="let currentLaboratoryUser of filteredInjectionServiceUsers" [value]="getInjectionUserFullName(currentLaboratoryUser)">
                           <!--names-->
-                          {{ currentLaboratoryUser.person.name_01 }}
+                          <span [innerHTML]="currentLaboratoryUser.person.name_01 | highlighter : inputLaboratoryUser.value"></span>
                           <span *ngIf="currentLaboratoryUser.person.name_02">
-                            {{ ' ' + currentLaboratoryUser.person.name_02 }}
+                            {{ ' ' }}<span [innerHTML]="currentLaboratoryUser.person.name_02 | highlighter : inputLaboratoryUser.value"></span>
                           </span>
                           <!--surnames-->
-                          {{ ' ' + currentLaboratoryUser.person.surname_01 }}
+                          {{ ' ' }}<span [innerHTML]="currentLaboratoryUser.person.surname_01 | highlighter : inputLaboratoryUser.value"></span>
                           <span *ngIf="currentLaboratoryUser.person.surname_02">
-                            {{ ' ' + currentLaboratoryUser.person.surname_02 }}
+                            {{ ' ' }}<span [innerHTML]="currentLaboratoryUser.person.surname_02 | highlighter : inputLaboratoryUser.value"></span>
                           </span>
                         </mat-option>
                       </mat-autocomplete>
@@ -526,18 +526,18 @@
                   <h4>{{ 'PERFORMING.FORM.TECHNICIAN_CONSOLE' | i18n }}</h4>
                   <mat-form-field appearance="fill" class="large">
                     <mat-label>{{ 'PERFORMING.FORM.TECHNICIAN_CONSOLE' | i18n }}</mat-label>
-                    <input type="text" matInput formControlName="console_technician_input" (keyup)="filterTechnicianServiceUsers($event)" [matAutocomplete]="autoConsoleTechnician" placeholder="{{ 'PERFORMING.FORM.SELECT_TECHNICIAN_CONSOLE' | i18n }}">
+                    <input #inputConsoleTechnician type="text" matInput formControlName="console_technician_input" (keyup)="filterTechnicianServiceUsers($event)" [matAutocomplete]="autoConsoleTechnician" placeholder="{{ 'PERFORMING.FORM.SELECT_TECHNICIAN_CONSOLE' | i18n }}">
                     <mat-autocomplete #autoConsoleTechnician="matAutocomplete">
                       <mat-option (onSelectionChange)="selectTechnicianServiceUser(currentConsoleTechnician)" *ngFor="let currentConsoleTechnician of filteredTechnicianServiceUsers" [value]="getInjectionUserFullName(currentConsoleTechnician)">
                         <!--names-->
-                        {{ currentConsoleTechnician.person.name_01 }}
+                        <span [innerHTML]="currentConsoleTechnician.person.name_01 | highlighter : inputConsoleTechnician.value"></span>
                         <span *ngIf="currentConsoleTechnician.person.name_02">
-                          {{ ' ' + currentConsoleTechnician.person.name_02 }}
+                          {{ ' ' }}<span [innerHTML]="currentConsoleTechnician.person.name_02 | highlighter : inputConsoleTechnician.value"></span>
                         </span>
                         <!--surnames-->
-                        {{ ' ' + currentConsoleTechnician.person.surname_01 }}
+                        {{ ' ' }}<span [innerHTML]="currentConsoleTechnician.person.surname_01 | highlighter : inputConsoleTechnician.value"></span>
                         <span *ngIf="currentConsoleTechnician.person.surname_02">
-                          {{ ' ' + currentConsoleTechnician.person.surname_02 }}
+                          {{ ' ' }}<span [innerHTML]="currentConsoleTechnician.person.surname_02 | highlighter : inputConsoleTechnician.value"></span>
                         </span>
                       </mat-option>
                     </mat-autocomplete>
