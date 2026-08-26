@@ -41,7 +41,7 @@
           <h4>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
             <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</mat-label>
-            <mat-select formControlName="reporting_user" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_MEDIC' | i18n }}">
+            <mat-select formControlName="reporting_user" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_MEDIC' | i18n }}" multiple>
               <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
                 <mat-option value="{{ currentReporting._id }}">
                   <!--names-->
