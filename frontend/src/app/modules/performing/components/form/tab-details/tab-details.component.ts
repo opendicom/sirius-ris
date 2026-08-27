@@ -148,9 +148,10 @@ export class TabDetailsComponent implements OnInit {
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
-        referring_organization_input : [ this.appointmentsService.getReferringOrganizationName(res.data[0].referring.organization._id) ],
+        referring_organization_input : [ this.appointmentsService.getReferringOrganizationFullName(res.data[0].referring.organization) ], // For mat-autocomplete input
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ '', [Validators.required]],
+        reporting_user_input      : [ '' ], // For mat-autocomplete input
 
         anamnesis                 : res.data[0].anamnesis,
         indications               : res.data[0].indications,
@@ -250,11 +251,13 @@ export class TabDetailsComponent implements OnInit {
       //Check current procedure reporting_delay:
       if(res.data[0].procedure.reporting_delay !== undefined && res.data[0].procedure.reporting_delay !== null && res.data[0].procedure.reporting_delay !== ''){
         this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting._id);
+        this.form.controls['reporting_user_input'].setValue(this.appointmentsService.getReportingUserFullName(res.data[0].reporting.fk_reporting));
         this.reporting_delay_controller = true;
       } else {
         //Remove reporting_user validators:
         this.form.controls['reporting_user'].clearValidators();
         this.form.controls['reporting_user'].updateValueAndValidity();
+        this.form.controls['reporting_user_input'].setValue('');
         this.reporting_delay_controller = false;
       }
 
@@ -276,9 +279,10 @@ export class TabDetailsComponent implements OnInit {
   initializateForm(){
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
-      referring_organization_input : [ '' ],
+      referring_organization_input : [ '' ], 
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
+      reporting_user_input      : [ '' ],
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

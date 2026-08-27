@@ -40,22 +40,21 @@
           <h4>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</h4>
           <mat-form-field appearance="fill" class="large">
             <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</mat-label>
-            <mat-select formControlName="reporting_user" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_MEDIC' | i18n }}">
-              <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
-                <mat-option value="{{ currentReporting._id }}">
-                  <!--names-->
-                  {{ currentReporting.person.name_01 }}
-                  <span *ngIf="currentReporting.person.name_02">
-                    {{ ' ' + currentReporting.person.name_02 }}
-                  </span>
-                  <!--surnames-->
-                  {{ ' ' + currentReporting.person.surname_01 }}
-                  <span *ngIf="currentReporting.person.surname_02">
-                    {{ ' ' + currentReporting.person.surname_02 }}
-                  </span>
-                </mat-option>
-              </div>
-            </mat-select>
+            <input #inputReportingUser type="text" matInput formControlName="reporting_user_input" (keyup)="appointmentsService.filterReportingUsers($event)" [matAutocomplete]="autoReportingUser" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REPORTING_MEDIC' | i18n }}">
+            <mat-autocomplete #autoReportingUser="matAutocomplete">
+              <mat-option (onSelectionChange)="appointmentsService.selectReportingUser(currentReporting, form)" *ngFor="let currentReporting of appointmentsService.filteredReportingUsers" [value]="appointmentsService.getReportingUserFullName(currentReporting)">
+                <!--names-->
+                <span [innerHTML]="currentReporting.person.name_01 | highlighter : inputReportingUser.value"></span>
+                <span *ngIf="currentReporting.person.name_02">
+                  {{ ' ' }}<span [innerHTML]="currentReporting.person.name_02 | highlighter : inputReportingUser.value"></span>
+                </span>
+                <!--surnames-->
+                {{ ' ' }}<span [innerHTML]="currentReporting.person.surname_01 | highlighter : inputReportingUser.value"></span>
+                <span *ngIf="currentReporting.person.surname_02">
+                  {{ ' ' }}<span [innerHTML]="currentReporting.person.surname_02 | highlighter : inputReportingUser.value"></span>
+                </span>
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
 
           <h4>{{ 'PERFORMING.TAB_DETAILS.REPORT_REQUIRED_BEFORE' | i18n }}</h4>
