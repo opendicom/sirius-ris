@@ -118,10 +118,10 @@ export class FormInsertComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
-      referring_organization_input : [ '' ],
+      referring_organization_input : [ '' ], // For mat-autocomplete input
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
       reporting_user            : [ '', [Validators.required] ],
-      reporting_user_input      : [ '' ],
+      reporting_user_input      : [ '' ], // For mat-autocomplete input
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

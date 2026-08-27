@@ -165,9 +165,8 @@ export class AppointmentsService {
     this.filteredReferringOrganizations = this.referringOrganizations.filter((currentOrganization: any) => currentOrganization.short_name.toUpperCase().includes(filterValue) || currentOrganization.name.toUpperCase().includes(filterValue));
   }
 
-  getReferringOrganizationName(_id: string){
-    //Find referring organization by _id and return display name:
-    const currentOrganization = (this.referringOrganizations || []).find((organization: any) => organization._id === _id);
+  getReferringOrganizationFullName(currentOrganization: any){
+    //Build display name directly from an already populated organization object (Avoids race condition: referringOrganizations list may not be loaded yet):
     return currentOrganization ? `${currentOrganization.short_name} (${currentOrganization.name})` : '';
   }
 
@@ -240,12 +239,6 @@ export class AppointmentsService {
     fullName += ` ${currentReporting.person.surname_01}`;
     if(currentReporting.person.surname_02){ fullName += ` ${currentReporting.person.surname_02}`; }
     return fullName;
-  }
-
-  getReportingUserName(_id: string){
-    //Find reporting user by _id and return display name:
-    const currentReporting = (this.reportingUsers || []).find((reporting: any) => reporting._id === _id);
-    return currentReporting ? this.getReportingUserFullName(currentReporting) : '';
   }
 
   selectReportingUser(currentReporting: any, form: FormGroup){
