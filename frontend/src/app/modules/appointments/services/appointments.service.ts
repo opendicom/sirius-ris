@@ -181,7 +181,7 @@ export class AppointmentsService {
       } else {
         //Clear previous values:
         this.reportingUsers = [];
-        form.controls['reporting_user'].setValue('');
+        form.controls['reporting_user'].setValue([]);
 
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
@@ -297,9 +297,9 @@ export class AppointmentsService {
       service       : reportingSplitted[2]
     };
 
-    //Data normalizarion - FK Reporting:
-    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user !== ''){
-      mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+    //Data normalizarion - FK Reporting (Multiple selection - Array of ObjectId):
+    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user.length > 0){
+      mergedValues.reporting['fk_reporting'] = mergedValues.reporting_user;
     }
 
     //Data normalization - Dates types:

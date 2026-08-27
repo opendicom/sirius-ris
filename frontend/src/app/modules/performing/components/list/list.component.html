@@ -21,11 +21,11 @@
             <!-- reporting indicator -->
             <!-- Superusuario, Supervisor, Médico, Concesiones: [6: Gestión de informes] -->
             <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 3 || sharedProp.userLogged.permissions[0].role == 4 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [6]))">
-              <span *ngIf="element.appointment && element.appointment.reporting && element.appointment.reporting.fk_reporting; then thenBlockUserAssigned else elseBlockUserNotAssigned"></span>
+              <span *ngIf="element.appointment && element.appointment.reporting && element.appointment.reporting.fk_reporting && element.appointment.reporting.fk_reporting.length > 0; then thenBlockUserAssigned else elseBlockUserNotAssigned"></span>
 
-              <!-- Report user assigned -->
+              <!-- Report user assigned (fk_reporting is an array - Multiple selection) -->
               <ng-template #thenBlockUserAssigned>
-                <div *ngIf="element.appointment.reporting.fk_reporting._id == sharedProp.userLogged.user_id; then thenBlockReporting else elseBlockReporting"></div>
+                <div *ngIf="sharedFunctions.checkArrayIds(element.appointment.reporting.fk_reporting, sharedProp.userLogged.user_id); then thenBlockReporting else elseBlockReporting"></div>
                 <ng-template #thenBlockReporting>
                   <mat-icon class="reporting-indicator" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.STUDY_ASSIGNED_TO_USER' | i18n }}" color="primary">circle</mat-icon>
                 </ng-template>

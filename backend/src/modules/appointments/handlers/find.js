@@ -160,7 +160,9 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$reporting.organization", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$reporting.branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$reporting.service", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
+
+        //(fix array case)Unwind reporting.fk_reporting [Array] (Unwind):
+        //{ $unwind: { path: "$reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
         //Imaging -> Service -> Modality (Lookup & Unwind):
