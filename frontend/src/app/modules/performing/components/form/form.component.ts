@@ -1177,6 +1177,9 @@ export class FormComponent implements OnInit {
   }
 
   getInjectionUserFullName(currentUser: any){
+    //Guard against missing person data:
+    if(!currentUser || !currentUser.person){ return ''; }
+
     //Build full name (names and surnames):
     let fullName = currentUser.person.name_01;
     if(currentUser.person.name_02){ fullName += ` ${currentUser.person.name_02}`; }

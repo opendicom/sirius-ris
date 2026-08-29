@@ -181,7 +181,7 @@ export class AppointmentsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND REPORTING USERS (FIND BY SERVICE):
   //--------------------------------------------------------------------------------------------------------------------//
-  findReportingUsers(service_id: string, form: FormGroup){
+  findReportingUsers(service_id: string, form: FormGroup, callback: (res: any) => void = () => {}){
     //Set params:
     const params = {
       //Only people users:
@@ -216,6 +216,9 @@ export class AppointmentsService {
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
       }
+
+      //Execute callback:
+      callback(res);
     }, false, 'findByService');
   }
   //--------------------------------------------------------------------------------------------------------------------//
@@ -233,6 +236,9 @@ export class AppointmentsService {
   }
 
   getReportingUserFullName(currentReporting: any){
+    //Guard against missing person data:
+    if(!currentReporting || !currentReporting.person){ return ''; }
+
     //Build full name (names and surnames):
     let fullName = currentReporting.person.name_01;
     if(currentReporting.person.name_02){ fullName += ` ${currentReporting.person.name_02}`; }
