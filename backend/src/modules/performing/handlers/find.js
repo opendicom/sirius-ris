@@ -15,14 +15,23 @@ module.exports = async (req, res, currentSchema) => {
         'appointment.imaging.organization.base64_logo': 0,
         'appointment.imaging.organization.base64_cert': 0,
         'appointment.imaging.organization.password_cert': 0,
+        'appointment.imaging.organization.white_labeling.base64_logo_horizontal': 0,
+        'appointment.imaging.organization.white_labeling.base64_logo_vertical': 0,
+        'appointment.imaging.organization.white_labeling.base64_logo_welcome': 0,
         'appointment.imaging.branch.base64_logo': 0,
         'appointment.referring.organization.base64_logo': 0,
         'appointment.referring.organization.base64_cert': 0,
         'appointment.referring.organization.password_cert': 0,
+        'appointment.referring.organization.white_labeling.base64_logo_horizontal': 0,
+        'appointment.referring.organization.white_labeling.base64_logo_vertical': 0,
+        'appointment.referring.organization.white_labeling.base64_logo_welcome': 0,
         'appointment.referring.branch.base64_logo': 0,
         'appointment.reporting.organization.base64_logo': 0,
         'appointment.reporting.organization.base64_cert': 0,
         'appointment.reporting.organization.password_cert': 0,
+        'appointment.reporting.organization.white_labeling.base64_logo_horizontal': 0,
+        'appointment.reporting.organization.white_labeling.base64_logo_vertical': 0,
+        'appointment.reporting.organization.white_labeling.base64_logo_welcome': 0,
         'appointment.reporting.branch.base64_logo': 0
     }; }
     

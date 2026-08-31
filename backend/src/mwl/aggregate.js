@@ -222,6 +222,9 @@ module.exports = [
 
         //Base64 Logos:
         'imaging.organization.base64_logo': 0,
+        'imaging.organization.white_labeling.base64_logo_horizontal': 0,
+        'imaging.organization.white_labeling.base64_logo_vertical': 0,
+        'imaging.organization.white_labeling.base64_logo_welcome': 0,
         'imaging.branch.base64_logo': 0,
 
         //Organization cert:
