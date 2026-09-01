@@ -210,7 +210,7 @@ export class AppointmentsService {
         //Clear previous values:
         this.reportingUsers = [];
         this.filteredReportingUsers = [];
-        form.controls['reporting_user'].setValue('');
+        form.controls['reporting_user'].setValue([]);
         form.controls['reporting_user_input'].setValue('');
 
         //Send message:
@@ -361,9 +361,9 @@ export class AppointmentsService {
       service       : reportingSplitted[2]
     };
 
-    //Data normalizarion - FK Reporting:
-    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user !== ''){
-      mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+    //Data normalizarion - FK Reporting (Multiple selection - Array of ObjectId):
+    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user.length > 0){
+      mergedValues.reporting['fk_reporting'] = mergedValues.reporting_user;
     }
 
     //Data normalization - Dates types:

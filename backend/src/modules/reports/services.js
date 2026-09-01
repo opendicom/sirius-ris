@@ -182,7 +182,9 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
         { $unwind: { path: "$appointment.reporting.organization", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$appointment.reporting.branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$appointment.reporting.service", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
+
+        //(fix array case)Unwind appointment.reporting.fk_reporting [Array] (Unwind):
+        //{ $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
         //------------------------------------------------------------------------------------------------------------//
@@ -1105,7 +1107,9 @@ async function setLogos(fk_performing){
         { $unwind: { path: "$appointment.reporting.organization", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$appointment.reporting.branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$appointment.reporting.service", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
+
+        //(fix array case)Unwind appointment.reporting.fk_reporting [Array] (Unwind):
+        //{ $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
         //------------------------------------------------------------------------------------------------------------//

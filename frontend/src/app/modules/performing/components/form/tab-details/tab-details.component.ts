@@ -151,7 +151,7 @@ export class TabDetailsComponent implements OnInit {
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
         referring_organization_input : [ this.appointmentsService.getReferringOrganizationFullName(res.data[0].referring.organization) ], // For mat-autocomplete input
         reporting_domain          : [ selectedReporting, [Validators.required]],
-        reporting_user            : [ '', [Validators.required]],
+        reporting_user            : [ [], [Validators.required]],
         reporting_user_input      : [ '' ], // For mat-autocomplete input
 
         anamnesis                 : res.data[0].anamnesis,
@@ -251,6 +251,8 @@ export class TabDetailsComponent implements OnInit {
 
       //Check current procedure reporting_delay:
       if(res.data[0].procedure.reporting_delay !== undefined && res.data[0].procedure.reporting_delay !== null && res.data[0].procedure.reporting_delay !== ''){
+        //Set selected reporting users (Array of ObjectId - Multiple selection):
+        this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting.map((currentReporting: any) => currentReporting._id));
         this.reporting_delay_controller = true;
 
         //Find reporting users for service and set initial value (callback ensures form is already initialized):
@@ -299,7 +301,7 @@ export class TabDetailsComponent implements OnInit {
       referring_organization    : [ '', [Validators.required] ],
       referring_organization_input : [ '' ], // For mat-autocomplete input
       reporting_domain          : [ '', [Validators.required] ],
-      reporting_user            : [ '', [Validators.required] ],
+      reporting_user            : [ [], [Validators.required] ]
       reporting_user_input      : [ '' ], // For mat-autocomplete input
 
       anamnesis                 : [ '' ],

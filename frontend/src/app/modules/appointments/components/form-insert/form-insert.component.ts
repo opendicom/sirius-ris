@@ -120,7 +120,7 @@ export class FormInsertComponent implements OnInit {
       referring_organization    : [ '', [Validators.required] ],
       referring_organization_input : [ '' ], // For mat-autocomplete input
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
-      reporting_user            : [ '', [Validators.required] ],
+      reporting_user            : [ [], [Validators.required] ],
       reporting_user_input      : [ '' ], // For mat-autocomplete input
 
       anamnesis                 : [ '' ],
