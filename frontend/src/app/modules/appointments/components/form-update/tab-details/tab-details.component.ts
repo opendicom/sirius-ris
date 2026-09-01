@@ -111,11 +111,12 @@ export class TabDetailsComponent implements OnInit {
       //Find referring organizations:
       this.appointmentsService.findReferringOrganizations();
 
-      //Find referring and reporting information:
-      this.appointmentsService.findReportingUsers(res.data[0].reporting.service._id, this.form);
-
       //Set selected reporting:
       const selectedReporting = res.data[0].reporting.organization._id + '.' + res.data[0].reporting.branch._id + '.' + res.data[0].reporting.service._id;
+
+      //Get first reporting user ID from array (fk_reporting is an array from $lookup):
+      const fkReportingArray = Array.isArray(res.data[0].reporting.fk_reporting) ? res.data[0].reporting.fk_reporting : [res.data[0].reporting.fk_reporting];
+      const firstReportingUserId = (fkReportingArray.length > 0 && fkReportingArray[0]) ? fkReportingArray[0]._id : null;
 
       //Check if inpatient:
       let inpatient = { type: '', where: '', room: '', contact: '' };
@@ -159,8 +160,10 @@ export class TabDetailsComponent implements OnInit {
       //Send data to the form:
       this.setReactiveForm({
         referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
+        referring_organization_input : [ this.appointmentsService.getReferringOrganizationFullName(res.data[0].referring.organization) ], // For mat-autocomplete input
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ [], [Validators.required]],
+        reporting_user_input      : [ '' ], // For mat-autocomplete input
 
         anamnesis                 : res.data[0].anamnesis,
         indications               : res.data[0].indications,
@@ -245,11 +248,34 @@ export class TabDetailsComponent implements OnInit {
         //Set selected reporting users (Array of ObjectId - Multiple selection):
         this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting.map((currentReporting: any) => currentReporting._id));
         this.reporting_delay_controller = true;
+
+        //Find reporting users for service and set initial value (callback ensures form is already initialized):
+        this.appointmentsService.findReportingUsers(res.data[0].reporting.service._id, this.form, () => {
+          //Find matching user from loaded reportingUsers list (has person data):
+          const matchedUser = firstReportingUserId
+            ? (this.appointmentsService.reportingUsers || []).find((u: any) => u._id === firstReportingUserId)
+            : null;
+
+          if(matchedUser){
+            this.form.controls['reporting_user'].setValue(matchedUser._id);
+            this.form.controls['reporting_user_input'].setValue(this.appointmentsService.getReportingUserFullName(matchedUser));
+          }
+
+          //Get property keys with values (after async reporting user is set):
+          this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
+        });
       } else {
+        //Find reporting users for service (no initial value to set):
+        this.appointmentsService.findReportingUsers(res.data[0].reporting.service._id, this.form);
+
         //Remove reporting_user validators:
         this.form.controls['reporting_user'].clearValidators();
         this.form.controls['reporting_user'].updateValueAndValidity();
+        this.form.controls['reporting_user_input'].setValue('');
         this.reporting_delay_controller = false;
+
+        //Get property keys with values:
+        this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
       }
 
       //Add files into file manager controller:
@@ -272,9 +298,6 @@ export class TabDetailsComponent implements OnInit {
           }
         }
       }
-
-      //Get property keys with values:
-      this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
     }
   }
 
@@ -323,7 +346,7 @@ export class TabDetailsComponent implements OnInit {
         //Refresh current_flow_state in sharedProp for enable slot tab:
         this.sharedProp.current_flow_state = 'A01';
 
-        break;  
+        break;
       case 'A02':
         this.booleanCancelation = true;
 
@@ -336,8 +359,10 @@ export class TabDetailsComponent implements OnInit {
   initializateForm(){
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
+      referring_organization_input : [ '' ], // For mat-autocomplete input
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ [], [Validators.required] ],
+      reporting_user_input      : [ '' ], // For mat-autocomplete input
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],

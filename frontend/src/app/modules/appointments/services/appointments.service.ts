@@ -27,8 +27,10 @@ export class AppointmentsService {
   public availableServices      : any;
 
   //Set referring and reporting objects:
-  public referringOrganizations   : any;
-  public reportingUsers           : any;
+  public referringOrganizations         : any;
+  public filteredReferringOrganizations : any;
+  public reportingUsers                 : any;
+  public filteredReportingUsers         : any;
 
   //Boolean class binding objects:
   public booleanContrast  : Boolean = false;
@@ -146,7 +148,32 @@ export class AppointmentsService {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.referringOrganizations = res.data;
+      this.filteredReferringOrganizations = res.data;
     });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REFERRING ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReferringOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter referring organizations:
+    this.filteredReferringOrganizations = this.referringOrganizations.filter((currentOrganization: any) => currentOrganization.short_name.toUpperCase().includes(filterValue) || currentOrganization.name.toUpperCase().includes(filterValue));
+  }
+
+  getReferringOrganizationFullName(currentOrganization: any){
+    //Build display name directly from an already populated organization object (Avoids race condition: referringOrganizations list may not be loaded yet):
+    return currentOrganization ? `${currentOrganization.short_name} (${currentOrganization.name})` : '';
+  }
+
+  selectReferringOrganization(currentOrganization: any, form: FormGroup){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    form.controls['referring_organization'].setValue(currentOrganization._id);
+    form.controls['referring_organization_input'].setValue(`${currentOrganization.short_name} (${currentOrganization.name})`);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -154,7 +181,7 @@ export class AppointmentsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND REPORTING USERS (FIND BY SERVICE):
   //--------------------------------------------------------------------------------------------------------------------//
-  findReportingUsers(service_id: string, form: FormGroup){
+  findReportingUsers(service_id: string, form: FormGroup, callback: (res: any) => void = () => {}){
     //Set params:
     const params = {
       //Only people users:
@@ -178,15 +205,52 @@ export class AppointmentsService {
       if(res.data.length > 0){
         //Set reporting users:
         this.reportingUsers = res.data;
+        this.filteredReportingUsers = res.data;
       } else {
         //Clear previous values:
         this.reportingUsers = [];
+        this.filteredReportingUsers = [];
         form.controls['reporting_user'].setValue([]);
+        form.controls['reporting_user_input'].setValue('');
 
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
       }
+
+      //Execute callback:
+      callback(res);
     }, false, 'findByService');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REPORTING USERS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReportingUsers(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter reporting users by full name:
+    this.filteredReportingUsers = (this.reportingUsers || []).filter((currentReporting: any) => this.getReportingUserFullName(currentReporting).toUpperCase().includes(filterValue));
+  }
+
+  getReportingUserFullName(currentReporting: any){
+    //Guard against missing person data:
+    if(!currentReporting || !currentReporting.person){ return ''; }
+
+    //Build full name (names and surnames):
+    let fullName = currentReporting.person.name_01;
+    if(currentReporting.person.name_02){ fullName += ` ${currentReporting.person.name_02}`; }
+    fullName += ` ${currentReporting.person.surname_01}`;
+    if(currentReporting.person.surname_02){ fullName += ` ${currentReporting.person.surname_02}`; }
+    return fullName;
+  }
+
+  selectReportingUser(currentReporting: any, form: FormGroup){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    form.controls['reporting_user'].setValue(currentReporting._id);
+    form.controls['reporting_user_input'].setValue(this.getReportingUserFullName(currentReporting));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -352,15 +416,17 @@ export class AppointmentsService {
 
     //Delete temp values:
     delete mergedValues.referring_organization;
+    delete mergedValues.referring_organization_input;
     delete mergedValues.reporting_domain;
     delete mergedValues.reporting_user;
+    delete mergedValues.reporting_user_input;
 
     //Save data:
     this.sharedFunctions.save(operation, 'appointments', _id, mergedValues, keysWithValues, (res) => {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
         this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
-        
+
         //Create appointment PDF with pain password:
         if(this.sharedProp.current_friendly_pass !== ''){
           this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass, true);

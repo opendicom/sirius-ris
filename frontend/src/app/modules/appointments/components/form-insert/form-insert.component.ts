@@ -118,8 +118,10 @@ export class FormInsertComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       referring_organization    : [ '', [Validators.required] ],
+      referring_organization_input : [ '' ], // For mat-autocomplete input
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
       reporting_user            : [ [], [Validators.required] ],
+      reporting_user_input      : [ '' ], // For mat-autocomplete input
 
       anamnesis                 : [ '' ],
       indications               : [ '' ],
@@ -214,7 +216,7 @@ export class FormInsertComponent implements OnInit {
       if(this.sharedProp.current_appointment_request.anamnesis !== undefined && this.sharedProp.current_appointment_request.anamnesis !== null && this.sharedProp.current_appointment_request.anamnesis !== ''){
         this.form.controls['anamnesis'].setValue(this.sharedProp.current_appointment_request.anamnesis);
       }
-      
+
       //Check indications:
       if(this.sharedProp.current_appointment_request.indications !== undefined && this.sharedProp.current_appointment_request.indications !== null && this.sharedProp.current_appointment_request.indications !== ''){
         this.form.controls['indications'].setValue(this.sharedProp.current_appointment_request.indications);
@@ -233,6 +235,7 @@ export class FormInsertComponent implements OnInit {
       //Remove reporting_user validators:
       this.form.controls['reporting_user'].clearValidators();
       this.form.controls['reporting_user'].updateValueAndValidity();
+      this.form.controls['reporting_user_input'].setValue('');
     }
 
     //Enable source editing CKEditor for Superuser:

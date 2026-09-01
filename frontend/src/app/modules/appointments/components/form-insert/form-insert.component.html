@@ -213,13 +213,12 @@
         <h4>{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION' | i18n }}</h4>
         <mat-form-field appearance="fill" class="large">
           <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION' | i18n }}</mat-label>
-          <mat-select formControlName="referring_organization" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION_PLACEHOLDER' | i18n }}">
-            <span *ngIf="appointmentsService.referringOrganizations">
-              <div *ngFor="let currentOrganization of appointmentsService.referringOrganizations">
-                <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
-              </div>
-            </span>
-          </mat-select>
+          <input #inputReferringOrg type="text" matInput formControlName="referring_organization_input" (keyup)="appointmentsService.filterReferringOrganizations($event)" [matAutocomplete]="autoReferringOrganization" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION_PLACEHOLDER' | i18n }}">
+          <mat-autocomplete #autoReferringOrganization="matAutocomplete">
+            <mat-option (onSelectionChange)="appointmentsService.selectReferringOrganization(currentOrganization, form)" *ngFor="let currentOrganization of appointmentsService.filteredReferringOrganizations" [value]="currentOrganization.short_name + ' (' + currentOrganization.name + ')'">
+              <span [innerHTML]="currentOrganization.short_name | highlighter : inputReferringOrg.value"></span> (<span [innerHTML]="currentOrganization.name | highlighter : inputReferringOrg.value"></span>)
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
 
         <br/><hr class="dashed" />
@@ -247,20 +246,31 @@
           <mat-form-field appearance="fill" class="large">
             <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR' | i18n }}</mat-label>
             <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" multiple>
-              <div *ngFor="let currentReporting of appointmentsService.reportingUsers">
-                <mat-option value="{{ currentReporting._id }}">
-                  <!--names-->
-                  {{ currentReporting.person.name_01 }}
-                  <span *ngIf="currentReporting.person.name_02">
-                    {{ ' ' + currentReporting.person.name_02 }}
-                  </span>
-                  <!--surnames-->
-                  {{ ' ' + currentReporting.person.surname_01 }}
-                  <span *ngIf="currentReporting.person.surname_02">
-                    {{ ' ' + currentReporting.person.surname_02 }}
-                  </span>
-                </mat-option>
-              </div>
+              <!-- Search input -->
+              <mat-option>
+                <input #inputReportingUser type="text" matInput formControlName="reporting_user_input" (keyup)="appointmentsService.filterReportingUsers($event)" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              </mat-option>
+
+              <!-- Reporting users -->
+              <mat-option *ngFor="let currentReporting of appointmentsService.filteredReportingUsers" [value]="currentReporting._id">
+                <!-- names -->
+                <span [innerHTML]="currentReporting.person.name_01 | highlighter : inputReportingUser.value"></span>
+
+                <span *ngIf="currentReporting.person.name_02">
+                  {{ ' ' }}
+                  <span [innerHTML]="currentReporting.person.name_02 | highlighter : inputReportingUser.value"></span>
+                </span>
+
+                <!-- surnames -->
+                {{ ' ' }}
+
+                <span [innerHTML]="currentReporting.person.surname_01 | highlighter : inputReportingUser.value"></span>
+
+                <span *ngIf="currentReporting.person.surname_02">
+                  {{ ' ' }}
+                  <span [innerHTML]="currentReporting.person.surname_02 | highlighter : inputReportingUser.value"></span>
+                </span>
+              </mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -393,7 +403,7 @@
           <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.CONTACT' | i18n }}</mat-label>
           <input matInput type="text" formControlName="contact" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CONTACT_PLACEHOLDER' | i18n }}">
         </mat-form-field>
-        
+
         <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
         <div *ngIf="this.sharedProp.current_modality.code_value !== 'PT'">
           <br/><hr class="dashed" />
@@ -504,7 +514,7 @@
 
           <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="label-info">min: 2, max: 1000</span>:</h4>
           <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-          
+
           <br/>
 
           <h4>{{ 'PRIVATE_HEALTH.ALLERGIES' | i18n }}:</h4>
