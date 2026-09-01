@@ -100,6 +100,12 @@
             </span>
           </span>
 
+          <span *ngIf="sharedProp.userLogged.permissions[0].role == 1 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [26]))">
+            <button mat-mini-fab class="small_button" type="button" color="warn" matTooltip="{{ 'CHECK-IN.LIST.CALL_PATIENT' | i18n }}" (click)="callPatient(element)">
+              <mat-icon>campaign</mat-icon>
+            </button>
+          </span>
+
         </td>
       </ng-container>
 

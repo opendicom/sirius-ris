@@ -22,6 +22,10 @@ export class AppComponent {
     public sharedFunctions  : SharedFunctionsService,
     public themesService    : ThemesService
   ) {
+    if(localStorage.getItem('sirius_auth')){
+      this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
+    }
+
     // Initializate CSS theme:
     this.themesService.initializeTheme();
   }

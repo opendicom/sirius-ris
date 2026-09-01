@@ -1,0 +1,45 @@
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" style="height: 400px;">
+    <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+  </div>
+</ng-template>
+
+<ng-template #contentBlock>
+  <table *ngIf="sharedFunctions.response?.data" mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <ng-container matColumnDef="element_action">
+      <th mat-header-cell *matHeaderCellDef>{{ 'BOARDS.LIST.ACTIONS' | i18n }}</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="accent" [matTooltip]="'COMMON.EDIT' | i18n" routerLink="/boards/form/update/{{ element._id }}">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" [matTooltip]="'BOARDS.LIST.OPEN' | i18n" routerLink="/check-in/board/{{ element._id }}">
+          <mat-icon>tv</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" [matTooltip]="'COMMON.DELETE' | i18n" (click)="deleteBoard(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>{{ 'BOARDS.LIST.NAME' | i18n }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef>{{ 'BOARDS.LIST.DETAILS' | i18n }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.details }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef>{{ 'BOARDS.LIST.BRANCH' | i18n }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.branch?.name }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="sharedFunctions.response?.message" class="response-info">{{ sharedFunctions.response.message }}</div>
+</ng-template>

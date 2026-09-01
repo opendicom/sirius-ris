@@ -10,12 +10,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/check-in//components/list/list.component';
 import { BoardComponent } from '@modules/check-in/components/board/board.component';
+import { CallPatientComponent } from '@modules/check-in/components/call-patient/call-patient.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
-    BoardComponent
+    BoardComponent,
+    CallPatientComponent
   ],
   imports: [
     CommonModule,

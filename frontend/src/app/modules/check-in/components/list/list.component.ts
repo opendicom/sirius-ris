@@ -1,4 +1,5 @@
 import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -7,6 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';               // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                      // I18n Service
 import { ISO_3166, objectKeys } from '@env/environment';                                          // Enviroments
+import { CallPatientComponent } from '@modules/check-in/components/call-patient/call-patient.component';
 //--------------------------------------------------------------------------------------------------------------------//
 @Component({
   selector: 'app-list',
@@ -55,7 +57,8 @@ export class ListComponent implements OnInit, DoCheck {
   constructor(
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private dialog: MatDialog
   ){
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -160,7 +163,7 @@ export class ListComponent implements OnInit, DoCheck {
     //Find and set default modality:
     this.sharedFunctions.find(element, params, (res) => {
       //Check result:
-      if(res.success === true){
+      if(res.success === true && res.data && res.data.length > 0){
 
         //Check if the user is logged in at the service level:
         switch(element){
@@ -209,6 +212,8 @@ export class ListComponent implements OnInit, DoCheck {
       } else {
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('CHECK-IN.LIST.DEFAULT-MODALITY-ERROR'));
+        this.loading = false;
+        this.initialLoad = false;
       }
     }, findOne);
   }
@@ -251,6 +256,12 @@ export class ListComponent implements OnInit, DoCheck {
       if(result){
         this.sharedFunctions.sendToMWL(fk_appointment, true, { element: this.sharedProp.element, params: this.sharedProp.params });
       }
+    });
+  }
+
+  callPatient(appointment: any): void {
+    this.dialog.open(CallPatientComponent, { data: appointment }).afterClosed().subscribe((created) => {
+      if(created){ this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params); }
     });
   }
 

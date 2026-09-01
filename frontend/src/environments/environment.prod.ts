@@ -15,7 +15,7 @@ export const objectKeys = {
   eventsLogKeys                     : ['1','2','3','4','5','6','7'],
   documentTypesKeys                 : ['1','2','3','4','5','6','7','100'],
   userRolesKeys                     : ['1','2','3','4','5','6','7','8','9','10'],
-  userConcessionsKeys               : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24', '25'],
+  userConcessionsKeys               : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','16','17','20','21','22','23','24', '25', '26'],
   genderTypesKeys                   : ['1','2','3'],
   appointmentsFlowStateKeys         : ['A01','A02'],
   appointmentRequestsFlowStateKeys  : ['AR01','AR02','AR03','AR04','AR05','AR06','AR07'],

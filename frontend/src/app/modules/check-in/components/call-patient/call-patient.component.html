@@ -1,0 +1,19 @@
+<h1 mat-dialog-title><mat-icon>campaign</mat-icon>&nbsp; {{ 'CHECK-IN.CALL.TITLE' | i18n }}</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>{{ 'CHECK-IN.CALL.BOARD' | i18n }}</mat-label>
+      <mat-select formControlName="fk_board">
+        <mat-option *ngFor="let board of boards" [value]="board._id">{{ board.name }} - {{ board.details }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>{{ 'CHECK-IN.CALL.ROOM_PLACE' | i18n }}</mat-label>
+      <input matInput formControlName="room_place" maxlength="64">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>{{ 'ACTION.CANCEL_BUTTON' | i18n }}</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid || saving">{{ 'CHECK-IN.CALL.CONFIRM' | i18n }}</button>
+  </div>
+</form>

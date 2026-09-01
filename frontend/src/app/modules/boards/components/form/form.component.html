@@ -1,0 +1,28 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="input-wrapper">
+    <h4>{{ 'BOARDS.FORM.BRANCH' | i18n }}</h4>
+    <mat-form-field appearance="fill" class="large">
+      <mat-label>{{ 'BOARDS.FORM.BRANCH' | i18n }}</mat-label>
+      <mat-select formControlName="fk_branch">
+        <mat-option *ngFor="let branch of availableBranches" [value]="branch._id">{{ branch.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h4>{{ 'BOARDS.FORM.NAME' | i18n }}</h4>
+    <mat-form-field appearance="fill" class="large">
+      <mat-label>{{ 'BOARDS.FORM.NAME' | i18n }}</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <h4>{{ 'BOARDS.FORM.DETAILS' | i18n }}</h4>
+    <mat-form-field appearance="fill" class="large">
+      <mat-label>{{ 'BOARDS.FORM.DETAILS' | i18n }}</mat-label>
+      <textarea matInput formControlName="details"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
+    <button mat-flat-button type="button" (click)="onCancel()">{{ 'ACTION.CANCEL_BUTTON' | i18n }}</button>
+    <button mat-flat-button type="submit" color="primary">{{ 'ACTION.SAVE_BUTTON' | i18n }}</button>
+  </div>
+</form>

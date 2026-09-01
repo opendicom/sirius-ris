@@ -1,1 +1,28 @@
-<p>{{ 'CHECK-IN.BOARD.IN-PROGRESS' | i18n }}</p>
+<div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center" style="height: 240px;">
+	<mat-progress-spinner mode="indeterminate" diameter="56"></mat-progress-spinner>
+</div>
+
+<table *ngIf="!loading" mat-table [dataSource]="checkIns" class="mat-elevation-z1">
+	<ng-container matColumnDef="patient">
+		<th mat-header-cell *matHeaderCellDef>{{ 'CHECK-IN.BOARD.PATIENT' | i18n }}</th>
+		<td mat-cell *matCellDef="let checkIn">{{ checkIn.patient?.person?.surname_01 }}, {{ checkIn.patient?.person?.name_01 }}</td>
+	</ng-container>
+	<ng-container matColumnDef="room_place">
+		<th mat-header-cell *matHeaderCellDef>{{ 'CHECK-IN.BOARD.ROOM_PLACE' | i18n }}</th>
+		<td mat-cell *matCellDef="let checkIn">{{ checkIn.room_place }}</td>
+	</ng-container>
+	<ng-container matColumnDef="date">
+		<th mat-header-cell *matHeaderCellDef>{{ 'CHECK-IN.BOARD.DATE' | i18n }}</th>
+		<td mat-cell *matCellDef="let checkIn">{{ checkIn.date | date: 'HH:mm' }}</td>
+	</ng-container>
+	<ng-container matColumnDef="actions">
+		<th mat-header-cell *matHeaderCellDef>{{ 'CHECK-IN.BOARD.ACTIONS' | i18n }}</th>
+		<td mat-cell *matCellDef="let checkIn">
+			<button mat-icon-button color="warn" [matTooltip]="'COMMON.DELETE' | i18n" (click)="deleteCheckIn(checkIn)"><mat-icon>delete</mat-icon></button>
+		</td>
+	</ng-container>
+	<tr mat-header-row *matHeaderRowDef="['patient', 'room_place', 'date', 'actions']"></tr>
+	<tr mat-row *matRowDef="let row; columns: ['patient', 'room_place', 'date', 'actions'];"></tr>
+</table>
+
+<div *ngIf="!loading && checkIns.length === 0" class="response-info">{{ 'CHECK-IN.BOARD.EMPTY' | i18n }}</div>

@@ -816,6 +816,9 @@
     "CANCEL": "CANCEL"
   },
   "DIALOGS": {
+    "CALL_PATIENT": {
+      "TITLE": "Call patient"
+    },
     "DELETE_ITEMS": {
       "TITLE": "Delete selected items",
       "CONFIRM_DELETE": "Do you confirm that you want to delete the selected items?",
@@ -1080,6 +1083,7 @@
     "COORDINATION_CALENDAR": "Calendar",
     "RECEPTION": "Reception",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_BOARDS": "Boards",
     "PERFORMING": "Performing",
     "PERFORMING_STUDIES": "Studies",
     "ADVANCED": "Advanced features",
@@ -1229,6 +1233,22 @@
       "TITLE": "Modalities form",
       "CODE_MEANING_PLACEHOLDER": "Enter the meaning",
       "CODE_VALUE_PLACEHOLDER": "Enter the code value"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Waiting room boards",
+      "ACTIONS": "Actions",
+      "OPEN": "Open board",
+      "NAME": "Name",
+      "DETAILS": "Details",
+      "BRANCH": "Branch"
+    },
+    "FORM": {
+      "TITLE": "Waiting room board",
+      "BRANCH": "Branch",
+      "NAME": "Name",
+      "DETAILS": "Details"
     }
   },
   "ORGANIZATIONS": {
@@ -1942,6 +1962,20 @@
     "COORDINATION_IN_PROGRESS": "[Coordination in progress]"
   },
   "CHECK-IN": {
+    "CALL": {
+      "TITLE": "Call patient",
+      "BOARD": "Waiting room board",
+      "ROOM_PLACE": "Room or location",
+      "CONFIRM": "CALL"
+    },
+    "BOARD": {
+      "PATIENT": "Patient",
+      "ROOM_PLACE": "Room or location",
+      "DATE": "Called at",
+      "ACTIONS": "Actions",
+      "EMPTY": "There are no patients waiting.",
+      "IN-PROGRESS": "In-progress care list in process..."
+    },
     "LIST": {
       "ORDER": "Nº",
       "ACTIONS": "Actions",
@@ -1950,6 +1984,7 @@
       "SENT-TO-MWL": "Sent to MWL",
       "SEND-TO-MWL": "Send to MWL",
       "CHECK-IN": "Check-in",
+      "CALL_PATIENT": "Call patient",
       "SCHEDULE": "Schedule",
       "DOCUMENTS": "Documents",
       "NAMES": "Names",
@@ -1976,9 +2011,6 @@
       "EXPORT-LIST": "EXPORT LIST",
       "TITLE": "Patient Check-in",
       "DEFAULT-MODALITY-ERROR": "There was a problem determining the default modality."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "In-progress care list in process..."
     }
   },
   "EVENTS_LOG": {
