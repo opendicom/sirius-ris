@@ -13,11 +13,11 @@
 
 <ng-template #thenBlockTable>
   <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
 
       <!-- log_id -->
       <ng-container matColumnDef="log_id">
-        <th mat-header-cell *matHeaderCellDef class="text-center divider"> {{ 'LOGS.LIST_BY_USER.TABLE.LOG_ID' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="_id" class="text-center divider"> {{ 'LOGS.LIST_BY_USER.TABLE.LOG_ID' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center divider">
           <small *ngIf="element._id">{{ element._id }}</small>
         </td>
@@ -25,7 +25,7 @@
 
       <!-- datetime -->
       <ng-container matColumnDef="datetime">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center divider"> {{ 'LOGS.LIST_BY_USER.TABLE.DATETIME' | i18n }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="datetime" class="column-alt text-center divider"> {{ 'LOGS.LIST_BY_USER.TABLE.DATETIME' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center divider">
           <span *ngIf="element.datetime">{{ element.datetime | date : "dd/MM/yyyy HH:mm:ss" : "UTC" }}</span>
         </td>
@@ -33,7 +33,7 @@
 
       <!-- event -->
       <ng-container matColumnDef="event">
-        <th mat-header-cell *matHeaderCellDef class="events-col"> {{ 'LOGS.LIST_BY_USER.TABLE.EVENT' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="event" class="events-col"> {{ 'LOGS.LIST_BY_USER.TABLE.EVENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="events-col">
           <span *ngIf="element.event">
             <span class="event e{{ element.event }}">{{ ('EVENTS_LOG.' + element.event) | i18n }}</span>
@@ -53,7 +53,7 @@
 
       <!-- fk_user -->
       <ng-container matColumnDef="fk_user">
-        <th mat-header-cell *matHeaderCellDef>{{ 'LOGS.LIST_BY_USER.TABLE.USER' | i18n }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="user.person.name_01">{{ 'LOGS.LIST_BY_USER.TABLE.USER' | i18n }}</th>
         <td mat-cell *matCellDef="let element">
           <small *ngIf="element.user">
             {{ element.user.person.name_01 }}
@@ -67,7 +67,7 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> {{ 'LOGS.LIST_BY_USER.TABLE.ORGANIZATION' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'LOGS.LIST_BY_USER.TABLE.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
           <ng-template #thenBlockTableOrganization>
@@ -79,7 +79,7 @@
 
       <!-- ip_client -->
       <ng-container matColumnDef="ip_client">
-        <th mat-header-cell *matHeaderCellDef> {{ 'LOGS.LIST_BY_USER.TABLE.IP_CLIENT' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="ip_client"> {{ 'LOGS.LIST_BY_USER.TABLE.IP_CLIENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <mat-chip-list>
             <mat-chip class="ip_client"><small *ngIf="element.ip_client" innerHTML="{{ element.ip_client | highlighter : sharedProp.filter }}"></small></mat-chip>

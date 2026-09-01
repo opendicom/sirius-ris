@@ -7,6 +7,7 @@ import { ApiClientService } from '@shared/services/api-client.service';       //
 import { I18nService } from '@shared/services/i18n.service';                  // I18n Service
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
+import { Sort } from '@angular/material/sort';                                // Angular Material sorting
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
 import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
 import { regexObjectId } from '@env/environment';                             // Enviroments
@@ -1996,6 +1997,91 @@ export class SharedFunctionsService {
         data[key] = Object.fromEntries(Object.entries(data[key]).sort());
       }
     }));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SORT TABLE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  sortTable(sort: Sort, displayedColumns: string[], originalData: any[]): void {
+    const rootColumn = sort.active.split('.')[0];
+    const isDisplayedColumn = displayedColumns.includes(rootColumn);
+    const isAvailableValue = this.response.data.some((element: any) => {
+      const value = this.getNestedValue(element, sort.active);
+      return value !== null && value !== undefined;
+    });
+
+    // Check if the active sort column is 'element_action' or not included in displayedColumns, if so, return without sorting:
+    if(sort.active === 'element_action' || (!isDisplayedColumn && !isAvailableValue)){
+      return;
+    }
+
+    // Check if sort direction is empty, if so, reset the data to the original data:
+    if(sort.direction === ''){
+      this.response.data = [...originalData];
+      return;
+    }
+
+    // Determine the sort direction (1 for ascending, -1 for descending):
+    const direction = sort.direction === 'asc' ? 1 : -1;
+    const data = [...this.response.data];
+
+    // Sort the data based on the active column and direction:
+    data.sort((firstElement, secondElement) => {
+      const firstValue = this.getComparableValue(this.getNestedValue(firstElement, sort.active));
+      const secondValue = this.getComparableValue(this.getNestedValue(secondElement, sort.active));
+
+      if(firstValue === secondValue){
+        return 0;
+      }
+      if(firstValue === null || firstValue === undefined){
+        return direction;
+      }
+      if(secondValue === null || secondValue === undefined){
+        return -direction;
+      }
+
+      if(typeof firstValue === 'string' && typeof secondValue === 'string'){
+        return firstValue.localeCompare(secondValue) * direction;
+      }
+      if(typeof firstValue === 'boolean' && typeof secondValue === 'boolean'){
+        return (Number(firstValue) - Number(secondValue)) * direction;
+      }
+
+      return (firstValue < secondValue ? -1 : 1) * direction;
+    });
+
+    // Update the response data with the sorted data:
+    this.response.data = data;
+  }
+
+  private getNestedValue(element: any, path: string): any {
+    return path.split('.').reduce((value, property) => {
+      if(value === null || value === undefined){
+        return value;
+      }
+
+      if(Array.isArray(value)){
+        return value.map(item => item === null || item === undefined ? item : item[property]);
+      }
+
+      return value[property];
+    }, element);
+  }
+
+  private getComparableValue(value: any): any {
+    if(value instanceof Date){
+      return value.getTime();
+    }
+    if(Array.isArray(value)){
+      return value.map(item => this.getComparableValue(item)).join('|');
+    }
+    if(value !== null && typeof value === 'object'){
+      return Object.keys(value).sort().map(key => `${key}:${this.getComparableValue(value[key])}`).join('|');
+    }
+
+    return value;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

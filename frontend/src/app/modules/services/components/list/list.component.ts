@@ -24,6 +24,7 @@ export class ListComponent implements OnInit, DoCheck {
   private initialLoad: boolean = true;
   private previousParams: any;
   private previousResponse: any;
+  public originalData: any[] = [];
 
   //Table to XLSX (SheetJS CE):
   private excludedColumns = [this.i18n.instant('SERVICES.LIST.EXCLUDED_COLUMNS_XLSX')];
@@ -125,6 +126,7 @@ export class ListComponent implements OnInit, DoCheck {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resServices => {
       //Set loading to false when data is received:
       this.loading = false;
+      this.originalData = [...this.sharedFunctions.response.data];
 
       //Initialize base state for change detection after initial load:
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
@@ -155,6 +157,7 @@ export class ListComponent implements OnInit, DoCheck {
     if(this.sharedFunctions.response !== this.previousResponse){
       this.previousResponse = this.sharedFunctions.response;
       if(this.sharedFunctions.response){
+        this.originalData = [...this.sharedFunctions.response.data];
         //Response received - mark loading as complete:
         this.loading = false;
       }

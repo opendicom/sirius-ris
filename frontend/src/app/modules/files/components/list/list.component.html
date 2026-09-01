@@ -13,10 +13,10 @@
 
   <ng-template #thenBlockTable>
     <div #main_list>
-      <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+      <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
         <!-- select element -->
         <ng-container matColumnDef="select_element">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="select_element">
             <mat-checkbox *ngIf="sharedFunctions.response.pager" [checked]="this.sharedProp.getTotalChecked() == sharedFunctions.response.pager.viewed_items" (change)="this.sharedProp.onSelectAll($event)" matTooltip="{{ 'FILES.LIST.TABLE.SELECT_ALL_TOOLTIP' | i18n }}"></mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let element; let i = index;">
@@ -39,7 +39,7 @@
 
         <!-- organization -->
         <ng-container matColumnDef="organization">
-          <th mat-header-cell *matHeaderCellDef> {{ 'FILES.LIST.TABLE.ORGANIZATION' | i18n }} </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'FILES.LIST.TABLE.ORGANIZATION' | i18n }} </th>
           <td mat-cell *matCellDef="let element">
             <span *ngIf="element.organization; then thenBlockOrganization else elseBlockOrganization"></span>
             <ng-template #thenBlockOrganization>
@@ -51,7 +51,7 @@
 
         <!-- branch -->
         <ng-container matColumnDef="branch">
-          <th mat-header-cell *matHeaderCellDef> {{ 'FILES.LIST.TABLE.BRANCH' | i18n }} </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="branch.short_name"> {{ 'FILES.LIST.TABLE.BRANCH' | i18n }} </th>
           <td mat-cell *matCellDef="let element">
             <span *ngIf="element.branch; then thenBlockBranch else elseBlockBranch"></span>
             <ng-template #thenBlockBranch>
@@ -63,7 +63,7 @@
 
         <!-- name -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> {{ 'FILES.LIST.TABLE.NAME' | i18n }} </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> {{ 'FILES.LIST.TABLE.NAME' | i18n }} </th>
           <td mat-cell *matCellDef="let element">
             <span *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
           </td>
@@ -71,7 +71,7 @@
 
         <!-- download -->
         <ng-container matColumnDef="download">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'FILES.LIST.TABLE.DOWNLOAD' | i18n }} </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="download" class="text-center"> {{ 'FILES.LIST.TABLE.DOWNLOAD' | i18n }} </th>
           <td mat-cell *matCellDef="let element" class="text-center">
             <mat-icon class="download-icon" matTooltip="{{ 'FILES.LIST.TOOLTIPS.DOWNLOAD' | i18n }}" (click)="fileManager.download(element._id)">download</mat-icon>
           </td>

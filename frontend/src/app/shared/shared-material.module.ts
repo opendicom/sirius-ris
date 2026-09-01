@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -47,6 +48,7 @@ const MatModules = [
   MatSlideToggleModule,
   MatDividerModule,
   MatTableModule,
+  MatSortModule,
   MatTooltipModule,
   MatCardModule,
   MatSnackBarModule,

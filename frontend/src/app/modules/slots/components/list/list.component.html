@@ -13,7 +13,7 @@
 
 <ng-template #thenBlockTable>
   <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
 
       <!-- select element-->
       <ng-container matColumnDef="select_element">
@@ -44,7 +44,7 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> {{ 'SLOTS.LIST.TABLE.ORGANIZATION' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'SLOTS.LIST.TABLE.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
           <ng-template #thenBlockTableOrganization>
@@ -56,7 +56,7 @@
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> {{ 'SLOTS.LIST.TABLE.BRANCH' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="branch.short_name"> {{ 'SLOTS.LIST.TABLE.BRANCH' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
           <ng-template #thenBlockTableBranch>
@@ -68,7 +68,7 @@
 
       <!-- service -->
       <ng-container matColumnDef="service">
-        <th mat-header-cell *matHeaderCellDef> {{ 'SLOTS.LIST.TABLE.SERVICE' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="service.name"> {{ 'SLOTS.LIST.TABLE.SERVICE' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.service; then thenBlockTableService else elseBlockTableService"></span>
           <ng-template #thenBlockTableService>
@@ -80,7 +80,7 @@
 
       <!-- date_name -->
       <ng-container matColumnDef="date_name">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.DAY' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="start" class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.DAY' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "EEEE" | titlecase }}</span>
         </td>
@@ -88,7 +88,7 @@
 
       <!-- date -->
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.DATE' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="start" class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.DATE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "dd/MM/yyyy" : "UTC" }}</span>
         </td>
@@ -96,7 +96,7 @@
 
       <!-- schedule -->
       <ng-container matColumnDef="schedule">
-        <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.SCHEDULE' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="start" class="column-alt text-center"> {{ 'SLOTS.LIST.TABLE.SCHEDULE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="column-alt text-center">
           <span *ngIf="element.start">{{ element.start | date : "HH:mm" : "UTC" }} {{ 'SLOTS.LIST.TABLE.SCHEDULE_TO' | i18n }} </span>
           <span *ngIf="element.end">{{ element.end | date : "HH:mm" : "UTC"}} {{ 'SLOTS.LIST.TABLE.SCHEDULE_HS' | i18n }}</span>
@@ -105,7 +105,7 @@
 
       <!-- equipment -->
       <ng-container matColumnDef="equipment">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'SLOTS.LIST.TABLE.EQUIPMENT' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="equipment.name" class="text-center"> {{ 'SLOTS.LIST.TABLE.EQUIPMENT' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.equipment; then thenBlockTableEquipment else elseBlockTableEquipment"></span>
           <ng-template #thenBlockTableEquipment>
@@ -119,7 +119,7 @@
 
       <!-- modality -->
       <ng-container matColumnDef="modality">
-        <th mat-header-cell *matHeaderCellDef> {{ 'SLOTS.LIST.TABLE.MODALITY' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="modality.code_value"> {{ 'SLOTS.LIST.TABLE.MODALITY' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.modality; then thenBlockTableModality else elseBlockTableModality"></span>
           <ng-template #thenBlockTableModality>
@@ -131,7 +131,7 @@
 
       <!-- urgency -->
       <ng-container matColumnDef="urgency">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'SLOTS.LIST.TABLE.URGENCY' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="urgency" class="text-center"> {{ 'SLOTS.LIST.TABLE.URGENCY' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.urgency; then thenBlock else elseBlock"></div>
           <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>

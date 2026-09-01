@@ -28,6 +28,7 @@ export class ListByUserComponent implements OnInit, DoCheck {
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['log_id', 'datetime', 'event', 'fk_user', 'organization', 'ip_client'];
+  public originalData: any[] = [];
 
   //Inject services to the constructor:
   constructor(
@@ -113,6 +114,7 @@ export class ListByUserComponent implements OnInit, DoCheck {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, (resLogs: any) => {
       //Set loading false when data arrives and initialize base state for change detection:
       this.loading = false;
+      this.originalData = [...this.sharedFunctions.response.data];
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
       this.previousResponse = this.sharedFunctions.response;
       this.initialLoad = false;
@@ -144,6 +146,7 @@ export class ListByUserComponent implements OnInit, DoCheck {
 
       //If response is not null/false, data has arrived - disable loading:
       if(this.sharedFunctions.response){
+        this.originalData = [...this.sharedFunctions.response.data];
         this.loading = false;
       }
     }
