@@ -294,11 +294,26 @@ body {
   text-align: left !important;
 }
 
+.text-left .mat-sort-header-container {
+  justify-content: left !important;
+  text-align: left !important;
+}
+
 .text-center{
   text-align: center !important;
 }
 
+.text-center .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
 .text-right{
+  text-align: right !important;
+}
+
+.text-right .mat-sort-header-container {
+  justify-content: right !important;
   text-align: right !important;
 }
 
