@@ -418,6 +418,9 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             //'appointment.imaging.organization.base64_logo': 0,    //Needed to set header logos
             //'appointment.imaging.organization.base64_cert': 0,
             //'appointment.imaging.organization.password_cert': 0,  //Needed to sign report
+            'appointment.imaging.organization.white_labeling.base64_logo_horizontal': 0,
+            'appointment.imaging.organization.white_labeling.base64_logo_vertical': 0,
+            'appointment.imaging.organization.white_labeling.base64_logo_welcome': 0,
 
             'appointment.imaging.branch.createdAt': 0,
             'appointment.imaging.branch.updatedAt': 0,
@@ -435,6 +438,9 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.referring.organization.base64_logo': 0,
             'appointment.referring.organization.base64_cert': 0,
             'appointment.referring.organization.password_cert': 0,
+            'appointment.referring.organization.white_labeling.base64_logo_horizontal': 0,
+            'appointment.referring.organization.white_labeling.base64_logo_vertical': 0,
+            'appointment.referring.organization.white_labeling.base64_logo_welcome': 0,
 
             'appointment.referring.branch.createdAt': 0,
             'appointment.referring.branch.updatedAt': 0,
@@ -460,6 +466,9 @@ async function createBase64Report(req, res, auth_fk_person, auth_datetime, obj_l
             'appointment.reporting.organization.base64_logo': 0,
             'appointment.reporting.organization.base64_cert': 0,
             'appointment.reporting.organization.password_cert': 0,
+            'appointment.reporting.organization.white_labeling.base64_logo_horizontal': 0,
+            'appointment.reporting.organization.white_labeling.base64_logo_vertical': 0,
+            'appointment.reporting.organization.white_labeling.base64_logo_welcome': 0,
 
             'appointment.reporting.branch.createdAt': 0,
             'appointment.reporting.branch.updatedAt': 0,
