@@ -1,6 +1,7 @@
 <h1 mat-dialog-title><mat-icon>campaign</mat-icon>&nbsp; {{ 'CHECK-IN.CALL.TITLE' | i18n }}</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div mat-dialog-content>
+    <!-- The selected board and location become the patient-call destination. -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>{{ 'CHECK-IN.CALL.BOARD' | i18n }}</mat-label>
       <mat-select formControlName="fk_board">

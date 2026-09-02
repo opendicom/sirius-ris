@@ -1,4 +1,5 @@
 <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- A board belongs to one branch and can be opened as a waiting-room display. -->
   <div class="input-wrapper">
     <h4>{{ 'BOARDS.FORM.BRANCH' | i18n }}</h4>
     <mat-form-field appearance="fill" class="large">

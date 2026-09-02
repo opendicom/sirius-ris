@@ -7,6 +7,7 @@
 </ng-template>
 
 <ng-template #contentBlock>
+  <!-- Board administration actions: edit, open the display, or delete the board. -->
   <table *ngIf="sharedFunctions.response?.data" mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
     <ng-container matColumnDef="element_action">
       <th mat-header-cell *matHeaderCellDef>{{ 'BOARDS.LIST.ACTIONS' | i18n }}</th>

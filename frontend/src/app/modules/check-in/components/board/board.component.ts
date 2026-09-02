@@ -23,6 +23,7 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Direct board URLs can initialize before the routed feature component.
     this.sharedProp.userLogged = this.sharedFunctions.getUserInfo();
     this.sharedProp.actionSetter({
       content_title: this.i18n.instant('BOARDS.LIST.OPEN'),
@@ -36,6 +37,7 @@ export class BoardComponent implements OnInit {
 
   refresh(): void {
     this.loading = true;
+    // Filter by the route board ID so one display never mixes waiting rooms.
     this.sharedFunctions.find('check_in_boards', { 'filter[fk_board]': this.boardId, 'sort[date]': 1 }, (res) => {
       this.checkIns = res.data || [];
       this.loading = false;

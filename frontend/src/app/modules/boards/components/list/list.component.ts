@@ -10,6 +10,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  // The table columns match the board fields returned by the aggregation handler.
   public displayedColumns: string[] = ['element_action', 'name', 'details', 'branch'];
   public loading: boolean = false;
 
@@ -64,6 +65,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // The shared action component owns search and pagination requests for this list.
     this.loading = true;
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, () => {
       this.loading = false;
@@ -71,6 +73,7 @@ export class ListComponent implements OnInit {
   }
 
   deleteBoard(board: any): void {
+    // Reuse the standard dialog so the configured deletion code is collected.
     const operationHandler = {
       element: 'boards',
       selected_items: [board._id],

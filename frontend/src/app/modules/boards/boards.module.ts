@@ -10,6 +10,7 @@ import { ListComponent } from '@modules/boards/components/list/list.component';
 import { FormComponent } from '@modules/boards/components/form/form.component';
 
 @NgModule({
+  // The module is lazy-loaded from the main application routes.
   declarations: [ListComponent, FormComponent],
   imports: [
     CommonModule,

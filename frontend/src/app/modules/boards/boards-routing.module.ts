@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
+      // Keep board administration separate from the public board display route.
       { path: 'list', component: ListComponent },
       { path: 'list/:_id', component: ListComponent },
       { path: 'form/:action/:_id', component: FormComponent },

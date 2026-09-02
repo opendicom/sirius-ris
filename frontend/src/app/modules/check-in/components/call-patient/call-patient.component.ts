@@ -26,6 +26,7 @@ export class CallPatientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Load only boards visible to the current user; the backend applies domain filtering.
     this.sharedFunctions.find('boards', {}, (res) => {
       this.boards = res.data || [];
     }, false, false, false);
@@ -34,9 +35,10 @@ export class CallPatientComponent implements OnInit {
   onSubmit(): void {
     if(this.form.valid){
       this.saving = true;
+      // The appointment lookup exposes the patient as a populated user object.
       const payload = {
         date: new Date().toISOString(),
-        fk_patient: this.appointment.fk_patient,
+        fk_patient: this.appointment.patient?._id || this.appointment.fk_patient,
         fk_board: this.form.value.fk_board,
         room_place: this.form.value.room_place
       };
