@@ -41,13 +41,13 @@
           <mat-form-field appearance="fill" class="large">
             <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</mat-label>
             <mat-select formControlName="reporting_user" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" multiple>
-              <!-- Search input -->
-              <mat-option>
-                <input #inputReportingUser type="text" matInput formControlName="reporting_user_input" (keyup)="appointmentsService.filterReportingUsers($event)" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-              </mat-option>
+              <!-- Search input (Plain div, not mat-option, so it's not selectable) -->
+              <div class="reporting-user-search" (click)="$event.stopPropagation()">
+                <input #inputReportingUser type="text" matInput formControlName="reporting_user_input" (keyup)="appointmentsService.filterReportingUsers($event)" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" (keydown)="$event.stopPropagation()">
+              </div>
 
               <!-- Reporting users -->
-              <mat-option *ngFor="let currentReporting of appointmentsService.filteredReportingUsers" [value]="currentReporting._id">
+              <mat-option *ngFor="let currentReporting of appointmentsService.reportingUsers" [class.non-display]="!appointmentsService.matchesReportingUserFilter(currentReporting)" [value]="currentReporting._id">
                 <!-- names -->
                 <span [innerHTML]="currentReporting.person.name_01 | highlighter : inputReportingUser.value"></span>
 
