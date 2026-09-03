@@ -30,7 +30,7 @@ export class AppointmentsService {
   public referringOrganizations         : any;
   public filteredReferringOrganizations : any;
   public reportingUsers                 : any;
-  public filteredReportingUsers         : any;
+  public reportingUserFilterValue       : string = '';
 
   //Boolean class binding objects:
   public booleanContrast  : Boolean = false;
@@ -201,15 +201,16 @@ export class AppointmentsService {
 
     //Find by service reporting users (last true parameter):
     this.sharedFunctions.find('users', params, (res) => {
+      //Reset previous search text:
+      this.reportingUserFilterValue = '';
+
       //Check data:
       if(res.data.length > 0){
         //Set reporting users:
         this.reportingUsers = res.data;
-        this.filteredReportingUsers = res.data;
       } else {
         //Clear previous values:
         this.reportingUsers = [];
-        this.filteredReportingUsers = [];
         form.controls['reporting_user'].setValue([]);
         form.controls['reporting_user_input'].setValue('');
 
@@ -228,11 +229,16 @@ export class AppointmentsService {
   // FILTER REPORTING USERS (matAutocomplete):
   //--------------------------------------------------------------------------------------------------------------------//
   filterReportingUsers(event: any){
-    //Set filter value and to upper case:
-    const filterValue = event.srcElement.value.toUpperCase();
+    //Set filter value and to upper case (Options stay mounted - Only their visibility toggles - See matchesReportingUserFilter):
+    this.reportingUserFilterValue = event.srcElement.value.toUpperCase();
+  }
 
-    //Filter reporting users by full name:
-    this.filteredReportingUsers = (this.reportingUsers || []).filter((currentReporting: any) => this.getReportingUserFullName(currentReporting).toUpperCase().includes(filterValue));
+  matchesReportingUserFilter(currentReporting: any): boolean {
+    //No search text - Every option matches:
+    if(!this.reportingUserFilterValue){ return true; }
+
+    //Check full name against the search text:
+    return this.getReportingUserFullName(currentReporting).toUpperCase().includes(this.reportingUserFilterValue);
   }
 
   getReportingUserFullName(currentReporting: any){
@@ -245,12 +251,6 @@ export class AppointmentsService {
     fullName += ` ${currentReporting.person.surname_01}`;
     if(currentReporting.person.surname_02){ fullName += ` ${currentReporting.person.surname_02}`; }
     return fullName;
-  }
-
-  selectReportingUser(currentReporting: any, form: FormGroup){
-    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
-    form.controls['reporting_user'].setValue(currentReporting._id);
-    form.controls['reporting_user_input'].setValue(this.getReportingUserFullName(currentReporting));
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

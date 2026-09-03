@@ -114,10 +114,6 @@ export class TabDetailsComponent implements OnInit {
       //Set selected reporting:
       const selectedReporting = res.data[0].reporting.organization._id + '.' + res.data[0].reporting.branch._id + '.' + res.data[0].reporting.service._id;
 
-      //Get first reporting user ID from array (fk_reporting is an array from $lookup):
-      const fkReportingArray = Array.isArray(res.data[0].reporting.fk_reporting) ? res.data[0].reporting.fk_reporting : [res.data[0].reporting.fk_reporting];
-      const firstReportingUserId = (fkReportingArray.length > 0 && fkReportingArray[0]) ? fkReportingArray[0]._id : null;
-
       //Check if inpatient:
       let inpatient = { type: '', where: '', room: '', contact: '' };
       if(res.data[0].inpatient){
@@ -249,18 +245,8 @@ export class TabDetailsComponent implements OnInit {
         this.form.controls['reporting_user'].setValue(res.data[0].reporting.fk_reporting.map((currentReporting: any) => currentReporting._id));
         this.reporting_delay_controller = true;
 
-        //Find reporting users for service and set initial value (callback ensures form is already initialized):
+        //Find reporting users for service (callback ensures form is already initialized):
         this.appointmentsService.findReportingUsers(res.data[0].reporting.service._id, this.form, () => {
-          //Find matching user from loaded reportingUsers list (has person data):
-          const matchedUser = firstReportingUserId
-            ? (this.appointmentsService.reportingUsers || []).find((u: any) => u._id === firstReportingUserId)
-            : null;
-
-          if(matchedUser){
-            this.form.controls['reporting_user'].setValue(matchedUser._id);
-            this.form.controls['reporting_user_input'].setValue(this.appointmentsService.getReportingUserFullName(matchedUser));
-          }
-
           //Get property keys with values (after async reporting user is set):
           this.sharedProp.current_keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
         });

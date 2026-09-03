@@ -803,6 +803,24 @@ mark {
   color: var(--opposite-color-02) !important;
 }
 
+.reporting-user-search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #3d3f51;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.reporting-user-search input {
+  width: 100%;
+  color: var(--opposite-color-02);
+  background: transparent;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
 .tab-icon {
   margin-right: 8px;
 }
