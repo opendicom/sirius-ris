@@ -1,51 +1,37 @@
-.form-title {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 1px;
+
+
+:host {
+  display: block;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-.male {
-  color: var(--light-blue);
-}
-  
-.female {
-  color: var(--pink);
-}
-  
-.other {
-  color: var(--green-highlighted);
-}
-  
-.current-info {
-  float: left;
-  margin-right: 10px;
-  padding: 5px 12px 5px 5px;
-}
-  
-.current-firts {
-  font-size: 18px;
-}
-  
-.details-title {
-  margin-bottom: 5px !important;
+
+:host ::ng-deep .input-wrapper {
+  box-sizing: border-box;
 }
 
-.details-wrap {
-  background-color: var(--base-color-05);
-  color: var(--opposite-color-02);
-  padding: 20px;
-  border-radius: 6px;
+
+:host ::ng-deep ckeditor,
+:host ::ng-deep .ck-editor,
+:host ::ng-deep .ck-editor__main,
+:host ::ng-deep .ck-content,
+:host ::ng-deep .ck-toolbar {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.annotations-wrap {
-  background-color: #3d3f5182;
-  color: #fff;
-  padding: 20px;
-  border-radius: 6px;
+:host ::ng-deep .ck-toolbar__items {
+  flex-wrap: wrap;
 }
 
-.physician {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  font-size: 18px;
+
+:host ::ng-deep .ck-tooltip {
+  display: none !important;
+}
+
+
+.required-error {
+  color: var(--orange-intense);
 }

@@ -1,230 +1,288 @@
 <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="sharedProp.mainSettings != undefined">
-    <div fxLayout="row" fxLayoutAlign="start start">
-  
-      <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-        <div *ngIf="sharedFunctions.response && sharedFunctions.response.data; then thenBlockDetails else elseBlockDetails"></div>
+  <mat-tab-group>
 
-        <ng-template #thenBlockDetails>
-            <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.DETAILS_TITLE' | i18n }}</h3>
+    <!-- PATIENT TAB: --------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">person</mat-icon>
+        {{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.PATIENT' | i18n }}
+        <mat-icon *ngIf="patientTabErrors" class="validate-error-tab" matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
+      </ng-template>
+
+      <div formGroupName="patient">
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <div class="input-wrapper divider">
+            <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="doc_country_code">
+                <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                  <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+
             <br/>
-    
-            <!-- referring -->
-            <div *ngIf="sharedFunctions.response.data[0].referring" class="current-info divider-alt">
-                <span *ngIf="sharedFunctions.response.data[0].referring.branch; then thenBlockReferring else elseBlockReferring"></span>
-                <ng-template #thenBlockReferring>
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_INSTITUTION' | i18n }}</small><br/>
-                    <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name + ' ► ' + sharedFunctions.response.data[0].referring.branch.short_name }}</span>
-                </ng-template>
 
-                <ng-template #elseBlockReferring>
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_INSTITUTION' | i18n }}</small><br/>
-                    <span matTooltip="{{ sharedFunctions.response.data[0].referring.organization.name }}">{{ sharedFunctions.response.data[0].referring.organization.short_name }}</span>
-                </ng-template>
-            </div>
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="doc_type">
+                <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+                  <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
 
-            <!-- imaging -->
-            <div *ngIf="sharedFunctions.response.data[0].imaging" class="current-info divider-alt">
-                <span *ngIf="sharedFunctions.response.data[0].imaging.branch; then thenBlockImaging else elseBlockImaging"></span>
-                <ng-template #thenBlockImaging>
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PERFORMING_INSTITUTION' | i18n }}</small><br/>
-                    <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name + ' ► ' + sharedFunctions.response.data[0].imaging.branch.short_name }}</span>
-                </ng-template>
+            <br/>
 
-                <ng-template #elseBlockImaging>
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PERFORMING_INSTITUTION' | i18n }}</small><br/>
-                    <span matTooltip="{{ sharedFunctions.response.data[0].imaging.organization.name }}">{{ sharedFunctions.response.data[0].imaging.organization.short_name }}</span>
-                </ng-template>
-            </div>
-
-            <!-- date -->
-            <div class="current-info" *ngIf="sharedProp.mainSettings.appSettings != undefined">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUEST_DATE' | i18n }}</small><br/>
-                <span >{{ sharedFunctions.response.data[0].createdAt | date:'dd/MM/yyyy':sharedProp.mainSettings.appSettings.default_utc }}</span><!-- Fix Mongoose Timestamps -->
-            </div>
-
-            <!-- procedure -->
-            <div *ngIf="sharedFunctions.response.data[0].procedure" class="current-info text-center divider-alt">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTED_PROCEDURE' | i18n }}</small><br/>
-                <span class="badge-alt">
-                <span>{{ sharedFunctions.response.data[0].procedure.name }}</span>
-                </span>
-            </div>
-
-            <!-- modality -->
-            <div *ngIf="sharedFunctions.response.data[0].modality" class="current-info text-center divider-alt">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.MODALITY' | i18n }}</small><br/>
-                <span class="badge" matTooltip="{{ sharedFunctions.response.data[0].modality.code_meaning }}">
-                <span>{{ sharedFunctions.response.data[0].modality.code_value }}</span>
-                </span>
-            </div>
-
-            <!-- urgency -->
-            <div class="current-info text-center">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.URGENCY' | i18n }}</small><br/>
-                <div *ngIf="sharedFunctions.response.data[0].urgency; then thenBlock else elseBlock"></div>
-                <ng-template #thenBlock><mat-icon class="color-fail" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.URGENT' | i18n }}">directions_run</mat-icon></ng-template>
-                <ng-template #elseBlock><mat-icon color="accent" matTooltip="{{ 'SLOTS.LIST.TOOLTIPS.NORMAL' | i18n }}">man</mat-icon></ng-template>
-            </div>
+            <mat-form-field appearance="fill" class="medium document_inputs">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}">
+            </mat-form-field>
 
             <div class="clear"></div>
-            <hr class="dashed" />
+            <hr class="dashed" /><br/>
 
-            <!-- PATIENT -->
-            <div *ngIf="sharedFunctions.response.data[0].patient">
-                <!-- document -->
-                <div class="current-info divider-alt">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_DOCUMENT' | i18n }}</small><br/>
-                    <span *ngIf="sharedFunctions.response.data[0].patient.doc_country_code"><span matTooltip="{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[sharedFunctions.response.data[0].patient.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;</span>
-                    <span matTooltip="{{ ('DOCUMENT_TYPES.' + sharedFunctions.response.data[0].patient.doc_type) | i18n }}">
-                        <span>{{ sharedFunctions.response.data[0].patient.document }}</span>
-                    </span>
-                </div>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.NAMES_TITLE' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.NAME1_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="{{ 'USERS.FORM.PERSON_TAB.NAME1_INPUT' | i18n }}">
+            </mat-form-field>
 
-                <!-- names -->
-                <div class="current-info divider-alt">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_FULL_NAME' | i18n }}</small><br/>
-                    <span >
-                    <span>{{ sharedFunctions.response.data[0].patient.name_01 }}</span>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.NAME2_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="{{ 'USERS.FORM.PERSON_TAB.NAME2_INPUT' | i18n }}">
+            </mat-form-field>
 
-                    <span *ngIf="sharedFunctions.response.data[0].patient.name_02">
-                        <span> {{ sharedFunctions.response.data[0].patient.name_02 }}</span>
-                    </span>
+            <br/>
 
-                    <span> {{ sharedFunctions.response.data[0].patient.surname_01 }}</span>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.SURNAMES_TITLE' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.SURNAME1_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="{{ 'USERS.FORM.PERSON_TAB.SURNAME1_INPUT' | i18n }}">
+            </mat-form-field>
 
-                    <span *ngIf="sharedFunctions.response.data[0].patient.surname_02">
-                        <span> {{ sharedFunctions.response.data[0].patient.surname_02 }}</span>
-                    </span>
-                    </span>
-                </div>
+            <mat-form-field appearance="fill" class="medium">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.SURNAME2_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="{{ 'USERS.FORM.PERSON_TAB.SURNAME2_INPUT' | i18n }}">
+            </mat-form-field>
 
-                <!-- patient_age -->
-                <div class="current-info divider-alt">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_AGE' | i18n }}</small><br/>
-                    <span  matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_AGE_TOOLTIP' | i18n }}">
-                        {{ sharedFunctions.calculateAge(sharedFunctions.response.data[0].patient.birth_date, sharedFunctions.response.data[0].createdAt) }}
-                    </span>
-                </div>
+            <hr class="dashed" /><br/>
 
-                <!-- gender -->
-                <div class="current-info divider-alt">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_GENDER' | i18n }}</small><br/>
-                    <div [ngSwitch]="sharedFunctions.response.data[0].patient.gender" matTooltip="{{ ('GENDER_TYPES.' + sharedFunctions.response.data[0].patient.gender) | i18n }}">
-                        <span *ngSwitchCase="1"><mat-icon class="male">man</mat-icon></span>
-                        <span *ngSwitchCase="2"><mat-icon class="female">woman</mat-icon></span>
-                        <span *ngSwitchCase="3"><mat-icon class="other">wc</mat-icon></span>
-                    </div>
-                </div>
+            <h4 [class.required-error]="form.get('patient.gender')?.invalid && form.get('patient.gender')?.touched">{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }} -</h4>
+            <mat-radio-group color="primary" formControlName="gender">
+              <mat-radio-button *ngFor="let currentGenderKey of genderTypesKeys" value="{{ currentGenderKey }}">{{ ('GENDER_TYPES.' + currentGenderKey) | i18n }}</mat-radio-button>
+            </mat-radio-group>
 
-                <!-- email-->
-                <div *ngIf="sharedFunctions.response.data[0].patient.email" class="current-info divider-alt">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_EMAIL' | i18n }}</small><br/>
-                    <span><small>{{ sharedFunctions.response.data[0].patient.email }}</small></span>
-                </div>
+            <br/><br/>
+          </div>
 
-                <!-- phone_numbers-->
-                <div class="current-info">
-                    <small>{{ 'APPOINTMENTS.FORM_REQUEST.PATIENT_PHONES' | i18n }}</small><br/>
-                    <span *ngFor="let current of sharedFunctions.response.data[0].patient.phone_numbers" >
-                        <span class="badge-accent">
-                            <span>{{ current + ' ' }}</span>
-                        </span>
-                    </span>
-                </div>
+          <div class="input-wrapper">
+            <h4>{{ 'USERS.FORM.PERSON_TAB.BIRTH_DATE_TITLE' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="medium" (click)="picker.open()">
+              <mat-label>{{ 'ACTION.SELECT_DATE' | i18n }}</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birth_date" (keydown)="false">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-hint align="end">{{ 'SLOTS.FORM.DATE_HINT' | i18n }}</mat-hint>
+            </mat-form-field>
 
-                <div class="clear"></div>
-                <hr class="dashed" /><br/>
-            </div>
+            <br/><br/><hr class="dashed" /><br/>
 
-            <div class="details-wrap">
-                <!-- anamnesis -->
-                <span *ngIf="sharedFunctions.response.data[0].anamnesis">
-                    <h3><strong>{{ 'ACTION.ANAMNESIS' | i18n }}:</strong></h3>
-                    <span innerHTML="{{ sharedFunctions.response.data[0].anamnesis }}"></span>
-                </span>
-
-                <!-- indications -->
-                <span *ngIf="sharedFunctions.response.data[0].indications">
-                    <br/><br/><hr class="soft-alt" /><br/>
-
-                    <h3><strong>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }}:</strong></h3>
-                    <span innerHTML="{{ sharedFunctions.response.data[0].indications }}"></span>
-                </span>
-            </div>
-
-            <span *ngIf="sharedFunctions.response.data[0].extra && (sharedFunctions.response.data[0].extra.physician_name || sharedFunctions.response.data[0].extra.physician_prof_id || sharedFunctions.response.data[0].extra.physician_contact)">
-                <div class="clear"></div><br/>
-                <hr class="dashed" /><br/>
-
-                <div class="current-info text-center divider-alt physician">
-                <span>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_PHYSICIAN' | i18n }}</span>
-                </div>
-
-                <!-- physician_name -->
-                <div *ngIf="sharedFunctions.response.data[0].extra.physician_name" class="current-info text-center divider-alt">
-                <small>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</small><br/>
-                {{ sharedFunctions.response.data[0].extra.physician_name }}
-                </div>
-
-                <!-- physician_prof_id -->
-                <div *ngIf="sharedFunctions.response.data[0].extra.physician_prof_id" class="current-info text-center divider-alt">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_ID' | i18n }}</small><br/>
-                {{ sharedFunctions.response.data[0].extra.physician_prof_id }}
-                </div>
-
-                <!-- physician_contact -->
-                <div *ngIf="sharedFunctions.response.data[0].extra.physician_contact" class="current-info text-center divider-alt">
-                <small>{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_CONTACT' | i18n }}</small><br/>
-                <span class="badge-accent">{{ sharedFunctions.response.data[0].extra.physician_contact }}</span>
-                </div>
-            </span>
-
-            <div class="clear"></div>
-        </ng-template>
-
-        <ng-template #elseBlockDetails>
-            {{ 'APPOINTMENTS.FORM_REQUEST.WAITING_FOR_DETAILS' | i18n }}
-        </ng-template>
-      </div> <!-- end fxLayout wrapper -->
-
-      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-        <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.STATUS_AND_ANNOTATIONS' | i18n }}</h3>
-        <br/>
-
-        <!-- flow_state -->
-        <span *ngIf="sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].flow_state">
-            <h3>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h3>
-            <mat-form-field appearance="fill" class="full">
-                <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
-                <mat-select formControlName="flow_state">
-                    <div *ngFor="let currentFSKey of appointmentRequestsFlowStateKeys">
-                        <div *ngIf="currentFSKey == 'AR05' || currentFSKey == 'AR06'; then thenBlockFS else elseBlockFS"></div>
-                        <ng-template #thenBlockFS>
-                            <mat-option *ngIf="currentFSKey == sharedFunctions.response.data[0].flow_state" value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
-                        </ng-template>
-                        <ng-template #elseBlockFS>
-                            <mat-option value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
-                        </ng-template>
-                    </div>
-                </mat-select>
+            <h4>{{ 'USERS.FORM.PERSON_TAB.PHONE_TITLE' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'USERS.FORM.PERSON_TAB.PHONE_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="{{ 'USERS.FORM.PERSON_TAB.PHONE_INPUT' | i18n }}">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-hint align="start">{{ 'USERS.FORM.PERSON_TAB.PHONE_HINT' | i18n }}</mat-hint>
             </mat-form-field>
 
             <br/><br/>
-        </span>
 
+            <h4>{{ 'USERS.FORM.USER_TAB.EMAIL_TITLE' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.EMAIL_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" formControlName="email" placeholder="{{ 'USERS.FORM.USER_TAB.EMAIL_INPUT' | i18n }}">
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <!-- PATIENT TAB: --------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- MAIN DATA TAB: ------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">assignment</mat-icon>
+        {{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.MAIN_DATA' | i18n }}
+        <mat-icon *ngIf="mainTabErrors" class="validate-error-tab" matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
+      </ng-template>
+
+      <div fxLayout="row wrap" fxLayoutAlign="start start">
+        <!-- performing + requesting institutions -->
+        <div class="input-wrapper divider" fxFlex="50" style="min-width: 260px;">
+          <!-- imaging (organization + branch set together) -->
+          <div formGroupName="imaging">
+            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_LABEL' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="branch" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_SELECT' | i18n }}" (selectionChange)="onImagingBranchChange($event.value)">
+                <div *ngFor="let currentBranch of availableBranches">
+                  <div *ngFor="let currentOrganization of availableOrganizations">
+                    <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+                  </div>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <br/>
+
+          <!-- referring (organization only) -->
+          <div formGroupName="referring">
+            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_LABEL' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_PLACEHOLDER' | i18n }}</mat-label>
+              <mat-select formControlName="organization" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_SELECT' | i18n }}">
+                <div *ngFor="let currentOrganization of availableOrganizations">
+                  <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <br/><br/>
+        </div>
+
+        <!-- workflow state + urgency -->
+        <div class="input-wrapper" fxFlex="50" style="min-width: 260px;">
+          <!-- flow_state (use form.get(...).value: form.value excludes disabled controls, e.g. AR05/AR06) -->
+          <span *ngIf="form.get('flow_state')?.value">
+            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
+              <mat-select formControlName="flow_state">
+                <div *ngFor="let currentFSKey of appointmentRequestsFlowStateKeys">
+                  <div *ngIf="currentFSKey == 'AR05' || currentFSKey == 'AR06'; then thenBlockFS else elseBlockFS"></div>
+                  <ng-template #thenBlockFS>
+                    <mat-option *ngIf="currentFSKey == form.get('flow_state')?.value" value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
+                  </ng-template>
+                  <ng-template #elseBlockFS>
+                    <mat-option value="{{ currentFSKey }}">{{ ('APPOINTMENTS_REQUESTS_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
+                  </ng-template>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </span>
+
+          <br/>
+
+          <h4>{{ 'APPOINTMENTS.FORM_REQUEST.URGENCY' | i18n }}</h4>
+          <mat-radio-group color="primary" formControlName="urgency">
+            <mat-radio-button value="true">{{ 'ACTION.URGENCY_HIGH' | i18n }}</mat-radio-button>
+            <mat-radio-button value="false">{{ 'ACTION.URGENCY_NORMAL' | i18n }}</mat-radio-button>
+          </mat-radio-group>
+
+          <br/><br/>
+        </div>
+      </div>
+
+      <hr class="dashed" /><br/>
+
+      <!-- annotations / anamnesis / indications (one full-width column per row, below requesting institution) -->
+      <div class="input-wrapper">
         <h4>{{ 'APPOINTMENTS.FORM_REQUEST.ANNOTATIONS' | i18n }} <span class="label-info">min: 10, max: 2000</span>:</h4>
-        <ckeditor formControlName="annotations" #annotations [editor]="annotationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-  
+        <ckeditor formControlName="annotations" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
         <br/><br/>
-      </div> <!-- end fxLayout wrapper -->
-  
+
+        <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <ckeditor formControlName="anamnesis" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
+        <br/><br/>
+
+        <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+        <ckeditor formControlName="indications" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+
+        <br/><br/>
+      </div>
+    </mat-tab>
+    <!-- MAIN DATA TAB: ------------------------------------------------------------------------------------------------ -->
+
+
+    <!-- STUDY TAB: ----------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">biotech</mat-icon>
+        {{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.STUDY' | i18n }}
+        <mat-icon *ngIf="studyTabErrors" class="validate-error-tab" matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start" formGroupName="study">
+        <div class="input-wrapper divider">
+          <!-- fk_modality (select) - single source for the requested study modality -->
+          <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.MODALITY_LABEL' | i18n }}</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.MODALITY_PLACEHOLDER' | i18n }}</mat-label>
+            <mat-select formControlName="fk_modality" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.MODALITY_SELECT' | i18n }}">
+              <div *ngFor="let currentModality of availableModalities">
+                <mat-option value="{{ currentModality._id }}">{{ currentModality.code_value }} - {{ currentModality.code_meaning }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+
+          <br/><br/>
+        </div>
+
+        <div class="input-wrapper text-center">
+          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        </div>
+      </div>
+    </mat-tab>
+    <!-- STUDY TAB: ----------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- PHYSICIAN TAB: ------------------------------------------------------------------------------------------------ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">local_hospital</mat-icon>
+        {{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.EXTRA' | i18n }}
+        <mat-icon *ngIf="extraTabErrors" class="validate-error-tab" matTooltip="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.TABS.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
+      </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="start start" formGroupName="extra">
+        <div class="input-wrapper divider">
+          <h4>{{ 'APPOINTMENTS.FORM_REQUEST.REQUESTING_PHYSICIAN' | i18n }}</h4>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.PHYSICIAN_ID_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="physician_id" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.PHYSICIAN_ID_LABEL' | i18n }}">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="physician_name" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.FULL_NAME' | i18n }}">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_CONTACT' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="physician_contact" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.PHYSICIAN_CONTACT' | i18n }}">
+          </mat-form-field>
+
+          <br/><br/>
+        </div>
+      </div>
+    </mat-tab>
+    <!-- PHYSICIAN TAB: ------------------------------------------------------------------------------------------------ -->
+
+  </mat-tab-group>
+
+  <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
+    <div>
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n | uppercase }}</button>
     </div>
-  
-    <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
-      <div> <!-- start fxLayout wrapper -->
-        <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
-        <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n | uppercase }}</button> <!-- [disabled]="form_data.invalid" -->
-      </div> <!-- end fxLayout wrapper -->
-    </div>
-  </form>
-  
+  </div>
+</form>
