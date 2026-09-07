@@ -217,6 +217,12 @@ const Validator = [
         .isLength({ min: 3, max: 40 })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "study.snomed" (min: 3, max: 40 [chars]).'),
 
+    body('study.fk_modality')
+        .optional()
+        .trim()
+        .isMongoId()
+        .withMessage(currentLang.ris.schema_validator.isMongoId + ' | "study.fk_modality" (ObjectId).'),
+
     //Modality (code_value)
     body('study.modality')
         .optional()
