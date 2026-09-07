@@ -72,7 +72,7 @@ export class ListRequestsComponent implements OnInit, DoCheck {
     sharedProp.actionSetter({
       content_title       : this.i18n.instant('APPOINTMENTS.LIST_REQUESTS.TITLE'),
       content_icon        : 'move_to_inbox',
-      add_button          : false,
+      add_button          : '/appointments/form/request/insert/0',
       duplicated_surnames : false,    // Check duplicated surnames
       nested_element      : false,    // Set nested element
       filters_form        : true,

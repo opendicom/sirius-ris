@@ -28,7 +28,7 @@
       <ng-container matColumnDef="element_action">
         <th mat-header-cell *matHeaderCellDef> {{ 'APPOINTMENTS.LIST.TABLE.ACTIONS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" matTooltip="{{ 'BRANCHES.LIST.TOOLTIPS.EDIT' | i18n }}" routerLink="/appointments/form/request/{{ element._id }}">
+          <button mat-icon-button color="accent" matTooltip="{{ 'BRANCHES.LIST.TOOLTIPS.EDIT' | i18n }}" routerLink="/appointments/form/request/update/{{ element._id }}">
             <mat-icon>edit</mat-icon>
           </button>
           
