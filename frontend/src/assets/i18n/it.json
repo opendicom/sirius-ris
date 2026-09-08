@@ -238,7 +238,26 @@
       "WAITING_FOR_DETAILS": "Attendere, i dettagli della richiesta non sono ancora stati caricati.",
       "STATUS_AND_ANNOTATIONS": "Stato e annotazioni:",
       "WORKFLOW": "Flusso di lavoro:",
-      "ANNOTATIONS": "Annotazioni"
+      "ANNOTATIONS": "Annotazioni",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Dati principali",
+          "STUDY": "Studio richiesto",
+          "PATIENT": "Dati del paziente",
+          "EXTRA": "Medico",
+          "VALIDATION_ERROR_TOOLTIP": "Sono presenti errori di convalida in questa scheda"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Filiale",
+        "IMAGING_SELECT": "Seleziona la filiale",
+        "REFERRING_LABEL": "Organizzazione richiedente",
+        "REFERRING_PLACEHOLDER": "Organizzazione richiedente",
+        "REFERRING_SELECT": "Seleziona l'organizzazione richiedente",
+        "MODALITY_LABEL": "Modalità",
+        "MODALITY_PLACEHOLDER": "Modalità",
+        "MODALITY_SELECT": "Seleziona la modalità dello studio",
+        "PHYSICIAN_ID_LABEL": "ID del medico richiedente"
+      }
     },
     "FORM_UPDATE": {
       "TITLE": "Modulo di aggiornamento appuntamento",

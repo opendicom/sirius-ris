@@ -238,7 +238,26 @@
       "WAITING_FOR_DETAILS": "请稍候，请求详情尚未加载。",
       "STATUS_AND_ANNOTATIONS": "状态和注释:",
       "WORKFLOW": "工作流程:",
-      "ANNOTATIONS": "注释"
+      "ANNOTATIONS": "注释",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "主要数据",
+          "STUDY": "请求的检查",
+          "PATIENT": "患者数据",
+          "EXTRA": "医生",
+          "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误"
+        },
+        "IMAGING_LABEL": "分院",
+        "IMAGING_PLACEHOLDER": "分院",
+        "IMAGING_SELECT": "请选择分院",
+        "REFERRING_LABEL": "请求机构",
+        "REFERRING_PLACEHOLDER": "请求机构",
+        "REFERRING_SELECT": "请选择请求机构",
+        "MODALITY_LABEL": "模态",
+        "MODALITY_PLACEHOLDER": "模态",
+        "MODALITY_SELECT": "请选择检查模态",
+        "PHYSICIAN_ID_LABEL": "请求医生ID"
+      }
     },
     "FORM_UPDATE": {
       "TITLE": "预约更新表单",

@@ -238,7 +238,26 @@
       "WAITING_FOR_DETAILS": "Veuillez patienter, les détails de la demande ne sont pas encore chargés.",
       "STATUS_AND_ANNOTATIONS": "Statut et annotations :",
       "WORKFLOW": "Flux de travail :",
-      "ANNOTATIONS": "Annotations"
+      "ANNOTATIONS": "Annotations",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Données principales",
+          "STUDY": "Étude demandée",
+          "PATIENT": "Données du patient",
+          "EXTRA": "Médecin",
+          "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Filiale",
+        "IMAGING_SELECT": "Sélectionnez la filiale",
+        "REFERRING_LABEL": "Organisation demanderesse",
+        "REFERRING_PLACEHOLDER": "Organisation demanderesse",
+        "REFERRING_SELECT": "Sélectionnez l'organisation demanderesse",
+        "MODALITY_LABEL": "Modalité",
+        "MODALITY_PLACEHOLDER": "Modalité",
+        "MODALITY_SELECT": "Sélectionnez la modalité de l'étude",
+        "PHYSICIAN_ID_LABEL": "ID du médecin demandeur"
+      }
     },
     "FORM_UPDATE": {
       "TITLE": "Formulaire de mise à jour du rendez-vous",

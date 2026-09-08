@@ -238,7 +238,26 @@
       "WAITING_FOR_DETAILS": "Подождите, детали запроса еще не загружены.",
       "STATUS_AND_ANNOTATIONS": "Статус и примечания:",
       "WORKFLOW": "Рабочий процесс:",
-      "ANNOTATIONS": "Примечания"
+      "ANNOTATIONS": "Примечания",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Основные данные",
+          "STUDY": "Запрошенное исследование",
+          "PATIENT": "Данные пациента",
+          "EXTRA": "Врач",
+          "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки проверки"
+        },
+        "IMAGING_LABEL": "Филиал",
+        "IMAGING_PLACEHOLDER": "Филиал",
+        "IMAGING_SELECT": "Выберите филиал",
+        "REFERRING_LABEL": "Запрашивающая организация",
+        "REFERRING_PLACEHOLDER": "Запрашивающая организация",
+        "REFERRING_SELECT": "Выберите запрашивающую организацию",
+        "MODALITY_LABEL": "Модальность",
+        "MODALITY_PLACEHOLDER": "Модальность",
+        "MODALITY_SELECT": "Выберите модальность исследования",
+        "PHYSICIAN_ID_LABEL": "ID запрашивающего врача"
+      }
     },
     "FORM_UPDATE": {
       "TITLE": "Форма обновления записи",

@@ -238,7 +238,26 @@
       "WAITING_FOR_DETAILS": "お待ちください、依頼の詳細はまだ読み込まれていません。",
       "STATUS_AND_ANNOTATIONS": "ステータスと注釈：",
       "WORKFLOW": "ワークフロー：",
-      "ANNOTATIONS": "注釈"
+      "ANNOTATIONS": "注釈",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "主データ",
+          "STUDY": "依頼された検査",
+          "PATIENT": "患者データ",
+          "EXTRA": "医師",
+          "VALIDATION_ERROR_TOOLTIP": "このタブに検証エラーがあります"
+        },
+        "IMAGING_LABEL": "支店",
+        "IMAGING_PLACEHOLDER": "支店",
+        "IMAGING_SELECT": "支店を選択してください",
+        "REFERRING_LABEL": "依頼元組織",
+        "REFERRING_PLACEHOLDER": "依頼元組織",
+        "REFERRING_SELECT": "依頼元組織を選択してください",
+        "MODALITY_LABEL": "モダリティ",
+        "MODALITY_PLACEHOLDER": "モダリティ",
+        "MODALITY_SELECT": "検査のモダリティを選択してください",
+        "PHYSICIAN_ID_LABEL": "依頼医のID"
+      }
     },
     "FORM_UPDATE": {
       "TITLE": "予約更新フォーム",
