@@ -66,7 +66,7 @@ export class FormRequestComponent implements OnInit {
       //Imaging institution (Organization and Branch are set together, same as the equipments branch input):
       imaging: this.formBuilder.group({
         organization  : [ (imaging.organization && imaging.organization._id) ? imaging.organization._id : (imaging.organization || ''), [Validators.required] ],
-        branch        : [ (imaging.branch && imaging.branch._id) ? imaging.branch._id : (imaging.branch || '') ]
+        branch        : [ (imaging.branch && imaging.branch._id) ? imaging.branch._id : (imaging.branch || ''), [Validators.required] ]
       }),
 
       //Referring institution (Organization only):
@@ -96,15 +96,15 @@ export class FormRequestComponent implements OnInit {
         surname_02        : [ patient.surname_02 || '' ],
         birth_date        : [ patient.birth_date ? new Date(patient.birth_date.split('T')[0].replace(/-/g, '/')) : '', [Validators.required] ],
         gender            : [ (patient.gender !== undefined && patient.gender !== null) ? `${patient.gender}` : '', [Validators.required] ],
-        'phone_numbers[0]': [ (patient.phone_numbers && patient.phone_numbers[0]) || '' ],
-        email             : [ patient.email || '' ]
+        'phone_numbers[0]': [ (patient.phone_numbers && patient.phone_numbers[0]) || '', [Validators.required] ],
+        email             : [ patient.email || '', [Validators.required] ]
       }),
 
       //Extra data (Physician):
       extra: this.formBuilder.group({
-        physician_id      : [ extra.physician_id || '' ],
-        physician_name    : [ extra.physician_name || '' ],
-        physician_contact : [ extra.physician_contact || '' ]
+        physician_id      : [ extra.physician_id || '', [Validators.required] ],
+        physician_name    : [ extra.physician_name || '', [Validators.required] ],
+        physician_contact : [ extra.physician_contact || '', [Validators.required] ]
       })
     };
   }

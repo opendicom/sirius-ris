@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "Modalität",
         "MODALITY_SELECT": "Modalität der Studie auswählen",
         "PHYSICIAN_ID_LABEL": "ID des anfordernden Arztes"
-      }
+      },
+      "DISCLAIMER": "Der Prozedur wird zum Zeitpunkt der Terminerstellung festgelegt.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Die in diesem Formular angeforderten Daten müssen vom behandelnden Arzt des Patienten ausgefüllt werden. Der anfordernde Arzt ist für ein medizinisch-rechtliches Dokument verantwortlich."
     },
     "FORM_UPDATE": {
       "TITLE": "Formular zur Terminaktualisierung",

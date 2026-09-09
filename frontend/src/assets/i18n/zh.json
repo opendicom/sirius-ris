@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "模态",
         "MODALITY_SELECT": "请选择检查模态",
         "PHYSICIAN_ID_LABEL": "请求医生ID"
-      }
+      },
+      "DISCLAIMER": "所执行的程序将在预约创建时确定。",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "此表单中请求的数据必须由患者的主治医生填写。请求医生负责具有医学法律性质的文件。"
     },
     "FORM_UPDATE": {
       "TITLE": "预约更新表单",

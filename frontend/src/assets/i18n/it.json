@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "Modalità",
         "MODALITY_SELECT": "Seleziona la modalità dello studio",
         "PHYSICIAN_ID_LABEL": "ID del medico richiedente"
-      }
+      },
+      "DISCLAIMER": "La procedura da eseguire verrà definita al momento della creazione dell'appuntamento.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "I dati richiesti in questo modulo devono essere compilati dal Medico Curante del paziente. Il medico richiedente è responsabile di un documento di carattere medico-legale."
     },
     "FORM_UPDATE": {
       "TITLE": "Modulo di aggiornamento appuntamento",

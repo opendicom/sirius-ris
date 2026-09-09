@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "Modalidad",
         "MODALITY_SELECT": "Seleccione la modalidad del estudio",
         "PHYSICIAN_ID_LABEL": "ID del médico solicitante"
-      }
+      },
+      "DISCLAIMER": "El procedimiento a realizar se establecerá al momento de creación de la cita.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Los datos que se solicitan en este formulario deben ser completados por el Médico Tratante del paciente. El médico solicitante es el responsable de un documento de carácter médico-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulario de actualización de cita",

@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "Modalidade",
         "MODALITY_SELECT": "Selecione a modalidade do estudo",
         "PHYSICIAN_ID_LABEL": "ID do médico requisitante"
-      }
+      },
+      "DISCLAIMER": "O procedimento a ser realizado será definido no momento da criação do agendamento.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Os dados solicitados neste formulário devem ser preenchidos pelo Médico Solicitante do paciente. O médico requisitante é responsável por um documento de caráter médico-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulário de Atualização de Agendamento",

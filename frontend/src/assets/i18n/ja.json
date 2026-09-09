@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "モダリティ",
         "MODALITY_SELECT": "検査のモダリティを選択してください",
         "PHYSICIAN_ID_LABEL": "依頼医のID"
-      }
+      },
+      "DISCLAIMER": "実施される手技は予約作成時に決定されます。",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "このフォームで要求されるデータは、患者の担当医によって入力する必要があります。依頼医は、医学的・法的性質の文書を責任もって作成する必要があります。"
     },
     "FORM_UPDATE": {
       "TITLE": "予約更新フォーム",

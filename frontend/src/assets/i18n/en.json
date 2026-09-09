@@ -257,7 +257,9 @@
         "MODALITY_PLACEHOLDER": "Modality",
         "MODALITY_SELECT": "Select the study modality",
         "PHYSICIAN_ID_LABEL": "Requesting physician ID"
-      }
+      },
+      "DISCLAIMER": "The procedure to be performed will be set at the time of appointment creation.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "The data requested in this form must be completed by the patient's treating physician. The requesting physician is responsible for a document of a medical-legal nature."
     },
     "FORM_UPDATE": {
       "TITLE": "Appointment Update Form",

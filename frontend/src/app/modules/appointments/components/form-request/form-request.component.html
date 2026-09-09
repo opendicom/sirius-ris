@@ -69,7 +69,7 @@
 
             <hr class="dashed" /><br/>
 
-            <h4 [class.required-error]="form.get('patient.gender')?.invalid && form.get('patient.gender')?.touched">{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }} -</h4>
+            <h4 [class.required-error]="form.get('patient.gender')?.invalid && form.get('patient.gender')?.touched">{{ 'USERS.FORM.PERSON_TAB.GENDER_TITLE' | i18n }}</h4>
             <mat-radio-group color="primary" formControlName="gender">
               <mat-radio-button *ngFor="let currentGenderKey of genderTypesKeys" value="{{ currentGenderKey }}">{{ ('GENDER_TYPES.' + currentGenderKey) | i18n }}</mat-radio-button>
             </mat-radio-group>
@@ -184,29 +184,30 @@
             <mat-radio-button value="true">{{ 'ACTION.URGENCY_HIGH' | i18n }}</mat-radio-button>
             <mat-radio-button value="false">{{ 'ACTION.URGENCY_NORMAL' | i18n }}</mat-radio-button>
           </mat-radio-group>
-
-          <br/><br/>
         </div>
       </div>
 
-      <hr class="dashed" /><br/>
+      <hr class="dashed" />
 
       <!-- annotations / anamnesis / indications (one full-width column per row, below requesting institution) -->
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper divider">
+          <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+          <ckeditor formControlName="anamnesis" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+        </div>
+
+        <div class="input-wrapper">
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+          <ckeditor formControlName="indications" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+        </div>
+      </div>
+
+      <hr class="dashed" />
+
       <div class="input-wrapper">
         <h4>{{ 'APPOINTMENTS.FORM_REQUEST.ANNOTATIONS' | i18n }} <span class="label-info">min: 10, max: 2000</span>:</h4>
         <ckeditor formControlName="annotations" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
 
-        <br/><br/>
-
-        <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
-        <ckeditor formControlName="anamnesis" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-
-        <br/><br/>
-
-        <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
-        <ckeditor formControlName="indications" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-
-        <br/><br/>
       </div>
     </mat-tab>
     <!-- MAIN DATA TAB: ------------------------------------------------------------------------------------------------ -->
@@ -236,8 +237,13 @@
           <br/><br/>
         </div>
 
-        <div class="input-wrapper text-center">
-          <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="nodes">
+        <div class="input-wrapper text-center disclaimer-wrap">
+          <!-- Disclaimer -->
+          <div class="current-info">
+            <mat-icon>info</mat-icon>&nbsp;&nbsp; {{ 'APPOINTMENTS.FORM_REQUEST.DISCLAIMER' | i18n }}
+          </div>
+
+          <div class="clear"></div>
         </div>
       </div>
     </mat-tab>
@@ -272,6 +278,15 @@
           </mat-form-field>
 
           <br/><br/>
+        </div>
+
+        <div class="input-wrapper text-center disclaimer-wrap">
+          <!-- Disclaimer -->
+          <div class="current-info">
+            <mat-icon>warning</mat-icon>&nbsp;&nbsp; {{ 'APPOINTMENTS.FORM_REQUEST.DISCLAIMER_REQUESTING_PHYSICIAN' | i18n }}
+          </div>
+
+          <div class="clear"></div>
         </div>
       </div>
     </mat-tab>

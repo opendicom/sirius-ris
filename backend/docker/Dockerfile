@@ -11,7 +11,7 @@
 # SIRIUS BACKEND STAGE:
 # ------------------------------------------------------------------------------------- #
 # Maximum compatibility for multiplatform builds:
-FROM node:18-bullseye
+FROM node:18-bookworm
 
 LABEL version="1.7.0"
 LABEL maintainer="opendicom <info@opendicom.com>"
