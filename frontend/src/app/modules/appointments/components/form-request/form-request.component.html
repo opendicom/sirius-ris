@@ -125,7 +125,7 @@
         <div class="input-wrapper divider" fxFlex="50" style="min-width: 260px;">
           <!-- imaging (organization + branch set together) -->
           <div formGroupName="imaging">
-            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_LABEL' | i18n }}</h4>
+            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_LABEL' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_PLACEHOLDER' | i18n }}</mat-label>
               <mat-select formControlName="branch" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_SELECT' | i18n }}" (selectionChange)="onImagingBranchChange($event.value)">
@@ -142,7 +142,7 @@
 
           <!-- referring (organization only) -->
           <div formGroupName="referring">
-            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_LABEL' | i18n }}</h4>
+            <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_LABEL' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_PLACEHOLDER' | i18n }}</mat-label>
               <mat-select formControlName="organization" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_SELECT' | i18n }}">

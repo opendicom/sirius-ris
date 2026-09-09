@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña"
         },
         "IMAGING_LABEL": "Sucursal",
-        "IMAGING_PLACEHOLDER": "Sucursal",
+        "IMAGING_PLACEHOLDER": "Seleccione la sucursal realizadora del estudio",
         "IMAGING_SELECT": "Seleccione la sucursal",
         "REFERRING_LABEL": "Organización solicitante",
         "REFERRING_PLACEHOLDER": "Organización solicitante",

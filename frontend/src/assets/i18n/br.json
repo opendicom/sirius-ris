@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "Existem erros de validação nesta aba"
         },
         "IMAGING_LABEL": "Filial",
-        "IMAGING_PLACEHOLDER": "Filial",
+        "IMAGING_PLACEHOLDER": "Filial realizadora do estudo",
         "IMAGING_SELECT": "Selecione a filial",
         "REFERRING_LABEL": "Organização requisitante",
         "REFERRING_PLACEHOLDER": "Organização requisitante",

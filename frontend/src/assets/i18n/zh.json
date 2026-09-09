@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误"
         },
         "IMAGING_LABEL": "分院",
-        "IMAGING_PLACEHOLDER": "分院",
+        "IMAGING_PLACEHOLDER": "选择执行研究的分院",
         "IMAGING_SELECT": "请选择分院",
         "REFERRING_LABEL": "请求机构",
         "REFERRING_PLACEHOLDER": "请求机构",

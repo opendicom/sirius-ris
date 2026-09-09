@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки проверки"
         },
         "IMAGING_LABEL": "Филиал",
-        "IMAGING_PLACEHOLDER": "Филиал",
+        "IMAGING_PLACEHOLDER": "Выберите филиал, выполняющий исследование",
         "IMAGING_SELECT": "Выберите филиал",
         "REFERRING_LABEL": "Запрашивающая организация",
         "REFERRING_PLACEHOLDER": "Запрашивающая организация",

@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "Sono presenti errori di convalida in questa scheda"
         },
         "IMAGING_LABEL": "Filiale",
-        "IMAGING_PLACEHOLDER": "Filiale",
+        "IMAGING_PLACEHOLDER": "Seleziona la filiale esecutrice dello studio",
         "IMAGING_SELECT": "Seleziona la filiale",
         "REFERRING_LABEL": "Organizzazione richiedente",
         "REFERRING_PLACEHOLDER": "Organizzazione richiedente",

@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "このタブに検証エラーがあります"
         },
         "IMAGING_LABEL": "支店",
-        "IMAGING_PLACEHOLDER": "支店",
+        "IMAGING_PLACEHOLDER": "依頼された検査を実施する支店を選択してください",
         "IMAGING_SELECT": "支店を選択してください",
         "REFERRING_LABEL": "依頼元組織",
         "REFERRING_PLACEHOLDER": "依頼元組織",

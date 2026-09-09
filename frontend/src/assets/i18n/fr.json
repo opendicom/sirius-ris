@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
         },
         "IMAGING_LABEL": "Filiale",
-        "IMAGING_PLACEHOLDER": "Filiale",
+        "IMAGING_PLACEHOLDER": "Sélectionnez la filiale réalisatrice de l'étude",
         "IMAGING_SELECT": "Sélectionnez la filiale",
         "REFERRING_LABEL": "Organisation demanderesse",
         "REFERRING_PLACEHOLDER": "Organisation demanderesse",

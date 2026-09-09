@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "Es gibt Validierungsfehler auf dieser Registerkarte"
         },
         "IMAGING_LABEL": "Filiale",
-        "IMAGING_PLACEHOLDER": "Filiale",
+        "IMAGING_PLACEHOLDER": "Filiale der Studie durchführen",
         "IMAGING_SELECT": "Filiale auswählen",
         "REFERRING_LABEL": "Anfordernde Organisation",
         "REFERRING_PLACEHOLDER": "Anfordernde Organisation",

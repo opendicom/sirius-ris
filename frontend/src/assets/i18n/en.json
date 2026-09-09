@@ -248,7 +248,7 @@
           "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab"
         },
         "IMAGING_LABEL": "Branch",
-        "IMAGING_PLACEHOLDER": "Branch",
+        "IMAGING_PLACEHOLDER": "Select the branch performing the study",
         "IMAGING_SELECT": "Select the branch",
         "REFERRING_LABEL": "Requesting organization",
         "REFERRING_PLACEHOLDER": "Requesting organization",
