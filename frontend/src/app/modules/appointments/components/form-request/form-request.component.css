@@ -34,6 +34,31 @@
   color: var(--orange-intense);
 }
 
+.documents {
+  position: relative;
+  float: left;
+  width: 50%;
+}
+
+.documents mat-form-field {
+  min-width: 200px;
+  width: 100%;
+}
+
+.document_inputs {
+  z-index: 10000;
+}
+
+.validate-info {
+  position: relative;
+  top: 10px !important;
+}
+
+.validate-icon {
+  position: relative;
+  top: 7px !important;
+}
+
 .current-info {
   float: left;
   margin-right: 10px;

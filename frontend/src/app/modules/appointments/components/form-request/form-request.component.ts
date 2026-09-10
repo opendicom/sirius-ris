@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';            
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
+import { ValidateDocumentsService } from '@shared/services/validate-documents.service'; // Validate documents service
 import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -37,6 +38,11 @@ export class FormRequestComponent implements OnInit {
   public studyTabErrors  : boolean = false;
   public patientTabErrors: boolean = false;
   public extraTabErrors  : boolean = false;
+
+  //Initializate validation document vars:
+  public registered_doc_type  : boolean = false;
+  public validation_result    : boolean = false;
+  public disabled_save_button : boolean = false;
 
   //Create CKEditor component and configure them:
   public ckEditor = customBuildEditor;
@@ -116,6 +122,7 @@ export class FormRequestComponent implements OnInit {
     private objRoute        : ActivatedRoute,
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
+    private sharedValidate  : ValidateDocumentsService,
     private i18n            : I18nService
   ){
     //Get Logged User Information:
@@ -171,6 +178,9 @@ export class FormRequestComponent implements OnInit {
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
 
+            //Validate document (Set validation icon state for the loaded patient):
+            this.validateDocument();
+
           } else {
             //Return to the list with request error message:
             this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_REQUEST.EDIT_ERROR') + res.message);
@@ -180,10 +190,67 @@ export class FormRequestComponent implements OnInit {
       }
     }
 
+    //Preload the "Physician" tab with the logged user's own data (self-service insert by role Médico):
+    if(this.form_action == 'insert' && this.sharedProp.userLogged.permissions[0].role == 4){
+      this.prefillPhysicianData();
+    }
+
     //Enable source editing CKEditor for Superuser:
     if(this.sharedProp.userLogged.permissions[0].role == 1){
       //Add sourceEditing to the toolbar:
       if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
+    }
+  }
+
+  //Preload requesting physician fields with the logged in Médico's own person and professional data:
+  prefillPhysicianData(): void{
+    const person_params = { 'filter[_id]': this.sharedProp.userLogged.person_id };
+
+    //Person data (Name and contact phone):
+    this.sharedFunctions.find('people', person_params, (res) => {
+      if(res.success === true && res.data.length > 0){
+        const person = res.data[0];
+
+        this.form.get('extra.physician_name')?.setValue(`${person.name_01} ${person.surname_01}`.trim());
+
+        if(person.phone_numbers && person.phone_numbers.length > 0){
+          this.form.get('extra.physician_contact')?.setValue(person.phone_numbers[0]);
+        }
+      }
+    });
+
+    const user_params = { 'filter[_id]': this.sharedProp.userLogged.user_id };
+
+    //User's professional data (physician_id maps to users.professional.id, not the person's document):
+    this.sharedFunctions.find('users', user_params, (res) => {
+      if(res.success === true && res.data.length > 0 && res.data[0].professional && res.data[0].professional.id){
+        this.form.get('extra.physician_id')?.setValue(res.data[0].professional.id);
+      }
+    });
+  }
+
+  //Validate patient document (Reuses the same document validation used across the app, e.g. patient check-in):
+  validateDocument(){
+    //Get validation result:
+    const result = this.sharedValidate.validate(this.form.value.patient.doc_country_code, this.form.value.patient.doc_type, this.form.value.patient.document);
+
+    //Set validation result in component vars:
+    this.registered_doc_type = result.registered_doc_type;
+
+    //Check that the type of document is registered:
+    if(result.registered_doc_type === true){
+      this.validation_result = result.validation_result;
+
+      //Check if the document requires parsing:
+      if(result.doc_parser.is_parsed === true){
+        this.form.get('patient.document')?.setValue(result.doc_parser.parser_result);
+      }
+
+      //Enable and disable save button:
+      this.disabled_save_button = !result.validation_result;
+    } else {
+      //Enable save button (Document type not registered):
+      this.disabled_save_button = false;
     }
   }
 

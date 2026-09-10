@@ -12,33 +12,41 @@
       <div formGroupName="patient">
         <div fxLayout="row" fxLayoutAlign="start start">
           <div class="input-wrapper divider">
-            <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</h4>
-            <mat-form-field appearance="fill" class="medium document_inputs">
-              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
-              <mat-select formControlName="doc_country_code">
-                <div *ngFor="let currentCode of getKeys(country_codes, true)">
-                  <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
+            <div class="documents">
+              <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</h4>
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
+                <mat-select formControlName="doc_country_code" (selectionChange)="validateDocument()">
+                  <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                    <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
 
-            <br/>
+              <br/>
 
-            <mat-form-field appearance="fill" class="medium document_inputs">
-              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
-              <mat-select formControlName="doc_type">
-                <div *ngFor="let currentDocTypeKey of documentTypesKeys">
-                  <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
+                <mat-select formControlName="doc_type" (selectionChange)="validateDocument()">
+                  <div *ngFor="let currentDocTypeKey of documentTypesKeys">
+                    <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
 
-            <br/>
+              <br/>
 
-            <mat-form-field appearance="fill" class="medium document_inputs">
-              <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
-              <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}">
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="medium document_inputs">
+                <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
+                <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}" (blur)="validateDocument()" (keyup)="validateDocument()">
+              </mat-form-field>
+            </div>
+
+            <div *ngIf="this.registered_doc_type === true" class="validate-info text-right">
+              <div *ngIf="this.validation_result; then thenBlockDocValidation else elseBlockDocValidation"></div>
+              <ng-template #thenBlockDocValidation><span class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_OK' | i18n }}">{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }} <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
+              <ng-template #elseBlockDocValidation><span class="label-accent" matTooltip="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION_FAIL' | i18n }}">{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_VALIDATION' | i18n }} <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
+            </div>
 
             <div class="clear"></div>
             <hr class="dashed" /><br/>
@@ -297,7 +305,7 @@
   <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
     <div>
       <button mat-flat-button type="button" (click)="onCancel();">{{ 'COMMON.CANCEL' | i18n | uppercase }}</button>
-      <button mat-flat-button type="submit" color="primary">{{ 'COMMON.SAVE' | i18n | uppercase }}</button>
+      <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">{{ 'COMMON.SAVE' | i18n | uppercase }}</button>
     </div>
   </div>
 </form>
