@@ -27,6 +27,9 @@ export class FormComponent implements OnInit {
   public selectedFile           : any = null;
   public selectedLogoController : boolean = false;
 
+  //PDF reports logo preview (data URI from FileReader or DB):
+  public previewLogo : string | null = null;
+
   //Set references objects:
   public availableOrganizations: any;
 
@@ -140,6 +143,7 @@ export class FormComponent implements OnInit {
             if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
               //Set selected Logo Controller:
               this.selectedLogoController = true;
+              this.previewLogo = this.sharedFunctions.getLogoDataURI(res.data[0].base64_logo);
             }
 
             //Get property keys with values:
@@ -157,8 +161,11 @@ export class FormComponent implements OnInit {
 
   onFileSelected(event: any){
     //Set selected file:
-    this.selectedFile = <File>event.target.files[0];
+    const file = <File>event.target.files[0];
+    if(!file) return;
+    this.selectedFile = file;
     this.selectedLogoController = true;
+    this._readFilePreview(file, (r) => { this.previewLogo = r; });
   }
 
   onSubmit(){
@@ -223,11 +230,18 @@ export class FormComponent implements OnInit {
       //Check result:
       if(res.success == true){
         this.sharedFunctions.sendMessage(this.i18n.instant('BRANCHES.FORM.DELETE_FILE_SUCCESS'), { duration : 2000 });
-
         //Reset logo file controllers:
         this.selectedFile = null;
         this.selectedLogoController = false;
+        this.previewLogo = null;
       }
     });
+  }
+
+  //Read a selected image file and return it as a data URI for preview:
+  private _readFilePreview(file: File, callback: (result: string) => void): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => callback(e.target.result);
+    reader.readAsDataURL(file);
   }
 }
