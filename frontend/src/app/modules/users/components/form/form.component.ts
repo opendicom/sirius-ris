@@ -35,6 +35,9 @@ export class FormComponent implements OnInit {
   public availableBranches      : any;
   public availableServices      : any;
 
+  //Filtered list used by the domain matAutocomplete:
+  public filteredDomainOptions : any[] = [];
+
   //Initializate response & params objects:
   private response      : any = {};
   private user_params   : any = {};
@@ -145,6 +148,7 @@ export class FormComponent implements OnInit {
       //User permissions:
       'domain_type'       : [ 'organization', [],],
       'domain'            : [ '', []],
+      'domain_input'      : [ '', []], //Visible text input for domain matAutocomplete.
       'role'              : [ '', []],
       'concessions'       : [ [], []]
     });
@@ -843,16 +847,78 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+      if(this.form.value.domain_type === 'organization'){ this.filteredDomainOptions = this.availableOrganizations; }
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
+      if(this.form.value.domain_type === 'branch'){ this.filteredDomainOptions = this.availableBranches; }
     });
 
     //Find services:
     this.sharedFunctions.find('services', params, (res) => {
       this.availableServices = res.data;
+      if(this.form.value.domain_type === 'service'){ this.filteredDomainOptions = this.availableServices; }
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER DOMAIN OPTIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getDomainOptionsList(domainType: string): any[]{
+    switch(domainType){
+      case 'organization': return this.availableOrganizations || [];
+      case 'branch':       return this.availableBranches || [];
+      case 'service':      return this.availableServices || [];
+      default:             return [];
+    }
+  }
+
+  getDomainLabel(currentItem: any, domainType: string): string{
+    //Guard against missing item:
+    if(!currentItem){ return ''; }
+
+    switch(domainType){
+      case 'organization':
+        return `${currentItem.short_name} (${currentItem.name})`;
+
+      case 'branch': {
+        const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentItem.fk_organization);
+        return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentItem.short_name} (${currentItem.name})`;
+      }
+
+      case 'service': {
+        const currentBranch = (this.availableBranches || []).find((currentBranch: any) => currentBranch._id == currentItem.fk_branch);
+        const currentOrganization = currentBranch ? (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization) : undefined;
+        return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch ? currentBranch.short_name + ' ► ' : ''}${currentItem.name}`;
+      }
+
+      default:
+        return '';
+    }
+  }
+
+  filterDomainOptions(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+    const domainType = this.form.value.domain_type;
+
+    //Filter domain options by their built label:
+    this.filteredDomainOptions = this.getDomainOptionsList(domainType).filter((currentItem: any) => this.getDomainLabel(currentItem, domainType).toUpperCase().includes(filterValue));
+  }
+
+  selectDomainOption(currentItem: any){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    this.form.get('domain')?.setValue(currentItem._id);
+    this.form.get('domain_input')?.setValue(this.getDomainLabel(currentItem, this.form.value.domain_type));
+  }
+
+  onDomainTypeChange(event: any){
+    //Reset domain selection and refresh the filtered list for the newly selected domain type:
+    this.form.get('domain')?.setValue('');
+    this.form.get('domain_input')?.setValue('');
+    this.filteredDomainOptions = this.getDomainOptionsList(event.value);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
