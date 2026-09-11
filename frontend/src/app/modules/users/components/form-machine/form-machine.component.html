@@ -105,7 +105,7 @@
           <br/><hr class="dashed" /><br/>
 
           <h4>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TYPE_TITLE' | i18n }}</h4>
-          <mat-radio-group color="primary" formControlName="domain_type">
+          <mat-radio-group color="primary" formControlName="domain_type" (change)="onDomainTypeChange($event)">
             <mat-radio-button value="organization" [disabled]="userService.disableRadioOrganization">{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TYPE_ORG' | i18n }}</mat-radio-button>
             <mat-radio-button value="branch" [disabled]="userService.disableRadioBranch">{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TYPE_BRANCH' | i18n }}</mat-radio-button>
             <mat-radio-button value="service" [disabled]="userService.disableRadioService">{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TYPE_SERVICE' | i18n }}</mat-radio-button>
@@ -113,53 +113,16 @@
 
           <br/><br/><hr class="dashed" /><br/>
 
-
-          <div [ngSwitch]="form.value.domain_type">
-            <!--ORGANIZATION-->
-            <span *ngSwitchCase="'organization'">
-              <h4>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
-              <mat-form-field appearance="fill" class="large">
-                <mat-label>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
-                <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
-                  <div *ngFor="let currentOrganization of availableOrganizations">
-                    <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
-                  </div>
-                </mat-select>
-              </mat-form-field>
-            </span>
-
-            <!--BRANCH-->
-            <span *ngSwitchCase="'branch'">
-              <h4>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
-              <mat-form-field appearance="fill" class="large">
-                <mat-label>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
-                <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
-                  <div *ngFor="let currentBranch of availableBranches">
-                    <div *ngFor="let currentOrganization of availableOrganizations">
-                      <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
-                    </div>
-                  </div>
-                </mat-select>
-              </mat-form-field>
-            </span>
-
-            <!--SERVICE-->
-            <span *ngSwitchCase="'service'">
-              <h4>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
-              <mat-form-field appearance="fill" class="large">
-                <mat-label>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
-                <mat-select formControlName="domain" placeholder="{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
-                  <div *ngFor="let currentService of availableServices">
-                    <div *ngFor="let currentBranch of availableBranches">
-                      <div *ngFor="let currentOrganization of availableOrganizations">
-                        <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id && currentService.fk_branch == currentBranch._id" value="{{ currentService._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ► {{ currentService.name }}</mat-option>
-                      </div>
-                    </div>
-                  </div>
-                </mat-select>
-              </mat-form-field>
-            </span>
-          </div>
+          <h4>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_TITLE' | i18n }}</h4>
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_PLACEHOLDER' | i18n }}</mat-label>
+            <input #inputDomain type="text" matInput formControlName="domain_input" (keyup)="filterDomainOptions($event)" [matAutocomplete]="autoDomain" placeholder="{{ 'USERS.FORM_MACHINE.PERMISSIONS_TAB.DOMAIN_SELECT' | i18n }}">
+            <mat-autocomplete #autoDomain="matAutocomplete">
+              <mat-option (onSelectionChange)="selectDomainOption(currentDomainOption)" *ngFor="let currentDomainOption of filteredDomainOptions" [value]="getDomainLabel(currentDomainOption, form.value.domain_type)">
+                <span [innerHTML]="getDomainLabel(currentDomainOption, form.value.domain_type) | highlighter : inputDomain.value"></span>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
 
           <br/><hr class="dashed" /><br/>
 

@@ -26,6 +26,9 @@ export class FormComponent implements OnInit {
   public selectedCertFile       : any = null;
   public selectedCertController : boolean = false;
 
+  //PDF reports logo preview (data URI from FileReader or DB):
+  public previewLogo : string | null = null;
+
   //White labeling logo controllers:
   public selectedLogoHorizontalFile       : any = null;
   public selectedLogoHorizontalController : boolean = false;
@@ -144,6 +147,7 @@ export class FormComponent implements OnInit {
             if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
               //Set selected Logo Controller:
               this.selectedLogoController = true;
+              this.previewLogo = this.sharedFunctions.getLogoDataURI(res.data[0].base64_logo);
             }
 
             //Set base64_cert:
@@ -182,10 +186,14 @@ export class FormComponent implements OnInit {
   onFileSelected(event: any, type: string){
     //Set selected file:
     switch(type){
-      case 'logo':
-        this.selectedLogoFile = <File>event.target.files[0];
+      case 'logo': {
+        const file = <File>event.target.files[0];
+        if(!file) return;
+        this.selectedLogoFile = file;
         this.selectedLogoController = true;
+        this._readFilePreview(file, (r) => { this.previewLogo = r; });
         break;
+      }
       case 'cert':
         this.selectedCertFile = <File>event.target.files[0];
         this.selectedCertController = true;
@@ -319,6 +327,7 @@ export class FormComponent implements OnInit {
           case 'base64_logo':
             this.selectedLogoFile = null;
             this.selectedLogoController = false;
+            this.previewLogo = null;
             break;
           case 'base64_cert':
             this.selectedCertFile = null;
