@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Please wait, request details are not yet loaded.",
       "STATUS_AND_ANNOTATIONS": "Status and annotations:",
       "WORKFLOW": "Workflow:",
-      "ANNOTATIONS": "Annotations"
+      "ANNOTATIONS": "Annotations",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Main data",
+          "STUDY": "Requested study",
+          "PATIENT": "Patient data",
+          "EXTRA": "Physician",
+          "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab"
+        },
+        "IMAGING_LABEL": "Branch",
+        "IMAGING_PLACEHOLDER": "Select the branch performing the study",
+        "IMAGING_SELECT": "Select the branch",
+        "REFERRING_LABEL": "Requesting organization",
+        "REFERRING_PLACEHOLDER": "Requesting organization",
+        "REFERRING_SELECT": "Select the requesting organization",
+        "MODALITY_LABEL": "Modality",
+        "MODALITY_PLACEHOLDER": "Modality",
+        "MODALITY_SELECT": "Select the study modality",
+        "PHYSICIAN_ID_LABEL": "Requesting physician ID"
+      },
+      "DISCLAIMER": "The procedure to be performed will be set at the time of appointment creation.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "The data requested in this form must be completed by the patient's treating physician. The requesting physician is responsible for a document of a medical-legal nature."
     },
     "FORM_UPDATE": {
       "TITLE": "Appointment Update Form",

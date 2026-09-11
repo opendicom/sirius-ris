@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Aguarde, aún no se cargaron los detalles de la solicitud.",
       "STATUS_AND_ANNOTATIONS": "Estado y anotaciones:",
       "WORKFLOW": "Flujo de trabajo:",
-      "ANNOTATIONS": "Anotaciones"
+      "ANNOTATIONS": "Anotaciones",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Datos principales",
+          "STUDY": "Estudio solicitado",
+          "PATIENT": "Datos del paciente",
+          "EXTRA": "Médico",
+          "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña"
+        },
+        "IMAGING_LABEL": "Sucursal",
+        "IMAGING_PLACEHOLDER": "Seleccione la sucursal realizadora del estudio",
+        "IMAGING_SELECT": "Seleccione la sucursal",
+        "REFERRING_LABEL": "Organización solicitante",
+        "REFERRING_PLACEHOLDER": "Organización solicitante",
+        "REFERRING_SELECT": "Seleccione la organización solicitante",
+        "MODALITY_LABEL": "Modalidad",
+        "MODALITY_PLACEHOLDER": "Modalidad",
+        "MODALITY_SELECT": "Seleccione la modalidad del estudio",
+        "PHYSICIAN_ID_LABEL": "ID del médico solicitante"
+      },
+      "DISCLAIMER": "El procedimiento a realizar se establecerá al momento de creación de la cita.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Los datos que se solicitan en este formulario deben ser completados por el Médico Tratante del paciente. El médico solicitante es el responsable de un documento de carácter médico-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulario de actualización de cita",

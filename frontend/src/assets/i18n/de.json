@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Bitte warten, die Anforderungsdetails sind noch nicht geladen.",
       "STATUS_AND_ANNOTATIONS": "Status und Anmerkungen:",
       "WORKFLOW": "Arbeitsablauf:",
-      "ANNOTATIONS": "Anmerkungen"
+      "ANNOTATIONS": "Anmerkungen",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Hauptdaten",
+          "STUDY": "Angeforderte Studie",
+          "PATIENT": "Patientendaten",
+          "EXTRA": "Arzt",
+          "VALIDATION_ERROR_TOOLTIP": "Es gibt Validierungsfehler auf dieser Registerkarte"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Filiale der Studie durchführen",
+        "IMAGING_SELECT": "Filiale auswählen",
+        "REFERRING_LABEL": "Anfordernde Organisation",
+        "REFERRING_PLACEHOLDER": "Anfordernde Organisation",
+        "REFERRING_SELECT": "Anfordernde Organisation auswählen",
+        "MODALITY_LABEL": "Modalität",
+        "MODALITY_PLACEHOLDER": "Modalität",
+        "MODALITY_SELECT": "Modalität der Studie auswählen",
+        "PHYSICIAN_ID_LABEL": "ID des anfordernden Arztes"
+      },
+      "DISCLAIMER": "Der Prozedur wird zum Zeitpunkt der Terminerstellung festgelegt.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Die in diesem Formular angeforderten Daten müssen vom behandelnden Arzt des Patienten ausgefüllt werden. Der anfordernde Arzt ist für ein medizinisch-rechtliches Dokument verantwortlich."
     },
     "FORM_UPDATE": {
       "TITLE": "Formular zur Terminaktualisierung",

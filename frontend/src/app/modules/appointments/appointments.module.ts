@@ -18,7 +18,7 @@ import { TabDetailsComponent } from '@modules/appointments/components/form-updat
 import { TabSlotComponent } from '@modules/appointments/components/form-update/tab-slot/tab-slot.component';
 import { ListDraftsComponent } from '@modules/appointments/components/list-drafts/list-drafts.component';
 import { ListRequestsComponent } from '@modules/appointments/components/list-requests/list-requests.component';
-import { FormRequestComponent } from '@modules/appointments/components/form-request/form-request.component';
+import { FormRequestComponent } from '@app/modules/appointments/components/form-request/form-request.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';

@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Veuillez patienter, les détails de la demande ne sont pas encore chargés.",
       "STATUS_AND_ANNOTATIONS": "Statut et annotations :",
       "WORKFLOW": "Flux de travail :",
-      "ANNOTATIONS": "Annotations"
+      "ANNOTATIONS": "Annotations",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Données principales",
+          "STUDY": "Étude demandée",
+          "PATIENT": "Données du patient",
+          "EXTRA": "Médecin",
+          "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Sélectionnez la filiale réalisatrice de l'étude",
+        "IMAGING_SELECT": "Sélectionnez la filiale",
+        "REFERRING_LABEL": "Organisation demanderesse",
+        "REFERRING_PLACEHOLDER": "Organisation demanderesse",
+        "REFERRING_SELECT": "Sélectionnez l'organisation demanderesse",
+        "MODALITY_LABEL": "Modalité",
+        "MODALITY_PLACEHOLDER": "Modalité",
+        "MODALITY_SELECT": "Sélectionnez la modalité de l'étude",
+        "PHYSICIAN_ID_LABEL": "ID du médecin demandeur"
+      },
+      "DISCLAIMER": "Le procédure à réaliser sera définie au moment de la création du rendez-vous.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Les données demandées dans ce formulaire doivent être complétées par le médecin traitant du patient. Le médecin demandeur est responsable d'un document de nature médicale-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulaire de mise à jour du rendez-vous",
