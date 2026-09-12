@@ -40,6 +40,9 @@ export class FormComponent implements OnInit {
   public anesthesiaTabErrors    : boolean = false;
   public acquisitionTabErrors   : boolean = false;
 
+  //Set loading state:
+  public loading: boolean = false;
+
   //Initializate available flow states:
   public availableFS            : any = {};
 
@@ -209,6 +212,9 @@ export class FormComponent implements OnInit {
       if(!this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.includes('sourceEditing')){ this.sharedProp.mainSettings.CKEditorConfig.toolbar.items.push('sourceEditing'); }
     }
 
+    //Set loading state:
+    this.loading = true;
+
     //Switch by form action:
     switch(this.form_action){
       case 'insert':
@@ -226,6 +232,9 @@ export class FormComponent implements OnInit {
         this.findReferencedAppointment('check-in', (resAppointments) => {
           //Set available flow states:
           this.setAvailableFlowStates('P01', resAppointments.data[0].procedure.has_interview);
+
+          //Set loading to false when data is received:
+          this.loading = false;
         });
 
         break;
@@ -405,6 +414,9 @@ export class FormComponent implements OnInit {
 
             //Set flow state (Enable validators):
             this.setFlowState(resPerforming.data[0].flow_state);
+
+            //Set loading to false when data is received:
+            this.loading = false;
 
           } else {
             //Return to the list with request error message:

@@ -86,21 +86,27 @@
 
       <br/><br/><hr class="dashed" /><br/>
 
-      <!-- Start logo file -->
-      <div *ngIf="selectedLogoController; then thenBlockLogo else elseBlockLogo"></div>
-
-      <ng-template #thenBlockLogo>
-        <button mat-flat-button type="button" class="file-button">
-          <mat-icon>image</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_BUTTON_LABEL' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedLogoFile === null" [matTooltip]="'ORGANIZATIONS.FORM.DELETE_LOGO_TOOLTIP' | i18n" class="delete-file" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
-        </button>
-
-      </ng-template>
-
-      <ng-template #elseBlockLogo>
-        <input type="file" (change)="onFileSelected($event, 'logo')" #fileInputLogo style="display: none" />
-        <button mat-flat-button type="button" color="accent" (click)="fileInputLogo.click()">
-        <mat-icon>add_photo_alternate</mat-icon> {{ 'ORGANIZATIONS.FORM.LOGO_SELECT' | i18n }}</button>
-      </ng-template>
+      <!-- Start logo file (PDF reports logo) -->
+      <div class="branding-logo-card">
+        <div class="branding-logo-preview">
+          <img *ngIf="previewLogo" [src]="previewLogo" class="branding-logo-img" />
+          <mat-icon *ngIf="!previewLogo" class="branding-logo-placeholder">image</mat-icon>
+        </div>
+        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.LOGO_BUTTON_LABEL' | i18n }}</p>
+        <div class="branding-logo-actions">
+          <input type="file" accept="image/*" (change)="onFileSelected($event, 'logo')" #fileInputLogo style="display:none" />
+          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoController" (click)="fileInputLogo.click()">
+            <mat-icon>{{ selectedLogoController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+            {{ (selectedLogoController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.LOGO_SELECT') | i18n }}
+          </button>
+          <button *ngIf="form_action == 'update' && selectedLogoController && selectedLogoFile === null"
+            mat-icon-button type="button" color="warn"
+            [matTooltip]="'ORGANIZATIONS.FORM.DELETE_LOGO_TOOLTIP' | i18n"
+            (click)="onDeleteFileRef('base64_logo')">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
       <!-- End logo file -->
 
     </div> <!-- end fxLayout wrapper -->

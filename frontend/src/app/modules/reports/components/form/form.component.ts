@@ -44,6 +44,9 @@ export class FormComponent implements OnInit {
   //Initializate validation tab errors:
   public reportTabErrors                : boolean = false;
 
+  //Set loading state:
+  public loading: boolean = false;
+
   //Initializate requestedDICOMController:
   public requestedDICOMController       : boolean = false;
   public ohifPath                       : string = '';
@@ -164,6 +167,9 @@ export class FormComponent implements OnInit {
       this.tabIndex = this.objRoute.snapshot.params['tabIndex'];
     }
 
+    //Set loading state:
+    this.loading = true;
+
     //Switch by form action:
     switch(this.form_action){
       case 'insert':
@@ -171,6 +177,9 @@ export class FormComponent implements OnInit {
         this.setPerformingData(this.fk_performing, (performingRes) => {
           //Find references (pathologies):
           this.findPathologies(performingRes.data[0].appointment.imaging.organization._id);
+
+          //Set loading to false when data is received:
+          this.loading = false;
         });
         break;
 
@@ -263,6 +272,9 @@ export class FormComponent implements OnInit {
 
             //Initialize pathologies:
             this.initializeSelectedPathologies(this.reportData.pathologies);
+
+            //Set loading to false when data is received:
+            this.loading = false;
 
           } else {
             //Return to the list with request error message:

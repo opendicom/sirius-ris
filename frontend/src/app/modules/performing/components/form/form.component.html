@@ -1,4 +1,9 @@
-<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmitMaster()" *ngIf="sharedProp.mainSettings != undefined">
+<!-- Loading indicator -->
+<div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center" style="height: 400px;">
+  <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+</div>
+
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmitMaster()" *ngIf="sharedProp.mainSettings != undefined" [class.non-display]="loading">
     <div fxLayout="row" fxLayoutAlign="start start">
       <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
         <h3 class="details-title">{{ 'PERFORMING.FORM.DETAILS_TITLE' | i18n }}</h3>
