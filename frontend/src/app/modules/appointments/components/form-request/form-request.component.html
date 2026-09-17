@@ -16,7 +16,7 @@
               <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.DOCUMENTS' | i18n }}</h4>
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_COUNTRY_PLACEHOLDER' | i18n }}</mat-label>
-                <mat-select formControlName="doc_country_code" (selectionChange)="validateDocument()">
+                <mat-select formControlName="doc_country_code" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentCode of getKeys(country_codes, true)">
                     <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
                   </div>
@@ -27,7 +27,7 @@
 
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOC_TYPE_PLACEHOLDER' | i18n }}</mat-label>
-                <mat-select formControlName="doc_type" (selectionChange)="validateDocument()">
+                <mat-select formControlName="doc_type" (selectionChange)="onSetDocument(true)">
                   <div *ngFor="let currentDocTypeKey of documentTypesKeys">
                     <mat-option value="{{ currentDocTypeKey }}">{{ ('DOCUMENT_TYPES.' + currentDocTypeKey) | i18n }}</mat-option>
                   </div>
@@ -38,7 +38,7 @@
 
               <mat-form-field appearance="fill" class="medium document_inputs">
                 <mat-label>{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_PLACEHOLDER' | i18n }}</mat-label>
-                <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}" (blur)="validateDocument()" (keyup)="validateDocument()">
+                <input matInput type="text" formControlName="document" placeholder="{{ 'USERS.FORM.PERSON_TAB.DOCUMENT_INPUT' | i18n }}" (blur)="onSetDocument()" (keyup)="validateDocument()">
               </mat-form-field>
             </div>
 
@@ -110,7 +110,7 @@
             <h4>{{ 'USERS.FORM.USER_TAB.EMAIL_TITLE' | i18n }}</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'USERS.FORM.USER_TAB.EMAIL_PLACEHOLDER' | i18n }}</mat-label>
-              <input matInput type="text" formControlName="email" placeholder="{{ 'USERS.FORM.USER_TAB.EMAIL_INPUT' | i18n }}">
+              <input matInput type="text" id="IDtxtEmail" formControlName="email" placeholder="{{ 'USERS.FORM.USER_TAB.EMAIL_INPUT' | i18n }}" (change)="onSetEmail()">
               <mat-icon matSuffix>mail</mat-icon>
             </mat-form-field>
           </div>
