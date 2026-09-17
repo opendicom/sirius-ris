@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service'; // Validate documents service
+import { map, mergeMap } from 'rxjs/operators';                                         // Reactive Extensions (RxJS)
 import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
@@ -43,6 +44,10 @@ export class FormRequestComponent implements OnInit {
   public registered_doc_type  : boolean = false;
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = false;
+
+  //Initializate response & params objects (Used by onSetDocument's duplicate check pipe):
+  private response      : any = {};
+  private user_params   : any = {};
 
   //Create CKEditor component and configure them:
   public ckEditor = customBuildEditor;
@@ -252,6 +257,208 @@ export class FormRequestComponent implements OnInit {
       //Enable save button (Document type not registered):
       this.disabled_save_button = false;
     }
+  }
+
+  //Check if the entered document already belongs to a registered person/patient (Same duplicate-check pattern as users/form and appointments/set-patient):
+  onSetDocument(preventClear: boolean = false): void{
+    //Validate document (Check registered_doc_type):
+    this.validateDocument();
+
+    //Check document fields content:
+    if(this.form.value.patient.document != '' && this.form.value.patient.doc_country_code != '' && this.form.value.patient.doc_type != ''){
+
+      //Set people params:
+      const people_params = {
+        'filter[elemMatch][documents][document]' : this.form.value.patient.document.toUpperCase(),
+        'filter[elemMatch][documents][doc_country_code]' : this.form.value.patient.doc_country_code,
+        'filter[elemMatch][documents][doc_type]' : this.form.value.patient.doc_type
+      };
+
+      //Create observable people:
+      const obsPeople = this.sharedFunctions.findRxJS('people', people_params, true);
+
+      //Create observable obsUser:
+      const obsUser = obsPeople.pipe(
+        //Check first result (find person):
+        map((res: any) => {
+          //Clear response and user_params objects:
+          this.response = {};
+          this.user_params = {};
+
+          //Check operation status:
+          if(res.success === true){
+            //Check data:
+            if(Object.keys(res.data).length > 0){
+              //Set user params:
+              this.user_params = {
+                'filter[fk_person]' : res.data[0]._id,
+                'proj[password]'    : 0
+              };
+
+              //Preserve response (only person data case):
+              this.response = res;
+            }
+          }
+
+          //Return response:
+          return res;
+        }),
+
+        //Search user with the fk_person (Return observable):
+        mergeMap(() => this.sharedFunctions.findRxJS('users', this.user_params, true)),
+
+        //Check second result (find user):
+        map((res: any) => {
+          //Check operation status:
+          if(res.success === true){
+            //Check data:
+            if(Object.keys(res.data).length == 0 || Object.keys(this.user_params).length == 0){
+              //Preserve person response (only person data case):
+              res = this.response;
+            } else {
+              //Preserve user response (in case you need to control from onSetEmail):
+              this.response = res;
+            }
+          }
+
+          //Return response:
+          return res;
+        })
+      );
+
+      //Observe content (Subscribe):
+      obsUser.subscribe({
+        next: (res) => {
+          //Check response:
+          if(Object.keys(res).length > 0){
+            //Clear previous patient data before loading the found one:
+            this.clearPatientFields(true);
+
+            //Found person WITH an associated user account:
+            if(res.data[0].fk_person){
+              this.setPatientFromPerson(res.data[0].person);
+
+              if(res.data[0].email){ this.form.get('patient.email')?.setValue(res.data[0].email); }
+
+            //Found person WITHOUT an associated user account (Only person data available):
+            } else {
+              this.setPatientFromPerson(res.data[0]);
+            }
+
+          //Genuinely new patient (No person/user found):
+          } else {
+            this.clearPatientFields(true);
+          }
+        }
+      });
+    } else {
+      //Check prevent clear (selectionChange: doc_country_code and doc_type):
+      if(preventClear == false){
+        //Clear data to FormControl elements:
+        this.clearPatientFields();
+      }
+    }
+  }
+
+  //Check if the entered email already belongs to a registered person/patient (Same duplicate-check pattern as users/form and appointments/set-patient):
+  onSetEmail(): void{
+    //Check the email field is not empty:
+    if(this.form.value.patient.email != ''){
+      //Set user params:
+      const user_params = {
+        'filter[email]'   : this.form.value.patient.email,
+        'proj[password]'  : 0
+      };
+
+      //Create observable users:
+      const obsUsers = this.sharedFunctions.findRxJS('users', user_params, true);
+
+      //Observe content (Subscribe):
+      obsUsers.subscribe({
+        next: (res) => {
+          //Check current response and res data (user data):
+          if(res.success === true && res.data.length > 0){
+            //Get native element to set focus:
+            const inputEmail = document.getElementById('IDtxtEmail');
+
+            //Check if document field is empty:
+            if(this.form.value.patient.document != ''){
+
+              //Check that the user is human (has an associated person record):
+              if(res.data[0].person){
+                //Create operation handler:
+                const operationHandler = {
+                  user_data : res.data[0]
+                };
+
+                //Open dialog to decide what operation to perform:
+                this.sharedFunctions.openDialog('found_person', operationHandler, (result) => {
+                  //Check if result is true:
+                  if(result){
+                    //Clear data to FormControl elements:
+                    this.clearPatientFields();
+
+                    //Send data to FormControl elements:
+                    this.setPatientFromPerson(res.data[0].person);
+                    this.form.get('patient.email')?.setValue(res.data[0].email);
+
+                  } else {
+                    //Clear email input and focus on this:
+                    this.form.get('patient.email')?.setValue('');
+                    inputEmail?.focus();
+                  }
+                });
+              } else {
+                //Send message, clear email input and focus on this (Reuse the existing set-patient message):
+                this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SET_PATIENT.MACHINE_USER_EMAIL_ERROR'));
+                this.form.get('patient.email')?.setValue('');
+                inputEmail?.focus();
+              }
+
+            //Empty document case (No conflicting data to overwrite):
+            } else {
+              //Clear data to FormControl elements:
+              this.clearPatientFields();
+
+              //Send data to FormControl elements:
+              this.setPatientFromPerson(res.data[0].person);
+              this.form.get('patient.email')?.setValue(res.data[0].email);
+            }
+          }
+        }
+      });
+    }
+  }
+
+  //Send person data to the flat 'patient' FormGroup (Same field mapping as UsersService.setPerson):
+  private setPatientFromPerson(personData: any): void{
+    this.form.get('patient.doc_country_code')?.setValue(personData.documents[0].doc_country_code);
+    this.form.get('patient.doc_type')?.setValue(personData.documents[0].doc_type.toString());
+    this.form.get('patient.document')?.setValue(personData.documents[0].document);
+    this.form.get('patient.name_01')?.setValue(personData.name_01);
+    this.form.get('patient.name_02')?.setValue(personData.name_02);
+    this.form.get('patient.surname_01')?.setValue(personData.surname_01);
+    this.form.get('patient.surname_02')?.setValue(personData.surname_02);
+    this.form.get('patient.gender')?.setValue(personData.gender.toString());
+    this.form.get('patient.phone_numbers[0]')?.setValue(personData.phone_numbers[0]);
+    this.form.get('patient.birth_date')?.setValue(new Date(personData.birth_date.split('T')[0].replace(/-/g, '/'))); //Replace '-' by '/' to prevent one day off JS Date error.
+  }
+
+  //Clear patient FormControl elements (preventClear preserves document/doc_country_code/doc_type):
+  private clearPatientFields(preventClear: boolean = false): void{
+    if(preventClear == false){
+      this.form.get('patient.document')?.setValue('');
+      this.form.get('patient.doc_country_code')?.setValue(this.sharedProp.mainSettings.appSettings.default_country);
+      this.form.get('patient.doc_type')?.setValue(this.sharedProp.mainSettings.appSettings.default_doc_type.toString());
+    }
+    this.form.get('patient.name_01')?.setValue('');
+    this.form.get('patient.name_02')?.setValue('');
+    this.form.get('patient.surname_01')?.setValue('');
+    this.form.get('patient.surname_02')?.setValue('');
+    this.form.get('patient.gender')?.setValue('');
+    this.form.get('patient.phone_numbers[0]')?.setValue('');
+    this.form.get('patient.birth_date')?.setValue('');
+    this.form.get('patient.email')?.setValue('');
   }
 
   //Set imaging organization from the selected branch (Same behaviour as the equipments branch input):
