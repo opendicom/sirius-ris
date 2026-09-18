@@ -894,6 +894,11 @@ mark {
 .mat-calendar{
   background-color: #27293d !important;
 }
+
+/* Disable horizontal scroll in tabs */
+.mat-tab-body-content {
+    overflow-x: hidden !important;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 
