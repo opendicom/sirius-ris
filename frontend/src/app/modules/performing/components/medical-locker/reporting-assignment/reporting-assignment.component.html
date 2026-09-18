@@ -17,9 +17,7 @@
     </button>
 </form>
 
-<hr class="dashed" />
-
-<div class="tab-content">
+<div>
     <div *ngIf="hasSearched && sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
 
     <ng-template #thenBlockTable>
@@ -204,8 +202,8 @@
 
                 <!-- reporting_user (Reused mat-select multiple + inner search pattern from performing/form/tab-details.component.html) -->
                 <ng-container matColumnDef="reporting_user">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }} </th>
-                    <td mat-cell *matCellDef="let study">
+                    <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }} </th>
+                    <td mat-cell *matCellDef="let study" class="column-alt text-center">
                         <mat-form-field appearance="fill" class="reporting-user-field">
                             <mat-label>{{ 'PERFORMING.TAB_DETAILS.REPORTING_MEDIC' | i18n }}</mat-label>
                             <mat-select [(ngModel)]="study.reportingUserIds" [ngModelOptions]="{standalone: true}" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.INFORMING_PARTY.DOCTOR_PLACEHOLDER' | i18n }}" multiple>
@@ -250,6 +248,8 @@
     </ng-template>
 
     <ng-template #elseBlockTable>
+        <hr class="dashed" />
+
         <div class="text-center">
             <br/>
             <mat-icon class="no-result-icon">search_activity</mat-icon><br/>

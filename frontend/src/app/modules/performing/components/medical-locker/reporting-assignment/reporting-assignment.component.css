@@ -15,16 +15,12 @@
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 
-.tab-content {
-  padding: 8px !important;
-}
-
 .table-wrapper {
   overflow-x: auto;
 }
 
-table {
-  min-width: 1450px;
+.mat-table {
+  border-top: 1px solid var(--list-border-color) !important;
 }
 
 .documents {
@@ -40,7 +36,7 @@ table {
 }
 
 .save-reporting-user-button .mat-icon {
-  color: var(--purple) !important;
+  color: var(--green) !important;
 }
 
 .no-result-text {
