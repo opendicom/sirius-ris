@@ -138,6 +138,7 @@ export class FormComponent implements OnInit {
         'password'                  : [ '', [Validators.required]],
         'password_repeat'           : [ '', [Validators.required]],
         'email'                     : [ '', [Validators.required]],
+        'email_alt'                 : [ '', [Validators.email]],
         'status'                    : [ 'true', []],
         'professional[id]'          : [ '', []],
         'professional[description]' : [ '', []],
@@ -626,6 +627,7 @@ export class FormComponent implements OnInit {
     this.form.get('user.status')?.setValue('true');
     this.form.get('user.password')?.setValue('');
     this.form.get('user.password_repeat')?.setValue('');
+    this.form.get('user.email_alt')?.setValue('');
     this.form.get('user.professional[id]')?.setValue('');
     this.form.get('user.professional[description]')?.setValue('');
     this.form.get('user.professional[workload]')?.setValue('');
