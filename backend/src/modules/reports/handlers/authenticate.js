@@ -126,11 +126,17 @@ module.exports = async (req, res, currentSchema) => {
                                                             type    : 'reports'
                                                         }
 
+                                                        //Set recipients (include alternative email if defined):
+                                                        let mail_to = reportResult.report_complete_data.patient.email;
+                                                        if(reportResult.report_complete_data.patient.email_alt !== undefined && reportResult.report_complete_data.patient.email_alt !== ''){
+                                                            mail_to += ', ' + reportResult.report_complete_data.patient.email_alt;
+                                                        }
+
                                                         //Send authenticated report by email:
                                                         await mailServices.sendEmail(
                                                             req, res,
                                                             log_element,
-                                                            reportResult.report_complete_data.patient.email,
+                                                            mail_to,
                                                             reportResult.report_complete_data.appointment.imaging.organization.name + ' - Informe médico (Sirius RIS)',
                                                             body_message,
                                                             attachments,

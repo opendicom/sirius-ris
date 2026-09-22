@@ -45,6 +45,7 @@ const preSchema = new mongoose.Schema({
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
     email:              { type: String, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
+    email_alt:          { type: String, match: /.+\@.+\..+/ },  // Alternative email (optional, used as additional ).
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
     settings:           { type: subSchemaSettings },
@@ -72,7 +73,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['email', 'professional.id', 'professional.description', 'professional.workload', 'professional.vacation'];
+const AllowedUnsetValues = ['email', 'email_alt', 'professional.id', 'professional.description', 'professional.workload', 'professional.vacation'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -101,7 +102,15 @@ const Validator = [
         .withMessage(currentLang.ris.schema_validator.isEmail + ' | "email".')
         .normalizeEmail({ gmail_remove_dots: false })
         .toLowerCase(),
-        
+
+    body('email_alt')
+        .optional()
+        .trim()
+        .isEmail()
+        .withMessage(currentLang.ris.schema_validator.isEmail + ' | "email_alt".')
+        .normalizeEmail({ gmail_remove_dots: false })
+        .toLowerCase(),
+
     body('permissions')
         .isArray()
         .withMessage(currentLang.ris.schema_validator.isRequired + ' | "permissions" (Array).'),
