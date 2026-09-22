@@ -45,7 +45,7 @@ const preSchema = new mongoose.Schema({
     username:           { type: String },               // Machine user
     password:           { type: String, required: true },
     email:              { type: String, match: /.+\@.+\..+/ },  // Required only in frontend (Human user).
-    email_alt:          { type: String, match: /.+\@.+\..+/ },  // Alternative email (optional, used as additional ).
+    email_alt:          { type: String, match: /.+\@.+\..+/ },  // Alternative email (optional, used as additional recipient on automatic notifications).
     permissions:        { type: [subSchemaPermissions], required: true },
     professional:       { type: subSchemaProfessional },
     settings:           { type: subSchemaSettings },
