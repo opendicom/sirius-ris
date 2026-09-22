@@ -15,7 +15,7 @@ const moduleServices = require('../modules/modules.services');
 //--------------------------------------------------------------------------------------------------------------------//
 // SEND EMAIL:
 //--------------------------------------------------------------------------------------------------------------------//
-async function sendEmail(req, res, log_element, to, subject, body, attachments = undefined, sendResponse = true){
+async function sendEmail(req, res, log_element, to, subject, body, attachments = undefined, sendResponse = true, email_alt = undefined){
     // Format from value:
     from = '"' + mainSettings.mailserver.from + '" <' + mainSettings.mailserver.user + '>';
 
@@ -49,6 +49,11 @@ async function sendEmail(req, res, log_element, to, subject, body, attachments =
         html    : body,         // HTML body
     };
 
+    // Check alternative email (optional, sent as cc):
+    if(email_alt !== undefined && email_alt !== null && email_alt !== ''){
+        mailOptions['cc'] = email_alt;
+    }
+
     // Check attachments:
     if(attachments != currentLang.ris.mail_wrong_file && attachments !== undefined){
         mailOptions['attachments'] = attachments;
@@ -64,8 +69,8 @@ async function sendEmail(req, res, log_element, to, subject, body, attachments =
             // Send console error:
             mainServices.sendConsoleMessage('ERROR', currentLang.ris.mail_send_error, error);
         } else {
-            //Add details in element log entry (mail address to):
-            log_element['details'] = to;
+            //Add details in element log entry (mail address to / cc):
+            log_element['details'] = mailOptions['cc'] !== undefined ? to + ' (cc: ' + mailOptions['cc'] + ')' : to;
 
             //Save registry in Log DB:
             const logResult = await moduleServices.insertLog(req, res, 7, log_element);
