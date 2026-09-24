@@ -84,6 +84,7 @@
         "report_authenticated": "レポートは正常に認証されました。",
         "mail_send_success": "メールが正常に送信されました。",
         "mail_send_error": "メール送信中にエラーが発生しました。",
+        "mail_not_configured": "組織にメールサービスが設定されていません。",
         "mail_wrong_address": "指定されたメールアドレスは無効です。",
         "mail_empty_subject": "subject パラメータは空にできません。",
         "mail_empty_message": "メッセージは空にできません。",

@@ -84,6 +84,7 @@
     "report_authenticated": "Bericht erfolgreich authentifiziert.",
     "mail_send_success": "E-Mail erfolgreich gesendet.",
     "mail_send_error": "Fehler beim Senden der E-Mail.",
+    "mail_not_configured": "Die Organisation hat den E-Mail-Dienst nicht konfiguriert.",
     "mail_wrong_address": "Die angegebene E-Mail-Adresse ist ungültig.",
     "mail_empty_subject": "Der Parameter 'subject' darf nicht leer sein.",
     "mail_empty_message": "Die Nachricht darf nicht leer sein.",

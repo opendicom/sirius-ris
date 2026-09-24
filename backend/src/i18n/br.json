@@ -84,6 +84,7 @@
     "report_authenticated": "Relatório autenticado com sucesso.",
     "mail_send_success": "E-mail enviado com sucesso.",
     "mail_send_error": "Erro ao tentar enviar o e-mail.",
+    "mail_not_configured": "A organização não possui o serviço de e-mail configurado.",
     "mail_wrong_address": "O endereço de e-mail informado é inválido.",
     "mail_empty_subject": "O parâmetro subject não pode ser vazio.",
     "mail_empty_message": "A mensagem não pode ser vazia.",
