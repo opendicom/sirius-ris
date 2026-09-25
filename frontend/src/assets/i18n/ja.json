@@ -1306,7 +1306,26 @@
       "BRANDING_LOGO_WELCOME_USAGE": "ウェルカム画面",
       "BRANDING_SELECT": "選択",
       "BRANDING_CHANGE": "変更",
-      "BRANDING_DELETE_TOOLTIP": "ロゴを削除"
+      "BRANDING_DELETE_TOOLTIP": "ロゴを削除",
+      "MAIL_TITLE": "メール設定",
+      "MAIL_MODE_DEFAULT": "デフォルトを使用（自動メール送信なし）",
+      "MAIL_MODE_CUSTOM": "カスタムSMTP設定",
+      "MAIL_NOT_CONFIGURED_WARNING": "この組織には独自のメールサーバーが設定されていません。自動メール（予約確認、レポートなど）は送信されません。",
+      "MAIL_TYPE_LABEL": "メールの種類",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "汎用SMTP",
+      "MAIL_HOST_LABEL": "ホスト",
+      "MAIL_HOST_PLACEHOLDER": "例: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "ポート",
+      "MAIL_PORT_PLACEHOLDER": "例: 465",
+      "MAIL_SECURE_LABEL": "セキュア接続 (TLS/SSL)",
+      "MAIL_FROM_LABEL": "送信者名",
+      "MAIL_FROM_PLACEHOLDER": "例: 自分の組織",
+      "MAIL_USER_LABEL": "アカウントのユーザー名",
+      "MAIL_USER_PLACEHOLDER": "メールアカウントのユーザー名を入力してください",
+      "MAIL_PASS_LABEL": "アカウントのパスワード",
+      "MAIL_PASS_PLACEHOLDER": "メールアカウントのパスワードを入力してください",
+      "MAIL_PASS_HINT": "データベースにすでにパスワードが存在します。変更する場合のみ入力してください。"
     }
   },
   "BRANCHES": {

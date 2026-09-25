@@ -1306,7 +1306,26 @@
       "BRANDING_LOGO_WELCOME_USAGE": "欢迎屏幕",
       "BRANDING_SELECT": "选择",
       "BRANDING_CHANGE": "更改",
-      "BRANDING_DELETE_TOOLTIP": "删除徽标"
+      "BRANDING_DELETE_TOOLTIP": "删除徽标",
+      "MAIL_TITLE": "邮件配置",
+      "MAIL_MODE_DEFAULT": "使用默认（不自动发送邮件）",
+      "MAIL_MODE_CUSTOM": "自定义 SMTP 配置",
+      "MAIL_NOT_CONFIGURED_WARNING": "该机构未配置自己的邮件服务器。系统将不会发送自动邮件（预约确认、报告等）。",
+      "MAIL_TYPE_LABEL": "邮件类型",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "通用 SMTP",
+      "MAIL_HOST_LABEL": "主机",
+      "MAIL_HOST_PLACEHOLDER": "例如：smtp.gmail.com",
+      "MAIL_PORT_LABEL": "端口",
+      "MAIL_PORT_PLACEHOLDER": "例如：465",
+      "MAIL_SECURE_LABEL": "安全连接 (TLS/SSL)",
+      "MAIL_FROM_LABEL": "发件人名称",
+      "MAIL_FROM_PLACEHOLDER": "例如：我的机构",
+      "MAIL_USER_LABEL": "账户用户名",
+      "MAIL_USER_PLACEHOLDER": "请输入邮件账户的用户名",
+      "MAIL_PASS_LABEL": "账户密码",
+      "MAIL_PASS_PLACEHOLDER": "请输入邮件账户的密码",
+      "MAIL_PASS_HINT": "数据库中已存在密码，仅在需要更改时输入。"
     }
   },
   "BRANCHES": {

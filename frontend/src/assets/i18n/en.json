@@ -1306,7 +1306,26 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Welcome screen",
       "BRANDING_SELECT": "SELECT",
       "BRANDING_CHANGE": "CHANGE",
-      "BRANDING_DELETE_TOOLTIP": "Delete logo"
+      "BRANDING_DELETE_TOOLTIP": "Delete logo",
+      "MAIL_TITLE": "Email configuration",
+      "MAIL_MODE_DEFAULT": "Use default (no automatic emails)",
+      "MAIL_MODE_CUSTOM": "Custom SMTP configuration",
+      "MAIL_NOT_CONFIGURED_WARNING": "This organization does not have its own mail server configured. Automatic emails (appointment confirmations, reports, etc.) will not be sent.",
+      "MAIL_TYPE_LABEL": "Mail type",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "Generic SMTP",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "E.g.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Port",
+      "MAIL_PORT_PLACEHOLDER": "E.g.: 465",
+      "MAIL_SECURE_LABEL": "Secure connection (TLS/SSL)",
+      "MAIL_FROM_LABEL": "From name",
+      "MAIL_FROM_PLACEHOLDER": "E.g.: My Organization",
+      "MAIL_USER_LABEL": "Account username",
+      "MAIL_USER_PLACEHOLDER": "Enter the mail account username",
+      "MAIL_PASS_LABEL": "Account password",
+      "MAIL_PASS_PLACEHOLDER": "Enter the mail account password",
+      "MAIL_PASS_HINT": "A password already exists in the database, only enter one if you want to change it."
     }
   },
   "BRANCHES": {

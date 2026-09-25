@@ -1306,7 +1306,26 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Écran d'accueil",
       "BRANDING_SELECT": "SÉLECTIONNER",
       "BRANDING_CHANGE": "CHANGER",
-      "BRANDING_DELETE_TOOLTIP": "Supprimer le logo"
+      "BRANDING_DELETE_TOOLTIP": "Supprimer le logo",
+      "MAIL_TITLE": "Configuration de messagerie",
+      "MAIL_MODE_DEFAULT": "Utiliser par défaut (aucun envoi automatique)",
+      "MAIL_MODE_CUSTOM": "Configuration SMTP personnalisée",
+      "MAIL_NOT_CONFIGURED_WARNING": "Cette organisation n'a pas de serveur de messagerie propre configuré. Les e-mails automatiques (confirmations de rendez-vous, rapports, etc.) ne seront pas envoyés.",
+      "MAIL_TYPE_LABEL": "Type de messagerie",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "SMTP générique",
+      "MAIL_HOST_LABEL": "Hôte",
+      "MAIL_HOST_PLACEHOLDER": "Ex. : smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Port",
+      "MAIL_PORT_PLACEHOLDER": "Ex. : 465",
+      "MAIL_SECURE_LABEL": "Connexion sécurisée (TLS/SSL)",
+      "MAIL_FROM_LABEL": "Nom de l'expéditeur",
+      "MAIL_FROM_PLACEHOLDER": "Ex. : Mon organisation",
+      "MAIL_USER_LABEL": "Nom d'utilisateur du compte",
+      "MAIL_USER_PLACEHOLDER": "Entrez le nom d'utilisateur du compte de messagerie",
+      "MAIL_PASS_LABEL": "Mot de passe du compte",
+      "MAIL_PASS_PLACEHOLDER": "Entrez le mot de passe du compte de messagerie",
+      "MAIL_PASS_HINT": "Un mot de passe existe déjà dans la base de données, n'en saisissez un que si vous souhaitez le modifier."
     }
   },
   "BRANCHES": {
