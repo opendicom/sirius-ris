@@ -53,9 +53,6 @@ async function sendEmail(req, res, log_element, to, subject, body, attachments =
                 auth: {
                     user: data.mail_options.user,
                     pass: data.mail_options.pass,
-                },
-                tls: {
-                    rejectUnauthorized: false
                 }
             };
 
