@@ -200,6 +200,16 @@
               <mat-radio-button value="false">{{ 'USERS.FORM.USER_TAB.STATUS_INACTIVE' | i18n }}</mat-radio-button>
             </mat-radio-group>
 
+            <br/><br/><hr class="dashed" /><br/>
+
+            <h4>{{ 'USERS.FORM.USER_TAB.EMAIL_ALT_TITLE' | i18n }} <span class="label-info">{{ 'USERS.FORM.USER_TAB.EMAIL_ALT_OPTIONAL' | i18n }}</span>:</h4>
+            <mat-form-field appearance="fill" class="large">
+              <mat-label>{{ 'USERS.FORM.USER_TAB.EMAIL_ALT_PLACEHOLDER' | i18n }}</mat-label>
+              <input matInput type="text" id="IDtxtEmailAlt" formControlName="email_alt" placeholder="{{ 'USERS.FORM.USER_TAB.EMAIL_ALT_INPUT' | i18n }}">
+              <mat-icon matSuffix>mail_outline</mat-icon>
+              <mat-hint align="start">{{ 'USERS.FORM.USER_TAB.EMAIL_ALT_HINT' | i18n }}</mat-hint>
+            </mat-form-field>
+
             <br/><br/>
 
           </div> <!-- end fxLayout wrapper -->

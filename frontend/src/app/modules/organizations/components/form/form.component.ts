@@ -11,6 +11,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
 import { ISO_3166 } from '@env/environment';                                            // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
+const EMAIL_WITH_DOMAIN_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 @Component({
   selector: 'app-form',
@@ -95,8 +96,19 @@ export class FormComponent implements OnInit {
       suffix        : [''],
       status        : ['true'],
       password_cert : [''],
-      white_labeling_label : ['']
+      white_labeling_label : [''],
+      mail_options_mode   : ['default'],
+      mail_options_type   : ['gmail'],
+      mail_options_host   : [''],
+      mail_options_port   : [''],
+      mail_options_secure : ['true'],
+      mail_options_from   : [''],
+      mail_options_user   : [''],
+      mail_options_pass   : ['']
     });
+
+    //Apply the initial required validators according to the mail configuration mode:
+    this.onMailModeChange();
   }
 
   ngOnInit(): void {
@@ -123,7 +135,13 @@ export class FormComponent implements OnInit {
           'proj[base64_logo]': 1,   // base64logo is not in the default projection.
           'proj[base64_cert]': 1,   // base64cert is not in the default projection.
           'proj[password_cert]': 1, // base64cert is not in the default projection.
-          'proj[white_labeling]': 1
+          'proj[white_labeling]': 1,
+          'proj[mail_options.type]': 1,
+          'proj[mail_options.host]': 1,
+          'proj[mail_options.port]': 1,
+          'proj[mail_options.secure]': 1,
+          'proj[mail_options.from]': 1,
+          'proj[mail_options.user]': 1
         };
 
         //Find element to update:
@@ -140,8 +158,19 @@ export class FormComponent implements OnInit {
               suffix        : res.data[0].suffix,
               status        : [ `${res.data[0].status}` ], //Use back tip notation to convert string,
               password_cert : '',
-              white_labeling_label : [ res.data[0].white_labeling?.label || '' ]
+              white_labeling_label : [ res.data[0].white_labeling?.label || '' ],
+              mail_options_mode   : [ res.data[0].mail_options?.host ? 'custom' : 'default' ],
+              mail_options_type   : [ res.data[0].mail_options?.type || 'gmail' ],
+              mail_options_host   : [ res.data[0].mail_options?.host || '' ],
+              mail_options_port   : [ res.data[0].mail_options?.port || '' ],
+              mail_options_secure : [ `${res.data[0].mail_options?.secure ?? true}` ],
+              mail_options_from   : [ res.data[0].mail_options?.from || '' ],
+              mail_options_user   : [ res.data[0].mail_options?.user || '' ],
+              mail_options_pass   : ['']
             });
+
+            //Apply required validators according to the loaded mail configuration mode:
+            this.onMailModeChange();
 
             //Set base64_logo:
             if(res.data[0].base64_logo !== null && res.data[0].base64_logo !== undefined && res.data[0].base64_logo !== ''){
@@ -244,6 +273,37 @@ export class FormComponent implements OnInit {
         formData['unset.white_labeling.label'] = '1';
       }
 
+      //Move mail_options_* fields into the flat "mail_options.X" keys expected by the backend:
+      const mailMode = formData.mail_options_mode;
+      const mailValues: any = {
+        type   : formData.mail_options_type,
+        host   : formData.mail_options_host,
+        port   : formData.mail_options_port,
+        secure : formData.mail_options_secure,
+        from   : formData.mail_options_from,
+        user   : formData.mail_options_user,
+        pass   : formData.mail_options_pass
+      };
+      ['mail_options_mode', 'mail_options_type', 'mail_options_host', 'mail_options_port', 'mail_options_secure',
+        'mail_options_from', 'mail_options_user', 'mail_options_pass'].forEach((key) => { delete formData[key]; });
+
+      if(mailMode === 'custom'){
+        Object.keys(mailValues).forEach((field) => {
+          const value = mailValues[field];
+          if(value !== null && value !== undefined && value !== ''){
+            formData['mail_options.' + field] = value;
+          } else if(this.form_action === 'update' && field !== 'pass'){
+            //Empty optional field on update: unset it (the password is never cleared this way, only replaced):
+            formData['unset.mail_options.' + field] = '1';
+          }
+        });
+      } else if(this.form_action === 'update'){
+        //Mode set back to "default": clear any previously saved custom mail configuration:
+        Object.keys(mailValues).forEach((field) => {
+          formData['unset.mail_options.' + field] = '1';
+        });
+      }
+
       //Check if there is logo file selected (Multipart form):
       if(this.selectedLogoFile !== null || this.selectedCertFile !== null
         || this.selectedLogoHorizontalFile !== null || this.selectedLogoVerticalFile !== null || this.selectedLogoWelcomeFile !== null){
@@ -313,6 +373,27 @@ export class FormComponent implements OnInit {
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.sharedProp.element, this.router);
+  }
+
+  //Toggle host/user/pass as required only while custom mail configuration is selected:
+  onMailModeChange(): void {
+    const isCustom = this.form.value.mail_options_mode === 'custom';
+    //Only trust sharedFunctions.response on update: on insert it may still hold a previously visited organization's data:
+    const hasExistingPass = this.form_action === 'update' && !!(this.sharedFunctions.response?.data?.[0]?.mail_options?.host);
+
+    const hostControl = this.form.get('mail_options_host');
+    hostControl?.setValidators(isCustom ? [Validators.required] : []);
+    hostControl?.updateValueAndValidity();
+
+    //Account username is expected to be a full email address (Gmail/SMTP login):
+    const userControl = this.form.get('mail_options_user');
+    userControl?.setValidators(isCustom ? [Validators.required, Validators.pattern(EMAIL_WITH_DOMAIN_PATTERN)] : []);
+    userControl?.updateValueAndValidity();
+
+    //Password is only required for custom mode when there isn't one already saved (insert, or update without a previous password):
+    const passControl = this.form.get('mail_options_pass');
+    passControl?.setValidators(isCustom && !hasExistingPass ? [Validators.required] : []);
+    passControl?.updateValueAndValidity();
   }
 
   onDeleteFileRef(fieldName: string){

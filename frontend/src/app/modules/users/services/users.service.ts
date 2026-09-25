@@ -133,6 +133,7 @@ export class UsersService {
       //Send data to FormControl elements (Set user fields):
       if(userData.username) { form.get('user.username')?.setValue(userData.username); }
       if(userData.email) { form.get('user.email')?.setValue(userData.email); }
+      if(userData.email_alt) { form.get('user.email_alt')?.setValue(userData.email_alt); }
       form.get('user.status')?.setValue(`${userData.status}`); //Use back tip notation to convert string
 
       //If cointain professional data:

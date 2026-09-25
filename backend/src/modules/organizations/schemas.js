@@ -17,6 +17,16 @@ const subSchemaWhiteLabeling = new mongoose.Schema({
     base64_logo_vertical:   { type: String }, // Login/Authorize pages logo (base64).
     base64_logo_welcome:    { type: String }, // Welcome/start page logo (base64).
 }, { _id: false });
+//Define mail options sub-schema (per-organization SMTP configuration):
+const subSchemaMailOptions = new mongoose.Schema({
+    type:           { type: String },  // Mail type (e.g. "gmail").
+    host:           { type: String },  // Mail server host.
+    port:           { type: Number },  // Mail server port.
+    secure:         { type: Boolean }, // Use secure connection.
+    from:           { type: String },  // Default "from" email address.
+    user:           { type: String },  // Mail server username.
+    pass:           { type: String },  // Mail server password (stored in plain text).
+}, { _id: false });
 
 //Define Schema:
 const Schema = new mongoose.Schema({
@@ -31,6 +41,7 @@ const Schema = new mongoose.Schema({
     base64_cert:    { type: String }, //This parameter is created in backend server (not validate).
     password_cert:  { type: String },  //This parameter is not validated since it has different characteristics.
     white_labeling: { type: subSchemaWhiteLabeling, required: false },
+    mail_options:   { type: subSchemaMailOptions, required: false },
 },
 { timestamps: true },
 { versionKey: false });
@@ -49,7 +60,7 @@ const ForeignKeys = {
 };
 
 //Register allowed unset values:
-const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert', 'password_cert', 'white_labeling', 'white_labeling.label', 'white_labeling.base64_logo_horizontal', 'white_labeling.base64_logo_vertical', 'white_labeling.base64_logo_welcome'];
+const AllowedUnsetValues = ['OID', 'structure_id', 'suffix', 'base64_logo', 'base64_cert', 'password_cert', 'white_labeling', 'white_labeling.label', 'white_labeling.base64_logo_horizontal', 'white_labeling.base64_logo_vertical', 'white_labeling.base64_logo_welcome', 'mail_options', 'mail_options.type', 'mail_options.host', 'mail_options.port', 'mail_options.secure', 'mail_options.from', 'mail_options.user', 'mail_options.pass'];
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -126,6 +137,46 @@ const Validator = [
         .optional()
         .isString()
         .withMessage(currentLang.ris.schema_validator.isString + ' | "white_labeling.base64_logo_welcome".'),
+
+    body('mail_options.type')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 32 })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "mail_options.type" (min: 1, max: 32 [chars]).'),
+
+    body('mail_options.host')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 128 })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "mail_options.host" (min: 1, max: 128 [chars]).'),
+
+    body('mail_options.port')
+        .optional()
+        .isInt({ min: 1, max: 65535 })
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "mail_options.port" (min: 1, max: 65535).')
+        .toInt(),
+
+    body('mail_options.secure')
+        .optional()
+        .isBoolean()
+        .withMessage(currentLang.ris.schema_validator.isBoolean + ' | "mail_options.secure" (true or false).')
+        .toBoolean(),
+
+    body('mail_options.from')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 128 })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "mail_options.from" (min: 1, max: 128 [chars]).'),
+
+    body('mail_options.user')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 128 })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "mail_options.user" (min: 1, max: 128 [chars]).'),
+
+    body('mail_options.pass')
+        .optional()
+        .trim(),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

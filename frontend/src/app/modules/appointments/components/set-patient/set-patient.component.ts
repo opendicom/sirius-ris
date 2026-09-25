@@ -125,6 +125,7 @@ export class SetPatientComponent implements OnInit {
         'password'          : [ '', [Validators.required]],
         'password_repeat'   : [ '', [Validators.required]],
         'email'             : [ '', [Validators.required]],
+        'email_alt'         : [ '', [Validators.email]],
         'status'            : [ 'true', []],
 
         //Patient organization input (Only Superuser):
@@ -501,6 +502,7 @@ export class SetPatientComponent implements OnInit {
     this.form.get('user.status')?.setValue('true');
     this.form.get('user.password')?.setValue('');
     this.form.get('user.password_repeat')?.setValue('');
+    this.form.get('user.email_alt')?.setValue('');
   }
 
   async onSubmit(){

@@ -113,99 +113,173 @@
 
   </div>
 
-  <!-- ==================== Branding / White Labeling ==================== -->
+  <!-- ==================== Branding / White Labeling + Mail configuration ==================== -->
   <div class="branding-section">
     <hr class="dashed" /><br/>
-    <h3 class="form-title underline-fail-alt">{{ 'ORGANIZATIONS.FORM.BRANDING_TITLE' | i18n }}:</h3>
 
-    <!-- Label (product name) -->
-    <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}:</h4>
-    <mat-form-field appearance="fill" class="large">
-      <mat-label>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}</mat-label>
-      <input matInput type="text" formControlName="white_labeling_label" [placeholder]="'ORGANIZATIONS.FORM.BRANDING_LABEL_PLACEHOLDER' | i18n">
-      <mat-hint>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_HINT' | i18n }}</mat-hint>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="start start">
 
-    <br/><br/>
-    <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LOGOS_TITLE' | i18n }}:</h4>
-    <br/>
+      <div class="input-wrapper divider"> <!-- start branding column -->
+        <h3 class="form-title underline-fail-alt">{{ 'ORGANIZATIONS.FORM.BRANDING_TITLE' | i18n }}:</h3>
 
-    <!-- Logo cards grid -->
-    <div class="branding-logo-grid">
+        <!-- Label (product name) -->
+        <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}:</h4>
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_TITLE' | i18n }}</mat-label>
+          <input matInput type="text" formControlName="white_labeling_label" [placeholder]="'ORGANIZATIONS.FORM.BRANDING_LABEL_PLACEHOLDER' | i18n">
+          <mat-hint>{{ 'ORGANIZATIONS.FORM.BRANDING_LABEL_HINT' | i18n }}</mat-hint>
+        </mat-form-field>
 
-      <!-- Logo Horizontal -->
-      <div class="branding-logo-card">
-        <div class="branding-logo-preview">
-          <img *ngIf="previewLogoHorizontal" [src]="previewLogoHorizontal" class="branding-logo-img" />
-          <mat-icon *ngIf="!previewLogoHorizontal" class="branding-logo-placeholder">image</mat-icon>
+        <br/><br/>
+        <h4>{{ 'ORGANIZATIONS.FORM.BRANDING_LOGOS_TITLE' | i18n }}:</h4>
+        <br/>
+
+        <!-- Logo cards grid -->
+        <div class="branding-logo-grid">
+
+          <!-- Logo Horizontal -->
+          <div class="branding-logo-card">
+            <div class="branding-logo-preview">
+              <img *ngIf="previewLogoHorizontal" [src]="previewLogoHorizontal" class="branding-logo-img" />
+              <mat-icon *ngIf="!previewLogoHorizontal" class="branding-logo-placeholder">image</mat-icon>
+            </div>
+            <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL' | i18n }}</p>
+            <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL_USAGE' | i18n }}</p>
+            <div class="branding-logo-actions">
+              <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_horizontal')" #fileInputH style="display:none" />
+              <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoHorizontalController" (click)="fileInputH.click()">
+                <mat-icon>{{ selectedLogoHorizontalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+                {{ (selectedLogoHorizontalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+              </button>
+              <button *ngIf="form_action == 'update' && selectedLogoHorizontalController && selectedLogoHorizontalFile === null"
+                mat-icon-button type="button" color="warn"
+                [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+                (click)="onDeleteFileRef('white_labeling.base64_logo_horizontal')">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Logo Vertical -->
+          <div class="branding-logo-card">
+            <div class="branding-logo-preview">
+              <img *ngIf="previewLogoVertical" [src]="previewLogoVertical" class="branding-logo-img" />
+              <mat-icon *ngIf="!previewLogoVertical" class="branding-logo-placeholder">image</mat-icon>
+            </div>
+            <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL' | i18n }}</p>
+            <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL_USAGE' | i18n }}</p>
+            <div class="branding-logo-actions">
+              <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_vertical')" #fileInputV style="display:none" />
+              <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoVerticalController" (click)="fileInputV.click()">
+                <mat-icon>{{ selectedLogoVerticalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+                {{ (selectedLogoVerticalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+              </button>
+              <button *ngIf="form_action == 'update' && selectedLogoVerticalController && selectedLogoVerticalFile === null"
+                mat-icon-button type="button" color="warn"
+                [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+                (click)="onDeleteFileRef('white_labeling.base64_logo_vertical')">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Logo Welcome -->
+          <div class="branding-logo-card">
+            <div class="branding-logo-preview">
+              <img *ngIf="previewLogoWelcome" [src]="previewLogoWelcome" class="branding-logo-img" />
+              <mat-icon *ngIf="!previewLogoWelcome" class="branding-logo-placeholder">image</mat-icon>
+            </div>
+            <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME' | i18n }}</p>
+            <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME_USAGE' | i18n }}</p>
+            <div class="branding-logo-actions">
+              <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_welcome')" #fileInputW style="display:none" />
+              <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoWelcomeController" (click)="fileInputW.click()">
+                <mat-icon>{{ selectedLogoWelcomeController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
+                {{ (selectedLogoWelcomeController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
+              </button>
+              <button *ngIf="form_action == 'update' && selectedLogoWelcomeController && selectedLogoWelcomeFile === null"
+                mat-icon-button type="button" color="warn"
+                [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
+                (click)="onDeleteFileRef('white_labeling.base64_logo_welcome')">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- end branding-logo-grid -->
+      </div> <!-- end branding column -->
+
+      <div class="input-wrapper"> <!-- start mail configuration column -->
+        <h3 class="form-title underline-fail-alt">{{ 'ORGANIZATIONS.FORM.MAIL_TITLE' | i18n }}:</h3>
+
+        <mat-radio-group color="primary" formControlName="mail_options_mode" (change)="onMailModeChange()">
+          <mat-radio-button value="default">{{ 'ORGANIZATIONS.FORM.MAIL_MODE_DEFAULT' | i18n }}</mat-radio-button>
+          <mat-radio-button value="custom">{{ 'ORGANIZATIONS.FORM.MAIL_MODE_CUSTOM' | i18n }}</mat-radio-button>
+        </mat-radio-group>
+
+        <br/><br/>
+
+        <!-- No custom mail configuration: warn that automatic emails won't be sent -->
+        <div *ngIf="form.value.mail_options_mode !== 'custom'" class="text-center disclaimer-wrap">
+          <div class="current-info">
+            <mat-icon>warning</mat-icon>&nbsp;&nbsp; {{ 'ORGANIZATIONS.FORM.MAIL_NOT_CONFIGURED_WARNING' | i18n }}
+          </div>
+          <div class="clear"></div>
         </div>
-        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL' | i18n }}</p>
-        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_HORIZONTAL_USAGE' | i18n }}</p>
-        <div class="branding-logo-actions">
-          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_horizontal')" #fileInputH style="display:none" />
-          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoHorizontalController" (click)="fileInputH.click()">
-            <mat-icon>{{ selectedLogoHorizontalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
-            {{ (selectedLogoHorizontalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
-          </button>
-          <button *ngIf="form_action == 'update' && selectedLogoHorizontalController && selectedLogoHorizontalFile === null"
-            mat-icon-button type="button" color="warn"
-            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
-            (click)="onDeleteFileRef('white_labeling.base64_logo_horizontal')">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </div>
 
-      <!-- Logo Vertical -->
-      <div class="branding-logo-card">
-        <div class="branding-logo-preview">
-          <img *ngIf="previewLogoVertical" [src]="previewLogoVertical" class="branding-logo-img" />
-          <mat-icon *ngIf="!previewLogoVertical" class="branding-logo-placeholder">image</mat-icon>
-        </div>
-        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL' | i18n }}</p>
-        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_VERTICAL_USAGE' | i18n }}</p>
-        <div class="branding-logo-actions">
-          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_vertical')" #fileInputV style="display:none" />
-          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoVerticalController" (click)="fileInputV.click()">
-            <mat-icon>{{ selectedLogoVerticalController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
-            {{ (selectedLogoVerticalController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
-          </button>
-          <button *ngIf="form_action == 'update' && selectedLogoVerticalController && selectedLogoVerticalFile === null"
-            mat-icon-button type="button" color="warn"
-            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
-            (click)="onDeleteFileRef('white_labeling.base64_logo_vertical')">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </div>
+        <!-- Custom mail configuration inputs -->
+        <div *ngIf="form.value.mail_options_mode === 'custom'">
+          <mat-form-field appearance="fill" class="medium">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_TYPE_LABEL' | i18n }}</mat-label>
+            <mat-select formControlName="mail_options_type">
+              <mat-option value="gmail">{{ 'ORGANIZATIONS.FORM.MAIL_TYPE_GMAIL' | i18n }}</mat-option>
+              <mat-option value="smtp">{{ 'ORGANIZATIONS.FORM.MAIL_TYPE_SMTP' | i18n }}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      <!-- Logo Welcome -->
-      <div class="branding-logo-card">
-        <div class="branding-logo-preview">
-          <img *ngIf="previewLogoWelcome" [src]="previewLogoWelcome" class="branding-logo-img" />
-          <mat-icon *ngIf="!previewLogoWelcome" class="branding-logo-placeholder">image</mat-icon>
-        </div>
-        <p class="branding-logo-name">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME' | i18n }}</p>
-        <p class="branding-logo-usage">{{ 'ORGANIZATIONS.FORM.BRANDING_LOGO_WELCOME_USAGE' | i18n }}</p>
-        <div class="branding-logo-actions">
-          <input type="file" accept="image/*" (change)="onFileSelected($event, 'base64_logo_welcome')" #fileInputW style="display:none" />
-          <button mat-stroked-button type="button" color="accent" [class.branding-change-mode]="selectedLogoWelcomeController" (click)="fileInputW.click()">
-            <mat-icon>{{ selectedLogoWelcomeController ? 'swap_horiz' : 'add_photo_alternate' }}</mat-icon>
-            {{ (selectedLogoWelcomeController ? 'ORGANIZATIONS.FORM.BRANDING_CHANGE' : 'ORGANIZATIONS.FORM.BRANDING_SELECT') | i18n }}
-          </button>
-          <button *ngIf="form_action == 'update' && selectedLogoWelcomeController && selectedLogoWelcomeFile === null"
-            mat-icon-button type="button" color="warn"
-            [matTooltip]="'ORGANIZATIONS.FORM.BRANDING_DELETE_TOOLTIP' | i18n"
-            (click)="onDeleteFileRef('white_labeling.base64_logo_welcome')">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </div>
+          <br/>
 
-    </div><!-- end branding-logo-grid -->
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_HOST_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="mail_options_host" [placeholder]="'ORGANIZATIONS.FORM.MAIL_HOST_PLACEHOLDER' | i18n">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="medium">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_PORT_LABEL' | i18n }}</mat-label>
+            <input matInput type="number" min="1" max="65535" class="no-spinner" formControlName="mail_options_port" [placeholder]="'ORGANIZATIONS.FORM.MAIL_PORT_PLACEHOLDER' | i18n">
+          </mat-form-field>
+
+          <br/>
+          <h4>{{ 'ORGANIZATIONS.FORM.MAIL_SECURE_LABEL' | i18n }}:</h4>
+          <mat-radio-group color="primary" formControlName="mail_options_secure">
+            <mat-radio-button value="true">{{ 'ACTION.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+            <mat-radio-button value="false">{{ 'ACTION.STATUS_INACTIVE' | i18n }}</mat-radio-button>
+          </mat-radio-group>
+          <br/><br/>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_FROM_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="mail_options_from" [placeholder]="'ORGANIZATIONS.FORM.MAIL_FROM_PLACEHOLDER' | i18n">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_USER_LABEL' | i18n }}</mat-label>
+            <input matInput type="text" formControlName="mail_options_user" [placeholder]="'ORGANIZATIONS.FORM.MAIL_USER_PLACEHOLDER' | i18n">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="large">
+            <mat-label>{{ 'ORGANIZATIONS.FORM.MAIL_PASS_LABEL' | i18n }}</mat-label>
+            <input matInput type="password" formControlName="mail_options_pass" [placeholder]="'ORGANIZATIONS.FORM.MAIL_PASS_PLACEHOLDER' | i18n">
+            <mat-hint *ngIf="form_action == 'update' && sharedFunctions.response && sharedFunctions.response.data && sharedFunctions.response.data[0].mail_options?.host" align="start">{{ 'ORGANIZATIONS.FORM.MAIL_PASS_HINT' | i18n }}</mat-hint>
+          </mat-form-field>
+        </div>
+
+      </div> <!-- end mail configuration column -->
+
+    </div>
     <br/>
   </div>
-  <!-- ==================== End Branding section ==================== -->
+  <!-- ==================== End Branding / Mail configuration section ==================== -->
 
   <div class="action-wrapper" fxLayout="row" fxLayoutAlign="end center">
     <div>
