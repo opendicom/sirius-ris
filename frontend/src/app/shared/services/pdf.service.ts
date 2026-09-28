@@ -270,15 +270,23 @@ export class PdfService {
                 '</p>';
 
                 //Set mail destination:
+                let email_alt_destination: string | undefined = undefined;
                 if(email_destination == undefined || email_destination == null || email_destination == ''){
+                  //Set the primary email destination:
                   email_destination = res.data[0].patient.email;
+
+                  //Set alternative email as cc (if defined):
+                  if(res.data[0].patient.email_alt !== undefined && res.data[0].patient.email_alt !== null && res.data[0].patient.email_alt !== ''){
+                    email_alt_destination = res.data[0].patient.email_alt;
+                  }
                 }
-                
+
                 //Get the PDF Document as base64 data:
                 pdfDocument.getBase64((base64Document: any) => {
                   //Set mail options:
                   const mailOptions = {
                     to        : email_destination,
+                    email_alt : email_alt_destination,
                     subject   : res.data[0].imaging.organization.name + ' - ' + this.i18n.instant('PDF.APPOINTMENT.EMAIL_SUBJECT'),
                     message   : body_message,
                     filename  : this.i18n.instant('PDF.APPOINTMENT.DOWNLOAD_FILENAME'),

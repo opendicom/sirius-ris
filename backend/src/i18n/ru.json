@@ -84,6 +84,7 @@
     "report_authenticated": "Отчет успешно подтвержден.",
     "mail_send_success": "Письмо успешно отправлено.",
     "mail_send_error": "Ошибка при отправке письма.",
+    "mail_not_configured": "У организации не настроен почтовый сервис.",
     "mail_wrong_address": "Указанный адрес электронной почты неверен.",
     "mail_empty_subject": "Параметр subject не может быть пустым.",
     "mail_empty_message": "Сообщение не может быть пустым.",

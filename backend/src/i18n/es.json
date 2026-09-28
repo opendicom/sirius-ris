@@ -84,6 +84,7 @@
     "report_authenticated": "Informe autenticado existosamente.",
     "mail_send_success": "Correo enviado exitosamente.",
     "mail_send_error": "Error al intentar enviar el correo.",
+    "mail_not_configured": "La organización no tiene configurado el servicio de correo.",
     "mail_wrong_address": "La dirección de correo indicada es incorrecta.",
     "mail_empty_subject": "El parametro subject no puede ser vacío.",
     "mail_empty_message": "El mensaje no puede ser vacío.",
