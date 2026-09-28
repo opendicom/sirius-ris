@@ -17,6 +17,7 @@ const subSchemaWhiteLabeling = new mongoose.Schema({
     base64_logo_vertical:   { type: String }, // Login/Authorize pages logo (base64).
     base64_logo_welcome:    { type: String }, // Welcome/start page logo (base64).
 }, { _id: false });
+
 //Define mail options sub-schema (per-organization SMTP configuration):
 const subSchemaMailOptions = new mongoose.Schema({
     type:           { type: String },  // Mail type (e.g. "gmail").
@@ -117,6 +118,7 @@ const Validator = [
         .optional()
         .trim(),
 
+    // White labeling (custom branding) validation rules:
     body('white_labeling.label')
         .optional()
         .trim()
@@ -138,6 +140,7 @@ const Validator = [
         .isString()
         .withMessage(currentLang.ris.schema_validator.isString + ' | "white_labeling.base64_logo_welcome".'),
 
+    // Mail options (SMTP configuration) validation rules:
     body('mail_options.type')
         .optional()
         .trim()

@@ -31,17 +31,6 @@ webserver:
   https_enabled   : ${SIRIUS_BACKEND_HTTPS_ENABLED}
   https_port      : ${SIRIUS_BACKEND_HTTPS_PORT}
 
-# Mail server settings:
-# Allowed mail types: 'gmail', 'other'.
-mailserver:
-  type            : '${SIRIUS_BACKEND_MAIL_TYPE}'
-  host            : '${SIRIUS_BACKEND_MAIL_HOST}'
-  port            : ${SIRIUS_BACKEND_MAIL_PORT}
-  secure          : ${SIRIUS_BACKEND_MAIL_SECURE}
-  from            : '${SIRIUS_BACKEND_MAIL_FROM}'
-  user            : '${SIRIUS_BACKEND_MAIL_USER}'
-  pass            : '${SIRIUS_BACKEND_MAIL_PASS}'
-
 # SSL settings (Only if https_enabled is true):
 ssl_certificates:
   key  : '${SSL_KEY}'

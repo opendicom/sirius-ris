@@ -223,10 +223,12 @@ export class FormComponent implements OnInit {
         this._readFilePreview(file, (r) => { this.previewLogo = r; });
         break;
       }
+
       case 'cert':
         this.selectedCertFile = <File>event.target.files[0];
         this.selectedCertController = true;
         break;
+
       case 'base64_logo_horizontal': {
         const file = <File>event.target.files[0];
         if(!file) return;
@@ -235,6 +237,7 @@ export class FormComponent implements OnInit {
         this._readFilePreview(file, (r) => { this.previewLogoHorizontal = r; });
         break;
       }
+
       case 'base64_logo_vertical': {
         const file = <File>event.target.files[0];
         if(!file) return;
@@ -243,6 +246,7 @@ export class FormComponent implements OnInit {
         this._readFilePreview(file, (r) => { this.previewLogoVertical = r; });
         break;
       }
+
       case 'base64_logo_welcome': {
         const file = <File>event.target.files[0];
         if(!file) return;
@@ -266,6 +270,7 @@ export class FormComponent implements OnInit {
       const wlLabel = formData.white_labeling_label;
       delete formData.white_labeling_label;
 
+      //Set white_labeling.label or unset it if empty on update:
       if(wlLabel !== null && wlLabel !== undefined && wlLabel !== ''){
         formData['white_labeling.label'] = wlLabel;
       } else if(this.form_action === 'update'){
@@ -384,6 +389,14 @@ export class FormComponent implements OnInit {
     const hostControl = this.form.get('mail_options_host');
     hostControl?.setValidators(isCustom ? [Validators.required] : []);
     hostControl?.updateValueAndValidity();
+
+    const portControl = this.form.get('mail_options_port');
+    portControl?.setValidators(isCustom ? [Validators.required] : []);
+    portControl?.updateValueAndValidity();
+
+    const fromControl = this.form.get('mail_options_from');
+    fromControl?.setValidators(isCustom ? [Validators.required, Validators.email] : []);
+    fromControl?.updateValueAndValidity();
 
     //Account username is expected to be a full email address (Gmail/SMTP login):
     const userControl = this.form.get('mail_options_user');
