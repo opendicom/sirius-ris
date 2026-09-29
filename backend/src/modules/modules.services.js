@@ -1161,6 +1161,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('performing');
             affectedCollections.push('signatures');
+            affectedCollections.push('check_in_boards');
 
         case 'people':
             affectedCollections.push('users');
@@ -1187,6 +1188,7 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
             affectedCollections.push('appointments');
             affectedCollections.push('appointments_drafts');
             affectedCollections.push('files');
+            affectedCollections.push('boards');
             break;
 
         case 'services':
@@ -1249,6 +1251,14 @@ async function checkReferences(_id, schemaName, ForeignKeys, res){
 
         case 'signatures':
             affectedCollections.push('reports');
+            break;
+
+        case 'boards':
+            affectedCollections.push('check_in_boards');
+            break;
+
+        case 'check_in_boards':
+            //Nothing at the moment.
             break;
     }
 
@@ -2557,6 +2567,39 @@ function adjustDataTypes(filter, schemaName, asPrefix = ''){
                 if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
                 if(filter[asPrefix + 'fk_organization'] != undefined){ filter[asPrefix + 'fk_organization'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_organization']); };
                 if(filter[asPrefix + 'fk_user'] != undefined){ filter[asPrefix + 'fk_user'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_user']); };
+
+                return filter;
+            });
+            break;
+
+        case 'boards':
+            filter = adjustCondition(filter, (filter) => {
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_branch'] != undefined){ filter[asPrefix + 'fk_branch'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_branch']); };
+                if(filter[asPrefix + 'status'] != undefined){ filter[asPrefix + 'status'] = mainServices.stringToBoolean(filter[asPrefix + 'status']); };
+
+                return filter;
+            });
+            break;
+
+        case 'check_in_boards':
+            filter = adjustCondition(filter, (filter) => {
+                //Schema:
+                if(filter[asPrefix + '_id'] != undefined){ filter[asPrefix + '_id'] = new mongoose.Types.ObjectId(filter[asPrefix + '_id']); };
+                if(filter[asPrefix + 'fk_patient'] != undefined){ filter[asPrefix + 'fk_patient'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_patient']); };
+                if(filter[asPrefix + 'fk_board'] != undefined){ filter[asPrefix + 'fk_board'] = new mongoose.Types.ObjectId(filter[asPrefix + 'fk_board']); };
+
+                //Set allowed explicit operators:
+                if(filter[asPrefix + 'date'] != undefined){
+                    setExplicitOperator(filter[asPrefix + 'date'], (explicitOperator) => {
+                        if(explicitOperator){
+                            filter[asPrefix + 'date'][explicitOperator] = new Date(filter[asPrefix + 'date'][explicitOperator]);
+                        } else {
+                            filter[asPrefix + 'date'] = new Date(filter[asPrefix + 'date']);
+                        }
+                    });
+                }
 
                 return filter;
             });
