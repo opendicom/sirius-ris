@@ -124,7 +124,7 @@ const rolePermissions = {
         exporter                : [],
         wezen                   : ['studyToken'],
         stats                   : [],
-        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        boards                  : ['find', 'findOne'],
         check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 
@@ -248,7 +248,7 @@ const rolePermissions = {
         exporter                : [],
         wezen                   : [],
         stats                   : [],
-        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        boards                  : ['find', 'findOne'],
         check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 

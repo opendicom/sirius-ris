@@ -3104,7 +3104,65 @@ async function addDomainCondition(req, res, domainType, completeDomain){
 
                             } else if(domainType == 'branches' || domainType == 'services'){
                                 //Add domain condition:
-                                req.query.filter['fk_branch'] = completeDomain.branch;                            
+                                req.query.filter['fk_branch'] = completeDomain.branch;
+                            }
+                        }
+                        break;
+
+                    case 'boards':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type:
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter.and['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter.and['fk_branch'] = completeDomain.branch;
+                            }
+
+                        } else {
+                            //Switch by domain type:
+                            if(domainType == 'organizations'){
+                                //Add domain condition:
+                                req.query.filter['branch.fk_organization'] = domain;
+
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition:
+                                req.query.filter['fk_branch'] = completeDomain.branch;
+                            }
+                        }
+                        break;
+
+                    case 'check_in_boards':
+                        //Check whether it has operator or not:
+                        if(haveOperator){
+                            //Add AND operator in case only this OR operator (Prevent: Cannot set properties of undefined):
+                            if(!filter.and){ req.query.filter['and'] = []; }
+
+                            //Switch by domain type:
+                            if(domainType == 'organizations'){
+                                //Add domain condition (Post-lookup: board -> branch -> organization):
+                                req.query.filter.and['board.organization._id'] = domain;
+
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition (Post-lookup: board -> branch):
+                                req.query.filter.and['board.branch._id'] = completeDomain.branch;
+                            }
+
+                        } else {
+                            //Switch by domain type:
+                            if(domainType == 'organizations'){
+                                //Add domain condition (Post-lookup: board -> branch -> organization):
+                                req.query.filter['board.organization._id'] = domain;
+
+                            } else if(domainType == 'branches' || domainType == 'services'){
+                                //Add domain condition (Post-lookup: board -> branch):
+                                req.query.filter['board.branch._id'] = completeDomain.branch;
                             }
                         }
                         break;
@@ -3742,6 +3800,48 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                         // The Superuser role is unique role can access here.
                         break;
 
+                    case 'boards':
+                        //Current cases to eval:
+                        if(domainType == 'organizations'){
+                            //Get Domain Reference (validate branch belongs to the user's organization):
+                            const referencedBranch = await getDomainReference('branches', req.body.fk_branch, { 'fk_organization': 1 });
+
+                            //Check Domain Reference:
+                            if(referencedBranch === false || referencedBranch.fk_organization != domain){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else if(domainType == 'branches' && req.body.fk_branch !== domain){
+                            operationResult = false; /* Operation rejected */
+                        } else if(domainType == 'services' && req.body.fk_branch !== completeDomain.branch){
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
+                    case 'check_in_boards':
+                        //Get Domain Reference (board -> branch):
+                        const referencedCheckInBoard = await getDomainReference('boards', req.body.fk_board, { 'fk_branch': 1 });
+
+                        //Check Domain Reference:
+                        if(referencedCheckInBoard !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations'){
+                                //Get Domain Reference (branch -> organization):
+                                const referencedCheckInBranch = await getDomainReference('branches', referencedCheckInBoard.fk_branch, { 'fk_organization': 1 });
+
+                                //Check Domain Reference:
+                                if(referencedCheckInBranch === false || referencedCheckInBranch.fk_organization != domain){
+                                    operationResult = false; /* Operation rejected */
+                                }
+                            } else if(domainType == 'branches' && referencedCheckInBoard.fk_branch != domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencedCheckInBoard.fk_branch != completeDomain.branch){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false; /* Operation rejected */
+                        }
+                        break;
+
                     case 'slots':
                         //Current cases to eval:
                         if(domainType == 'organizations' && req.body.domain.organization !== domain){
@@ -4000,6 +4100,64 @@ async function addDomainCondition(req, res, domainType, completeDomain){
                     case 'equipments':
                         // No restrictions here.
                         // The Superuser role is unique role can access here.
+                        break;
+
+                    case 'boards':
+                        //Get Domain Reference:
+                        const referencedBoard = await getDomainReference(schema, req.body._id, { 'fk_branch' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedBoard !== false){
+                            //Current cases to eval:
+                            if(domainType == 'organizations'){
+                                //Get Domain Reference (branch -> organization):
+                                const referencedBoardBranch = await getDomainReference('branches', referencedBoard.fk_branch, { 'fk_organization': 1 });
+
+                                //Check Domain Reference:
+                                if(referencedBoardBranch === false || referencedBoardBranch.fk_organization != domain){
+                                    operationResult = false; /* Operation rejected */
+                                }
+                            } else if(domainType == 'branches' && referencedBoard.fk_branch != domain){
+                                operationResult = false; /* Operation rejected */
+                            } else if(domainType == 'services' && referencedBoard.fk_branch != completeDomain.branch){
+                                operationResult = false; /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
+                        break;
+
+                    case 'check_in_boards':
+                        //Get Domain Reference:
+                        const referencedCIB = await getDomainReference(schema, req.body._id, { 'fk_board' : 1 });
+
+                        //Check Domain Reference:
+                        if(referencedCIB !== false){
+                            //Get Domain Reference (board -> branch):
+                            const referencedCIBBoard = await getDomainReference('boards', referencedCIB.fk_board, { 'fk_branch': 1 });
+
+                            //Check Domain Reference:
+                            if(referencedCIBBoard !== false){
+                                //Current cases to eval:
+                                if(domainType == 'organizations'){
+                                    //Get Domain Reference (branch -> organization):
+                                    const referencedCIBBranch = await getDomainReference('branches', referencedCIBBoard.fk_branch, { 'fk_organization': 1 });
+
+                                    //Check Domain Reference:
+                                    if(referencedCIBBranch === false || referencedCIBBranch.fk_organization != domain){
+                                        operationResult = false; /* Operation rejected */
+                                    }
+                                } else if(domainType == 'branches' && referencedCIBBoard.fk_branch != domain){
+                                    operationResult = false; /* Operation rejected */
+                                } else if(domainType == 'services' && referencedCIBBoard.fk_branch != completeDomain.branch){
+                                    operationResult = false; /* Operation rejected */
+                                }
+                            } else {
+                                operationResult = false;  /* Operation rejected */
+                            }
+                        } else {
+                            operationResult = false;  /* Operation rejected */
+                        }
                         break;
 
                     case 'slots':

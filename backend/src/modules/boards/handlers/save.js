@@ -10,21 +10,30 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema, operation) => {
-    //Set referenced elements (FKs - Check existence):
-    let referencedElements = [];
-    if(req.body.fk_branch){ referencedElements.push([ req.body.fk_branch, 'branches' ]); }
+    //Set params for check duplicates:
+    const params = { fk_branch: req.body.fk_branch, name: req.body.name };
 
-    //Excecute main query:
-    switch(operation){
-        case 'insert':
-            await moduleServices.insert(req, res, currentSchema, referencedElements);
-            break;
-        case 'update':
-            await moduleServices.update(req, res, currentSchema, referencedElements);
-            break;
-        default:
-            res.status(500).send({ success: false, message: currentLang.db.not_allowed_save });
-            break;
+    //Search for duplicates:
+    const duplicated = await moduleServices.isDuplicated(req, res, currentSchema, params);
+
+    //Check for duplicates:
+    if(duplicated == false){
+        //Set referenced elements (FKs - Check existence):
+        let referencedElements = [];
+        if(req.body.fk_branch){ referencedElements.push([ req.body.fk_branch, 'branches' ]); }
+
+        //Excecute main query:
+        switch(operation){
+            case 'insert':
+                await moduleServices.insert(req, res, currentSchema, referencedElements);
+                break;
+            case 'update':
+                await moduleServices.update(req, res, currentSchema, referencedElements);
+                break;
+            default:
+                res.status(500).send({ success: false, message: currentLang.db.not_allowed_save });
+                break;
+        }
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
