@@ -395,7 +395,7 @@ export class FormComponent implements OnInit {
     portControl?.updateValueAndValidity();
 
     const fromControl = this.form.get('mail_options_from');
-    fromControl?.setValidators(isCustom ? [Validators.required, Validators.email] : []);
+    fromControl?.setValidators(isCustom ? [Validators.required] : []);
     fromControl?.updateValueAndValidity();
 
     //Account username is expected to be a full email address (Gmail/SMTP login):
