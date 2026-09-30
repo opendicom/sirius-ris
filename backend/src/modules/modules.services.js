@@ -5323,6 +5323,20 @@ async function setBase64Files(req, operation){
                     }
                     break;
 
+                //Board screen (Waiting room multimedia content):
+                case 'base64_screen':
+                    //Set base64 in request by operation:
+                    switch(operation){
+                        case 'insert':
+                            req.body.base64_screen = fileBase64;
+                            break;
+                        case 'update':
+                            if(req.validatedResult.set === false){ req.validatedResult.set = {} };
+                            req.validatedResult.set['base64_screen'] = fileBase64;
+                            break;
+                    }
+                    break;
+
                 //Organization certificate:
                 case 'uploaded_cert':
                     //Set base64 in request by operation:

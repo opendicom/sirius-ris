@@ -4,6 +4,7 @@
 //--------------------------------------------------------------------------------------------------------------------//
 //Import external modules
 const express = require('express');
+const multer  = require('multer');
 
 //Import app modules:
 const mainServices  = require('../../main.services');                           // Main services
@@ -26,6 +27,12 @@ const boards = require('./schemas');
 //Get keys from current schema:
 const allSchemaKeys     = mainServices.getSchemaKeys(boards);            //All.
 const allowedSchemaKeys = mainServices.getSchemaKeys(boards, true);      //No parameters that cannot be modified.
+
+//Set storage parameters (file_max_size: 10 MB):
+const upload = multer({
+  storage: mainServices.setStorage(),
+  limits: { fileSize: mainSettings.file_max_size || 10 * 1024 * 1024 }
+});
 
 //Create Router.
 const router = express.Router();
@@ -65,6 +72,7 @@ router.post(
     '/insert',
     mainMiddlewares.checkJWT,
     mainMiddlewares.checkDBConnection,
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     boards.Validator,
     (req, res) => {
@@ -78,6 +86,7 @@ router.post(
     '/update',
     mainMiddlewares.checkJWT,
     mainMiddlewares.checkDBConnection,
+    upload.any(),
     mainMiddlewares.roleAccessBasedControl,
     mainMiddlewares.allowedValidate(allowedSchemaKeys, boards.AllowedUnsetValues),
     boards.Validator,
@@ -99,6 +108,12 @@ router.post(
         moduleServices._delete(req, res, boards);
     }
 );
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// Handling specific file upload errors (Multer):
+//--------------------------------------------------------------------------------------------------------------------//
+router.use(mainMiddlewares.fileUploadControl);
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//

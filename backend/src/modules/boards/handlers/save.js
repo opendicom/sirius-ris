@@ -10,6 +10,9 @@ const currentLang   = require('../../../main.languages')(mainSettings.language);
 const moduleServices = require('../../modules.services');
 
 module.exports = async (req, res, currentSchema, operation) => {
+    //Set base64 upload file in the request:
+    await moduleServices.setBase64Files(req, operation);
+
     //Set params for check duplicates:
     const params = { fk_branch: req.body.fk_branch, name: req.body.name };
 
