@@ -332,6 +332,7 @@ export class PdfService {
             'proj[performing.date]' : 1,
 
             //Make sure the first report is the most recent:
+            'sort[_id]'             : -1,
             'sort[createdAt]'       : -1
           };
           
@@ -452,6 +453,7 @@ export class PdfService {
             'proj[patient]'                 : 1,
 
             //Make sure the first report is the most recent:
+            'sort[_id]'                     : -1,
             'sort[createdAt]'               : -1
           };
 
