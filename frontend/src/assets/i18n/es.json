@@ -2087,7 +2087,9 @@
     "22": "Edición de identificación de pacientes",
     "23": "Sobreagenda (overbooking)",
     "24": "Listados de facturación",
-    "25": "Gestión de casillero médico"
+    "25": "Gestión de casillero médico",
+    "26": "Estadísticas de cálculo de demoras en citas",
+    "27": "Estadísticas de cálculo de demoras en informes"
   },
   "GENDER_TYPES": {
     "1": "Masculino",

@@ -2087,7 +2087,9 @@
     "22": "Edição de identificação do paciente",
     "23": "Encaixe",
     "24": "Listas de faturamento",
-    "25": "Gerenciamiento de armário médico"
+    "25": "Gerenciamiento de armário médico",
+    "26": "Estatísticas de cálculo de atrasos de agendamentos",
+    "27": "Estatísticas de cálculo de atrasos na entrega de laudos"
   },
   "GENDER_TYPES": {
     "1": "Masculino",

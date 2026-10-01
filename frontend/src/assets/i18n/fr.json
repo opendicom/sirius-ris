@@ -2087,7 +2087,9 @@
     "22": "Modification de l'identification du patient",
     "23": "Sur-réservation",
     "24": "Listes de facturation",
-    "25": "Gestion des casiers médicaux"
+    "25": "Gestion des casiers médicaux",
+    "26": "Statistiques de calcul des retards de rendez-vous",
+    "27": "Statistiques de calcul des retards de remise des rapports"
   },
   "GENDER_TYPES": {
     "1": "Masculin",
