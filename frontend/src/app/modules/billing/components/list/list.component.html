@@ -41,8 +41,8 @@
         <td mat-cell *matCellDef="let element" class="text-center">
           <mat-chip-list>
             <div *ngIf="completeFS.includes(element.flow_state) ; then thenBlockFlowState else elseBlockFlowState"></div>
-            <ng-template #thenBlockFlowState><mat-chip class="bg-color-ok">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
-            <ng-template #elseBlockFlowState><mat-chip class="bg-color-fail">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
+            <ng-template #thenBlockFlowState><mat-chip class="bg-color-ok mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
+            <ng-template #elseBlockFlowState><mat-chip class="bg-color-fail mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
           </mat-chip-list>
         </td>
       </ng-container>
@@ -75,18 +75,18 @@
               </ng-template>
 
               <ng-template #elseBlockNotAuthenticated_A>
-                <mat-chip class="bg-color-fail">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip>
+                <mat-chip class="bg-color-fail mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip>
               </ng-template>
             </ng-template>
 
             <ng-template #elseBlocklReportControl_A>
-              <mat-chip>{{ 'BILLING.LIST.CHIPS.NO_REPORT_REQUIRED' | i18n }}</mat-chip>
+              <mat-chip class="mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO_REPORT_REQUIRED' | i18n }}</mat-chip>
             </ng-template>
           </ng-template>
 
           <!--Cancelled (disable control)-->
           <ng-template #elseBlockCancelled_A>
-            <mat-chip class="bg-color-fail">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip>
+            <mat-chip class="bg-color-fail mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip>
           </ng-template>
         </td>
       </ng-container>
@@ -254,8 +254,18 @@
           <mat-chip-list *ngIf="element.appointment">
             <span *ngIf="element.appointment.contrast">
                 <div *ngIf="element.appointment.contrast.use_contrast; then thenBlockContrast else elseBlockContrast"></div>
-                <ng-template #thenBlockContrast><mat-chip class="bg-color-ok">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
-                <ng-template #elseBlockContrast><mat-chip class="bg-color-fail">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
+                <ng-template #thenBlockContrast><mat-chip class="bg-color-ok mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
+                <ng-template #elseBlockContrast><mat-chip class="bg-color-fail mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
+                
+                <!-- contrast description -->
+                <span *ngIf="element.modality;">
+                  <span *ngIf="element.modality.code_value !== 'PT';">
+                    &nbsp; <!-- export xsl space -->
+                    <div class="clear"></div>
+                    <small><span class="badge-primary badge-contrast">{{ element.appointment.contrast.description }}</span></small>
+                  </span>
+                </span>
+                
             </span>
           </mat-chip-list>
         </td>
@@ -263,12 +273,12 @@
 
       <!-- anesthesia -->
       <ng-container matColumnDef="anesthesia">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="anesthesia" class="text-center">{{ 'BILLING.LIST.TABLE.ANESTHESIA' | i18n }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="anesthesia" class="text-center">{{ 'BILLING.LIST.TABLE.ANESTHESIA' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <mat-chip-list>
             <div *ngIf="element.anesthesia; then thenBlockAnesthesia else elseBlockAnesthesia"></div>
-            <ng-template #thenBlockAnesthesia><mat-chip class="bg-color-ok">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
-            <ng-template #elseBlockAnesthesia><mat-chip class="bg-color-fail">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
+            <ng-template #thenBlockAnesthesia><mat-chip class="bg-color-ok mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.YES' | i18n }}</mat-chip></ng-template>
+            <ng-template #elseBlockAnesthesia><mat-chip class="bg-color-fail mat-chip-boolean">{{ 'BILLING.LIST.CHIPS.NO' | i18n }}</mat-chip></ng-template>
           </mat-chip-list>
         </td>
       </ng-container>
@@ -287,7 +297,7 @@
 
       <!-- referring -->
       <ng-container matColumnDef="referring">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header="urgency" class="column-alt text-center">{{ 'BILLING.LIST.TABLE.URGENCY' | i18n }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="urgency" class="column-alt text-center">{{ 'BILLING.LIST.TABLE.REFERRING' | i18n }}</th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.appointment" class="domain-container">
             <span *ngIf="element.appointment.referring; then thenBlockReferring else elseBlockReferring"></span>

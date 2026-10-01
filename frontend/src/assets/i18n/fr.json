@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Terminé (avec rapport)",
     "FINISHED_WITHOUT_REPORT": "Terminé (sans rapport)",
     "CANCELLED": "Annulé",
+    "AVG_DELAY": "Calcul des retards",
     "AVG_DELAY_APPOINTMENT": "Délai de coordination des rendez-vous",
     "AVG_DELAY_REPORTS": "Délai de remise des rapports",
     "AVG_DELAY_BY_MODALITY": "Délai moyen par modalité (jours)",

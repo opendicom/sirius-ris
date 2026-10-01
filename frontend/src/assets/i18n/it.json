@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Terminato (con referto)",
     "FINISHED_WITHOUT_REPORT": "Terminato (senza referto)",
     "CANCELLED": "Annullato",
+    "AVG_DELAY": "Calcolo delle ritardanze",
     "AVG_DELAY_APPOINTMENT": "Ritardo nel coordinamento degli appuntamenti",
     "AVG_DELAY_REPORTS": "Ritardo nella consegna dei referti",
     "AVG_DELAY_BY_MODALITY": "Ritardo medio per modalità (giorni)",

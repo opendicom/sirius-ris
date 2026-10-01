@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Finished (with report)",
     "FINISHED_WITHOUT_REPORT": "Finished (without report)",
     "CANCELLED": "Cancelled",
+    "AVG_DELAY": "Calculation of delays",
     "AVG_DELAY_APPOINTMENT": "Appointment Coordination Delay",
     "AVG_DELAY_REPORTS": "Report Delivery Delay",
     "AVG_DELAY_BY_MODALITY": "Average delay by modality (days)",
