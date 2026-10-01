@@ -2087,7 +2087,9 @@
     "22": "Bearbeitung der Patientenidentifikation",
     "23": "Überbuchung",
     "24": "Abrechnungslisten",
-    "25": "Verwaltung von medizinischen Schließfächern"
+    "25": "Verwaltung von medizinischen Schließfächern",
+    "26": "Statistiken zur Berechnung von Terminverzögerungen",
+    "27": "Statistiken zur Berechnung von Verzögerungen bei der Berichterstellung"
   },
   "GENDER_TYPES": {
     "1": "Männlich",

@@ -2087,7 +2087,9 @@
     "22": "Modifica dell'identificazione dei pazienti",
     "23": "Sovraprenotazione (overbooking)",
     "24": "Elenchi di fatturazione",
-    "25": "Gestione dei caselli medici"
+    "25": "Gestione dei caselli medici",
+    "26": "Statistiche sul calcolo dei ritardi degli appuntamenti",
+    "27": "Statistiche sul calcolo dei ritardi nella consegna dei referti"
   },
   "GENDER_TYPES": {
     "1": "Maschile",

@@ -2087,7 +2087,9 @@
     "22": "Patient identification editing",
     "23": "Overbooking",
     "24": "Billing lists",
-    "25": "Medical locker management"
+    "25": "Medical locker management",
+    "26": "Appointment scheduling delay statistics",
+    "27": "Report delivery delay statistics"
   },
   "GENDER_TYPES": {
     "1": "Male",
