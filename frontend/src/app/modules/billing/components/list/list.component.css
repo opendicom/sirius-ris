@@ -11,6 +11,15 @@ mat-chip.line-break {
     float: none !important;
 }
 
+.badge-contrast {
+    opacity: 0.7;
+    font-size: 0.8em;
+}
+
+.mat-chip-boolean {
+    font-size: 0.9em;
+}
+
 .small_button{
     margin-left: 6px !important;
     margin-bottom: 7px !important;
