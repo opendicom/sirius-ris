@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "已完成（有报告）",
     "FINISHED_WITHOUT_REPORT": "已完成（无报告）",
     "CANCELLED": "已取消",
+    "AVG_DELAY": "延误计算",
     "AVG_DELAY_APPOINTMENT": "预约协调延迟",
     "AVG_DELAY_REPORTS": "报告提交延迟",
     "AVG_DELAY_BY_MODALITY": "按模态划分的平均延迟（天）",

@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Завершено (с отчетом)",
     "FINISHED_WITHOUT_REPORT": "Завершено (без отчета)",
     "CANCELLED": "Отменено",
+    "AVG_DELAY": "Расчет задержек",
     "AVG_DELAY_APPOINTMENT": "Задержка координации записи",
     "AVG_DELAY_REPORTS": "Задержка выдачи заключений",
     "AVG_DELAY_BY_MODALITY": "Средняя задержка по модальности (дни)",

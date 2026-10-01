@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Beendet (mit Bericht)",
     "FINISHED_WITHOUT_REPORT": "Beendet (ohne Bericht)",
     "CANCELLED": "Abgesagt",
+    "AVG_DELAY": "Berechnung der Verzögerungen",
     "AVG_DELAY_APPOINTMENT": "Verzögerung bei der Terminkoordination",
     "AVG_DELAY_REPORTS": "Verzögerung bei der Befundübermittlung",
     "AVG_DELAY_BY_MODALITY": "Durchschnittliche Verzögerung nach Modalität (Tage)",

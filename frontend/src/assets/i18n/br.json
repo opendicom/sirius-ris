@@ -819,6 +819,7 @@
     "FINISHED_WITH_REPORT": "Finalizado (com laudo)",
     "FINISHED_WITHOUT_REPORT": "Finalizado (sem laudo)",
     "CANCELLED": "Cancelado",
+    "AVG_DELAY": "Cálculo de atrasos",
     "AVG_DELAY_APPOINTMENT": "Atraso na Coordenação de Agendamentos",
     "AVG_DELAY_REPORTS": "Atraso na Entrega de Laudos",
     "AVG_DELAY_BY_MODALITY": "Atraso médio por modalidade (dias)",
