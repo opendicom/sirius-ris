@@ -12,11 +12,13 @@ const moduleServices = require('../../modules.services');
 module.exports = async (req, res, currentSchema) => {
     //Remove base64 for default projection:
     if(!req.query.proj){ req.query['proj'] = {
-        'base64_screen': 0,
         'branch.base64_logo': 0,
         'organization.base64_logo': 0,
         'organization.base64_cert': 0,
-        'organization.password_cert': 0
+        'organization.password_cert': 0,
+        'organization.white_labeling.base64_logo_horizontal': 0,
+        'organization.white_labeling.base64_logo_vertical': 0,
+        'organization.white_labeling.base64_logo_welcome': 0
     }; }
 
     //Get query params:

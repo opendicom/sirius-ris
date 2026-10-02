@@ -15,11 +15,13 @@ module.exports = async (req, res, currentSchema) => {
         'patient.password': 0,
         'patient.permissions': 0,
         'patient.settings': 0,
-        'board.base64_screen': 0,
         'board.branch.base64_logo': 0,
         'board.organization.base64_logo': 0,
         'board.organization.base64_cert': 0,
-        'board.organization.password_cert': 0
+        'board.organization.password_cert': 0,
+        'board.organization.white_labeling.base64_logo_horizontal': 0,
+        'board.organization.white_labeling.base64_logo_vertical': 0,
+        'board.organization.white_labeling.base64_logo_welcome': 0
     }; }
 
     //Get query params:
