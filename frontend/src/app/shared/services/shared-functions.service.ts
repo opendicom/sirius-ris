@@ -7,6 +7,7 @@ import { ApiClientService } from '@shared/services/api-client.service';       //
 import { I18nService } from '@shared/services/i18n.service';                  // I18n Service
 import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
 import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
+import { Sort } from '@angular/material/sort';                                // Angular Material sorting
 import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
 import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
 import { regexObjectId } from '@env/environment';                             // Enviroments
@@ -34,7 +35,7 @@ import { PatientDetailsComponent } from '@shared/components/dialogs/patient-deta
   providedIn: 'root'
 })
 export class SharedFunctionsService {
-  // mainSettings property is duplicated in the most important services to avoid 
+  // mainSettings property is duplicated in the most important services to avoid
   // circular dependencies and the content is set in the app.component constructor.
   public mainSettings       : any = {};
   public response           : any = {};
@@ -393,11 +394,11 @@ export class SharedFunctionsService {
             if(result){
               this.delete('single', operationHandler.element, operationHandler.appointment_draft._id, (res) => {
                 //Check appointment_draft to confirm if you have an appointment_request:
-                if(res.success === true && 
-                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') && 
-                  operationHandler.appointment_draft.appointment_request._id !== undefined && 
-                  operationHandler.appointment_draft.appointment_request._id !== null && 
-                  operationHandler.appointment_draft.appointment_request._id !== '' && 
+                if(res.success === true &&
+                  operationHandler.appointment_draft.hasOwnProperty('appointment_request') &&
+                  operationHandler.appointment_draft.appointment_request._id !== undefined &&
+                  operationHandler.appointment_draft.appointment_request._id !== null &&
+                  operationHandler.appointment_draft.appointment_request._id !== '' &&
                   regexObjectId.test(operationHandler.appointment_draft.appointment_request._id) &&
                   operationHandler.appointment_draft.appointment_request.flow_state == "AR05"
                 ){
@@ -519,11 +520,13 @@ export class SharedFunctionsService {
     //Check if AditionalRequest is true:
     //Only the users and stats modules uses this case [findByService or findByRoleInReport, Stat cases (appointments)]):
     if(AditionalRequest !== false && (
-      AditionalRequest === 'findByService' || 
-      AditionalRequest === 'findByBranch' || 
-      AditionalRequest === 'findByRoleInReport' || 
+      AditionalRequest === 'findByService' ||
+      AditionalRequest === 'findByBranch' ||
+      AditionalRequest === 'findByRoleInReport' ||
       AditionalRequest === 'appointments' ||        // Stats case
       AditionalRequest === 'performing' ||          // Stats case
+      AditionalRequest === 'avg-delay-appointment' ||  // Stats case
+      AditionalRequest === 'avg-delay-reports' ||       // Stats case
       AditionalRequest === 'findLockers'
     )){ operation = AditionalRequest; }
 
@@ -565,7 +568,7 @@ export class SharedFunctionsService {
   save(operation: string, element: string, _id: string, data: any, exceptions: Array<string> = [], callback = (res: any) => {}, saveResponse: boolean = true): void {
     //Validate data - Delete empty fields:
     this.cleanEmptyFields(operation, data, exceptions);
-    
+
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){
       data._id = _id;
@@ -868,7 +871,7 @@ export class SharedFunctionsService {
 
     //Initializate File Max Size Controller:
     let fileMaxSizeError = false;
-    
+
     //Add _id only for update case:
     if(operation == 'update' && _id != ''){
       data._id = _id;
@@ -932,7 +935,7 @@ export class SharedFunctionsService {
           await Promise.all(Object.keys(data).map((key) => {
             multipartForm.delete(key);
           }));
-  
+
           //Send cancelation message:
           this.sendMessage(
             this.i18n.instant('SHARED.FILE_SIZE_EXCEEDED_ERROR') +
@@ -1359,6 +1362,17 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK ARRAY IDS:
+  // Check if an array of populated documents (with _id) contains a given id (fk_reporting multiple selection cases).
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkArrayIds(array: any[], id: string): boolean {
+    if(!array || !Array.isArray(array)){ return false; }
+    return array.some((current: any) => current._id == id);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // ARRAY COUNT VALUES:
   //--------------------------------------------------------------------------------------------------------------------//
   async arrayCountValues(array: any[]){
@@ -1462,7 +1476,7 @@ export class SharedFunctionsService {
     } else if(nestedIN.length > 1){
       params['filter[in][fk_appointment]'] = nestedIN;
     }
-    
+
     //Search only if there are results in the previous search:
     if(nestedIN.length > 0){
       //Find nested elements:
@@ -1513,7 +1527,7 @@ export class SharedFunctionsService {
 
     //Calculate dose:
 		const numberDose: number = numberWeight * numberCoefficient;
-		
+
     //Return calculated dose:
     return numberDose.toFixed(2)
   }
@@ -1545,7 +1559,7 @@ export class SharedFunctionsService {
     if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)){
       age--;
     }
-    
+
     //Return calculated age:
     //In case the calculated age is less than one year:
     if(age <= 0){
@@ -1563,7 +1577,7 @@ export class SharedFunctionsService {
       } else {
         return months_age + ' meses';
       }
-      
+
     } else if(age == 1) {
       return age + ' año';
 
@@ -1626,7 +1640,7 @@ export class SharedFunctionsService {
 
     //Get element table:
     const element_table = tableChild.nativeElement.getElementsByTagName("TABLE")[0];
-    
+
     //Create workbook:
     // raw = If true, every cell will hold raw strings (Prevent Datetime format errors):
     const workbook = utils.table_to_book(element_table, { sheet: sheetName, raw: true });
@@ -1680,7 +1694,7 @@ export class SharedFunctionsService {
           //Await foreach of alphabet array:
           await Promise.all(Object.keys(alphabetArray).map(async (keyAlphabet: any) => {
             const compareValue = columnLetter.localeCompare(alphabetArray[keyAlphabet]);
-            
+
             //Prevent undefined values for delete duplicates:
             if(workbook.Sheets[sheetName][key] !== undefined){
 
@@ -1915,7 +1929,7 @@ export class SharedFunctionsService {
 
     //Reset authenticated_performing (sharedFunctions Property):
     this.authenticated_performing = {};
-    
+
     //Preserve performing _id to find authenticated reports (Await foreach):
     await Promise.all(Object.keys(performingData).map((key) => {
       if(performingData[key].flow_state === 'P09'){
@@ -1957,7 +1971,7 @@ export class SharedFunctionsService {
               this.authenticated_performing[reportsRes.data[key].fk_performing] = reportsRes.data[key].authenticated.datetime;
             }
           }));
-          
+
 
           //Execute callback:
           callback(reportsRes.data);
@@ -1988,6 +2002,91 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // SORT TABLE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  sortTable(sort: Sort, displayedColumns: string[], originalData: any[]): void {
+    const rootColumn = sort.active.split('.')[0];
+    const isDisplayedColumn = displayedColumns.includes(rootColumn);
+    const isAvailableValue = this.response.data.some((element: any) => {
+      const value = this.getNestedValue(element, sort.active);
+      return value !== null && value !== undefined;
+    });
+
+    // Check if the active sort column is 'element_action' or not included in displayedColumns, if so, return without sorting:
+    if(sort.active === 'element_action' || (!isDisplayedColumn && !isAvailableValue)){
+      return;
+    }
+
+    // Check if sort direction is empty, if so, reset the data to the original data:
+    if(sort.direction === ''){
+      this.response.data = [...originalData];
+      return;
+    }
+
+    // Determine the sort direction (1 for ascending, -1 for descending):
+    const direction = sort.direction === 'asc' ? 1 : -1;
+    const data = [...this.response.data];
+
+    // Sort the data based on the active column and direction:
+    data.sort((firstElement, secondElement) => {
+      const firstValue = this.getComparableValue(this.getNestedValue(firstElement, sort.active));
+      const secondValue = this.getComparableValue(this.getNestedValue(secondElement, sort.active));
+
+      if(firstValue === secondValue){
+        return 0;
+      }
+      if(firstValue === null || firstValue === undefined){
+        return direction;
+      }
+      if(secondValue === null || secondValue === undefined){
+        return -direction;
+      }
+
+      if(typeof firstValue === 'string' && typeof secondValue === 'string'){
+        return firstValue.localeCompare(secondValue) * direction;
+      }
+      if(typeof firstValue === 'boolean' && typeof secondValue === 'boolean'){
+        return (Number(firstValue) - Number(secondValue)) * direction;
+      }
+
+      return (firstValue < secondValue ? -1 : 1) * direction;
+    });
+
+    // Update the response data with the sorted data:
+    this.response.data = data;
+  }
+
+  private getNestedValue(element: any, path: string): any {
+    return path.split('.').reduce((value, property) => {
+      if(value === null || value === undefined){
+        return value;
+      }
+
+      if(Array.isArray(value)){
+        return value.map(item => item === null || item === undefined ? item : item[property]);
+      }
+
+      return value[property];
+    }, element);
+  }
+
+  private getComparableValue(value: any): any {
+    if(value instanceof Date){
+      return value.getTime();
+    }
+    if(Array.isArray(value)){
+      return value.map(item => this.getComparableValue(item)).join('|');
+    }
+    if(value !== null && typeof value === 'object'){
+      return Object.keys(value).sort().map(key => `${key}:${this.getComparableValue(value[key])}`).join('|');
+    }
+
+    return value;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // CREATE OBJECT ID FUNCTION:
   //--------------------------------------------------------------------------------------------------------------------//
   getObjectId() {
@@ -2004,7 +2103,7 @@ export class SharedFunctionsService {
   getDaysPassed(date: string, second_date: any = undefined): any {
     //Convert the input date to a Date object and prevent TZ errors using the same time (T00:00:00.000Z):
     const startDate: Date = new Date(date.split('T')[0].slice(0) + 'T00:00:00.000Z');
-    
+
     //Set second date:
     if(second_date === undefined || second_date === null || second_date === ''){
       //Get the current date:
@@ -2014,19 +2113,19 @@ export class SharedFunctionsService {
       second_date = second_date.split('T')[0].slice(0) + 'T00:00:00.000Z';
       second_date = new Date(second_date);
     }
-    
+
     //Calculate the difference in milliseconds:
     const millisecondsDiff: number = second_date.getTime() - startDate.getTime();
-    
+
     //Convert the difference from milliseconds to days:
     const millisecondsPerDay: number = 1000 * 60 * 60 * 24;
     let daysPassed: any = Math.floor(millisecondsDiff / millisecondsPerDay);
-    
+
     //Check if daysPassed is zero (0 = false for IF):
     if(daysPassed == 0){
       daysPassed = 'zero';
     }
-    
+
     return daysPassed;
   }
   //--------------------------------------------------------------------------------------------------------------------//

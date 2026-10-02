@@ -104,6 +104,26 @@ module.exports = async (req, res, currentSchema, operation) => {
                     mainServices.sendError(res, currentLang.db.query_error, err);
                 });
 
+            //SET BY FK_MODALITY:
+            } else if(req.body.study && req.body.study.fk_modality && regexObjectId.test(req.body.study.fk_modality)){
+                //Find modality by _id:
+                await modalities.Model.findById(req.body.study.fk_modality, modalityProj)
+                .exec()
+                .then((modalityData) => {
+                    //Check if have results:
+                    if(modalityData && modalityData.status){
+                        //Set study object:
+                        studyChecked = true;
+                    } else {
+                        //Modality not found:
+                        res.status(200).send({ success: false, message: currentLang.ris.modalitiy_not_found });
+                    }
+                })
+                .catch((err) => {
+                    //Send error:
+                    mainServices.sendError(res, currentLang.db.query_error, err);
+                });
+
             //SET BY MODALITY (CODE VALUE):
             } else if(req.body.study && req.body.study.modality !== undefined && req.body.study.modality !== null && req.body.study.modality !== '' ){
                 //Find modality by code_value:

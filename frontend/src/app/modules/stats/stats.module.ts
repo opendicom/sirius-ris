@@ -13,9 +13,11 @@ import { StatsAppointmentRequestsComponent } from '@modules/stats/components/sta
 import { StatsAppointmentsComponent } from '@modules/stats/components/stats-appointments/stats-appointments.component';
 import { StatsPerformingComponent } from '@modules/stats/components/stats-performing/stats-performing.component';
 import { StatsReportsComponent } from '@modules/stats/components/stats-reports/stats-reports.component';
+import { StatsAvgDelayAppointmentComponent } from '@modules/stats/components/stats-avg-delay-appointment/stats-avg-delay-appointment.component';
+import { StatsAvgDelayReportsComponent } from '@modules/stats/components/stats-avg-delay-reports/stats-avg-delay-reports.component';
 
 // NgxCharts:
-import { NgxChartsModule }from '@swimlane/ngx-charts';                            
+import { NgxChartsModule }from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     StatsAppointmentRequestsComponent,
     StatsAppointmentsComponent,
     StatsPerformingComponent,
-    StatsReportsComponent
+    StatsReportsComponent,
+    StatsAvgDelayAppointmentComponent,
+    StatsAvgDelayReportsComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,7 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     NgxChartsModule
   ],
   providers: [
-    // If you enter this module directly having an authentication file in the browser, it is necessary to 
+    // If you enter this module directly having an authentication file in the browser, it is necessary to
     // initialize the app from the module (For example: entry from a marker of a specific component):
     AppInitializer,
     { provide: APP_INITIALIZER, useFactory: (appInitializer: AppInitializer) => appInitializer.initializeApp(), multi: true, deps: [AppInitializer] },

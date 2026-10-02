@@ -15,14 +15,23 @@ module.exports = async (req, res, currentSchema) => {
         'imaging.organization.base64_logo': 0,
         'imaging.organization.base64_cert': 0,
         'imaging.organization.password_cert': 0,
+        'imaging.organization.white_labeling.base64_logo_horizontal': 0,
+        'imaging.organization.white_labeling.base64_logo_vertical': 0,
+        'imaging.organization.white_labeling.base64_logo_welcome': 0,
         'imaging.branch.base64_logo': 0,
         'referring.organization.base64_logo': 0,
         'referring.organization.base64_cert': 0,
         'referring.organization.password_cert': 0,
+        'referring.organization.white_labeling.base64_logo_horizontal': 0,
+        'referring.organization.white_labeling.base64_logo_vertical': 0,
+        'referring.organization.white_labeling.base64_logo_welcome': 0,
         'referring.branch.base64_logo': 0,
         'reporting.organization.base64_logo': 0,
         'reporting.organization.base64_cert': 0,
         'reporting.organization.password_cert': 0,
+        'reporting.organization.white_labeling.base64_logo_horizontal': 0,
+        'reporting.organization.white_labeling.base64_logo_vertical': 0,
+        'reporting.organization.white_labeling.base64_logo_welcome': 0,
         'reporting.branch.base64_logo': 0
     }; }
 
@@ -160,7 +169,9 @@ module.exports = async (req, res, currentSchema) => {
         { $unwind: { path: "$reporting.organization", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$reporting.branch", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$reporting.service", preserveNullAndEmptyArrays: true } },
-        { $unwind: { path: "$reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
+
+        //(fix array case)Unwind reporting.fk_reporting [Array] (Unwind):
+        //{ $unwind: { path: "$reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
         //------------------------------------------------------------------------------------------------------------//
 
         //Imaging -> Service -> Modality (Lookup & Unwind):

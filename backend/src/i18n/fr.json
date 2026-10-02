@@ -84,6 +84,7 @@
     "report_authenticated": "Rapport authentifié avec succès.",
     "mail_send_success": "E-mail envoyé avec succès.",
     "mail_send_error": "Erreur lors de la tentative d'envoi de l'e-mail.",
+    "mail_not_configured": "L'organisation n'a pas configuré le service de messagerie.",
     "mail_wrong_address": "L'adresse e-mail indiquée est incorrecte.",
     "mail_empty_subject": "Le paramètre 'subject' ne peut pas être vide.",
     "mail_empty_message": "Le message ne peut pas être vide.",

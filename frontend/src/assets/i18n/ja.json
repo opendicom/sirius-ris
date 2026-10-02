@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "お待ちください、依頼の詳細はまだ読み込まれていません。",
       "STATUS_AND_ANNOTATIONS": "ステータスと注釈：",
       "WORKFLOW": "ワークフロー：",
-      "ANNOTATIONS": "注釈"
+      "ANNOTATIONS": "注釈",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "主データ",
+          "STUDY": "依頼された検査",
+          "PATIENT": "患者データ",
+          "EXTRA": "医師",
+          "VALIDATION_ERROR_TOOLTIP": "このタブに検証エラーがあります"
+        },
+        "IMAGING_LABEL": "支店",
+        "IMAGING_PLACEHOLDER": "依頼された検査を実施する支店を選択してください",
+        "IMAGING_SELECT": "支店を選択してください",
+        "REFERRING_LABEL": "依頼元組織",
+        "REFERRING_PLACEHOLDER": "依頼元組織",
+        "REFERRING_SELECT": "依頼元組織を選択してください",
+        "MODALITY_LABEL": "モダリティ",
+        "MODALITY_PLACEHOLDER": "モダリティ",
+        "MODALITY_SELECT": "検査のモダリティを選択してください",
+        "PHYSICIAN_ID_LABEL": "依頼医のID"
+      },
+      "DISCLAIMER": "実施される手技は予約作成時に決定されます。",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "このフォームで要求されるデータは、患者の担当医によって入力する必要があります。依頼医は、医学的・法的性質の文書を責任もって作成する必要があります。"
     },
     "FORM_UPDATE": {
       "TITLE": "予約更新フォーム",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "完了（レポートあり）",
     "FINISHED_WITHOUT_REPORT": "完了（レポートなし）",
     "CANCELLED": "キャンセル",
+    "AVG_DELAY": "遅延時間の計算",
+    "AVG_DELAY_APPOINTMENT": "予約調整の遅延",
+    "AVG_DELAY_REPORTS": "レポート提出の遅延",
+    "AVG_DELAY_BY_MODALITY": "モダリティ別平均遅延（日数）",
+    "TOTAL_AVG_DELAY": "全体の平均遅延（日数）：",
     "FIND_STATS_ERROR": "情報の取得試行中にエラーが発生しました：",
     "FIND_USERS_ERROR": "統計に関与するユーザーの取得試行中にエラーが発生しました。"
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "接尾辞を入力してください",
       "LOGO_BUTTON_LABEL": "組織のロゴ",
       "DELETE_LOGO_TOOLTIP": "組織のロゴを削除",
-      "LOGO_SELECT": "組織のロゴを選択",
+      "LOGO_SELECT": "選択",
       "FILE_DELETED_SUCCESS": "ファイルが正常に削除されました",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "設定済み",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "ウェルカム画面",
       "BRANDING_SELECT": "選択",
       "BRANDING_CHANGE": "変更",
-      "BRANDING_DELETE_TOOLTIP": "ロゴを削除"
+      "BRANDING_DELETE_TOOLTIP": "ロゴを削除",
+      "MAIL_TITLE": "メール設定",
+      "MAIL_MODE_DEFAULT": "デフォルトを使用",
+      "MAIL_MODE_DEFAULT_INFO": "自動メール送信なし",
+      "MAIL_MODE_CUSTOM": "カスタムSMTP設定",
+      "MAIL_NOT_CONFIGURED_WARNING": "この組織には独自のメールサーバーが設定されていません。自動メール（確認、予約、レポートをリクエストする）は送信されません。",
+      "MAIL_TYPE_LABEL": "メールの種類",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "汎用SMTP",
+      "MAIL_HOST_LABEL": "ホスト",
+      "MAIL_HOST_PLACEHOLDER": "例: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "ポート",
+      "MAIL_PORT_PLACEHOLDER": "例: 465",
+      "MAIL_SECURE_LABEL": "セキュア接続",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "送信者名",
+      "MAIL_FROM_PLACEHOLDER": "例: 自分の組織",
+      "MAIL_USER_LABEL": "アカウントのユーザー名",
+      "MAIL_USER_PLACEHOLDER": "メールアカウントのユーザー名を入力してください",
+      "MAIL_PASS_LABEL": "アカウントのパスワード",
+      "MAIL_PASS_PLACEHOLDER": "メールアカウントのパスワードを入力してください",
+      "MAIL_PASS_HINT": "データベースにすでにパスワードが存在します。変更する場合のみ入力してください。"
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "最小：10、最大：3000",
       "BRANCH_LOGO_BUTTON": "支店のロゴ",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "組織のロゴを削除",
-      "SELECT_BRANCH_LOGO_BUTTON": "支店のロゴを選択",
+      "SELECT_BRANCH_LOGO_BUTTON": "選択",
       "STATUS_H4": "ステータス：",
       "STATUS_ACTIVE": "アクティブ",
       "STATUS_INACTIVE": "非アクティブ",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "メール",
         "EMAIL_INPUT": "例：name@example.com",
         "DEFAULT_EMAIL_TOOLTIP": "デフォルトのメールを設定",
+        "EMAIL_ALT_TITLE": "代替メールアドレス",
+        "EMAIL_ALT_OPTIONAL": "任意",
+        "EMAIL_ALT_PLACEHOLDER": "代替メール",
+        "EMAIL_ALT_INPUT": "例：name@example.com",
+        "EMAIL_ALT_HINT": "自動通知の追加の宛先として使用されます",
         "PASSWORD_TITLE": "ユーザーパスワード",
         "PASSWORD_HINT_UPDATE": "変更しない場合は空欄",
         "PASSWORD_PLACEHOLDER": "パスワード",
@@ -1998,6 +2050,7 @@
     "5": "居住許可証",
     "6": "ビザ",
     "7": "一時的書類",
+    "8": "内部登録番号",
     "100": "匿名書類"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "患者識別情報の編集",
     "23": "過剰予約（オーバーブッキング）",
     "24": "請求リスト",
-    "25": "医療用ロッカーの管理"
+    "25": "医療用ロッカーの管理",
+    "26": "予約調整の遅延計算統計",
+    "27": "レポート納期遅延の計算統計"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2224,7 +2279,8 @@
     "BRANCH": "支店",
     "SELECT_BRANCH": "支店を選択",
     "SEARCH": "検索",
-    "ASSIGNED_REPORTS": "割り当てられたレポート",
+    "ASSIGNED_REPORTS": "医療ロッカー",
+    "PHYSICIAN_ASSIGNMENT": "医師の割り当て",
     "NO_RESULTS": "結果がありません",
     "REPORTS": "レポート",
     "URGENCY": "緊急",

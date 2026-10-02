@@ -18,6 +18,7 @@ import { I18nService } from '@shared/services/i18n.service';                    
 export class ListComponent implements OnInit, DoCheck {
   //Set visible columns of the list:
   public displayedColumns: string[] = ['select_element', 'element_action', 'organization', 'branch', 'service', 'date_name', 'date', 'schedule', 'equipment', 'modality', 'urgency'];
+  public originalData: any[] = [];
 
   //Loading state management:
   public loading: boolean = false;
@@ -128,6 +129,7 @@ export class ListComponent implements OnInit, DoCheck {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resSlots => {
       //Set loading to false when data is received:
       this.loading = false;
+      this.originalData = [...this.sharedFunctions.response.data];
 
       //Initialize base state for change detection after initial load:
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
@@ -158,6 +160,7 @@ export class ListComponent implements OnInit, DoCheck {
     if(this.sharedFunctions.response !== this.previousResponse){
       this.previousResponse = this.sharedFunctions.response;
       if(this.sharedFunctions.response){
+        this.originalData = [...this.sharedFunctions.response.data];
         //Response received - mark loading as complete:
         this.loading = false;
       }

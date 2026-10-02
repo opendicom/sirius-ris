@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Please wait, request details are not yet loaded.",
       "STATUS_AND_ANNOTATIONS": "Status and annotations:",
       "WORKFLOW": "Workflow:",
-      "ANNOTATIONS": "Annotations"
+      "ANNOTATIONS": "Annotations",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Main data",
+          "STUDY": "Requested study",
+          "PATIENT": "Patient data",
+          "EXTRA": "Physician",
+          "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab"
+        },
+        "IMAGING_LABEL": "Branch",
+        "IMAGING_PLACEHOLDER": "Select the branch performing the study",
+        "IMAGING_SELECT": "Select the branch",
+        "REFERRING_LABEL": "Requesting organization",
+        "REFERRING_PLACEHOLDER": "Requesting organization",
+        "REFERRING_SELECT": "Select the requesting organization",
+        "MODALITY_LABEL": "Modality",
+        "MODALITY_PLACEHOLDER": "Modality",
+        "MODALITY_SELECT": "Select the study modality",
+        "PHYSICIAN_ID_LABEL": "Requesting physician ID"
+      },
+      "DISCLAIMER": "The procedure to be performed will be set at the time of appointment creation.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "The data requested in this form must be completed by the patient's treating physician. The requesting physician is responsible for a document of a medical-legal nature."
     },
     "FORM_UPDATE": {
       "TITLE": "Appointment Update Form",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Finished (with report)",
     "FINISHED_WITHOUT_REPORT": "Finished (without report)",
     "CANCELLED": "Cancelled",
+    "AVG_DELAY": "Calculation of delays",
+    "AVG_DELAY_APPOINTMENT": "Appointment Coordination Delay",
+    "AVG_DELAY_REPORTS": "Report Delivery Delay",
+    "AVG_DELAY_BY_MODALITY": "Average delay by modality (days)",
+    "TOTAL_AVG_DELAY": "Overall average delay (days):",
     "FIND_STATS_ERROR": "Error trying to get information: ",
     "FIND_USERS_ERROR": "Error trying to get users involved in the statistics."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Enter the Suffix",
       "LOGO_BUTTON_LABEL": "ORGANIZATION LOGO",
       "DELETE_LOGO_TOOLTIP": "Delete organization logo",
-      "LOGO_SELECT": "SELECT PDF REPORT LOGO",
+      "LOGO_SELECT": "SELECT",
       "FILE_DELETED_SUCCESS": "File deleted successfully",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Configured",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Welcome screen",
       "BRANDING_SELECT": "SELECT",
       "BRANDING_CHANGE": "CHANGE",
-      "BRANDING_DELETE_TOOLTIP": "Delete logo"
+      "BRANDING_DELETE_TOOLTIP": "Delete logo",
+      "MAIL_TITLE": "Email configuration",
+      "MAIL_MODE_DEFAULT": "Use default",
+      "MAIL_MODE_DEFAULT_INFO": "No automatic emails",
+      "MAIL_MODE_CUSTOM": "Custom SMTP configuration",
+      "MAIL_NOT_CONFIGURED_WARNING": "This organization does not have its own mail server configured. Automatic emails (Confirmations of requests, appointments, and reports) will not be sent.",
+      "MAIL_TYPE_LABEL": "Mail type",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "Generic SMTP",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "E.g.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Port",
+      "MAIL_PORT_PLACEHOLDER": "E.g.: 465",
+      "MAIL_SECURE_LABEL": "Secure connection",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "From name",
+      "MAIL_FROM_PLACEHOLDER": "E.g.: My Organization",
+      "MAIL_USER_LABEL": "Account username",
+      "MAIL_USER_PLACEHOLDER": "Enter the mail account username",
+      "MAIL_PASS_LABEL": "Account password",
+      "MAIL_PASS_PLACEHOLDER": "Enter the mail account password",
+      "MAIL_PASS_HINT": "A password already exists in the database, only enter one if you want to change it."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
       "BRANCH_LOGO_BUTTON": "BRANCH LOGO",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Delete organization logo",
-      "SELECT_BRANCH_LOGO_BUTTON": "SELECT BRANCH LOGO",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELECT",
       "STATUS_H4": "Status:",
       "STATUS_ACTIVE": "Active",
       "STATUS_INACTIVE": "Inactive",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Ex: name@mailbox.com",
         "DEFAULT_EMAIL_TOOLTIP": "Set default email",
+        "EMAIL_ALT_TITLE": "Alternative email",
+        "EMAIL_ALT_OPTIONAL": "Optional",
+        "EMAIL_ALT_PLACEHOLDER": "Alternative e-mail",
+        "EMAIL_ALT_INPUT": "Ex: name@mailbox.com",
+        "EMAIL_ALT_HINT": "Used as an additional recipient on automatic notifications",
         "PASSWORD_TITLE": "User password",
         "PASSWORD_HINT_UPDATE": "Empty if you do not want to modify",
         "PASSWORD_PLACEHOLDER": "Password",
@@ -1998,6 +2050,7 @@
     "5": "Residence permit",
     "6": "Visa",
     "7": "Temporary document",
+    "8": "Internal registration number",
     "100": "Anonymous document"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Patient identification editing",
     "23": "Overbooking",
     "24": "Billing lists",
-    "25": "Medical locker management"
+    "25": "Medical locker management",
+    "26": "Appointment scheduling delay statistics",
+    "27": "Report delivery delay statistics"
   },
   "GENDER_TYPES": {
     "1": "Male",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Branch",
     "SELECT_BRANCH": "Select Branch",
     "SEARCH": "SEARCH",
-    "ASSIGNED_REPORTS": "Assigned Reports",
+    "ASSIGNED_REPORTS": "Medical Locker",
+    "PHYSICIAN_ASSIGNMENT": "Physician Assignment",
     "NO_RESULTS": "No Results",
     "REPORTS": "REPORTS",
     "URGENCY": "Urgency",

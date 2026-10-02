@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Attendere, i dettagli della richiesta non sono ancora stati caricati.",
       "STATUS_AND_ANNOTATIONS": "Stato e annotazioni:",
       "WORKFLOW": "Flusso di lavoro:",
-      "ANNOTATIONS": "Annotazioni"
+      "ANNOTATIONS": "Annotazioni",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Dati principali",
+          "STUDY": "Studio richiesto",
+          "PATIENT": "Dati del paziente",
+          "EXTRA": "Medico",
+          "VALIDATION_ERROR_TOOLTIP": "Sono presenti errori di convalida in questa scheda"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Seleziona la filiale esecutrice dello studio",
+        "IMAGING_SELECT": "Seleziona la filiale",
+        "REFERRING_LABEL": "Organizzazione richiedente",
+        "REFERRING_PLACEHOLDER": "Organizzazione richiedente",
+        "REFERRING_SELECT": "Seleziona l'organizzazione richiedente",
+        "MODALITY_LABEL": "Modalità",
+        "MODALITY_PLACEHOLDER": "Modalità",
+        "MODALITY_SELECT": "Seleziona la modalità dello studio",
+        "PHYSICIAN_ID_LABEL": "ID del medico richiedente"
+      },
+      "DISCLAIMER": "La procedura da eseguire verrà definita al momento della creazione dell'appuntamento.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "I dati richiesti in questo modulo devono essere compilati dal Medico Curante del paziente. Il medico richiedente è responsabile di un documento di carattere medico-legale."
     },
     "FORM_UPDATE": {
       "TITLE": "Modulo di aggiornamento appuntamento",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Terminato (con referto)",
     "FINISHED_WITHOUT_REPORT": "Terminato (senza referto)",
     "CANCELLED": "Annullato",
+    "AVG_DELAY": "Calcolo delle ritardanze",
+    "AVG_DELAY_APPOINTMENT": "Ritardo nel coordinamento degli appuntamenti",
+    "AVG_DELAY_REPORTS": "Ritardo nella consegna dei referti",
+    "AVG_DELAY_BY_MODALITY": "Ritardo medio per modalità (giorni)",
+    "TOTAL_AVG_DELAY": "Ritardo medio complessivo (giorni):",
     "FIND_STATS_ERROR": "Errore durante il tentativo di ottenere informazioni: ",
     "FIND_USERS_ERROR": "Errore durante il tentativo di ottenere gli utenti coinvolti nella statistica."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Inserisci il Suffisso",
       "LOGO_BUTTON_LABEL": "LOGO DELL'ORGANIZZAZIONE",
       "DELETE_LOGO_TOOLTIP": "Elimina logo dell'organizzazione",
-      "LOGO_SELECT": "SELEZIONA LOGO DELL'ORGANIZZAZIONE",
+      "LOGO_SELECT": "SELEZIONA",
       "FILE_DELETED_SUCCESS": "File eliminato con successo",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Configurato",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Schermata di benvenuto",
       "BRANDING_SELECT": "SELEZIONA",
       "BRANDING_CHANGE": "CAMBIA",
-      "BRANDING_DELETE_TOOLTIP": "Elimina logo"
+      "BRANDING_DELETE_TOOLTIP": "Elimina logo",
+      "MAIL_TITLE": "Configurazione email",
+      "MAIL_MODE_DEFAULT": "Usa predefinito",
+      "MAIL_MODE_DEFAULT_INFO": "Nessun invio automatico",
+      "MAIL_MODE_CUSTOM": "Configurazione SMTP personalizzata",
+      "MAIL_NOT_CONFIGURED_WARNING": "Questa organizzazione non ha un proprio server di posta configurato. Le email automatiche (Richiedi conferme, appuntamenti e report) non verranno inviate.",
+      "MAIL_TYPE_LABEL": "Tipo di posta",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "SMTP generico",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "Es.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Porta",
+      "MAIL_PORT_PLACEHOLDER": "Es.: 465",
+      "MAIL_SECURE_LABEL": "Connessione sicura",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Nome mittente",
+      "MAIL_FROM_PLACEHOLDER": "Es.: La mia organizzazione",
+      "MAIL_USER_LABEL": "Nome utente account",
+      "MAIL_USER_PLACEHOLDER": "Inserisci il nome utente dell'account email",
+      "MAIL_PASS_LABEL": "Password account",
+      "MAIL_PASS_PLACEHOLDER": "Inserisci la password dell'account email",
+      "MAIL_PASS_HINT": "Esiste già una password nel database, inseriscine una solo se desideri cambiarla."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
       "BRANCH_LOGO_BUTTON": "LOGO DELLA SEDE",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Elimina logo dell'organizzazione",
-      "SELECT_BRANCH_LOGO_BUTTON": "SELEZIONA LOGO DELLA SEDE",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELEZIONA",
       "STATUS_H4": "Stato:",
       "STATUS_ACTIVE": "Attivo",
       "STATUS_INACTIVE": "Inattivo",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Es: nome@casella.com",
         "DEFAULT_EMAIL_TOOLTIP": "Imposta email predefinita",
+        "EMAIL_ALT_TITLE": "Email alternativa",
+        "EMAIL_ALT_OPTIONAL": "Opzionale",
+        "EMAIL_ALT_PLACEHOLDER": "E-mail alternativa",
+        "EMAIL_ALT_INPUT": "Es: nome@casella.com",
+        "EMAIL_ALT_HINT": "Verrà utilizzata come destinatario aggiuntivo nelle notifiche automatiche",
         "PASSWORD_TITLE": "Password dell'utente",
         "PASSWORD_HINT_UPDATE": "Vuoto se non si desidera modificare",
         "PASSWORD_PLACEHOLDER": "Password",
@@ -1998,6 +2050,7 @@
     "5": "Permesso di soggiorno",
     "6": "Visto",
     "7": "Documento transitorio",
+    "8": "Numero di registrazione interno",
     "100": "Documento anonimo"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Modifica dell'identificazione dei pazienti",
     "23": "Sovraprenotazione (overbooking)",
     "24": "Elenchi di fatturazione",
-    "25": "Gestione dei caselli medici"
+    "25": "Gestione dei caselli medici",
+    "26": "Statistiche sul calcolo dei ritardi degli appuntamenti",
+    "27": "Statistiche sul calcolo dei ritardi nella consegna dei referti"
   },
   "GENDER_TYPES": {
     "1": "Maschile",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Filiale",
     "SELECT_BRANCH": "Seleziona Filiale",
     "SEARCH": "CERCA",
-    "ASSIGNED_REPORTS": "Rapporti Assegnati",
+    "ASSIGNED_REPORTS": "Armadio Medico",
+    "PHYSICIAN_ASSIGNMENT": "Assegnazione dei Medici",
     "NO_RESULTS": "Nessun Risultato",
     "REPORTS": "RAPPORTI",
     "URGENCY": "Urgenza",

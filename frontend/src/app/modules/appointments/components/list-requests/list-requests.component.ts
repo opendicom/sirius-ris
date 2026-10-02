@@ -26,6 +26,7 @@ export class ListRequestsComponent implements OnInit, DoCheck {
   private initialLoad: boolean = true;
   private previousParams: any;
   private previousResponse: any;
+  public originalData: any[] = [];
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -71,7 +72,7 @@ export class ListRequestsComponent implements OnInit, DoCheck {
     sharedProp.actionSetter({
       content_title       : this.i18n.instant('APPOINTMENTS.LIST_REQUESTS.TITLE'),
       content_icon        : 'move_to_inbox',
-      add_button          : false,
+      add_button          : '/appointments/form/request/insert/0',
       duplicated_surnames : false,    // Check duplicated surnames
       nested_element      : false,    // Set nested element
       filters_form        : true,
@@ -167,6 +168,7 @@ export class ListRequestsComponent implements OnInit, DoCheck {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, resRequests => {
       //Set loading to false when data is received:
       this.loading = false;
+      this.originalData = [...this.sharedFunctions.response.data];
 
       //Initialize base state for change detection after initial load:
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
@@ -197,6 +199,7 @@ export class ListRequestsComponent implements OnInit, DoCheck {
     if(this.sharedFunctions.response !== this.previousResponse){
       this.previousResponse = this.sharedFunctions.response;
       if(this.sharedFunctions.response){
+        this.originalData = [...this.sharedFunctions.response.data];
         //Response received - mark loading as complete:
         this.loading = false;
       }

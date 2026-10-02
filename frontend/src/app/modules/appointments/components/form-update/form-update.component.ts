@@ -31,6 +31,9 @@ export class FormUpdateComponent implements OnInit {
   //Initializate validation tab errors:
   public detailsTabErrors       : boolean = false;
 
+  //Set loading state:
+  public loading: boolean = false;
+
   //Initialize previous:
   public previous : any = undefined;
 
@@ -99,6 +102,9 @@ export class FormUpdateComponent implements OnInit {
         'proj[reporting.branch.base64_logo]': 0
       };
 
+      //Set loading state:
+      this.loading = true;
+
       //Find element to update:
       this.sharedFunctions.find(this.sharedProp.element, params, (res) => {
         //Check operation status:
@@ -113,6 +119,9 @@ export class FormUpdateComponent implements OnInit {
               //Excecute manual onInit childrens components:
               this.tabDetails.manualOnInit(res);
               this.tabSlot.manualOnInit();
+
+              //Set loading to false when data is received:
+              this.loading = false;
             });
 
             //Find previous:

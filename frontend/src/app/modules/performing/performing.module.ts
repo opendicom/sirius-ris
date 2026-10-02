@@ -12,6 +12,8 @@ import { ListComponent } from '@modules/performing/components/list/list.componen
 import { FormComponent } from '@modules/performing/components/form/form.component';
 import { TabDetailsComponent } from '@modules/performing/components/form/tab-details/tab-details.component';
 import { MedicalLockerComponent } from '@modules/performing/components/medical-locker/medical-locker.component';
+import { LockerComponent } from '@modules/performing/components/medical-locker/locker/locker.component';
+import { ReportingAssignmentComponent } from '@modules/performing/components/medical-locker/reporting-assignment/reporting-assignment.component';
 
 // Import CKEditor Module:
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -21,7 +23,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
         ListComponent,
         FormComponent,
         TabDetailsComponent,
-        MedicalLockerComponent
+        MedicalLockerComponent,
+        LockerComponent,
+        ReportingAssignmentComponent
     ],
     imports: [
         CommonModule,

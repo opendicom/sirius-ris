@@ -21,6 +21,7 @@ export class ListComponent implements OnInit, DoCheck {
   private initialLoad: boolean = true;
   private previousParams: any = null;
   private previousResponse: any = null;
+  public originalData: any[] = [];
 
   //Set visible columns of the list:
   public displayedColumns: string[] = ['element_action', 'organization', 'name', 'description', 'status'];
@@ -114,6 +115,7 @@ export class ListComponent implements OnInit, DoCheck {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params, (resPathologies: any) => {
       //Set loading to false when first data is received:
       this.loading = false;
+      this.originalData = [...this.sharedFunctions.response.data];
 
       //Initialize base state for change detection after initial load:
       this.previousParams = JSON.parse(JSON.stringify(this.sharedProp.params));
@@ -149,6 +151,7 @@ export class ListComponent implements OnInit, DoCheck {
 
       //If response is not null/false, data has arrived - disable loading:
       if(this.sharedFunctions.response){
+        this.originalData = [...this.sharedFunctions.response.data];
         this.loading = false;
       }
     }

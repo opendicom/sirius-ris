@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Bitte warten, die Anforderungsdetails sind noch nicht geladen.",
       "STATUS_AND_ANNOTATIONS": "Status und Anmerkungen:",
       "WORKFLOW": "Arbeitsablauf:",
-      "ANNOTATIONS": "Anmerkungen"
+      "ANNOTATIONS": "Anmerkungen",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Hauptdaten",
+          "STUDY": "Angeforderte Studie",
+          "PATIENT": "Patientendaten",
+          "EXTRA": "Arzt",
+          "VALIDATION_ERROR_TOOLTIP": "Es gibt Validierungsfehler auf dieser Registerkarte"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Filiale der Studie durchführen",
+        "IMAGING_SELECT": "Filiale auswählen",
+        "REFERRING_LABEL": "Anfordernde Organisation",
+        "REFERRING_PLACEHOLDER": "Anfordernde Organisation",
+        "REFERRING_SELECT": "Anfordernde Organisation auswählen",
+        "MODALITY_LABEL": "Modalität",
+        "MODALITY_PLACEHOLDER": "Modalität",
+        "MODALITY_SELECT": "Modalität der Studie auswählen",
+        "PHYSICIAN_ID_LABEL": "ID des anfordernden Arztes"
+      },
+      "DISCLAIMER": "Der Prozedur wird zum Zeitpunkt der Terminerstellung festgelegt.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Die in diesem Formular angeforderten Daten müssen vom behandelnden Arzt des Patienten ausgefüllt werden. Der anfordernde Arzt ist für ein medizinisch-rechtliches Dokument verantwortlich."
     },
     "FORM_UPDATE": {
       "TITLE": "Formular zur Terminaktualisierung",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Beendet (mit Bericht)",
     "FINISHED_WITHOUT_REPORT": "Beendet (ohne Bericht)",
     "CANCELLED": "Abgesagt",
+    "AVG_DELAY": "Berechnung der Verzögerungen",
+    "AVG_DELAY_APPOINTMENT": "Verzögerung bei der Terminkoordination",
+    "AVG_DELAY_REPORTS": "Verzögerung bei der Befundübermittlung",
+    "AVG_DELAY_BY_MODALITY": "Durchschnittliche Verzögerung nach Modalität (Tage)",
+    "TOTAL_AVG_DELAY": "Durchschnittliche Gesamtverzögerung (Tage):",
     "FIND_STATS_ERROR": "Fehler beim Versuch, Informationen zu erhalten: ",
     "FIND_USERS_ERROR": "Fehler beim Versuch, die an der Statistik beteiligten Benutzer zu erhalten."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Suffix eingeben",
       "LOGO_BUTTON_LABEL": "ORGANISATIONSLOGO",
       "DELETE_LOGO_TOOLTIP": "Organisationslogo löschen",
-      "LOGO_SELECT": "ORGANISATIONSLOGO AUSWÄHLEN",
+      "LOGO_SELECT": "AUSWÄHLEN",
       "FILE_DELETED_SUCCESS": "Datei erfolgreich gelöscht",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Konfiguriert",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Willkommensbildschirm",
       "BRANDING_SELECT": "AUSWÄHLEN",
       "BRANDING_CHANGE": "ÄNDERN",
-      "BRANDING_DELETE_TOOLTIP": "Logo löschen"
+      "BRANDING_DELETE_TOOLTIP": "Logo löschen",
+      "MAIL_TITLE": "E-Mail-Konfiguration",
+      "MAIL_MODE_DEFAULT": "Standard verwenden",
+      "MAIL_MODE_DEFAULT_INFO": "Keine automatischen E-Mails",
+      "MAIL_MODE_CUSTOM": "Benutzerdefinierte SMTP-Konfiguration",
+      "MAIL_NOT_CONFIGURED_WARNING": "Für diese Organisation ist kein eigener Mailserver konfiguriert. Automatische E-Mails (Bestätigungen, Termine und Berichte anfordern) werden nicht gesendet.",
+      "MAIL_TYPE_LABEL": "E-Mail-Typ",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "Generisches SMTP",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "Z. B.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Port",
+      "MAIL_PORT_PLACEHOLDER": "Z. B.: 465",
+      "MAIL_SECURE_LABEL": "Sichere Verbindung",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Absendername",
+      "MAIL_FROM_PLACEHOLDER": "Z. B.: Meine Organisation",
+      "MAIL_USER_LABEL": "Kontobenutzername",
+      "MAIL_USER_PLACEHOLDER": "Benutzernamen des E-Mail-Kontos eingeben",
+      "MAIL_PASS_LABEL": "Kontopasswort",
+      "MAIL_PASS_PLACEHOLDER": "Passwort des E-Mail-Kontos eingeben",
+      "MAIL_PASS_HINT": "In der Datenbank existiert bereits ein Passwort, geben Sie nur eines ein, wenn Sie es ändern möchten."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
       "BRANCH_LOGO_BUTTON": "NIEDERLASSUNGSLOGO",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Organisationslogo löschen",
-      "SELECT_BRANCH_LOGO_BUTTON": "NIEDERLASSUNGSLOGO AUSWÄHLEN",
+      "SELECT_BRANCH_LOGO_BUTTON": "AUSWÄHLEN",
       "STATUS_H4": "Status:",
       "STATUS_ACTIVE": "Aktiv",
       "STATUS_INACTIVE": "Inaktiv",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-Mail",
         "EMAIL_INPUT": "Bsp: name@mailbox.com",
         "DEFAULT_EMAIL_TOOLTIP": "Standard-E-Mail festlegen",
+        "EMAIL_ALT_TITLE": "Alternative E-Mail",
+        "EMAIL_ALT_OPTIONAL": "Optional",
+        "EMAIL_ALT_PLACEHOLDER": "Alternative E-Mail",
+        "EMAIL_ALT_INPUT": "Bsp: name@mailbox.com",
+        "EMAIL_ALT_HINT": "Wird als zusätzlicher Empfänger bei automatischen Benachrichtigungen verwendet",
         "PASSWORD_TITLE": "Benutzerpasswort",
         "PASSWORD_HINT_UPDATE": "Leer lassen, wenn Sie es nicht ändern möchten",
         "PASSWORD_PLACEHOLDER": "Passwort",
@@ -1998,6 +2050,7 @@
     "5": "Aufenthaltserlaubnis",
     "6": "Visum",
     "7": "Temporäres Dokument",
+    "8": "Interne Registrierungsnummer",
     "100": "Anonymes Dokument"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Bearbeitung der Patientenidentifikation",
     "23": "Überbuchung",
     "24": "Abrechnungslisten",
-    "25": "Verwaltung von medizinischen Schließfächern"
+    "25": "Verwaltung von medizinischen Schließfächern",
+    "26": "Statistiken zur Berechnung von Terminverzögerungen",
+    "27": "Statistiken zur Berechnung von Verzögerungen bei der Berichterstellung"
   },
   "GENDER_TYPES": {
     "1": "Männlich",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Filiale",
     "SELECT_BRANCH": "Filiale auswählen",
     "SEARCH": "SUCHE",
-    "ASSIGNED_REPORTS": "Zugewiesene Berichte",
+    "ASSIGNED_REPORTS": "Medizinisches Schließfach",
+    "PHYSICIAN_ASSIGNMENT": "Ärztezuweisung",
     "NO_RESULTS": "Keine Ergebnisse",
     "REPORTS": "BERICHTE",
     "URGENCY": "Unterdrückung",

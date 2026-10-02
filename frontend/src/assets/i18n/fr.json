@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Veuillez patienter, les détails de la demande ne sont pas encore chargés.",
       "STATUS_AND_ANNOTATIONS": "Statut et annotations :",
       "WORKFLOW": "Flux de travail :",
-      "ANNOTATIONS": "Annotations"
+      "ANNOTATIONS": "Annotations",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Données principales",
+          "STUDY": "Étude demandée",
+          "PATIENT": "Données du patient",
+          "EXTRA": "Médecin",
+          "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
+        },
+        "IMAGING_LABEL": "Filiale",
+        "IMAGING_PLACEHOLDER": "Sélectionnez la filiale réalisatrice de l'étude",
+        "IMAGING_SELECT": "Sélectionnez la filiale",
+        "REFERRING_LABEL": "Organisation demanderesse",
+        "REFERRING_PLACEHOLDER": "Organisation demanderesse",
+        "REFERRING_SELECT": "Sélectionnez l'organisation demanderesse",
+        "MODALITY_LABEL": "Modalité",
+        "MODALITY_PLACEHOLDER": "Modalité",
+        "MODALITY_SELECT": "Sélectionnez la modalité de l'étude",
+        "PHYSICIAN_ID_LABEL": "ID du médecin demandeur"
+      },
+      "DISCLAIMER": "Le procédure à réaliser sera définie au moment de la création du rendez-vous.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Les données demandées dans ce formulaire doivent être complétées par le médecin traitant du patient. Le médecin demandeur est responsable d'un document de nature médicale-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulaire de mise à jour du rendez-vous",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Terminé (avec rapport)",
     "FINISHED_WITHOUT_REPORT": "Terminé (sans rapport)",
     "CANCELLED": "Annulé",
+    "AVG_DELAY": "Calcul des retards",
+    "AVG_DELAY_APPOINTMENT": "Délai de coordination des rendez-vous",
+    "AVG_DELAY_REPORTS": "Délai de remise des rapports",
+    "AVG_DELAY_BY_MODALITY": "Délai moyen par modalité (jours)",
+    "TOTAL_AVG_DELAY": "Délai moyen global (jours) :",
     "FIND_STATS_ERROR": "Erreur lors de la tentative d'obtention d'informations : ",
     "FIND_USERS_ERROR": "Erreur lors de la tentative d'obtention des utilisateurs impliqués dans la statistique."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Entrez le suffixe",
       "LOGO_BUTTON_LABEL": "LOGO DE L'ORGANISATION",
       "DELETE_LOGO_TOOLTIP": "Supprimer le logo de l'organisation",
-      "LOGO_SELECT": "SÉLECTIONNER LE LOGO DE L'ORGANISATION",
+      "LOGO_SELECT": "SÉLECTIONNER",
       "FILE_DELETED_SUCCESS": "Fichier supprimé avec succès",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Configuré",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Écran d'accueil",
       "BRANDING_SELECT": "SÉLECTIONNER",
       "BRANDING_CHANGE": "CHANGER",
-      "BRANDING_DELETE_TOOLTIP": "Supprimer le logo"
+      "BRANDING_DELETE_TOOLTIP": "Supprimer le logo",
+      "MAIL_TITLE": "Configuration de messagerie",
+      "MAIL_MODE_DEFAULT": "Utiliser par défaut",
+      "MAIL_MODE_DEFAULT_INFO": "Aucun envoi automatique",
+      "MAIL_MODE_CUSTOM": "Configuration SMTP personnalisée",
+      "MAIL_NOT_CONFIGURED_WARNING": "Cette organisation n'a pas de serveur de messagerie propre configuré. Les e-mails automatiques (Demandes de confirmation, de rendez-vous et de rapports) ne seront pas envoyés.",
+      "MAIL_TYPE_LABEL": "Type de messagerie",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "SMTP générique",
+      "MAIL_HOST_LABEL": "Hôte",
+      "MAIL_HOST_PLACEHOLDER": "Ex. : smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Port",
+      "MAIL_PORT_PLACEHOLDER": "Ex. : 465",
+      "MAIL_SECURE_LABEL": "Connexion sécurisée",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Nom de l'expéditeur",
+      "MAIL_FROM_PLACEHOLDER": "Ex. : Mon organisation",
+      "MAIL_USER_LABEL": "Nom d'utilisateur du compte",
+      "MAIL_USER_PLACEHOLDER": "Entrez le nom d'utilisateur du compte de messagerie",
+      "MAIL_PASS_LABEL": "Mot de passe du compte",
+      "MAIL_PASS_PLACEHOLDER": "Entrez le mot de passe du compte de messagerie",
+      "MAIL_PASS_HINT": "Un mot de passe existe déjà dans la base de données, n'en saisissez un que si vous souhaitez le modifier."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "min : 10, max : 3000",
       "BRANCH_LOGO_BUTTON": "LOGO DE LA FILIALE",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Supprimer le logo de l'organisation",
-      "SELECT_BRANCH_LOGO_BUTTON": "SÉLECTIONNER LE LOGO DE LA FILIALE",
+      "SELECT_BRANCH_LOGO_BUTTON": "SÉLECTIONNER",
       "STATUS_H4": "Statut :",
       "STATUS_ACTIVE": "Actif",
       "STATUS_INACTIVE": "Inactif",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Ex : nom@boiteauxlettres.com",
         "DEFAULT_EMAIL_TOOLTIP": "Définir l'e-mail par défaut",
+        "EMAIL_ALT_TITLE": "E-mail alternatif",
+        "EMAIL_ALT_OPTIONAL": "Facultatif",
+        "EMAIL_ALT_PLACEHOLDER": "E-mail alternatif",
+        "EMAIL_ALT_INPUT": "Ex : nom@boiteauxlettres.com",
+        "EMAIL_ALT_HINT": "Sera utilisé comme destinataire supplémentaire pour les notifications automatiques",
         "PASSWORD_TITLE": "Mot de passe de l'utilisateur",
         "PASSWORD_HINT_UPDATE": "Vide si vous ne voulez pas modifier",
         "PASSWORD_PLACEHOLDER": "Mot de passe",
@@ -1998,6 +2050,7 @@
     "5": "Permis de séjour",
     "6": "Visa",
     "7": "Document temporaire",
+    "8": "Numéro d'enregistrement interne",
     "100": "Document anonyme"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Modification de l'identification du patient",
     "23": "Sur-réservation",
     "24": "Listes de facturation",
-    "25": "Gestion des casiers médicaux"
+    "25": "Gestion des casiers médicaux",
+    "26": "Statistiques de calcul des retards de rendez-vous",
+    "27": "Statistiques de calcul des retards de remise des rapports"
   },
   "GENDER_TYPES": {
     "1": "Masculin",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Succursale",
     "SELECT_BRANCH": "Sélectionner la Succursale",
     "SEARCH": "RECHERCHER",
-    "ASSIGNED_REPORTS": "Rapports Assignés à Informer",
+    "ASSIGNED_REPORTS": "Casier Médical",
+    "PHYSICIAN_ASSIGNMENT": "Attribution des Médecins",
     "NO_RESULTS": "Aucun Résultat",
     "REPORTS": "INFORMES",
     "URGENCY": "Urgence",

@@ -13,7 +13,7 @@
 
 <ng-template #thenBlockTable>
   <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
@@ -44,7 +44,7 @@
 
       <!-- documents -->
       <ng-container matColumnDef="documents">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.DOCUMENTS' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.documents.document"> {{ 'USERS.LIST.DOCUMENTS' | i18n }} </th>
         <td class="documents" mat-cell *matCellDef="let element">
 
             <!-- Human case -->
@@ -70,7 +70,7 @@
 
       <!-- names -->
       <ng-container matColumnDef="names">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.NAMES' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.name_01"> {{ 'USERS.LIST.NAMES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.person">
             <span innerHTML="{{ element.person.name_01 | highlighter : sharedProp.filter }}"></span>
@@ -84,7 +84,7 @@
 
       <!-- surnames -->
       <ng-container matColumnDef="surnames">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.SURNAMES' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.surname_01"> {{ 'USERS.LIST.SURNAMES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.person">
             <span innerHTML="{{ element.person.surname_01 | highlighter : sharedProp.filter }}"></span>
@@ -98,7 +98,7 @@
 
       <!-- birth_date -->
       <ng-container matColumnDef="birth_date">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.BIRTH_DATE' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.birth_date"> {{ 'USERS.LIST.BIRTH_DATE' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.person">
             {{ element.person.birth_date | date:"dd/MM/yyyy":"UTC" }}
@@ -108,7 +108,7 @@
 
       <!-- email -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.EMAIL' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> {{ 'USERS.LIST.EMAIL' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.email" innerHTML="{{ element.email | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -116,7 +116,7 @@
 
       <!-- phone_numbers -->
       <ng-container matColumnDef="phone_numbers">
-        <th mat-header-cell *matHeaderCellDef> {{ 'USERS.LIST.PHONE_NUMBERS' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.phone_numbers"> {{ 'USERS.LIST.PHONE_NUMBERS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.person">
             <span *ngIf="element.person.phone_numbers">
@@ -132,7 +132,7 @@
 
       <!-- role -->
       <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'USERS.LIST.ROLES' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="permissions.role" class="text-center"> {{ 'USERS.LIST.ROLES' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="roles">
           <span *ngIf="element.permissions">
             <mat-chip-list>
@@ -146,7 +146,7 @@
 
       <!-- gender -->
       <ng-container matColumnDef="gender">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'USERS.LIST.GENDER' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person.gender" class="text-center"> {{ 'USERS.LIST.GENDER' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.person">
             <div [ngSwitch]="element.person.gender" matTooltip="{{ ('GENDER_TYPES.' + element.person.gender) | i18n }}">
@@ -160,7 +160,7 @@
 
       <!-- type -->
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'USERS.LIST.TYPE' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="person" class="text-center"> {{ 'USERS.LIST.TYPE' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
 
           <!-- Human case -->
@@ -178,7 +178,7 @@
 
       <!-- status -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'USERS.LIST.STATUS' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status" class="text-center"> {{ 'USERS.LIST.STATUS' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <div *ngIf="element.status; then thenBlock else elseBlock"></div>
           <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'USERS.LIST.ACTIVE' | i18n }}">done</mat-icon></ng-template>

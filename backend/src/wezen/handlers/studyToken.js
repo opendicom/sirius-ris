@@ -152,7 +152,9 @@ module.exports = async (req, res) => {
             { $unwind: { path: "$appointment.reporting.organization", preserveNullAndEmptyArrays: true } },
             { $unwind: { path: "$appointment.reporting.branch", preserveNullAndEmptyArrays: true } },
             { $unwind: { path: "$appointment.reporting.service", preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
+
+            //(fix array case)Unwind appointment.reporting.fk_reporting [Array] (Unwind):
+            //{ $unwind: { path: "$appointment.reporting.fk_reporting", preserveNullAndEmptyArrays: true } },
             //------------------------------------------------------------------------------------------------------------//
 
             //------------------------------------------------------------------------------------------------------------//

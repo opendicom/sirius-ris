@@ -30,7 +30,12 @@ module.exports = async (req, res, currentSchema, operation) => {
     if(req.body.reporting.organization){ referencedElements.push([ req.body.reporting.organization, 'organizations' ]); }
     if(req.body.reporting.branch){ referencedElements.push([ req.body.reporting.branch, 'branches' ]); }
     if(req.body.reporting.service){ referencedElements.push([ req.body.reporting.service, 'services' ]); }
-    if(req.body.reporting.fk_reporting){ referencedElements.push([ req.body.reporting.fk_reporting, 'users' ]); }
+    //Set referenced elements (FKs - Check existence) [Arrays case]:
+    if(req.body.reporting.fk_reporting){
+        for(let currentKey in req.body.reporting.fk_reporting){
+            referencedElements.push([ req.body.reporting.fk_reporting[currentKey], 'users' ]);
+        }
+    }
 
     //Schema:
     if(req.body.fk_patient){ referencedElements.push([ req.body.fk_patient, 'users' ]); }

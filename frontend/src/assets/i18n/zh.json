@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "请稍候，请求详情尚未加载。",
       "STATUS_AND_ANNOTATIONS": "状态和注释:",
       "WORKFLOW": "工作流程:",
-      "ANNOTATIONS": "注释"
+      "ANNOTATIONS": "注释",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "主要数据",
+          "STUDY": "请求的检查",
+          "PATIENT": "患者数据",
+          "EXTRA": "医生",
+          "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误"
+        },
+        "IMAGING_LABEL": "分院",
+        "IMAGING_PLACEHOLDER": "选择执行研究的分院",
+        "IMAGING_SELECT": "请选择分院",
+        "REFERRING_LABEL": "请求机构",
+        "REFERRING_PLACEHOLDER": "请求机构",
+        "REFERRING_SELECT": "请选择请求机构",
+        "MODALITY_LABEL": "模态",
+        "MODALITY_PLACEHOLDER": "模态",
+        "MODALITY_SELECT": "请选择检查模态",
+        "PHYSICIAN_ID_LABEL": "请求医生ID"
+      },
+      "DISCLAIMER": "所执行的程序将在预约创建时确定。",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "此表单中请求的数据必须由患者的主治医生填写。请求医生负责具有医学法律性质的文件。"
     },
     "FORM_UPDATE": {
       "TITLE": "预约更新表单",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "已完成（有报告）",
     "FINISHED_WITHOUT_REPORT": "已完成（无报告）",
     "CANCELLED": "已取消",
+    "AVG_DELAY": "延误计算",
+    "AVG_DELAY_APPOINTMENT": "预约协调延迟",
+    "AVG_DELAY_REPORTS": "报告提交延迟",
+    "AVG_DELAY_BY_MODALITY": "按模态划分的平均延迟（天）",
+    "TOTAL_AVG_DELAY": "总体平均延迟（天）:",
     "FIND_STATS_ERROR": "尝试获取信息时出错: ",
     "FIND_USERS_ERROR": "尝试获取参与统计的用户时出错。"
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "输入后缀",
       "LOGO_BUTTON_LABEL": "组织徽标",
       "DELETE_LOGO_TOOLTIP": "删除组织徽标",
-      "LOGO_SELECT": "选择组织徽标",
+      "LOGO_SELECT": "选择",
       "FILE_DELETED_SUCCESS": "文件已成功删除",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "已配置",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "欢迎屏幕",
       "BRANDING_SELECT": "选择",
       "BRANDING_CHANGE": "更改",
-      "BRANDING_DELETE_TOOLTIP": "删除徽标"
+      "BRANDING_DELETE_TOOLTIP": "删除徽标",
+      "MAIL_TITLE": "邮件配置",
+      "MAIL_MODE_DEFAULT": "使用默认",
+      "MAIL_MODE_DEFAULT_INFO": "不自动发送邮件",
+      "MAIL_MODE_CUSTOM": "自定义 SMTP 配置",
+      "MAIL_NOT_CONFIGURED_WARNING": "该机构未配置自己的邮件服务器。系统将不会发送自动邮件（请求确认、预约和报告）。",
+      "MAIL_TYPE_LABEL": "邮件类型",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "通用 SMTP",
+      "MAIL_HOST_LABEL": "主机",
+      "MAIL_HOST_PLACEHOLDER": "例如：smtp.gmail.com",
+      "MAIL_PORT_LABEL": "端口",
+      "MAIL_PORT_PLACEHOLDER": "例如：465",
+      "MAIL_SECURE_LABEL": "安全连接",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "发件人名称",
+      "MAIL_FROM_PLACEHOLDER": "例如：我的机构",
+      "MAIL_USER_LABEL": "账户用户名",
+      "MAIL_USER_PLACEHOLDER": "请输入邮件账户的用户名",
+      "MAIL_PASS_LABEL": "账户密码",
+      "MAIL_PASS_PLACEHOLDER": "请输入邮件账户的密码",
+      "MAIL_PASS_HINT": "数据库中已存在密码，仅在需要更改时输入。"
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "最小: 10, 最大: 3000",
       "BRANCH_LOGO_BUTTON": "分支徽标",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "删除组织徽标",
-      "SELECT_BRANCH_LOGO_BUTTON": "选择分支徽标",
+      "SELECT_BRANCH_LOGO_BUTTON": "选择",
       "STATUS_H4": "状态:",
       "STATUS_ACTIVE": "活动",
       "STATUS_INACTIVE": "非活动",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "电子邮件",
         "EMAIL_INPUT": "例如：name@example.com",
         "DEFAULT_EMAIL_TOOLTIP": "设置默认电子邮件",
+        "EMAIL_ALT_TITLE": "备用电子邮件",
+        "EMAIL_ALT_OPTIONAL": "可选",
+        "EMAIL_ALT_PLACEHOLDER": "备用电子邮件",
+        "EMAIL_ALT_INPUT": "例如：name@example.com",
+        "EMAIL_ALT_HINT": "将作为自动通知的附加收件人",
         "PASSWORD_TITLE": "用户密钥",
         "PASSWORD_HINT_UPDATE": "留空则不修改",
         "PASSWORD_PLACEHOLDER": "密码",
@@ -1998,6 +2050,7 @@
     "5": "居留许可",
     "6": "签证",
     "7": "临时文件",
+    "8": "内部注册号",
     "100": "匿名文件"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "编辑患者身份信息",
     "23": "超额预订",
     "24": "计费清单",
-    "25": "医疗储物柜管理"
+    "25": "医疗储物柜管理",
+    "26": "预约延迟计算统计",
+    "27": "报告交付延迟计算统计"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2224,7 +2279,8 @@
     "BRANCH": "分支",
     "SELECT_BRANCH": "选择分支",
     "SEARCH": "搜索",
-    "ASSIGNED_REPORTS": "分配的报告",
+    "ASSIGNED_REPORTS": "医疗柜",
+    "PHYSICIAN_ASSIGNMENT": "医生分配",
     "NO_RESULTS": "无结果",
     "REPORTS": "报告",
     "URGENCY": "紧急",

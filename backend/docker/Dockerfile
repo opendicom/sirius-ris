@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------------- #
 # Outside Docker Build Context: Build this image from parent directory 'backend'.
 # Example:
-# docker build --no-cache -t opendicom/sirius-backend:1.7.0 -f docker/Dockerfile .
+# docker build --no-cache -t opendicom/sirius-backend:1.8.0 -f docker/Dockerfile .
 # ------------------------------------------------------------------------------------- #
 
 
@@ -11,9 +11,9 @@
 # SIRIUS BACKEND STAGE:
 # ------------------------------------------------------------------------------------- #
 # Maximum compatibility for multiplatform builds:
-FROM node:18-bullseye
+FROM node:18-bookworm
 
-LABEL version="1.7.0"
+LABEL version="1.8.0"
 LABEL maintainer="opendicom <info@opendicom.com>"
 LABEL author="Camilo Pifano Herrera <camilopifano@gmail.com>"
 LABEL description="Sirius RIS is an open source Radiology Information System"

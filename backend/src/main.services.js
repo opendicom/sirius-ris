@@ -240,6 +240,29 @@ function parseDate(input){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// GET DAYS PASSED:
+// Calculates the amount of days passed between two dates 
+//--------------------------------------------------------------------------------------------------------------------//
+function getDaysPassed(date, second_date = undefined){
+    //Truncate a date (string or Date) to day precision, in UTC:
+    const toUTCDateOnly = (input) => {
+        const parsedDate = (input instanceof Date) ? input : new Date(input);
+        return new Date(parsedDate.toISOString().split('T')[0] + 'T00:00:00.000Z');
+    };
+
+    //Convert the input date to a day-precision Date object:
+    const startDate = toUTCDateOnly(date);
+
+    //Set second date (default: current date):
+    const endDate = (second_date === undefined || second_date === null || second_date === '') ? toUTCDateOnly(new Date()) : toUTCDateOnly(second_date);
+
+    //Convert the difference from milliseconds to days:
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    return Math.floor((endDate.getTime() - startDate.getTime()) / millisecondsPerDay);
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
 // STRICT CHECK:
 //--------------------------------------------------------------------------------------------------------------------//
 function strictCheck (proj, doc) {
@@ -484,6 +507,7 @@ module.exports = {
     sendError,
     stringToBoolean,
     parseDate,
+    getDaysPassed,
     strictCheck,
     datetimeFulCalendarFormater,
     setDicomNamePersonFormat,

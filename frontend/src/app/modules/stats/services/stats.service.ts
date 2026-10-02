@@ -19,7 +19,7 @@ export class StatsService {
   public availableUsers         : any;
 
   //Inject services to the constructor:
-  constructor(  
+  constructor(
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
     private i18n            : I18nService
@@ -28,16 +28,16 @@ export class StatsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND STATS:
   //--------------------------------------------------------------------------------------------------------------------//
-  findStats(statsDatasets: any, stats_element: string, params: any, statsCallback = (response: any, dataset: any) => {}){  
+  findStats(statsDatasets: any, stats_element: string, params: any, statsCallback = (response: any, dataset: any) => {}){
     //Execute stats find:
     this.sharedFunctions.find('stats', params, async (res) => {
       //Check operation status:
       if(res.success === true){
         //Set data in local response:
         const statsResponse = res.data;
-          
+
         //Order result:
-        await this.sharedFunctions.sortObject(statsResponse, ['total_items', 'anesthesia']);
+        await this.sharedFunctions.sortObject(statsResponse, ['total_items', 'anesthesia', 'total-avg-days-passed']);
 
         //Set Charts datasets:
         await Promise.all(Object.keys(statsDatasets).map(async (key: any) => {
@@ -61,7 +61,7 @@ export class StatsService {
   async getDataSet(statsRespone: any, chart_name: string, stats_element: string){
     //Initializate dataset:
     let current_dataset: any = [];
-  
+
     //Loop in response object (await foreach):
     await Promise.all(Object.keys(statsRespone).map(async key => {
       //Check chart name:
@@ -75,7 +75,7 @@ export class StatsService {
           switch(key){
             case 'flow_state':
               //Check current stats element:
-              switch(stats_element){ 
+              switch(stats_element){
                 case 'appointments':
                   key_name = this.i18n.instant('APPOINTMENT_FLOW_STATES.' + element_key);
                   break;
@@ -97,7 +97,7 @@ export class StatsService {
             case 'gender':
               key_name = this.i18n.instant('GENDER_TYPES.' + element_key);
               break;
-            
+
             case 'cancellation_reasons':
               key_name = this.i18n.instant('CANCELLATION_REASONS.' + element_key);
               break;
@@ -132,7 +132,7 @@ export class StatsService {
         }));
       }
     }));
-  
+
     //Return current dataset:
     return current_dataset;
   }

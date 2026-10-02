@@ -27,8 +27,10 @@ export class AppointmentsService {
   public availableServices      : any;
 
   //Set referring and reporting objects:
-  public referringOrganizations   : any;
-  public reportingUsers           : any;
+  public referringOrganizations         : any;
+  public filteredReferringOrganizations : any;
+  public reportingUsers                 : any;
+  public reportingUserFilterValue       : string = '';
 
   //Boolean class binding objects:
   public booleanContrast  : Boolean = false;
@@ -146,7 +148,32 @@ export class AppointmentsService {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.referringOrganizations = res.data;
+      this.filteredReferringOrganizations = res.data;
     });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REFERRING ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReferringOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter referring organizations:
+    this.filteredReferringOrganizations = this.referringOrganizations.filter((currentOrganization: any) => currentOrganization.short_name.toUpperCase().includes(filterValue) || currentOrganization.name.toUpperCase().includes(filterValue));
+  }
+
+  getReferringOrganizationFullName(currentOrganization: any){
+    //Build display name directly from an already populated organization object (Avoids race condition: referringOrganizations list may not be loaded yet):
+    return currentOrganization ? `${currentOrganization.short_name} (${currentOrganization.name})` : '';
+  }
+
+  selectReferringOrganization(currentOrganization: any, form: FormGroup){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    form.controls['referring_organization'].setValue(currentOrganization._id);
+    form.controls['referring_organization_input'].setValue(`${currentOrganization.short_name} (${currentOrganization.name})`);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -154,7 +181,7 @@ export class AppointmentsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // FIND REPORTING USERS (FIND BY SERVICE):
   //--------------------------------------------------------------------------------------------------------------------//
-  findReportingUsers(service_id: string, form: FormGroup){
+  findReportingUsers(service_id: string, form: FormGroup, callback: (res: any) => void = () => {}){
     //Set params:
     const params = {
       //Only people users:
@@ -174,6 +201,9 @@ export class AppointmentsService {
 
     //Find by service reporting users (last true parameter):
     this.sharedFunctions.find('users', params, (res) => {
+      //Reset previous search text:
+      this.reportingUserFilterValue = '';
+
       //Check data:
       if(res.data.length > 0){
         //Set reporting users:
@@ -181,12 +211,46 @@ export class AppointmentsService {
       } else {
         //Clear previous values:
         this.reportingUsers = [];
-        form.controls['reporting_user'].setValue('');
+        form.controls['reporting_user'].setValue([]);
+        form.controls['reporting_user_input'].setValue('');
 
         //Send message:
         this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.SELECT_PROCEDURE.NO_REPORTER_ASSIGNED_WARNING'));
       }
+
+      //Execute callback:
+      callback(res);
     }, false, 'findByService');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER REPORTING USERS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterReportingUsers(event: any){
+    //Set filter value and to upper case (Options stay mounted - Only their visibility toggles - See matchesReportingUserFilter):
+    this.reportingUserFilterValue = event.srcElement.value.toUpperCase();
+  }
+
+  matchesReportingUserFilter(currentReporting: any): boolean {
+    //No search text - Every option matches:
+    if(!this.reportingUserFilterValue){ return true; }
+
+    //Check full name against the search text:
+    return this.getReportingUserFullName(currentReporting).toUpperCase().includes(this.reportingUserFilterValue);
+  }
+
+  getReportingUserFullName(currentReporting: any){
+    //Guard against missing person data:
+    if(!currentReporting || !currentReporting.person){ return ''; }
+
+    //Build full name (names and surnames):
+    let fullName = currentReporting.person.name_01;
+    if(currentReporting.person.name_02){ fullName += ` ${currentReporting.person.name_02}`; }
+    fullName += ` ${currentReporting.person.surname_01}`;
+    if(currentReporting.person.surname_02){ fullName += ` ${currentReporting.person.surname_02}`; }
+    return fullName;
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -297,9 +361,9 @@ export class AppointmentsService {
       service       : reportingSplitted[2]
     };
 
-    //Data normalizarion - FK Reporting:
-    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user !== ''){
-      mergedValues.reporting['fk_reporting'] = [mergedValues.reporting_user];
+    //Data normalizarion - FK Reporting (Multiple selection - Array of ObjectId):
+    if(mergedValues.reporting_user !== undefined && mergedValues.reporting_user !== null && mergedValues.reporting_user.length > 0){
+      mergedValues.reporting['fk_reporting'] = mergedValues.reporting_user;
     }
 
     //Data normalization - Dates types:
@@ -352,15 +416,17 @@ export class AppointmentsService {
 
     //Delete temp values:
     delete mergedValues.referring_organization;
+    delete mergedValues.referring_organization_input;
     delete mergedValues.reporting_domain;
     delete mergedValues.reporting_user;
+    delete mergedValues.reporting_user_input;
 
     //Save data:
     this.sharedFunctions.save(operation, 'appointments', _id, mergedValues, keysWithValues, (res) => {
       //Delete appointment draft only if the operation was successful:
       if(res.success === true && operation === 'insert'){
         this.sharedFunctions.delete('single', 'appointments_drafts', this.sharedProp.current_appointment_draft);
-        
+
         //Create appointment PDF with pain password:
         if(this.sharedProp.current_friendly_pass !== ''){
           this.pdfService.createPDF('appointment', res.data._id, this.sharedProp.current_friendly_pass, true);

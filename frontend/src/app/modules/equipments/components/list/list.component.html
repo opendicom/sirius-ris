@@ -13,7 +13,7 @@
 
 <ng-template #thenBlockTable>
   <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
 
       <!-- element action -->
       <ng-container matColumnDef="element_action">
@@ -34,7 +34,7 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.ORGANIZATION' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'EQUIPMENTS.LIST.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
           <ng-template #thenBlockTableOrganization>
@@ -46,7 +46,7 @@
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.BRANCH' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="branch.short_name"> {{ 'EQUIPMENTS.LIST.BRANCH' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
           <ng-template #thenBlockTableBranch>
@@ -58,7 +58,7 @@
 
       <!-- name -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.NAME' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> {{ 'EQUIPMENTS.LIST.NAME' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span class="badge-accent" *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -66,7 +66,7 @@
 
       <!-- serial_number -->
       <ng-container matColumnDef="serial_number">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.SERIAL_NUMBER' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="serial_number"> {{ 'EQUIPMENTS.LIST.SERIAL_NUMBER' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.serial_number" innerHTML="{{ element.serial_number | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -74,7 +74,7 @@
 
       <!-- AET -->
       <ng-container matColumnDef="AET">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.AET' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="AET"> {{ 'EQUIPMENTS.LIST.AET' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.AET" innerHTML="{{ element.AET | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -82,7 +82,7 @@
 
       <!-- modalities -->
       <ng-container matColumnDef="modalities">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.MODALITIES' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="modalities"> {{ 'EQUIPMENTS.LIST.MODALITIES' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.modalities; then thenBlockTableModalities else elseBlockTableModalities"></span>
           <ng-template #thenBlockTableModalities>
@@ -96,7 +96,7 @@
 
       <!-- status -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> {{ 'EQUIPMENTS.LIST.STATUS' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> {{ 'EQUIPMENTS.LIST.STATUS' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <div *ngIf="element.status; then thenBlock else elseBlock"></div>
           <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'EQUIPMENTS.LIST.ACTIVE' | i18n }}">done</mat-icon></ng-template>

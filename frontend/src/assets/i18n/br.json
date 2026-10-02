@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Por favor, aguarde, os detalhes da requisição ainda não foram carregados.",
       "STATUS_AND_ANNOTATIONS": "Status e anotações:",
       "WORKFLOW": "Fluxo de trabalho:",
-      "ANNOTATIONS": "Anotações"
+      "ANNOTATIONS": "Anotações",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Dados principais",
+          "STUDY": "Estudo solicitado",
+          "PATIENT": "Dados do paciente",
+          "EXTRA": "Médico",
+          "VALIDATION_ERROR_TOOLTIP": "Existem erros de validação nesta aba"
+        },
+        "IMAGING_LABEL": "Filial",
+        "IMAGING_PLACEHOLDER": "Filial realizadora do estudo",
+        "IMAGING_SELECT": "Selecione a filial",
+        "REFERRING_LABEL": "Organização requisitante",
+        "REFERRING_PLACEHOLDER": "Organização requisitante",
+        "REFERRING_SELECT": "Selecione a organização requisitante",
+        "MODALITY_LABEL": "Modalidade",
+        "MODALITY_PLACEHOLDER": "Modalidade",
+        "MODALITY_SELECT": "Selecione a modalidade do estudo",
+        "PHYSICIAN_ID_LABEL": "ID do médico requisitante"
+      },
+      "DISCLAIMER": "O procedimento a ser realizado será definido no momento da criação do agendamento.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Os dados solicitados neste formulário devem ser preenchidos pelo Médico Solicitante do paciente. O médico requisitante é responsável por um documento de caráter médico-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulário de Atualização de Agendamento",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Finalizado (com laudo)",
     "FINISHED_WITHOUT_REPORT": "Finalizado (sem laudo)",
     "CANCELLED": "Cancelado",
+    "AVG_DELAY": "Cálculo de atrasos",
+    "AVG_DELAY_APPOINTMENT": "Atraso na Coordenação de Agendamentos",
+    "AVG_DELAY_REPORTS": "Atraso na Entrega de Laudos",
+    "AVG_DELAY_BY_MODALITY": "Atraso médio por modalidade (dias)",
+    "TOTAL_AVG_DELAY": "Atraso médio geral (dias):",
     "FIND_STATS_ERROR": "Erro ao tentar obter informações: ",
     "FIND_USERS_ERROR": "Erro ao tentar obter os usuários envolvidos na estatística."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Insira o sufixo",
       "LOGO_BUTTON_LABEL": "LOGO DA ORGANIZAÇÃO",
       "DELETE_LOGO_TOOLTIP": "Excluir logo da organização",
-      "LOGO_SELECT": "SELECIONAR LOGO DA ORGANIZAÇÃO",
+      "LOGO_SELECT": "SELECIONAR",
       "FILE_DELETED_SUCCESS": "Arquivo excluído com sucesso",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Configurado",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Tela de boas-vindas",
       "BRANDING_SELECT": "SELECIONAR",
       "BRANDING_CHANGE": "ALTERAR",
-      "BRANDING_DELETE_TOOLTIP": "Excluir logo"
+      "BRANDING_DELETE_TOOLTIP": "Excluir logo",
+      "MAIL_TITLE": "Configuração de e-mail",
+      "MAIL_MODE_DEFAULT": "Usar padrão",
+      "MAIL_MODE_DEFAULT_INFO": "Sem envio automático de e-mails",
+      "MAIL_MODE_CUSTOM": "Configuração SMTP personalizada",
+      "MAIL_NOT_CONFIGURED_WARNING": "Esta organização não possui um servidor de e-mail próprio configurado. E-mails automáticos (Solicitar confirmações, agendamentos e relatórios.) não serão enviados.",
+      "MAIL_TYPE_LABEL": "Tipo de e-mail",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "SMTP genérico",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "Ex.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Porta",
+      "MAIL_PORT_PLACEHOLDER": "Ex.: 465",
+      "MAIL_SECURE_LABEL": "Conexão segura",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Nome do remetente",
+      "MAIL_FROM_PLACEHOLDER": "Ex.: Minha Organização",
+      "MAIL_USER_LABEL": "Usuário da conta",
+      "MAIL_USER_PLACEHOLDER": "Informe o usuário da conta de e-mail",
+      "MAIL_PASS_LABEL": "Senha da conta",
+      "MAIL_PASS_PLACEHOLDER": "Informe a senha da conta de e-mail",
+      "MAIL_PASS_HINT": "Já existe uma senha salva no banco de dados; informe uma apenas se quiser alterá-la."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "mín: 10, máx: 3000",
       "BRANCH_LOGO_BUTTON": "LOGO DA FILIAL",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Excluir logo da organização",
-      "SELECT_BRANCH_LOGO_BUTTON": "SELECIONAR LOGO DA FILIAL",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELECIONAR",
       "STATUS_H4": "Status:",
       "STATUS_ACTIVE": "Ativo",
       "STATUS_INACTIVE": "Inativo",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Ex: nome@caixadeemail.com",
         "DEFAULT_EMAIL_TOOLTIP": "Definir e-mail padrão",
+        "EMAIL_ALT_TITLE": "E-mail alternativo",
+        "EMAIL_ALT_OPTIONAL": "Opcional",
+        "EMAIL_ALT_PLACEHOLDER": "E-mail alternativo",
+        "EMAIL_ALT_INPUT": "Ex: nome@caixadeemail.com",
+        "EMAIL_ALT_HINT": "Será usado como destinatário adicional nas notificações automáticas",
         "PASSWORD_TITLE": "Senha do usuário",
         "PASSWORD_HINT_UPDATE": "Vazio se não quiser modificar",
         "PASSWORD_PLACEHOLDER": "Senha",
@@ -1998,6 +2050,7 @@
     "5": "Autorização de residência",
     "6": "Visto",
     "7": "Documento temporário",
+    "8": "Nro de registro interno",
     "100": "Documento anônimo"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Edição de identificação do paciente",
     "23": "Encaixe",
     "24": "Listas de faturamento",
-    "25": "Gerenciamiento de armário médico"
+    "25": "Gerenciamiento de armário médico",
+    "26": "Estatísticas de cálculo de atrasos de agendamentos",
+    "27": "Estatísticas de cálculo de atrasos na entrega de laudos"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Filial",
     "SELECT_BRANCH": "Selecionar Filial",
     "SEARCH": "BUSCAR",
-    "ASSIGNED_REPORTS": "Estudos Atribuídos para Informar",
+    "ASSIGNED_REPORTS": "Armário Médico",
+    "PHYSICIAN_ASSIGNMENT": "Atribuição de Médicos",
     "NO_RESULTS": "Sem Resultados",
     "REPORTS": "INFORMES",
     "URGENCY": "Urgência",

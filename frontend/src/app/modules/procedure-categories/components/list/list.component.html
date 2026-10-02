@@ -13,11 +13,11 @@
 
 <ng-template #thenBlockTable>
   <div #main_list>
-    <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
 
       <!-- select element-->
       <ng-container matColumnDef="select_element">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="select_element">
           <mat-checkbox *ngIf="sharedFunctions.response.pager" [checked]="this.sharedProp.getTotalChecked() == sharedFunctions.response.pager.viewed_items" (change)="this.sharedProp.onSelectAll($event)" matTooltip="{{ 'PROCEDURE_CATEGORIES.LIST.SELECT_ALL_TOOLTIP' | i18n }}"></mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let element; let i = index;">
@@ -44,7 +44,7 @@
 
       <!-- organization -->
       <ng-container matColumnDef="organization">
-        <th mat-header-cell *matHeaderCellDef> {{ 'PROCEDURE_CATEGORIES.LIST.ORGANIZATION' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'PROCEDURE_CATEGORIES.LIST.ORGANIZATION' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.organization; then thenBlockOrganization else elseBlockOrganization"></span>
           <ng-template #thenBlockOrganization>
@@ -56,7 +56,7 @@
 
       <!-- branch -->
       <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> {{ 'PROCEDURE_CATEGORIES.LIST.BRANCH' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="branch.short_name"> {{ 'PROCEDURE_CATEGORIES.LIST.BRANCH' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.branch; then thenBlockBranch else elseBlockBranch"></span>
           <ng-template #thenBlockBranch>
@@ -68,7 +68,7 @@
 
       <!-- name -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> {{ 'PROCEDURE_CATEGORIES.LIST.NAME' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> {{ 'PROCEDURE_CATEGORIES.LIST.NAME' | i18n }} </th>
         <td mat-cell *matCellDef="let element">
           <span *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
         </td>
@@ -76,7 +76,7 @@
 
       <!-- procedures_count -->
       <ng-container matColumnDef="procedures_count">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> {{ 'PROCEDURE_CATEGORIES.LIST.PROCEDURES_COUNT' | i18n }} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="procedures_count" class="text-center"> {{ 'PROCEDURE_CATEGORIES.LIST.PROCEDURES_COUNT' | i18n }} </th>
         <td mat-cell *matCellDef="let element" class="text-center">
           <span *ngIf="element.procedures">{{ getKeys(element.procedures).length }}</span>
         </td>

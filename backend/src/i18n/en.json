@@ -84,6 +84,7 @@
     "report_authenticated": "Report successfully authenticated.",
     "mail_send_success": "Mail sent successfully.",
     "mail_send_error": "Error trying to send mail.",
+    "mail_not_configured": "The organization does not have the mail service configured.",
     "mail_wrong_address": "The email address indicated is incorrect.",
     "mail_empty_subject": "The subject parameter cannot be empty.",
     "mail_empty_message": "The message cannot be empty.",

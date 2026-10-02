@@ -64,10 +64,25 @@
       <div *ngIf="selectedLogoController; then thenBlockLogo else elseBlockLogo"></div>
 
       <ng-template #thenBlockLogo>
-        <button mat-flat-button type="button" class="logo-button">
-          <mat-icon>image</mat-icon> {{ 'BRANCHES.FORM.BRANCH_LOGO_BUTTON' | i18n }} <mat-icon *ngIf="form_action == 'update' && selectedFile === null" matTooltip="{{ 'BRANCHES.FORM.DELETE_ORGANIZATION_LOGO_TOOLTIP' | i18n }}" class="delete-logo" (click)="onDeleteFileRef('base64_logo')">close</mat-icon>
-        </button>
-        
+        <div class="branding-logo-card">
+          <div class="branding-logo-preview">
+            <img *ngIf="previewLogo" [src]="previewLogo" class="branding-logo-img" />
+            <mat-icon *ngIf="!previewLogo" class="branding-logo-placeholder">image</mat-icon>
+          </div>
+          <p class="branding-logo-name">{{ 'BRANCHES.FORM.BRANCH_LOGO_BUTTON' | i18n }}</p>
+          <div class="branding-logo-actions">
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInputChange style="display: none" />
+            <button mat-stroked-button type="button" color="accent" class="branding-change-mode" (click)="fileInputChange.click()">
+              <mat-icon>swap_horiz</mat-icon> {{ 'ORGANIZATIONS.FORM.BRANDING_CHANGE' | i18n }}
+            </button>
+            <button *ngIf="form_action == 'update' && selectedFile === null"
+              mat-icon-button type="button" color="warn"
+              matTooltip="{{ 'BRANCHES.FORM.DELETE_ORGANIZATION_LOGO_TOOLTIP' | i18n }}"
+              (click)="onDeleteFileRef('base64_logo')">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
       </ng-template>
 
       <ng-template #elseBlockLogo>

@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Aguarde, aún no se cargaron los detalles de la solicitud.",
       "STATUS_AND_ANNOTATIONS": "Estado y anotaciones:",
       "WORKFLOW": "Flujo de trabajo:",
-      "ANNOTATIONS": "Anotaciones"
+      "ANNOTATIONS": "Anotaciones",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Datos principales",
+          "STUDY": "Estudio solicitado",
+          "PATIENT": "Datos del paciente",
+          "EXTRA": "Médico",
+          "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña"
+        },
+        "IMAGING_LABEL": "Sucursal",
+        "IMAGING_PLACEHOLDER": "Seleccione la sucursal realizadora del estudio",
+        "IMAGING_SELECT": "Seleccione la sucursal",
+        "REFERRING_LABEL": "Organización solicitante",
+        "REFERRING_PLACEHOLDER": "Organización solicitante",
+        "REFERRING_SELECT": "Seleccione la organización solicitante",
+        "MODALITY_LABEL": "Modalidad",
+        "MODALITY_PLACEHOLDER": "Modalidad",
+        "MODALITY_SELECT": "Seleccione la modalidad del estudio",
+        "PHYSICIAN_ID_LABEL": "ID del médico solicitante"
+      },
+      "DISCLAIMER": "El procedimiento a realizar se establecerá al momento de creación de la cita.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Los datos que se solicitan en este formulario deben ser completados por el Médico Tratante del paciente. El médico solicitante es el responsable de un documento de carácter médico-legal."
     },
     "FORM_UPDATE": {
       "TITLE": "Formulario de actualización de cita",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Terminado (con informe)",
     "FINISHED_WITHOUT_REPORT": "Terminado (sin informe)",
     "CANCELLED": "Cancelado",
+    "AVG_DELAY": "Cálculo de demoras",
+    "AVG_DELAY_APPOINTMENT": "Demora en la coordinación de citas",
+    "AVG_DELAY_REPORTS": "Demora en la entrega de informes",
+    "AVG_DELAY_BY_MODALITY": "Demora promedio por modalidad (días)",
+    "TOTAL_AVG_DELAY": "Promedio general de demora (días):",
     "FIND_STATS_ERROR": "Error al intentar obtener información: ",
     "FIND_USERS_ERROR": "Error al intentar obtener los usuarios involucrados en la estadística."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Ingrese el Sufijo",
       "LOGO_BUTTON_LABEL": "LOGO DE LA ORGANIZACIÓN",
       "DELETE_LOGO_TOOLTIP": "Eliminar logo de la organización",
-      "LOGO_SELECT": "SELECCIONAR LOGO PARA REPORTES PDF",
+      "LOGO_SELECT": "SELECCIONAR",
       "FILE_DELETED_SUCCESS": "Archivo eliminado exitosamente",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Configurado",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Pantalla de bienvenida",
       "BRANDING_SELECT": "SELECCIONAR",
       "BRANDING_CHANGE": "CAMBIAR",
-      "BRANDING_DELETE_TOOLTIP": "Eliminar logo"
+      "BRANDING_DELETE_TOOLTIP": "Eliminar logo",
+      "MAIL_TITLE": "Configuración de correo",
+      "MAIL_MODE_DEFAULT": "Usar por defecto",
+      "MAIL_MODE_DEFAULT_INFO": "Sin envío automático de correos",
+      "MAIL_MODE_CUSTOM": "Configuración SMTP personalizada",
+      "MAIL_NOT_CONFIGURED_WARNING": "Esta organización no tiene configurado un servidor de correo propio. No se enviarán correos automáticos (Confirmaciones de solicitudes, citas e informes).",
+      "MAIL_TYPE_LABEL": "Tipo de correo",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "SMTP genérico",
+      "MAIL_HOST_LABEL": "Host",
+      "MAIL_HOST_PLACEHOLDER": "Ej: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Puerto",
+      "MAIL_PORT_PLACEHOLDER": "Ej: 465",
+      "MAIL_SECURE_LABEL": "Conexión segura",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Nombre del remitente",
+      "MAIL_FROM_PLACEHOLDER": "Ej: Mi Organización",
+      "MAIL_USER_LABEL": "Usuario de la cuenta",
+      "MAIL_USER_PLACEHOLDER": "Ingrese el usuario de la cuenta de correo",
+      "MAIL_PASS_LABEL": "Contraseña de la cuenta",
+      "MAIL_PASS_PLACEHOLDER": "Ingrese la contraseña de la cuenta de correo",
+      "MAIL_PASS_HINT": "Ya existe una contraseña en la base de datos, ingrese una solo si desea cambiarla."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "min: 10, max: 3000",
       "BRANCH_LOGO_BUTTON": "LOGO DE LA SUCURSAL",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Eliminar logo de la organización",
-      "SELECT_BRANCH_LOGO_BUTTON": "SELECCIONAR LOGO DE LA SUCURSAL",
+      "SELECT_BRANCH_LOGO_BUTTON": "SELECCIONAR",
       "STATUS_H4": "Estado:",
       "STATUS_ACTIVE": "Activo",
       "STATUS_INACTIVE": "Inactivo",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Ej: nombre@casilla.com",
         "DEFAULT_EMAIL_TOOLTIP": "Establecer correo por defecto",
+        "EMAIL_ALT_TITLE": "Correo electrónico alternativo",
+        "EMAIL_ALT_OPTIONAL": "Opcional",
+        "EMAIL_ALT_PLACEHOLDER": "E-mail alternativo",
+        "EMAIL_ALT_INPUT": "Ej: nombre@casilla.com",
+        "EMAIL_ALT_HINT": "Se usará como destinatario adicional en las notificaciones automáticas",
         "PASSWORD_TITLE": "Clave del usuario",
         "PASSWORD_HINT_UPDATE": "Vacío sino desea modificar",
         "PASSWORD_PLACEHOLDER": "Contraseña",
@@ -1998,6 +2050,7 @@
     "5": "Permiso de residencia",
     "6": "Visa",
     "7": "Documento transitorio",
+    "8": "Nro de registro interno",
     "100": "Documento anónimo"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Edición de identificación de pacientes",
     "23": "Sobreagenda (overbooking)",
     "24": "Listados de facturación",
-    "25": "Gestión de casillero médico"
+    "25": "Gestión de casillero médico",
+    "26": "Estadísticas de cálculo de demoras en citas",
+    "27": "Estadísticas de cálculo de demoras en informes"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Sucursal",
     "SELECT_BRANCH": "Seleccione la sucursal",
     "SEARCH": "BUSCAR",
-    "ASSIGNED_REPORTS": "Estudios asignados para informar",
+    "ASSIGNED_REPORTS": "Casillero médico",
+    "PHYSICIAN_ASSIGNMENT": "Asignación de médicos",
     "NO_RESULTS": "Sin resultados",
     "REPORTS": "INFORMES",
     "URGENCY": "Urgencia",

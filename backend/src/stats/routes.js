@@ -15,9 +15,11 @@ const currentLang   = require('../main.languages')(mainSettings.language);   // 
 const mainMiddlewares = require('../main.middlewares');
 
 //Import Handlers:
-const appointmentsHandler   = require('./handlers/appointments');
-const performingHandler     = require('./handlers/performing');
-const organizationsHandler  = require('./handlers/organizations');
+const appointmentsHandler       = require('./handlers/appointments');
+const performingHandler         = require('./handlers/performing');
+const organizationsHandler      = require('./handlers/organizations');
+const avgDelayAppointmentHandler = require('./handlers/avg-delay-appointment');
+const avgDelayReportsHandler     = require('./handlers/avg-delay-reports');
 
 //Create Router.
 const router = express.Router();
@@ -53,6 +55,28 @@ router.get(
     mainMiddlewares.roleAccessBasedControl,
     async (req, res) => {
         organizationsHandler(req, res);
+    }
+);
+
+//AVG DELAY APPOINTMENT:
+router.get(
+    '/avg-delay-appointment',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
+    mainMiddlewares.roleAccessBasedControl,
+    async (req, res) => {
+        avgDelayAppointmentHandler(req, res);
+    }
+);
+
+//AVG DELAY REPORTS:
+router.get(
+    '/avg-delay-reports',
+    mainMiddlewares.checkJWT,
+    mainMiddlewares.checkDBConnection,
+    mainMiddlewares.roleAccessBasedControl,
+    async (req, res) => {
+        avgDelayReportsHandler(req, res);
     }
 );
 //--------------------------------------------------------------------------------------------------------------------//

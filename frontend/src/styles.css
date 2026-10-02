@@ -294,11 +294,26 @@ body {
   text-align: left !important;
 }
 
+.text-left .mat-sort-header-container {
+  justify-content: left !important;
+  text-align: left !important;
+}
+
 .text-center{
   text-align: center !important;
 }
 
+.text-center .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
 .text-right{
+  text-align: right !important;
+}
+
+.text-right .mat-sort-header-container {
+  justify-content: right !important;
   text-align: right !important;
 }
 
@@ -788,6 +803,24 @@ mark {
   color: var(--opposite-color-02) !important;
 }
 
+.reporting-user-search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #3d3f51;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.reporting-user-search input {
+  width: 100%;
+  color: var(--opposite-color-02);
+  background: transparent;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
 .tab-icon {
   margin-right: 8px;
 }
@@ -860,6 +893,11 @@ mark {
 /* Datepicker */
 .mat-calendar{
   background-color: #27293d !important;
+}
+
+/* Disable horizontal scroll in tabs */
+.mat-tab-body-content {
+    overflow-x: hidden !important;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
 

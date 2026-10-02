@@ -238,7 +238,28 @@
       "WAITING_FOR_DETAILS": "Подождите, детали запроса еще не загружены.",
       "STATUS_AND_ANNOTATIONS": "Статус и примечания:",
       "WORKFLOW": "Рабочий процесс:",
-      "ANNOTATIONS": "Примечания"
+      "ANNOTATIONS": "Примечания",
+      "FORM": {
+        "TABS": {
+          "MAIN_DATA": "Основные данные",
+          "STUDY": "Запрошенное исследование",
+          "PATIENT": "Данные пациента",
+          "EXTRA": "Врач",
+          "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки проверки"
+        },
+        "IMAGING_LABEL": "Филиал",
+        "IMAGING_PLACEHOLDER": "Выберите филиал, выполняющий исследование",
+        "IMAGING_SELECT": "Выберите филиал",
+        "REFERRING_LABEL": "Запрашивающая организация",
+        "REFERRING_PLACEHOLDER": "Запрашивающая организация",
+        "REFERRING_SELECT": "Выберите запрашивающую организацию",
+        "MODALITY_LABEL": "Модальность",
+        "MODALITY_PLACEHOLDER": "Модальность",
+        "MODALITY_SELECT": "Выберите модальность исследования",
+        "PHYSICIAN_ID_LABEL": "ID запрашивающего врача"
+      },
+      "DISCLAIMER": "Процедура, которая будет выполняться, будет установлена в момент создания записи.",
+      "DISCLAIMER_REQUESTING_PHYSICIAN": "Данные, запрашиваемые в этой форме, должны быть заполнены лечащим врачом пациента. Запрашивающий врач несет ответственность за документ медицинского и юридического характера."
     },
     "FORM_UPDATE": {
       "TITLE": "Форма обновления записи",
@@ -798,6 +819,11 @@
     "FINISHED_WITH_REPORT": "Завершено (с отчетом)",
     "FINISHED_WITHOUT_REPORT": "Завершено (без отчета)",
     "CANCELLED": "Отменено",
+    "AVG_DELAY": "Расчет задержек",
+    "AVG_DELAY_APPOINTMENT": "Задержка координации записи",
+    "AVG_DELAY_REPORTS": "Задержка выдачи заключений",
+    "AVG_DELAY_BY_MODALITY": "Средняя задержка по модальности (дни)",
+    "TOTAL_AVG_DELAY": "Общая средняя задержка (дни):",
     "FIND_STATS_ERROR": "Ошибка при попытке получения информации: ",
     "FIND_USERS_ERROR": "Ошибка при попытке получения пользователей, вовлеченных в статистику."
   },
@@ -1265,7 +1291,7 @@
       "SUFFIX_PLACEHOLDER": "Введите суффикс",
       "LOGO_BUTTON_LABEL": "ЛОГОТИП ОРГАНИЗАЦИИ",
       "DELETE_LOGO_TOOLTIP": "Удалить логотип организации",
-      "LOGO_SELECT": "ВЫБРАТЬ ЛОГОТИП ОРГАНИЗАЦИИ",
+      "LOGO_SELECT": "ВЫБРАТЬ",
       "FILE_DELETED_SUCCESS": "Файл успешно удален",
       "BRANDING_TITLE": "Branding / White Labeling",
       "BRANDING_CONFIGURED": "Настроено",
@@ -1281,7 +1307,28 @@
       "BRANDING_LOGO_WELCOME_USAGE": "Экран приветствия",
       "BRANDING_SELECT": "ВЫБРАТЬ",
       "BRANDING_CHANGE": "ИЗМЕНИТЬ",
-      "BRANDING_DELETE_TOOLTIP": "Удалить логотип"
+      "BRANDING_DELETE_TOOLTIP": "Удалить логотип",
+      "MAIL_TITLE": "Настройка почты",
+      "MAIL_MODE_DEFAULT": "Использовать по умолчанию",
+      "MAIL_MODE_DEFAULT_INFO": "Без автоматической отправки писем",
+      "MAIL_MODE_CUSTOM": "Пользовательская настройка SMTP",
+      "MAIL_NOT_CONFIGURED_WARNING": "Для этой организации не настроен собственный почтовый сервер. Автоматические письма (Запрос подтверждений, назначений встреч и отчетов.) отправляться не будут.",
+      "MAIL_TYPE_LABEL": "Тип почты",
+      "MAIL_TYPE_GMAIL": "Gmail",
+      "MAIL_TYPE_SMTP": "Обычный SMTP",
+      "MAIL_HOST_LABEL": "Хост",
+      "MAIL_HOST_PLACEHOLDER": "Напр.: smtp.gmail.com",
+      "MAIL_PORT_LABEL": "Порт",
+      "MAIL_PORT_PLACEHOLDER": "Напр.: 465",
+      "MAIL_SECURE_LABEL": "Безопасное соединение",
+      "MAIL_SECURE_LABEL_INFO": "TLS/SSL",
+      "MAIL_FROM_LABEL": "Имя отправителя",
+      "MAIL_FROM_PLACEHOLDER": "Напр.: Моя организация",
+      "MAIL_USER_LABEL": "Имя пользователя учётной записи",
+      "MAIL_USER_PLACEHOLDER": "Введите имя пользователя почтовой учётной записи",
+      "MAIL_PASS_LABEL": "Пароль учётной записи",
+      "MAIL_PASS_PLACEHOLDER": "Введите пароль почтовой учётной записи",
+      "MAIL_PASS_HINT": "В базе данных уже сохранён пароль, вводите новый только если хотите его изменить."
     }
   },
   "BRANCHES": {
@@ -1338,7 +1385,7 @@
       "APPOINTMENT_FOOTER_INFO": "мин: 10, макс: 3000",
       "BRANCH_LOGO_BUTTON": "ЛОГОТИП ФИЛИАЛА",
       "DELETE_ORGANIZATION_LOGO_TOOLTIP": "Удалить логотип организации",
-      "SELECT_BRANCH_LOGO_BUTTON": "ВЫБРАТЬ ЛОГОТИП ФИЛИАЛА",
+      "SELECT_BRANCH_LOGO_BUTTON": "ВЫБРАТЬ",
       "STATUS_H4": "Статус:",
       "STATUS_ACTIVE": "Активно",
       "STATUS_INACTIVE": "Неактивно",
@@ -1708,6 +1755,11 @@
         "EMAIL_PLACEHOLDER": "E-mail",
         "EMAIL_INPUT": "Пример: имя@ящик.com",
         "DEFAULT_EMAIL_TOOLTIP": "Установить почту по умолчанию",
+        "EMAIL_ALT_TITLE": "Альтернативная электронная почта",
+        "EMAIL_ALT_OPTIONAL": "Необязательно",
+        "EMAIL_ALT_PLACEHOLDER": "Альтернативный e-mail",
+        "EMAIL_ALT_INPUT": "Пример: имя@ящик.com",
+        "EMAIL_ALT_HINT": "Будет использоваться как дополнительный получатель в автоматических уведомлениях",
         "PASSWORD_TITLE": "Пароль пользователя",
         "PASSWORD_HINT_UPDATE": "Пусто, если не хотите изменять",
         "PASSWORD_PLACEHOLDER": "Пароль",
@@ -1998,6 +2050,7 @@
     "5": "Вид на жительство",
     "6": "Виза",
     "7": "Временный документ",
+    "8": "Внутренний регистрационный номер",
     "100": "Анонимный документ"
   },
   "USER_ROLES": {
@@ -2034,7 +2087,9 @@
     "22": "Редактирование идентификации пациентов",
     "23": "Запись сверх лимита (overbooking)",
     "24": "Списки для выставления счетов",
-    "25": "Управление медицинскими шкафами"
+    "25": "Управление медицинскими шкафами",
+    "26": "Статистика расчета задержек при записи на прием",
+    "27": "Статистика расчета задержек при выдаче отчетов"
   },
   "GENDER_TYPES": {
     "1": "Мужской",
@@ -2224,7 +2279,8 @@
     "BRANCH": "Отделение",
     "SELECT_BRANCH": "Выберите отделение",
     "SEARCH": "ПОИСК",
-    "ASSIGNED_REPORTS": "Назначенные отчеты",
+    "ASSIGNED_REPORTS": "Медицинский шкаф",
+    "PHYSICIAN_ASSIGNMENT": "Назначение врачей",
     "NO_RESULTS": "Результаты не найдены",
     "REPORTS": "ОТЧЕТЫ",
     "URGENCY": "Cpочность",
