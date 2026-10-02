@@ -259,7 +259,7 @@
                 
                 <!-- contrast description -->
                 <span *ngIf="element.modality;">
-                  <span *ngIf="element.modality.code_value !== 'PT';">
+                  <span *ngIf="element.appointment.contrast.use_contrast && element.modality.code_value !== 'PT';">
                     &nbsp; <!-- export xsl space -->
                     <div class="clear"></div>
                     <small><span class="badge-primary badge-contrast">{{ element.appointment.contrast.description }}</span></small>
