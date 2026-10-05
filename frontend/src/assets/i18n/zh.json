@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "导出列表",
       "TITLE": "患者签到",
       "DEFAULT-MODALITY-ERROR": "确定默认模态时出现问题。"
-    },
-    "BOARD": {
-      "IN-PROGRESS": "正在处理中的关注列表..."
     }
   },
   "EVENTS_LOG": {

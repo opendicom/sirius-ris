@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "LISTE EXPORTIEREN",
       "TITLE": "Patienten-Check-in",
       "DEFAULT-MODALITY-ERROR": "Es gab ein Problem bei der Bestimmung der Standardmodalität."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "In Bearbeitung befindliche Pflegeliste..."
     }
   },
   "EVENTS_LOG": {

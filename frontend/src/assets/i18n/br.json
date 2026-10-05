@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "EXPORTAR LISTA",
       "TITLE": "Check-in do Paciente",
       "DEFAULT-MODALITY-ERROR": "Houve um problema ao determinar a modalidade padrão."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Lista de atendimento em andamento..."
     }
   },
   "EVENTS_LOG": {

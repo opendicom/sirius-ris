@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "EXPORTAR LISTADO",
       "TITLE": "Recepción de pacientes",
       "DEFAULT-MODALITY-ERROR": "Hubo un problema al determinar la modalidad por defecto."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Listado de atención en curso en proceso..."
     }
   },
   "EVENTS_LOG" : {

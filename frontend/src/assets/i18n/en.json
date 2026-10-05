@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "EXPORT LIST",
       "TITLE": "Patient Check-in",
       "DEFAULT-MODALITY-ERROR": "There was a problem determining the default modality."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "In-progress care list in process..."
     }
   },
   "EVENTS_LOG": {

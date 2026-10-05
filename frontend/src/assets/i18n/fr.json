@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "EXPORTER LA LISTE",
       "TITLE": "Arrivée du patient",
       "DEFAULT-MODALITY-ERROR": "Un problème est survenu lors de la détermination de la modalité par défaut."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Liste des soins en cours de traitement..."
     }
   },
   "EVENTS_LOG": {

@@ -9,13 +9,11 @@ import { SharedMaterialModule } from '@shared/shared-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from '@modules/check-in//components/list/list.component';
-import { BoardComponent } from '@modules/check-in/components/board/board.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent,
-    BoardComponent
+    ListComponent
   ],
   imports: [
     CommonModule,

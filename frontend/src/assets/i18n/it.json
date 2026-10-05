@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "ESPORTA ELENCO",
       "TITLE": "Accettazione dei pazienti",
       "DEFAULT-MODALITY-ERROR": "Si è verificato un problema nel determinare la modalità predefinita."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Elenco di assistenza in corso in elaborazione..."
     }
   },
   "EVENTS_LOG": {

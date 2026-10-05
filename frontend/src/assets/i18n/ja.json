@@ -2042,9 +2042,6 @@
       "EXPORT-LIST": "リストをエクスポート",
       "TITLE": "患者受付",
       "DEFAULT-MODALITY-ERROR": "デフォルトのモダリティを決定する際に問題が発生しました。"
-    },
-    "BOARD": {
-      "IN-PROGRESS": "進行中の受付リスト処理中..."
     }
   },
   "EVENTS_LOG": {
