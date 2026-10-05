@@ -33,6 +33,9 @@ const routes: Routes = [
   // Equipments | 1: Superusuario:
   { path: 'equipments', loadChildren: () => import('@modules/equipments/equipments.module').then( m => m.EquipmentsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1] } },
   
+  // Boards | 1: Superusuario, 2: Administrador, Concesiones: [28: Gestión de salas de esperas]:
+  { path: 'boards', loadChildren: () => import('@modules/boards/boards.module').then( m => m.BoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2], array_concessions: [28] } },
+
   // Slots | 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos]:
   { path: 'slots', loadChildren: () => import('@modules/slots/slots.module').then( m => m.SlotsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [1] } },
   

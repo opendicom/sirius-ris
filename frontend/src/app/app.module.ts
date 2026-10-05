@@ -51,6 +51,7 @@ import { OrganizationsModule } from '@modules/organizations/organizations.module
 import { BranchesModule } from '@modules/branches/branches.module';
 import { ServicesModule } from '@modules/services/services.module';
 import { EquipmentsModule } from '@modules/equipments/equipments.module';
+import { BoardsModule } from '@modules/boards/boards.module';
 import { UsersModule } from '@modules/users/users.module';
 import { SlotsModule } from '@modules/slots/slots.module';
 import { ProceduresModule } from '@modules/procedures/procedures.module';
@@ -93,6 +94,7 @@ import { BillingModule } from '@modules/billing/billing.module';
     BranchesModule,
     ServicesModule,
     EquipmentsModule,
+    BoardsModule,
     UsersModule,
     SlotsModule,
     ProceduresModule,
