@@ -1162,6 +1162,7 @@
     "SERVICES": "Servizi",
     "MODALITIES": "Modalità",
     "EQUIPMENTS": "Apparecchiature",
+    "BOARDS": "Schermi",
     "PROCEDURES": "Procedure",
     "PROCEDURE_CATEGORIES": "Categorie di procedure",
     "PATHOLOGIES": "Patologie",
@@ -1254,6 +1255,46 @@
       "TITLE": "Modulo delle modalità",
       "CODE_MEANING_PLACEHOLDER": "Inserisci il significato",
       "CODE_VALUE_PLACEHOLDER": "Inserisci il codice valore"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Elenco degli schermi",
+      "SHEET_NAME": "schermi",
+      "NO_DATA": "(Nessun dato)",
+      "WAITING_RESULTS": "Attendere, non ci sono ancora risultati.",
+      "EXPORT": "ESPORTA ELENCO",
+      "TABLE": {
+        "ACTIONS": "Azioni",
+        "ORGANIZATION": "Organizzazione",
+        "BRANCH": "Sede",
+        "NAME": "Nome",
+        "DETAILS": "Dettagli",
+        "STATUS": "Stato"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Modifica",
+        "LOGS": "Log dell'elemento"
+      }
+    },
+    "FORM": {
+      "TITLE": "Modulo schermi",
+      "EDIT_ERROR": "Errore durante la modifica dell'elemento: ",
+      "BRANCH_H4": "Sede",
+      "BRANCH_LABEL": "Sede",
+      "BRANCH_PLACEHOLDER": "Seleziona una sede",
+      "NAME_H4": "Nome",
+      "NAME_LABEL": "Nome",
+      "NAME_PLACEHOLDER": "Inserisci il nome dello schermo",
+      "DETAILS_H4": "Dettagli",
+      "DETAILS_LABEL": "Dettagli",
+      "DETAILS_PLACEHOLDER": "Inserisci i dettagli dello schermo",
+      "STATUS_H4": "Stato",
+      "SCREEN_H4": "Immagine dello schermo",
+      "SELECT_SCREEN_BUTTON": "SELEZIONA L'IMMAGINE DELLO SCHERMO",
+      "CHANGE_SCREEN_BUTTON": "Cambia",
+      "DELETE_SCREEN_TOOLTIP": "Elimina l'immagine dello schermo",
+      "DELETE_FILE_SUCCESS": "Immagine dello schermo eliminata con successo."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Modifica dell'identificazione dei pazienti",
     "23": "Sovraprenotazione (overbooking)",
     "24": "Elenchi di fatturazione",
-    "25": "Gestione dei caselli medici"
+    "25": "Gestione dei caselli medici",
+    "28": "Gestione delle sale d'attesa"
   },
   "GENDER_TYPES": {
     "1": "Maschile",
@@ -2135,6 +2177,7 @@
     "appointments": "appuntamento",
     "appointments_drafts": "appuntamento in corso",
     "appointment_requests": "richiesta",
+    "boards": "schermo",
     "branches": "sede",
     "equipments": "apparecchiatura",
     "files": "file",

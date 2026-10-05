@@ -1162,6 +1162,7 @@
     "SERVICES": "Services",
     "MODALITIES": "Modalities",
     "EQUIPMENTS": "Equipment",
+    "BOARDS": "Boards",
     "PROCEDURES": "Procedures",
     "PROCEDURE_CATEGORIES": "Procedure categories",
     "PATHOLOGIES": "Pathologies",
@@ -1254,6 +1255,46 @@
       "TITLE": "Modalities form",
       "CODE_MEANING_PLACEHOLDER": "Enter the meaning",
       "CODE_VALUE_PLACEHOLDER": "Enter the code value"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Boards list",
+      "SHEET_NAME": "boards",
+      "NO_DATA": "(No data)",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "BRANCH": "Branch",
+        "NAME": "Name",
+        "DETAILS": "Details",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element logs"
+      }
+    },
+    "FORM": {
+      "TITLE": "Boards form",
+      "EDIT_ERROR": "Error trying to edit element: ",
+      "BRANCH_H4": "Branch",
+      "BRANCH_LABEL": "Branch",
+      "BRANCH_PLACEHOLDER": "Select a branch",
+      "NAME_H4": "Name",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Enter the board name",
+      "DETAILS_H4": "Details",
+      "DETAILS_LABEL": "Details",
+      "DETAILS_PLACEHOLDER": "Enter the board details",
+      "STATUS_H4": "Status",
+      "SCREEN_H4": "Screen image",
+      "SELECT_SCREEN_BUTTON": "SELECT SCREEN IMAGE",
+      "CHANGE_SCREEN_BUTTON": "Change",
+      "DELETE_SCREEN_TOOLTIP": "Delete screen image",
+      "DELETE_FILE_SUCCESS": "Screen image deleted successfully."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Patient identification editing",
     "23": "Overbooking",
     "24": "Billing lists",
-    "25": "Medical locker management"
+    "25": "Medical locker management",
+    "28": "Waiting room boards management"
   },
   "GENDER_TYPES": {
     "1": "Male",
@@ -2135,6 +2177,7 @@
     "appointments": "appointment",
     "appointments_drafts": "appointment draft",
     "appointment_requests": "request",
+    "boards": "board",
     "branches": "branch",
     "equipments": "equipment",
     "files": "file",

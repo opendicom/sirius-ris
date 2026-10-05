@@ -1162,6 +1162,7 @@
     "SERVICES": "服务",
     "MODALITIES": "模态",
     "EQUIPMENTS": "设备",
+    "BOARDS": "显示屏",
     "PROCEDURES": "程序",
     "PROCEDURE_CATEGORIES": "程序类别",
     "PATHOLOGIES": "病理",
@@ -1254,6 +1255,46 @@
       "TITLE": "模态表单",
       "CODE_MEANING_PLACEHOLDER": "输入含义",
       "CODE_VALUE_PLACEHOLDER": "输入值代码"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "显示屏列表",
+      "SHEET_NAME": "显示屏",
+      "NO_DATA": "(无数据)",
+      "WAITING_RESULTS": "请稍候，暂无结果。",
+      "EXPORT": "导出列表",
+      "TABLE": {
+        "ACTIONS": "操作",
+        "ORGANIZATION": "组织",
+        "BRANCH": "分支",
+        "NAME": "名称",
+        "DETAILS": "详情",
+        "STATUS": "状态"
+      },
+      "TOOLTIPS": {
+        "EDIT": "编辑",
+        "LOGS": "元素日志"
+      }
+    },
+    "FORM": {
+      "TITLE": "显示屏表单",
+      "EDIT_ERROR": "尝试编辑元素时出错：",
+      "BRANCH_H4": "分支",
+      "BRANCH_LABEL": "分支",
+      "BRANCH_PLACEHOLDER": "选择分支",
+      "NAME_H4": "名称",
+      "NAME_LABEL": "名称",
+      "NAME_PLACEHOLDER": "输入显示屏名称",
+      "DETAILS_H4": "详情",
+      "DETAILS_LABEL": "详情",
+      "DETAILS_PLACEHOLDER": "输入显示屏详情",
+      "STATUS_H4": "状态",
+      "SCREEN_H4": "屏幕图像",
+      "SELECT_SCREEN_BUTTON": "选择屏幕图像",
+      "CHANGE_SCREEN_BUTTON": "更改",
+      "DELETE_SCREEN_TOOLTIP": "删除屏幕图像",
+      "DELETE_FILE_SUCCESS": "屏幕图像已成功删除。"
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "编辑患者身份信息",
     "23": "超额预订",
     "24": "计费清单",
-    "25": "医疗储物柜管理"
+    "25": "医疗储物柜管理",
+    "28": "候诊室管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2135,6 +2177,7 @@
     "appointments": "预约",
     "appointments_drafts": "进行中的预约",
     "appointment_requests": "请求",
+    "boards": "显示屏",
     "branches": "分支",
     "equipments": "设备",
     "files": "文件",

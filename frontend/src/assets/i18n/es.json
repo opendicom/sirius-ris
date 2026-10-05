@@ -1162,6 +1162,7 @@
     "SERVICES": "Servicios",
     "MODALITIES": "Modalidades",
     "EQUIPMENTS": "Equipamiento",
+    "BOARDS": "Pantallas",
     "PROCEDURES": "Procedimientos",
     "PROCEDURE_CATEGORIES": "Categorías de procedimientos",
     "PATHOLOGIES": "Patologías",
@@ -1254,6 +1255,46 @@
       "TITLE": "Formulario de modalidades",
       "CODE_MEANING_PLACEHOLDER": "Ingrese el significado",
       "CODE_VALUE_PLACEHOLDER": "Ingrese el código de valor"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Listado de pantallas",
+      "SHEET_NAME": "pantallas",
+      "NO_DATA": "(Sin datos)",
+      "WAITING_RESULTS": "Por favor espere, aún no hay resultados.",
+      "EXPORT": "EXPORTAR LISTADO",
+      "TABLE": {
+        "ACTIONS": "Acciones",
+        "ORGANIZATION": "Organización",
+        "BRANCH": "Sucursal",
+        "NAME": "Nombre",
+        "DETAILS": "Detalles",
+        "STATUS": "Estado"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs del elemento"
+      }
+    },
+    "FORM": {
+      "TITLE": "Formulario de pantallas",
+      "EDIT_ERROR": "Error al intentar editar el elemento: ",
+      "BRANCH_H4": "Sucursal",
+      "BRANCH_LABEL": "Sucursal",
+      "BRANCH_PLACEHOLDER": "Seleccione una sucursal",
+      "NAME_H4": "Nombre",
+      "NAME_LABEL": "Nombre",
+      "NAME_PLACEHOLDER": "Ingrese el nombre de la pantalla",
+      "DETAILS_H4": "Detalles",
+      "DETAILS_LABEL": "Detalles",
+      "DETAILS_PLACEHOLDER": "Ingrese los detalles de la pantalla",
+      "STATUS_H4": "Estado",
+      "SCREEN_H4": "Imagen de pantalla",
+      "SELECT_SCREEN_BUTTON": "SELECCIONAR IMAGEN DE PANTALLA",
+      "CHANGE_SCREEN_BUTTON": "Cambiar",
+      "DELETE_SCREEN_TOOLTIP": "Eliminar imagen de pantalla",
+      "DELETE_FILE_SUCCESS": "Imagen de pantalla eliminada correctamente."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Edición de identificación de pacientes",
     "23": "Sobreagenda (overbooking)",
     "24": "Listados de facturación",
-    "25": "Gestión de casillero médico"
+    "25": "Gestión de casillero médico",
+    "28": "Gestión de salas de esperas"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2135,6 +2177,7 @@
     "appointments": "cita",
     "appointments_drafts": "cita en curso",
     "appointment_requests": "solicitud",
+    "boards": "pantalla",
     "branches": "sucursal",
     "equipments": "equipo",
     "files": "archivo",

@@ -1162,6 +1162,7 @@
     "SERVICES": "Serviços",
     "MODALITIES": "Modalidades",
     "EQUIPMENTS": "Equipamentos",
+    "BOARDS": "Painéis",
     "PROCEDURES": "Procedimentos",
     "PROCEDURE_CATEGORIES": "Categorias de procedimento",
     "PATHOLOGIES": "Patologias",
@@ -1254,6 +1255,46 @@
       "TITLE": "Formulário de modalidades",
       "CODE_MEANING_PLACEHOLDER": "Insira o significado",
       "CODE_VALUE_PLACEHOLDER": "Insira o valor do código"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Lista de painéis",
+      "SHEET_NAME": "painéis",
+      "NO_DATA": "(Sem dados)",
+      "WAITING_RESULTS": "Por favor aguarde, ainda não há resultados.",
+      "EXPORT": "EXPORTAR LISTA",
+      "TABLE": {
+        "ACTIONS": "Ações",
+        "ORGANIZATION": "Organização",
+        "BRANCH": "Filial",
+        "NAME": "Nome",
+        "DETAILS": "Detalhes",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Editar",
+        "LOGS": "Logs do elemento"
+      }
+    },
+    "FORM": {
+      "TITLE": "Formulário de painéis",
+      "EDIT_ERROR": "Erro ao tentar editar o elemento: ",
+      "BRANCH_H4": "Filial",
+      "BRANCH_LABEL": "Filial",
+      "BRANCH_PLACEHOLDER": "Selecione uma filial",
+      "NAME_H4": "Nome",
+      "NAME_LABEL": "Nome",
+      "NAME_PLACEHOLDER": "Digite o nome do painel",
+      "DETAILS_H4": "Detalhes",
+      "DETAILS_LABEL": "Detalhes",
+      "DETAILS_PLACEHOLDER": "Digite os detalhes do painel",
+      "STATUS_H4": "Status",
+      "SCREEN_H4": "Imagem do painel",
+      "SELECT_SCREEN_BUTTON": "SELECIONAR IMAGEM DO PAINEL",
+      "CHANGE_SCREEN_BUTTON": "Alterar",
+      "DELETE_SCREEN_TOOLTIP": "Excluir imagem do painel",
+      "DELETE_FILE_SUCCESS": "Imagem do painel excluída com sucesso."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Edição de identificação do paciente",
     "23": "Encaixe",
     "24": "Listas de faturamento",
-    "25": "Gerenciamiento de armário médico"
+    "25": "Gerenciamiento de armário médico",
+    "28": "Gerenciamento de salas de espera"
   },
   "GENDER_TYPES": {
     "1": "Masculino",
@@ -2135,6 +2177,7 @@
     "appointments": "agendamento",
     "appointments_drafts": "rascunho de agendamento",
     "appointment_requests": "requisição",
+    "boards": "painel",
     "branches": "filial",
     "equipments": "equipamento",
     "files": "arquivo",

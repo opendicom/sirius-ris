@@ -1162,6 +1162,7 @@
     "SERVICES": "サービス",
     "MODALITIES": "モダリティ",
     "EQUIPMENTS": "機器",
+    "BOARDS": "ボード",
     "PROCEDURES": "手技",
     "PROCEDURE_CATEGORIES": "手技カテゴリ",
     "PATHOLOGIES": "病状",
@@ -1254,6 +1255,46 @@
       "TITLE": "モダリティフォーム",
       "CODE_MEANING_PLACEHOLDER": "意味を入力してください",
       "CODE_VALUE_PLACEHOLDER": "値コードを入力してください"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "ボード一覧",
+      "SHEET_NAME": "ボード",
+      "NO_DATA": "(データなし)",
+      "WAITING_RESULTS": "お待ちください。まだ結果がありません。",
+      "EXPORT": "一覧をエクスポート",
+      "TABLE": {
+        "ACTIONS": "操作",
+        "ORGANIZATION": "組織",
+        "BRANCH": "支店",
+        "NAME": "名前",
+        "DETAILS": "詳細",
+        "STATUS": "ステータス"
+      },
+      "TOOLTIPS": {
+        "EDIT": "編集",
+        "LOGS": "要素のログ"
+      }
+    },
+    "FORM": {
+      "TITLE": "ボードフォーム",
+      "EDIT_ERROR": "要素の編集中にエラーが発生しました: ",
+      "BRANCH_H4": "支店",
+      "BRANCH_LABEL": "支店",
+      "BRANCH_PLACEHOLDER": "支店を選択してください",
+      "NAME_H4": "名前",
+      "NAME_LABEL": "名前",
+      "NAME_PLACEHOLDER": "ボード名を入力してください",
+      "DETAILS_H4": "詳細",
+      "DETAILS_LABEL": "詳細",
+      "DETAILS_PLACEHOLDER": "ボードの詳細を入力してください",
+      "STATUS_H4": "ステータス",
+      "SCREEN_H4": "画面画像",
+      "SELECT_SCREEN_BUTTON": "画面画像を選択",
+      "CHANGE_SCREEN_BUTTON": "変更",
+      "DELETE_SCREEN_TOOLTIP": "画面画像を削除",
+      "DELETE_FILE_SUCCESS": "画面画像を削除しました。"
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "患者識別情報の編集",
     "23": "過剰予約（オーバーブッキング）",
     "24": "請求リスト",
-    "25": "医療用ロッカーの管理"
+    "25": "医療用ロッカーの管理",
+    "28": "待合室の管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2135,6 +2177,7 @@
     "appointments": "予約",
     "appointments_drafts": "進行中の予約",
     "appointment_requests": "依頼",
+    "boards": "ボード",
     "branches": "支店",
     "equipments": "機器",
     "files": "ファイル",

@@ -1162,6 +1162,7 @@
     "SERVICES": "Отделения",
     "MODALITIES": "Модальности",
     "EQUIPMENTS": "Оборудование",
+    "BOARDS": "Табло",
     "PROCEDURES": "Процедуры",
     "PROCEDURE_CATEGORIES": "Категории процедур",
     "PATHOLOGIES": "Патологии",
@@ -1254,6 +1255,46 @@
       "TITLE": "Форма модальностей",
       "CODE_MEANING_PLACEHOLDER": "Введите значение",
       "CODE_VALUE_PLACEHOLDER": "Введите код"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Список табло",
+      "SHEET_NAME": "табло",
+      "NO_DATA": "(Нет данных)",
+      "WAITING_RESULTS": "Пожалуйста, подождите, результатов пока нет.",
+      "EXPORT": "ЭКСПОРТ СПИСКА",
+      "TABLE": {
+        "ACTIONS": "Действия",
+        "ORGANIZATION": "Организация",
+        "BRANCH": "Филиал",
+        "NAME": "Название",
+        "DETAILS": "Подробности",
+        "STATUS": "Статус"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Редактировать",
+        "LOGS": "Журналы элемента"
+      }
+    },
+    "FORM": {
+      "TITLE": "Форма табло",
+      "EDIT_ERROR": "Ошибка при попытке редактирования элемента: ",
+      "BRANCH_H4": "Филиал",
+      "BRANCH_LABEL": "Филиал",
+      "BRANCH_PLACEHOLDER": "Выберите филиал",
+      "NAME_H4": "Название",
+      "NAME_LABEL": "Название",
+      "NAME_PLACEHOLDER": "Введите название табло",
+      "DETAILS_H4": "Подробности",
+      "DETAILS_LABEL": "Подробности",
+      "DETAILS_PLACEHOLDER": "Введите подробности табло",
+      "STATUS_H4": "Статус",
+      "SCREEN_H4": "Изображение экрана",
+      "SELECT_SCREEN_BUTTON": "ВЫБРАТЬ ИЗОБРАЖЕНИЕ ЭКРАНА",
+      "CHANGE_SCREEN_BUTTON": "Изменить",
+      "DELETE_SCREEN_TOOLTIP": "Удалить изображение экрана",
+      "DELETE_FILE_SUCCESS": "Изображение экрана успешно удалено."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Редактирование идентификации пациентов",
     "23": "Запись сверх лимита (overbooking)",
     "24": "Списки для выставления счетов",
-    "25": "Управление медицинскими шкафами"
+    "25": "Управление медицинскими шкафами",
+    "28": "Управление залами ожидания"
   },
   "GENDER_TYPES": {
     "1": "Мужской",
@@ -2135,6 +2177,7 @@
     "appointments": "запись",
     "appointments_drafts": "текущая запись",
     "appointment_requests": "запрос",
+    "boards": "табло",
     "branches": "филиал",
     "equipments": "оборудование",
     "files": "файл",

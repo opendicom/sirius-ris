@@ -1162,6 +1162,7 @@
     "SERVICES": "Services",
     "MODALITIES": "Modalités",
     "EQUIPMENTS": "Équipements",
+    "BOARDS": "Écrans",
     "PROCEDURES": "Procédures",
     "PROCEDURE_CATEGORIES": "Catégories de procédures",
     "PATHOLOGIES": "Pathologies",
@@ -1254,6 +1255,46 @@
       "TITLE": "Formulaire des modalités",
       "CODE_MEANING_PLACEHOLDER": "Entrez la signification",
       "CODE_VALUE_PLACEHOLDER": "Entrez la valeur du code"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Liste des écrans",
+      "SHEET_NAME": "écrans",
+      "NO_DATA": "(Aucune donnée)",
+      "WAITING_RESULTS": "Veuillez patienter, il n'y a pas encore de résultats.",
+      "EXPORT": "EXPORTER LA LISTE",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organisation",
+        "BRANCH": "Filiale",
+        "NAME": "Nom",
+        "DETAILS": "Détails",
+        "STATUS": "Statut"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Modifier",
+        "LOGS": "Journaux de l'élément"
+      }
+    },
+    "FORM": {
+      "TITLE": "Formulaire d'écrans",
+      "EDIT_ERROR": "Erreur lors de la modification de l'élément : ",
+      "BRANCH_H4": "Filiale",
+      "BRANCH_LABEL": "Filiale",
+      "BRANCH_PLACEHOLDER": "Sélectionnez une filiale",
+      "NAME_H4": "Nom",
+      "NAME_LABEL": "Nom",
+      "NAME_PLACEHOLDER": "Saisissez le nom de l'écran",
+      "DETAILS_H4": "Détails",
+      "DETAILS_LABEL": "Détails",
+      "DETAILS_PLACEHOLDER": "Saisissez les détails de l'écran",
+      "STATUS_H4": "Statut",
+      "SCREEN_H4": "Image de l'écran",
+      "SELECT_SCREEN_BUTTON": "SÉLECTIONNER L'IMAGE DE L'ÉCRAN",
+      "CHANGE_SCREEN_BUTTON": "Changer",
+      "DELETE_SCREEN_TOOLTIP": "Supprimer l'image de l'écran",
+      "DELETE_FILE_SUCCESS": "Image de l'écran supprimée avec succès."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Modification de l'identification du patient",
     "23": "Sur-réservation",
     "24": "Listes de facturation",
-    "25": "Gestion des casiers médicaux"
+    "25": "Gestion des casiers médicaux",
+    "28": "Gestion des salles d'attente"
   },
   "GENDER_TYPES": {
     "1": "Masculin",
@@ -2135,6 +2177,7 @@
     "appointments": "rendez-vous",
     "appointments_drafts": "brouillon de rendez-vous",
     "appointment_requests": "demande",
+    "boards": "écran",
     "branches": "filiale",
     "equipments": "équipement",
     "files": "fichier",

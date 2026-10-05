@@ -1162,6 +1162,7 @@
     "SERVICES": "Dienste",
     "MODALITIES": "Modalitäten",
     "EQUIPMENTS": "Ausrüstung",
+    "BOARDS": "Anzeigetafeln",
     "PROCEDURES": "Prozeduren",
     "PROCEDURE_CATEGORIES": "Prozedurkategorien",
     "PATHOLOGIES": "Pathologien",
@@ -1254,6 +1255,46 @@
       "TITLE": "Modalitätenformular",
       "CODE_MEANING_PLACEHOLDER": "Bedeutung eingeben",
       "CODE_VALUE_PLACEHOLDER": "Codewert eingeben"
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Liste der Anzeigetafeln",
+      "SHEET_NAME": "anzeigetafeln",
+      "NO_DATA": "(Keine Daten)",
+      "WAITING_RESULTS": "Bitte warten, es gibt noch keine Ergebnisse.",
+      "EXPORT": "LISTE EXPORTIEREN",
+      "TABLE": {
+        "ACTIONS": "Aktionen",
+        "ORGANIZATION": "Organisation",
+        "BRANCH": "Niederlassung",
+        "NAME": "Name",
+        "DETAILS": "Details",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Bearbeiten",
+        "LOGS": "Elementprotokolle"
+      }
+    },
+    "FORM": {
+      "TITLE": "Anzeigetafel-Formular",
+      "EDIT_ERROR": "Fehler beim Bearbeiten des Elements: ",
+      "BRANCH_H4": "Niederlassung",
+      "BRANCH_LABEL": "Niederlassung",
+      "BRANCH_PLACEHOLDER": "Niederlassung auswählen",
+      "NAME_H4": "Name",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Namen der Anzeigetafel eingeben",
+      "DETAILS_H4": "Details",
+      "DETAILS_LABEL": "Details",
+      "DETAILS_PLACEHOLDER": "Details der Anzeigetafel eingeben",
+      "STATUS_H4": "Status",
+      "SCREEN_H4": "Bildschirmbild",
+      "SELECT_SCREEN_BUTTON": "BILDSCHIRMBILD AUSWÄHLEN",
+      "CHANGE_SCREEN_BUTTON": "Ändern",
+      "DELETE_SCREEN_TOOLTIP": "Bildschirmbild löschen",
+      "DELETE_FILE_SUCCESS": "Bildschirmbild erfolgreich gelöscht."
     }
   },
   "ORGANIZATIONS": {
@@ -2060,7 +2101,8 @@
     "22": "Bearbeitung der Patientenidentifikation",
     "23": "Überbuchung",
     "24": "Abrechnungslisten",
-    "25": "Verwaltung von medizinischen Schließfächern"
+    "25": "Verwaltung von medizinischen Schließfächern",
+    "28": "Verwaltung von Wartezimmern"
   },
   "GENDER_TYPES": {
     "1": "Männlich",
@@ -2135,6 +2177,7 @@
     "appointments": "Termin",
     "appointments_drafts": "Terminentwurf",
     "appointment_requests": "Anforderung",
+    "boards": "Anzeigetafel",
     "branches": "Niederlassung",
     "equipments": "Ausrüstung",
     "files": "Datei",
