@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "カレンダー",
     "RECEPTION": "受付",
     "RECEPTION_CHECKINS": "受付",
+    "RECEPTION_CHECKIN_BOARDS": "待合室",
     "PERFORMING": "実施",
     "PERFORMING_STUDIES": "検査",
     "ADVANCED": "高度な機能",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "日付を選択",
     "FLOW_STATE": "アイテムのフロー",
     "MODALITY": "モダリティ",
+    "BOARD": "ボード",
     "STATUS": "ステータス",
     "STATUS_ACTIVE": "アクティブ",
     "STATUS_INACTIVE": "非アクティブ",
@@ -1255,6 +1257,28 @@
       "TITLE": "モダリティフォーム",
       "CODE_MEANING_PLACEHOLDER": "意味を入力してください",
       "CODE_VALUE_PLACEHOLDER": "値コードを入力してください"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "待合室一覧",
+      "TOOLTIPS": {
+        "DETAILS": "詳細を表示"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "待合室の患者",
+      "SHEET_NAME": "待合室",
+      "WAITING_RESULTS": "結果がまだありません。しばらくお待ちください。",
+      "EXPORT": "一覧をエクスポート",
+      "NO_BOARDS": "お客様のアカウントで利用できるボードはありません。",
+      "TOOLTIPS": {
+        "DELETE": "待合室から削除"
+      },
+      "TABLE": {
+        "DATE": "日時",
+        "ROOM_PLACE": "部屋 / 場所"
+      }
     }
   },
   "BOARDS": {

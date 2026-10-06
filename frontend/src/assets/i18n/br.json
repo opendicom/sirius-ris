@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "Calendário",
     "RECEPTION": "Recepção",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_CHECKIN_BOARDS": "Salas de espera",
     "PERFORMING": "Realização",
     "PERFORMING_STUDIES": "Estudos",
     "ADVANCED": "Recursos avançados",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "Selecionar data",
     "FLOW_STATE": "Estado do fluxo",
     "MODALITY": "Modalidade",
+    "BOARD": "Tela",
     "STATUS": "Status",
     "STATUS_ACTIVE": "Ativo",
     "STATUS_INACTIVE": "Inativo",
@@ -1255,6 +1257,28 @@
       "TITLE": "Formulário de modalidades",
       "CODE_MEANING_PLACEHOLDER": "Insira o significado",
       "CODE_VALUE_PLACEHOLDER": "Insira o valor do código"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Lista de salas de espera",
+      "TOOLTIPS": {
+        "DETAILS": "Ver detalhes"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Pacientes na sala de espera",
+      "SHEET_NAME": "salas_de_espera",
+      "WAITING_RESULTS": "Por favor, aguarde, ainda não há resultados.",
+      "EXPORT": "EXPORTAR LISTA",
+      "NO_BOARDS": "Não há telas disponíveis para sua conta.",
+      "TOOLTIPS": {
+        "DELETE": "Remover da sala de espera"
+      },
+      "TABLE": {
+        "DATE": "Data e hora",
+        "ROOM_PLACE": "Sala / local"
+      }
     }
   },
   "BOARDS": {

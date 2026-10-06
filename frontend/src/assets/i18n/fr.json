@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "Calendrier",
     "RECEPTION": "Réception",
     "RECEPTION_CHECKINS": "Arrivées",
+    "RECEPTION_CHECKIN_BOARDS": "Salles d'attente",
     "PERFORMING": "Réalisation",
     "PERFORMING_STUDIES": "Études",
     "ADVANCED": "Fonctionnalités avancées",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "Sélectionnez la date",
     "FLOW_STATE": "État du flux",
     "MODALITY": "Modalité",
+    "BOARD": "Écran",
     "STATUS": "Statut",
     "STATUS_ACTIVE": "Actif",
     "STATUS_INACTIVE": "Inactif",
@@ -1255,6 +1257,28 @@
       "TITLE": "Formulaire des modalités",
       "CODE_MEANING_PLACEHOLDER": "Entrez la signification",
       "CODE_VALUE_PLACEHOLDER": "Entrez la valeur du code"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Liste des salles d'attente",
+      "TOOLTIPS": {
+        "DETAILS": "Voir les détails"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patients en salle d'attente",
+      "SHEET_NAME": "salles_attente",
+      "WAITING_RESULTS": "Veuillez patienter, il n'y a pas encore de résultats.",
+      "EXPORT": "EXPORTER LA LISTE",
+      "NO_BOARDS": "Aucun écran disponible pour votre compte.",
+      "TOOLTIPS": {
+        "DELETE": "Retirer de la salle d'attente"
+      },
+      "TABLE": {
+        "DATE": "Date et heure",
+        "ROOM_PLACE": "Salle / lieu"
+      }
     }
   },
   "BOARDS": {

@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "Календарь",
     "RECEPTION": "Регистрация",
     "RECEPTION_CHECKINS": "Регистрации",
+    "RECEPTION_CHECKIN_BOARDS": "Залы ожидания",
     "PERFORMING": "Выполнение",
     "PERFORMING_STUDIES": "Исследования",
     "ADVANCED": "Расширенные функции",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "Выберите дату",
     "FLOW_STATE": "Состояние элемента",
     "MODALITY": "Модальность",
+    "BOARD": "Экран",
     "STATUS": "Статус",
     "STATUS_ACTIVE": "Активно",
     "STATUS_INACTIVE": "Неактивно",
@@ -1255,6 +1257,28 @@
       "TITLE": "Форма модальностей",
       "CODE_MEANING_PLACEHOLDER": "Введите значение",
       "CODE_VALUE_PLACEHOLDER": "Введите код"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Список залов ожидания",
+      "TOOLTIPS": {
+        "DETAILS": "Показать детали"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Пациенты в зале ожидания",
+      "SHEET_NAME": "залы_ожидания",
+      "WAITING_RESULTS": "Пожалуйста, подождите, результатов пока нет.",
+      "EXPORT": "ЭКСПОРТ СПИСКА",
+      "NO_BOARDS": "Для вашей учётной записи нет доступных экранов.",
+      "TOOLTIPS": {
+        "DELETE": "Удалить из зала ожидания"
+      },
+      "TABLE": {
+        "DATE": "Дата и время",
+        "ROOM_PLACE": "Зал / место"
+      }
     }
   },
   "BOARDS": {

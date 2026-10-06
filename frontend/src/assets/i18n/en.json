@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "Calendar",
     "RECEPTION": "Reception",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_CHECKIN_BOARDS": "Check-in boards",
     "PERFORMING": "Performing",
     "PERFORMING_STUDIES": "Studies",
     "ADVANCED": "Advanced features",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "Select date",
     "FLOW_STATE": "Flow state",
     "MODALITY": "Modality",
+    "BOARD": "Board",
     "STATUS": "Status",
     "STATUS_ACTIVE": "Active",
     "STATUS_INACTIVE": "Inactive",
@@ -1255,6 +1257,28 @@
       "TITLE": "Modalities form",
       "CODE_MEANING_PLACEHOLDER": "Enter the meaning",
       "CODE_VALUE_PLACEHOLDER": "Enter the code value"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Check-in boards list",
+      "TOOLTIPS": {
+        "DETAILS": "View details"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patients in waiting room",
+      "SHEET_NAME": "check_in_boards",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST",
+      "NO_BOARDS": "No boards available for your account.",
+      "TOOLTIPS": {
+        "DELETE": "Remove from waiting room"
+      },
+      "TABLE": {
+        "DATE": "Date and time",
+        "ROOM_PLACE": "Room / place"
+      }
     }
   },
   "BOARDS": {

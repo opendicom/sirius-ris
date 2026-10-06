@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "日历",
     "RECEPTION": "接待",
     "RECEPTION_CHECKINS": "签到",
+    "RECEPTION_CHECKIN_BOARDS": "候诊室",
     "PERFORMING": "执行中",
     "PERFORMING_STUDIES": "研究",
     "ADVANCED": "高级功能",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "选择日期",
     "FLOW_STATE": "项目流程",
     "MODALITY": "模态",
+    "BOARD": "屏幕",
     "STATUS": "状态",
     "STATUS_ACTIVE": "活动",
     "STATUS_INACTIVE": "非活动",
@@ -1255,6 +1257,28 @@
       "TITLE": "模态表单",
       "CODE_MEANING_PLACEHOLDER": "输入含义",
       "CODE_VALUE_PLACEHOLDER": "输入值代码"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "候诊室列表",
+      "TOOLTIPS": {
+        "DETAILS": "查看详情"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "候诊室患者",
+      "SHEET_NAME": "候诊室",
+      "WAITING_RESULTS": "请稍候，暂无结果。",
+      "EXPORT": "导出列表",
+      "NO_BOARDS": "您的账户没有可用的屏幕。",
+      "TOOLTIPS": {
+        "DELETE": "从候诊室移除"
+      },
+      "TABLE": {
+        "DATE": "日期和时间",
+        "ROOM_PLACE": "房间 / 位置"
+      }
     }
   },
   "BOARDS": {

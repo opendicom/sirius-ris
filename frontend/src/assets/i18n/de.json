@@ -1105,6 +1105,7 @@
     "COORDINATION_CALENDAR": "Kalender",
     "RECEPTION": "Empfang",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_CHECKIN_BOARDS": "Wartezimmer",
     "PERFORMING": "Durchführung",
     "PERFORMING_STUDIES": "Studien",
     "ADVANCED": "Erweiterte Funktionen",
@@ -1182,6 +1183,7 @@
     "SELECT_DATE": "Datum auswählen",
     "FLOW_STATE": "Flussstatus",
     "MODALITY": "Modalität",
+    "BOARD": "Anzeige",
     "STATUS": "Status",
     "STATUS_ACTIVE": "Aktiv",
     "STATUS_INACTIVE": "Inaktiv",
@@ -1255,6 +1257,28 @@
       "TITLE": "Modalitätenformular",
       "CODE_MEANING_PLACEHOLDER": "Bedeutung eingeben",
       "CODE_VALUE_PLACEHOLDER": "Codewert eingeben"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Liste der Wartezimmer",
+      "TOOLTIPS": {
+        "DETAILS": "Details anzeigen"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patienten im Wartezimmer",
+      "SHEET_NAME": "wartezimmer",
+      "WAITING_RESULTS": "Bitte warten, es liegen noch keine Ergebnisse vor.",
+      "EXPORT": "LISTE EXPORTIEREN",
+      "NO_BOARDS": "Für Ihr Konto sind keine Anzeigen verfügbar.",
+      "TOOLTIPS": {
+        "DELETE": "Aus dem Wartezimmer entfernen"
+      },
+      "TABLE": {
+        "DATE": "Datum und Uhrzeit",
+        "ROOM_PLACE": "Raum / Ort"
+      }
     }
   },
   "BOARDS": {
