@@ -88,6 +88,13 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.board">
+        <mat-label>{{ 'ACTION.BOARD' | i18n }}</mat-label>
+        <mat-select [(ngModel)]="sharedProp.board" (selectionChange)="onSearch();">
+          <mat-option *ngFor="let currentBoard of sharedProp.boards" value="{{ currentBoard._id }}">{{ currentBoard.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.status">
         <mat-label>{{ 'ACTION.STATUS' | i18n }}</mat-label>
         <mat-select [(ngModel)]="sharedProp.status" (selectionChange)="onSearch();">
