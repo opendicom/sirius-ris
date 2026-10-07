@@ -3,7 +3,7 @@ import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ActivatedRoute } from '@angular/router';                                           // Activated Route Interface
+import { ActivatedRoute, Router } from '@angular/router';                                   // Router Interfaces
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';       // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
@@ -37,6 +37,7 @@ export class DetailsComponent implements OnInit, DoCheck {
   //Inject services to the constructor:
   constructor(
     private objRoute: ActivatedRoute,
+    private router: Router,
     public sharedProp: SharedPropertiesService,
     public sharedFunctions: SharedFunctionsService,
     private i18n: I18nService
@@ -124,6 +125,28 @@ export class DetailsComponent implements OnInit, DoCheck {
   get currentBoard(): any {
     return this.sharedProp.boards.find((current: any) => current._id === this.sharedProp.board);
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // DELETE CHECK-IN BOARD (Remove the patient from the board):
+  //--------------------------------------------------------------------------------------------------------------------//
+  deleteCheckInBoard(element: any): void {
+    //Create operation handler:
+    const operationHandler = {
+      element         : this.sharedProp.element,
+      selected_items  : [element._id],
+      router          : this.router,
+      excludeRedirect : true        // Stay in the details to refresh the list
+    };
+
+    //Open dialog to confirm:
+    this.sharedFunctions.openDialog('delete', operationHandler, (deleted) => {
+      //Refresh list (Request params are preserved):
+      if(deleted){
+        this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   ngOnInit(): void {
     this.loading = true;
