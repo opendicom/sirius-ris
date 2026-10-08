@@ -485,12 +485,12 @@ const concessionPermissions = {
         users                   : ['findByBranch']
     },
 
-    // 26 : Estadísticas sobre demora de citas coordinadas:
+    // 26 : Estadísticas de cálculo de demoras en citas:
     26: {
         stats                   : ['avg-delay-appointment']
     },
 
-    // 27 : Estadísticas sobre demora de entrega de informes:
+    // 27 : Estadísticas de cálculo de demoras en informes:
     27: {
         stats                   : ['avg-delay-reports']
     },

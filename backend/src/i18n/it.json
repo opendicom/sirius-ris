@@ -84,6 +84,7 @@
     "report_authenticated": "Referto autenticato con successo.",
     "mail_send_success": "E-mail inviata con successo.",
     "mail_send_error": "Errore durante l'invio dell'e-mail.",
+    "mail_not_configured": "L'organizzazione non ha configurato il servizio di posta.",
     "mail_wrong_address": "L'indirizzo e-mail indicato è errato.",
     "mail_empty_subject": "Il parametro 'subject' non può essere vuoto.",
     "mail_empty_message": "Il messaggio non può essere vuoto.",

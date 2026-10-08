@@ -20,6 +20,12 @@ module.exports = async (req, res) => {
     
     //Check email:
     if(regexEmail.test(req.body.to)){
+        //Validate alternative email (optional, sent as cc):
+        if(req.body.email_alt !== undefined && req.body.email_alt !== null && req.body.email_alt !== '' && !regexEmail.test(req.body.email_alt)){
+            //Return the result (HTML Response):
+            return res.status(422).send({ success: false, message: currentLang.ris.mail_wrong_address });
+        }
+
         //Validate subject is not empty:
         if(req.body.subject !== undefined && req.body.subject !== null && req.body.subject !== ''){
             //Validate message is not empty:
@@ -51,7 +57,7 @@ module.exports = async (req, res) => {
                         }
 
                         //Send email:
-                        await mailServices.sendEmail(req, res, log_element, req.body.to, req.body.subject, req.body.message, attachments);
+                        await mailServices.sendEmail(req, res, log_element, req.body.to, req.body.subject, req.body.message, attachments, true, req.body.email_alt);
                     } else {
                         //Return the result (HTML Response):
                         res.status(422).send({ success: false, message: currentLang.db.not_valid_objectid });    

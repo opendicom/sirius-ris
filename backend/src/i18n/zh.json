@@ -84,6 +84,7 @@
     "report_authenticated": "报告已成功认证。",
     "mail_send_success": "电子邮件发送成功。",
     "mail_send_error": "发送电子邮件时发生错误。",
+    "mail_not_configured": "该机构尚未配置邮件服务。",
     "mail_wrong_address": "指定的电子邮件地址不正确。",
     "mail_empty_subject": "subject 参数不能为空。",
     "mail_empty_message": "消息不能为空。",
