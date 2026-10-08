@@ -56,3 +56,7 @@
   background: #e91e6299;
   color: #fff !important;
 }
+
+.call-patient {
+  background-color: var(--gold) !important;
+}
