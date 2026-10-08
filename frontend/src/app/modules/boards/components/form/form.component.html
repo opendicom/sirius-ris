@@ -1,0 +1,80 @@
+<form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutAlign="start start">
+
+    <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
+      <h4>{{ 'BOARDS.FORM.BRANCH_H4' | i18n }}</h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>{{ 'BOARDS.FORM.BRANCH_LABEL' | i18n }}</mat-label>
+        <mat-select formControlName="fk_branch" placeholder="{{ 'BOARDS.FORM.BRANCH_PLACEHOLDER' | i18n }}">
+          <div *ngFor="let currentBranch of availableBranches">
+            <div *ngFor="let currentOrganization of availableOrganizations">
+              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
+            </div>
+          </div>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>{{ 'BOARDS.FORM.NAME_H4' | i18n }} <span class="label-info">min: 2, max: 32</span></h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>{{ 'BOARDS.FORM.NAME_LABEL' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="name" maxlength="32" placeholder="{{ 'BOARDS.FORM.NAME_PLACEHOLDER' | i18n }}">
+      </mat-form-field>
+
+      <h4>{{ 'BOARDS.FORM.DETAILS_H4' | i18n }} <span class="label-info">min: 3, max: 128</span></h4>
+      <mat-form-field appearance="fill" class="large">
+        <mat-label>{{ 'BOARDS.FORM.DETAILS_LABEL' | i18n }}</mat-label>
+        <input matInput type="text" formControlName="details" maxlength="128" placeholder="{{ 'BOARDS.FORM.DETAILS_PLACEHOLDER' | i18n }}">
+      </mat-form-field>
+
+      <h4>{{ 'BOARDS.FORM.STATUS_H4' | i18n }}</h4>
+      <mat-radio-group color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'ACTION.STATUS_ACTIVE' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'ACTION.STATUS_INACTIVE' | i18n }}</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h4>{{ 'BOARDS.FORM.SCREEN_H4' | i18n }}</h4>
+
+      <div *ngIf="selectedScreenController; then thenBlockScreen else elseBlockScreen"></div>
+
+      <ng-template #thenBlockScreen>
+        <div class="screen-card">
+          <div class="screen-preview">
+            <img *ngIf="previewScreen" [src]="previewScreen" class="screen-img" />
+            <mat-icon *ngIf="!previewScreen" class="screen-placeholder">image</mat-icon>
+          </div>
+          <div class="screen-actions">
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInputChange style="display: none" />
+            <button mat-stroked-button type="button" color="accent" (click)="fileInputChange.click()">
+              <mat-icon>swap_horiz</mat-icon> {{ 'BOARDS.FORM.CHANGE_SCREEN_BUTTON' | i18n }}
+            </button>
+            <button *ngIf="form_action == 'update' && selectedFile === null"
+              mat-icon-button type="button" color="warn"
+              matTooltip="{{ 'BOARDS.FORM.DELETE_SCREEN_TOOLTIP' | i18n }}"
+              (click)="onDeleteFileRef('base64_screen')">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #elseBlockScreen>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
+        <button mat-flat-button type="button" color="accent" (click)="fileInput.click()">
+          <mat-icon>add_photo_alternate</mat-icon> {{ 'BOARDS.FORM.SELECT_SCREEN_BUTTON' | i18n }}
+        </button>
+      </ng-template>
+    </div> <!-- end fxLayout wrapper -->
+
+  </div>
+
+  <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+    <div> <!-- start fxLayout wrapper -->
+      <button mat-flat-button type="button" (click)="onCancel();">{{ 'ACTION.CANCEL_BUTTON' | i18n }}</button>
+      <button mat-flat-button type="submit" color="primary">{{ 'ACTION.SAVE_BUTTON' | i18n }}</button>
+    </div> <!-- end fxLayout wrapper -->
+  </div>
+</form>

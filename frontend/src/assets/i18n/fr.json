@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "Aucune image associée à l'étude n'a été trouvée",
       "CLOSE": "FERMER"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Appeler le patient",
+      "BOARD_LABEL": "Salle d'attente (écran)",
+      "ROOM_PLACE_LABEL": "Salle / lieu",
+      "ROOM_PLACE_PLACEHOLDER": "Ex : Cabinet A",
+      "NO_BOARDS": "Aucun écran disponible pour votre compte.",
+      "SUCCESS": "Patient appelé avec succès.",
+      "CANCEL": "ANNULER",
+      "CALL": "APPELER LE PATIENT"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient déjà appelé",
+      "ALREADY_CALLED": "Ce patient a déjà été appelé dans cette salle aujourd'hui.",
+      "CURRENT_CALL": "Appel actuel :",
+      "NEW_CALL": "Nouvel appel :",
+      "NO_ROOM_PLACE": "(sans salle / lieu)",
+      "CONFIRM_UPDATE": "Voulez-vous mettre à jour la salle / le lieu et l'heure de l'appel ?",
+      "NO": "NON",
+      "YES_UPDATE": "OUI, METTRE À JOUR"
+    },
     "MWL_RESEND": {
       "TITLE": "Renvoyer le patient à la MWL",
       "PATIENT_ALREADY_SENT": "Le patient sélectionné a déjà été envoyé à la liste de travail du PACS.",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "Calendrier",
     "RECEPTION": "Réception",
     "RECEPTION_CHECKINS": "Arrivées",
+    "RECEPTION_CHECKIN_BOARDS": "Salles d'attente",
     "PERFORMING": "Réalisation",
     "PERFORMING_STUDIES": "Études",
     "ADVANCED": "Fonctionnalités avancées",
@@ -1163,6 +1184,7 @@
     "SERVICES": "Services",
     "MODALITIES": "Modalités",
     "EQUIPMENTS": "Équipements",
+    "BOARDS": "Écrans",
     "PROCEDURES": "Procédures",
     "PROCEDURE_CATEGORIES": "Catégories de procédures",
     "PATHOLOGIES": "Pathologies",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "Sélectionnez la date",
     "FLOW_STATE": "État du flux",
     "MODALITY": "Modalité",
+    "BOARD": "Écran",
     "STATUS": "Statut",
     "STATUS_ACTIVE": "Actif",
     "STATUS_INACTIVE": "Inactif",
@@ -1255,6 +1278,68 @@
       "TITLE": "Formulaire des modalités",
       "CODE_MEANING_PLACEHOLDER": "Entrez la signification",
       "CODE_VALUE_PLACEHOLDER": "Entrez la valeur du code"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Liste des salles d'attente",
+      "TOOLTIPS": {
+        "DETAILS": "Voir les détails"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patients en salle d'attente",
+      "SHEET_NAME": "salles_attente",
+      "WAITING_RESULTS": "Veuillez patienter, il n'y a pas encore de résultats.",
+      "EXPORT": "EXPORTER LA LISTE",
+      "NO_BOARDS": "Aucun écran disponible pour votre compte.",
+      "TOOLTIPS": {
+        "DELETE": "Retirer de la salle d'attente"
+      },
+      "TABLE": {
+        "DATE": "Date et heure",
+        "ROOM_PLACE": "Salle / lieu"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Liste des écrans",
+      "SHEET_NAME": "écrans",
+      "NO_DATA": "(Aucune donnée)",
+      "WAITING_RESULTS": "Veuillez patienter, il n'y a pas encore de résultats.",
+      "EXPORT": "EXPORTER LA LISTE",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organisation",
+        "BRANCH": "Filiale",
+        "NAME": "Nom",
+        "DETAILS": "Détails",
+        "STATUS": "Statut"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Modifier",
+        "LOGS": "Journaux de l'élément"
+      }
+    },
+    "FORM": {
+      "TITLE": "Formulaire d'écrans",
+      "EDIT_ERROR": "Erreur lors de la modification de l'élément : ",
+      "BRANCH_H4": "Filiale",
+      "BRANCH_LABEL": "Filiale",
+      "BRANCH_PLACEHOLDER": "Sélectionnez une filiale",
+      "NAME_H4": "Nom",
+      "NAME_LABEL": "Nom",
+      "NAME_PLACEHOLDER": "Saisissez le nom de l'écran",
+      "DETAILS_H4": "Détails",
+      "DETAILS_LABEL": "Détails",
+      "DETAILS_PLACEHOLDER": "Saisissez les détails de l'écran",
+      "STATUS_H4": "Statut",
+      "SCREEN_H4": "Image de l'écran",
+      "SELECT_SCREEN_BUTTON": "SÉLECTIONNER L'IMAGE DE L'ÉCRAN",
+      "CHANGE_SCREEN_BUTTON": "Changer",
+      "DELETE_SCREEN_TOOLTIP": "Supprimer l'image de l'écran",
+      "DELETE_FILE_SUCCESS": "Image de l'écran supprimée avec succès."
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Enregistrer une autre étude avec le même rendez-vous",
       "SENT-TO-MWL": "Envoyé à la MWL",
       "SEND-TO-MWL": "Envoyer à la MWL",
+      "CALL-PATIENT": "APPELER LE PATIENT",
       "CHECK-IN": "Arrivée",
       "SCHEDULE": "Horaire",
       "DOCUMENTS": "Documents",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "EXPORTER LA LISTE",
       "TITLE": "Arrivée du patient",
       "DEFAULT-MODALITY-ERROR": "Un problème est survenu lors de la détermination de la modalité par défaut."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Liste des soins en cours de traitement..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "Listes de facturation",
     "25": "Gestion des casiers médicaux",
     "26": "Statistiques de calcul des retards de rendez-vous",
-    "27": "Statistiques de calcul des retards de remise des rapports"
+    "27": "Statistiques de calcul des retards de remise des rapports",
+    "28": "Gestion des salles d'attente"
   },
   "GENDER_TYPES": {
     "1": "Masculin",
@@ -2164,6 +2248,7 @@
     "appointments": "rendez-vous",
     "appointments_drafts": "brouillon de rendez-vous",
     "appointment_requests": "demande",
+    "boards": "écran",
     "branches": "filiale",
     "equipments": "équipement",
     "files": "fichier",

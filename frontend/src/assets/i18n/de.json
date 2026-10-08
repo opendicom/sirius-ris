@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "Keine Bilder zur Studie gefunden",
       "CLOSE": "SCHLIESSEN"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Patient aufrufen",
+      "BOARD_LABEL": "Wartezimmer (Anzeige)",
+      "ROOM_PLACE_LABEL": "Raum / Ort",
+      "ROOM_PLACE_PLACEHOLDER": "Beispiel: Sprechzimmer A",
+      "NO_BOARDS": "Für Ihr Konto sind keine Anzeigen verfügbar.",
+      "SUCCESS": "Patient wurde erfolgreich aufgerufen.",
+      "CANCEL": "ABBRECHEN",
+      "CALL": "PATIENT AUFRUFEN"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient bereits aufgerufen",
+      "ALREADY_CALLED": "Dieser Patient wurde heute bereits in dieses Wartezimmer aufgerufen.",
+      "CURRENT_CALL": "Aktueller Aufruf:",
+      "NEW_CALL": "Neuer Aufruf:",
+      "NO_ROOM_PLACE": "(kein Raum / Ort)",
+      "CONFIRM_UPDATE": "Möchten Sie Raum / Ort und Uhrzeit des Aufrufs aktualisieren?",
+      "NO": "NEIN",
+      "YES_UPDATE": "JA, AKTUALISIEREN"
+    },
     "MWL_RESEND": {
       "TITLE": "Patient erneut an MWL senden",
       "PATIENT_ALREADY_SENT": "Der ausgewählte Patient wurde bereits an die PACS-Arbeitsliste gesendet.",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "Kalender",
     "RECEPTION": "Empfang",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_CHECKIN_BOARDS": "Wartezimmer",
     "PERFORMING": "Durchführung",
     "PERFORMING_STUDIES": "Studien",
     "ADVANCED": "Erweiterte Funktionen",
@@ -1163,6 +1184,7 @@
     "SERVICES": "Dienste",
     "MODALITIES": "Modalitäten",
     "EQUIPMENTS": "Ausrüstung",
+    "BOARDS": "Anzeigetafeln",
     "PROCEDURES": "Prozeduren",
     "PROCEDURE_CATEGORIES": "Prozedurkategorien",
     "PATHOLOGIES": "Pathologien",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "Datum auswählen",
     "FLOW_STATE": "Flussstatus",
     "MODALITY": "Modalität",
+    "BOARD": "Anzeige",
     "STATUS": "Status",
     "STATUS_ACTIVE": "Aktiv",
     "STATUS_INACTIVE": "Inaktiv",
@@ -1255,6 +1278,68 @@
       "TITLE": "Modalitätenformular",
       "CODE_MEANING_PLACEHOLDER": "Bedeutung eingeben",
       "CODE_VALUE_PLACEHOLDER": "Codewert eingeben"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Liste der Wartezimmer",
+      "TOOLTIPS": {
+        "DETAILS": "Details anzeigen"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patienten im Wartezimmer",
+      "SHEET_NAME": "wartezimmer",
+      "WAITING_RESULTS": "Bitte warten, es liegen noch keine Ergebnisse vor.",
+      "EXPORT": "LISTE EXPORTIEREN",
+      "NO_BOARDS": "Für Ihr Konto sind keine Anzeigen verfügbar.",
+      "TOOLTIPS": {
+        "DELETE": "Aus dem Wartezimmer entfernen"
+      },
+      "TABLE": {
+        "DATE": "Datum und Uhrzeit",
+        "ROOM_PLACE": "Raum / Ort"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Liste der Anzeigetafeln",
+      "SHEET_NAME": "anzeigetafeln",
+      "NO_DATA": "(Keine Daten)",
+      "WAITING_RESULTS": "Bitte warten, es gibt noch keine Ergebnisse.",
+      "EXPORT": "LISTE EXPORTIEREN",
+      "TABLE": {
+        "ACTIONS": "Aktionen",
+        "ORGANIZATION": "Organisation",
+        "BRANCH": "Niederlassung",
+        "NAME": "Name",
+        "DETAILS": "Details",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Bearbeiten",
+        "LOGS": "Elementprotokolle"
+      }
+    },
+    "FORM": {
+      "TITLE": "Anzeigetafel-Formular",
+      "EDIT_ERROR": "Fehler beim Bearbeiten des Elements: ",
+      "BRANCH_H4": "Niederlassung",
+      "BRANCH_LABEL": "Niederlassung",
+      "BRANCH_PLACEHOLDER": "Niederlassung auswählen",
+      "NAME_H4": "Name",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Namen der Anzeigetafel eingeben",
+      "DETAILS_H4": "Details",
+      "DETAILS_LABEL": "Details",
+      "DETAILS_PLACEHOLDER": "Details der Anzeigetafel eingeben",
+      "STATUS_H4": "Status",
+      "SCREEN_H4": "Bildschirmbild",
+      "SELECT_SCREEN_BUTTON": "BILDSCHIRMBILD AUSWÄHLEN",
+      "CHANGE_SCREEN_BUTTON": "Ändern",
+      "DELETE_SCREEN_TOOLTIP": "Bildschirmbild löschen",
+      "DELETE_FILE_SUCCESS": "Bildschirmbild erfolgreich gelöscht."
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Check-in für eine andere Studie mit demselben Termin",
       "SENT-TO-MWL": "An MWL gesendet",
       "SEND-TO-MWL": "An MWL senden",
+      "CALL-PATIENT": "PATIENT AUFRUFEN",
       "CHECK-IN": "Check-in",
       "SCHEDULE": "Zeitplan",
       "DOCUMENTS": "Dokumente",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "LISTE EXPORTIEREN",
       "TITLE": "Patienten-Check-in",
       "DEFAULT-MODALITY-ERROR": "Es gab ein Problem bei der Bestimmung der Standardmodalität."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "In Bearbeitung befindliche Pflegeliste..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "Abrechnungslisten",
     "25": "Verwaltung von medizinischen Schließfächern",
     "26": "Statistiken zur Berechnung von Terminverzögerungen",
-    "27": "Statistiken zur Berechnung von Verzögerungen bei der Berichterstellung"
+    "27": "Statistiken zur Berechnung von Verzögerungen bei der Berichterstellung",
+    "28": "Verwaltung von Wartezimmern"
   },
   "GENDER_TYPES": {
     "1": "Männlich",
@@ -2164,6 +2248,7 @@
     "appointments": "Termin",
     "appointments_drafts": "Terminentwurf",
     "appointment_requests": "Anforderung",
+    "boards": "Anzeigetafel",
     "branches": "Niederlassung",
     "equipments": "Ausrüstung",
     "files": "Datei",

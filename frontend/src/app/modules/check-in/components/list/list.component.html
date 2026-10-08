@@ -50,6 +50,14 @@
                         </button>
                       </span>
 
+                      <!-- call patient (Checked in and not yet studied: P01 to P04) -->
+                      <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas) -->
+                      <span *ngIf="callableFlowStates.includes(currentNested.flow_state) && (sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [28])))">
+                        <button mat-mini-fab class="small_button call-patient" type="button" matTooltip="{{ 'CHECK-IN.LIST.CALL-PATIENT' | i18n }}" (click)="callPatient(element)">
+                          <mat-icon>campaign</mat-icon>
+                        </button>
+                      </span>
+
                       <br/>
 
                       <!-- performing flow_state -->

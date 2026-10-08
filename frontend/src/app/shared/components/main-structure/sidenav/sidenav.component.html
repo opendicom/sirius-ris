@@ -47,13 +47,23 @@
     </div>
   </div>
 
-  <!-- 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones] -->
-  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
+  <!-- 1: Superusuario, 2: Administrador, 4: Médico, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones, 28: Gestión de salas de esperas] -->
+  <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 4 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4, 28]))" >
     <h3>{{ 'SIDENAV.RECEPTION' | i18n }}</h3>
 
-    <mat-list-item routerLink="/check-in/list">
-      <mat-icon>today</mat-icon><span>{{ 'SIDENAV.RECEPTION_CHECKINS' | i18n }}</span>
-    </mat-list-item>
+    <!-- 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 5 || sharedProp.userLogged.permissions[0].role == 6 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [4]))" >
+      <mat-list-item routerLink="/check-in/list">
+        <mat-icon>today</mat-icon><span>{{ 'SIDENAV.RECEPTION_CHECKINS' | i18n }}</span>
+      </mat-list-item>
+    </div>
+
+    <!-- 1: Superusuario, 2: Administrador, 4: Médico, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 4 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [28]))" >
+      <mat-list-item routerLink="/check-in-boards/list">
+        <mat-icon>monitor</mat-icon><span>{{ 'SIDENAV.RECEPTION_CHECKIN_BOARDS' | i18n }}</span>
+      </mat-list-item>
+    </div>
   </div>
 
   <!-- 1: Superusuario, 2: Administrador, 3: Supervisor, 4: Médico, Concesiones: [5: Gestión de estudios] -->

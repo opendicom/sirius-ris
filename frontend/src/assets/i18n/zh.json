@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "未找到与研究相关的图像",
       "CLOSE": "关闭"
     },
+    "CALL_PATIENT": {
+      "TITLE": "呼叫患者",
+      "BOARD_LABEL": "候诊室（屏幕）",
+      "ROOM_PLACE_LABEL": "房间 / 位置",
+      "ROOM_PLACE_PLACEHOLDER": "例如：诊室A",
+      "NO_BOARDS": "您的账户没有可用的屏幕。",
+      "SUCCESS": "已成功呼叫患者。",
+      "CANCEL": "取消",
+      "CALL": "呼叫患者"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "患者已被呼叫",
+      "ALREADY_CALLED": "该患者今天已被呼叫到此候诊室。",
+      "CURRENT_CALL": "当前呼叫：",
+      "NEW_CALL": "新的呼叫：",
+      "NO_ROOM_PLACE": "（无房间 / 位置）",
+      "CONFIRM_UPDATE": "是否更新呼叫的房间 / 位置和时间？",
+      "NO": "否",
+      "YES_UPDATE": "是，更新"
+    },
     "MWL_RESEND": {
       "TITLE": "将患者重新发送到 MWL",
       "PATIENT_ALREADY_SENT": "所选患者之前已发送到 PACS 工作列表。",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "日历",
     "RECEPTION": "接待",
     "RECEPTION_CHECKINS": "签到",
+    "RECEPTION_CHECKIN_BOARDS": "候诊室",
     "PERFORMING": "执行中",
     "PERFORMING_STUDIES": "研究",
     "ADVANCED": "高级功能",
@@ -1163,6 +1184,7 @@
     "SERVICES": "服务",
     "MODALITIES": "模态",
     "EQUIPMENTS": "设备",
+    "BOARDS": "显示屏",
     "PROCEDURES": "程序",
     "PROCEDURE_CATEGORIES": "程序类别",
     "PATHOLOGIES": "病理",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "选择日期",
     "FLOW_STATE": "项目流程",
     "MODALITY": "模态",
+    "BOARD": "屏幕",
     "STATUS": "状态",
     "STATUS_ACTIVE": "活动",
     "STATUS_INACTIVE": "非活动",
@@ -1255,6 +1278,68 @@
       "TITLE": "模态表单",
       "CODE_MEANING_PLACEHOLDER": "输入含义",
       "CODE_VALUE_PLACEHOLDER": "输入值代码"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "候诊室列表",
+      "TOOLTIPS": {
+        "DETAILS": "查看详情"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "候诊室患者",
+      "SHEET_NAME": "候诊室",
+      "WAITING_RESULTS": "请稍候，暂无结果。",
+      "EXPORT": "导出列表",
+      "NO_BOARDS": "您的账户没有可用的屏幕。",
+      "TOOLTIPS": {
+        "DELETE": "从候诊室移除"
+      },
+      "TABLE": {
+        "DATE": "日期和时间",
+        "ROOM_PLACE": "房间 / 位置"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "显示屏列表",
+      "SHEET_NAME": "显示屏",
+      "NO_DATA": "(无数据)",
+      "WAITING_RESULTS": "请稍候，暂无结果。",
+      "EXPORT": "导出列表",
+      "TABLE": {
+        "ACTIONS": "操作",
+        "ORGANIZATION": "组织",
+        "BRANCH": "分支",
+        "NAME": "名称",
+        "DETAILS": "详情",
+        "STATUS": "状态"
+      },
+      "TOOLTIPS": {
+        "EDIT": "编辑",
+        "LOGS": "元素日志"
+      }
+    },
+    "FORM": {
+      "TITLE": "显示屏表单",
+      "EDIT_ERROR": "尝试编辑元素时出错：",
+      "BRANCH_H4": "分支",
+      "BRANCH_LABEL": "分支",
+      "BRANCH_PLACEHOLDER": "选择分支",
+      "NAME_H4": "名称",
+      "NAME_LABEL": "名称",
+      "NAME_PLACEHOLDER": "输入显示屏名称",
+      "DETAILS_H4": "详情",
+      "DETAILS_LABEL": "详情",
+      "DETAILS_PLACEHOLDER": "输入显示屏详情",
+      "STATUS_H4": "状态",
+      "SCREEN_H4": "屏幕图像",
+      "SELECT_SCREEN_BUTTON": "选择屏幕图像",
+      "CHANGE_SCREEN_BUTTON": "更改",
+      "DELETE_SCREEN_TOOLTIP": "删除屏幕图像",
+      "DELETE_FILE_SUCCESS": "屏幕图像已成功删除。"
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "使用同一次预约签到另一项研究",
       "SENT-TO-MWL": "已发送到 MWL",
       "SEND-TO-MWL": "发送到 MWL",
+      "CALL-PATIENT": "呼叫患者",
       "CHECK-IN": "签到",
       "SCHEDULE": "时间表",
       "DOCUMENTS": "文件",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "导出列表",
       "TITLE": "患者签到",
       "DEFAULT-MODALITY-ERROR": "确定默认模态时出现问题。"
-    },
-    "BOARD": {
-      "IN-PROGRESS": "正在处理中的关注列表..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "计费清单",
     "25": "医疗储物柜管理",
     "26": "预约延迟计算统计",
-    "27": "报告交付延迟计算统计"
+    "27": "报告交付延迟计算统计",
+    "28": "候诊室管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2164,6 +2248,7 @@
     "appointments": "预约",
     "appointments_drafts": "进行中的预约",
     "appointment_requests": "请求",
+    "boards": "显示屏",
     "branches": "分支",
     "equipments": "设备",
     "files": "文件",

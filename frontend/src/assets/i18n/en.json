@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "No images associated with the study were found",
       "CLOSE": "CLOSE"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Call patient",
+      "BOARD_LABEL": "Board",
+      "ROOM_PLACE_LABEL": "Room / place",
+      "ROOM_PLACE_PLACEHOLDER": "Example: Office A",
+      "NO_BOARDS": "There are no boards available for your account.",
+      "SUCCESS": "Patient called successfully.",
+      "CANCEL": "CANCEL",
+      "CALL": "CALL PATIENT"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient already called",
+      "ALREADY_CALLED": "This patient has already been called to this board today.",
+      "CURRENT_CALL": "Current call:",
+      "NEW_CALL": "New call:",
+      "NO_ROOM_PLACE": "(no room / place)",
+      "CONFIRM_UPDATE": "Do you want to update the room / place and the time of the call?",
+      "NO": "NO",
+      "YES_UPDATE": "YES, UPDATE"
+    },
     "MWL_RESEND": {
       "TITLE": "Resend patient to MWL",
       "PATIENT_ALREADY_SENT": "The selected patient has already been sent to the PACS worklist.",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "Calendar",
     "RECEPTION": "Reception",
     "RECEPTION_CHECKINS": "Check-ins",
+    "RECEPTION_CHECKIN_BOARDS": "Check-in boards",
     "PERFORMING": "Performing",
     "PERFORMING_STUDIES": "Studies",
     "ADVANCED": "Advanced features",
@@ -1163,6 +1184,7 @@
     "SERVICES": "Services",
     "MODALITIES": "Modalities",
     "EQUIPMENTS": "Equipment",
+    "BOARDS": "Boards",
     "PROCEDURES": "Procedures",
     "PROCEDURE_CATEGORIES": "Procedure categories",
     "PATHOLOGIES": "Pathologies",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "Select date",
     "FLOW_STATE": "Flow state",
     "MODALITY": "Modality",
+    "BOARD": "Board",
     "STATUS": "Status",
     "STATUS_ACTIVE": "Active",
     "STATUS_INACTIVE": "Inactive",
@@ -1255,6 +1278,68 @@
       "TITLE": "Modalities form",
       "CODE_MEANING_PLACEHOLDER": "Enter the meaning",
       "CODE_VALUE_PLACEHOLDER": "Enter the code value"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Check-in boards list",
+      "TOOLTIPS": {
+        "DETAILS": "View details"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Patients in waiting room",
+      "SHEET_NAME": "check_in_boards",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST",
+      "NO_BOARDS": "No boards available for your account.",
+      "TOOLTIPS": {
+        "DELETE": "Remove from waiting room"
+      },
+      "TABLE": {
+        "DATE": "Date and time",
+        "ROOM_PLACE": "Room / place"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Boards list",
+      "SHEET_NAME": "boards",
+      "NO_DATA": "(No data)",
+      "WAITING_RESULTS": "Please wait, there are no results yet.",
+      "EXPORT": "EXPORT LIST",
+      "TABLE": {
+        "ACTIONS": "Actions",
+        "ORGANIZATION": "Organization",
+        "BRANCH": "Branch",
+        "NAME": "Name",
+        "DETAILS": "Details",
+        "STATUS": "Status"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Edit",
+        "LOGS": "Element logs"
+      }
+    },
+    "FORM": {
+      "TITLE": "Boards form",
+      "EDIT_ERROR": "Error trying to edit element: ",
+      "BRANCH_H4": "Branch",
+      "BRANCH_LABEL": "Branch",
+      "BRANCH_PLACEHOLDER": "Select a branch",
+      "NAME_H4": "Name",
+      "NAME_LABEL": "Name",
+      "NAME_PLACEHOLDER": "Enter the board name",
+      "DETAILS_H4": "Details",
+      "DETAILS_LABEL": "Details",
+      "DETAILS_PLACEHOLDER": "Enter the board details",
+      "STATUS_H4": "Status",
+      "SCREEN_H4": "Screen image",
+      "SELECT_SCREEN_BUTTON": "SELECT SCREEN IMAGE",
+      "CHANGE_SCREEN_BUTTON": "Change",
+      "DELETE_SCREEN_TOOLTIP": "Delete screen image",
+      "DELETE_FILE_SUCCESS": "Screen image deleted successfully."
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Check-in another study with the same appointment",
       "SENT-TO-MWL": "Sent to MWL",
       "SEND-TO-MWL": "Send to MWL",
+      "CALL-PATIENT": "CALL PATIENT",
       "CHECK-IN": "Check-in",
       "SCHEDULE": "Schedule",
       "DOCUMENTS": "Documents",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "EXPORT LIST",
       "TITLE": "Patient Check-in",
       "DEFAULT-MODALITY-ERROR": "There was a problem determining the default modality."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "In-progress care list in process..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "Billing lists",
     "25": "Medical locker management",
     "26": "Appointment scheduling delay statistics",
-    "27": "Report delivery delay statistics"
+    "27": "Report delivery delay statistics",
+    "28": "Waiting room boards management"
   },
   "GENDER_TYPES": {
     "1": "Male",
@@ -2164,6 +2248,7 @@
     "appointments": "appointment",
     "appointments_drafts": "appointment draft",
     "appointment_requests": "request",
+    "boards": "board",
     "branches": "branch",
     "equipments": "equipment",
     "files": "file",

@@ -34,6 +34,8 @@ module.exports = async function() {
     const performingRoutes              = require('./modules/performing/routes');
     const reportsRoutes                 = require('./modules/reports/routes');
     const signaturesRoutes              = require('./modules/signatures/routes');
+    const boardsRoutes                  = require('./modules/boards/routes');
+    const check_in_boardsRoutes         = require('./modules/check_in_boards/routes');
 
     //Import other routes:
     const authRoutes                    = require('./auth/routes');
@@ -171,6 +173,8 @@ module.exports = async function() {
     app.use('/performing',              performingRoutes);
     app.use('/reports',                 reportsRoutes);
     app.use('/signatures',              signaturesRoutes);
+    app.use('/boards',                  boardsRoutes);
+    app.use('/check_in_boards',         check_in_boardsRoutes);
 
     //Set other routes:
     app.use('/signin',                  authRoutes);

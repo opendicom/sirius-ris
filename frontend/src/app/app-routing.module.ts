@@ -33,6 +33,9 @@ const routes: Routes = [
   // Equipments | 1: Superusuario:
   { path: 'equipments', loadChildren: () => import('@modules/equipments/equipments.module').then( m => m.EquipmentsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1] } },
   
+  // Boards | 1: Superusuario, 2: Administrador, Concesiones: [28: Gestión de salas de esperas]:
+  { path: 'boards', loadChildren: () => import('@modules/boards/boards.module').then( m => m.BoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2], array_concessions: [28] } },
+
   // Slots | 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [1: Gestión de turnos]:
   { path: 'slots', loadChildren: () => import('@modules/slots/slots.module').then( m => m.SlotsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [1] } },
   
@@ -49,6 +52,8 @@ const routes: Routes = [
   { path: 'appointments', loadChildren: () => import('@modules/appointments/appointments.module').then( m => m.AppointmentsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [2] } },
   
   // Check-in | 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones]:
+  // Check-in boards | 1: Superusuario, 2: Administrador, 4: Médico, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas]:
+  { path: 'check-in-boards', loadChildren: () => import('@modules/check-in-boards/check-in-boards.module').then( m => m.CheckInBoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 4, 8], array_concessions: [28] } },
   { path: 'check-in', loadChildren: () => import('@modules/check-in/check-in.module').then( m => m.CheckInModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 5, 6, 8], array_concessions: [4] } },
   
   // Calendar | 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [3: Calendario de citas]:

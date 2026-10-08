@@ -1,0 +1,41 @@
+.board-info {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  background-color: var(--list-domain-color);
+  border-left: 4px solid var(--green-highlighted);
+  border-radius: 5px;
+  padding: 12px 16px;
+  margin: 16px 0;
+}
+
+.board-info .mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+  color: var(--green-highlighted);
+}
+
+.board-separator {
+  color: var(--green-highlighted);
+}
+
+.board-name {
+  font-size: 20px;
+  color: var(--green-highlighted);
+}
+
+/* Badges aligned with the column header (Inline to follow the column text alignment) */
+.badge-accent,
+.badge-alt {
+  float: none;
+  display: inline-block;
+  margin-left: 0px !important;
+  margin-right: 4px !important;
+}
+
+/* Separation from the previous column with differentiating background (column-alt) */
+.names {
+  padding-left: 10px;
+}

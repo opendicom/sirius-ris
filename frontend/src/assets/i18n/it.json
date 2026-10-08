@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "Nessuna immagine associata allo studio trovata",
       "CLOSE": "CHIUDI"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Chiama paziente",
+      "BOARD_LABEL": "Sala d'attesa (schermo)",
+      "ROOM_PLACE_LABEL": "Sala / luogo",
+      "ROOM_PLACE_PLACEHOLDER": "Es: Ambulatorio A",
+      "NO_BOARDS": "Nessuno schermo disponibile per il tuo account.",
+      "SUCCESS": "Paziente chiamato correttamente.",
+      "CANCEL": "ANNULLA",
+      "CALL": "CHIAMA PAZIENTE"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Paziente già chiamato",
+      "ALREADY_CALLED": "Questo paziente è già stato chiamato in questa sala oggi.",
+      "CURRENT_CALL": "Chiamata attuale:",
+      "NEW_CALL": "Nuova chiamata:",
+      "NO_ROOM_PLACE": "(senza sala / luogo)",
+      "CONFIRM_UPDATE": "Vuoi aggiornare la sala / il luogo e l'ora della chiamata?",
+      "NO": "NO",
+      "YES_UPDATE": "SÌ, AGGIORNA"
+    },
     "MWL_RESEND": {
       "TITLE": "Invia di nuovo il paziente alla MWL",
       "PATIENT_ALREADY_SENT": "Il paziente selezionato è già stato inviato in precedenza alla lista di lavoro del PACS.",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "Calendario",
     "RECEPTION": "Accettazione",
     "RECEPTION_CHECKINS": "Accettazioni",
+    "RECEPTION_CHECKIN_BOARDS": "Sale d'attesa",
     "PERFORMING": "Esecuzione",
     "PERFORMING_STUDIES": "Studi",
     "ADVANCED": "Funzioni avanzate",
@@ -1163,6 +1184,7 @@
     "SERVICES": "Servizi",
     "MODALITIES": "Modalità",
     "EQUIPMENTS": "Apparecchiature",
+    "BOARDS": "Schermi",
     "PROCEDURES": "Procedure",
     "PROCEDURE_CATEGORIES": "Categorie di procedure",
     "PATHOLOGIES": "Patologie",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "Seleziona data",
     "FLOW_STATE": "Flusso dell'elemento",
     "MODALITY": "Modalità",
+    "BOARD": "Schermo",
     "STATUS": "Stato",
     "STATUS_ACTIVE": "Attivo",
     "STATUS_INACTIVE": "Inattivo",
@@ -1255,6 +1278,68 @@
       "TITLE": "Modulo delle modalità",
       "CODE_MEANING_PLACEHOLDER": "Inserisci il significato",
       "CODE_VALUE_PLACEHOLDER": "Inserisci il codice valore"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "Elenco delle sale d'attesa",
+      "TOOLTIPS": {
+        "DETAILS": "Vedi dettagli"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "Pazienti in sala d'attesa",
+      "SHEET_NAME": "sale_attesa",
+      "WAITING_RESULTS": "Attendere prego, non ci sono ancora risultati.",
+      "EXPORT": "ESPORTA ELENCO",
+      "NO_BOARDS": "Nessuno schermo disponibile per il tuo account.",
+      "TOOLTIPS": {
+        "DELETE": "Rimuovi dalla sala d'attesa"
+      },
+      "TABLE": {
+        "DATE": "Data e ora",
+        "ROOM_PLACE": "Sala / luogo"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "Elenco degli schermi",
+      "SHEET_NAME": "schermi",
+      "NO_DATA": "(Nessun dato)",
+      "WAITING_RESULTS": "Attendere, non ci sono ancora risultati.",
+      "EXPORT": "ESPORTA ELENCO",
+      "TABLE": {
+        "ACTIONS": "Azioni",
+        "ORGANIZATION": "Organizzazione",
+        "BRANCH": "Sede",
+        "NAME": "Nome",
+        "DETAILS": "Dettagli",
+        "STATUS": "Stato"
+      },
+      "TOOLTIPS": {
+        "EDIT": "Modifica",
+        "LOGS": "Log dell'elemento"
+      }
+    },
+    "FORM": {
+      "TITLE": "Modulo schermi",
+      "EDIT_ERROR": "Errore durante la modifica dell'elemento: ",
+      "BRANCH_H4": "Sede",
+      "BRANCH_LABEL": "Sede",
+      "BRANCH_PLACEHOLDER": "Seleziona una sede",
+      "NAME_H4": "Nome",
+      "NAME_LABEL": "Nome",
+      "NAME_PLACEHOLDER": "Inserisci il nome dello schermo",
+      "DETAILS_H4": "Dettagli",
+      "DETAILS_LABEL": "Dettagli",
+      "DETAILS_PLACEHOLDER": "Inserisci i dettagli dello schermo",
+      "STATUS_H4": "Stato",
+      "SCREEN_H4": "Immagine dello schermo",
+      "SELECT_SCREEN_BUTTON": "SELEZIONA L'IMMAGINE DELLO SCHERMO",
+      "CHANGE_SCREEN_BUTTON": "Cambia",
+      "DELETE_SCREEN_TOOLTIP": "Elimina l'immagine dello schermo",
+      "DELETE_FILE_SUCCESS": "Immagine dello schermo eliminata con successo."
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Accetta un altro studio con lo stesso appuntamento",
       "SENT-TO-MWL": "Inviato a MWL",
       "SEND-TO-MWL": "Invia a MWL",
+      "CALL-PATIENT": "CHIAMA PAZIENTE",
       "CHECK-IN": "Accetta",
       "SCHEDULE": "Orario",
       "DOCUMENTS": "Documenti",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "ESPORTA ELENCO",
       "TITLE": "Accettazione dei pazienti",
       "DEFAULT-MODALITY-ERROR": "Si è verificato un problema nel determinare la modalità predefinita."
-    },
-    "BOARD": {
-      "IN-PROGRESS": "Elenco di assistenza in corso in elaborazione..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "Elenchi di fatturazione",
     "25": "Gestione dei caselli medici",
     "26": "Statistiche sul calcolo dei ritardi degli appuntamenti",
-    "27": "Statistiche sul calcolo dei ritardi nella consegna dei referti"
+    "27": "Statistiche sul calcolo dei ritardi nella consegna dei referti",
+    "28": "Gestione delle sale d'attesa"
   },
   "GENDER_TYPES": {
     "1": "Maschile",
@@ -2164,6 +2248,7 @@
     "appointments": "appuntamento",
     "appointments_drafts": "appuntamento in corso",
     "appointment_requests": "richiesta",
+    "boards": "schermo",
     "branches": "sede",
     "equipments": "apparecchiatura",
     "files": "file",

@@ -29,6 +29,9 @@ export class ListComponent implements OnInit, DoCheck {
   @ViewChild('main_list') table!: ElementRef;
   tableToExcel(): void { this.sharedFunctions.tableToXLSX(this.i18n.instant('CHECK-IN.LIST.TITLE'), this.table, this.excludedColumns) }
 
+  //Performing flow states in which the patient can be called (P01: Reception, P02: Interview, P03: Preparation/Injection, P04: Acquisition):
+  public callableFlowStates: string[] = ['P01', 'P02', 'P03', 'P04'];
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -237,6 +240,11 @@ export class ListComponent implements OnInit, DoCheck {
         this.loading = false;
       }
     }
+  }
+
+  callPatient(element: any){
+    //Open dialog to select the board and the room/place (Insert on check_in_boards):
+    this.sharedFunctions.openDialog('call_patient', { patient: element.patient });
   }
 
   mwlResend(fk_appointment: string, accession_date: string){

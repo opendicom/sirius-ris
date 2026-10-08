@@ -1047,6 +1047,26 @@
       "NO_IMAGES_FOUND": "検査に関連付けられた画像が見つかりませんでした",
       "CLOSE": "閉じる"
     },
+    "CALL_PATIENT": {
+      "TITLE": "患者を呼び出す",
+      "BOARD_LABEL": "待合室（ボード）",
+      "ROOM_PLACE_LABEL": "部屋 / 場所",
+      "ROOM_PLACE_PLACEHOLDER": "例：診察室A",
+      "NO_BOARDS": "お客様のアカウントで利用できるボードはありません。",
+      "SUCCESS": "患者を呼び出しました。",
+      "CANCEL": "キャンセル",
+      "CALL": "患者を呼び出す"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "すでに呼び出し済みの患者",
+      "ALREADY_CALLED": "この患者は本日すでにこの待合室に呼び出されています。",
+      "CURRENT_CALL": "現在の呼び出し：",
+      "NEW_CALL": "新しい呼び出し：",
+      "NO_ROOM_PLACE": "（部屋 / 場所なし）",
+      "CONFIRM_UPDATE": "呼び出しの部屋 / 場所と時刻を更新しますか？",
+      "NO": "いいえ",
+      "YES_UPDATE": "はい、更新する"
+    },
     "MWL_RESEND": {
       "TITLE": "患者をMWLに再送",
       "PATIENT_ALREADY_SENT": "選択された患者は既にPACSのワークリストに送信されています。",
@@ -1106,6 +1126,7 @@
     "COORDINATION_CALENDAR": "カレンダー",
     "RECEPTION": "受付",
     "RECEPTION_CHECKINS": "受付",
+    "RECEPTION_CHECKIN_BOARDS": "待合室",
     "PERFORMING": "実施",
     "PERFORMING_STUDIES": "検査",
     "ADVANCED": "高度な機能",
@@ -1163,6 +1184,7 @@
     "SERVICES": "サービス",
     "MODALITIES": "モダリティ",
     "EQUIPMENTS": "機器",
+    "BOARDS": "ボード",
     "PROCEDURES": "手技",
     "PROCEDURE_CATEGORIES": "手技カテゴリ",
     "PATHOLOGIES": "病状",
@@ -1182,6 +1204,7 @@
     "SELECT_DATE": "日付を選択",
     "FLOW_STATE": "アイテムのフロー",
     "MODALITY": "モダリティ",
+    "BOARD": "ボード",
     "STATUS": "ステータス",
     "STATUS_ACTIVE": "アクティブ",
     "STATUS_INACTIVE": "非アクティブ",
@@ -1255,6 +1278,68 @@
       "TITLE": "モダリティフォーム",
       "CODE_MEANING_PLACEHOLDER": "意味を入力してください",
       "CODE_VALUE_PLACEHOLDER": "値コードを入力してください"
+    }
+  },
+  "CHECK-IN-BOARDS": {
+    "LIST": {
+      "TITLE": "待合室一覧",
+      "TOOLTIPS": {
+        "DETAILS": "詳細を表示"
+      }
+    },
+    "DETAILS": {
+      "TITLE": "待合室の患者",
+      "SHEET_NAME": "待合室",
+      "WAITING_RESULTS": "結果がまだありません。しばらくお待ちください。",
+      "EXPORT": "一覧をエクスポート",
+      "NO_BOARDS": "お客様のアカウントで利用できるボードはありません。",
+      "TOOLTIPS": {
+        "DELETE": "待合室から削除"
+      },
+      "TABLE": {
+        "DATE": "日時",
+        "ROOM_PLACE": "部屋 / 場所"
+      }
+    }
+  },
+  "BOARDS": {
+    "LIST": {
+      "TITLE": "ボード一覧",
+      "SHEET_NAME": "ボード",
+      "NO_DATA": "(データなし)",
+      "WAITING_RESULTS": "お待ちください。まだ結果がありません。",
+      "EXPORT": "一覧をエクスポート",
+      "TABLE": {
+        "ACTIONS": "操作",
+        "ORGANIZATION": "組織",
+        "BRANCH": "支店",
+        "NAME": "名前",
+        "DETAILS": "詳細",
+        "STATUS": "ステータス"
+      },
+      "TOOLTIPS": {
+        "EDIT": "編集",
+        "LOGS": "要素のログ"
+      }
+    },
+    "FORM": {
+      "TITLE": "ボードフォーム",
+      "EDIT_ERROR": "要素の編集中にエラーが発生しました: ",
+      "BRANCH_H4": "支店",
+      "BRANCH_LABEL": "支店",
+      "BRANCH_PLACEHOLDER": "支店を選択してください",
+      "NAME_H4": "名前",
+      "NAME_LABEL": "名前",
+      "NAME_PLACEHOLDER": "ボード名を入力してください",
+      "DETAILS_H4": "詳細",
+      "DETAILS_LABEL": "詳細",
+      "DETAILS_PLACEHOLDER": "ボードの詳細を入力してください",
+      "STATUS_H4": "ステータス",
+      "SCREEN_H4": "画面画像",
+      "SELECT_SCREEN_BUTTON": "画面画像を選択",
+      "CHANGE_SCREEN_BUTTON": "変更",
+      "DELETE_SCREEN_TOOLTIP": "画面画像を削除",
+      "DELETE_FILE_SUCCESS": "画面画像を削除しました。"
     }
   },
   "ORGANIZATIONS": {
@@ -2001,6 +2086,7 @@
       "CHECK-IN-ANOTHER-STUDY": "同じ予約で別の検査を受付",
       "SENT-TO-MWL": "MWLに送信済み",
       "SEND-TO-MWL": "MWLに送信",
+      "CALL-PATIENT": "患者を呼び出す",
       "CHECK-IN": "受付",
       "SCHEDULE": "時間",
       "DOCUMENTS": "ドキュメント",
@@ -2028,9 +2114,6 @@
       "EXPORT-LIST": "リストをエクスポート",
       "TITLE": "患者受付",
       "DEFAULT-MODALITY-ERROR": "デフォルトのモダリティを決定する際に問題が発生しました。"
-    },
-    "BOARD": {
-      "IN-PROGRESS": "進行中の受付リスト処理中..."
     }
   },
   "EVENTS_LOG": {
@@ -2089,7 +2172,8 @@
     "24": "請求リスト",
     "25": "医療用ロッカーの管理",
     "26": "予約調整の遅延計算統計",
-    "27": "レポート納期遅延の計算統計"
+    "27": "レポート納期遅延の計算統計",
+    "28": "待合室の管理"
   },
   "GENDER_TYPES": {
     "1": "男性",
@@ -2164,6 +2248,7 @@
     "appointments": "予約",
     "appointments_drafts": "進行中の予約",
     "appointment_requests": "依頼",
+    "boards": "ボード",
     "branches": "支店",
     "equipments": "機器",
     "files": "ファイル",

@@ -1,0 +1,117 @@
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+
+<!-- Loading indicator -->
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" style="height: 400px;">
+    <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+  </div>
+</ng-template>
+
+<!-- Content -->
+<ng-template #contentBlock>
+  <!-- No boards available for the logged user -->
+  <div *ngIf="noBoards" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    {{ 'CHECK-IN-BOARDS.DETAILS.NO_BOARDS' | i18n }}
+  </div>
+
+  <div *ngIf="!noBoards">
+    <!-- Board (General information): Organization ► Branch ► Board -->
+    <div class="board-info" *ngIf="currentBoard">
+      <mat-icon>monitor</mat-icon>
+      <span *ngIf="currentBoard.organization">{{ currentBoard.organization.short_name }}</span>
+      <span *ngIf="currentBoard.branch">&nbsp;<span class="board-separator">►</span>&nbsp;{{ currentBoard.branch.short_name }}</span>
+      <span>&nbsp;<span class="board-separator">►</span>&nbsp;<strong class="board-name">{{ currentBoard.name }}</strong></span>
+    </div>
+
+    <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+    <ng-template #thenBlockTable>
+      <div #main_list>
+        <table mat-table [dataSource]="sharedFunctions.response.data" class="mat-elevation-z1">
+
+          <!-- element action -->
+          <ng-container matColumnDef="element_action">
+            <th mat-header-cell *matHeaderCellDef> {{ 'BOARDS.LIST.TABLE.ACTIONS' | i18n }} </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="accent" matTooltip="{{ 'CHECK-IN-BOARDS.DETAILS.TOOLTIPS.DELETE' | i18n }}" (click)="deleteCheckInBoard(element)">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- date -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'CHECK-IN-BOARDS.DETAILS.TABLE.DATE' | i18n }} </th>
+            <td mat-cell *matCellDef="let element" class="column-alt text-center">
+              <span *ngIf="element.date">{{ element.date | date : "dd/MM/yyyy HH:mm" : "UTC" }}</span>
+            </td>
+          </ng-container>
+
+          <!-- documents -->
+          <ng-container matColumnDef="documents">
+            <th mat-header-cell *matHeaderCellDef class="column-alt text-center"> {{ 'CHECK-IN.LIST.DOCUMENTS' | i18n }} </th>
+            <td mat-cell *matCellDef="let element" class="column-alt text-center">
+              <span *ngIf="element.patient && element.patient.person">
+                <span *ngFor="let current of element.patient.person.documents">
+                  <span class="badge-accent" matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
+                    <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+                    <span innerHTML="{{ current.document | highlighter : sharedProp.filter }}"></span>
+                  </span>
+                  <div class="clear"></div>
+                </span>
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- names -->
+          <ng-container matColumnDef="names">
+            <th mat-header-cell *matHeaderCellDef class="names"> {{ 'CHECK-IN.LIST.NAMES' | i18n }} </th>
+            <td mat-cell *matCellDef="let element" class="names">
+              <span *ngIf="element.patient && element.patient.person">
+                <span innerHTML="{{ element.patient.person.name_01 | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.patient.person.name_02" innerHTML="{{ ' ' + element.patient.person.name_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- surnames -->
+          <ng-container matColumnDef="surnames">
+            <th mat-header-cell *matHeaderCellDef> {{ 'CHECK-IN.LIST.SURNAMES' | i18n }} </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.patient && element.patient.person">
+                <span innerHTML="{{ element.patient.person.surname_01 | highlighter : sharedProp.filter }}"></span>
+                <span *ngIf="element.patient.person.surname_02" innerHTML="{{ ' ' + element.patient.person.surname_02 | highlighter : sharedProp.filter }}"></span>
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- room_place -->
+          <ng-container matColumnDef="room_place">
+            <th mat-header-cell *matHeaderCellDef> {{ 'CHECK-IN-BOARDS.DETAILS.TABLE.ROOM_PLACE' | i18n }} </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="badge-alt" *ngIf="element.room_place">{{ element.room_place }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </ng-template>
+
+    <!-- Await response or not response -->
+    <ng-template #elseBlockTable>
+      <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+        {{ 'CHECK-IN-BOARDS.DETAILS.WAITING_RESULTS' | i18n }}
+      </div>
+    </ng-template>
+
+    <!-- No Data -->
+    <div *ngIf="sharedFunctions.response && sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+      {{ sharedFunctions.response.message }}
+    </div>
+
+    <!-- Export to XSLX -->
+    <div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'CHECK-IN-BOARDS.DETAILS.EXPORT' | i18n }}</button></div>
+  </div>
+</ng-template>

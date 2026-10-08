@@ -30,7 +30,9 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : ['reports'],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports'],
+        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 
     // Administrador:
@@ -59,7 +61,9 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports']
+        stats                   : ['appointment_requests', 'appointments', 'performing', 'reports', 'organizations', 'avg-delay-appointment', 'avg-delay-reports'],
+        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 
     // Supervisor:
@@ -88,7 +92,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Médico:
@@ -117,7 +123,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : []
+        stats                   : [],
+        boards                  : ['find', 'findOne'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 
     // Técnico:
@@ -146,7 +154,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Enfermero:
@@ -175,7 +185,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Coordinador:
@@ -204,7 +216,9 @@ const rolePermissions = {
         mail                    : ['send'],
         exporter                : [],
         wezen                   : [],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Recepcionista:
@@ -233,7 +247,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : [],
-        stats                   : []
+        stats                   : [],
+        boards                  : ['find', 'findOne'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     },
 
     // Paciente:
@@ -261,7 +277,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : ['studyToken'],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Funcional [Empty role for concessions (Generic user)]:
@@ -290,7 +308,9 @@ const rolePermissions = {
         mail                    : [],
         exporter                : [],
         wezen                   : [],
-        stats                   : []
+        stats                   : [],
+        boards                  : [],
+        check_in_boards         : []
     }
 }
 
@@ -473,6 +493,12 @@ const concessionPermissions = {
     // 27 : Estadísticas de cálculo de demoras en informes:
     27: {
         stats                   : ['avg-delay-reports']
+    },
+
+    // 28 : Gestión de salas de esperas:
+    28: {
+        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     }
 }
 //--------------------------------------------------------------------------------------------------------------------//
