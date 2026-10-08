@@ -1,0 +1,67 @@
+<h1 mat-dialog-title class="underline-ok"><mat-icon>campaign</mat-icon>&nbsp; {{ 'DIALOGS.CALL_PATIENT.TITLE' | i18n }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <br/>
+
+    <!-- patient (Same style as patient details dialog) -->
+    <div class="current-wrap" *ngIf="data.patient && data.patient.person">
+      <!-- documents -->
+      <div class="current-info">
+        <small>{{ 'DIALOGS.PATIENT_DETAILS.DOCUMENTS' | i18n }}</small><br/>
+        <span *ngFor="let current of data.patient.person.documents" >
+          <span matTooltip="{{ country_codes[current.doc_country_code].name }}" class="flag-icon flag-icon-{{ country_codes[current.doc_country_code].alpha_2 | lowercase }}"></span>&nbsp;
+          <span matTooltip="{{ ('DOCUMENT_TYPES.' + current.doc_type) | i18n }}">
+            <span>{{ current.document }}</span>
+          </span>
+          <br/>
+        </span>
+      </div>
+
+      <!-- names -->
+      <div class="current-info">
+        <small>{{ 'DIALOGS.PATIENT_DETAILS.FULL_NAME' | i18n }}</small><br/>
+        <span class="current-firts">
+          <span>{{ data.patient.person.name_01 }}</span>
+
+          <span *ngIf="data.patient.person.name_02">
+            <span> {{ data.patient.person.name_02 }}</span>
+          </span>
+
+          <span> {{ data.patient.person.surname_01 }}</span>
+
+          <span *ngIf="data.patient.person.surname_02">
+            <span> {{ data.patient.person.surname_02 }}</span>
+          </span>
+        </span>
+      </div>
+
+      <div class="clear"></div>
+    </div>
+
+    <div class="clear"></div>
+
+    <!-- fk_board -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'DIALOGS.CALL_PATIENT.BOARD_LABEL' | i18n }}</mat-label>
+      <mat-select formControlName="fk_board" required>
+        <mat-option *ngFor="let currentBoard of boards" value="{{ currentBoard._id }}">
+          {{ currentBoard.name }}<span *ngIf="currentBoard.branch"> | {{ currentBoard.branch.short_name }}</span>
+        </mat-option>
+      </mat-select>
+      <mat-hint *ngIf="!loading && boards.length === 0">{{ 'DIALOGS.CALL_PATIENT.NO_BOARDS' | i18n }}</mat-hint>
+    </mat-form-field>
+
+    <!-- room_place -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'DIALOGS.CALL_PATIENT.ROOM_PLACE_LABEL' | i18n }}</mat-label>
+      <input matInput type="text" formControlName="room_place" maxlength="32" placeholder="{{ 'DIALOGS.CALL_PATIENT.ROOM_PLACE_PLACEHOLDER' | i18n }}">
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <span class="mat-spacer"></span>
+    <button mat-button type="button" mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.CALL_PATIENT.CANCEL' | i18n }}</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="form.invalid">{{ 'DIALOGS.CALL_PATIENT.CALL' | i18n }}</button>
+  </div>
+</form>
