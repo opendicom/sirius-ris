@@ -3,7 +3,7 @@
   align-items: center;
   font-size: 16px;
   background-color: var(--list-domain-color);
-  border-left: 4px solid var(--gray-opaque);
+  border-left: 4px solid var(--green-highlighted);
   border-radius: 5px;
   padding: 12px 16px;
   margin: 16px 0;
@@ -14,11 +14,16 @@
   width: 28px;
   height: 28px;
   margin-right: 12px;
-  color: var(--gray-opaque);
+  color: var(--green-highlighted);
+}
+
+.board-separator {
+  color: var(--green-highlighted);
 }
 
 .board-name {
   font-size: 20px;
+  color: var(--green-highlighted);
 }
 
 /* Badges aligned with the column header (Inline to follow the column text alignment) */

@@ -19,8 +19,8 @@
     <div class="board-info" *ngIf="currentBoard">
       <mat-icon>monitor</mat-icon>
       <span *ngIf="currentBoard.organization">{{ currentBoard.organization.short_name }}</span>
-      <span *ngIf="currentBoard.branch">&nbsp;►&nbsp;{{ currentBoard.branch.short_name }}</span>
-      <span>&nbsp;►&nbsp;<strong class="board-name">{{ currentBoard.name }}</strong></span>
+      <span *ngIf="currentBoard.branch">&nbsp;<span class="board-separator">►</span>&nbsp;{{ currentBoard.branch.short_name }}</span>
+      <span>&nbsp;<span class="board-separator">►</span>&nbsp;<strong class="board-name">{{ currentBoard.name }}</strong></span>
     </div>
 
     <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
