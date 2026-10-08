@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "Aucune image associée à l'étude n'a été trouvée",
       "CLOSE": "FERMER"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Appeler le patient",
+      "BOARD_LABEL": "Salle d'attente (écran)",
+      "ROOM_PLACE_LABEL": "Salle / lieu",
+      "ROOM_PLACE_PLACEHOLDER": "Ex : Cabinet A",
+      "NO_BOARDS": "Aucun écran disponible pour votre compte.",
+      "SUCCESS": "Patient appelé avec succès.",
+      "CANCEL": "ANNULER",
+      "CALL": "APPELER LE PATIENT"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient déjà appelé",
+      "ALREADY_CALLED": "Ce patient a déjà été appelé dans cette salle aujourd'hui.",
+      "CURRENT_CALL": "Appel actuel :",
+      "NEW_CALL": "Nouvel appel :",
+      "NO_ROOM_PLACE": "(sans salle / lieu)",
+      "CONFIRM_UPDATE": "Voulez-vous mettre à jour la salle / le lieu et l'heure de l'appel ?",
+      "NO": "NON",
+      "YES_UPDATE": "OUI, METTRE À JOUR"
+    },
     "MWL_RESEND": {
       "TITLE": "Renvoyer le patient à la MWL",
       "PATIENT_ALREADY_SENT": "Le patient sélectionné a déjà été envoyé à la liste de travail du PACS.",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Enregistrer une autre étude avec le même rendez-vous",
       "SENT-TO-MWL": "Envoyé à la MWL",
       "SEND-TO-MWL": "Envoyer à la MWL",
+      "CALL-PATIENT": "APPELER LE PATIENT",
       "CHECK-IN": "Arrivée",
       "SCHEDULE": "Horaire",
       "DOCUMENTS": "Documents",

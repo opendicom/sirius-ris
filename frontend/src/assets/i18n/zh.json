@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "未找到与研究相关的图像",
       "CLOSE": "关闭"
     },
+    "CALL_PATIENT": {
+      "TITLE": "呼叫患者",
+      "BOARD_LABEL": "候诊室（屏幕）",
+      "ROOM_PLACE_LABEL": "房间 / 位置",
+      "ROOM_PLACE_PLACEHOLDER": "例如：诊室A",
+      "NO_BOARDS": "您的账户没有可用的屏幕。",
+      "SUCCESS": "已成功呼叫患者。",
+      "CANCEL": "取消",
+      "CALL": "呼叫患者"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "患者已被呼叫",
+      "ALREADY_CALLED": "该患者今天已被呼叫到此候诊室。",
+      "CURRENT_CALL": "当前呼叫：",
+      "NEW_CALL": "新的呼叫：",
+      "NO_ROOM_PLACE": "（无房间 / 位置）",
+      "CONFIRM_UPDATE": "是否更新呼叫的房间 / 位置和时间？",
+      "NO": "否",
+      "YES_UPDATE": "是，更新"
+    },
     "MWL_RESEND": {
       "TITLE": "将患者重新发送到 MWL",
       "PATIENT_ALREADY_SENT": "所选患者之前已发送到 PACS 工作列表。",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "使用同一次预约签到另一项研究",
       "SENT-TO-MWL": "已发送到 MWL",
       "SEND-TO-MWL": "发送到 MWL",
+      "CALL-PATIENT": "呼叫患者",
       "CHECK-IN": "签到",
       "SCHEDULE": "时间表",
       "DOCUMENTS": "文件",

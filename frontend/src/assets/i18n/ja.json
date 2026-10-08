@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "検査に関連付けられた画像が見つかりませんでした",
       "CLOSE": "閉じる"
     },
+    "CALL_PATIENT": {
+      "TITLE": "患者を呼び出す",
+      "BOARD_LABEL": "待合室（ボード）",
+      "ROOM_PLACE_LABEL": "部屋 / 場所",
+      "ROOM_PLACE_PLACEHOLDER": "例：診察室A",
+      "NO_BOARDS": "お客様のアカウントで利用できるボードはありません。",
+      "SUCCESS": "患者を呼び出しました。",
+      "CANCEL": "キャンセル",
+      "CALL": "患者を呼び出す"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "すでに呼び出し済みの患者",
+      "ALREADY_CALLED": "この患者は本日すでにこの待合室に呼び出されています。",
+      "CURRENT_CALL": "現在の呼び出し：",
+      "NEW_CALL": "新しい呼び出し：",
+      "NO_ROOM_PLACE": "（部屋 / 場所なし）",
+      "CONFIRM_UPDATE": "呼び出しの部屋 / 場所と時刻を更新しますか？",
+      "NO": "いいえ",
+      "YES_UPDATE": "はい、更新する"
+    },
     "MWL_RESEND": {
       "TITLE": "患者をMWLに再送",
       "PATIENT_ALREADY_SENT": "選択された患者は既にPACSのワークリストに送信されています。",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "同じ予約で別の検査を受付",
       "SENT-TO-MWL": "MWLに送信済み",
       "SEND-TO-MWL": "MWLに送信",
+      "CALL-PATIENT": "患者を呼び出す",
       "CHECK-IN": "受付",
       "SCHEDULE": "時間",
       "DOCUMENTS": "ドキュメント",

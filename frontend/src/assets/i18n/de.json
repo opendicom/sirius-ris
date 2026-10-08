@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "Keine Bilder zur Studie gefunden",
       "CLOSE": "SCHLIESSEN"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Patient aufrufen",
+      "BOARD_LABEL": "Wartezimmer (Anzeige)",
+      "ROOM_PLACE_LABEL": "Raum / Ort",
+      "ROOM_PLACE_PLACEHOLDER": "Beispiel: Sprechzimmer A",
+      "NO_BOARDS": "Für Ihr Konto sind keine Anzeigen verfügbar.",
+      "SUCCESS": "Patient wurde erfolgreich aufgerufen.",
+      "CANCEL": "ABBRECHEN",
+      "CALL": "PATIENT AUFRUFEN"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient bereits aufgerufen",
+      "ALREADY_CALLED": "Dieser Patient wurde heute bereits in dieses Wartezimmer aufgerufen.",
+      "CURRENT_CALL": "Aktueller Aufruf:",
+      "NEW_CALL": "Neuer Aufruf:",
+      "NO_ROOM_PLACE": "(kein Raum / Ort)",
+      "CONFIRM_UPDATE": "Möchten Sie Raum / Ort und Uhrzeit des Aufrufs aktualisieren?",
+      "NO": "NEIN",
+      "YES_UPDATE": "JA, AKTUALISIEREN"
+    },
     "MWL_RESEND": {
       "TITLE": "Patient erneut an MWL senden",
       "PATIENT_ALREADY_SENT": "Der ausgewählte Patient wurde bereits an die PACS-Arbeitsliste gesendet.",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Check-in für eine andere Studie mit demselben Termin",
       "SENT-TO-MWL": "An MWL gesendet",
       "SEND-TO-MWL": "An MWL senden",
+      "CALL-PATIENT": "PATIENT AUFRUFEN",
       "CHECK-IN": "Check-in",
       "SCHEDULE": "Zeitplan",
       "DOCUMENTS": "Dokumente",

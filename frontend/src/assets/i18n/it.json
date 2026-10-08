@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "Nessuna immagine associata allo studio trovata",
       "CLOSE": "CHIUDI"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Chiama paziente",
+      "BOARD_LABEL": "Sala d'attesa (schermo)",
+      "ROOM_PLACE_LABEL": "Sala / luogo",
+      "ROOM_PLACE_PLACEHOLDER": "Es: Ambulatorio A",
+      "NO_BOARDS": "Nessuno schermo disponibile per il tuo account.",
+      "SUCCESS": "Paziente chiamato correttamente.",
+      "CANCEL": "ANNULLA",
+      "CALL": "CHIAMA PAZIENTE"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Paziente già chiamato",
+      "ALREADY_CALLED": "Questo paziente è già stato chiamato in questa sala oggi.",
+      "CURRENT_CALL": "Chiamata attuale:",
+      "NEW_CALL": "Nuova chiamata:",
+      "NO_ROOM_PLACE": "(senza sala / luogo)",
+      "CONFIRM_UPDATE": "Vuoi aggiornare la sala / il luogo e l'ora della chiamata?",
+      "NO": "NO",
+      "YES_UPDATE": "SÌ, AGGIORNA"
+    },
     "MWL_RESEND": {
       "TITLE": "Invia di nuovo il paziente alla MWL",
       "PATIENT_ALREADY_SENT": "Il paziente selezionato è già stato inviato in precedenza alla lista di lavoro del PACS.",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Accetta un altro studio con lo stesso appuntamento",
       "SENT-TO-MWL": "Inviato a MWL",
       "SEND-TO-MWL": "Invia a MWL",
+      "CALL-PATIENT": "CHIAMA PAZIENTE",
       "CHECK-IN": "Accetta",
       "SCHEDULE": "Orario",
       "DOCUMENTS": "Documenti",

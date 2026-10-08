@@ -1046,6 +1046,26 @@
       "NO_IMAGES_FOUND": "No images associated with the study were found",
       "CLOSE": "CLOSE"
     },
+    "CALL_PATIENT": {
+      "TITLE": "Call patient",
+      "BOARD_LABEL": "Board",
+      "ROOM_PLACE_LABEL": "Room / place",
+      "ROOM_PLACE_PLACEHOLDER": "Example: Office A",
+      "NO_BOARDS": "There are no boards available for your account.",
+      "SUCCESS": "Patient called successfully.",
+      "CANCEL": "CANCEL",
+      "CALL": "CALL PATIENT"
+    },
+    "CALL_PATIENT_EXISTS": {
+      "TITLE": "Patient already called",
+      "ALREADY_CALLED": "This patient has already been called to this board today.",
+      "CURRENT_CALL": "Current call:",
+      "NEW_CALL": "New call:",
+      "NO_ROOM_PLACE": "(no room / place)",
+      "CONFIRM_UPDATE": "Do you want to update the room / place and the time of the call?",
+      "NO": "NO",
+      "YES_UPDATE": "YES, UPDATE"
+    },
     "MWL_RESEND": {
       "TITLE": "Resend patient to MWL",
       "PATIENT_ALREADY_SENT": "The selected patient has already been sent to the PACS worklist.",
@@ -2039,6 +2059,7 @@
       "CHECK-IN-ANOTHER-STUDY": "Check-in another study with the same appointment",
       "SENT-TO-MWL": "Sent to MWL",
       "SEND-TO-MWL": "Send to MWL",
+      "CALL-PATIENT": "CALL PATIENT",
       "CHECK-IN": "Check-in",
       "SCHEDULE": "Schedule",
       "DOCUMENTS": "Documents",
