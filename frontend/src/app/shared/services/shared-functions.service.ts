@@ -1860,7 +1860,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // REPORT REVIEW:
   //--------------------------------------------------------------------------------------------------------------------//
-  reportReview(fk_performing: string){
+  reportReview(fk_performing: string, callback = () => {}){
     //Initializate amendmentsData:
     let amendmentsData : any = false;
 
@@ -1884,6 +1884,9 @@ export class SharedFunctionsService {
 
     //Find reports by fk_performing:
     this.find('reports', params, async (reportsRes) => {
+      //Excecute callback when data is received (before opening the dialog):
+      callback();
+
       //Check operation status:
       if(reportsRes.success === true){
         //Check amend cases:

@@ -20,6 +20,7 @@ export class ListComponent implements OnInit, DoCheck {
   public country_codes          : any = ISO_3166;
   public documentTypesKeys      : string[] = objectKeys.documentTypesKeys;
   public loading                : boolean = false;
+  public loadingReport          : boolean = false;
   private initialLoad           : boolean = true;
   private previousResponse      : any = null;
   private previousParams        : any = null;
@@ -258,6 +259,16 @@ export class ListComponent implements OnInit, DoCheck {
         this.loading = false;
       }
     }
+  }
+
+  openReport(current_id: string){
+    //Show spinner:
+    this.loadingReport = true;
+
+    //Open the report review dialog (hide spinner when the reports have been received):
+    this.sharedFunctions.reportReview(current_id, () => {
+      this.loadingReport = false;
+    });
   }
 
   performingDownloads(current_performing: any){

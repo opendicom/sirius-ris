@@ -1,4 +1,4 @@
-<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+<div *ngIf="loading || loadingReport; then loadingBlock else contentBlock"></div>
 
 <!-- Loading indicator -->
 <ng-template #loadingBlock>
@@ -102,7 +102,7 @@
                   </button>
                 </span>
 
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
               </span>
@@ -116,14 +116,14 @@
                   </button>
                 </span>
 
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
               </span>
 
               <!--view_report and amend-->
               <span *ngSwitchCase="'P09'">
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>playlist_add_check</mat-icon>
                 </button>
               </span>
