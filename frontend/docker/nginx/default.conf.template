@@ -2,7 +2,10 @@
 server {
     # Port that this Virtual Host will listen to:
     listen 80;
-    listen [::]:80;
+
+    # Commented on to prevent Nginx error when attempting to open an IPv6 socket:
+    # socket() [::]:80 failed (97: Address family not supported by protocol).
+    # listen [::]:80;
 
     # Root directory:
     root /usr/share/nginx/html;
