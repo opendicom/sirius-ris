@@ -2,8 +2,6 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div mat-dialog-content>
-    <br/>
-
     <!-- patient (Same style as patient details dialog) -->
     <div class="current-wrap" *ngIf="data.patient && data.patient.person">
       <!-- documents -->
@@ -39,7 +37,7 @@
       <div class="clear"></div>
     </div>
 
-    <div class="clear"></div>
+    <div class="clear"></div><hr class="dashed"/><br/>
 
     <!-- fk_board -->
     <mat-form-field appearance="outline" class="full-width">

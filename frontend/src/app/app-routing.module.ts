@@ -52,9 +52,10 @@ const routes: Routes = [
   { path: 'appointments', loadChildren: () => import('@modules/appointments/appointments.module').then( m => m.AppointmentsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [2] } },
   
   // Check-in | 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones]:
+  { path: 'check-in', loadChildren: () => import('@modules/check-in/check-in.module').then( m => m.CheckInModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 5, 6, 8], array_concessions: [4] } },
+  
   // Check-in boards | 1: Superusuario, 2: Administrador, 4: Médico, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas]:
   { path: 'check-in-boards', loadChildren: () => import('@modules/check-in-boards/check-in-boards.module').then( m => m.CheckInBoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 4, 8], array_concessions: [28] } },
-  { path: 'check-in', loadChildren: () => import('@modules/check-in/check-in.module').then( m => m.CheckInModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 5, 6, 8], array_concessions: [4] } },
   
   // Calendar | 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [3: Calendario de citas]:
   { path: 'calendar', loadChildren: () => import('@modules/calendar/calendar.module').then( m => m.CalendarModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [3] } },
