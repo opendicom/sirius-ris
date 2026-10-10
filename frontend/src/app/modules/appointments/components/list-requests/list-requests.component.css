@@ -17,3 +17,9 @@
 .imaging {
    border-left: 2px solid var(--green-highlighted);
 }
+
+.badge-mini {
+    float: none !important;
+    white-space: nowrap;
+    margin-right: 10px !important;
+}

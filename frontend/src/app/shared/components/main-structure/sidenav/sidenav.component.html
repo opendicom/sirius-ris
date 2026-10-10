@@ -58,8 +58,8 @@
       </mat-list-item>
     </div>
 
-    <!-- 1: Superusuario, 2: Administrador, 4: Médico, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas] -->
-    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 4 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [28]))" >
+    <!-- 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas] -->
+    <div *ngIf="sharedProp.userLogged.permissions[0].role == 1 || sharedProp.userLogged.permissions[0].role == 2 || sharedProp.userLogged.permissions[0].role == 8 || (sharedProp.userLogged.permissions[0].concession && sharedFunctions.checkConcessions(sharedProp, [28]))" >
       <mat-divider></mat-divider>
       
       <mat-list-item routerLink="/check-in-boards/list">

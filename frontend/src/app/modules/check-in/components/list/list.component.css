@@ -28,9 +28,10 @@
 }
 
 .badge-mini {
-  float: none !important;
+    float: none !important;
+    white-space: nowrap;
+    margin-right: 10px !important;
 }
-
 
 .mat-mini-fab .mat-icon {
   color: #27293dc3 !important;

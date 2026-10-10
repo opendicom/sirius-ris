@@ -42,7 +42,7 @@
 
               <!-- flow_state -->
               <ng-template #elseBlockFS>
-                <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span>
+                <small><span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span></small>
               </ng-template>
           </td>
         </ng-container>

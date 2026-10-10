@@ -124,8 +124,8 @@ const rolePermissions = {
         exporter                : [],
         wezen                   : ['studyToken'],
         stats                   : [],
-        boards                  : ['find', 'findOne'],
-        check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
+        boards                  : [],
+        check_in_boards         : []
     },
 
     // Técnico:
@@ -497,7 +497,7 @@ const concessionPermissions = {
 
     // 28 : Gestión de salas de esperas:
     28: {
-        boards                  : ['find', 'findOne', 'insert', 'update', 'delete'],
+        boards                  : ['find', 'findOne'],
         check_in_boards         : ['find', 'findOne', 'insert', 'update', 'delete']
     }
 }
