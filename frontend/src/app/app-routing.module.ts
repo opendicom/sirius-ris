@@ -54,8 +54,8 @@ const routes: Routes = [
   // Check-in | 1: Superusuario, 2: Administrador, 5: Técnico, 6: Enfermero, 8: Recepcionista, Concesiones: [4: Gestión de recepciones]:
   { path: 'check-in', loadChildren: () => import('@modules/check-in/check-in.module').then( m => m.CheckInModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 5, 6, 8], array_concessions: [4] } },
   
-  // Check-in boards | 1: Superusuario, 2: Administrador, 4: Médico, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas]:
-  { path: 'check-in-boards', loadChildren: () => import('@modules/check-in-boards/check-in-boards.module').then( m => m.CheckInBoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 4, 8], array_concessions: [28] } },
+  // Check-in boards | 1: Superusuario, 2: Administrador, 8: Recepcionista, Concesiones: [28: Gestión de salas de esperas]:
+  { path: 'check-in-boards', loadChildren: () => import('@modules/check-in-boards/check-in-boards.module').then( m => m.CheckInBoardsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 8], array_concessions: [28] } },
   
   // Calendar | 1: Superusuario, 2: Administrador, 7: Coordinador, Concesiones: [3: Calendario de citas]:
   { path: 'calendar', loadChildren: () => import('@modules/calendar/calendar.module').then( m => m.CalendarModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 7], array_concessions: [3] } },
@@ -64,8 +64,9 @@ const routes: Routes = [
   { path: 'pathologies', loadChildren: () => import('@modules/pathologies/pathologies.module').then( m => m.PathologiesModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2] } },
 
   // Performing | 1: Superusuario, 2: Administrador, 3: Supervisor, 4: Médico, Concesiones: [5: Gestión de estudios]:
+  // Performing - Additional access | 5: Técnico, 6: Enfermero, 8: Recepcionista (only for the "check-in" module).
   // Medical lockers | 1: Superusuario, 2: Administrador, 3: Supervisor, Concesiones: [25: Acceso a casilleros de informes].
-  { path: 'performing', loadChildren: () => import('@modules/performing/performing.module').then( m => m.PerformingModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 3, 4], array_concessions: [5, 25] } },
+  { path: 'performing', loadChildren: () => import('@modules/performing/performing.module').then( m => m.PerformingModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 3, 4, 5, 6, 8], array_concessions: [5, 25] } },
   
   // Reports | 1: Superusuario, 2: Administrador, 3: Supervisor, 4: Médico, Concesiones: [6: Gestión de informes]:
   { path: 'reports', loadChildren: () => import('@modules/reports/reports.module').then( m => m.ReportsModule ), canActivate: [AuthGuard], canLoad: [AuthGuard], data: { array_roles: [1, 2, 3, 4], array_concessions: [6] } },

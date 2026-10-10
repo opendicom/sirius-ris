@@ -9,6 +9,8 @@ mat-chip.line-break {
 
 .badge-mini {
     float: none !important;
+    white-space: nowrap;
+    margin-right: 10px !important;
 }
 
 .small_button{

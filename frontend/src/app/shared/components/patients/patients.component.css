@@ -6,3 +6,9 @@
     background-color: #232338;
     padding: 6px;
 }
+
+.badge-mini {
+    float: none !important;
+    white-space: nowrap;
+    margin-right: 10px !important;
+}

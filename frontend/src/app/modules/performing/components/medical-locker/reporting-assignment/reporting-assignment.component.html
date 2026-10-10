@@ -28,7 +28,7 @@
                 <ng-container matColumnDef="flow_state">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header="flow_state" class="text-center">{{ 'PERFORMING.LIST.TABLE.FLOW_STATE' | i18n }}</th>
                     <td mat-cell *matCellDef="let study" class="text-center">
-                        <span class="badge badge-mini {{ study.flow_state }}">{{ ('PERFORMING_FLOW_STATES.' + study.flow_state) | i18n }}</span>
+                        <small><span class="badge badge-mini {{ study.flow_state }}">{{ ('PERFORMING_FLOW_STATES.' + study.flow_state) | i18n }}</span></small>
                     </td>
                 </ng-container>
 
