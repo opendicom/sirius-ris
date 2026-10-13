@@ -33,6 +33,9 @@ export class FormComponent implements OnInit {
   //Set references objects:
   public availableOrganizations: any;
 
+  //Filtered list used by the organization matAutocomplete:
+  public filteredOrganizations: any[] = [];
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -78,6 +81,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_organization     : ['', [Validators.required]],
+      fk_organization_input : [''], //Visible text input for organization matAutocomplete.
       short_name          : ['', [Validators.required]],
       name                : ['', [Validators.required]],
       OID                 : [''],
@@ -129,6 +133,7 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               fk_organization     : res.data[0].fk_organization,
+              fk_organization_input : [''],
               short_name          : res.data[0].short_name,
               name                : res.data[0].name,
               OID                 : res.data[0].OID,
@@ -145,6 +150,9 @@ export class FormComponent implements OnInit {
               this.selectedLogoController = true;
               this.previewLogo = this.sharedFunctions.getLogoDataURI(res.data[0].base64_logo);
             }
+
+            //Set visible organization text (matAutocomplete):
+            this.setOrganizationInput();
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -173,6 +181,9 @@ export class FormComponent implements OnInit {
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+
+      //Remove visible matAutocomplete text (Blocked attribute by the backend):
+      delete this.form.value.fk_organization_input;
 
       //Check if there is logo file selected (Multipart form):
       if(this.selectedFile !== null){
@@ -222,8 +233,45 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+      this.filteredOrganizations = res.data || [];
+
+      //Set visible organization text (Update case, if the form data arrived first):
+      this.setOrganizationInput();
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getOrganizationLabel(currentOrganization: any): string{
+    //Guard against missing item:
+    if(!currentOrganization){ return ''; }
+
+    return `${currentOrganization.short_name} (${currentOrganization.name})`;
+  }
+
+  filterOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.srcElement.value.toUpperCase();
+
+    //Filter organizations by their built label:
+    this.filteredOrganizations = (this.availableOrganizations || []).filter((currentOrganization: any) => this.getOrganizationLabel(currentOrganization).toUpperCase().includes(filterValue));
+  }
+
+  selectOrganization(currentOrganization: any){
+    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
+    this.form.get('fk_organization')?.setValue(currentOrganization._id);
+    this.form.get('fk_organization_input')?.setValue(this.getOrganizationLabel(currentOrganization));
+  }
+
+  setOrganizationInput(){
+    //Find the selected organization and set the visible input text:
+    const selectedOrganization = (this.availableOrganizations || []).find((currentOrganization: any) => currentOrganization._id == this.form.value.fk_organization);
+    if(selectedOrganization){
+      this.form.get('fk_organization_input')?.setValue(this.getOrganizationLabel(selectedOrganization));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onDeleteFileRef(fieldName: string){
     this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {
