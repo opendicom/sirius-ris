@@ -1,4 +1,9 @@
-<div *ngIf="loading || loadingReport; then loadingBlock else contentBlock"></div>
+<!-- Loading report indicator -->
+<div *ngIf="loadingReport;" fxLayout="row" fxLayoutAlign="center center" class="loading-spinner-report">
+  <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+</div>
+
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
 
 <!-- Loading indicator -->
 <ng-template #loadingBlock>
