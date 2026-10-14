@@ -128,7 +128,9 @@ li {
 }
 
 .badge-mini {
-  float: none !important;
+    float: none !important;
+    white-space: nowrap;
+    margin-right: 10px !important;
 }
 
 .history_small_button{

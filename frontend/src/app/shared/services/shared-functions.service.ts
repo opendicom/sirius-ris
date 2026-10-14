@@ -21,6 +21,8 @@ import { TentativeExistComponent } from '@shared/components/dialogs/tentative-ex
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
+import { CallPatientComponent } from '@shared/components/dialogs/call-patient/call-patient.component';
+import { CallPatientExistsComponent } from '@shared/components/dialogs/call-patient-exists/call-patient-exists.component';
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
@@ -424,6 +426,32 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsMWLResend.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //CALL PATIENT (INSERT ON CHECK_IN_BOARDS):
+        case 'call_patient':
+          //Create dialog observable:
+          const obsCallPatient = this.dialog.open(CallPatientComponent, { data: operationHandler });
+
+          //Observe content (Subscribe):
+          obsCallPatient.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //CALL PATIENT - PATIENT ALREADY CALLED TO THE BOARD (CONFIRM UPDATE):
+        case 'call_patient_exists':
+          //Create dialog observable:
+          const obsCallPatientExists = this.dialog.open(CallPatientExistsComponent, { data: operationHandler });
+
+          //Observe content (Subscribe):
+          obsCallPatientExists.afterClosed().subscribe(result => {
             //Excecute callback:
             callback(result);
           });
@@ -1832,7 +1860,7 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // REPORT REVIEW:
   //--------------------------------------------------------------------------------------------------------------------//
-  reportReview(fk_performing: string){
+  reportReview(fk_performing: string, callback = () => {}){
     //Initializate amendmentsData:
     let amendmentsData : any = false;
 
@@ -1856,6 +1884,9 @@ export class SharedFunctionsService {
 
     //Find reports by fk_performing:
     this.find('reports', params, async (reportsRes) => {
+      //Excecute callback when data is received (before opening the dialog):
+      callback();
+
       //Check operation status:
       if(reportsRes.success === true){
         //Check amend cases:

@@ -88,7 +88,7 @@
             </span>
 
             <!-- flow state -->
-            <span class="badge badge-mini {{ element.performing.flow_state }}" matTooltip="{{ element.performing.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.performing.cancellation_reasons) | i18n) : '' }}" *ngIf="element.performing.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.performing.flow_state) | i18n }}</span>
+            <small><span class="badge badge-mini {{ element.performing.flow_state }}" matTooltip="{{ element.performing.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.performing.cancellation_reasons) | i18n) : '' }}" *ngIf="element.performing.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.performing.flow_state) | i18n }}</span></small>
           </span>
         </td>
       </ng-container>

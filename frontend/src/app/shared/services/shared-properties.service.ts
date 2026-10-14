@@ -50,6 +50,8 @@ export class SharedPropertiesService {
   public date           : any;
   public date_range     : any;
   public modality       : any;
+  public board          : string;
+  public boards         : any[] = [];
   public selected_items : string[];
   public checked_items  : boolean[];
   public fk_user        : string;
@@ -110,6 +112,7 @@ export class SharedPropertiesService {
       end   : ''
     };
     this.modality     = '';
+    this.board        = '';
     this.fk_user      = '';
     this.log_event    = '';
     this.log_element  = '';
@@ -194,6 +197,11 @@ export class SharedPropertiesService {
     //Check Modality - Filter (With AND Condition):
     if(this.action.filters_form === true && this.modality !== ''){
       string_filter += '"filter[and][' + this.action.filters.modality + ']": "' + this.modality + '", ';
+    }
+
+    //Check Board - Filter (With AND Condition):
+    if(this.action.filters_form === true && this.action.filters.board && this.board !== ''){
+      string_filter += '"filter[and][' + this.action.filters.board + ']": "' + this.board + '", ';
     }
 
     //Check Date - Filter (With AND Condition):

@@ -1,0 +1,99 @@
+<div *ngIf="loading; then loadingBlock else contentBlock"></div>
+
+<!-- Loading indicator -->
+<ng-template #loadingBlock>
+  <div fxLayout="row" fxLayoutAlign="center center" style="height: 400px;">
+    <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+  </div>
+</ng-template>
+
+<!-- Content -->
+<ng-template #contentBlock>
+  <div *ngIf="sharedFunctions.response; then thenBlockTable else elseBlockTable"></div>
+
+<ng-template #thenBlockTable>
+  <div #main_list>
+    <table mat-table [dataSource]="sharedFunctions.response.data" matSort (matSortChange)="sharedFunctions.sortTable($event, displayedColumns, originalData)" class="mat-elevation-z1">
+
+      <!-- element action -->
+      <ng-container matColumnDef="element_action">
+        <th mat-header-cell *matHeaderCellDef> {{ 'BOARDS.LIST.TABLE.ACTIONS' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" matTooltip="{{ 'CHECK-IN-BOARDS.LIST.TOOLTIPS.DETAILS' | i18n }}" routerLink="/check-in-boards/details/{{ element._id }}">
+            <mat-icon>info</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- organization -->
+      <ng-container matColumnDef="organization">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="organization.short_name"> {{ 'BOARDS.LIST.TABLE.ORGANIZATION' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.organization; then thenBlockTableOrganization else elseBlockTableOrganization"></span>
+          <ng-template #thenBlockTableOrganization>
+            <span innerHTML="{{ element.organization.short_name | highlighter : sharedProp.filter }}"></span>
+          </ng-template>
+          <ng-template #elseBlockTableOrganization>{{ 'BOARDS.LIST.NO_DATA' | i18n }}</ng-template>
+        </td>
+      </ng-container>
+
+      <!-- branch -->
+      <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="branch.short_name"> {{ 'BOARDS.LIST.TABLE.BRANCH' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.branch; then thenBlockTableBranch else elseBlockTableBranch"></span>
+          <ng-template #thenBlockTableBranch>
+            <span innerHTML="{{ element.branch.short_name | highlighter : sharedProp.filter }}"></span>
+          </ng-template>
+          <ng-template #elseBlockTableBranch>{{ 'BOARDS.LIST.NO_DATA' | i18n }}</ng-template>
+        </td>
+      </ng-container>
+
+      <!-- name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> {{ 'BOARDS.LIST.TABLE.NAME' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <span class="badge-accent name-badge" *ngIf="element.name" innerHTML="{{ element.name | highlighter : sharedProp.filter }}"></span>
+        </td>
+      </ng-container>
+
+      <!-- details -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="details"> {{ 'BOARDS.LIST.TABLE.DETAILS' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.details" innerHTML="{{ element.details | highlighter : sharedProp.filter }}"></span>
+        </td>
+      </ng-container>
+
+      <!-- status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="status"> {{ 'BOARDS.LIST.TABLE.STATUS' | i18n }} </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.status; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock><mat-icon class="color-ok" matTooltip="{{ 'ACTION.STATUS_ACTIVE' | i18n }}">done</mat-icon></ng-template>
+          <ng-template #elseBlock><mat-icon class="color-fail" matTooltip="{{ 'ACTION.STATUS_INACTIVE' | i18n }}">clear</mat-icon></ng-template>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</ng-template>
+
+<!-- Await response or not response -->
+<ng-template #elseBlockTable>
+  <div fxLayout="row" fxLayoutAlign="center center" class="response-info">
+    {{ 'BOARDS.LIST.WAITING_RESULTS' | i18n }}
+  </div>
+</ng-template>
+
+<!-- No Data -->
+<div *ngIf="sharedFunctions.response.message;" fxLayout="row" fxLayoutAlign="center center" class="response-info">
+  {{ sharedFunctions.response.message }}
+</div>
+
+<!-- Export to XSLX -->
+<div class="text-right" *ngIf="sharedFunctions.response"><button mat-flat-button color="accent" class="export-xslx" (click)="tableToExcel()"><mat-icon class="export-icon">get_app</mat-icon> {{ 'BOARDS.LIST.EXPORT' | i18n }}</button></div>
+
+</ng-template>

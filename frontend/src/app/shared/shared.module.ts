@@ -30,6 +30,8 @@ import { TentativeExistComponent } from '@shared/components/dialogs/tentative-ex
 import { EventDetailsComponent } from '@shared/components/dialogs/event-details/event-details.component';
 import { DeleteAppointmentDraftComponent } from '@shared/components/dialogs/delete-appointment-draft/delete-appointment-draft.component';
 import { MwlResendComponent } from '@shared/components/dialogs/mwl-resend/mwl-resend.component';
+import { CallPatientComponent } from '@shared/components/dialogs/call-patient/call-patient.component';
+import { CallPatientExistsComponent } from '@shared/components/dialogs/call-patient-exists/call-patient-exists.component';
 import { ReportReviewComponent } from '@shared/components/dialogs/report-review/report-review.component';
 import { PasswordRequestComponent } from '@shared/components/dialogs/password-request/password-request.component';
 import { PerformingDownloadsComponent } from '@shared/components/dialogs/performing-downloads/performing-downloads.component';
@@ -77,6 +79,8 @@ import * as IC from '@shared/directives/input-control.directive';
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
     MwlResendComponent,
+    CallPatientComponent,
+    CallPatientExistsComponent,
     ReportReviewComponent,
     PasswordRequestComponent,
     PerformingDownloadsComponent,
@@ -134,6 +138,8 @@ import * as IC from '@shared/directives/input-control.directive';
     EventDetailsComponent,
     DeleteAppointmentDraftComponent,
     MwlResendComponent,
+    CallPatientComponent,
+    CallPatientExistsComponent,
     ReportReviewComponent,
     PasswordRequestComponent,
     PerformingDownloadsComponent,

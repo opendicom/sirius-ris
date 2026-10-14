@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     public sharedProp: SharedPropertiesService,
   ) { }
 
+  // CanActivate method to check if the user can access a route based on their roles and concessions:
   canActivate(route: any): boolean {
     const data = (route && route.data ? route.data : {}) as Data;
     const array_roles = Array.isArray(data['array_roles']) ? data['array_roles'] : [];
@@ -28,6 +29,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.checkAccess(array_roles, array_concessions);
   }
 
+  // CanLoad method to check if the user can load a module based on their roles and concessions:
   canLoad(route: Route, _segments: UrlSegment[]): boolean {
     const data = (route && route.data ? route.data : {}) as Data;
     const array_roles = Array.isArray(data['array_roles']) ? data['array_roles'] : [];
@@ -36,6 +38,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.checkAccess(array_roles, array_concessions);
   }
 
+  // Check access method to determine if the user has the required roles or concessions to access a route or load a module:
   private checkAccess(array_roles: number[], array_concessions: number[] = []): boolean {
     //Check authentication:
     if (!this.userAuth.userIsLogged()) {

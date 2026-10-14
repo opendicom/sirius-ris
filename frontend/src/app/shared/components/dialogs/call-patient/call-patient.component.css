@@ -1,0 +1,9 @@
+.full-width {
+  width: 100%;
+}
+
+.current-info {
+  float: left;
+  margin-right: 10px;
+  padding: 5px 12px 5px 5px;
+}

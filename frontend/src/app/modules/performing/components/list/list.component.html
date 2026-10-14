@@ -1,3 +1,8 @@
+<!-- Loading report indicator -->
+<div *ngIf="loadingReport;" fxLayout="row" fxLayoutAlign="center center" class="loading-spinner-report">
+  <mat-progress-spinner mode="indeterminate" diameter="65"></mat-progress-spinner>
+</div>
+
 <div *ngIf="loading; then loadingBlock else contentBlock"></div>
 
 <!-- Loading indicator -->
@@ -102,7 +107,7 @@
                   </button>
                 </span>
 
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
               </span>
@@ -116,14 +121,14 @@
                   </button>
                 </span>
 
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.REVIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>manage_search</mat-icon>
                 </button>
               </span>
 
               <!--view_report and amend-->
               <span *ngSwitchCase="'P09'">
-                <button mat-mini-fab class="small_button" type="button" (click)="sharedFunctions.reportReview(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
+                <button mat-mini-fab class="small_button" type="button" (click)="openReport(element._id)" matTooltip="{{ 'PERFORMING.LIST.TOOLTIPS.VIEW_REPORT' | i18n }}" color="accent">
                   <mat-icon>playlist_add_check</mat-icon>
                 </button>
               </span>
@@ -141,7 +146,7 @@
             </span>
 
             <!-- flow_state -->
-            <span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span>
+            <small><span class="badge badge-mini {{ element.flow_state }}" matTooltip="{{ element.cancellation_reasons ? (('CANCELLATION_REASONS.' + element.cancellation_reasons) | i18n) : '' }}" *ngIf="element.flow_state">{{ ('PERFORMING_FLOW_STATES.' + element.flow_state) | i18n }}</span></small>
           </td>
         </ng-container>
 

@@ -109,6 +109,7 @@ export class ActionComponent implements OnInit {
         end   : ''
       };
       this.sharedProp.modality = '';
+      this.sharedProp.board = '';
       this.sharedProp.fk_user = '';
       this.sharedProp.log_event = '';
       this.sharedProp.log_element = '';
