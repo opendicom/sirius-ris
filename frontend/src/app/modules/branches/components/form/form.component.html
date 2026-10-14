@@ -5,11 +5,12 @@
       <h4>{{ 'BRANCHES.FORM.ORGANIZATION_H4' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>{{ 'BRANCHES.FORM.ORGANIZATION_LABEL' | i18n }}</mat-label>
-        <mat-select formControlName="fk_organization" placeholder="{{ 'BRANCHES.FORM.ORGANIZATION_PLACEHOLDER' | i18n }}">
-          <div *ngFor="let currentOrganization of availableOrganizations">
-            <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
-          </div>
-        </mat-select>
+        <input #inputOrganization type="text" matInput formControlName="fk_organization_input" (keyup)="filterOrganizations($event)" [matAutocomplete]="autoOrganization" placeholder="{{ 'BRANCHES.FORM.ORGANIZATION_PLACEHOLDER' | i18n }}">
+        <mat-autocomplete #autoOrganization="matAutocomplete">
+          <mat-option (onSelectionChange)="selectOrganization(currentOrganization)" *ngFor="let currentOrganization of filteredOrganizations" [value]="getOrganizationLabel(currentOrganization)">
+            <span [innerHTML]="getOrganizationLabel(currentOrganization) | highlighter : inputOrganization.value"></span>
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <h4>{{ 'BRANCHES.FORM.SHORT_NAME_H4' | i18n }}</h4>
