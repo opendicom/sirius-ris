@@ -14,6 +14,7 @@ import { FooterComponent } from '@shared/components/main-structure/footer/footer
 import { StartPageComponent } from '@shared/components/start-page/start-page.component';
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { ReferringSelectComponent } from '@shared/components/referring-select/referring-select.component';
 
 //DICOM Viewer component (For patients):
 import { DcmViewerComponent } from '@shared/components/dcm-viewer/dcm-viewer.component';
@@ -63,6 +64,7 @@ import * as IC from '@shared/directives/input-control.directive';
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
+    ReferringSelectComponent,
 
     //DICOM Viewer component (For patients):
     DcmViewerComponent,
@@ -121,6 +123,7 @@ import * as IC from '@shared/directives/input-control.directive';
     StartPageComponent,
     SettingsComponent,
     NotFoundComponent,
+    ReferringSelectComponent,
     SharedMaterialModule,
 
     //DICOM Viewer component (For patients):

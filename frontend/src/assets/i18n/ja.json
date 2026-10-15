@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "依頼元：",
-        "ORGANIZATION": "依頼元組織：",
-        "ORGANIZATION_PLACEHOLDER": "依頼元組織を選択してください"
+        "ORGANIZATION_BRANCH": "依頼元組織 | 支店：",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "依頼元組織または支店を選択してください"
       },
       "INFORMING_PARTY": {
         "TITLE": "報告者：",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "依頼元：",
-      "REQUESTING_ORGANIZATION": "依頼元組織：",
-      "SELECT_REQUESTING_ORGANIZATION": "依頼元組織を選択してください",
       "REPORTING": "報告者：",
       "REPORTING_SERVICE": "報告サービス：",
       "SELECT_REPORTING_SERVICE": "報告サービスを選択してください",

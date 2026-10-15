@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "Partie demanderesse :",
-        "ORGANIZATION": "Organisation demanderesse :",
-        "ORGANIZATION_PLACEHOLDER": "Sélectionnez l'organisation demanderesse"
+        "ORGANIZATION_BRANCH": "Organisation | Succursale demanderesse :",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "Sélectionnez l'organisation ou la succursale demanderesse"
       },
       "INFORMING_PARTY": {
         "TITLE": "Partie informatrice :",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "Demandeur :",
-      "REQUESTING_ORGANIZATION": "Organisation demanderesse :",
-      "SELECT_REQUESTING_ORGANIZATION": "Sélectionnez l'organisation demanderesse",
       "REPORTING": "Rapport :",
       "REPORTING_SERVICE": "Service de rapport :",
       "SELECT_REPORTING_SERVICE": "Sélectionnez le service de rapport",

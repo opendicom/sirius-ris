@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "Requesting party:",
-        "ORGANIZATION": "Requesting organization:",
-        "ORGANIZATION_PLACEHOLDER": "Select the requesting organization"
+        "ORGANIZATION_BRANCH": "Requesting organization | branch:",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "Select the requesting organization or branch"
       },
       "INFORMING_PARTY": {
         "TITLE": "Informing party:",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "Requesting:",
-      "REQUESTING_ORGANIZATION": "Requesting Organization:",
-      "SELECT_REQUESTING_ORGANIZATION": "Select Requesting Organization",
       "REPORTING": "Reporting:",
       "REPORTING_SERVICE": "Reporting Service:",
       "SELECT_REPORTING_SERVICE": "Select Reporting Service",

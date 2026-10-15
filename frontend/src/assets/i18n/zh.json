@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "请求方:",
-        "ORGANIZATION": "请求组织:",
-        "ORGANIZATION_PLACEHOLDER": "选择请求组织"
+        "ORGANIZATION_BRANCH": "请求组织 | 分支:",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "选择请求组织或分支"
       },
       "INFORMING_PARTY": {
         "TITLE": "报告方:",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "请求者:",
-      "REQUESTING_ORGANIZATION": "请求组织:",
-      "SELECT_REQUESTING_ORGANIZATION": "选择请求组织",
       "REPORTING": "报告者:",
       "REPORTING_SERVICE": "报告服务:",
       "SELECT_REPORTING_SERVICE": "选择报告服务",
