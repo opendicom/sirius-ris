@@ -117,8 +117,7 @@ export class FormInsertComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      referring_organization    : [ '', [Validators.required] ],
-      referring_organization_input : [ '' ], // For mat-autocomplete input
+      ...this.appointmentsService.getReferringControls(), // referring_organization, referring_branch, referring_input
       reporting_domain          : [ sugestedReporting, [Validators.required] ],
       reporting_user            : [ [], [Validators.required] ],
       reporting_user_input      : [ '' ], // For mat-autocomplete input
@@ -203,9 +202,6 @@ export class FormInsertComponent implements OnInit {
 
     //Find references:
     this.appointmentsService.findReferences({ 'filter[status]': true });
-
-    //Find referring organizations:
-    this.appointmentsService.findReferringOrganizations();
 
     //Find referring and reporting information:
     this.appointmentsService.findReportingUsers(this.sharedProp.current_imaging.service._id, this.form);
