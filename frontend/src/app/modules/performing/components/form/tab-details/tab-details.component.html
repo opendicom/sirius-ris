@@ -5,16 +5,7 @@
         <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.REQUESTING' | i18n }}</h3>
         <br/>
 
-        <h4>{{ 'PERFORMING.TAB_DETAILS.REQUESTING_ORGANIZATION' | i18n }}</h4>
-        <mat-form-field appearance="fill" class="large">
-          <mat-label>{{ 'PERFORMING.TAB_DETAILS.REQUESTING_ORGANIZATION' | i18n }}</mat-label>
-          <input #inputReferringOrg type="text" matInput formControlName="referring_organization_input" (keyup)="appointmentsService.filterReferringOrganizations($event)" [matAutocomplete]="autoReferringOrganization" placeholder="{{ 'PERFORMING.TAB_DETAILS.SELECT_REQUESTING_ORGANIZATION' | i18n }}">
-          <mat-autocomplete #autoReferringOrganization="matAutocomplete">
-            <mat-option (onSelectionChange)="appointmentsService.selectReferringOrganization(currentOrganization, form)" *ngFor="let currentOrganization of appointmentsService.filteredReferringOrganizations" [value]="currentOrganization.short_name + ' (' + currentOrganization.name + ')'">
-              <span [innerHTML]="currentOrganization.short_name | highlighter : inputReferringOrg.value"></span> (<span [innerHTML]="currentOrganization.name | highlighter : inputReferringOrg.value"></span>)
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+        <app-referring-select [form]="form" label="{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION_BRANCH' | i18n }}" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.REQUESTING_PARTY.ORGANIZATION_BRANCH_PLACEHOLDER' | i18n }}"></app-referring-select>
 
         <br/><hr class="dashed" />
 
