@@ -315,6 +315,9 @@ export class TabDetailsComponent implements OnInit {
         callback(res);
       });
     } else {
+      //Mark all fields as touched to show validation errors:
+      this.form.markAllAsTouched();
+
       //Return false for tab details validate errors:
       callback(false);
     }
