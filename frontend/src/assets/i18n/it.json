@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "Richiedente:",
-        "ORGANIZATION": "Organizzazione richiedente:",
-        "ORGANIZATION_PLACEHOLDER": "Seleziona l'organizzazione richiedente"
+        "ORGANIZATION_BRANCH": "Organizzazione | Filiale richiedente:",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "Seleziona l'organizzazione o la filiale richiedente"
       },
       "INFORMING_PARTY": {
         "TITLE": "Refertatore:",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "Richiedente:",
-      "REQUESTING_ORGANIZATION": "Organizzazione richiedente:",
-      "SELECT_REQUESTING_ORGANIZATION": "Seleziona l'organizzazione richiedente",
       "REPORTING": "Refertatore:",
       "REPORTING_SERVICE": "Servizio refertatore:",
       "SELECT_REPORTING_SERVICE": "Seleziona il servizio refertatore",

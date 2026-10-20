@@ -260,7 +260,7 @@ const roleAccessBasedControl = async (req, res, next) => {
     let haveConcession = false;
 
     //Set schemas allowed in RABC exclude policy (Referring and Reporting cases):
-    const excludeSchemasRABCPolicy = ['organizations'];
+    const excludeSchemasRABCPolicy = ['organizations', 'branches'];
 
     //Get authenticated user information (Decoded JWT):
     const userAuth = {

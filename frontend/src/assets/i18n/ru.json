@@ -151,8 +151,8 @@
       },
       "REQUESTING_PARTY": {
         "TITLE": "Запрашивающая сторона:",
-        "ORGANIZATION": "Запрашивающая организация:",
-        "ORGANIZATION_PLACEHOLDER": "Выберите запрашивающую организацию"
+        "ORGANIZATION_BRANCH": "Запрашивающая организация | филиал:",
+        "ORGANIZATION_BRANCH_PLACEHOLDER": "Выберите запрашивающую организацию или филиал"
       },
       "INFORMING_PARTY": {
         "TITLE": "Информирующая сторона:",
@@ -581,8 +581,6 @@
     },
     "TAB_DETAILS": {
       "REQUESTING": "Запрашивающий:",
-      "REQUESTING_ORGANIZATION": "Запрашивающая организация:",
-      "SELECT_REQUESTING_ORGANIZATION": "Выберите запрашивающую организацию",
       "REPORTING": "Составляющий отчет:",
       "REPORTING_SERVICE": "Информирующее отделение:",
       "SELECT_REPORTING_SERVICE": "Выберите информирующее отделение",

@@ -108,9 +108,6 @@ export class TabDetailsComponent implements OnInit {
       //Find references:
       this.appointmentsService.findReferences();
 
-      //Find referring organizations:
-      this.appointmentsService.findReferringOrganizations();
-
       //Set selected reporting:
       const selectedReporting = res.data[0].reporting.organization._id + '.' + res.data[0].reporting.branch._id + '.' + res.data[0].reporting.service._id;
 
@@ -155,8 +152,7 @@ export class TabDetailsComponent implements OnInit {
 
       //Send data to the form:
       this.setReactiveForm({
-        referring_organization    : [ res.data[0].referring.organization._id, [Validators.required]],
-        referring_organization_input : [ this.appointmentsService.getReferringOrganizationFullName(res.data[0].referring.organization) ], // For mat-autocomplete input
+        ...this.appointmentsService.getReferringControls(res.data[0].referring.organization, res.data[0].referring.branch), // referring_organization, referring_branch, referring_input
         reporting_domain          : [ selectedReporting, [Validators.required]],
         reporting_user            : [ [], [Validators.required]],
         reporting_user_input      : [ '' ], // For mat-autocomplete input
@@ -319,6 +315,9 @@ export class TabDetailsComponent implements OnInit {
         callback(res);
       });
     } else {
+      //Mark all fields as touched to show validation errors:
+      this.form.markAllAsTouched();
+
       //Return false for tab details validate errors:
       callback(false);
     }
@@ -344,8 +343,7 @@ export class TabDetailsComponent implements OnInit {
 
   initializateForm(){
     this.setReactiveForm({
-      referring_organization    : [ '', [Validators.required] ],
-      referring_organization_input : [ '' ], // For mat-autocomplete input
+      ...this.appointmentsService.getReferringControls(), // referring_organization, referring_branch, referring_input
       reporting_domain          : [ '', [Validators.required] ],
       reporting_user            : [ [], [Validators.required] ],
       reporting_user_input      : [ '' ], // For mat-autocomplete input

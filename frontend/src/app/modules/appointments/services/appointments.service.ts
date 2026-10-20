@@ -8,7 +8,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';         // Shared Functions
 import { PdfService } from '@shared/services/pdf.service';                                  // PDF Service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
-import { FormGroup } from '@angular/forms';                                                 // Reactive form handling tools
+import { FormGroup, Validators } from '@angular/forms';                                     // Reactive form handling tools
 import { Country, State, City }  from 'country-state-city';                                 // Country State City
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -27,8 +27,8 @@ export class AppointmentsService {
   public availableServices      : any;
 
   //Set referring and reporting objects:
-  public referringOrganizations         : any;
-  public filteredReferringOrganizations : any;
+  public referringOptions               : any = [];
+  public filteredReferringOptions       : any = [];
   public reportingUsers                 : any;
   public reportingUserFilterValue       : string = '';
 
@@ -136,44 +136,90 @@ export class AppointmentsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // FIND REFERRING ORGANIZATIONS:
+  // REFERRING OPTIONS (Organization | Branch):
   //--------------------------------------------------------------------------------------------------------------------//
-  findReferringOrganizations(){
+  getReferringControls(organization: any = null, branch: any = null){
+    //Reactive form controls used by the app-referring-select component:
+    return {
+      referring_organization  : [ organization ? organization._id : '', [Validators.required] ],
+      referring_branch        : [ branch ? branch._id : '' ],
+      referring_input         : [ this.getReferringFullName(organization, branch) ] // For mat-autocomplete input
+    };
+  }
+
+  getReferringFullName(organization: any, branch: any = null){
+    //Guard against missing organization:
+    if(!organization){ return ''; }
+
+    //Build display name directly from already populated objects:
+    if(branch){ return `${organization.short_name} ► ${branch.short_name} (${branch.name})`; }
+    return `${organization.short_name} (${organization.name})`;
+  }
+
+  findReferringOptions(){
     //Set params:
     const params = {
       'rabc_exclude_code' : this.sharedProp.mainSettings.appSettings.rabc_exclude_code,
       'filter[status]'    : true
     };
 
-    //Find organizations:
-    this.sharedFunctions.find('organizations', params, (res) => {
-      this.referringOrganizations = res.data;
-      this.filteredReferringOrganizations = res.data;
-    });
+    //Initialize results:
+    let organizations : any;
+    let branches      : any;
+
+    const buildOptions = () => {
+      if(organizations === undefined || branches === undefined){ return; }
+
+      //Each organization is followed by its own branches:
+      this.referringOptions = [];
+      organizations.forEach((currentOrganization: any) => {
+        this.referringOptions.push({
+          organization  : currentOrganization,
+          branch        : null,
+          label         : this.getReferringFullName(currentOrganization)
+        });
+
+        branches.filter((currentBranch: any) => currentBranch.fk_organization == currentOrganization._id).forEach((currentBranch: any) => {
+          this.referringOptions.push({
+            organization  : currentOrganization,
+            branch        : currentBranch,
+            label         : this.getReferringFullName(currentOrganization, currentBranch)
+          });
+        });
+      });
+
+      this.filteredReferringOptions = this.referringOptions;
+    };
+
+    //Find organizations and branches:
+    this.sharedFunctions.find('organizations', params, (res) => { organizations = res.data; buildOptions(); });
+    this.sharedFunctions.find('branches', params, (res) => { branches = res.data; buildOptions(); });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // FILTER REFERRING ORGANIZATIONS (matAutocomplete):
+  // FILTER AND SELECT REFERRING OPTIONS (matAutocomplete):
   //--------------------------------------------------------------------------------------------------------------------//
-  filterReferringOrganizations(event: any){
+  filterReferringOptions(filterText: string){
     //Set filter value and to upper case:
-    const filterValue = event.srcElement.value.toUpperCase();
+    const filterValue = filterText.toUpperCase();
 
-    //Filter referring organizations:
-    this.filteredReferringOrganizations = this.referringOrganizations.filter((currentOrganization: any) => currentOrganization.short_name.toUpperCase().includes(filterValue) || currentOrganization.name.toUpperCase().includes(filterValue));
+    //Filter referring options (Matches the organization, the branch or the combined label):
+    this.filteredReferringOptions = this.referringOptions.filter((currentOption: any) => currentOption.label.toUpperCase().includes(filterValue) || currentOption.organization.name.toUpperCase().includes(filterValue));
   }
 
-  getReferringOrganizationFullName(currentOrganization: any){
-    //Build display name directly from an already populated organization object (Avoids race condition: referringOrganizations list may not be loaded yet):
-    return currentOrganization ? `${currentOrganization.short_name} (${currentOrganization.name})` : '';
+  selectReferringOption(currentOption: any, form: FormGroup){
+    //Set hidden ObjectId controls  and visible input text:
+    form.controls['referring_organization'].setValue(currentOption.organization._id);
+    form.controls['referring_branch'].setValue(currentOption.branch ? currentOption.branch._id : '');
+    form.controls['referring_input'].setValue(currentOption.label);
   }
 
-  selectReferringOrganization(currentOrganization: any, form: FormGroup){
-    //Set hidden ObjectId control (Sent to the backend) and visible input text (matAutocomplete):
-    form.controls['referring_organization'].setValue(currentOrganization._id);
-    form.controls['referring_organization_input'].setValue(`${currentOrganization.short_name} (${currentOrganization.name})`);
+  clearReferringSelection(form: FormGroup){
+    //The typed text no longer matches a selected option:
+    form.controls['referring_organization'].setValue('');
+    form.controls['referring_branch'].setValue('');
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -352,6 +398,7 @@ export class AppointmentsService {
 
     //Data normalization - Referring:
     mergedValues['referring'] = { organization: mergedValues.referring_organization };
+    if(mergedValues.referring_branch){ mergedValues.referring['branch'] = mergedValues.referring_branch; }
 
     //Data normalization - Reporting:
     const reportingSplitted = mergedValues.reporting_domain.split('.');
@@ -416,7 +463,8 @@ export class AppointmentsService {
 
     //Delete temp values:
     delete mergedValues.referring_organization;
-    delete mergedValues.referring_organization_input;
+    delete mergedValues.referring_branch;
+    delete mergedValues.referring_input;
     delete mergedValues.reporting_domain;
     delete mergedValues.reporting_user;
     delete mergedValues.reporting_user_input;

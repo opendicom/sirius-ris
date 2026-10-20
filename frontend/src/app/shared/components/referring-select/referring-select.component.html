@@ -1,0 +1,17 @@
+<ng-container [formGroup]="form">
+  <h4>{{ label }}</h4>
+  <mat-form-field appearance="fill" class="large">
+    <mat-label>{{ label }}</mat-label>
+    <input #inputReferring type="text" matInput formControlName="referring_input" (input)="onInput(inputReferring.value)" [matAutocomplete]="autoReferring" placeholder="{{ placeholder }}">
+    <mat-autocomplete #autoReferring="matAutocomplete">
+      <mat-option (onSelectionChange)="onSelect(currentOption)" *ngFor="let currentOption of appointmentsService.filteredReferringOptions" [value]="currentOption.label">
+        <span *ngIf="!currentOption.branch">
+          <span [innerHTML]="currentOption.organization.short_name | highlighter : inputReferring.value"></span> (<span [innerHTML]="currentOption.organization.name | highlighter : inputReferring.value"></span>)
+        </span>
+        <span *ngIf="currentOption.branch">
+          <span [innerHTML]="currentOption.organization.short_name | highlighter : inputReferring.value"></span> ► <span [innerHTML]="currentOption.branch.short_name | highlighter : inputReferring.value"></span> (<span [innerHTML]="currentOption.branch.name | highlighter : inputReferring.value"></span>)
+        </span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-container>
