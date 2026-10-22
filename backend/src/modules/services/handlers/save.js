@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------------------------//
 // SERVICES SAVE HANDLER:
 //--------------------------------------------------------------------------------------------------------------------//
+//Import external modules:
+const { validationResult } = require('express-validator');
+
 //Import app modules:
 const mainServices  = require('../../../main.services');                            // Main services
 const mainSettings  = mainServices.getFileSettings();                               // File settings (YAML)
@@ -28,6 +31,17 @@ module.exports = async (req, res, currentSchema, operation) => {
             await moduleServices.insert(req, res, currentSchema, referencedElements);
             break;
         case 'update':
+            //calendarOptions are checked here to reject incomplete or invalid calendarOptions:
+            if(req.validatedResult.set && req.validatedResult.set.calendarOptions !== undefined){
+                //Get nested validation errors:
+                const calendarErrors = validationResult(req).array().filter((error) => error.param.startsWith('calendarOptions.'));
+
+                //Return the result:
+                if(calendarErrors.length > 0){
+                    return res.status(422).send({ success: false, message: currentLang.db.validate_error, validate_errors: calendarErrors.map((error) => error.msg) });
+                }
+            }
+
             await moduleServices.update(req, res, currentSchema, referencedElements);
             break;
         default:
