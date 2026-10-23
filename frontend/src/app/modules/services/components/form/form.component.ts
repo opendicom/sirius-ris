@@ -42,6 +42,100 @@ export class FormComponent implements OnInit {
     this.form = this.formBuilder.group(fields);
   }
 
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CALENDAR OPTIONS (FullCalendar defaults per service):
+  //--------------------------------------------------------------------------------------------------------------------//
+  //FullCalendar end of the day (slotMaxTime is an exclusive end time):
+  private readonly endOfDay: string = '24:00:00';
+
+  //Get the global FullCalendar defaults (main-settings.json):
+  private getCalendarDefaults(): any{
+    const { initialView, slotMinTime, slotMaxTime, slotDuration } = this.sharedProp.mainSettings.FullCalendarOptions;
+    return { initialView, slotMinTime, slotMaxTime, slotDuration };
+  }
+
+  //Normalize time to HH:MM:SS format (The time input can return HH:MM):
+  private normalizeTime(time: any): string{
+    return (typeof time === 'string' && time.length === 5) ? time + ':00' : (time || '');
+  }
+
+  //Validator: End time must be later than start time:
+  private timeRangeValidator(){
+    return (control: any) => {
+      const minTime = this.normalizeTime(control.parent?.get('slotMinTime')?.value);
+      const maxTime = this.normalizeTime(control.value);
+      return (minTime && maxTime && minTime >= maxTime) ? { timeRange: true } : null;
+    };
+  }
+
+  //Convert slot duration (HH:MM:SS) to minutes:
+  private durationToMinutes(duration: any): any{
+    if(typeof duration !== 'string' || duration === ''){ return ''; }
+
+    const [ hours, minutes ] = duration.split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
+  //Convert slot duration (minutes) to HH:MM:SS format (Backend format):
+  private minutesToDuration(minutes: any): string{
+    const total = Number(minutes);
+    return String(Math.floor(total / 60)).padStart(2, '0') + ':' + String(total % 60).padStart(2, '0') + ':00';
+  }
+
+  //Build the calendar options group (All the properties are required):
+  private buildCalendarGroup(values: any): FormGroup{
+    const calendarGroup = this.formBuilder.group({
+      initialView     : [ values.initialView, [Validators.required] ],
+      slotMinTime     : [ values.slotMinTime, [Validators.required] ],
+      slotMaxTime     : [ values.slotMaxTime, [Validators.required, this.timeRangeValidator()] ],
+      slotMaxEndOfDay : [ values.slotMaxTime === this.endOfDay ],
+      slotDuration    : [ this.durationToMinutes(values.slotDuration), [Validators.required, Validators.min(1), Validators.max(1439), Validators.pattern(/^[0-9]+$/)] ]  // Minutes (Integer)
+    });
+
+    //The time range depends on both times, so revalidate the end time when the start time changes:
+    calendarGroup.get('slotMinTime')?.valueChanges.subscribe(() => {
+      if(calendarGroup.enabled){ calendarGroup.get('slotMaxTime')?.updateValueAndValidity(); }
+    });
+
+    //Disable the end time input if the end of the day is selected:
+    this.syncMaxTimeState(calendarGroup);
+
+    return calendarGroup;
+  }
+
+  //Enable or disable the end time input according to the "end of the day" checkbox:
+  private syncMaxTimeState(calendarGroup: any): void{
+    if(calendarGroup?.get('slotMaxEndOfDay')?.value){
+      calendarGroup.get('slotMaxTime')?.disable();
+    } else {
+      calendarGroup?.get('slotMaxTime')?.enable();
+    }
+  }
+
+  onMaxEndOfDayChange(endOfDay: boolean): void{
+    const calendarGroup = this.form.get('calendarOptions');
+
+    //End of the day: 24:00:00. Otherwise the user must choose the end time:
+    calendarGroup?.get('slotMaxTime')?.setValue(endOfDay ? this.endOfDay : '');
+    this.syncMaxTimeState(calendarGroup);
+  }
+
+  onCalendarToggle(customize: boolean): void{
+    const calendarGroup = this.form.get('calendarOptions');
+
+    if(customize){
+      //Enable the calendar options :
+      calendarGroup?.enable();
+      this.syncMaxTimeState(calendarGroup);
+    } else {
+      //Back to the global defaults and disable the calendar options 
+      const defaults = this.getCalendarDefaults();
+      calendarGroup?.reset({ ...defaults, slotDuration: this.durationToMinutes(defaults.slotDuration), slotMaxEndOfDay: defaults.slotMaxTime === this.endOfDay });
+      calendarGroup?.disable();
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
   //Inject services, components and router to the constructor:
   constructor(
     public formBuilder: FormBuilder,
@@ -72,8 +166,13 @@ export class FormComponent implements OnInit {
       name            : [ '', [Validators.required] ],
       fk_equipments   : new FormControl({ value: '', disabled: true }, Validators.required),
       fk_modality     : new FormControl({ value: '', disabled: true }, Validators.required),
-      status          : [ 'true' ]
+      status          : [ 'true' ],
+      calendar_custom : [ false ], //UI toggle (Not sent to the backend).
+      calendarOptions : this.buildCalendarGroup(this.getCalendarDefaults())
     });
+
+    //Show the global defaults without customization (Disabled):
+    this.form.get('calendarOptions')?.disable();
   }
 
   ngOnInit(): void {
@@ -108,8 +207,15 @@ export class FormComponent implements OnInit {
               fk_modality     : res.data[0].fk_modality,
               name            : res.data[0].name,
               fk_equipments   : new FormControl({ value: [] }, Validators.required),
-              status          : [ `${res.data[0].status}` ] //Use back tip notation to convert string
+              status          : [ `${res.data[0].status}` ], //Use back tip notation to convert string
+              calendar_custom : [ !!res.data[0].calendarOptions ],
+              calendarOptions : this.buildCalendarGroup(res.data[0].calendarOptions || this.getCalendarDefaults())
             });
+
+            //Without customization, show the global defaults (Disabled):
+            if(!res.data[0].calendarOptions){
+              this.form.get('calendarOptions')?.disable();
+            }
 
             //Send data to FormControl elements (Arrays - Mat-Select Multiple):
             this.form.controls['fk_equipments'].setValue(res.data[0].fk_equipments);
@@ -213,17 +319,40 @@ export class FormComponent implements OnInit {
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
-      //Data normalization - Booleans types (mat-option cases):
-      if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+      const formData: any = { ...this.form.value };
 
-      //Remove visible matAutocomplete text (Blocked attribute by the backend):
-      delete this.form.value.fk_branch_input;
+      //Data normalization - Booleans types (mat-option cases):
+      if(typeof formData.status != "boolean"){ formData.status = formData.status.toLowerCase() == 'true' ? true : false; }
+
+      //Remove visible matAutocomplete text 
+      delete formData.fk_branch_input;
+
+      //Remove the calendar toggle 
+      delete formData.calendar_custom;
+
+      //Calendar options :
+      const calendarGroup = this.form.get('calendarOptions');
+      if(calendarGroup?.enabled){
+        const calendarValues = calendarGroup.value;
+        formData.calendarOptions = {
+          initialView   : calendarValues.initialView,
+          slotMinTime   : this.normalizeTime(calendarValues.slotMinTime),
+          slotMaxTime   : calendarValues.slotMaxEndOfDay ? this.endOfDay : this.normalizeTime(calendarValues.slotMaxTime),
+          slotDuration  : this.minutesToDuration(calendarValues.slotDuration)
+        };
+      } else {
+        //Not customized (Back to the global defaults):
+        formData.calendarOptions = '';
+      }
 
       //Save data:
-      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
+      this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, formData, [ ...this.keysWithValues, 'calendarOptions' ], (res) => {
         //Response the form according to the result:
         this.sharedFunctions.formResponder(res, this.sharedProp.element, this.router);
       });
+    } else {
+      //Show the validation errors:
+      this.form.markAllAsTouched();
     }
   }
 
