@@ -48,8 +48,51 @@
       <br/><br/>
     </div> <!-- end fxLayout wrapper -->
 
-    <div class="input-wrapper text-center"> <!-- start fxLayout wrapper -->
-      <img class="form_nodes" src="../../../../../assets/img/nodes.png" alt="{{ 'SERVICES.FORM.NODES_ALT' | i18n }}">
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <!-- Calendar options (FullCalendar defaults per service) -->
+      <h4>{{ 'SERVICES.FORM.CALENDAR_H4' | i18n }}</h4>
+      <div class="calendar-toggle">
+        <mat-slide-toggle color="primary" formControlName="calendar_custom" (change)="onCalendarToggle($event.checked)">{{ 'SERVICES.FORM.CALENDAR_CUSTOM_TOGGLE' | i18n }}</mat-slide-toggle>
+        <span class="label-info">{{ (form.value.calendar_custom ? 'SERVICES.FORM.CALENDAR_CUSTOM_INFO' : 'SERVICES.FORM.CALENDAR_DEFAULT_INFO') | i18n }}</span>
+      </div>
+      <br/>
+
+      <div formGroupName="calendarOptions">
+        <mat-form-field appearance="fill" class="large">
+          <mat-label>{{ 'SERVICES.FORM.CALENDAR_INITIAL_VIEW_LABEL' | i18n }}</mat-label>
+          <mat-select formControlName="initialView">
+            <mat-option value="resourceTimeGridDay">{{ 'SERVICES.FORM.CALENDAR_VIEW_DAY' | i18n }}</mat-option>
+            <mat-option value="resourceTimeGridWeek">{{ 'SERVICES.FORM.CALENDAR_VIEW_WEEK' | i18n }}</mat-option>
+          </mat-select>
+          <mat-error>{{ 'SERVICES.FORM.CALENDAR_REQUIRED_ERROR' | i18n }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="medium">
+          <mat-label>{{ 'SERVICES.FORM.CALENDAR_SLOT_MIN_TIME_LABEL' | i18n }}</mat-label>
+          <input type="time" step="1" matInput formControlName="slotMinTime">
+          <mat-error>{{ 'SERVICES.FORM.CALENDAR_REQUIRED_ERROR' | i18n }}</mat-error>
+        </mat-form-field>
+
+        <!-- The end time is hidden when the end of the day (24:00:00) is selected -->
+        <mat-form-field *ngIf="!form.get('calendarOptions.slotMaxEndOfDay')?.value" appearance="fill" class="medium">
+          <mat-label>{{ 'SERVICES.FORM.CALENDAR_SLOT_MAX_TIME_LABEL' | i18n }}</mat-label>
+          <input type="time" step="1" matInput formControlName="slotMaxTime">
+          <mat-error *ngIf="form.get('calendarOptions.slotMaxTime')?.hasError('required')">{{ 'SERVICES.FORM.CALENDAR_REQUIRED_ERROR' | i18n }}</mat-error>
+          <mat-error *ngIf="form.get('calendarOptions.slotMaxTime')?.hasError('timeRange')">{{ 'SERVICES.FORM.CALENDAR_TIME_RANGE_ERROR' | i18n }}</mat-error>
+        </mat-form-field>
+
+        <br/>
+        <mat-checkbox color="primary" formControlName="slotMaxEndOfDay" (change)="onMaxEndOfDayChange($event.checked)">{{ 'SERVICES.FORM.CALENDAR_SLOT_MAX_END_OF_DAY' | i18n }}</mat-checkbox>
+        <br/><br/>
+
+        <h4>{{ 'SERVICES.FORM.CALENDAR_SLOT_DURATION_LABEL' | i18n }} <span class="label-info">{{ 'SERVICES.FORM.CALENDAR_SLOT_DURATION_HINT' | i18n }}</span>:</h4>
+        <mat-form-field appearance="fill" class="medium">
+          <mat-label>{{ 'SERVICES.FORM.CALENDAR_SLOT_DURATION_LABEL' | i18n }}</mat-label>
+          <input icNumbers type="text" maxlength="4" matInput formControlName="slotDuration">
+          <mat-error *ngIf="form.get('calendarOptions.slotDuration')?.hasError('required')">{{ 'SERVICES.FORM.CALENDAR_REQUIRED_ERROR' | i18n }}</mat-error>
+          <mat-error *ngIf="form.get('calendarOptions.slotDuration')?.hasError('min') || form.get('calendarOptions.slotDuration')?.hasError('max') || form.get('calendarOptions.slotDuration')?.hasError('pattern')">{{ 'SERVICES.FORM.CALENDAR_DURATION_ERROR' | i18n }}</mat-error>
+        </mat-form-field>
+      </div>
     </div> <!-- end fxLayout wrapper -->
 
   </div>

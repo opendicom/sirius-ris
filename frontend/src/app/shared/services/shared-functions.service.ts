@@ -1355,6 +1355,35 @@ export class SharedFunctionsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // SET SERVICE CALENDAR OPTIONS (FULLCALENDAR):
+  //--------------------------------------------------------------------------------------------------------------------//
+  setServiceCalendarOptions(calendarOptions: any, service_id: string, callback = (appliedOptions: any) => {}): void {
+    //Get default configuration (Enviroment):
+    const { initialView, slotMinTime, slotMaxTime, slotDuration } = this.mainSettings.FullCalendarOptions;
+    const appliedOptions: any = { initialView, slotMinTime, slotMaxTime, slotDuration };
+
+    //Find service calendar options :
+    this.find('services', { 'filter[_id]': service_id, 'proj[calendarOptions]': 1 }, (res) => {
+      //Replace the default configuration only if the service has calendarOptions:
+      if(res.data && res.data.length > 0 && res.data[0].calendarOptions){
+        const serviceOptions = res.data[0].calendarOptions;
+
+        appliedOptions.initialView  = serviceOptions.initialView;
+        appliedOptions.slotMinTime  = serviceOptions.slotMinTime;
+        appliedOptions.slotMaxTime  = serviceOptions.slotMaxTime;
+        appliedOptions.slotDuration = serviceOptions.slotDuration;
+      }
+
+      //Set options in the calendar:
+      Object.assign(calendarOptions, appliedOptions);
+
+      callback(appliedOptions);
+    }, false, false, false);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // GET FRIENDLY PASS:
   //--------------------------------------------------------------------------------------------------------------------//
   getFriendlyPass(): string {

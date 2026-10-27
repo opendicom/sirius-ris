@@ -55,8 +55,8 @@ export class TabSlotComponent implements OnInit {
   //References the #calendar (FullCalendar):
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
-  //Set FullCalendar Default options:
-  public calendarOptions: CalendarOptions = this.sharedProp.mainSettings.FullCalendarOptions;
+  //Set FullCalendar Default options (Copy: the service calendar options must not modify the global configuration):
+  public calendarOptions: CalendarOptions = { ...this.sharedProp.mainSettings.FullCalendarOptions };
 
   //Initializate Calendar Resources:
   public calendarResources: any = [];
@@ -177,6 +177,14 @@ export class TabSlotComponent implements OnInit {
 
     // Fix FullCalendar bug first Render:
     this.sharedFunctions.fixFullCalendarRender();
+
+    //Set service calendar options (Default configuration):
+    if(this.sharedProp.current_imaging !== undefined && this.sharedProp.current_imaging.service !== undefined){
+      this.sharedFunctions.setServiceCalendarOptions(this.calendarOptions, this.sharedProp.current_imaging.service._id, (appliedOptions) => {
+        //The initial view is only used when the calendar is created, so change the current view:
+        this.calendarComponent?.getApi().changeView(appliedOptions.initialView);
+      });
+    }
 
     //Find slots:
     this.findSlots(false, true);
