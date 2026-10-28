@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
+import { Subscription } from 'rxjs';                                                    // Subscription
+import { filter } from 'rxjs/operators';                                                // Filter operator
+import { marked } from 'marked';                                                        // Markdown parser
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
+import { ReleasesService } from '@auth/services/releases.service';                      // Releases Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
-import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
+import { ISO_3166, objectKeys, environment } from '@env/environment';                   // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,9 +22,21 @@ import { ISO_3166, objectKeys } from '@env/environment';                        
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
   public country_codes: any = ISO_3166;
   public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
+
+  //Release notes: current release (environment) and available releases (newest first):
+  public currentVersion: string = environment.version;
+  public versions: string[] = environment.releases.includes(environment.version)
+    ? environment.releases
+    : [environment.version, ...environment.releases];
+  public selectedVersion: string = this.currentVersion;
+
+  //Rendered markdown:
+  public releaseDetailsHtml: string = '';
+  public releaseLoading: boolean = false;
+  private langSubscription?: Subscription;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -42,7 +58,8 @@ export class SigninComponent implements OnInit {
     public  sharedFunctions : SharedFunctionsService,
     private objRoute        : ActivatedRoute,
     public  themesService   : ThemesService,
-    public  i18n            : I18nService
+    public  i18n            : I18nService,
+    private releasesService : ReleasesService
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -79,6 +96,13 @@ export class SigninComponent implements OnInit {
       const objSettings = JSON.parse(stored);
       this.lastWhiteLabeling = objSettings['last_white_labeling'] || null;
     }
+
+    // Load release details (and reload on language change) once translations are available:
+    this.langSubscription = this.i18n.loaded$.pipe(filter((loaded) => loaded)).subscribe(() => this.loadReleaseDetails());
+  }
+
+  ngOnDestroy(): void {
+    this.langSubscription?.unsubscribe();
   }
 
   onSubmit(form_data: NgForm): void {
@@ -88,4 +112,50 @@ export class SigninComponent implements OnInit {
       this.userAuth.userSignin(form_data);
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // RELEASE NOTES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  get selectedIndex(): number {
+    return this.versions.indexOf(this.selectedVersion);
+  }
+
+  get hasOlder(): boolean {
+    return this.selectedIndex < this.versions.length - 1;
+  }
+
+  get hasNewer(): boolean {
+    return this.selectedIndex > 0;
+  }
+
+  get isCurrentVersion(): boolean {
+    return this.selectedVersion === this.currentVersion;
+  }
+
+  selectVersion(version: string): void {
+    this.selectedVersion = version;
+    this.loadReleaseDetails();
+  }
+
+  goOlder(): void {
+    if(this.hasOlder) this.selectVersion(this.versions[this.selectedIndex + 1]);
+  }
+
+  goNewer(): void {
+    if(this.hasNewer) this.selectVersion(this.versions[this.selectedIndex - 1]);
+  }
+
+  private loadReleaseDetails(): void {
+    const requestedVersion = this.selectedVersion;
+    this.releaseLoading = true;
+
+    this.releasesService.getReleaseDetails(requestedVersion, this.i18n.language).subscribe((markdown) => {
+      // Ignore late responses of a version that is no longer selected:
+      if(requestedVersion !== this.selectedVersion) return;
+
+      this.releaseDetailsHtml = markdown ? marked.parse(markdown, { mangle: false, headerIds: false }) : '';
+      this.releaseLoading = false;
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }
