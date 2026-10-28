@@ -837,7 +837,15 @@
     "DOMAIN": "Domaine",
     "ROLE": "Rôle",
     "SELECT": "SÉLECTIONNER",
-    "CANCEL": "ANNULER"
+    "CANCEL": "ANNULER",
+    "RELEASE_NOTES": "Notes de version",
+    "RELEASE_LATEST": "Dernière",
+    "RELEASE_PREVIOUS_NOTICE": "Vous consultez une version précédente.",
+    "RELEASE_BACK_TO_CURRENT": "Retour à la version actuelle",
+    "RELEASE_OLDER": "Version plus ancienne",
+    "RELEASE_NEWER": "Version plus récente",
+    "RELEASE_SELECT_VERSION": "Version",
+    "RELEASE_NOT_AVAILABLE": "Les détails de la version ne sont pas disponibles."
   },
   "DIALOGS": {
     "DELETE_ITEMS": {
