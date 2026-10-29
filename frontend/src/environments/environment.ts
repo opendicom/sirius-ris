@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   version: '1.8.1',
   // Releases with details in assets/releases/{version}/{lang}.md:
-  releases: ['1.8.1', '1.8.0']
+  releases: ['1.8.1', '1.8.0', '1.7.0', '1.6.2']
 };
 
 // Set ObjectId regular expression to validate ObjectIds:
