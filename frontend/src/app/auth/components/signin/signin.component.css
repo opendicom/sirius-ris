@@ -146,6 +146,16 @@ mat-form-field {
   }
 }
 
+/* Loading spinner */
+.release-spinner {
+  margin: 24px auto;
+  animation: release-slide-in 0.28s ease-out 0.2s backwards;
+}
+
+.release-spinner ::ng-deep circle {
+  stroke: #fff;
+}
+
 /* Rendered markdown*/
 .release-markdown ::ng-deep h1 {
   margin: 0 0 20px;

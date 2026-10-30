@@ -112,6 +112,7 @@
         <div class="release-markdown release-slide" *ngIf="releaseDetailsHtml; else noReleaseDetails" [innerHTML]="releaseDetailsHtml"></div>
       </ng-container>
       <ng-template #noReleaseDetails>
+        <mat-progress-spinner *ngIf="releaseLoading" class="release-spinner" mode="indeterminate" diameter="32"></mat-progress-spinner>
         <p class="release-empty" *ngIf="!releaseLoading">{{ 'AUTH.RELEASE_NOT_AVAILABLE' | i18n }}</p>
       </ng-template>
     </div>
