@@ -1,4 +1,6 @@
 <div class="signin-layout">
+<!-- Sign in (right half) -->
+<div class="signin-panel">
 <form class="form-element" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
   <ng-container *ngIf="sharedFunctions.getLogoDataURI(lastWhiteLabeling?.base64_logo_vertical) as customLogo; else defaultSigninLogo">
     <img [src]="customLogo" alt="Signin">
@@ -83,48 +85,60 @@
   </div>
 </form>
 
-<!-- Release notes side panel -->
-<section class="release-notes" role="region" [attr.aria-label]="'AUTH.RELEASE_NOTES' | i18n">
-  <header class="release-header">
-    <span class="release-title">{{ 'AUTH.RELEASE_NOTES' | i18n }}</span>
-    <span class="release-badge" *ngIf="isCurrentVersion">{{ 'AUTH.RELEASE_LATEST' | i18n }}</span>
-  </header>
+</div> <!-- end signin-panel -->
 
-  <!-- Version slider (only when there are previous releases) -->
-  <div class="release-nav" *ngIf="versions.length > 1">
-    <button mat-icon-button type="button" (click)="goOlder()" [disabled]="!hasOlder"
-      [attr.aria-label]="'AUTH.RELEASE_OLDER' | i18n" [matTooltip]="'AUTH.RELEASE_OLDER' | i18n">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
+<!-- Release notes (left half): one release per slide -->
+<section class="release-notes" *ngIf="showReleases">
+  <div class="release-inner">
+    <header class="release-header">
+      <span class="release-title">{{ 'AUTH.RELEASE_NOTES' | i18n }}</span>
+      <span class="release-badge" *ngIf="isCurrentVersion">{{ 'AUTH.RELEASE_LATEST' | i18n }}</span>
+    </header>
 
-    <mat-form-field appearance="outline" class="release-select">
-      <mat-label>{{ 'AUTH.RELEASE_SELECT_VERSION' | i18n }}</mat-label>
-      <mat-select [value]="selectedVersion" (selectionChange)="selectVersion($event.value)">
-        <mat-option *ngFor="let version of versions" [value]="version">
-          {{ version }}<span *ngIf="version === currentVersion"> &middot; {{ 'AUTH.RELEASE_LATEST' | i18n }}</span>
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="release-hero">{{ selectedVersion }}</div>
 
-    <button mat-icon-button type="button" (click)="goNewer()" [disabled]="!hasNewer"
-      [attr.aria-label]="'AUTH.RELEASE_NEWER' | i18n" [matTooltip]="'AUTH.RELEASE_NEWER' | i18n">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-  </div>
+    <!-- Notice when viewing a previous release -->
+    <div class="release-previous-notice" *ngIf="!isCurrentVersion">
+      <span>{{ 'AUTH.RELEASE_PREVIOUS_NOTICE' | i18n }}</span>
+      <button type="button" class="release-link" (click)="selectVersion(currentVersion)">
+        {{ 'AUTH.RELEASE_BACK_TO_CURRENT' | i18n }}
+      </button>
+    </div>
 
-  <!-- Notice when viewing a previous release -->
-  <div class="release-previous-notice" *ngIf="!isCurrentVersion">
-    <span>{{ 'AUTH.RELEASE_PREVIOUS_NOTICE' | i18n }}</span>
-    <button mat-button type="button" color="primary" (click)="selectVersion(currentVersion)">
-      {{ 'AUTH.RELEASE_BACK_TO_CURRENT' | i18n }}
-    </button>
-  </div>
+    <!-- Slide (fixed height, scrolls inside). Arrow keys move between releases -->
+    <div #releaseContent class="release-content" tabindex="0" (keydown.arrowleft)="goOlder()" (keydown.arrowright)="goNewer()">
+      <!-- The ngFor over the selected version re-creates the slide to replay its entrance animation -->
+      <ng-container *ngFor="let slideVersion of [selectedVersion]">
+        <div class="release-markdown release-slide" *ngIf="releaseDetailsHtml; else noReleaseDetails" [innerHTML]="releaseDetailsHtml"></div>
+      </ng-container>
+      <ng-template #noReleaseDetails>
+        <p class="release-empty" *ngIf="!releaseLoading">{{ 'AUTH.RELEASE_NOT_AVAILABLE' | i18n }}</p>
+      </ng-template>
+    </div>
 
-  <div class="release-content" aria-live="polite" [class.loading]="releaseLoading">
-    <div class="release-markdown" *ngIf="releaseDetailsHtml; else noReleaseDetails" [innerHTML]="releaseDetailsHtml"></div>
-    <ng-template #noReleaseDetails>
-      <p class="release-empty" *ngIf="!releaseLoading">{{ 'AUTH.RELEASE_NOT_AVAILABLE' | i18n }}</p>
-    </ng-template>
+    <!-- Carousel controls (only when there are previous releases) -->
+    <div class="release-nav" *ngIf="versions.length > 1">
+      <div class="release-position">
+        <div class="release-progress"><span [style.width.%]="(releasePosition / versions.length) * 100"></span></div>
+        <span class="release-counter">{{ releasePosition }} / {{ versions.length }}</span>
+      </div>
+
+      <div class="release-controls">
+        <button type="button" class="release-arrow" (click)="goOlder()" [disabled]="!hasOlder" [matTooltip]="'AUTH.RELEASE_OLDER' | i18n">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <select class="release-select" [title]="'AUTH.RELEASE_SELECT_VERSION' | i18n" (change)="selectVersion($any($event.target).value)">
+          <option *ngFor="let version of versions" [value]="version" [selected]="version === selectedVersion">
+            {{ version }}{{ version === currentVersion ? ' · ' + ('AUTH.RELEASE_LATEST' | i18n) : '' }}
+          </option>
+        </select>
+
+        <button type="button" class="release-arrow" (click)="goNewer()" [disabled]="!hasNewer" [matTooltip]="'AUTH.RELEASE_NEWER' | i18n">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 </div>

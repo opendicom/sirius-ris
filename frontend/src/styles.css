@@ -22,6 +22,7 @@
   /* login: */
   --login-form-bg-color: #eaeaefa6;
   --login-document-bg-color: #eaeaef;
+  --login-release-bg-color: #2f2f55;
 
   /* header: */
   --header-bg-color: #404070;
@@ -129,6 +130,7 @@
   /* login: */
   --login-form-bg-color: #27293d;
   --login-document-bg-color: #242538;
+  --login-release-bg-color: #1b1c2e;
 
   /* header: */
   --header-bg-color: #27293d;

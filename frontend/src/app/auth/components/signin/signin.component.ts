@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
-import { Subscription } from 'rxjs';                                                    // Subscription
-import { filter } from 'rxjs/operators';                                                // Filter operator
+import { combineLatest, Subscription } from 'rxjs';                                     // Combine observables and Subscription
+import { BreakpointObserver } from '@angular/cdk/layout';                               // Breakpoint Observer (screen size)
 import { marked } from 'marked';                                                        // Markdown parser
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
 import { ReleasesService } from '@auth/services/releases.service';                      // Releases Service
@@ -33,10 +33,16 @@ export class SigninComponent implements OnInit, OnDestroy {
     : [environment.version, ...environment.releases];
   public selectedVersion: string = this.currentVersion;
 
+  //Release notes are only shown (and loaded) on wide screens:
+  public showReleases: boolean = false;
+
   //Rendered markdown:
   public releaseDetailsHtml: string = '';
   public releaseLoading: boolean = false;
-  private langSubscription?: Subscription;
+  private releaseSubscription?: Subscription;
+
+  //Scrollable container of the release details:
+  @ViewChild('releaseContent') releaseContent?: ElementRef<HTMLElement>;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -59,7 +65,8 @@ export class SigninComponent implements OnInit, OnDestroy {
     private objRoute        : ActivatedRoute,
     public  themesService   : ThemesService,
     public  i18n            : I18nService,
-    private releasesService : ReleasesService
+    private releasesService : ReleasesService,
+    private breakpointObserver : BreakpointObserver
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -97,12 +104,19 @@ export class SigninComponent implements OnInit, OnDestroy {
       this.lastWhiteLabeling = objSettings['last_white_labeling'] || null;
     }
 
-    // Load release details (and reload on language change) once translations are available:
-    this.langSubscription = this.i18n.loaded$.pipe(filter((loaded) => loaded)).subscribe(() => this.loadReleaseDetails());
+    // Show the release notes only on wide screens and load their details
+    // once the translations are available:
+    this.releaseSubscription = combineLatest([
+      this.breakpointObserver.observe('(min-width: 901px)'),
+      this.i18n.loaded$
+    ]).subscribe(([screen, translationsLoaded]) => {
+      this.showReleases = screen.matches;
+      if(this.showReleases && translationsLoaded) this.loadReleaseDetails();
+    });
   }
 
   ngOnDestroy(): void {
-    this.langSubscription?.unsubscribe();
+    this.releaseSubscription?.unsubscribe();
   }
 
   onSubmit(form_data: NgForm): void {
@@ -120,6 +134,11 @@ export class SigninComponent implements OnInit, OnDestroy {
     return this.versions.indexOf(this.selectedVersion);
   }
 
+  //Chronological position of the selected release:
+  get releasePosition(): number {
+    return this.versions.length - this.selectedIndex;
+  }
+
   get hasOlder(): boolean {
     return this.selectedIndex < this.versions.length - 1;
   }
@@ -134,6 +153,11 @@ export class SigninComponent implements OnInit, OnDestroy {
 
   selectVersion(version: string): void {
     this.selectedVersion = version;
+
+    //Clear the previous details:
+    this.releaseDetailsHtml = '';
+    if(this.releaseContent) this.releaseContent.nativeElement.scrollTop = 0;
+
     this.loadReleaseDetails();
   }
 
