@@ -6,6 +6,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
 import { combineLatest, Subscription } from 'rxjs';                                     // Combine observables and Subscription
+import { filter } from 'rxjs/operators';                                                // Filter operator
 import { BreakpointObserver } from '@angular/cdk/layout';                               // Breakpoint Observer (screen size)
 import { marked } from 'marked';                                                        // Markdown parser
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
@@ -108,10 +109,10 @@ export class SigninComponent implements OnInit, OnDestroy {
     // once the translations are available:
     this.releaseSubscription = combineLatest([
       this.breakpointObserver.observe('(min-width: 901px)'),
-      this.i18n.loaded$
-    ]).subscribe(([screen, translationsLoaded]) => {
+      this.i18n.loaded$.pipe(filter((loaded) => loaded))
+    ]).subscribe(([screen]) => {
       this.showReleases = screen.matches;
-      if(this.showReleases && translationsLoaded) this.loadReleaseDetails();
+      if(this.showReleases) this.loadReleaseDetails();
     });
   }
 
