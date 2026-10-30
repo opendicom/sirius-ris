@@ -22,7 +22,8 @@
   /* login: */
   --login-form-bg-color: #eaeaefa6;
   --login-document-bg-color: #eaeaef;
-  --login-release-bg-color: #2f2f55;
+  --login-release-bg-color: #d9daea;
+  --login-release-txt-rgb: 30, 30, 47;
 
   /* header: */
   --header-bg-color: #404070;
@@ -131,6 +132,7 @@
   --login-form-bg-color: #27293d;
   --login-document-bg-color: #242538;
   --login-release-bg-color: #1b1c2e;
+  --login-release-txt-rgb: 255, 255, 255;
 
   /* header: */
   --header-bg-color: #27293d;

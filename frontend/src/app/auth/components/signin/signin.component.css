@@ -66,7 +66,7 @@ mat-form-field {
   display: flex;
   padding: 48px 56px;
   text-align: left;
-  color: #fff;
+  color: rgb(var(--login-release-txt-rgb));
   background-color: var(--login-release-bg-color);
 }
 
@@ -97,6 +97,7 @@ mat-form-field {
   padding: 2px 10px;
   border-radius: 12px;
   font-size: 0.75rem;
+  color: #fff;
   background-color: #2e7d32;
 }
 
@@ -116,13 +117,13 @@ mat-form-field {
   padding: 10px 14px;
   font-size: 0.85rem;
   border-left: 3px solid #ffb74d;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(var(--login-release-txt-rgb), 0.08);
 }
 
 .release-link {
   padding: 0;
   font: inherit;
-  color: #fff;
+  color: rgb(var(--login-release-txt-rgb));
   text-decoration: underline;
   background: none;
   border: 0;
@@ -153,7 +154,7 @@ mat-form-field {
 }
 
 .release-spinner ::ng-deep circle {
-  stroke: #fff;
+  stroke: rgb(var(--login-release-txt-rgb));
 }
 
 /* Rendered markdown*/
@@ -171,7 +172,7 @@ mat-form-field {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.7;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(var(--login-release-txt-rgb), 0.2);
 }
 
 .release-markdown ::ng-deep ul {
@@ -195,14 +196,14 @@ mat-form-field {
   margin-top: 16px;
   padding: 12px 14px;
   border-left: 3px solid #ffb74d;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(var(--login-release-txt-rgb), 0.08);
 }
 
 /* Carousel controls: always at the bottom of the panel */
 .release-nav {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(var(--login-release-txt-rgb), 0.2);
 }
 
 .release-position {
@@ -216,13 +217,13 @@ mat-form-field {
 .release-progress {
   flex: 1;
   height: 3px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(var(--login-release-txt-rgb), 0.2);
 }
 
 .release-progress > span {
   display: block;
   height: 100%;
-  background-color: #fff;
+  background-color: rgb(var(--login-release-txt-rgb));
 }
 
 .release-controls {
@@ -233,9 +234,9 @@ mat-form-field {
 .release-arrow,
 .release-select {
   height: 40px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: rgb(var(--login-release-txt-rgb));
+  background: rgba(var(--login-release-txt-rgb), 0.08);
+  border: 1px solid rgba(var(--login-release-txt-rgb), 0.35);
 }
 
 .release-arrow {
