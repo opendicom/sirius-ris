@@ -837,7 +837,15 @@
     "DOMAIN": "ドメイン",
     "ROLE": "役割",
     "SELECT": "選択",
-    "CANCEL": "キャンセル"
+    "CANCEL": "キャンセル",
+    "RELEASE_NOTES": "リリースノート",
+    "RELEASE_LATEST": "最新",
+    "RELEASE_PREVIOUS_NOTICE": "以前のバージョンを表示しています。",
+    "RELEASE_BACK_TO_CURRENT": "現在のバージョンに戻る",
+    "RELEASE_OLDER": "古いバージョン",
+    "RELEASE_NEWER": "新しいバージョン",
+    "RELEASE_SELECT_VERSION": "バージョン",
+    "RELEASE_NOT_AVAILABLE": "リリースの詳細は利用できません。"
   },
   "DIALOGS": {
     "DELETE_ITEMS": {
