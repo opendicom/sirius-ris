@@ -82,8 +82,8 @@ const subSchemaCOVID19 = new mongoose.Schema({
 
 //Define PrivateHealth Sub-Schema:
 const subSchemaPrivateHealth = new mongoose.Schema({
-    height:                 { type: Number, required: true },
-    weight:                 { type: Number, required: true },
+    height:                 { type: Number },
+    weight:                 { type: Number },
     diabetes:               { type: Boolean, required: true, default: false },
     hypertension:           { type: Boolean, required: true, default: false },
     epoc:                   { type: Boolean, required: true, default: false },
@@ -107,7 +107,10 @@ const subSchemaPrivateHealth = new mongoose.Schema({
     allergies:              { type: String, default: 'No' },
     other:                  { type: String, default: 'No' },
     implants:               { type: subSchemaImplants, required: true },
-    covid19:                { type: subSchemaCOVID19, required: true }
+    covid19:                { type: subSchemaCOVID19, required: true },
+    birads:                 { type: Number },
+    pirads:                 { type: Number },
+    base64_patology_detail: { type: String }
 },
 { _id : false });
 
@@ -402,14 +405,16 @@ const Validator = [
     // PRIVATE HEALTH:
     //----------------------------------------------------------------------------------------------------------------//
     body('private_health.height')
+        .optional()
         .trim()
         .isDecimal()
-        .withMessage(currentLang.ris.schema_validator.isRequiredDecimal + ' | "private_health.height".'),
+        .withMessage(currentLang.ris.schema_validator.isDecimal + ' | "private_health.height".'),
 
     body('private_health.weight')
+        .optional()
         .trim()
         .isDecimal()
-        .withMessage(currentLang.ris.schema_validator.isRequiredDecimal + ' | "private_health.weight".'),
+        .withMessage(currentLang.ris.schema_validator.isDecimal + ' | "private_health.weight".'),
 
     body('private_health.diabetes')
         .trim()
@@ -596,6 +601,23 @@ const Validator = [
         .trim()
         .isLength({ min: 3, max: 100 })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.covid19.details" (min: 3, max: 100 [chars]).'),
+
+    body('private_health.birads')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "private_health.birads".'),
+
+    body('private_health.pirads')
+        .optional()
+        .trim()
+        .isInt()
+        .withMessage(currentLang.ris.schema_validator.isInt + ' | "private_health.pirads".'),
+
+    body('private_health.base64_patology_detail')
+        .optional()
+        .isString()
+        .withMessage(currentLang.ris.schema_validator.isString + ' | "private_health.base64_patology_detail".'),
     //----------------------------------------------------------------------------------------------------------------//
 
     //----------------------------------------------------------------------------------------------------------------//
