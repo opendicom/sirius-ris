@@ -1,7 +1,7 @@
 <div class="signin-layout">
 <!-- Sign in (right half) -->
 <div class="signin-panel">
-<form class="form-element" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
+<form class="form-element signin-form" #form_data="ngForm" (ngSubmit)="onSubmit(form_data)">
   <ng-container *ngIf="sharedFunctions.getLogoDataURI(lastWhiteLabeling?.base64_logo_vertical) as customLogo; else defaultSigninLogo">
     <img [src]="customLogo" alt="Signin">
   </ng-container>
