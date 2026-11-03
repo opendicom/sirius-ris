@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
 import { ActivatedRoute } from '@angular/router';                                       // Activated Route Interface (To get information about the routes)
 import { NgForm } from '@angular/forms';                                                // NgForm (bidirectional binding)
+import { combineLatest, Subscription } from 'rxjs';                                     // Combine observables and Subscription
+import { filter } from 'rxjs/operators';                                                // Filter operator
+import { BreakpointObserver } from '@angular/cdk/layout';                               // Breakpoint Observer (screen size)
+import { marked } from 'marked';                                                        // Markdown parser
 import { UsersAuthService } from '@auth/services/users-auth.service';                   // Users Auth Service
+import { ReleasesService } from '@auth/services/releases.service';                      // Releases Service
 import { SharedPropertiesService } from '@shared/services/shared-properties.service';   // Shared Properties
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { ThemesService } from '@shared/services/themes.service';                        // Themes Service
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
-import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
+import { ISO_3166, objectKeys, environment } from '@env/environment';                   // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -18,9 +23,27 @@ import { ISO_3166, objectKeys } from '@env/environment';                        
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
   public country_codes: any = ISO_3166;
   public documentTypesKeys: string[] = objectKeys.documentTypesKeys;
+
+  //Release notes: current release (environment) and available releases (newest first):
+  public currentVersion: string = environment.version;
+  public versions: string[] = environment.releases.includes(environment.version)
+    ? environment.releases
+    : [environment.version, ...environment.releases];
+  public selectedVersion: string = this.currentVersion;
+
+  //Release notes are only shown (and loaded) on wide screens:
+  public showReleases: boolean = false;
+
+  //Rendered markdown:
+  public releaseDetailsHtml: string = '';
+  public releaseLoading: boolean = false;
+  private releaseSubscription?: Subscription;
+
+  //Scrollable container of the release details:
+  @ViewChild('releaseContent') releaseContent?: ElementRef<HTMLElement>;
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
@@ -42,7 +65,9 @@ export class SigninComponent implements OnInit {
     public  sharedFunctions : SharedFunctionsService,
     private objRoute        : ActivatedRoute,
     public  themesService   : ThemesService,
-    public  i18n            : I18nService
+    public  i18n            : I18nService,
+    private releasesService : ReleasesService,
+    private breakpointObserver : BreakpointObserver
   ) {
     //Pass Service Method:
     this.getKeys = this.sharedFunctions.getKeys;
@@ -79,6 +104,20 @@ export class SigninComponent implements OnInit {
       const objSettings = JSON.parse(stored);
       this.lastWhiteLabeling = objSettings['last_white_labeling'] || null;
     }
+
+    // Show the release notes only on wide screens and load their details
+    // once the translations are available:
+    this.releaseSubscription = combineLatest([
+      this.breakpointObserver.observe('(min-width: 901px)'),
+      this.i18n.loaded$.pipe(filter((loaded) => loaded))
+    ]).subscribe(([screen]) => {
+      this.showReleases = screen.matches;
+      if(this.showReleases) this.loadReleaseDetails();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.releaseSubscription?.unsubscribe();
   }
 
   onSubmit(form_data: NgForm): void {
@@ -88,4 +127,60 @@ export class SigninComponent implements OnInit {
       this.userAuth.userSignin(form_data);
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // RELEASE NOTES:
+  //--------------------------------------------------------------------------------------------------------------------//
+  get selectedIndex(): number {
+    return this.versions.indexOf(this.selectedVersion);
+  }
+
+  //Chronological position of the selected release:
+  get releasePosition(): number {
+    return this.versions.length - this.selectedIndex;
+  }
+
+  get hasOlder(): boolean {
+    return this.selectedIndex < this.versions.length - 1;
+  }
+
+  get hasNewer(): boolean {
+    return this.selectedIndex > 0;
+  }
+
+  get isCurrentVersion(): boolean {
+    return this.selectedVersion === this.currentVersion;
+  }
+
+  selectVersion(version: string): void {
+    this.selectedVersion = version;
+
+    //Clear the previous details:
+    this.releaseDetailsHtml = '';
+    if(this.releaseContent) this.releaseContent.nativeElement.scrollTop = 0;
+
+    this.loadReleaseDetails();
+  }
+
+  goOlder(): void {
+    if(this.hasOlder) this.selectVersion(this.versions[this.selectedIndex + 1]);
+  }
+
+  goNewer(): void {
+    if(this.hasNewer) this.selectVersion(this.versions[this.selectedIndex - 1]);
+  }
+
+  private loadReleaseDetails(): void {
+    const requestedVersion = this.selectedVersion;
+    this.releaseLoading = true;
+
+    this.releasesService.getReleaseDetails(requestedVersion, this.i18n.language).subscribe((markdown) => {
+      // Ignore late responses of a version that is no longer selected:
+      if(requestedVersion !== this.selectedVersion) return;
+
+      this.releaseDetailsHtml = markdown ? marked.parse(markdown, { mangle: false, headerIds: false }) : '';
+      this.releaseLoading = false;
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

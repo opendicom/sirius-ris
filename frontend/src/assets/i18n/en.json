@@ -837,7 +837,15 @@
     "DOMAIN": "Domain",
     "ROLE": "Role",
     "SELECT": "SELECT",
-    "CANCEL": "CANCEL"
+    "CANCEL": "CANCEL",
+    "RELEASE_NOTES": "Release notes",
+    "RELEASE_LATEST": "Latest",
+    "RELEASE_PREVIOUS_NOTICE": "You are viewing a previous release.",
+    "RELEASE_BACK_TO_CURRENT": "Back to current version",
+    "RELEASE_OLDER": "Older version",
+    "RELEASE_NEWER": "Newer version",
+    "RELEASE_SELECT_VERSION": "Version",
+    "RELEASE_NOT_AVAILABLE": "Release details are not available."
   },
   "DIALOGS": {
     "DELETE_ITEMS": {

@@ -837,7 +837,15 @@
     "DOMAIN": "Домен",
     "ROLE": "Роль",
     "SELECT": "ВЫБРАТЬ",
-    "CANCEL": "ОТМЕНА"
+    "CANCEL": "ОТМЕНА",
+    "RELEASE_NOTES": "Примечания к выпуску",
+    "RELEASE_LATEST": "Последняя",
+    "RELEASE_PREVIOUS_NOTICE": "Вы просматриваете предыдущую версию.",
+    "RELEASE_BACK_TO_CURRENT": "Вернуться к текущей версии",
+    "RELEASE_OLDER": "Более старая версия",
+    "RELEASE_NEWER": "Более новая версия",
+    "RELEASE_SELECT_VERSION": "Версия",
+    "RELEASE_NOT_AVAILABLE": "Сведения о выпуске недоступны."
   },
   "DIALOGS": {
     "DELETE_ITEMS": {

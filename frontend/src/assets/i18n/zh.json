@@ -837,7 +837,15 @@
     "DOMAIN": "域",
     "ROLE": "角色",
     "SELECT": "选择",
-    "CANCEL": "取消"
+    "CANCEL": "取消",
+    "RELEASE_NOTES": "发行说明",
+    "RELEASE_LATEST": "最新",
+    "RELEASE_PREVIOUS_NOTICE": "您正在查看历史版本。",
+    "RELEASE_BACK_TO_CURRENT": "返回当前版本",
+    "RELEASE_OLDER": "较旧版本",
+    "RELEASE_NEWER": "较新版本",
+    "RELEASE_SELECT_VERSION": "版本",
+    "RELEASE_NOT_AVAILABLE": "暂无版本详情。"
   },
   "DIALOGS": {
     "DELETE_ITEMS": {
