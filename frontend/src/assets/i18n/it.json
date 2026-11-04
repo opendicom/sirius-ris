@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Dettagli",
+        "INTERVIEW": "Intervista",
+        "VALIDATION_ERROR_TOOLTIP": "Ci sono errori di convalida in questa scheda"
+      },
       "TITLE": "Passo 04 - Dettagli dell'appuntamento",
       "SUMMARY": {
         "TITLE": "Riepilogo:",

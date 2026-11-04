@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Detalles",
+        "INTERVIEW": "Entrevista",
+        "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña"
+      },
       "TITLE": "Paso 04 - Detalles de la cita",
       "SUMMARY": {
         "TITLE": "Resumen:",

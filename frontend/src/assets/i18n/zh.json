@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "详情",
+        "INTERVIEW": "问诊",
+        "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误"
+      },
       "TITLE": "步骤 04 - 预约详情",
       "SUMMARY": {
         "TITLE": "摘要:",

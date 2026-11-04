@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Детали",
+        "INTERVIEW": "Опрос",
+        "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки валидации"
+      },
       "TITLE": "Шаг 04 - Детали записи",
       "SUMMARY": {
         "TITLE": "Сводка:",

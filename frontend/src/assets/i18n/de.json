@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Details",
+        "INTERVIEW": "Befragung",
+        "VALIDATION_ERROR_TOOLTIP": "Unter diesem Reiter gibt es Validierungsfehler"
+      },
       "TITLE": "Schritt 04 - Termindetails",
       "SUMMARY": {
         "TITLE": "Zusammenfassung:",

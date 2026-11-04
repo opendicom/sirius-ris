@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Details",
+        "INTERVIEW": "Interview",
+        "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab"
+      },
       "TITLE": "Step 04 - Appointment Details",
       "SUMMARY": {
         "TITLE": "Summary:",

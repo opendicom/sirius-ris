@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "詳細",
+        "INTERVIEW": "問診",
+        "VALIDATION_ERROR_TOOLTIP": "このタブには検証エラーが存在します"
+      },
       "TITLE": "ステップ04 - 予約詳細",
       "SUMMARY": {
         "TITLE": "概要：",

@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Detalhes",
+        "INTERVIEW": "Entrevista",
+        "VALIDATION_ERROR_TOOLTIP": "Existem erros de validação nesta aba"
+      },
       "TITLE": "Passo 04 - Detalhes do Agendamento",
       "SUMMARY": {
         "TITLE": "Resumo:",

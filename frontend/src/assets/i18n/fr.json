@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Détails",
+        "INTERVIEW": "Entretien",
+        "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
+      },
       "TITLE": "Étape 04 - Détails du rendez-vous",
       "SUMMARY": {
         "TITLE": "Résumé :",
