@@ -73,7 +73,11 @@
           </div> <!-- end fxLayout wrapper -->
         </div>
 
-        <mat-checkbox color="primary" (change)="appointmentsService.onCheckOtherPatology($event, form)">{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-checkbox><br/>
+        <mat-checkbox *ngIf="form.get('private_health.otherBoolean'); else otherPatologyUnbound" color="primary" formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherPatology($event, form)">{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-checkbox>
+        <ng-template #otherPatologyUnbound>
+          <mat-checkbox color="primary" (change)="appointmentsService.onCheckOtherPatology($event, form)">{{ 'PRIVATE_HEALTH.OTHER_PATOLOGY' | i18n }}</mat-checkbox>
+        </ng-template>
+        <br/>
 
         <div [class.non-display]="appointmentsService.booleanPatology == false">
           <mat-form-field appearance="fill" class="full">
@@ -111,7 +115,11 @@
             </div> <!-- end fxLayout wrapper -->
 
             <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-              <mat-checkbox (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-checkbox><br/>
+              <mat-checkbox *ngIf="form.get('private_health.implants.otherBoolean'); else otherImplantsUnbound" formControlName="otherBoolean" (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-checkbox>
+              <ng-template #otherImplantsUnbound>
+                <mat-checkbox (change)="appointmentsService.onCheckOtherImplants($event, form)" color="primary">{{ 'PRIVATE_HEALTH.IMPLANTS.OTHER_TYPE' | i18n }}</mat-checkbox>
+              </ng-template>
+              <br/>
 
               <div [class.non-display]="appointmentsService.booleanImplants == false">
                 <mat-form-field appearance="fill" class="full">
