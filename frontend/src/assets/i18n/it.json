@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Errore durante il tentativo di caricare la procedura associata: ",
       "TABS": {
         "DETAILS": "Dettagli dell'appuntamento",
+        "INTERVIEW": "Intervista",
         "VALIDATION_ERROR_TOOLTIP": "Ci sono errori di convalida in questa scheda",
         "COORDINATION_DETAILS": "Dettagli del coordinamento",
         "PREVIOUS_STUDIES": "Studi precedenti"

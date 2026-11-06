@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Error al intentar cargar el procedimiento asociado: ",
       "TABS": {
         "DETAILS": "Detalles de la cita",
+        "INTERVIEW": "Entrevista",
         "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña",
         "COORDINATION_DETAILS": "Detalles de la coordinación",
         "PREVIOUS_STUDIES": "Estudios previos"

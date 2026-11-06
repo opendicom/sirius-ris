@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Ошибка при загрузке связанной процедуры: ",
       "TABS": {
         "DETAILS": "Детали записи",
+        "INTERVIEW": "Опрос",
         "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки валидации",
         "COORDINATION_DETAILS": "Детали координации",
         "PREVIOUS_STUDIES": "Предыдущие исследования"

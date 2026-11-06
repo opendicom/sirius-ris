@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "関連する手技の読み込み試行中にエラーが発生しました：",
       "TABS": {
         "DETAILS": "予約詳細",
+        "INTERVIEW": "問診",
         "VALIDATION_ERROR_TOOLTIP": "このタブには検証エラーが存在します",
         "COORDINATION_DETAILS": "調整詳細",
         "PREVIOUS_STUDIES": "過去の検査"

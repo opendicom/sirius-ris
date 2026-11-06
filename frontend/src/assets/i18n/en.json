@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Error trying to load the associated procedure: ",
       "TABS": {
         "DETAILS": "Appointment Details",
+        "INTERVIEW": "Interview",
         "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab",
         "COORDINATION_DETAILS": "Coordination Details",
         "PREVIOUS_STUDIES": "Previous Studies"

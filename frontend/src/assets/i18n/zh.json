@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "尝试加载关联程序时出错: ",
       "TABS": {
         "DETAILS": "预约详情",
+        "INTERVIEW": "问诊",
         "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误",
         "COORDINATION_DETAILS": "协调详情",
         "PREVIOUS_STUDIES": "以前的研究"

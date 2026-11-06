@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Fehler beim Versuch, die zugehörige Prozedur zu laden: ",
       "TABS": {
         "DETAILS": "Termindetails",
+        "INTERVIEW": "Befragung",
         "VALIDATION_ERROR_TOOLTIP": "Unter diesem Reiter gibt es Validierungsfehler",
         "COORDINATION_DETAILS": "Koordinationsdetails",
         "PREVIOUS_STUDIES": "Frühere Studien"

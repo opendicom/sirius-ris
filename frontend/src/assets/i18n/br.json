@@ -273,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Erro ao tentar carregar o procedimento associado: ",
       "TABS": {
         "DETAILS": "Detalhes do Agendamento",
+        "INTERVIEW": "Entrevista",
         "VALIDATION_ERROR_TOOLTIP": "Existem erros de validação nesta aba",
         "COORDINATION_DETAILS": "Detalhes da Coordenação",
         "PREVIOUS_STUDIES": "Estudos Anteriores"
