@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -21,6 +21,9 @@ export class InterviewDefaultComponent {
   //CKEditor validators (Visual state):
   @Input() anamnesisValidator   : boolean = true;
   @Input() indicationsValidator : boolean = true;
+
+  //Emits the change event of the weight input (Used by performing to recalculate the PET dose):
+  @Output() weightChanged       : EventEmitter<any> = new EventEmitter<any>();
 
   //Create CKEditor component and configure them:
   public customEditor = customBuildEditor;

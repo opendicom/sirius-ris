@@ -36,7 +36,7 @@
             <h4>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }} <span class="label-info">{{ 'PRIVATE_HEALTH.KILOGRAMS' | i18n }}</span>:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'PRIVATE_HEALTH.WEIGHT' | i18n }}</mat-label>
-              <input type="text" icNumbersWD matInput formControlName="weight" min="1" max="300">
+              <input type="text" icNumbersWD (change)="weightChanged.emit($event)" matInput formControlName="weight" min="1" max="300">
             </mat-form-field>
           </div> <!-- end fxLayout wrapper -->
         </div>
