@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Details",
+        "INTERVIEW": "Interview",
+        "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab"
+      },
       "TITLE": "Step 04 - Appointment Details",
       "SUMMARY": {
         "TITLE": "Summary:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Error trying to load the associated procedure: ",
       "TABS": {
         "DETAILS": "Appointment Details",
+        "INTERVIEW": "Interview",
         "VALIDATION_ERROR_TOOLTIP": "There are validation errors under this tab",
         "COORDINATION_DETAILS": "Coordination Details",
         "PREVIOUS_STUDIES": "Previous Studies"
@@ -519,6 +525,7 @@
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
       "APPOINTMENT_DETAILS_TAB": "Appointment Details",
+      "INTERVIEW_TAB": "Interview",
       "PROCEDURE_TAB": "Procedure",
       "PREPARATION_DATA": "Preparation Data:",
       "PROCEDURE": "Procedure",

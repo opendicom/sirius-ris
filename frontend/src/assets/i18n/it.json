@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Dettagli",
+        "INTERVIEW": "Intervista",
+        "VALIDATION_ERROR_TOOLTIP": "Ci sono errori di convalida in questa scheda"
+      },
       "TITLE": "Passo 04 - Dettagli dell'appuntamento",
       "SUMMARY": {
         "TITLE": "Riepilogo:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Errore durante il tentativo di caricare la procedura associata: ",
       "TABS": {
         "DETAILS": "Dettagli dell'appuntamento",
+        "INTERVIEW": "Intervista",
         "VALIDATION_ERROR_TOOLTIP": "Ci sono errori di convalida in questa scheda",
         "COORDINATION_DETAILS": "Dettagli del coordinamento",
         "PREVIOUS_STUDIES": "Studi precedenti"
@@ -519,6 +525,7 @@
       "ACTIVE": "Attivo",
       "INACTIVE": "Inattivo",
       "APPOINTMENT_DETAILS_TAB": "Dettagli dell'appuntamento",
+      "INTERVIEW_TAB": "Intervista",
       "PROCEDURE_TAB": "Procedura",
       "PREPARATION_DATA": "Dati della preparazione:",
       "PROCEDURE": "Procedura",

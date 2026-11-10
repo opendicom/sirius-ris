@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Detalles",
+        "INTERVIEW": "Entrevista",
+        "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña"
+      },
       "TITLE": "Paso 04 - Detalles de la cita",
       "SUMMARY": {
         "TITLE": "Resumen:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Error al intentar cargar el procedimiento asociado: ",
       "TABS": {
         "DETAILS": "Detalles de la cita",
+        "INTERVIEW": "Entrevista",
         "VALIDATION_ERROR_TOOLTIP": "Existen errores de validación bajo esta pestaña",
         "COORDINATION_DETAILS": "Detalles de la coordinación",
         "PREVIOUS_STUDIES": "Estudios previos"
@@ -519,6 +525,7 @@
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
       "APPOINTMENT_DETAILS_TAB": "Detalles de la cita",
+      "INTERVIEW_TAB": "Entrevista",
       "PROCEDURE_TAB": "Procedimiento",
       "PREPARATION_DATA": "Datos de la preparación:",
       "PROCEDURE": "Procedimiento",

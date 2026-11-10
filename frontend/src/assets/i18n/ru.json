@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Детали",
+        "INTERVIEW": "Опрос",
+        "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки валидации"
+      },
       "TITLE": "Шаг 04 - Детали записи",
       "SUMMARY": {
         "TITLE": "Сводка:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Ошибка при загрузке связанной процедуры: ",
       "TABS": {
         "DETAILS": "Детали записи",
+        "INTERVIEW": "Опрос",
         "VALIDATION_ERROR_TOOLTIP": "На этой вкладке есть ошибки валидации",
         "COORDINATION_DETAILS": "Детали координации",
         "PREVIOUS_STUDIES": "Предыдущие исследования"
@@ -519,6 +525,7 @@
       "ACTIVE": "Активно",
       "INACTIVE": "Неактивно",
       "APPOINTMENT_DETAILS_TAB": "Детали записи",
+      "INTERVIEW_TAB": "Опрос",
       "PROCEDURE_TAB": "Процедура",
       "PREPARATION_DATA": "Данные о подготовке:",
       "PROCEDURE": "Процедура",

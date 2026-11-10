@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "详情",
+        "INTERVIEW": "问诊",
+        "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误"
+      },
       "TITLE": "步骤 04 - 预约详情",
       "SUMMARY": {
         "TITLE": "摘要:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "尝试加载关联程序时出错: ",
       "TABS": {
         "DETAILS": "预约详情",
+        "INTERVIEW": "问诊",
         "VALIDATION_ERROR_TOOLTIP": "此选项卡下存在验证错误",
         "COORDINATION_DETAILS": "协调详情",
         "PREVIOUS_STUDIES": "以前的研究"
@@ -519,6 +525,7 @@
       "ACTIVE": "活动",
       "INACTIVE": "非活动",
       "APPOINTMENT_DETAILS_TAB": "预约详情",
+      "INTERVIEW_TAB": "问诊",
       "PROCEDURE_TAB": "程序",
       "PREPARATION_DATA": "准备数据:",
       "PROCEDURE": "程序",

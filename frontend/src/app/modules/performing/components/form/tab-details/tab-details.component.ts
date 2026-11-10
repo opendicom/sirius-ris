@@ -11,7 +11,6 @@ import { AppointmentsService } from '@modules/appointments/services/appointments
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { objectKeys } from '@env/environment';                                              // Enviroments
-import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -25,9 +24,6 @@ export class TabDetailsComponent implements OnInit {
 
   //Re-define method in component to use in HTML view:
   public getKeys: any;
-
-  //Create CKEditor component and configure them:
-  public customEditor = customBuildEditor;
 
   //Initializate reporting_delay_controller:
   public reporting_delay_controller : Boolean = false;
