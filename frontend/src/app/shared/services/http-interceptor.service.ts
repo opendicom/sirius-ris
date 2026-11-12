@@ -18,6 +18,12 @@ export class HttpInterceptorService implements HttpInterceptor {
 
   //Interface intercept method (HttpInterceptor):
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    //Requests to identity-service must keep their own headers (X-API-Key):
+    const identityHost = this.fileSettingsService.mainSettings?.identityService?.host;
+    if(identityHost && req.url.startsWith(identityHost)){
+      return next.handle(req);
+    }
+
     let jwt_token: any = 'JWT Empty';
 
     //Get JWT of localStorage:

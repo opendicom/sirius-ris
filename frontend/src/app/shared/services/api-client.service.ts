@@ -29,17 +29,22 @@ export class ApiClientService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SEND REQUEST:
   //--------------------------------------------------------------------------------------------------------------------//
-  sendRequest(method: string, path: string, data: any): Observable<any> {
+  // Optional "headers" allows sending extra headers and optional "baseUrl" replaces the backend URL
+  //--------------------------------------------------------------------------------------------------------------------//
+  sendRequest(method: string, path: string, data: any, headers?: { [header: string]: string }, baseUrl?: string): Observable<any> {
     //Initialize response object:
     let response: any;
+
+    //Set URL (Custom base URL or backend URL):
+    const url = (baseUrl !== undefined ? baseUrl : this.backend_url) + path;
 
     //Set method:
     switch(method){
       case 'GET':
-        response = this.http.get(this.backend_url + path, { params: data });
+        response = this.http.get(url, { params: data, headers: headers });
         break;
       case 'POST':
-        response = this.http.post(this.backend_url + path, data);
+        response = this.http.post(url, data, { headers: headers });
         break;
     }
 
