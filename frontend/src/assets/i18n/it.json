@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "NO, USA UN'ALTRA EMAIL",
       "YES_EDIT_FOUND_USER": "SÌ, MODIFICA UTENTE TROVATO"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "Differenze con l'identity-service",
+      "MESSAGE": "I dati della persona in Sirius RIS differiscono da quelli dell'identity-service. Seleziona quale valore mantenere per ogni campo:",
+      "FIELD": "Campo",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity service",
+      "FIELDS": {
+        "name_01": "Nome 1",
+        "name_02": "Nome 2",
+        "surname_01": "Cognome 1",
+        "surname_02": "Cognome 2",
+        "gender": "Genere",
+        "birth_date": "Data di nascita"
+      },
+      "USE_ALL_SIRIUS": "USA TUTTO DA SIRIUS RIS",
+      "USE_ALL_IDENTITY": "USA TUTTO DA IDENTITY SERVICE",
+      "CANCEL": "ANNULLA (MANTIENI SIRIUS RIS)",
+      "ACCEPT": "ACCETTA"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "Richiesta di password",
       "ENTER_USER_PASSWORD": "Inserisci la password dell'utente:",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "L'utente deve possedere almeno un permesso per poter essere salvato.",
       "PASSWORD_MISMATCH_ERROR": "Le password inserite non coincidono tra loro.",
       "EMAIL_IN_USE_MACHINE_ERROR": "L'indirizzo email indicato NON può essere utilizzato, è associato a un utente di tipo macchina.",
+      "IDENTITY_SERVICE_ERROR": "Impossibile consultare l'identity-service, sono stati verificati solo i dati di Sirius RIS.",
       "ANONYMOUS": "ANONIMO",
       "PERSON_TAB": {
         "TITLE": "Persona",

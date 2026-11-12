@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "NO, USE ANOTHER EMAIL",
       "YES_EDIT_FOUND_USER": "YES, EDIT FOUND USER"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "Differences with identity-service",
+      "MESSAGE": "The person's data in Sirius RIS differs from the data in the identity-service. Select which value to keep for each field:",
+      "FIELD": "Field",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity service",
+      "FIELDS": {
+        "name_01": "Name 1",
+        "name_02": "Name 2",
+        "surname_01": "Surname 1",
+        "surname_02": "Surname 2",
+        "gender": "Gender",
+        "birth_date": "Birth date"
+      },
+      "USE_ALL_SIRIUS": "USE ALL FROM SIRIUS RIS",
+      "USE_ALL_IDENTITY": "USE ALL FROM IDENTITY SERVICE",
+      "CANCEL": "CANCEL (KEEP SIRIUS RIS)",
+      "ACCEPT": "ACCEPT"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "Password request",
       "ENTER_USER_PASSWORD": "Enter the user's password:",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "The user must have at least one permission to be saved.",
       "PASSWORD_MISMATCH_ERROR": "The entered passwords do not match each other.",
       "EMAIL_IN_USE_MACHINE_ERROR": "The indicated email cannot be used, it is associated with a machine type user.",
+      "IDENTITY_SERVICE_ERROR": "The identity-service could not be reached, only Sirius RIS data was checked.",
       "ANONYMOUS": "ANONYMOUS",
       "PERSON_TAB": {
         "TITLE": "Person",

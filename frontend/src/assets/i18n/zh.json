@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "不，使用其他电子邮件",
       "YES_EDIT_FOUND_USER": "是的，编辑找到的用户"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "与 identity-service 的差异",
+      "MESSAGE": "Sirius RIS 中该人员的数据与 identity-service 中的数据不同。请为每个字段选择要保留的值：",
+      "FIELD": "字段",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity service",
+      "FIELDS": {
+        "name_01": "名 1",
+        "name_02": "名 2",
+        "surname_01": "姓 1",
+        "surname_02": "姓 2",
+        "gender": "性别",
+        "birth_date": "出生日期"
+      },
+      "USE_ALL_SIRIUS": "全部使用 SIRIUS RIS",
+      "USE_ALL_IDENTITY": "全部使用 IDENTITY SERVICE",
+      "CANCEL": "取消（保留 SIRIUS RIS）",
+      "ACCEPT": "确定"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "密码请求",
       "ENTER_USER_PASSWORD": "输入用户密码:",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "用户必须至少拥有一个权限才能保存。",
       "PASSWORD_MISMATCH_ERROR": "输入的密码不匹配。",
       "EMAIL_IN_USE_MACHINE_ERROR": "指定的电子邮件无法使用，它与机器类型的用户相关联。",
+      "IDENTITY_SERVICE_ERROR": "无法访问 identity-service，仅检查了 Sirius RIS 的数据。",
       "ANONYMOUS": "匿名",
       "PERSON_TAB": {
         "TITLE": "个人",

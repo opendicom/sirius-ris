@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "NEIN, ANDERE E-MAIL VERWENDEN",
       "YES_EDIT_FOUND_USER": "JA, GEFUNDENEN BENUTZER BEARBEITEN"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "Unterschiede zum Identity-Service",
+      "MESSAGE": "Die Daten der Person in Sirius RIS weichen von denen im Identity-Service ab. Wählen Sie für jedes Feld den beizubehaltenden Wert:",
+      "FIELD": "Feld",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity-Service",
+      "FIELDS": {
+        "name_01": "Vorname 1",
+        "name_02": "Vorname 2",
+        "surname_01": "Nachname 1",
+        "surname_02": "Nachname 2",
+        "gender": "Geschlecht",
+        "birth_date": "Geburtsdatum"
+      },
+      "USE_ALL_SIRIUS": "ALLES AUS SIRIUS RIS VERWENDEN",
+      "USE_ALL_IDENTITY": "ALLES AUS IDENTITY-SERVICE VERWENDEN",
+      "CANCEL": "ABBRECHEN (SIRIUS RIS BEIBEHALTEN)",
+      "ACCEPT": "ÜBERNEHMEN"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "Passwortanforderung",
       "ENTER_USER_PASSWORD": "Geben Sie das Passwort des Benutzers ein:",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "Der Benutzer muss mindestens eine Berechtigung haben, um gespeichert zu werden.",
       "PASSWORD_MISMATCH_ERROR": "Die eingegebenen Passwörter stimmen nicht überein.",
       "EMAIL_IN_USE_MACHINE_ERROR": "Die angegebene E-Mail kann nicht verwendet werden, sie ist einem Maschinentyp-Benutzer zugeordnet.",
+      "IDENTITY_SERVICE_ERROR": "Der Identity-Service konnte nicht abgefragt werden, es wurden nur die Sirius-RIS-Daten geprüft.",
       "ANONYMOUS": "ANONYM",
       "PERSON_TAB": {
         "TITLE": "Person",

@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "НЕТ, ИСПОЛЬЗОВАТЬ ДРУГОЙ АДРЕС",
       "YES_EDIT_FOUND_USER": "ДА, РЕДАКТИРОВАТЬ НАЙДЕННОГО ПОЛЬЗОВАТЕЛЯ"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "Различия с identity-service",
+      "MESSAGE": "Данные о человеке в Sirius RIS отличаются от данных в identity-service. Выберите, какое значение сохранить для каждого поля:",
+      "FIELD": "Поле",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity service",
+      "FIELDS": {
+        "name_01": "Имя 1",
+        "name_02": "Имя 2",
+        "surname_01": "Фамилия 1",
+        "surname_02": "Фамилия 2",
+        "gender": "Пол",
+        "birth_date": "Дата рождения"
+      },
+      "USE_ALL_SIRIUS": "ВСЁ ИЗ SIRIUS RIS",
+      "USE_ALL_IDENTITY": "ВСЁ ИЗ IDENTITY SERVICE",
+      "CANCEL": "ОТМЕНА (ОСТАВИТЬ SIRIUS RIS)",
+      "ACCEPT": "ПРИНЯТЬ"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "Запрос пароля",
       "ENTER_USER_PASSWORD": "Введите пароль пользователя:",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "Пользователь должен иметь хотя бы одно разрешение для сохранения.",
       "PASSWORD_MISMATCH_ERROR": "Введенные пароли не совпадают.",
       "EMAIL_IN_USE_MACHINE_ERROR": "Указанный адрес электронной почты НЕ может быть использован, так как он связан с пользователем типа 'машина'.",
+      "IDENTITY_SERVICE_ERROR": "Не удалось обратиться к identity-service, проверены только данные Sirius RIS.",
       "ANONYMOUS": "АНОНИМ",
       "PERSON_TAB": {
         "TITLE": "Человек",

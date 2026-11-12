@@ -987,6 +987,25 @@
       "NO_USE_ANOTHER_EMAIL": "いいえ、別のメールを使用します",
       "YES_EDIT_FOUND_USER": "はい、見つかったユーザーを編集します"
     },
+    "IDENTITY_COMPARE": {
+      "TITLE": "identity-service との相違",
+      "MESSAGE": "Sirius RIS の人物データが identity-service のデータと異なります。各項目について保持する値を選択してください：",
+      "FIELD": "項目",
+      "SIRIUS_COLUMN": "Sirius RIS",
+      "IDENTITY_COLUMN": "Identity service",
+      "FIELDS": {
+        "name_01": "名 1",
+        "name_02": "名 2",
+        "surname_01": "姓 1",
+        "surname_02": "姓 2",
+        "gender": "性別",
+        "birth_date": "生年月日"
+      },
+      "USE_ALL_SIRIUS": "すべて Sirius RIS を使用",
+      "USE_ALL_IDENTITY": "すべて IDENTITY SERVICE を使用",
+      "CANCEL": "キャンセル（Sirius RIS を維持）",
+      "ACCEPT": "承諾"
+    },
     "PASSWORD_REQUEST": {
       "TITLE": "パスワードリクエスト",
       "ENTER_USER_PASSWORD": "ユーザーのパスワードを入力してください：",
@@ -1816,6 +1835,7 @@
       "PERMISSION_ERROR": "保存するには、ユーザーに少なくとも1つの権限が必要です。",
       "PASSWORD_MISMATCH_ERROR": "入力されたパスワードが一致しません。",
       "EMAIL_IN_USE_MACHINE_ERROR": "指定されたメールは使用できません。マシンタイプのユーザーに関連付けられています。",
+      "IDENTITY_SERVICE_ERROR": "identity-service に接続できなかったため、Sirius RIS のデータのみ確認しました。",
       "ANONYMOUS": "匿名",
       "PERSON_TAB": {
         "TITLE": "人物",
