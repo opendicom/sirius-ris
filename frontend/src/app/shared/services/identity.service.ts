@@ -117,7 +117,7 @@ export class IdentityService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
-  // PARSE GENDER (identity-service "sexo" -> Sirius RIS gender: 1 = Male, 2 = Female, 3 = Other):
+  // PARSE GENDER (External service -> Sirius RIS gender: 1 = Male, 2 = Female, 3 = Other):
   //--------------------------------------------------------------------------------------------------------------------//
   private parseGender(value: any): string {
     switch(String(value ?? '').trim().toUpperCase()){
