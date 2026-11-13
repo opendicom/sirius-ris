@@ -11,6 +11,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';           // Shared Functions
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service';       // Validate documents service
 import { UsersService } from '@modules/users/services/users.service';                         // User Services
+import { IdentityService, IdentityDifference } from '@shared/services/identity.service';       // Identity Service (identity-service)
 import { map, mergeMap, filter } from 'rxjs/operators';                                       // Reactive Extensions (RxJS)
 import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                       // Enviroments
 //--------------------------------------------------------------------------------------------------------------------//
@@ -66,6 +67,9 @@ export class FormComponent implements OnInit {
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = true;
 
+  //Last document checked against identity-service (Prevents asking again for the same document):
+  private identityCheckedDocument : string = '';
+
   //Form destiny:
   public destiny: any;
 
@@ -97,6 +101,7 @@ export class FormComponent implements OnInit {
     private sharedFunctions : SharedFunctionsService,
     private sharedValidate  : ValidateDocumentsService,
     public  userService     : UsersService,
+    private identityService : IdentityService,
     private i18n            : I18nService
   ){
     //Pass Service Method:
@@ -217,6 +222,9 @@ export class FormComponent implements OnInit {
 
                   //Get property keys with values:
                   this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+
+                  //Document loaded from the DB:
+                  this.identityCheckedDocument = this.getCurrentDocument();
                 }
               }
             },
@@ -238,6 +246,9 @@ export class FormComponent implements OnInit {
             doc_type          : new_document[1],
             document          : new_document[2],
           };
+
+          //Person not found in Sirius RIS DB, search in identity-service:
+          this.checkIdentityService(null);
         }
       }
 
@@ -288,6 +299,9 @@ export class FormComponent implements OnInit {
 
             //Validate document (Enable submit document):
             this.validateDocument();
+
+            //Document loaded from the DB:
+            this.identityCheckedDocument = this.getCurrentDocument();
 
           } else {
             //Return to the list with request error message:
@@ -429,6 +443,9 @@ export class FormComponent implements OnInit {
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
 
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0].person);
+
             //UPDATE PERSON AND INSERT USER:
             } else {
               //Clear data to FormControl elements:
@@ -456,6 +473,9 @@ export class FormComponent implements OnInit {
               //Get property keys with values:
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
+
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0]);
             }
 
           //INSERT PERSON AND USER:
@@ -482,6 +502,9 @@ export class FormComponent implements OnInit {
             //Set operations:
             this.personOperation = 'insert';
             this.userOperation = 'insert';
+
+            //Person not found in Sirius RIS DB, search in identity-service:
+            this.checkIdentityService(null);
           }
         }
       });
@@ -493,6 +516,90 @@ export class FormComponent implements OnInit {
       }
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK IDENTITY SERVICE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkIdentityService(siriusPerson: any | null){
+    //Check identity-service status:
+    if(!this.identityService.isEnabled()){ return; }
+
+    //Get current document:
+    const document = this.getCurrentDocument();
+    if(document === ''){ return; }
+
+    //Check each document only once:
+    if(document === this.identityCheckedDocument){ return; }
+
+    //Only the document type known by identity-service is searched:
+    if(!this.identityService.isSupportedDocument(this.form.value.person.doc_country_code, this.form.value.person.doc_type)){ return; }
+
+    //Find in identity-service:
+    this.identityService.find(document).subscribe((res) => {
+      //Ignore outdated responses (The document has changed while waiting for the response):
+      if(this.getCurrentDocument() !== document){ return; }
+
+      //Mark document as checked:
+      if(!res.error){ this.identityCheckedDocument = document; }
+
+      //Check request error:
+      if(res.error){
+        this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.IDENTITY_SERVICE_ERROR'));
+        return;
+      }
+
+      //Check result:
+      if(!res.found){ return; }
+
+      if(siriusPerson === null){
+        //NOT IN SIRIUS RIS DB: Load identity-service data into the form:
+        this.setIdentityPerson(res.person);
+
+      } else {
+        //IN BOTH: Compare data:
+        const differences: IdentityDifference[] = this.identityService.compare(siriusPerson, res.person);
+
+        //Without differences the Sirius RIS data remains loaded, otherwise the user must decide:
+        if(differences.length > 0){
+          this.sharedFunctions.openDialog('identity_compare', { differences: differences }, (selected: any) => {
+            //Apply the fields selected from identity-service:
+            if(selected){ this.applyIdentityFields(selected); }
+          });
+        }
+      }
+    });
+  }
+
+  getCurrentDocument(): string{
+    return String(this.form.value.person.document || '').trim();
+  }
+
+  setIdentityPerson(person: any){
+    //Set only empty fields:
+    const setIfEmpty = (control: string, value: any) => {
+      if(value !== '' && value !== null && value !== undefined && !this.form.get(control)?.value){
+        this.form.get(control)?.setValue(value);
+      }
+    };
+
+    setIfEmpty('person.name_01', person.name_01);
+    setIfEmpty('person.name_02', person.name_02);
+    setIfEmpty('person.surname_01', person.surname_01);
+    setIfEmpty('person.surname_02', person.surname_02);
+    setIfEmpty('person.gender', person.gender);
+    setIfEmpty('person.birth_date', person.birth_date);
+    setIfEmpty('person.phone_numbers[0]', person.phone_numbers[0]);
+    setIfEmpty('person.phone_numbers[1]', person.phone_numbers[1]);
+  }
+
+  applyIdentityFields(selected: { [field: string]: any }){
+    Object.keys(selected).forEach((field: string) => {
+      //Birth date is a Date in the form:
+      const value = field === 'birth_date' ? this.identityService.parseDate(selected[field]) : selected[field];
+      this.form.get('person.' + field)?.setValue(value);
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onSetEmail(){
     //Check the email field is not empty:
