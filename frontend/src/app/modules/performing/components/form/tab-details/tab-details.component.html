@@ -176,9 +176,11 @@
           <input matInput type="text" formControlName="contact" placeholder="{{ 'PERFORMING.TAB_DETAILS.ENTER_CONTACT' | i18n }}">
         </mat-form-field>
 
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
         <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
         <div *ngIf="this.sharedProp.current_modality && this.sharedProp.current_modality.code_value !== 'PT'">
-          <br/><hr class="dashed" />
 
           <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.CONTRAST_MEDIA' | i18n }}</h3>
           <!-- Contrast start-->
@@ -206,9 +208,7 @@
           <!-- Contrast end-->
         </div>
 
-      </div> <!-- end fxLayout wrapper -->
-
-      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <!-- Inpatient start -->
         <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.TAB_DETAILS.HOSPITALIZATION' | i18n }}</h3>
         <br/>
 
@@ -219,7 +219,6 @@
 
         <br/>
 
-        <!-- Inpatient start -->
         <div formGroupName="inpatient" [class.non-display]="appointmentsService.booleanInpatient == false">
           <br/><hr class="dashed" />
 

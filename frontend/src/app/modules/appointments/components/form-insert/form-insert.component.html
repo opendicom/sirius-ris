@@ -390,9 +390,20 @@
           <input matInput type="text" formControlName="contact" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CONTACT_PLACEHOLDER' | i18n }}">
         </mat-form-field>
 
+        <hr class="dashed" /><br/>
+
+        <h4>{{ 'APPOINTMENTS.LIST.TABLE.STATUS' | i18n }}:</h4>
+        <mat-radio-group color="primary" formControlName="status">
+          <mat-radio-button value="true">{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}</mat-radio-button>
+          <mat-radio-button value="false">{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}</mat-radio-button>
+        </mat-radio-group>
+
+        <br/><br/>
+      </div> <!-- end fxLayout wrapper -->
+
+      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
         <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
         <div *ngIf="this.sharedProp.current_modality.code_value !== 'PT'">
-          <br/><hr class="dashed" />
 
           <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.CONTRAST.TITLE' | i18n }}</h3>
           <!-- Contrast start-->
@@ -420,18 +431,7 @@
           <!-- Contrast end-->
         </div>
 
-        <hr class="dashed" /><br/>
-
-        <h4>{{ 'APPOINTMENTS.LIST.TABLE.STATUS' | i18n }}:</h4>
-        <mat-radio-group color="primary" formControlName="status">
-          <mat-radio-button value="true">{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}</mat-radio-button>
-          <mat-radio-button value="false">{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}</mat-radio-button>
-        </mat-radio-group>
-
-        <br/><br/>
-      </div> <!-- end fxLayout wrapper -->
-
-      <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+        <!-- Inpatient start -->
         <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TITLE' | i18n }}</h3>
         <br/>
 
@@ -442,7 +442,6 @@
 
         <br/>
 
-        <!-- Inpatient start -->
         <div formGroupName="inpatient" [class.non-display]="appointmentsService.booleanInpatient == false">
           <br/><hr class="dashed" />
 

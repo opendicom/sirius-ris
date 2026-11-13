@@ -176,6 +176,49 @@
         <input matInput type="text" formControlName="contact" placeholder="{{ 'APPOINTMENTS.FORM_INSERT.ADDRESS.CONTACT_PLACEHOLDER' | i18n }}">
       </mat-form-field>
 
+      <hr class="dashed" />
+
+      <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.STATUS' | i18n }}</h4>
+      <mat-radio-group color="primary" formControlName="status">
+        <mat-radio-button value="true">{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}</mat-radio-button>
+        <mat-radio-button value="false">{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}</mat-radio-button>
+      </mat-radio-group>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+
+      <!-- flow_state -->
+      <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h3>
+      <div fxLayout="row" fxLayoutAlign="start start">
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <h4>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h4>
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
+            <mat-select formControlName="flow_state">
+              <div *ngFor="let currentFSKey of appointmentsFlowStateKeys">
+                <mat-option (click)="onClickFlowState(currentFSKey)" value="{{ currentFSKey }}">{{ ('APPOINTMENT_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </div> <!-- end fxLayout wrapper -->
+
+        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
+          <div [class.non-display]="booleanCancelation == false">
+            <h4>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_DETAILS.CANCELLATION_REASONS' | i18n }}:</h4>
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_DETAILS.CANCELLATION_REASONS' | i18n }}</mat-label>
+              <mat-select formControlName="cancellation_reasons">
+                <div *ngFor="let currentReasonKey of cancellationReasonKeys">
+                  <mat-option value="{{ currentReasonKey }}">{{ ('CANCELLATION_REASONS.' + currentReasonKey) | i18n }}</mat-option>
+                </div>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div> <!-- end fxLayout wrapper -->
+      </div>
+
       <!-- Contrast (Check if is PET-CT procedure) [Hardset onSubmit] -->
       <div *ngIf="this.sharedProp.current_modality && this.sharedProp.current_modality.code_value !== 'PT'">
         <br/><hr class="dashed" />
@@ -208,49 +251,7 @@
 
       <hr class="dashed" />
 
-      <!-- flow_state -->
-      <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h3>
-      <br/>
-      <div fxLayout="row" fxLayoutAlign="start start">
-        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <h4>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</h4>
-          <mat-form-field appearance="fill" class="full">
-            <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.WORKFLOW' | i18n }}</mat-label>
-            <mat-select formControlName="flow_state">
-              <div *ngFor="let currentFSKey of appointmentsFlowStateKeys">
-                <mat-option (click)="onClickFlowState(currentFSKey)" value="{{ currentFSKey }}">{{ ('APPOINTMENT_FLOW_STATES.' + currentFSKey) | i18n }}</mat-option>
-              </div>
-            </mat-select>
-          </mat-form-field>
-        </div> <!-- end fxLayout wrapper -->
-
-        <div class="input-wrapper sub-wrapper"> <!-- start fxLayout wrapper -->
-          <div [class.non-display]="booleanCancelation == false">
-            <h4>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_DETAILS.CANCELLATION_REASONS' | i18n }}:</h4>
-            <mat-form-field appearance="fill" class="full">
-              <mat-label>{{ 'APPOINTMENTS.FORM_UPDATE.TAB_DETAILS.CANCELLATION_REASONS' | i18n }}</mat-label>
-              <mat-select formControlName="cancellation_reasons">
-                <div *ngFor="let currentReasonKey of cancellationReasonKeys">
-                  <mat-option value="{{ currentReasonKey }}">{{ ('CANCELLATION_REASONS.' + currentReasonKey) | i18n }}</mat-option>
-                </div>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div> <!-- end fxLayout wrapper -->
-      </div>
-
-      <hr class="dashed" />
-
-      <h4>{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.STATUS' | i18n }}</h4>
-      <mat-radio-group color="primary" formControlName="status">
-        <mat-radio-button value="true">{{ 'BRANCHES.LIST.STATUS.ACTIVE' | i18n }}</mat-radio-button>
-        <mat-radio-button value="false">{{ 'BRANCHES.LIST.STATUS.INACTIVE' | i18n }}</mat-radio-button>
-      </mat-radio-group>
-
-      <br/><br/>
-    </div> <!-- end fxLayout wrapper -->
-
-    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <!-- Inpatient start -->
       <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.HOSPITALIZATION.TITLE' | i18n }}</h3>
       <br/>
 
@@ -261,7 +262,6 @@
 
       <br/>
 
-      <!-- Inpatient start -->
       <div formGroupName="inpatient" [class.non-display]="appointmentsService.booleanInpatient == false">
         <br/><hr class="dashed" />
 
