@@ -1,0 +1,27 @@
+.identity-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.identity-compare-table th,
+.identity-compare-table td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.identity-compare-table th {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+}
+
+.identity-compare-table td.selected {
+  font-weight: bold;
+}
+
+.field-name {
+  opacity: 0.8;
+}
+
+.select-all-buttons {
+  margin-top: 10px;
+}

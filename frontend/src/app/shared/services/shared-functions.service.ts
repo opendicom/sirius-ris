@@ -15,6 +15,7 @@ import { regexObjectId } from '@env/environment';                             //
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
+import { IdentityCompareComponent } from '@shared/components/dialogs/identity-compare/identity-compare.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
@@ -327,6 +328,19 @@ export class SharedFunctionsService {
 
           //Observe content (Subscribe):
           obsDialog.afterClosed().subscribe(result => {
+            //Excecute callback:
+            callback(result);
+          });
+
+          break;
+
+        //DIFFERENCES BETWEEN SIRIUS RIS AND IDENTITY-SERVICE IN USER FORM COMPONENT:
+        case 'identity_compare':
+          //Create dialog observable:
+          const obsIdentityDialog = this.dialog.open(IdentityCompareComponent, { data: operationHandler, width: '700px', disableClose: true });
+
+          //Observe content (Subscribe):
+          obsIdentityDialog.afterClosed().subscribe((result: any) => {
             //Excecute callback:
             callback(result);
           });

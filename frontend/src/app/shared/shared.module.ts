@@ -25,6 +25,7 @@ import { PatientsComponent } from '@shared/components/patients/patients.componen
 //Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
 import { FoundPersonComponent } from '@shared/components/dialogs/found-person/found-person.component';
+import { IdentityCompareComponent } from '@shared/components/dialogs/identity-compare/identity-compare.component';
 import { SlotSelectComponent } from '@shared/components/dialogs/slot-select/slot-select.component';
 import { OverlapEventsComponent } from '@shared/components/dialogs/overlap-events/overlap-events.component';
 import { TentativeExistComponent } from '@shared/components/dialogs/tentative-exist/tentative-exist.component';
@@ -75,6 +76,7 @@ import * as IC from '@shared/directives/input-control.directive';
     // Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
+    IdentityCompareComponent,
     SlotSelectComponent,
     OverlapEventsComponent,
     TentativeExistComponent,
@@ -135,6 +137,7 @@ import * as IC from '@shared/directives/input-control.directive';
     // Dialogs components:
     DeleteItemsComponent,
     FoundPersonComponent,
+    IdentityCompareComponent,
     SlotSelectComponent,
     OverlapEventsComponent,
     TentativeExistComponent,
