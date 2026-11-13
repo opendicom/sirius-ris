@@ -2,22 +2,6 @@
   <div fxLayout="row" fxLayoutAlign="start start">
 
     <div class="input-wrapper divider"> <!-- start fxLayout wrapper -->
-      <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
-      <div [class.unselected]="anamnesisValidator == false">
-        <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-      </div>
-
-      <br/><hr class="dashed" /><br/>
-
-      <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
-      <div [class.unselected]="indicationsValidator == false">
-        <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-      </div>
-
-      <br/><br/>
-    </div> <!-- end fxLayout wrapper -->
-
-    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
       <h3 class="form-title text-center underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.TITLE' | i18n }} <span class="label-alt">{{ 'APPOINTMENTS.FORM_INSERT.PATIENT.SENSITIVE_INFO' | i18n }}</span>:</h3>
       <br/>
 
@@ -152,5 +136,24 @@
 
       <br/>
     </div> <!-- end fxLayout wrapper -->
+
+    <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+      <h3 class="form-title underline-fail-alt">{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h3>
+      <br/>
+      <div [class.unselected]="anamnesisValidator == false">
+        <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      </div>
+
+      <br/><hr class="dashed" /><br/>
+
+      <h3 class="form-title underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h3>
+      <br/>
+      <div [class.unselected]="indicationsValidator == false">
+        <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      </div>
+
+      <br/><br/>
+    </div> <!-- end fxLayout wrapper -->
+
   </div>
 </ng-container>
