@@ -232,7 +232,8 @@ module.exports = [
         'imaging.organization.password_cert': 0,
 
         //Added projection:
-        'attached_files.base64': 0, 'consents.informed_consent.base64': 0, 'consents.clinical_trial.base64': 0
+        'attached_files.base64': 0, 'consents.informed_consent.base64': 0, 'consents.clinical_trial.base64': 0,
+        'private_health.base64_patology_detail': 0
     }}
     //------------------------------------------------------------------------------------------------------------//
 ];

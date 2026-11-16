@@ -183,6 +183,17 @@
         <!-- APPOINTMENT DETAILS TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
 
+        <!-- INTERVIEW TAB: ---------------------------------------------------------------------------------------------------------------------------- -->
+        <mat-tab *ngIf="hasInterview">
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">assignment</mat-icon> {{ 'PERFORMING.FORM.INTERVIEW_TAB' | i18n }}
+              <mat-icon *ngIf="interviewTabErrors" class="validate-error-tab" matTooltip="{{ 'PERFORMING.FORM.TAB_VALIDATION_ERRORS' | i18n }}">priority_high</mat-icon>
+            </ng-template>
+            <app-interview-default *ngIf="interviewForm" [form]="interviewForm" (weightChanged)="onWeightChanged($event)"></app-interview-default>
+        </mat-tab>
+        <!-- INTERVIEW TAB: ---------------------------------------------------------------------------------------------------------------------------- -->
+
+
         <!-- INJECTION TAB: -------------------------------------------------------------------------------------------------------------------------- -->
         <mat-tab>
             <ng-template mat-tab-label>

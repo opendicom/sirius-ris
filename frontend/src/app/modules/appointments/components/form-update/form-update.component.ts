@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';                                                     // Reactive form handling tools
 
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
@@ -30,6 +31,10 @@ export class FormUpdateComponent implements OnInit {
 
   //Initializate validation tab errors:
   public detailsTabErrors       : boolean = false;
+  public interviewTabErrors     : boolean = false;
+
+  //Form shared with the interview tab:
+  public interviewForm?         : FormGroup;
 
   //Set loading state:
   public loading: boolean = false;
@@ -120,6 +125,9 @@ export class FormUpdateComponent implements OnInit {
               this.tabDetails.manualOnInit(res);
               this.tabSlot.manualOnInit();
 
+              //Share the details form :
+              this.interviewForm = this.tabDetails.form;
+
               //Set loading to false when data is received:
               this.loading = false;
             });
@@ -152,14 +160,15 @@ export class FormUpdateComponent implements OnInit {
         //Send second submit in controlled order (Update appointment):
         this.tabDetails.onSubmit((res) => {
           if(res !== false){
-            //Set details tab errors:
+            //Set tab errors:
             this.detailsTabErrors = false;
+            this.interviewTabErrors = false;
 
             //Response the form according to the result:
             this.sharedFunctions.formResponder(res, 'appointments', this.router);
           } else {
-            //Set details tab errors:
-            this.detailsTabErrors = true;
+            //Set tab errors:
+            this.setTabErrors();
           }
         }, overbooking); // <-- Send overbooking (true or false)
       });
@@ -167,6 +176,18 @@ export class FormUpdateComponent implements OnInit {
     } else {
       this.sharedFunctions.sendMessage(this.i18n.instant('APPOINTMENTS.FORM_UPDATE.MISSING_SLOT_SELECTION_ERROR'))
     }
+  }
+
+  setTabErrors(){
+    //Interview tab controls (Displayed by app-interview-default):
+    const interviewControls = ['anamnesis', 'indications', 'private_health'];
+    const controls = this.tabDetails.form.controls;
+
+    //Check interview tab errors:
+    this.interviewTabErrors = interviewControls.some((key) => controls[key].invalid);
+
+    //Check details tab errors (All the other controls):
+    this.detailsTabErrors = Object.keys(controls).some((key) => !interviewControls.includes(key) && controls[key].invalid);
   }
 
   async setCurrentData(res: any, callback = () => {}) {

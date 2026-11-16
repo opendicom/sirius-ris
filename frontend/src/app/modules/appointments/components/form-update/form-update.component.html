@@ -206,6 +206,15 @@
     </mat-tab>
     <!-- APPOINTMENT TAB: ------------------------------------------------------------------------------------------------------------------ -->
 
+    <!-- INTERVIEW TAB: -------------------------------------------------------------------------------------------------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label><mat-icon class="tab-icon">assignment</mat-icon> {{ 'APPOINTMENTS.FORM_UPDATE.TABS.INTERVIEW' | i18n }}
+      <mat-icon *ngIf="interviewTabErrors" class="validate-error-tab" matTooltip="{{ 'APPOINTMENTS.FORM_UPDATE.TABS.VALIDATION_ERROR_TOOLTIP' | i18n }}">priority_high</mat-icon>
+      </ng-template>
+      <app-interview-default *ngIf="interviewForm" [form]="interviewForm"></app-interview-default>
+    </mat-tab>
+    <!-- INTERVIEW TAB: -------------------------------------------------------------------------------------------------------------------- -->
+
     <!-- SLOT TAB: ------------------------------------------------------------------------------------------------------------------------- -->
     <mat-tab>
       <ng-template mat-tab-label><mat-icon class="tab-icon">date_range</mat-icon> {{ 'APPOINTMENTS.FORM_UPDATE.TABS.COORDINATION_DETAILS' | i18n }}</ng-template>

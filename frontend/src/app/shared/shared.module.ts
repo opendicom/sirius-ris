@@ -15,6 +15,7 @@ import { StartPageComponent } from '@shared/components/start-page/start-page.com
 import { SettingsComponent } from '@shared/components/settings/settings.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { ReferringSelectComponent } from '@shared/components/referring-select/referring-select.component';
+import { InterviewDefaultComponent } from '@shared/components/interview-templates/default/default.component';
 
 //DICOM Viewer component (For patients):
 import { DcmViewerComponent } from '@shared/components/dcm-viewer/dcm-viewer.component';
@@ -51,6 +52,9 @@ import { SafeURLPipe } from '@shared/pipes/safe_url.pipe';
 // Required for bidirectional binding (ngModule):
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// Import CKEditor Module:
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 // Import all Input Control directives:
 import * as IC from '@shared/directives/input-control.directive';
 
@@ -65,6 +69,7 @@ import * as IC from '@shared/directives/input-control.directive';
     SettingsComponent,
     NotFoundComponent,
     ReferringSelectComponent,
+    InterviewDefaultComponent,
 
     //DICOM Viewer component (For patients):
     DcmViewerComponent,
@@ -112,7 +117,10 @@ import * as IC from '@shared/directives/input-control.directive';
     SharedRoutingModule,
     SharedMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    //CKEditor (Used by interview templates):
+    CKEditorModule
   ],
   exports: [
     // Shared components:
@@ -124,6 +132,7 @@ import * as IC from '@shared/directives/input-control.directive';
     SettingsComponent,
     NotFoundComponent,
     ReferringSelectComponent,
+    InterviewDefaultComponent,
     SharedMaterialModule,
 
     //DICOM Viewer component (For patients):

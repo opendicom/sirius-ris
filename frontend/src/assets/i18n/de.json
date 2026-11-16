@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Details",
+        "INTERVIEW": "Befragung",
+        "VALIDATION_ERROR_TOOLTIP": "Unter diesem Reiter gibt es Validierungsfehler"
+      },
       "TITLE": "Schritt 04 - Termindetails",
       "SUMMARY": {
         "TITLE": "Zusammenfassung:",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Fehler beim Versuch, die zugehörige Prozedur zu laden: ",
       "TABS": {
         "DETAILS": "Termindetails",
+        "INTERVIEW": "Befragung",
         "VALIDATION_ERROR_TOOLTIP": "Unter diesem Reiter gibt es Validierungsfehler",
         "COORDINATION_DETAILS": "Koordinationsdetails",
         "PREVIOUS_STUDIES": "Frühere Studien"
@@ -519,6 +525,7 @@
       "ACTIVE": "Aktiv",
       "INACTIVE": "Inaktiv",
       "APPOINTMENT_DETAILS_TAB": "Termindetails",
+      "INTERVIEW_TAB": "Befragung",
       "PROCEDURE_TAB": "Prozedur",
       "PREPARATION_DATA": "Vorbereitungsdaten:",
       "PROCEDURE": "Prozedur",

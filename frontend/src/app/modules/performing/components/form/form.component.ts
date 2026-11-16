@@ -36,12 +36,17 @@ export class FormComponent implements OnInit {
 
   //Initializate validation tab errors:
   public detailsTabErrors       : boolean = false;
+  public interviewTabErrors     : boolean = false;
   public injectionTabErrors     : boolean = false;
   public anesthesiaTabErrors    : boolean = false;
   public acquisitionTabErrors   : boolean = false;
 
   //Set loading state:
   public loading: boolean = false;
+
+  //Interview tab:
+  public hasInterview           : boolean = true;
+  public interviewForm?         : FormGroup;
 
   //Initializate available flow states:
   public availableFS            : any = {};
@@ -449,12 +454,12 @@ export class FormComponent implements OnInit {
       this.anesthesiaValidator = true;
     }
 
-    //Check details tab errors:
-    if(this.tabDetails.form.status == 'VALID'){
-      this.detailsTabErrors = false;
-    } else {
-      this.detailsTabErrors = true;
-    }
+    //Check details and interview tab errors:
+    const interviewControls = ['anamnesis', 'indications', 'private_health'];
+    const detailsControls = this.tabDetails.form.controls;
+
+    this.interviewTabErrors = interviewControls.some((key) => detailsControls[key].invalid);
+    this.detailsTabErrors = Object.keys(detailsControls).some((key) => !interviewControls.includes(key) && detailsControls[key].invalid);
 
     //Check injection tab errors:
     if(this.form.value.hasOwnProperty('injection')){
@@ -621,6 +626,11 @@ export class FormComponent implements OnInit {
   onCancel(){
     //Redirect to the list:
     this.sharedFunctions.gotoList(this.origin, this.router);
+  }
+
+  onWeightChanged(event: any){
+    //Weight input lives in the interview tab, the dose calculation in tabDetails:
+    this.tabDetails.setWeight(event);
   }
 
   async setCurrentAppointmentData(res: any, callback = () => {}) {
@@ -1025,6 +1035,14 @@ export class FormComponent implements OnInit {
   }
 
   async setAvailableFlowStates(currentFS: string, has_interview: any = undefined){
+    //Hide interview tab for procedures without interview:
+    if(has_interview === false && this.hasInterview){
+      this.hasInterview = false;
+
+      //The tabIndex received by routing considers the interview tab:
+      this.tabIndex = Math.max(Number(this.tabIndex) - 1, 0);
+    }
+
     //Initialize found flag:
     let foundFlag = false;
 
@@ -1115,6 +1133,9 @@ export class FormComponent implements OnInit {
         this.setCurrentAppointmentData(resAppointments, () => {
           //Excecute manual onInit childrens components:
           this.tabDetails.manualOnInit(resAppointments);
+
+          //Share the details form with the interview tab:
+          this.interviewForm = this.tabDetails.form;
 
           //Initialize sync_contrast_description field with DB data:
           this.form.get('injection.sync_contrast_description')?.setValue(resAppointments.data[0].contrast.description);

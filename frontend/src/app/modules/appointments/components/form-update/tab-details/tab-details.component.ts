@@ -11,7 +11,6 @@ import { AppointmentsService } from '@modules/appointments/services/appointments
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { objectKeys } from '@env/environment';                                              // Enviroments
-import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -30,9 +29,6 @@ export class TabDetailsComponent implements OnInit {
 
   //Boolean class binding objects:
   public booleanCancelation : Boolean = false;
-
-  //Create CKEditor component and configure them:
-  public customEditor = customBuildEditor;
 
   //Initializate reporting_delay_controller:
   public reporting_delay_controller : Boolean = false;
@@ -285,12 +281,14 @@ export class TabDetailsComponent implements OnInit {
 
   onSubmit(callback = (res: any) => {}, overbooking: Boolean = false){
     //Check that report before is not less than the appointment start date:
-    if(this.reporting_delay_controller === true){
-      const current_report_before = this.sharedFunctions.datetimeFulCalendarFormater(this.form.controls['report_before'].value, this.form.controls['report_before'].value);
+    //Empty or invalid values are handled by the required validator
+    if(this.reporting_delay_controller === true && this.form.controls['report_before'].value instanceof Date){
+      //Compare by calendar day:
+      const reportBeforeValue = this.form.controls['report_before'].value;
+      const reportBeforeDate = new Date(reportBeforeValue.getFullYear(), reportBeforeValue.getMonth(), reportBeforeValue.getDate());
 
-      //Convert text strings to Date objects for comparison:
-      const reportBeforeDate = new Date(current_report_before.start);
-      const currentDateTime = new Date(this.sharedProp.current_datetime.start);
+      const currentStart = new Date(this.sharedProp.current_datetime.start);
+      const currentDateTime = new Date(currentStart.getFullYear(), currentStart.getMonth(), currentStart.getDate());
 
       //Compare dates:
       if (reportBeforeDate < currentDateTime) {

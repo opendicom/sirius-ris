@@ -11,7 +11,6 @@ import { AppointmentsService } from '@modules/appointments/services/appointments
 import { FileManagerService } from '@shared/services/file-manager.service';                 // File manager service
 import { I18nService } from '@shared/services/i18n.service';                                // I18n Service
 import { regexObjectId, ISO_3166, objectKeys } from '@env/environment';                     // Enviroments
-import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';               // CKEditor
 //--------------------------------------------------------------------------------------------------------------------//
 
 @Component({
@@ -28,12 +27,13 @@ export class FormInsertComponent implements OnInit {
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
-  //Create CKEditor component and configure them:
-  public customEditor = customBuildEditor;
-
-  //Create CKEditor validator:
+  //Create CKEditor validator (Passed to app-interview-default):
   public anamnesisValidator = true;
   public indicationsValidator = true;
+
+  //Set tab errors flags (Validation warnings on tabs):
+  public detailsTabErrors   : boolean = false;
+  public interviewTabErrors : boolean = false;
 
   //Set appointment_request flag:
   public appointment_request    : any;
@@ -255,6 +255,16 @@ export class FormInsertComponent implements OnInit {
     // } else {
     //   this.indicationsValidator = true;
     // }
+
+    //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state:
+    this.form.markAllAsTouched();
+
+    //Check interview tab errors (Controls displayed by app-interview-default):
+    const interviewControls = ['anamnesis', 'indications', 'private_health'];
+    this.interviewTabErrors = interviewControls.some((key) => this.form.controls[key].invalid);
+
+    //Check details tab errors (All the other controls):
+    this.detailsTabErrors = Object.keys(this.form.controls).some((key) => !interviewControls.includes(key) && this.form.controls[key].invalid);
 
     //Validate fields:
     if(this.form.valid){

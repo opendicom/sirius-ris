@@ -113,6 +113,11 @@
       }
     },
     "FORM_INSERT": {
+      "TABS": {
+        "DETAILS": "Détails",
+        "INTERVIEW": "Entretien",
+        "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet"
+      },
       "TITLE": "Étape 04 - Détails du rendez-vous",
       "SUMMARY": {
         "TITLE": "Résumé :",
@@ -268,6 +273,7 @@
       "PROCEDURE_LOAD_ERROR": "Erreur lors de la tentative de chargement de la procédure associée : ",
       "TABS": {
         "DETAILS": "Détails du rendez-vous",
+        "INTERVIEW": "Entretien",
         "VALIDATION_ERROR_TOOLTIP": "Il y a des erreurs de validation sous cet onglet",
         "COORDINATION_DETAILS": "Détails de la coordination",
         "PREVIOUS_STUDIES": "Études précédentes"
@@ -519,6 +525,7 @@
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif",
       "APPOINTMENT_DETAILS_TAB": "Détails du rendez-vous",
+      "INTERVIEW_TAB": "Entretien",
       "PROCEDURE_TAB": "Procédure",
       "PREPARATION_DATA": "Données de préparation :",
       "PROCEDURE": "Procédure",

@@ -38,7 +38,7 @@
                   <span *ngFor="let currentNested of sharedFunctions.nested_response.data">
                     <span *ngIf="element._id == currentNested.fk_appointment">
                       <!-- update performing -->
-                      <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="{{ 'CHECK-IN.LIST.EDIT-STUDY' | i18n }}" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P03' ? '/1' : currentNested.flow_state == 'P04' ? '/3' : '' }}">
+                      <button mat-mini-fab class="small_button" type="button" color="primary" matTooltip="{{ 'CHECK-IN.LIST.EDIT-STUDY' | i18n }}" routerLink="/performing/form/update/{{ currentNested._id }}/check-in{{ currentNested.flow_state == 'P02' ? '/1' : currentNested.flow_state == 'P03' ? '/2' : currentNested.flow_state == 'P04' ? '/4' : '' }}">
                         <mat-icon>edit</mat-icon>
                       </button>
         
