@@ -57,6 +57,9 @@ export class SetPatientComponent implements OnInit {
   //Set appointment_request flag:
   public appointment_request    : any;
 
+  //Last document checked against identity-service (Prevents asking again for the same document):
+  private identityState : { checkedDocument: string } = { checkedDocument: '' };
+
   //Re-define method in component to use in HTML view:
   public getKeys: any;
 
@@ -291,6 +294,9 @@ export class SetPatientComponent implements OnInit {
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
 
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0].person);
+
             //UPDATE PERSON AND INSERT USER:
             } else {
               //Clear data to FormControl elements:
@@ -323,6 +329,9 @@ export class SetPatientComponent implements OnInit {
               //Get property keys with values:
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
+
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0]);
             }
 
           //INSERT PERSON AND USER:
@@ -354,6 +363,9 @@ export class SetPatientComponent implements OnInit {
             //Set operations:
             this.personOperation = 'insert';
             this.userOperation = 'insert';
+
+            //Person not found in Sirius RIS DB, search in identity-service:
+            this.checkIdentityService(null);
           }
 
           //Execute callback:
@@ -368,6 +380,14 @@ export class SetPatientComponent implements OnInit {
       }
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK IDENTITY SERVICE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkIdentityService(siriusPerson: any | null){
+    this.userService.checkIdentity(this.form, siriusPerson, this.identityState);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onSetEmail(){
     //Check the email field is not empty:
