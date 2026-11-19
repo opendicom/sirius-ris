@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { FormGroup } from '@angular/forms';                                             // Reactive form handling tools
+import { IdentityService, IdentityDifference } from '@shared/services/identity.service'; // Identity Service (identity-service)
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -20,6 +21,7 @@ export class UsersService {
   //Inject services to the constructor:
   constructor(
     private sharedFunctions : SharedFunctionsService,
+    private identityService : IdentityService,
     public i18n             : I18nService
   ) { }
 
@@ -82,6 +84,105 @@ export class UsersService {
 
     //Return selected Concession:
     return selectedConcession;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET FORM DOCUMENT:
+  //--------------------------------------------------------------------------------------------------------------------//
+  getFormDocument(form: FormGroup, group: string = 'person'): string {
+    return String(form.value[group].document || '').trim();
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK IDENTITY (identity-service):
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkIdentity(form: FormGroup, siriusPerson: any | null, state: { checkedDocument: string }, group: string = 'person', sourceColumnKey?: string): void {
+    //Check identity-service status:
+    if(!this.identityService.isEnabled()){ return; }
+
+    //Get current document:
+    const document = this.getFormDocument(form, group);
+    if(document === ''){ return; }
+
+    //Check each document only once:
+    if(document === state.checkedDocument){ return; }
+
+    //Only the document type known by identity-service is searched:
+    if(!this.identityService.isSupportedDocument(form.value[group].doc_country_code, form.value[group].doc_type)){ return; }
+
+    //Find in identity-service:
+    this.identityService.find(document).subscribe((res) => {
+      //Ignore outdated responses:
+      if(this.getFormDocument(form, group) !== document){ return; }
+
+      //Check request error:
+      if(res.error){
+        this.sharedFunctions.sendMessage(this.i18n.instant('USERS.FORM.IDENTITY_SERVICE_ERROR'));
+        return;
+      }
+
+      //Mark document as checked:
+      state.checkedDocument = document;
+
+      //Check result:
+      if(!res.found){ return; }
+
+      if(siriusPerson === null){
+        //NOT IN SIRIUS RIS DB: Load identity-service data into the form:
+        this.setIdentityPerson(res.person, form, group);
+
+      } else {
+        //IN BOTH: Compare data:
+        const differences: IdentityDifference[] = this.identityService.compare(siriusPerson, res.person);
+
+        //Without differences the Sirius RIS data remains loaded, otherwise the user must decide:
+        if(differences.length > 0){
+          this.sharedFunctions.openDialog('identity_compare', { differences: differences, sourceColumnKey: sourceColumnKey }, (selected: any) => {
+            //Apply the fields selected from identity-service:
+            if(selected){ this.applyIdentityFields(selected, form, group); }
+          });
+        }
+      }
+    });
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // SET IDENTITY PERSON (identity-service data -> form person fields):
+  //--------------------------------------------------------------------------------------------------------------------//
+  setIdentityPerson(person: any, form: FormGroup, group: string = 'person'): void {
+    const setIfEmpty = (control: string, value: any) => {
+      if(value !== '' && value !== null && value !== undefined && !form.get(control)?.value){
+        form.get(control)?.setValue(value);
+      }
+    };
+
+    setIfEmpty(group + '.name_01', person.name_01);
+    setIfEmpty(group + '.name_02', person.name_02);
+    setIfEmpty(group + '.surname_01', person.surname_01);
+    setIfEmpty(group + '.surname_02', person.surname_02);
+    setIfEmpty(group + '.gender', person.gender);
+    setIfEmpty(group + '.birth_date', person.birth_date);
+    setIfEmpty(group + '.phone_numbers[0]', person.phone_numbers[0]);
+    setIfEmpty(group + '.phone_numbers[1]', person.phone_numbers[1]);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // APPLY IDENTITY FIELDS:
+  //--------------------------------------------------------------------------------------------------------------------//
+  applyIdentityFields(selected: { [field: string]: any }, form: FormGroup, group: string = 'person'): void {
+    Object.keys(selected).forEach((field: string) => {
+      //Birth date is a Date in the form:
+      const value = field === 'birth_date' ? this.identityService.parseDate(selected[field]) : selected[field];
+      form.get(group + '.' + field)?.setValue(value);
+    });
   }
   //--------------------------------------------------------------------------------------------------------------------//
 

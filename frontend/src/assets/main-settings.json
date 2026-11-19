@@ -16,6 +16,16 @@
         "default_utc": "UTC-3"
     },
 
+    "identityService": {
+        "enabled": false,
+        "host": "http://localhost:3000/",
+        "apiKey": "YOUR_SECRET_API_KEY",
+        "supportedDocument": {
+            "doc_country_code": "858",
+            "doc_type": "1"
+        }
+    },
+
     "passKeywords": ["eucalipto", "pino", "roble", "cedro", "romero", "ficus", "cactus", "tacuara", "manzano", "higuera", "tero", "carpincho", "mulita", "yacare", "cardenal", "golondrina", "benteveo", "chaja", "jaguar", "dorado"],
 
     "documentsParsers": {

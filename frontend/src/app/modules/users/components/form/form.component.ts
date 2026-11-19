@@ -66,6 +66,9 @@ export class FormComponent implements OnInit {
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = true;
 
+  //Last document checked against identity-service (Prevents asking again for the same document):
+  private identityState : { checkedDocument: string } = { checkedDocument: '' };
+
   //Form destiny:
   public destiny: any;
 
@@ -217,6 +220,9 @@ export class FormComponent implements OnInit {
 
                   //Get property keys with values:
                   this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
+
+                  //Document loaded from the DB:
+                  this.identityState.checkedDocument = this.userService.getFormDocument(this.form);
                 }
               }
             },
@@ -238,6 +244,9 @@ export class FormComponent implements OnInit {
             doc_type          : new_document[1],
             document          : new_document[2],
           };
+
+          //Person not found in Sirius RIS DB, search in identity-service:
+          this.checkIdentityService(null);
         }
       }
 
@@ -288,6 +297,9 @@ export class FormComponent implements OnInit {
 
             //Validate document (Enable submit document):
             this.validateDocument();
+
+            //Document loaded from the DB:
+            this.identityState.checkedDocument = this.userService.getFormDocument(this.form);
 
           } else {
             //Return to the list with request error message:
@@ -429,6 +441,9 @@ export class FormComponent implements OnInit {
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
 
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0].person);
+
             //UPDATE PERSON AND INSERT USER:
             } else {
               //Clear data to FormControl elements:
@@ -456,6 +471,9 @@ export class FormComponent implements OnInit {
               //Get property keys with values:
               this.personKeysWithValues = this.sharedFunctions.getKeys(this.form.value.person, false, true);
               this.userKeysWithValues = this.sharedFunctions.getKeys(this.form.value.user, false, true);
+
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0]);
             }
 
           //INSERT PERSON AND USER:
@@ -482,6 +500,9 @@ export class FormComponent implements OnInit {
             //Set operations:
             this.personOperation = 'insert';
             this.userOperation = 'insert';
+
+            //Person not found in Sirius RIS DB, search in identity-service:
+            this.checkIdentityService(null);
           }
         }
       });
@@ -493,6 +514,14 @@ export class FormComponent implements OnInit {
       }
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK IDENTITY SERVICE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkIdentityService(siriusPerson: any | null){
+    this.userService.checkIdentity(this.form, siriusPerson, this.identityState);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onSetEmail(){
     //Check the email field is not empty:
