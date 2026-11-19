@@ -9,6 +9,7 @@ import { SharedPropertiesService } from '@shared/services/shared-properties.serv
 import { SharedFunctionsService } from '@shared/services/shared-functions.service';     // Shared Functions
 import { I18nService } from '@shared/services/i18n.service';                            // I18n Service
 import { ValidateDocumentsService } from '@shared/services/validate-documents.service'; // Validate documents service
+import { UsersService } from '@modules/users/services/users.service';                   // User Services (Shared identity-service logic)
 import { map, mergeMap } from 'rxjs/operators';                                         // Reactive Extensions (RxJS)
 import { ISO_3166, objectKeys } from '@env/environment';                                // Enviroments
 import * as customBuildEditor from '@assets/plugins/customBuildCKE/ckeditor';           // CKEditor
@@ -44,6 +45,14 @@ export class FormRequestComponent implements OnInit {
   public registered_doc_type  : boolean = false;
   public validation_result    : boolean = false;
   public disabled_save_button : boolean = false;
+
+  //Last document checked against identity-service (Prevents asking again for the same document):
+  private identityState : { checkedDocument: string } = { checkedDocument: '' };
+
+  //Update case - Patient data saved in the request:
+  private originalPatient     : any = null;
+  private originalDocumentKey : string = '';
+  private lastDocumentKey     : string = '';
 
   //Initializate response & params objects (Used by onSetDocument's duplicate check pipe):
   private response      : any = {};
@@ -128,6 +137,7 @@ export class FormRequestComponent implements OnInit {
     public sharedProp       : SharedPropertiesService,
     public sharedFunctions  : SharedFunctionsService,
     private sharedValidate  : ValidateDocumentsService,
+    private userService     : UsersService,
     private i18n            : I18nService
   ){
     //Get Logged User Information:
@@ -185,6 +195,14 @@ export class FormRequestComponent implements OnInit {
 
             //Validate document (Set validation icon state for the loaded patient):
             this.validateDocument();
+
+            //Document loaded from the DB:
+            this.identityState.checkedDocument = this.userService.getFormDocument(this.form, 'patient');
+
+            //Preserve the patient data saved in the request:
+            this.originalPatient = res.data[0].patient || null;
+            this.originalDocumentKey = this.getDocumentKey();
+            this.lastDocumentKey = this.originalDocumentKey;
 
           } else {
             //Return to the list with request error message:
@@ -326,6 +344,9 @@ export class FormRequestComponent implements OnInit {
         })
       );
 
+      //Document of this lookup:
+      const documentKey = this.getDocumentKey();
+
       //Observe content (Subscribe):
       obsUser.subscribe({
         next: (res) => {
@@ -340,15 +361,41 @@ export class FormRequestComponent implements OnInit {
 
               if(res.data[0].email){ this.form.get('patient.email')?.setValue(res.data[0].email); }
 
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0].person);
+
             //Found person WITHOUT an associated user account (Only person data available):
             } else {
               this.setPatientFromPerson(res.data[0]);
+
+              //Check person data against identity-service:
+              this.checkIdentityService(res.data[0]);
             }
 
           //Genuinely new patient (No person/user found):
           } else {
-            this.clearPatientFields(true);
+            //Update case only (Request loaded from the DB):
+            const isUpdate                = this.originalPatient !== null;
+            const sameDocumentAsLastLookup = isUpdate && documentKey === this.lastDocumentKey;
+            const backToOriginalDocument  = isUpdate && documentKey === this.originalDocumentKey;
+
+            //Same document as the last lookup:
+            if(!sameDocumentAsLastLookup){
+              this.clearPatientFields(true);
+
+              if(backToOriginalDocument){
+                //Back to the original document:
+                this.checkIdentityService(this.restoreOriginalPatient(), true);
+
+              } else {
+                //Person not found in Sirius RIS DB, search in identity-service:
+                this.checkIdentityService(null);
+              }
+            }
           }
+
+          //Preserve the document of this lookup:
+          this.lastDocumentKey = documentKey;
         }
       });
     } else {
@@ -359,6 +406,45 @@ export class FormRequestComponent implements OnInit {
       }
     }
   }
+
+  //Get the document key of the patient form:
+  private getDocumentKey(): string{
+    const patient = this.form.value.patient;
+    return [patient.doc_country_code, patient.doc_type, String(patient.document || '').trim().toUpperCase()].join('|');
+  }
+
+  //Restore the patient data saved in the request and return it as a person:
+  private restoreOriginalPatient(): any{
+    const original = this.originalPatient;
+    const phones = Array.isArray(original.phone_numbers) ? original.phone_numbers : [];
+
+    this.form.get('patient.name_01')?.setValue(original.name_01 || '');
+    this.form.get('patient.name_02')?.setValue(original.name_02 || '');
+    this.form.get('patient.surname_01')?.setValue(original.surname_01 || '');
+    this.form.get('patient.surname_02')?.setValue(original.surname_02 || '');
+    this.form.get('patient.gender')?.setValue((original.gender !== undefined && original.gender !== null) ? `${original.gender}` : '');
+    this.form.get('patient.phone_numbers[0]')?.setValue(phones[0] || '');
+    this.form.get('patient.birth_date')?.setValue(original.birth_date ? new Date(original.birth_date.split('T')[0].replace(/-/g, '/')) : '');
+    this.form.get('patient.email')?.setValue(original.email || '');
+
+    return {
+      name_01     : original.name_01 || '',
+      name_02     : original.name_02 || '',
+      surname_01  : original.surname_01 || '',
+      surname_02  : original.surname_02 || '',
+      gender      : (original.gender !== undefined && original.gender !== null) ? `${original.gender}` : '',
+      birth_date  : original.birth_date || '',
+      phone_numbers: phones
+    };
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // CHECK IDENTITY SERVICE:
+  //--------------------------------------------------------------------------------------------------------------------//
+  checkIdentityService(siriusPerson: any | null, fromRequest: boolean = false): void{
+    this.userService.checkIdentity(this.form, siriusPerson, this.identityState, 'patient', fromRequest ? 'DIALOGS.IDENTITY_COMPARE.REQUEST_COLUMN' : undefined);
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   //Check if the entered email already belongs to a registered person/patient (Same duplicate-check pattern as users/form and appointments/set-patient):
   onSetEmail(): void{
