@@ -91,8 +91,8 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // GET FORM DOCUMENT:
   //--------------------------------------------------------------------------------------------------------------------//
-  getFormDocument(form: FormGroup): string {
-    return String(form.value.person.document || '').trim();
+  getFormDocument(form: FormGroup, group: string = 'person'): string {
+    return String(form.value[group].document || '').trim();
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -100,24 +100,24 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // CHECK IDENTITY (identity-service):
   //--------------------------------------------------------------------------------------------------------------------//
-  checkIdentity(form: FormGroup, siriusPerson: any | null, state: { checkedDocument: string }): void {
+  checkIdentity(form: FormGroup, siriusPerson: any | null, state: { checkedDocument: string }, group: string = 'person', sourceColumnKey?: string): void {
     //Check identity-service status:
     if(!this.identityService.isEnabled()){ return; }
 
     //Get current document:
-    const document = this.getFormDocument(form);
+    const document = this.getFormDocument(form, group);
     if(document === ''){ return; }
 
     //Check each document only once:
     if(document === state.checkedDocument){ return; }
 
     //Only the document type known by identity-service is searched:
-    if(!this.identityService.isSupportedDocument(form.value.person.doc_country_code, form.value.person.doc_type)){ return; }
+    if(!this.identityService.isSupportedDocument(form.value[group].doc_country_code, form.value[group].doc_type)){ return; }
 
     //Find in identity-service:
     this.identityService.find(document).subscribe((res) => {
       //Ignore outdated responses:
-      if(this.getFormDocument(form) !== document){ return; }
+      if(this.getFormDocument(form, group) !== document){ return; }
 
       //Check request error:
       if(res.error){
@@ -133,7 +133,7 @@ export class UsersService {
 
       if(siriusPerson === null){
         //NOT IN SIRIUS RIS DB: Load identity-service data into the form:
-        this.setIdentityPerson(res.person, form);
+        this.setIdentityPerson(res.person, form, group);
 
       } else {
         //IN BOTH: Compare data:
@@ -141,9 +141,9 @@ export class UsersService {
 
         //Without differences the Sirius RIS data remains loaded, otherwise the user must decide:
         if(differences.length > 0){
-          this.sharedFunctions.openDialog('identity_compare', { differences: differences }, (selected: any) => {
+          this.sharedFunctions.openDialog('identity_compare', { differences: differences, sourceColumnKey: sourceColumnKey }, (selected: any) => {
             //Apply the fields selected from identity-service:
-            if(selected){ this.applyIdentityFields(selected, form); }
+            if(selected){ this.applyIdentityFields(selected, form, group); }
           });
         }
       }
@@ -155,21 +155,21 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // SET IDENTITY PERSON (identity-service data -> form person fields):
   //--------------------------------------------------------------------------------------------------------------------//
-  setIdentityPerson(person: any, form: FormGroup): void {
+  setIdentityPerson(person: any, form: FormGroup, group: string = 'person'): void {
     const setIfEmpty = (control: string, value: any) => {
       if(value !== '' && value !== null && value !== undefined && !form.get(control)?.value){
         form.get(control)?.setValue(value);
       }
     };
 
-    setIfEmpty('person.name_01', person.name_01);
-    setIfEmpty('person.name_02', person.name_02);
-    setIfEmpty('person.surname_01', person.surname_01);
-    setIfEmpty('person.surname_02', person.surname_02);
-    setIfEmpty('person.gender', person.gender);
-    setIfEmpty('person.birth_date', person.birth_date);
-    setIfEmpty('person.phone_numbers[0]', person.phone_numbers[0]);
-    setIfEmpty('person.phone_numbers[1]', person.phone_numbers[1]);
+    setIfEmpty(group + '.name_01', person.name_01);
+    setIfEmpty(group + '.name_02', person.name_02);
+    setIfEmpty(group + '.surname_01', person.surname_01);
+    setIfEmpty(group + '.surname_02', person.surname_02);
+    setIfEmpty(group + '.gender', person.gender);
+    setIfEmpty(group + '.birth_date', person.birth_date);
+    setIfEmpty(group + '.phone_numbers[0]', person.phone_numbers[0]);
+    setIfEmpty(group + '.phone_numbers[1]', person.phone_numbers[1]);
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
@@ -177,11 +177,11 @@ export class UsersService {
   //--------------------------------------------------------------------------------------------------------------------//
   // APPLY IDENTITY FIELDS:
   //--------------------------------------------------------------------------------------------------------------------//
-  applyIdentityFields(selected: { [field: string]: any }, form: FormGroup): void {
+  applyIdentityFields(selected: { [field: string]: any }, form: FormGroup, group: string = 'person'): void {
     Object.keys(selected).forEach((field: string) => {
       //Birth date is a Date in the form:
       const value = field === 'birth_date' ? this.identityService.parseDate(selected[field]) : selected[field];
-      form.get('person.' + field)?.setValue(value);
+      form.get(group + '.' + field)?.setValue(value);
     });
   }
   //--------------------------------------------------------------------------------------------------------------------//

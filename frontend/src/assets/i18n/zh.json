@@ -992,6 +992,7 @@
       "MESSAGE": "Sirius RIS 中该人员的数据与 identity-service 中的数据不同。请为每个字段选择要保留的值：",
       "FIELD": "字段",
       "SIRIUS_COLUMN": "Sirius RIS",
+      "REQUEST_COLUMN": "申请",
       "IDENTITY_COLUMN": "Identity service",
       "FIELDS": {
         "name_01": "名 1",

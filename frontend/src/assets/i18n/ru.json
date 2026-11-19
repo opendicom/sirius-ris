@@ -992,6 +992,7 @@
       "MESSAGE": "Данные о человеке в Sirius RIS отличаются от данных в identity-service. Выберите, какое значение сохранить для каждого поля:",
       "FIELD": "Поле",
       "SIRIUS_COLUMN": "Sirius RIS",
+      "REQUEST_COLUMN": "Заявка",
       "IDENTITY_COLUMN": "Identity service",
       "FIELDS": {
         "name_01": "Имя 1",
