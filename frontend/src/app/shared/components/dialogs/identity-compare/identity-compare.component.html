@@ -26,12 +26,12 @@
   </table>
 
   <div class="select-all-buttons">
-    <button mat-stroked-button type="button" (click)="selectAll('sirius')">{{ 'DIALOGS.IDENTITY_COMPARE.USE_ALL_SIRIUS' | i18n }}</button>&nbsp;
-    <button mat-stroked-button type="button" (click)="selectAll('identity')">{{ 'DIALOGS.IDENTITY_COMPARE.USE_ALL_IDENTITY' | i18n }}</button>
+    <button mat-flat-button type="button" color="accent" (click)="selectAll('sirius')">{{ 'DIALOGS.IDENTITY_COMPARE.USE_ALL_SIRIUS' | i18n }}</button>&nbsp;
+    <button mat-flat-button type="button" color="accent" (click)="selectAll('identity')">{{ 'DIALOGS.IDENTITY_COMPARE.USE_ALL_IDENTITY' | i18n }}</button>
   </div>
 </div>
 <div mat-dialog-actions>
   <span class="mat-spacer"></span>
-  <button mat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.IDENTITY_COMPARE.CANCEL' | i18n }}</button>
+  <button mat-flat-button mat-dialog-close [mat-dialog-close]="false">{{ 'DIALOGS.IDENTITY_COMPARE.CANCEL' | i18n }}</button>
   <button mat-flat-button color="primary" type="button" (click)="onAccept()" cdkFocusInitial>{{ 'DIALOGS.IDENTITY_COMPARE.ACCEPT' | i18n }}</button>
 </div>

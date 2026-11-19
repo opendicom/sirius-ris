@@ -16,6 +16,13 @@
         "default_utc": "${SIRIUS_FRONTEND_DEFAULT_UTC}"
     },
 
+    "identityService": {
+        "enabled": ${SIRIUS_FRONTEND_IDENTITY_SERVICE_ENABLED},
+        "host": "${SIRIUS_FRONTEND_IDENTITY_SERVICE_HOST}",
+        "apiKey": "${SIRIUS_FRONTEND_IDENTITY_SERVICE_APIKEY}",
+        "supportedDocument": ${SIRIUS_FRONTEND_IDENTITY_SERVICE_SUPPORTED_DOCS}
+    },
+
     "passKeywords": ${SIRIUS_FRONTEND_PASS_KEYWORDS},
 
     "documentsParsers": ${SIRIUS_FRONTEND_DOC_PARSERS},
