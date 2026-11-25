@@ -5,13 +5,12 @@
       <h4>{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_LABEL' | i18n }}</h4>
       <mat-form-field appearance="fill" class="large">
         <mat-label>{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_PLACEHOLDER' | i18n }}</mat-label>
-        <mat-select formControlName="domain" (selectionChange)="onChangeBranch($event)" placeholder="{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_SELECT' | i18n }}">
-          <div *ngFor="let currentBranch of availableBranches">
-            <div *ngFor="let currentOrganization of availableOrganizations">
-              <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentOrganization._id + '.' + currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }}</mat-option>
-            </div>
-          </div>
-        </mat-select>
+        <input #inputBranch type="text" matInput formControlName="domain_input" (keyup)="filterBranches($event)" [matAutocomplete]="autoBranch" placeholder="{{ 'PROCEDURE_CATEGORIES.FORM.BRANCH_SELECT' | i18n }}">
+        <mat-autocomplete #autoBranch="matAutocomplete">
+          <mat-option (onSelectionChange)="selectBranch(currentBranch)" *ngFor="let currentBranch of filteredBranches" [value]="getBranchLabel(currentBranch)">
+            <span [innerHTML]="getBranchLabel(currentBranch) | highlighter : inputBranch.value"></span>
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <h4>{{ 'PROCEDURE_CATEGORIES.FORM.NAME_LABEL' | i18n }}</h4>

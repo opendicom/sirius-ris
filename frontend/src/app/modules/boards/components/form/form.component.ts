@@ -27,6 +27,9 @@ export class FormComponent implements OnInit {
   public availableOrganizations: any;
   public availableBranches: any;
 
+  //Filtered list used by the branch matAutocomplete:
+  public filteredBranches: any[] = [];
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -66,6 +69,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_branch : ['', [Validators.required]],
+      fk_branch_input : [''], //Visible text input for branch matAutocomplete.
       name      : ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       details   : ['', [Validators.minLength(3), Validators.maxLength(128)]],
       status    : ['true']
@@ -97,6 +101,7 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               fk_branch : [res.data[0].fk_branch, [Validators.required]],
+              fk_branch_input : [''],
               name      : [res.data[0].name, [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
               details   : [res.data[0].details ?? '', [Validators.minLength(3), Validators.maxLength(128)]],
               status    : [ `${res.data[0].status}` ] //Use back tip notation to convert string
@@ -107,6 +112,9 @@ export class FormComponent implements OnInit {
               this.selectedScreenController = true;
               this.previewScreen = this.sharedFunctions.getLogoDataURI(res.data[0].base64_screen);
             }
+
+            //Set visible branch text (matAutocomplete):
+            this.setBranchInput();
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -135,6 +143,9 @@ export class FormComponent implements OnInit {
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+
+      //Remove visible matAutocomplete text:
+      delete this.form.value.fk_branch_input;
 
       //Check if there is a screen file selected (Multipart form):
       if(this.selectedFile !== null){
@@ -184,13 +195,54 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+
+      //Refresh visible branch text (Labels depend on organizations):
+      this.setBranchInput();
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
+      this.filteredBranches = res.data || [];
+
+      //Set visible branch text (Update case, if the form data arrived first):
+      this.setBranchInput();
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  filterBranches(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter branches by their built label:
+    this.filteredBranches = (this.availableBranches || []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('fk_branch')?.setValue(currentBranch._id);
+    this.form.get('fk_branch_input')?.setValue(this.getBranchLabel(currentBranch));
+  }
+
+  setBranchInput(){
+    //Find the selected branch and set the visible input text:
+    const selectedBranch = (this.availableBranches || []).find((currentBranch: any) => currentBranch._id == this.form.value.fk_branch);
+    if(selectedBranch){
+      this.form.get('fk_branch_input')?.setValue(this.getBranchLabel(selectedBranch));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onDeleteFileRef(fieldName: string){
     this.sharedFunctions.deleteFileRef(this.sharedProp.element, this._id, fieldName, (res) => {

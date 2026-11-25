@@ -19,6 +19,9 @@ export class FormComponent implements OnInit {
   //Set references objects:
   public availableOrganizations: any;
   public availableBranches: any;
+
+  //Filtered list used by the branch matAutocomplete:
+  public filteredBranches: any[] = [];
   public availableProcedures: any;
 
   //Re-define method in component to use in HTML view:
@@ -66,6 +69,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       domain          : [ '', [Validators.required] ],
+      domain_input    : [ '' ], //Visible text input for branch matAutocomplete.
       name            : [ '', [Validators.required] ],
       fk_procedures : new FormControl({ value: [], disabled: true }, Validators.required)
     });
@@ -98,9 +102,13 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               domain          : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
+              domain_input    : [ '' ],
               name            : res.data[0].name,
               fk_procedures : new FormControl({ value: [] }, Validators.required),
             });
+
+            //Set visible branch text (matAutocomplete):
+            this.setBranchInput();
 
             //Send data to FormControl elements (Arrays - Mat-Select Multiple):
             this.form.controls['fk_procedures'].setValue(res.data[0].fk_procedures);
@@ -150,6 +158,9 @@ export class FormComponent implements OnInit {
   onSubmit(){
     //Validate fields:
     if(this.form.valid){
+      //Remove visible matAutocomplete text:
+      delete this.form.value.domain_input;
+
       //Data normalization - Domain:
       const domain = this.form.value.domain.split('.');
       this.form.value.domain = {
@@ -188,11 +199,55 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+
+      //Refresh visible branch text (Labels depend on organizations):
+      this.setBranchInput();
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
+      this.filteredBranches = res.data || [];
+
+      //Set visible branch text (Update case, if the form data arrived first):
+      this.setBranchInput();
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  filterBranches(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter branches by their built label:
+    this.filteredBranches = (this.availableBranches || []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('domain')?.setValue(currentBranch.fk_organization + '.' + currentBranch._id);
+    this.form.get('domain_input')?.setValue(this.getBranchLabel(currentBranch));
+
+    //Find dependent references for the selected branch:
+    this.onChangeBranch({ value: this.form.get('domain')?.value });
+  }
+
+  setBranchInput(){
+    //Find the selected branch and set the visible input text:
+    const selectedBranch = (this.availableBranches || []).find((currentBranch: any) => (currentBranch.fk_organization + '.' + currentBranch._id) == this.form.value.domain);
+    if(selectedBranch){
+      this.form.get('domain_input')?.setValue(this.getBranchLabel(selectedBranch));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

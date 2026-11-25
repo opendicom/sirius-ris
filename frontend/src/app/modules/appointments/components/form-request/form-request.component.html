@@ -136,13 +136,12 @@
             <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_LABEL' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_PLACEHOLDER' | i18n }}</mat-label>
-              <mat-select formControlName="branch" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_SELECT' | i18n }}" (selectionChange)="onImagingBranchChange($event.value)">
-                <div *ngFor="let currentBranch of availableBranches">
-                  <div *ngFor="let currentOrganization of availableOrganizations">
-                    <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
-                  </div>
-                </div>
-              </mat-select>
+              <input #inputBranch type="text" matInput formControlName="branch_input" (keyup)="filterBranches($event)" [matAutocomplete]="autoBranch" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.IMAGING_SELECT' | i18n }}">
+              <mat-autocomplete #autoBranch="matAutocomplete">
+                <mat-option (onSelectionChange)="selectBranch(currentBranch)" *ngFor="let currentBranch of filteredBranches" [value]="getBranchLabel(currentBranch)">
+                  <span [innerHTML]="getBranchLabel(currentBranch) | highlighter : inputBranch.value"></span>
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </div>
 
@@ -153,11 +152,12 @@
             <h4>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_LABEL' | i18n }}:</h4>
             <mat-form-field appearance="fill" class="large">
               <mat-label>{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_PLACEHOLDER' | i18n }}</mat-label>
-              <mat-select formControlName="organization" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_SELECT' | i18n }}">
-                <div *ngFor="let currentOrganization of availableOrganizations">
-                  <mat-option value="{{ currentOrganization._id }}">{{ currentOrganization.short_name }} ({{ currentOrganization.name }})</mat-option>
-                </div>
-              </mat-select>
+              <input #inputOrganization type="text" matInput formControlName="organization_input" (keyup)="filterOrganizations($event)" [matAutocomplete]="autoOrganization" placeholder="{{ 'APPOINTMENTS.FORM_REQUEST.FORM.REFERRING_SELECT' | i18n }}">
+              <mat-autocomplete #autoOrganization="matAutocomplete">
+                <mat-option (onSelectionChange)="selectOrganization(currentOrganization)" *ngFor="let currentOrganization of filteredOrganizations" [value]="getOrganizationLabel(currentOrganization)">
+                  <span [innerHTML]="getOrganizationLabel(currentOrganization) | highlighter : inputOrganization.value"></span>
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </div>
 
