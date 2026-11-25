@@ -66,9 +66,9 @@ module.exports = async (req, res) => {
                             { "flow_state": "P09" },
                             { "status": true },
 
-                            //Date range condition (Performing creation date):
-                            { "createdAt": { "$gte": new Date(start_date + "T00:00:00.000Z") } },
-                            { "createdAt": { "$lte": new Date(end_date + "T23:59:59.000Z") } }
+                            //Date range condition (Performing date, when the study was performed):
+                            { "date": { "$gte": new Date(start_date + "T00:00:00.000Z") } },
+                            { "date": { "$lte": new Date(end_date + "T23:59:59.000Z") } }
                         ]
                     }},
 
@@ -102,24 +102,27 @@ module.exports = async (req, res) => {
                     }},
                     { $unwind: { path: "$modality", preserveNullAndEmptyArrays: true } },
 
-                    //Reports (Lookup first authenticated report created for this performing, sorted by createdAt ascending):
+                    //Reports (Lookup first authenticated report for this performing, sorted by authentication datetime ascending):
                     { $lookup: {
                         from: 'reports',
                         let: { performing_id: "$_id" },
                         pipeline: [
-                            { $match: { $expr: { "$eq": ["$fk_performing", "$$performing_id"] } } },
-                            { $sort: { createdAt: 1 } },
+                            { $match: {
+                                $expr: { "$eq": ["$fk_performing", "$$performing_id"] },
+                                "authenticated.datetime": { $exists: true, $ne: null }
+                            }},
+                            { $sort: { "authenticated.datetime": 1 } },
                             { $limit: 1 }
                         ],
                         as: 'report',
                     }},
-                    { $unwind: { path: "$report", preserveNullAndEmptyArrays: false } }, //Only performing with at least one report.
+                    { $unwind: { path: "$report", preserveNullAndEmptyArrays: false } }, //Only performing with at least one authenticated report.
 
                     //Project only the fields needed to calculate the delay per modality:
                     { $project: {
                         _id: 0,
-                        performing_created: "$createdAt",
-                        report_created: "$report.createdAt",
+                        performing_date: "$date",
+                        report_authenticated: "$report.authenticated.datetime",
                         modality_code_value: "$modality.code_value"
                     }}
                 ];
@@ -131,7 +134,7 @@ module.exports = async (req, res) => {
                     //Sum days passed per modality:
                     const modalityTotals = {};
                     data.forEach((element) => {
-                        const daysPassed = mainServices.getDaysPassed(element.performing_created, element.report_created);
+                        const daysPassed = mainServices.getDaysPassed(element.performing_date, element.report_authenticated);
                         const modalityKey = element.modality_code_value;
 
                         if(!modalityTotals.hasOwnProperty(modalityKey)){
