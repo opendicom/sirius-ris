@@ -42,17 +42,17 @@
 }
 
 /*----------------------------------------------------------------------------------------------------------------------*/
-/* AUTO WITH SELECT: */
+/* AUTO WIDTH SELECT: */
 /*----------------------------------------------------------------------------------------------------------------------*/
-::ng-deep .mat-select-value:has(>.auto-width)  {
-    max-width: 100%;
-    min-width: 100%;
-    width: auto;
-}
-
-::ng-deep .mat-form-field-infix:has(>.auto-width) {
+::ng-deep .mat-form-field-infix:has(> input.auto-width) {
     width: auto !important;
     min-width: 180px !important;
-    padding-right: 13px !important;
+}
+
+::ng-deep input.auto-width {
+    field-sizing: content;
+    min-width: 180px;
+    max-width: 100%;
+    box-sizing: content-box;
 }
 /*----------------------------------------------------------------------------------------------------------------------*/
