@@ -89,7 +89,7 @@ export class FormComponent implements OnInit {
       structure_id        : [''],
       suffix              : [''],
       status              : ['true'],
-      appointment_footer  : ['']
+      appointment_footer  : [ '', [this.sharedFunctions.visibleLengthValidator(10, 3000)] ]
     });
   }
 
@@ -141,7 +141,7 @@ export class FormComponent implements OnInit {
               structure_id        : res.data[0].structure_id,
               suffix              : res.data[0].suffix,
               status              : [ `${res.data[0].status}` ], //Use back tip notation to convert string
-              appointment_footer  : res.data[0].appointment_footer
+              appointment_footer  : [ res.data[0].appointment_footer, [this.sharedFunctions.visibleLengthValidator(10, 3000)] ]
             });
 
             //Set base64_logo:
@@ -177,6 +177,9 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit(){
+    //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state:
+    this.form.markAllAsTouched();
+    
     //Validate fields:
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):

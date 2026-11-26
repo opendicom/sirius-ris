@@ -1055,6 +1055,27 @@ mark {
 .ck-on {
   background-color: var(--soft-color-03) !important;
 }
+
+
+ckeditor.ng-invalid.ng-touched .ck-editor {
+  border: 1px solid var(--orange-intense);
+}
+
+.ck-counter {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.ck-counter-error {
+  color: var(--orange-intense);
+  opacity: 1;
+}
+
+.ck-error-message {
+  color: var(--orange-intense);
+  font-size: 13px;
+  margin-top: 5px;
+}
 /*----------------------------------------------------------------------------------------------------------------------*/
 
 

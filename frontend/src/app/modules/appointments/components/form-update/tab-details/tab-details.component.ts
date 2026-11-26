@@ -153,8 +153,8 @@ export class TabDetailsComponent implements OnInit {
         reporting_user            : [ [], [Validators.required]],
         reporting_user_input      : [ '' ], // For mat-autocomplete input
 
-        anamnesis                 : res.data[0].anamnesis,
-        indications               : res.data[0].indications,
+        anamnesis                 : [ res.data[0].anamnesis, [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
+        indications               : [ res.data[0].indications, [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
         report_before             : [ new Date(res.data[0].report_before.slice(0, -8)), [Validators.required]],
         contact                   : [ res.data[0].contact, [Validators.required]],
 
@@ -202,7 +202,7 @@ export class TabDetailsComponent implements OnInit {
           pregnancy               : [ res.data[0].private_health.pregnancy, [Validators.required] ],
           other                   : res.data[0].private_health.other,
           otherBoolean            : [ patologiesOther, [Validators.required] ],
-          medication              : res.data[0].private_health.medication,
+          medication              : [ res.data[0].private_health.medication, [this.sharedFunctions.visibleLengthValidator(2, 1000)] ],
           allergies               : res.data[0].private_health.allergies,
 
           implants: this.formBuilder.group({
@@ -346,8 +346,8 @@ export class TabDetailsComponent implements OnInit {
       reporting_user            : [ [], [Validators.required] ],
       reporting_user_input      : [ '' ], // For mat-autocomplete input
 
-      anamnesis                 : [ '' ],
-      indications               : [ '' ],
+      anamnesis                 : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
+      indications               : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
       report_before             : [ '', [Validators.required] ],
       contact                   : [ '', [Validators.required] ],
       status                    : [ 'true', [Validators.required] ],
@@ -394,7 +394,7 @@ export class TabDetailsComponent implements OnInit {
         pregnancy               : [ false, [Validators.required] ],
         other                   : [ '' ],
         otherBoolean            : [ 'false', [Validators.required] ],
-        medication              : [ '' ],
+        medication              : [ '', [this.sharedFunctions.visibleLengthValidator(2, 1000)] ],
         allergies               : [ '' ],
 
         implants: this.formBuilder.group({

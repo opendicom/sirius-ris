@@ -2334,7 +2334,9 @@
     "BLOCKED_ATTRIBUTES": " - ブロックされた属性: ",
     "BLOCKED_UNSET": " - ブロックされた削除: ",
     "MWL_ERROR_DETAIL": "エラーの詳細: ",
-    "ERROR_LABEL": "エラー: "
+    "ERROR_LABEL": "エラー: ",
+    "VISIBLE_LENGTH_MIN_ERROR": "テキストは{min}文字以上で入力してください。",
+    "VISIBLE_LENGTH_MAX_ERROR": "テキストは{max}文字以内で入力してください。"
   },
   "PDF": {
     "APPOINTMENT": {

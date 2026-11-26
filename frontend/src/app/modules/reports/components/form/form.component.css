@@ -89,6 +89,11 @@ li {
   padding-right: 8px;
 }
 
+.label-editor-error {
+  background-color: var(--orange-intense);
+  opacity: 1;
+}
+
 .dose{
   text-align: center;
   opacity: 0.8;

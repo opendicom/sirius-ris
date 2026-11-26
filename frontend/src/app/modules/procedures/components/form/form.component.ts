@@ -95,9 +95,9 @@ export class FormComponent implements OnInit {
       has_interview               : [ 'false' ],
       informed_consent            : [ 'false' ],
       status                      : [ 'true' ],
-      preparation                 : [ '' ],
-      procedure_template          : [ '' ],
-      report_template             : [ '' ],
+      preparation                 : [ '', [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
+      procedure_template          : [ '', [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
+      report_template             : [ '', [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
       coefficient                 : [ '', [Validators.required] ],
       reporting_delay_controller  : [ 'false' ],
       reporting_delay             : [ '' ],
@@ -152,9 +152,9 @@ export class FormComponent implements OnInit {
               status                      : [ `${res.data[0].status}`, [Validators.required]], //Use back tip notation to convert string
               has_interview               : [ `${res.data[0].has_interview}`, [Validators.required]], //Use back tip notation to convert string
               informed_consent            : [ `${res.data[0].informed_consent}`, [Validators.required]], //Use back tip notation to convert string
-              preparation                 : res.data[0].preparation,
-              procedure_template          : res.data[0].procedure_template,
-              report_template             : res.data[0].report_template,
+              preparation                 : [ res.data[0].preparation, [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
+              procedure_template          : [ res.data[0].procedure_template, [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
+              report_template             : [ res.data[0].report_template, [this.sharedFunctions.visibleLengthValidator(10, 3000)] ],
               coefficient                 : res.data[0].coefficient,
               reporting_delay_controller  : [ 'false' ],
               reporting_delay             : [ '' ],
@@ -326,6 +326,9 @@ export class FormComponent implements OnInit {
   }
 
   async onSubmit(){
+    //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state:
+    this.form.markAllAsTouched();
+
     //Validate coefficient only in PET-CT Procedures:
     if(this.enableCoefPETInput === false){
       this.form.controls['coefficient'].clearValidators();

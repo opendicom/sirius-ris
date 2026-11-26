@@ -2334,7 +2334,9 @@
     "BLOCKED_ATTRIBUTES": " - Blocked attributes: ",
     "BLOCKED_UNSET": " - Blocked deletions: ",
     "MWL_ERROR_DETAIL": "Error detail: ",
-    "ERROR_LABEL": "Error: "
+    "ERROR_LABEL": "Error: ",
+    "VISIBLE_LENGTH_MIN_ERROR": "The text must have at least {min} characters.",
+    "VISIBLE_LENGTH_MAX_ERROR": "The text cannot exceed {max} characters."
   },
   "PDF": {
     "APPOINTMENT": {

@@ -250,8 +250,10 @@
                   <hr class="dashed"/><br/>
                 </div>
 
-                <h4>{{ 'PERFORMING.FORM.OBSERVATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+                <h4>{{ 'PERFORMING.FORM.OBSERVATIONS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('observations')?.invalid && (form.get('observations')?.dirty || form.get('observations')?.touched)">{{ form.get('observations')?.value | visibleLength }} / 1000</span>:</h4>
                 <ckeditor formControlName="observations" #injectionObservations [editor]="injectionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+                <div class="ck-error-message" *ngIf="form.get('observations')?.touched && form.get('observations')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+                <div class="ck-error-message" *ngIf="form.get('observations')?.touched && form.get('observations')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
                 <br/><hr class="dashed" /><br/>
 
@@ -488,10 +490,10 @@
                   <h3 class="form-title text-center underline-fail-alt">{{ 'PERFORMING.FORM.ANESTHESIA_PROCEDURE' | i18n }}</h3>
                   <br/>
 
-                  <h4>{{ 'PERFORMING.FORM.PERFORMED_PROCEDURE' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
-                  <div [class.unselected]="anesthesiaValidator == false">
-                    <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-                  </div>
+                  <h4>{{ 'PERFORMING.FORM.PERFORMED_PROCEDURE' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('anesthesia.procedure')?.invalid && (form.get('anesthesia.procedure')?.dirty || form.get('anesthesia.procedure')?.touched)">{{ form.get('anesthesia.procedure')?.value | visibleLength }} / 1000</span>:</h4>
+                  <ckeditor formControlName="procedure" #procedure [editor]="procedureEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+                  <div class="ck-error-message" *ngIf="form.get('anesthesia.procedure')?.touched && form.get('anesthesia.procedure')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+                  <div class="ck-error-message" *ngIf="form.get('anesthesia.procedure')?.touched && form.get('anesthesia.procedure')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
                 </div> <!-- end fxLayout wrapper -->
               </div>
 
@@ -534,9 +536,10 @@
                     <button matSuffix mat-icon-button type="button" matTooltip="{{ 'PERFORMING.FORM.NOW' | i18n }}" (click)="setTimeNow('acquisition.time');"><mat-icon>timer</mat-icon></button>
                   </mat-form-field>
 
-                  <h4>{{ 'PERFORMING.FORM.OBSERVATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+                  <h4>{{ 'PERFORMING.FORM.OBSERVATIONS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('acquisition.observations')?.invalid && (form.get('acquisition.observations')?.dirty || form.get('acquisition.observations')?.touched)">{{ form.get('acquisition.observations')?.value | visibleLength }} / 1000</span>:</h4>
                   <ckeditor formControlName="observations" #acquisitionObservations [editor]="acquisitionObservationsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-
+                  <div class="ck-error-message" *ngIf="form.get('acquisition.observations')?.touched && form.get('acquisition.observations')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+                  <div class="ck-error-message" *ngIf="form.get('acquisition.observations')?.touched && form.get('acquisition.observations')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
                   <br/><hr class="dashed"/><br/>
 
                   <h4>{{ 'PERFORMING.FORM.TECHNICIAN_CONSOLE' | i18n }}</h4>

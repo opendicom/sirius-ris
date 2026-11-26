@@ -2334,7 +2334,9 @@
     "BLOCKED_ATTRIBUTES": " - Gesperrte Attribute: ",
     "BLOCKED_UNSET": " - Blockierte Löschungen: ",
     "MWL_ERROR_DETAIL": "Fehlerdetails: ",
-    "ERROR_LABEL": "Fehler: "
+    "ERROR_LABEL": "Fehler: ",
+    "VISIBLE_LENGTH_MIN_ERROR": "Der Text muss mindestens {min} Zeichen enthalten.",
+    "VISIBLE_LENGTH_MAX_ERROR": "Der Text darf {max} Zeichen nicht überschreiten."
   },
   "PDF": {
     "APPOINTMENT": {

@@ -508,18 +508,18 @@
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper"> <!-- start fxLayout wrapper -->
           <h3 class="underline-ok">{{ 'REPORTS.FORM.CLINICAL_INFO' | i18n }} <span class="label-template" matTooltip="{{ 'REPORTS.FORM.LOAD_CLINICAL_INFO' | i18n }}" (click)="insertClinicalInfo()"><mat-icon>auto_fix_high</mat-icon></span></h3>
-          <div [class.unselected]="clinicalInfoValidator == false">
-            <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
-            <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-          </div>
+          <span class="label-editor" [class.label-editor-error]="form.get('clinical_info')?.invalid && (form.get('clinical_info')?.dirty || form.get('clinical_info')?.touched)">{{ form.get('clinical_info')?.value | visibleLength }} / 10000</span>
+          <ckeditor formControlName="clinical_info" #clinicalInfo [editor]="clinicalInfoEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('clinical_info')?.touched && form.get('clinical_info')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('clinical_info')?.touched && form.get('clinical_info')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 10000 } }}</div>
 
           <br/><hr class="soft-alt" /><br/>
 
           <h3 class="underline-ok">{{ 'REPORTS.FORM.PROCEDURE' | i18n }} <span class="label-template" matTooltip="{{ 'REPORTS.FORM.LOAD_PROCEDURE_TEMPLATE' | i18n }}" (click)="insertProcedureTemplate()"><mat-icon>auto_fix_high</mat-icon></span></h3>
-          <div [class.unselected]="procedureDescriptionValidator == false">
-            <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
-            <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-          </div>
+          <span class="label-editor" [class.label-editor-error]="form.get('procedure_description')?.invalid && (form.get('procedure_description')?.dirty || form.get('procedure_description')?.touched)">{{ form.get('procedure_description')?.value | visibleLength }} / 10000</span>
+          <ckeditor formControlName="procedure_description" #procedureDescription [editor]="procedureDescriptionEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('procedure_description')?.touched && form.get('procedure_description')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('procedure_description')?.touched && form.get('procedure_description')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 10000 } }}</div>
 
           <br/><hr class="soft-alt" /><br/>
         
@@ -529,14 +529,18 @@
             <mat-icon matPrefix matTooltip="{{ 'REPORTS.FORM.LOAD_REPORT_TEMPLATE' | i18n }}" (click)="insertReportTemplate()">auto_fix_high</mat-icon>
           </mat-form-field>
 
-          <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
+          <span class="label-editor" [class.label-editor-error]="form.get('procedure_findings')?.invalid && (form.get('procedure_findings')?.dirty || form.get('procedure_findings')?.touched)">{{ form.get('procedure_findings')?.value | visibleLength }} / 10000</span>
           <ckeditor formControlName="procedure_findings" #procedure_findings [editor]="procedure_findingsEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('procedure_findings')?.touched && form.get('procedure_findings')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('procedure_findings')?.touched && form.get('procedure_findings')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 10000 } }}</div>
 
           <br/><hr class="soft-alt" /><br/>
 
           <h3 class="underline-ok">{{ 'REPORTS.FORM.IN_SUMMARY' | i18n }}</h3>
-          <span class="label-editor">{{ 'REPORTS.FORM.MIN_MAX' | i18n }}</span>
+          <span class="label-editor" [class.label-editor-error]="form.get('summary')?.invalid && (form.get('summary')?.dirty || form.get('summary')?.touched)">{{ form.get('summary')?.value | visibleLength }} / 10000</span>
           <ckeditor formControlName="summary" #summary [editor]="summaryEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('summary')?.touched && form.get('summary')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('summary')?.touched && form.get('summary')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 10000 } }}</div>
           
           <br/>
         </div> <!-- end fxLayout wrapper -->

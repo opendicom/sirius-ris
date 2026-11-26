@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 //--------------------------------------------------------------------------------------------------------------------//
 // IMPORTS:
 //--------------------------------------------------------------------------------------------------------------------//
-import { ApiClientService } from '@shared/services/api-client.service';       // API Client Service
-import { I18nService } from '@shared/services/i18n.service';                  // I18n Service
-import { MatSnackBar } from '@angular/material/snack-bar';                    // SnackBar (Angular Material)
-import { MatDialog } from '@angular/material/dialog';                         // Dialog (Angular Material)
-import { Sort } from '@angular/material/sort';                                // Angular Material sorting
-import { map, filter, mergeMap, Observable } from 'rxjs';                     // Reactive Extensions (RxJS)
-import { utils, writeFileXLSX } from 'xlsx';                                  // SheetJS CE
-import { regexObjectId } from '@env/environment';                             // Enviroments
+import { ApiClientService } from '@shared/services/api-client.service';           // API Client Service
+import { I18nService } from '@shared/services/i18n.service';                      // I18n Service
+import { MatSnackBar } from '@angular/material/snack-bar';                        // SnackBar (Angular Material)
+import { MatDialog } from '@angular/material/dialog';                             // Dialog (Angular Material)
+import { Sort } from '@angular/material/sort';                                    // Angular Material sorting
+import { map, filter, mergeMap, Observable } from 'rxjs';                         // Reactive Extensions (RxJS)
+import { utils, writeFileXLSX } from 'xlsx';                                      // SheetJS CE
+import { regexObjectId } from '@env/environment';                                 // Enviroments
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';  // Reactive form handling tools
 
 // Dialogs components:
 import { DeleteItemsComponent } from '@shared/components/dialogs/delete-items/delete-items.component';
@@ -2221,6 +2222,43 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   isMac(): boolean {
     return navigator.userAgent.includes('Mac');
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // GET VISIBLE LENGTH:
+  // Get the length of the visible text of an HTML string (CKEditor fields).
+  //--------------------------------------------------------------------------------------------------------------------//
+  getVisibleLength(html: any): number{
+    if(html === undefined || html === null){ return 0; }
+
+    return String(html)
+      .replace(/<[^>]*>/g, '')            // Remove HTML tags (<p>, <strong>, <li>, ...)
+      .replace(/&nbsp;/g, ' ')            // CKEditor non-breaking space counts as a space
+      .replace(/&[a-zA-Z0-9#]+;/g, '_')   // Any other HTML entity (&amp;, &lt;, ...) counts as one char
+      .trim()
+      .length;
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // VISIBLE LENGTH VALIDATOR:
+  // Validate the min and max visible text length of a CKEditor control.
+  // Empty optional fields are valid: empty fields are deleted before saving (cleanEmptyFields) and the backend skips them.
+  //--------------------------------------------------------------------------------------------------------------------//
+  visibleLengthValidator(min: number, max: number, required: boolean = false): ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+      //Empty optional field:
+      if(!required && (control.value === null || control.value === undefined || control.value === '')){ return null; }
+
+      const length = this.getVisibleLength(control.value);
+
+      if(length < min){ return { minVisibleLength: { min: min, actual: length } }; }
+      if(length > max){ return { maxVisibleLength: { max: max, actual: length } }; }
+
+      return null;
+    };
   }
   //--------------------------------------------------------------------------------------------------------------------//
 }
