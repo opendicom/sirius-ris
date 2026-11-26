@@ -35,6 +35,10 @@ export class FormRequestComponent implements OnInit {
   public availableBranches      : any;
   public availableModalities    : any;
 
+  //Filtered lists used by the imaging branch and referring organization matAutocomplete:
+  public filteredBranches       : any[] = [];
+  public filteredOrganizations  : any[] = [];
+
   //Tab validation error flags (Show error icon on the tab label):
   public mainTabErrors   : boolean = false;
   public studyTabErrors  : boolean = false;
@@ -86,12 +90,14 @@ export class FormRequestComponent implements OnInit {
       //Imaging institution (Organization and Branch are set together, same as the equipments branch input):
       imaging: this.formBuilder.group({
         organization  : [ (imaging.organization && imaging.organization._id) ? imaging.organization._id : (imaging.organization || ''), [Validators.required] ],
-        branch        : [ (imaging.branch && imaging.branch._id) ? imaging.branch._id : (imaging.branch || ''), [Validators.required] ]
+        branch        : [ (imaging.branch && imaging.branch._id) ? imaging.branch._id : (imaging.branch || ''), [Validators.required] ],
+        branch_input  : [ '' ] //Visible text input for branch matAutocomplete
       }),
 
       //Referring institution (Organization only):
       referring: this.formBuilder.group({
-        organization  : [ (referring.organization && referring.organization._id) ? referring.organization._id : (referring.organization || ''), [Validators.required] ]
+        organization  : [ (referring.organization && referring.organization._id) ? referring.organization._id : (referring.organization || ''), [Validators.required] ],
+        organization_input : [ '' ] //Visible text input for organization matAutocomplete
       }),
 
       flow_state  : [ data.flow_state || 'AR01' ],
@@ -184,6 +190,10 @@ export class FormRequestComponent implements OnInit {
           if(res.success === true){
             //Send data to the form:
             this.setReactiveForm(this.buildFormFields(res.data[0]));
+
+            //Set visible branch and organization text (matAutocomplete):
+            this.setBranchInput();
+            this.setOrganizationInput();
 
             //Set out-of-edition flow states:
             if(res.data[0].flow_state == 'AR05' || res.data[0].flow_state == 'AR06'){
@@ -547,15 +557,6 @@ export class FormRequestComponent implements OnInit {
     this.form.get('patient.email')?.setValue('');
   }
 
-  //Set imaging organization from the selected branch (Same behaviour as the equipments branch input):
-  onImagingBranchChange(branch_id: string): void{
-    const currentBranch = (this.availableBranches || []).find((current: any) => current._id === branch_id);
-
-    if(currentBranch){
-      this.form.get('imaging.organization')?.setValue(currentBranch.fk_organization);
-    }
-  }
-
   onSubmit(){
     //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state:
     this.form.markAllAsTouched();
@@ -607,6 +608,10 @@ export class FormRequestComponent implements OnInit {
 
       if(saveData.imaging.branch == ''){ delete saveData.imaging.branch; }
 
+      //Remove visible matAutocomplete text:
+      delete saveData.imaging.branch_input;
+      delete saveData.referring.organization_input;
+
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, saveData, this.keysWithValues, (res) => {
         //Response the form according to the result:
@@ -638,11 +643,20 @@ export class FormRequestComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+      this.filteredOrganizations = res.data || [];
+
+      //Set visible organization and branch text:
+      this.setOrganizationInput();
+      this.setBranchInput();
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
+      this.filteredBranches = res.data || [];
+
+      //Set visible branch text (Update case, if the form data arrived first):
+      this.setBranchInput();
     });
 
     //Find modalities:
@@ -650,4 +664,69 @@ export class FormRequestComponent implements OnInit {
       this.availableModalities = res.data;
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER IMAGING BRANCHES AND REFERRING ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  getOrganizationLabel(currentOrganization: any): string{
+    //Guard against missing item:
+    if(!currentOrganization){ return ''; }
+
+    return `${currentOrganization.short_name} (${currentOrganization.name})`;
+  }
+
+  filterBranches(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter branches by their built label:
+    this.filteredBranches = (this.availableBranches || []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+
+  filterOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter organizations by their built label:
+    this.filteredOrganizations = (this.availableOrganizations || []).filter((currentOrganization: any) => this.getOrganizationLabel(currentOrganization).toUpperCase().includes(filterValue));
+  }
+
+  //Set imaging branch and its organization together:
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId controls and visible input text (matAutocomplete):
+    this.form.get('imaging.branch')?.setValue(currentBranch._id);
+    this.form.get('imaging.organization')?.setValue(currentBranch.fk_organization);
+    this.form.get('imaging.branch_input')?.setValue(this.getBranchLabel(currentBranch));
+  }
+
+  selectOrganization(currentOrganization: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('referring.organization')?.setValue(currentOrganization._id);
+    this.form.get('referring.organization_input')?.setValue(this.getOrganizationLabel(currentOrganization));
+  }
+
+  setBranchInput(){
+    //Find the selected branch and set the visible input text:
+    const selectedBranch = (this.availableBranches || []).find((currentBranch: any) => currentBranch._id == this.form.value.imaging?.branch);
+    if(selectedBranch){
+      this.form.get('imaging.branch_input')?.setValue(this.getBranchLabel(selectedBranch));
+    }
+  }
+
+  setOrganizationInput(){
+    //Find the selected organization and set the visible input text:
+    const selectedOrganization = (this.availableOrganizations || []).find((currentOrganization: any) => currentOrganization._id == this.form.value.referring?.organization);
+    if(selectedOrganization){
+      this.form.get('referring.organization_input')?.setValue(this.getOrganizationLabel(selectedOrganization));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

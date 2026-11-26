@@ -25,6 +25,9 @@ export class FormComponent implements OnInit {
   //Set references objects:
   public availableOrganizations : any;
   public availableBranches      : any;
+
+  //Filtered list used by the branch matAutocomplete:
+  public filteredBranches       : any[] = [];
   public availableModalities    : any;
   public availableEquipments    : any;
 
@@ -87,6 +90,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       domain                      : [ '', [Validators.required] ],
+      domain_input                : [ '' ], //Visible text input for branch matAutocomplete.
       name                        : [ '', [Validators.required] ],
       code                        : [ '' ],
       snomed                      : [ '' ],
@@ -144,6 +148,7 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               domain                      : res.data[0].domain.organization + '.' + res.data[0].domain.branch,
+              domain_input                : [ '' ],
               fk_modality                 : res.data[0].fk_modality,
               name                        : res.data[0].name,
               code                        : res.data[0].code,
@@ -161,6 +166,9 @@ export class FormComponent implements OnInit {
               wait_time_controller        : [ 'false' ],
               wait_time                   : [ '' ]
             });
+
+            //Set visible branch text (matAutocomplete):
+            this.setBranchInput();
 
             //Set empty array value to prevent "Value must be an array in multiple-selection mode":
             this.form.controls['equipments'].setValue([]);
@@ -341,6 +349,9 @@ export class FormComponent implements OnInit {
       //Create save object to preserve data types in form.value (Clone objects with spread operator):
       let procedureSaveData = { ...this.form.value };
 
+      //Remove visible matAutocomplete text :
+      delete procedureSaveData.domain_input;
+
       //Data normalization - Domain:
       const domain = procedureSaveData.domain.split('.');
       procedureSaveData.domain = {
@@ -415,11 +426,18 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+
+      //Refresh visible branch text (Labels depend on organizations):
+      this.setBranchInput();
     });
 
     //Find branches:
     this.sharedFunctions.find('branches', params, (res) => {
       this.availableBranches = res.data;
+      this.filteredBranches = res.data || [];
+
+      //Set visible branch text (Update case, if the form data arrived first):
+      this.setBranchInput();
     });
 
     //Find modalities (Only update action - first case):
@@ -429,6 +447,43 @@ export class FormComponent implements OnInit {
       });
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  filterBranches(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter branches by their built label:
+    this.filteredBranches = (this.availableBranches || []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('domain')?.setValue(currentBranch.fk_organization + '.' + currentBranch._id);
+    this.form.get('domain_input')?.setValue(this.getBranchLabel(currentBranch));
+
+    //Find dependent references for the selected branch:
+    this.onChangeBranch({ value: this.form.get('domain')?.value });
+  }
+
+  setBranchInput(){
+    //Find the selected branch and set the visible input text:
+    const selectedBranch = (this.availableBranches || []).find((currentBranch: any) => (currentBranch.fk_organization + '.' + currentBranch._id) == this.form.value.domain);
+    if(selectedBranch){
+      this.form.get('domain_input')?.setValue(this.getBranchLabel(selectedBranch));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   async setEquipments(updateData: any){
     //Create array to set data into equipments input FormControl (Arrays - Mat-Select Multiple):

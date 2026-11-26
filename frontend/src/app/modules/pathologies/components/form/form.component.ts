@@ -19,6 +19,9 @@ export class FormComponent implements OnInit {
   //Set references objects:
   public availableOrganizations: any;
 
+  //Filtered list used by the organization matAutocomplete:
+  public filteredOrganizations: any[] = [];
+
   //Define Formgroup (Reactive form handling):
   public form!: FormGroup;
 
@@ -58,6 +61,7 @@ export class FormComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_organization:  ['', [Validators.required]],  //Current organization input (Only Superuser).
+      fk_organization_input: [''],                    //Visible text input for organization matAutocomplete.
       name:             ['', [Validators.required]],
       description:      [''],
       status:           ['true'],
@@ -79,6 +83,9 @@ export class FormComponent implements OnInit {
 
       //Set organization input value (FormControl):
       this.form.controls['fk_organization'].setValue(result);
+
+      //Set visible organization text (matAutocomplete):
+      this.setOrganizationInput();
     });
 
     //Extract sent data (Parameters by routing):
@@ -101,10 +108,14 @@ export class FormComponent implements OnInit {
             //Send data to the form:
             this.setReactiveForm({
               fk_organization : res.data[0].fk_organization,
+              fk_organization_input : [''],
               name            : res.data[0].name,
               description     : res.data[0].description,
               status          : [ `${res.data[0].status}` ] //Use back tip notation to convert string
             });
+
+            //Set visible organization text (matAutocomplete):
+            this.setOrganizationInput();
 
             //Get property keys with values:
             this.keysWithValues = this.sharedFunctions.getKeys(this.form.value, false, true);
@@ -124,6 +135,9 @@ export class FormComponent implements OnInit {
     if(this.form.valid){
       //Data normalization - Booleans types (mat-option cases):
       if(typeof this.form.value.status != "boolean"){ this.form.value.status = this.form.value.status.toLowerCase() == 'true' ? true : false; }
+
+      //Remove visible matAutocomplete text:
+      delete this.form.value.fk_organization_input;
 
       //Save data:
       this.sharedFunctions.save(this.form_action, this.sharedProp.element, this._id, this.form.value, this.keysWithValues, (res) => {
@@ -145,6 +159,43 @@ export class FormComponent implements OnInit {
     //Find organizations:
     this.sharedFunctions.find('organizations', params, (res) => {
       this.availableOrganizations = res.data;
+      this.filteredOrganizations = res.data || [];
+
+      //Set visible organization text (Update case, if the form data arrived first):
+      this.setOrganizationInput();
     });
   }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER ORGANIZATIONS (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getOrganizationLabel(currentOrganization: any): string{
+    //Guard against missing item:
+    if(!currentOrganization){ return ''; }
+
+    return `${currentOrganization.short_name} (${currentOrganization.name})`;
+  }
+
+  filterOrganizations(event: any){
+    //Set filter value and to upper case:
+    const filterValue = event.target.value.toUpperCase();
+
+    //Filter organizations by their built label:
+    this.filteredOrganizations = (this.availableOrganizations || []).filter((currentOrganization: any) => this.getOrganizationLabel(currentOrganization).toUpperCase().includes(filterValue));
+  }
+
+  selectOrganization(currentOrganization: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('fk_organization')?.setValue(currentOrganization._id);
+    this.form.get('fk_organization_input')?.setValue(this.getOrganizationLabel(currentOrganization));
+  }
+
+  setOrganizationInput(){
+    //Find the selected organization and set the visible input text:
+    const selectedOrganization = (this.availableOrganizations || []).find((currentOrganization: any) => currentOrganization._id == this.form.value.fk_organization);
+    if(selectedOrganization){
+      this.form.get('fk_organization_input')?.setValue(this.getOrganizationLabel(selectedOrganization));
+    }
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 }

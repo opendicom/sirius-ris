@@ -97,12 +97,31 @@ export class StatsAppointmentsComponent implements OnInit {
     //Set Reactive Form (First time):
     this.setReactiveForm({
       fk_branch     : ['', [Validators.required]],
+      fk_branch_input : [''], //Visible text input for branch matAutocomplete.
       range_start   : ['', [Validators.required]],
       range_end     : ['', [Validators.required]]
     });
   }
 
+  //Filtered list used by the branch matAutocomplete:
+  public filteredBranches: any[] = [];
+
   ngOnInit(): void { }
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  filterBranches(event: any){
+    //Filter branches by the current input text:
+    this.filteredBranches = this.statsService.filterBranches(event.target.value);
+  }
+
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('fk_branch')?.setValue(currentBranch._id);
+    this.form.get('fk_branch_input')?.setValue(this.statsService.getBranchLabel(currentBranch));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
 
   onSearch(){
     //Validate fields:

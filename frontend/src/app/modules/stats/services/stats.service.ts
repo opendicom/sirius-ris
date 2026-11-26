@@ -163,6 +163,27 @@ export class StatsService {
 
 
   //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (this.availableOrganizations || []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  filterBranches(value: string): any[]{
+    //Set filter value and to upper case:
+    const filterValue = (value || '').toUpperCase();
+
+    //Filter branches by their built label:
+    return (this.availableBranches || []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
+
+  //--------------------------------------------------------------------------------------------------------------------//
   // FIND STAT USERS:
   //--------------------------------------------------------------------------------------------------------------------//
   findStatUsers(callback = (res: any) => {}){

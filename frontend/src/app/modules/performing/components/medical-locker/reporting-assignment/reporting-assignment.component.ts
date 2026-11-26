@@ -27,6 +27,9 @@ export class ReportingAssignmentComponent implements OnInit {
   public availableOrganizations : any = {};
   public availableBranches      : any = {};
 
+  //Filtered list used by the branch matAutocomplete:
+  public filteredBranches       : any[] = [];
+
   //Set visible columns of the list:
   public displayedColumns: string[] = [
     'flow_state',
@@ -53,7 +56,8 @@ export class ReportingAssignmentComponent implements OnInit {
   ) {
     
     this.form = this.formBuilder.group({
-      fk_branch: ['', [Validators.required]]
+      fk_branch: ['', [Validators.required]],
+      fk_branch_input: [''] //Visible text input for branch matAutocomplete.
     });
   }
 
@@ -141,7 +145,33 @@ export class ReportingAssignmentComponent implements OnInit {
     });
   }
 
-  
+
+  //--------------------------------------------------------------------------------------------------------------------//
+  // FILTER BRANCHES (matAutocomplete):
+  //--------------------------------------------------------------------------------------------------------------------//
+  getBranchLabel(currentBranch: any): string{
+    //Guard against missing item:
+    if(!currentBranch){ return ''; }
+
+    const currentOrganization = (Array.isArray(this.availableOrganizations) ? this.availableOrganizations : []).find((currentOrg: any) => currentOrg._id == currentBranch.fk_organization);
+    return `${currentOrganization ? currentOrganization.short_name + ' ► ' : ''}${currentBranch.short_name} (${currentBranch.name})`;
+  }
+
+  filterBranches(event: any){
+    //Set filter value and to upper case:
+    const filterValue = (event.target.value || '').toUpperCase();
+
+    //Filter branches by their built label:
+    this.filteredBranches = (Array.isArray(this.availableBranches) ? this.availableBranches : []).filter((currentBranch: any) => this.getBranchLabel(currentBranch).toUpperCase().includes(filterValue));
+  }
+
+  selectBranch(currentBranch: any){
+    //Set hidden ObjectId control and visible input text (matAutocomplete):
+    this.form.get('fk_branch')?.setValue(currentBranch._id);
+    this.form.get('fk_branch_input')?.setValue(this.getBranchLabel(currentBranch));
+  }
+  //--------------------------------------------------------------------------------------------------------------------//
+
   matchesReportingUserFilter(study: any, currentReporting: any): boolean {
     
     if(!study.reportingUserInput){ return true; }

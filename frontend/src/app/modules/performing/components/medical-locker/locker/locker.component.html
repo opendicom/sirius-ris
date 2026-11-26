@@ -1,15 +1,12 @@
 <form class="form-locker" [formGroup]="form">
     <mat-form-field appearance="outline">
         <mat-label>{{ 'MEDICAL_LOCKER.BRANCH' | i18n }}</mat-label>
-        <mat-select formControlName="fk_branch" placeholder="{{ 'MEDICAL_LOCKER.SELECT_BRANCH' | i18n }}" class="auto-width">
-        <span *ngIf="availableOrganizations.length > 0 && availableBranches.length > 0">
-            <div *ngFor="let currentBranch of availableBranches">
-                <div *ngFor="let currentOrganization of availableOrganizations">
-                <mat-option *ngIf="currentBranch.fk_organization == currentOrganization._id" value="{{ currentBranch._id }}">{{ currentOrganization.short_name }} ► {{ currentBranch.short_name }} ({{ currentBranch.name }})</mat-option>
-                </div>
-            </div>
-        </span>
-        </mat-select>
+        <input #inputBranch type="text" matInput formControlName="fk_branch_input" (focus)="filterBranches($event)" (keyup)="filterBranches($event)" [matAutocomplete]="autoBranch" placeholder="{{ 'MEDICAL_LOCKER.SELECT_BRANCH' | i18n }}" class="auto-width">
+        <mat-autocomplete #autoBranch="matAutocomplete">
+          <mat-option (onSelectionChange)="selectBranch(currentBranch)" *ngFor="let currentBranch of filteredBranches" [value]="getBranchLabel(currentBranch)">
+            <span [innerHTML]="getBranchLabel(currentBranch) | highlighter : inputBranch.value"></span>
+          </mat-option>
+        </mat-autocomplete>
     </mat-form-field>
 
     <button mat-flat-button color="primary" class="button_filters" (click)="onSearch();">
