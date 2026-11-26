@@ -152,7 +152,10 @@ const Validator = [
     body('observations')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "observations" (min: 3, max: 1000 [chars]).'),
         
     //----------------------------------------------------------------------------------------------------------------//
@@ -163,7 +166,10 @@ const Validator = [
     body('anesthesia.procedure')
         .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "anesthesia.procedure" (min: 10, max: 1000 [chars]).'),
 
     body('anesthesia.professional_id')
@@ -283,7 +289,10 @@ const Validator = [
     body('acquisition.observations')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "acquisition.observations" (min: 10, max: 1000 [chars]).'),
     //----------------------------------------------------------------------------------------------------------------//
 

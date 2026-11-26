@@ -491,6 +491,21 @@ async function XMLStringToJSON(xml, callback = () => {}){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// GET VISIBLE LENGTH
+// Get the length of the visible text of an HTML string (CKEditor fields).
+//--------------------------------------------------------------------------------------------------------------------//
+function getVisibleLength(html){
+  if(html === undefined || html === null){ return 0; }
+
+  return String(html)
+    .replace(/<[^>]*>/g, '')            // Remove HTML tags (<p>, <strong>, <li>, ...)     
+    .replace(/&nbsp;/g, ' ')            // CKEditor non-breaking space counts as a space 
+    .replace(/&[a-zA-Z0-9#]+;/g, '_')   // Any other HTML entity (&amp;, &lt;, ...) counts as one char
+    .trim()                             
+    .length;
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -513,6 +528,7 @@ module.exports = {
     setDicomNamePersonFormat,
     setStorage,
     httpClientGETRequest,
-    XMLStringToJSON
+    XMLStringToJSON,
+    getVisibleLength
 };
 //--------------------------------------------------------------------------------------------------------------------//

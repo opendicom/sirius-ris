@@ -70,12 +70,18 @@ const Validator = [
 
     body('clinical_info')
         .trim()
-        .isLength({ min: 10, max: 10000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 10000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "clinical_info" (min: 10, max: 10000 [chars]).'),
 
     body('procedure_description')
         .trim()
-        .isLength({ min: 10, max: 10000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 10000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "procedure_description" (min: 10, max: 10000 [chars]).'),
 
     body('findings').optional().isArray(),
@@ -89,7 +95,10 @@ const Validator = [
     body('findings.*.procedure_findings')
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 10, max: 10000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 10000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "findings.*.procedure_findings" (min: 10, max: 10000 [chars]).'),
 
     body('findings.*.title')
@@ -101,7 +110,10 @@ const Validator = [
     body('summary')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 10000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 10000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "summary" (min: 10, max: 10000 [chars]).'),
 
     body('fk_pathologies')

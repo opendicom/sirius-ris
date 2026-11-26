@@ -234,19 +234,28 @@ const Validator = [
     body('annotations')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 2000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 2000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "annotations" (min: 10, max: 2000 [chars]).'),
 
     body('anamnesis')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 10, max: 1000 [chars]).'),
 
     body('indications')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 10, max: 1000 [chars]).'),
 
     //----------------------------------------------------------------------------------------------------------------//

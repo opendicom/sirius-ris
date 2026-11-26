@@ -318,13 +318,19 @@ const Validator = [
     body('anamnesis')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 10, max: 1000 [chars]).'),
 
     body('indications')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 10, max: 1000 [chars]).'),
 
     body('report_before').trim(),
@@ -533,7 +539,10 @@ const Validator = [
     body('private_health.medication')
         .optional()
         .trim()
-        .isLength({ min: 2, max: 1000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.medication" (min: 2, max: 1000 [chars]).'),
 
     body('private_health.allergies')

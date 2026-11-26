@@ -98,7 +98,10 @@ const Validator = [
     body('appointment_footer')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 3000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 3000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "appointment_footer" (min: 10, max: 3000 [chars]).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//

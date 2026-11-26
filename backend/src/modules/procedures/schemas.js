@@ -121,19 +121,28 @@ const Validator = [
     body('preparation')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 3000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 3000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "preparation" (min: 10, max: 3000 [chars]).'),
 
     body('procedure_template')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 3000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 3000;
+        })
         .withMessage('El parametro procedure_template ingresado es demasiado corto o demasiado largo (min: 10, max: 3000 [caracteres]).'),
 
     body('report_template')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 3000 })
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 10 && length <= 3000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "report_template" (min: 10, max: 3000 [chars]).'),
 
     body('informed_consent')
