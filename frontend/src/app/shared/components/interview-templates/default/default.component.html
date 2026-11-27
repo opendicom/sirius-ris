@@ -74,7 +74,7 @@
 
         <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('private_health.medication')?.invalid && (form.get('private_health.medication')?.dirty || form.get('private_health.medication')?.touched)">{{ form.get('private_health.medication')?.value | visibleLength }} / 1000</span>:</h4>
         <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-        <div class="ck-error-message" *ngIf="form.get('private_health.medication')?.touched && form.get('private_health.medication')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 2 } }}</div>
+        <div class="ck-error-message" *ngIf="form.get('private_health.medication')?.touched && form.get('private_health.medication')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
         <div class="ck-error-message" *ngIf="form.get('private_health.medication')?.touched && form.get('private_health.medication')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
         <br/>
@@ -145,7 +145,7 @@
       <div [class.unselected]="anamnesisValidator == false">
         <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
       </div>
-      <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
       <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
       <br/><hr class="dashed" /><br/>
@@ -155,7 +155,7 @@
       <div [class.unselected]="indicationsValidator == false">
         <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
       </div>
-      <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 10 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
       <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
       <br/><br/>

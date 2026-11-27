@@ -148,7 +148,7 @@ export class FormComponent implements OnInit {
       cancellation_reasons      : [ '' ],
       status                    : ['true'],
       urgency                   : ['false'],  // First time preserve appointment value.
-      observations              : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
+      observations              : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
 
       //Injection fields:
       injection: this.formBuilder.group({
@@ -189,7 +189,7 @@ export class FormComponent implements OnInit {
         'time'                     : [ '' ],
         'console_technician'       : [ '' ],
         'console_technician_input' : [ '' ], //Visible text input for console_technician matAutocomplete.
-        'observations'             : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ]
+        'observations'             : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ]
       }),
     });
   }
@@ -294,7 +294,7 @@ export class FormComponent implements OnInit {
               cancellation_reasons      : [ '' ],
               status                    : [ `${resPerforming.data[0].status}` ], //Use back tip notation to convert string
               urgency                   : [ `${resPerforming.data[0].urgency}` ], //Use back tip notation to convert string
-              observations              : [ resPerforming.data[0].observations, [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
+              observations              : [ resPerforming.data[0].observations, [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
 
               //Injection fields (They need to exist in advance):
               injection: this.formBuilder.group({
@@ -335,7 +335,7 @@ export class FormComponent implements OnInit {
                 'time'                     : [ '' ],
                 'console_technician'       : [ '' ],
                 'console_technician_input' : [ '' ], //Visible text input for console_technician matAutocomplete.
-                'observations'             : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ]
+                'observations'             : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ]
               }),
             });
 
@@ -546,8 +546,8 @@ export class FormComponent implements OnInit {
             if(performingSaveData.acquisition[key] === null || performingSaveData.acquisition[key] === undefined || performingSaveData.acquisition[key] === ''){
               delete performingSaveData.acquisition;
             }
-          //Prevent length validation error (min length 10 + 7 chars [<p></p>]):
-          } else if(performingSaveData.acquisition.observations.length < 17) {
+          //Empty CKEditor value (no visible text):
+          } else if(this.sharedFunctions.isEmptyHtml(performingSaveData.acquisition.observations)) {
             delete performingSaveData.acquisition.observations;
           }
         }));
@@ -555,7 +555,7 @@ export class FormComponent implements OnInit {
 
       //Check performing observations:
       //Update case allow empty observations field (unset value case).
-      if(performingSaveData.hasOwnProperty('observations') && performingSaveData.observations.length == 0 && this.form_action == 'insert'){
+      if(performingSaveData.hasOwnProperty('observations') && this.sharedFunctions.isEmptyHtml(performingSaveData.observations) && this.form_action == 'insert'){
         //Delete to prevent validation backend error:
         delete performingSaveData.observations;
       }
@@ -779,7 +779,7 @@ export class FormComponent implements OnInit {
       this.form.get('anesthesia.document')?.setValidators([Validators.required]);
       this.form.get('anesthesia.name')?.setValidators([Validators.required]);
       this.form.get('anesthesia.surname')?.setValidators([Validators.required]);
-      this.form.get('anesthesia.procedure')?.setValidators([Validators.required, this.sharedFunctions.visibleLengthValidator(10, 1000, true)]);
+      this.form.get('anesthesia.procedure')?.setValidators([Validators.required, this.sharedFunctions.visibleLengthValidator(3, 1000, true)]);
 
       this.form.get('anesthesia.professional_id')?.updateValueAndValidity();
       this.form.get('anesthesia.document')?.updateValueAndValidity();

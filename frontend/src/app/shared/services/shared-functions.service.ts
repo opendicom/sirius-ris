@@ -2241,7 +2241,6 @@ export class SharedFunctionsService {
   }
   //--------------------------------------------------------------------------------------------------------------------//
 
-
   //--------------------------------------------------------------------------------------------------------------------//
   // VISIBLE LENGTH VALIDATOR:
   // Validate the min and max visible text length of a CKEditor control.
@@ -2249,8 +2248,8 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   visibleLengthValidator(min: number, max: number, required: boolean = false): ValidatorFn{
     return (control: AbstractControl): ValidationErrors | null => {
-      //Empty optional field:
-      if(!required && (control.value === null || control.value === undefined || control.value === '')){ return null; }
+      //Empty optional field (no visible text, no embedded content): valid, the backend saves it as null:
+      if(!required && this.isEmptyHtml(control.value)){ return null; }
 
       const length = this.getVisibleLength(control.value);
 
@@ -2261,4 +2260,10 @@ export class SharedFunctionsService {
     };
   }
   //--------------------------------------------------------------------------------------------------------------------//
+
+
+  isEmptyHtml(html: any): boolean {
+    if (this.getVisibleLength(html) > 0) { return false; }
+    return !/<(img|table|figure|iframe|oembed|video|audio)\b/i.test(String(html || ''));
+  }
 }

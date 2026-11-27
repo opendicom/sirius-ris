@@ -107,7 +107,7 @@ export class PdfService {
                 }
 
                 //Convert HTML to PDF Make syntax:
-                if(res.data[0].procedure.preparation !== undefined && res.data[0].procedure.preparation !== '' && res.data[0].procedure.preparation.length > 0){
+                if(res.data[0].procedure.preparation && res.data[0].procedure.preparation.length > 0){
                   appointment_preparation = res.data[0].procedure.preparation;
                 }
                 let htmlPreparation = htmlToPdfmake(appointment_preparation);

@@ -122,8 +122,8 @@ export class FormInsertComponent implements OnInit {
       reporting_user            : [ [], [Validators.required] ],
       reporting_user_input      : [ '' ], // For mat-autocomplete input
 
-      anamnesis                 : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
-      indications               : [ '', [this.sharedFunctions.visibleLengthValidator(10, 1000)] ],
+      anamnesis                 : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
+      indications               : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
       report_before             : [ '', [Validators.required] ],
       contact                   : [ '', [Validators.required] ],
       status                    : [ 'true', [Validators.required] ],
@@ -167,7 +167,7 @@ export class FormInsertComponent implements OnInit {
         hypothyroidism          : [ false, [Validators.required] ],
         pregnancy               : [ false, [Validators.required] ],
         other                   : [ '' ],
-        medication              : [ '', [this.sharedFunctions.visibleLengthValidator(2, 1000)] ],
+        medication              : [ '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
         allergies               : [ '' ],
 
         implants: this.formBuilder.group({
