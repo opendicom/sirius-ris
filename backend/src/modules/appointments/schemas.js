@@ -318,14 +318,24 @@ const Validator = [
     body('anamnesis')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 10, max: 1000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anamnesis" (min: 3, max: 1000 [chars]).'),
 
     body('indications')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 10, max: 1000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "indications" (min: 3, max: 1000 [chars]).'),
 
     body('report_before').trim(),
 
@@ -533,8 +543,13 @@ const Validator = [
     body('private_health.medication')
         .optional()
         .trim()
-        .isLength({ min: 2, max: 1000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.medication" (min: 2, max: 1000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "private_health.medication" (min: 3, max: 1000 [chars]).'),
 
     body('private_health.allergies')
         .optional()

@@ -200,22 +200,27 @@
       <!-- annotations / anamnesis / indications (one full-width column per row, below requesting institution) -->
       <div fxLayout="row" fxLayoutAlign="start start">
         <div class="input-wrapper divider">
-          <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+          <h4>{{ 'ACTION.ANAMNESIS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('anamnesis')?.invalid && (form.get('anamnesis')?.dirty || form.get('anamnesis')?.touched)">{{ form.get('anamnesis')?.value | visibleLength }} / 1000</span>:</h4>
           <ckeditor formControlName="anamnesis" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
         </div>
 
         <div class="input-wrapper">
-          <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h4>
+          <h4>{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('indications')?.invalid && (form.get('indications')?.dirty || form.get('indications')?.touched)">{{ form.get('indications')?.value | visibleLength }} / 1000</span>:</h4>
           <ckeditor formControlName="indications" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+          <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+          <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
         </div>
       </div>
 
       <hr class="dashed" />
 
       <div class="input-wrapper">
-        <h4>{{ 'APPOINTMENTS.FORM_REQUEST.ANNOTATIONS' | i18n }} <span class="label-info">min: 10, max: 2000</span>:</h4>
+        <h4>{{ 'APPOINTMENTS.FORM_REQUEST.ANNOTATIONS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('annotations')?.invalid && (form.get('annotations')?.dirty || form.get('annotations')?.touched)">{{ form.get('annotations')?.value | visibleLength }} / 2000</span>:</h4>
         <ckeditor formControlName="annotations" [editor]="ckEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
-
+        <div class="ck-error-message" *ngIf="form.get('annotations')?.touched && form.get('annotations')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+        <div class="ck-error-message" *ngIf="form.get('annotations')?.touched && form.get('annotations')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 2000 } }}</div>
       </div>
     </mat-tab>
     <!-- MAIN DATA TAB: ------------------------------------------------------------------------------------------------ -->

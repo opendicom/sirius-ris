@@ -102,9 +102,9 @@ export class FormRequestComponent implements OnInit {
 
       flow_state  : [ data.flow_state || 'AR01' ],
       urgency     : [ data.urgency !== undefined ? `${data.urgency}` : 'false', [Validators.required] ],
-      annotations : [ data.annotations || '' ],
-      anamnesis   : [ data.anamnesis || '' ],
-      indications : [ data.indications || '' ],
+      annotations : [ data.annotations || '', [this.sharedFunctions.visibleLengthValidator(3, 2000)] ],
+      anamnesis   : [ data.anamnesis   || '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
+      indications : [ data.indications || '', [this.sharedFunctions.visibleLengthValidator(3, 1000)] ],
 
       //Study (Requested modality):
       study: this.formBuilder.group({

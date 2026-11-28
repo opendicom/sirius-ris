@@ -491,6 +491,38 @@ async function XMLStringToJSON(xml, callback = () => {}){
 //--------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------//
+// GET VISIBLE LENGTH
+// Get the length of the visible text of an HTML string (CKEditor fields).
+//--------------------------------------------------------------------------------------------------------------------//
+function getVisibleLength(html){
+  if(html === undefined || html === null){ return 0; }
+
+  return String(html)
+    .replace(/<[^>]*>/g, '')            // Remove HTML tags (<p>, <strong>, <li>, ...)     
+    .replace(/&nbsp;/g, ' ')            // CKEditor non-breaking space counts as a space 
+    .replace(/&[a-zA-Z0-9#]+;/g, '_')   // Any other HTML entity (&amp;, &lt;, ...) counts as one char
+    .trim()                             
+    .length;
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// IS EMPTY HTML
+// A CKEditor value is empty when it has no visible text and no embedded content (image, table, media).
+//--------------------------------------------------------------------------------------------------------------------//
+function isEmptyHtml(html){
+    if(getVisibleLength(html) > 0){ return false; }
+    return !/<(img|table|figure|iframe|oembed|video|audio)\b/i.test(String(html || ''));
+}
+//--------------------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------------------------------------------------------------------------------------//
+// NULL IF EMPTY HTML
+//--------------------------------------------------------------------------------------------------------------------//
+function nullIfEmptyHtml(html){
+    return isEmptyHtml(html) ? null : html;
+}
+
 // Export service module:
 //--------------------------------------------------------------------------------------------------------------------//
 module.exports = {
@@ -513,6 +545,9 @@ module.exports = {
     setDicomNamePersonFormat,
     setStorage,
     httpClientGETRequest,
-    XMLStringToJSON
+    XMLStringToJSON,
+    getVisibleLength,
+    isEmptyHtml,
+    nullIfEmptyHtml
 };
 //--------------------------------------------------------------------------------------------------------------------//

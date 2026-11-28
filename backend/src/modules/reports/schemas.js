@@ -70,13 +70,19 @@ const Validator = [
 
     body('clinical_info')
         .trim()
-        .isLength({ min: 10, max: 10000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "clinical_info" (min: 10, max: 10000 [chars]).'),
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 10000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "clinical_info" (min: 3, max: 10000 [chars]).'),
 
     body('procedure_description')
         .trim()
-        .isLength({ min: 10, max: 10000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "procedure_description" (min: 10, max: 10000 [chars]).'),
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 10000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "procedure_description" (min: 3, max: 10000 [chars]).'),
 
     body('findings').optional().isArray(),
 
@@ -89,8 +95,11 @@ const Validator = [
     body('findings.*.procedure_findings')
         .if(body('findings').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 10, max: 10000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "findings.*.procedure_findings" (min: 10, max: 10000 [chars]).'),
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 10000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "findings.*.procedure_findings" (min: 3, max: 10000 [chars]).'),
 
     body('findings.*.title')
         .if(body('findings').exists())   // Check if parent exists.
@@ -101,8 +110,13 @@ const Validator = [
     body('summary')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 10000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "summary" (min: 10, max: 10000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 10000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "summary" (min: 3, max: 10000 [chars]).'),
 
     body('fk_pathologies')
         .optional()

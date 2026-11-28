@@ -157,18 +157,24 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>{{ 'PROCEDURES.FORM.PREPARATION_LABEL' | i18n }} <span class="label-info">{{ 'PROCEDURES.FORM.TEXT_AREA_HINT' | i18n }}</span>:</h4>
+      <h4>{{ 'PROCEDURES.FORM.PREPARATION_LABEL' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('preparation')?.invalid && (form.get('preparation')?.dirty || form.get('preparation')?.touched)">{{ form.get('preparation')?.value | visibleLength }} / 3000</span>:</h4>
       <ckeditor formControlName="preparation" #preparation [editor]="preparationEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      <div class="ck-error-message" *ngIf="form.get('preparation')?.touched && form.get('preparation')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('preparation')?.touched && form.get('preparation')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 3000 } }}</div>
 
       <br/><hr class="dashed"/><br/>
 
-      <h4>{{ 'PROCEDURES.FORM.PROCEDURE_TEMPLATE_LABEL' | i18n }} <span class="label-info">{{ 'PROCEDURES.FORM.TEXT_AREA_HINT' | i18n }}</span>:</h4>
+      <h4>{{ 'PROCEDURES.FORM.PROCEDURE_TEMPLATE_LABEL' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('procedure_template')?.invalid && (form.get('procedure_template')?.dirty || form.get('procedure_template')?.touched)">{{ form.get('procedure_template')?.value | visibleLength }} / 3000</span>:</h4>
       <ckeditor formControlName="procedure_template" #procedure_template [editor]="procedureTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      <div class="ck-error-message" *ngIf="form.get('procedure_template')?.touched && form.get('procedure_template')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('procedure_template')?.touched && form.get('procedure_template')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 3000 } }}</div>
 
       <br/><hr class="dashed"/><br/>
 
-      <h4>{{ 'PROCEDURES.FORM.REPORT_TEMPLATE_LABEL' | i18n }} <span class="label-info">{{ 'PROCEDURES.FORM.TEXT_AREA_HINT' | i18n }}</span>:</h4>
+      <h4>{{ 'PROCEDURES.FORM.REPORT_TEMPLATE_LABEL' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('report_template')?.invalid && (form.get('report_template')?.dirty || form.get('report_template')?.touched)">{{ form.get('report_template')?.value | visibleLength }} / 3000</span>:</h4>
       <ckeditor formControlName="report_template" #report_template [editor]="reportTemplateEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      <div class="ck-error-message" *ngIf="form.get('report_template')?.touched && form.get('report_template')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('report_template')?.touched && form.get('report_template')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 3000 } }}</div>
 
     </div> <!-- end fxLayout wrapper -->
 

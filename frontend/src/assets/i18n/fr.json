@@ -2334,7 +2334,9 @@
     "BLOCKED_ATTRIBUTES": " - Attributs bloqués : ",
     "BLOCKED_UNSET": " - Suppressions bloquées : ",
     "MWL_ERROR_DETAIL": "Détail de l'erreur : ",
-    "ERROR_LABEL": "Erreur : "
+    "ERROR_LABEL": "Erreur : ",
+    "VISIBLE_LENGTH_MIN_ERROR": "Le texte doit contenir au moins {min} caractères.",
+    "VISIBLE_LENGTH_MAX_ERROR": "Le texte ne peut pas dépasser {max} caractères."
   },
   "PDF": {
     "APPOINTMENT": {

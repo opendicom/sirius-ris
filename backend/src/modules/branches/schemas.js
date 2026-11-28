@@ -98,8 +98,13 @@ const Validator = [
     body('appointment_footer')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 3000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "appointment_footer" (min: 10, max: 3000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 3000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "appointment_footer" (min: 3, max: 3000 [chars]).'),
 ];
 //--------------------------------------------------------------------------------------------------------------------//
 

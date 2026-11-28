@@ -2334,7 +2334,9 @@
     "BLOCKED_ATTRIBUTES": " - 被锁定的属性: ",
     "BLOCKED_UNSET": " - 被阻止的删除: ",
     "MWL_ERROR_DETAIL": "错误详情：",
-    "ERROR_LABEL": "错误: "
+    "ERROR_LABEL": "错误: ",
+    "VISIBLE_LENGTH_MIN_ERROR": "文本至少需要 {min} 个字符。",
+    "VISIBLE_LENGTH_MAX_ERROR": "文本不能超过 {max} 个字符。"
   },
   "PDF": {
     "APPOINTMENT": {

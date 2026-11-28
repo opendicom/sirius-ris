@@ -37,9 +37,6 @@ export class FormComponent implements OnInit {
   public procedure_findingsEditor       = customBuildEditor;
   public summaryEditor                  = customBuildEditor;
 
-  //Create CKEditor validators:
-  public clinicalInfoValidator          : boolean = true;
-  public procedureDescriptionValidator  : boolean = true;
 
   //Initializate validation tab errors:
   public reportTabErrors                : boolean = false;
@@ -142,11 +139,11 @@ export class FormComponent implements OnInit {
 
     //Set Reactive Form (First time):
     this.setReactiveForm({
-      clinical_info           : ['', [Validators.required]],
-      procedure_description   : ['', [Validators.required]],
-      summary                 : [''],
+      clinical_info           : ['', [Validators.required, this.sharedFunctions.visibleLengthValidator(3, 10000, true)]],
+      procedure_description   : ['', [Validators.required, this.sharedFunctions.visibleLengthValidator(3, 10000, true)]],
+      summary                 : ['', [this.sharedFunctions.visibleLengthValidator(3, 10000)]],
       findings_title          : [''],
-      procedure_findings      : [''],
+      procedure_findings      : ['', [this.sharedFunctions.visibleLengthValidator(3, 10000)]],
       pathologies_input       : ['']
     });
   }
@@ -256,13 +253,13 @@ export class FormComponent implements OnInit {
 
               //Send data to the form:
               this.setReactiveForm({
-                clinical_info         : this.reportData.clinical_info,
-                procedure_description : this.reportData.procedure_description,
-                summary               : this.reportData.summary,
+                clinical_info         : [ this.reportData.clinical_info, [Validators.required, this.sharedFunctions.visibleLengthValidator(3, 10000, true)] ],
+                procedure_description : [ this.reportData.procedure_description, [Validators.required, this.sharedFunctions.visibleLengthValidator(3, 10000, true)] ],
+                summary               : [ this.reportData.summary, [this.sharedFunctions.visibleLengthValidator(3, 10000)] ],
 
                 //Force the use of the first finding (current procedure finding), extra_procedures will be added in the future.
                 findings_title        : finding_title,
-                procedure_findings    : procedure_findings,
+                procedure_findings    : [ procedure_findings, [this.sharedFunctions.visibleLengthValidator(3, 10000)] ],
                 pathologies_input     : []
               });
 
@@ -309,19 +306,8 @@ export class FormComponent implements OnInit {
   }
   
   async onSubmit(current_operation: string = 'save'){
-    //Validate CKEditor clinical_info (min length 10 + 7 chars [<p></p>]):
-    if(this.form.value.clinical_info.length < 17){
-      this.clinicalInfoValidator = false;
-    } else {
-      this.clinicalInfoValidator = true;
-    }
-
-    //Validate CKEditor procedure_description (min length 10 + 7 chars [<p></p>]):
-    if(this.form.value.procedure_description.length < 17){
-      this.procedureDescriptionValidator = false;
-    } else {
-      this.procedureDescriptionValidator = true;
-    }
+    //Required validator doesn't effect the input fields, if you don't mark them as dirty, when they are in pristine state:
+    this.form.markAllAsTouched();
 
     //Validate fields:
     if(this.form.valid){
@@ -332,15 +318,15 @@ export class FormComponent implements OnInit {
       let reportSaveData = { ...this.form.value };
 
       //Data normalization - Findings object:
-      if(reportSaveData.procedure_findings.length > 17){
+      if(!this.sharedFunctions.isEmptyHtml(reportSaveData.procedure_findings)){
         //Overwrite finding value format:
         reportSaveData['findings'] = [{
           fk_procedure        : this.performingData.procedure._id,
           title               : reportSaveData.findings_title,
           procedure_findings  : reportSaveData.procedure_findings
         }];
-      //Update unset findings field case (empty CKEditor <= 7 chars '<p></p>'):
-      } else if(reportSaveData.procedure_findings.length <= 7 && this.form_action == 'update'){
+      //Update unset findings field case (empty CKEditor):
+      } else if(this.form_action == 'update'){
         reportSaveData['findings'] = '';  //Empty string to unset previous value.
       };
 

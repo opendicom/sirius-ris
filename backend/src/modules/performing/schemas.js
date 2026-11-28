@@ -152,7 +152,12 @@ const Validator = [
     body('observations')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
         .withMessage(currentLang.ris.schema_validator.isLength + ' | "observations" (min: 3, max: 1000 [chars]).'),
         
     //----------------------------------------------------------------------------------------------------------------//
@@ -163,8 +168,11 @@ const Validator = [
     body('anesthesia.procedure')
         .if(body('anesthesia').exists())   // Check if parent exists.
         .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anesthesia.procedure" (min: 10, max: 1000 [chars]).'),
+        .custom(value => {
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "anesthesia.procedure" (min: 3, max: 1000 [chars]).'),
 
     body('anesthesia.professional_id')
         .if(body('anesthesia').exists())   // Check if parent exists.
@@ -283,8 +291,13 @@ const Validator = [
     body('acquisition.observations')
         .optional()
         .trim()
-        .isLength({ min: 10, max: 1000 })
-        .withMessage(currentLang.ris.schema_validator.isLength + ' | "acquisition.observations" (min: 10, max: 1000 [chars]).'),
+        .customSanitizer(mainServices.nullIfEmptyHtml)
+        .custom(value => {
+            if(mainServices.isEmptyHtml(value)){ return true; } //Empty value is valid (it is saved as null)
+            const length = mainServices.getVisibleLength(value);
+            return length >= 3 && length <= 1000;
+        })
+        .withMessage(currentLang.ris.schema_validator.isLength + ' | "acquisition.observations" (min: 3, max: 1000 [chars]).'),
     //----------------------------------------------------------------------------------------------------------------//
 
 ];

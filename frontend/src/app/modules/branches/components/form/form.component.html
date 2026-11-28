@@ -57,8 +57,10 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h4>{{ 'BRANCHES.FORM.APPOINTMENT_FOOTER_H4' | i18n }} <span class="label-info">min: 10, max: 3000</span>:</h4>
+      <h4>{{ 'BRANCHES.FORM.APPOINTMENT_FOOTER_H4' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('appointment_footer')?.invalid && (form.get('appointment_footer')?.dirty || form.get('appointment_footer')?.touched)">{{ form.get('appointment_footer')?.value | visibleLength }} / 3000</span>:</h4>
       <ckeditor formControlName="appointment_footer" #appointmentFooter [editor]="appointmentFooterEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+      <div class="ck-error-message" *ngIf="form.get('appointment_footer')?.touched && form.get('appointment_footer')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('appointment_footer')?.touched && form.get('appointment_footer')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 3000 } }}</div>
 
       <br/><hr class="dashed" /><br/>
 

@@ -72,8 +72,10 @@
 
         <br/><hr class="dashed" /><br/>
 
-        <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="label-info">min: 2, max: 1000</span>:</h4>
+        <h4>{{ 'PRIVATE_HEALTH.MEDICATION' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('private_health.medication')?.invalid && (form.get('private_health.medication')?.dirty || form.get('private_health.medication')?.touched)">{{ form.get('private_health.medication')?.value | visibleLength }} / 1000</span>:</h4>
         <ckeditor *ngIf="sharedProp.mainSettings" formControlName="medication" #medication [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
+        <div class="ck-error-message" *ngIf="form.get('private_health.medication')?.touched && form.get('private_health.medication')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+        <div class="ck-error-message" *ngIf="form.get('private_health.medication')?.touched && form.get('private_health.medication')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
         <br/>
 
@@ -138,19 +140,23 @@
     </div> <!-- end fxLayout wrapper -->
 
     <div class="input-wrapper"> <!-- start fxLayout wrapper -->
-      <h3 class="form-title underline-fail-alt">{{ 'ACTION.ANAMNESIS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h3>
+      <h3 class="form-title underline-fail-alt">{{ 'ACTION.ANAMNESIS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('anamnesis')?.invalid && (form.get('anamnesis')?.dirty || form.get('anamnesis')?.touched)">{{ form.get('anamnesis')?.value | visibleLength }} / 1000</span>:</h3>
       <br/>
       <div [class.unselected]="anamnesisValidator == false">
         <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
       </div>
+      <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('anamnesis')?.touched && form.get('anamnesis')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
       <br/><hr class="dashed" /><br/>
 
-      <h3 class="form-title underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="label-info">min: 10, max: 1000</span>:</h3>
+      <h3 class="form-title underline-fail-alt">{{ 'APPOINTMENTS.FORM_INSERT.DETAILS.INDICATIONS' | i18n }} <span class="ck-counter" [class.ck-counter-error]="form.get('indications')?.invalid && (form.get('indications')?.dirty || form.get('indications')?.touched)">{{ form.get('indications')?.value | visibleLength }} / 1000</span>:</h3>
       <br/>
       <div [class.unselected]="indicationsValidator == false">
         <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="sharedProp.mainSettings.CKEditorConfig" data=""></ckeditor>
       </div>
+      <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('minVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MIN_ERROR' | i18n: { min: 3 } }}</div>
+      <div class="ck-error-message" *ngIf="form.get('indications')?.touched && form.get('indications')?.hasError('maxVisibleLength')">{{ 'SHARED.VISIBLE_LENGTH_MAX_ERROR' | i18n: { max: 1000 } }}</div>
 
       <br/><br/>
     </div> <!-- end fxLayout wrapper -->

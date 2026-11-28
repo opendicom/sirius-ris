@@ -51,7 +51,7 @@
         <div class="current-wrap preparation-wrap">
           <!-- preparation -->
           <div class="current-info">
-            <div *ngIf="this.sharedProp.current_procedure.preparation !== undefined && this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
+            <div *ngIf="this.sharedProp.current_procedure.preparation && this.sharedProp.current_procedure.preparation.length > 0; then thenBlockPreparation else elseBlockPreparation"></div>
 
             <ng-template #thenBlockPreparation>
               <span innerHTML="{{ this.sharedProp.current_procedure.preparation }}"></span>
